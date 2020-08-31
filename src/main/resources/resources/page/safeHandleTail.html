@@ -1,0 +1,112 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="css/tail.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body style="border-radius: 8px;width: 680px">
+<form>
+    <div class="top table2_top">
+        <div>
+            <div class="top_out">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>问题名称<span>*</span></td>
+                        <td><input type="text" required   minlength ="2"></td>
+                        <td>所属环节<span>*</span></td>
+                        <td> <select>
+                            <option>生产</option>
+                            <option>运输</option>
+                            <option>储存</option>
+                            <option>销售</option>
+                        </select></td>
+                    </tr>
+                    <tr>
+                        <td>问题描述<span></span></td>
+                        <td colspan = "8" style="text-align: left"><textarea></textarea></td>
+                    </tr>
+                    <tr>
+                        <td>安全级别<span></span></td>
+                        <td>
+                            <select >
+                                <option>特大</option>
+                                <option>级大</option>
+                                <option>一般</option>
+                                <option>微小</option>
+                            </select>
+                        </td>
+                        <td>发现时间<span></span></td>
+                        <td>
+                            <input type="text">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>所属企业<span></span></td>
+                        <td>
+                            <input type="text">
+                        </td>
+                        <td>企业负责人<span></span></td>
+                        <td>
+                            <input type="text">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>来源部门<span></span></td>
+                        <td><select >
+                            <option>四川省公安局</option>
+
+                        </select></td>
+                        <td>处理时间<span></span></td>
+                        <td><input type="text" ></td>
+                    </tr>
+                    <tr>
+                        <td>问题状态<span></span></td>
+                        <td><select >
+                            <option>未处理</option>
+                            <!--<option>已经指派</option>-->
+                            <!--<option>未处理</option>-->
+                            <!--<option>已处理</option>-->
+                            <!--<option>已关闭</option>-->
+                        </select></td>
+                        <td>关闭时间<span></span></td>
+                        <td><input type="text" ></td>
+                    </tr>
+
+                    <tr>
+                        <td>处理结果<span></span></td>
+                        <td colspan = "8" style="text-align: left"><textarea></textarea></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="notice_bot">
+            <div class="l_left"><input type="checkbox" checked="checked"/>保存并关闭窗口</div>
+            <div class="r_right but_p"><button class="but_save" type="submit" onclick="save()">保存</button><button class="but_close" onclick="Cancel()">关闭</button></div>
+        </div>
+    </div>
+</form>
+<script src="js/jquery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script>
+    function Cancel() {
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+    function save(){
+        layer.msg('数据提交中', {
+            icon: 16,
+            shade: 0.01,
+            time: 20000
+        });
+        setTimeout(function(){
+            layer.closeAll('dialog');
+        }, 3000);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,334 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>统计表</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/table1.css" rel="stylesheet" type="text/css">
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="from_main" >
+    <div class="news_check">
+        <div class="check_left l_left">
+            <label>事故类型：</label>
+            <select class="find_input" style="margin-right: 10px">
+                <option>火灾</option>
+                <option>毒气泄漏</option>
+            </select>
+            <label>时间段：</label><input type="date" placeholder="" style="margin-right: 10px"><input type="date" placeholder=""><button>查询</button>
+        </div>
+        <div class="check_right r_right">
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-circle-arrow-down l_left"></span>打印</a>
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-download-alt l_left"></span>导出</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div style="padding: 0 10px 0 10px ;border: 1px #ccc solid;background-color: #fff;">
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p" style="text-align: center">事故汇总信息</p>
+                <div >
+                    <table  class="annyTable01" border="1">
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 12%">事故总数：</td>
+                            <td  colspan="3" style="color: red;font-weight: bold">2051件</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">特级事故发生次数：</td>
+                            <td  colspan="3">8次（同比增加5%，环比增加2%）</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">事故频发类型：</td>
+                            <td colspan="3">火灾类（32%）</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 12%">事故频发区域：</td>
+                            <td  colspan="3">北区（23%）</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">事故频发原因：</td>
+                            <td  colspan="3">物品过期（38%）</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">事故频发月份：</td>
+                            <td colspan="3">4月（2145件）</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">事故变化趋势：</td>
+                            <td colspan="9">事故总体呈上升趋势（相比去年吧同比增加9%；环比增加6%）；其中火灾类事故增长最为明显。</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">决策建议：</td>
+                            <td colspan="9" style="color: red">每年的六月、七月是事故的高发时期，需要在这些时间做好防范措施！</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">事故级别分析<span class="r_right">更多></span></p>
+                <div id="container" style="height:200px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">事故级别</td>
+                            <td>特大事故</td>
+                            <td>极大事故</td>
+                            <td>重大事故</td>
+                            <td>一般事故</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">发生数</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">事故类型分析<span class="r_right">更多></span></p>
+                <div id="container1" style="height:200px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">事故类型</td>
+                            <td>火灾类</td>
+                            <td>腐蚀类</td>
+                            <td>爆炸类</td>
+                            <td>坍塌类</td>
+                            <td>其他</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">发生数</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">各行业事故分析<span class="r_right">更多></span></p>
+                <div id="container2" style="height:230px;width: 98%"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">单位行业</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">事故数</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">事故原因分析<span class="r_right">更多></span></p>
+                <div id="container3" style="height:200px;width: 98%"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">事故原因</td>
+                            <td>物品过期</td>
+                            <td>看护不力</td>
+                            <td>物品损坏</td>
+                            <td>其他</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">原因数</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="e_chart">
+            <div class="charts charts_last">
+                <p class="charts_p">事故变化趋势图<span class="r_right">更多></span></p>
+                <div id="container4" style="height:250px"></div>
+                <table class="annyTable" border="1">
+                    <tr>
+                        <td class="first_td">月份</td>
+                        <td>一月</td>
+                        <td>二月</td>
+                        <td>三月</td>
+                        <td>四月</td>
+                        <td>五月</td>
+                        <td>六月</td>
+                        <td>七月</td>
+                        <td>八月</td>
+                        <td>九月</td>
+                        <td>十月</td>
+                        <td>十一月</td>
+                        <td>十二月</td>
+                    </tr>
+                    <tr>
+                        <td class="first_td">事故数（件）</td>
+                        <td>1502</td>
+                        <td>2564</td>
+                        <td>2541</td>
+                        <td>3568</td>
+                        <td>4852</td>
+                        <td>2451</td>
+                        <td>251</td>
+                        <td>1456</td>
+                        <td>4852</td>
+                        <td>2451</td>
+                        <td>251</td>
+                        <td>1456</td>
+                    </tr>
+                    <tr>
+                        <td class="first_td">同比</td>
+                        <td>8.2%</td>
+                        <td>7.2%</td>
+                        <td>5.2%</td>
+                        <td>5.2%</td>
+                        <td>5.2%</td>
+                        <td>5.2%</td>
+                        <td>7.2%</td>
+                        <td>6.2%</td>
+                        <td>5.2%</td>
+                        <td>9.2%</td>
+                        <td>5.2%</td>
+                        <td>6.2%</td>
+                    </tr>
+                    <tr>
+                        <td class="first_td">环比</td>
+                        <td>8.2%</td>
+                        <td>7.2%</td>
+                        <td>5.2%</td>
+                        <td>5.2%</td>
+                        <td>5.2%</td>
+                        <td>5.2%</td>
+                        <td>7.2%</td>
+                        <td>6.2%</td>
+                        <td>5.2%</td>
+                        <td>9.2%</td>
+                        <td>5.2%</td>
+                        <td>6.2%</td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+        <div class="e_chart">
+            <div class="charts charts_last">
+                <p class="charts_p">各类事故走势图<span class="r_right">更多></span></p>
+                <div id="container5" style="height:250px"></div>
+                <table class="annyTable" border="1">
+                    <tr>
+                        <td class="first_td">事故类型</td>
+                        <td>火灾类</td>
+                        <td>腐蚀类</td>
+                        <td>爆炸类</td>
+                        <td>坍塌类</td>
+                        <td>其他</td>
+                    </tr>
+                    <tr>
+                        <td class="first_td">事故数（件）</td>
+                        <td>1502</td>
+                        <td>2564</td>
+                        <td>2541</td>
+                        <td>3568</td>
+                        <td>4852</td>
+                    </tr>
+                    <tr>
+                        <td class="first_td">同比</td>
+                        <td>+5.2%</td>
+                        <td>-5.2%</td>
+                        <td>+5.2%</td>
+                        <td>+5.2%</td>
+                        <td>+5.2%</td>
+
+                    </tr>
+                    <tr>
+                        <td class="first_td">环比</td>
+                        <td>-5.2%</td>
+                        <td>+5.2%</td>
+                        <td>-5.2%</td>
+                        <td>-5.2%</td>
+                        <td>+5.2%</td>
+
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+</body>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script src="js/echarts-all.js"></script>
+<script src="js/accidentAnalysis.js"></script>
+<script>
+    myEcharts();
+
+</script>
+</html>

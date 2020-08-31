@@ -1,0 +1,449 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>运输分析</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table1.css" rel="stylesheet" type="text/css">
+
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="from_main" >
+    <div class="news_check">
+        <div class="check_left l_left">
+            <label>单位类型：</label>
+            <select class="find_input" style="margin-right: 10px">
+                <option>烟花爆竹</option>
+            </select>
+            <label>地理位置：</label>
+            <input type="text"  class="find_input" style="margin-right: 10px">
+            <label>时间：</label>
+            <input type="date"  class="find_input">
+            <button>查询</button>
+        </div>
+        <div class="check_right r_right">
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-circle-arrow-down l_left"></span>打印</a>
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-download-alt l_left"></span>导出</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div style="padding: 0 10px 0 10px ;border: 1px #ccc solid;background-color: #fff;">
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p" style="text-align: center">生产汇总信息</p>
+                <div >
+                    <table  class="annyTable01" border="1">
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">生产单位：</td>
+                            <td colspan="9">爆炸物品、危险化学品、射钉器材、印章、机修、散装加油、典当和烟花爆竹等</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 10%">生产单位：</td>
+                            <td  colspan="3" style="color: red;font-weight: bold">1564个</td>
+                            <td style="font-weight: bold;text-align: right;width: 10%">最多生产单位：</td>
+                            <td colspan="3">烟花爆竹（635个，占比30%；同比增加4%；环比增加5%）</td>
+                            <td style="font-weight: bold;text-align: right;width: 10%">最少生产单位：</td>
+                            <td  colspan="3">危险化学品（96个，占比10%；同比减少2%；环比减少3%）</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">各类危化品产量：</td>
+                            <td colspan="9">爆炸物品（125吨）、危险化学品（263吨）、射钉器材（23654件）、印章（25648件）、机修（2564台）、散装加油（14745升）、典当（25647件）和烟花爆竹（2541447箱）等</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 10%">最多产量区域：</td>
+                            <td colspan="3" style="width: 10%">北区（占比45%）</td>
+                            <td style="font-weight: bold;text-align: right;width: 10%">最多产量类型：</td>
+                            <td  colspan="3">东射钉器材(1245件；占比26%；)</td>
+
+                            <td style="font-weight: bold;text-align: right;width: 10%">总产量最多月份：</td>
+                            <td  colspan="3">7月（占比36%；同比下降10%；环比下降6%）</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">计划产量和实际产量：</td>
+                            <td colspan="9">实际产量多于计划产量；同比增长8%；环比增加9.6%</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">决策建议：</td>
+                            <td colspan="9" style="color: red;font-weight: bold">总体说来危化品需求量在不断的增加，需要对危化品监控、管理更加严格；避免事故发生。</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">各类危化品生产单位占比<span class="r_right">更多></span></p>
+                <div id="container" style="height:200px;width: 100%;"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">生产单位</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">各区域生产单位占比<span class="r_right">更多></span></p>
+                <div id="container2" style="height:200px;width: 100%;"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">区域</td>
+                            <td>成都市</td>
+                            <td>绵阳市</td>
+                            <td>德阳市</td>
+                            <td>自贡市</td>
+                            <td>南充市</td>
+                            <td>广元市</td>
+                            <td>巴中市</td>
+                            <td>德阳市</td>
+                            <td>资阳市</td>
+                            <td>泸州市</td>
+                            <td>遂宁市</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">各类生产人员分析<span class="r_right">更多></span></p>
+                <div id="container7" style="height:250px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">危化品</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">人数</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">生产人员年龄段分析<span class="r_right">更多></span></p>
+                <div id="container8" style="height:250px;width: 100%;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">年龄段</td>
+                            <td>青年</td>
+                            <td>中年</td>
+                            <td>老年</td>
+                            <td>其它</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">各类危化品产量分析<span class="r_right">更多></span></p>
+                <div id="container1" style="height:250px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">危化品</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">产量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">不同区域各类型危化品产量分析<span class="r_right">更多></span></p>
+                <div id="container3" style="height:250px;width: 100%;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">区域</td>
+                            <td>东区</td>
+                            <td>西区</td>
+                            <td>南区</td>
+                            <td>北区</td>
+                            <td>其它</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">产量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">全年各类型危化品产量走势分析<span class="r_right">更多></span></p>
+                <div id="container4" style="height:300px;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">危化品</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">产量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">环比</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>-5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">计划产量和实际产量对比<span class="r_right">更多></span></p>
+                <div id="container6" style="height:300px;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td"></td>
+                            <td class="">计划（吨）</td>
+                            <td class="">实际（吨）</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">产量</td>
+                            <td>5678</td>
+                            <td>5234</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+
+                        </tr>
+                        <tr>
+                            <td class="first_td">环比</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts charts_last">
+                <p class="charts_p">生产单位分布图<span class="r_right"></span></p>
+                <div>
+                    <img src="img/ditu.png" style="width: 100%">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+</body>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/layer_v2.1/layer/layer.js"></script>
+<script src="js/echarts-all.js"></script>
+<script src="js/production_analysis.js"></script>
+
+</html>

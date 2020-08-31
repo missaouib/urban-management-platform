@@ -1,0 +1,145 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>全局分析</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table1.css" rel="stylesheet" type="text/css">
+
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="from_main" >
+    <div class="news_check">
+        <div class="check_left l_left">
+            <label>从业单位类型：</label>
+            <select class="find_input">
+                <option>生产单位</option>
+                <option>存储单位</option>
+                <option>运输单位</option>
+                <option>使用单位</option>
+
+        </select>
+            <label>从业区域：</label>
+            <select class="find_input">
+                <option>绵阳</option>
+                <option>全部</option>
+                <option>成都</option>
+
+            </select>
+            <label>年份：</label>
+            <input type="date" class="find_input"/>
+
+
+        <button>查询</button>
+        </div>
+        <div class="check_right r_right">
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-circle-arrow-down l_left"></span>打印</a>
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-download-alt l_left"></span>导出</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div style="padding: 0 10px 0 10px ;border: 1px #ccc solid;background-color: #fff;">
+
+
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p">从业人员分析<span class="r_right">更多></span></p>
+                <div id="container7" style="height:250px;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">物品类型</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>机修</td>
+                            <td>典当</td>
+                            <td>印章</td>
+                            <td>散装加油</td>
+                            <td>烟花爆竹</td>
+
+                        </tr>
+                        <tr>
+                            <td class="first_td">从业人员数</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+</body>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/echarts-all.js"></script>
+
+<script>
+    $(function(){
+        var myChart = echarts.init($("#container7")[0]);
+        option = {
+
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient : 'vertical',
+                x : 'left',
+                data:['化学品','射钉器材','印章','机修','散装加油','典当','烟花爆竹']
+            },
+
+            calculable : false,
+            series : [
+                {
+                    name:'存储量',
+                    type:'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:[
+                        {value:1335, name:'化学品'},
+                        {value:310, name:'射钉器材'},
+                        {value:234, name:'印章'},
+                        {value:35, name:'机修'},
+                        {value:148, name:'散装加油'},
+                        {value:148, name:'典当'},
+                        {value:148, name:'烟花爆竹'}
+                    ]
+                }
+            ]
+        };
+        myChart.setOption(option);
+    });
+</script>
+</html>

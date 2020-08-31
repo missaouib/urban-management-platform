@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table1.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="">
+    <div id="container" style="height:200px;width: 100%;"></div>
+    <div style="width: 100%;margin-top: 30px">
+        <table class="annyTable" border="1">
+            <tr>
+                <td class="first_td">区域</td>
+                <td>青羊区</td>
+                <td>锦江区</td>
+                <td>金牛区</td>
+                <td>武侯区</td>
+                <td>成华区</td>
+                <td>龙泉驿区</td>
+                <td>青白江区</td>
+                <td>温江区</td>
+                <td>郫县</td>
+                <td>双流县</td>
+                <td>新津县</td>
+            </tr>
+            <tr>
+                <td class="first_td">数量</td>
+                <td>102</td>
+                <td>102</td>
+                <td>102</td>
+                <td>102</td>
+                <td>102</td>
+                <td>102</td>
+                <td>102</td>
+                <td>102</td>
+                <td>102</td>
+                <td>102</td>
+                <td>102</td>
+            </tr>
+            <tr>
+                <td class="first_td">占比</td>
+                <td>5.2%</td>
+                <td>5.2%</td>
+                <td>5.2%</td>
+                <td>5.2%</td>
+                <td>5.2%</td>
+                <td>5.2%</td>
+                <td>5.2%</td>
+                <td>5.2%</td>
+                <td>5.2%</td>
+                <td>5.2%</td>
+                <td>5.2%</td>
+            </tr>
+
+        </table>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script src="js/echarts-all.js"></script>
+<script>
+    $(function(){
+        var myChart = echarts.init($("#container")[0]);
+        var option = {
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient : 'horizontal',
+                x : 'left',
+                data:['青羊区','锦江区','金牛区','武侯区',"成华区",'龙泉驿区','青白江区','温江区',"郫县",'双流县','新津县']
+            },
+
+            calculable : false,
+            series : [
+                {
+                    name:'各区域单位占比',
+                    type:'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:[
+                        {
+                            value:124,
+                            name:'青羊区',
+                            itemStyle:{
+                                normal:{
+                                    color:""
+                                }
+                            }
+                        },
+                        {
+                            value:9,
+                            name:'锦江区'
+                        },
+                        {
+                            value:9,
+                            name:'金牛区'
+                        },
+                        {
+                            value:9,
+                            name:'武侯区'
+                        },
+                        {
+                            value:39,
+                            name:'成华区'
+                        },
+                        {
+                            value:9,
+                            name:'龙泉驿区'
+                        },
+                        {
+                            value:9,
+                            name:'青白江区'
+                        },
+                        {
+                            value:9,
+                            name:'温江区'
+                        },
+                        {
+                            value:39,
+                            name:'郫县'
+                        },
+                        {
+                            value:9,
+                            name:'双流县'
+                        },
+                        {
+                            value:39,
+                            name:'新津县'
+                        }
+
+                    ]
+                }
+            ]
+        };
+        myChart.setOption(option);
+    });
+</script>
+</html>

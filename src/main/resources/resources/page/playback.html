@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="css/video.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="css/powerange.css" />
+</head>
+<body>
+<div class="index_video_camera" style="background-color: #092789" >
+    <div class="video_main" style="height: 564px">
+
+        <div class="video_01">
+            <div class="video_right" style="height: 524px">
+            </div>
+            <div class="video_left">
+                <h5>回放设置</h5>
+            </div>
+            <div class="clear"></div>
+            <div class="video_bot">
+                <div class="video_bot_left l_left">
+                    <ul>
+                        <li><img src="img/01.png" /></li>
+                        <li><img src="img/02.png" /></li>
+                        <li><img src="img/03.png" /></li>
+                    </ul>
+                </div>
+                <div class="video_bot_middle l_left">
+                    <ul>
+                        <li><img src="img/15.png" /></li>
+                        <li class="began"></li>
+                        <li><img src="img/16.png" /></li>
+                        <li style="width: 120px; margin: 17px 0 0 43px;">
+                            <input type="text" class="js-check-click"/>
+                        </li>
+                    </ul>
+                </div>
+                <div class="video_bot_right r_right">
+                    <ul>
+                        <li style="margin-top: 6px"><img src="img/14.png" /></li>
+                        <li><img src="img/05.png" /></li>
+                        <li><img src="img/06.png" /></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="js/jquery-2.2.0.min.js"></script>
+<script src="js/powerange.min.js"></script>
+<script type="text/javascript">
+    var clickInput = document.querySelector('.js-check-click');
+    initClickInput = new Powerange(clickInput, { start: 20 });
+</script>
+<script>
+    $(function(){
+        //        开关效果
+        var flag = true;
+        $(".began").click(function () {
+            if(flag){
+                $(this).removeClass("began");
+                $(this).addClass("began1");
+                flag = false;
+            }else {
+                $(this).addClass("began");
+                $(this).removeClass("began1");
+                flag = true;
+            }
+        });
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,320 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>运输分析</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table1.css" rel="stylesheet" type="text/css">
+
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="from_main" >
+    <div class="news_check">
+        <div class="check_left l_left">
+            <label>单位类型：</label>
+            <select class="find_input" style="margin-right: 10px">
+                <option>烟花爆竹</option>
+            </select>
+            <label>地理位置：</label>
+            <input type="text"  class="find_input" style="margin-right: 10px">
+            <label>时间：</label>
+            <input type="date"  class="find_input">
+            <button>查询</button>
+        </div>
+        <div class="check_right r_right">
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-circle-arrow-down l_left"></span>打印</a>
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-download-alt l_left"></span>导出</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div style="padding: 0 10px 0 10px ;border: 1px #ccc solid;background-color: #fff;">
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p" style="text-align: center">单位汇总信息</p>
+                <div >
+                    <table  class="annyTable01" border="1">
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">从业单位：</td>
+                            <td colspan="9">爆炸物品、危险化学品、射钉器材、印章、机修、散装加油、典当和烟花爆竹等</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 10%">从业单位总数：</td>
+                            <td  colspan="3" style="color: red;font-weight: bold">2546个</td>
+                            <td style="font-weight: bold;text-align: right;width: 10%">最多从业单位：</td>
+                            <td colspan="3">烟花爆竹（692个，占比40%；同比增加5%；环比增加3%）</td>
+                            <td style="font-weight: bold;text-align: right;width: 10%">最少从业单位：</td>
+                            <td  colspan="3">危险化学品（124个，占比40%；同比减少3%；环比减少3%）</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 10%">最多从业单位区域：</td>
+                            <td  colspan="3" style="width: 10%">东区(1245个)</td>
+                            <td style="font-weight: bold;text-align: right;width: 10%">最少从业单位区域：</td>
+                            <td colspan="3">北区（92个）</td>
+                            <td style="font-weight: bold;text-align: right;width: 10%">从业单位变化趋势：</td>
+                            <td  colspan="3">整体呈下降趋势（同比下降10%；环比下降6%）</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">决策建议：</td>
+                            <td colspan="9" style="color: red;font-weight: bold">通过对各个从业单位数量分析和变化分析发现各从业单位均呈不断减少趋势；为保证行业发展；应该加强各行业单位的入驻。。</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">不同类型单位占比<span class="r_right">更多></span></p>
+                <div id="container" style="height:200px;width: 100%;"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">从业单位</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">各区域从业单位占比<span class="r_right">更多></span></p>
+                <div id="container2" style="height:200px;width: 100%;"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">区域</td>
+                            <td>成都市</td>
+                            <td>绵阳市</td>
+                            <td>德阳市</td>
+                            <td>自贡市</td>
+                            <td>南充市</td>
+                            <td>广元市</td>
+                            <td>巴中市</td>
+                            <td>德阳市</td>
+                            <td>资阳市</td>
+                            <td>泸州市</td>
+                            <td>遂宁市</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">从业单位数量分析<span class="r_right">更多></span></p>
+                <div id="container1" style="height:250px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">从业单位</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">不同区域各单位数据分析<span class="r_right">更多></span></p>
+                <div id="container3" style="height:250px;width: 100%;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">区域</td>
+                            <td>东区</td>
+                            <td>西区</td>
+                            <td>南区</td>
+                            <td>北区</td>
+                            <td>其它</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p">全年从业单位走势分析<span class="r_right">更多></span></p>
+                <div id="container4" style="height:300px;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">从业单位</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">单位数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">环比</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>-5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+</body>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/layer_v2.1/layer/layer.js"></script>
+<script src="js/echarts-all.js"></script>
+<script src="js/unit_analysis.js"></script>
+
+</html>

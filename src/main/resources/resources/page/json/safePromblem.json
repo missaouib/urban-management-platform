@@ -1,0 +1,25 @@
+
+{"data":
+[{"check":"","id":"001","title":"仓库储存容量超标问题","link":"储存","class":"一般","content":"该厂储存危化品，在一个仓库大量堆积，超出是是最大容量","company":"成都市诚正化工有限公司","person":"张先华","discoverTime":"2017-09-13","part":"成都市安监局","stats":"未指派","result":"无","handTime":"无","closeTime":"无","oper":"1"},
+  {"check":"","id":"002","title":"生产过程没有按钮规范操作","link":"生产","class":"一般","content":"该厂员工操作不熟练，未按操作手册执行","company":"四川高旺上为科技有限公司","person":"李细明","discoverTime":"2017-09-11","part":"成都市安监局","stats":"未处理","result":"无","handTime":"无","closeTime":"无","oper":"1"},
+  {"check":"","id":"003","title":"把炸药销售给个人","link":"销售","class":"极大","content":"该厂炸药制品销售给任意个人","company":"绵阳金川磷化工有限公司","person":"罗今","discoverTime":"2017-08-8","part":"四川省安全管理局","stats":"已处理","result":"罚款10万元，责令整改","handTime":"2017-08-10","closeTime":"无","oper":"1"},
+  {"check":"","id":"004","title":"没有用专业车辆运输物品","link":"运输","class":"极大","content":"该厂储存危化品，在一个仓库大量堆积，超出是是最大容量","company":"四川景玉化工有限公司","person":"高加强","discoverTime":"2017-08-02","part":"四川交通局","stats":"已处理","result":"驾驶员扣6分，企业罚款1万元","handTime":"2017-08-02","closeTime":"2017-08-03","oper":"1"},
+  {"check":"","id":"005","title":"物品储存不规范","link":"储存","class":"一般","content":"该厂储存危化品，在一个仓库大量堆积，超出是是最大容量","company":"四川蜀泰化工科技有限公司","person":"刘希云","discoverTime":"2017-07-25","part":"成都市安监局","stats":"未处理","result":"无","handTime":"无","closeTime":"无","oper":"1"},
+  {"check":"","id":"006","title":"未用专业车辆运输危化品","link":"运输","class":"一般","content":"该厂储存危化品，在一个仓库大量堆积，超出是是最大容量","company":"成都泰竽工业气体有限公司","person":"吴襄阳","discoverTime":"2017-07-18","part":"成都市交警局","stats":"已关闭","result":"驾驶员扣6分，企业罚款1万元","handTime":"2017-07-18","closeTime":"2017-07-19","oper":"1"},
+  {"check":"","id":"007","title":"生产人员未取得资格证","link":"生产","class":"一般","content":"该厂储存危化品，在一个仓库大量堆积，超出是是最大容量","company":"成都德思特生物技术有限公司","person":"陈家容","discoverTime":"2017-07-13","part":"成都人力资源局","stats":"已处理","result":"责令整改，罚款1万","handTime":"201--07-26","closeTime":"无","oper":"1"},
+  {"check":"","id":"008","title":"销售易爆物给个人","link":"储存","class":"极大","content":"该厂储存危化品，在一个仓库大量堆积，超出是是最大容量","company":"成都荣成化工有限公司","person":"李成成","discoverTime":"2017-06-11","part":"成都市安全管理局","stats":"已处理","result":"罚款10万，责令整改","handTime":"2017-06-22","closeTime":"无","oper":"1"},
+  {"check":"","id":"009","title":"生产人员未取得资格证","link":"生产","class":"一般","content":"该厂储存危化品，在一个仓库大量堆积，超出是是最大容量","company":"永安防腐制冷设备制造厂","person":"万杰本","discoverTime":"2017-06-10","part":"成都市人力资源局","stats":"未处理","result":"无","handTime":"无","closeTime":"无","oper":"1"},
+  {"check":"","id":"010","title":"仓库储存容量超标问题","link":"储存","class":"一般","content":"该厂储存危化品，在一个仓库大量堆积，超出是是最大容量","company":"遂宁青龙丙烯酸酯橡胶厂","person":"刘一明","discoverTime":"2017-05-13","part":"成都市安监局","stats":"未处理","result":"无","handTime":"无","closeTime":"无","oper":"1"},
+  {"check":"","id":"011","title":"仓库储存容量超标问题","link":"储存","class":"一般","content":"该厂储存危化品，在一个仓库大量堆积，超出是是最大容量","company":"成都市诚正化工有限公司","person":"张先华","discoverTime":"2017-02-13","part":"成都市安监局","stats":"未处理","result":"无","handTime":"无","closeTime":"无","oper":"1"},
+  {"check":"","id":"012","title":"仓库储存容量超标问题","link":"储存","class":"一般","content":"该厂储存危化品，在一个仓库大量堆积，超出是是最大容量","company":"成都市诚正化工有限公司","person":"张先华","discoverTime":"2017-02-13","part":"成都市安监局","stats":"未处理","result":"无","handTime":"无","closeTime":"无","oper":"1"}
+
+
+
+
+
+
+
+
+
+
+]}
