@@ -1,0 +1,66 @@
+{
+"data":[
+{
+  "id":"001",
+"name":"百姓拍数据源",
+"type":"SQL Server",
+"host":"222.85.161.87",
+"port":"1433",
+"dbname":"bxpdata",
+"username":"bxp",
+"password":"bxp"
+},
+{
+  "id":"002",
+"name":"综合执法数据源",
+"type":"MySQL",
+"host":"222.85.161.87",
+"port":"8011",
+"dbname":"gycg",
+"username":"sjtl",
+"password":"sjtl"
+},
+{
+  "id":"003",
+"name":"渣土系统数据源",
+"type":"Oracle",
+"host":"58.42.235.168",
+"port":"3389",
+"dbname":"orcl",
+"username":"cityms",
+"password":"cityms"
+}
+
+,
+{
+  "id":"004",
+"name":"行政审批系统数据源",
+"type":"SQL Server",
+"host":"222.85.161.87",
+"port":"1443",
+"dbname":"xzsp",
+"username":"xzsp",
+"password":"xzsp"
+},
+{
+  "id":"005",
+"name":"舆情分析系统数据源",
+"type":"MySQL",
+"host":"222.85.161.87",
+"port":"8022",
+"dbname":"yq",
+"username":"yqss",
+"password":"yqss"
+},
+{
+  "id":"006",
+"name":"12319系统数据源",
+"type":"Oracle",
+"host":"222.85.161.87",
+"port":"1443",
+"dbname":"s12319",
+"username":"s123",
+"password":"s123"
+}
+]
+}

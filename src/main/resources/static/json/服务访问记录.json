@@ -1,0 +1,356 @@
+{
+"data":[
+{
+  "id":"001",
+"serviceName":"各子系统数据交换量",
+"url":"http://222.85.161.189:10002/homePage/getDataTransNum.shtm",
+"visitTime":"2017/04/04 10:45:12",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"002",
+"serviceName":"执法车辆在线量",
+"url":"http://222.85.161.189:10002/homePage/getPersonOnlineNum.shtm",
+"visitTime":"2017/03/19 11:54:09",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"003",
+"serviceName":"渣土车辆在线量",
+"url":"http://222.85.161.189:10002/homePage/getDataTransNum.shtm",
+"visitTime":"2017/09/22 10:12:12",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"004",
+"serviceName":"风险预警",
+"url":"http://222.85.161.189:10002/homePage/getZtcAlarmIn10Min.shtm",
+"visitTime":"2017/07/04 16:19:28",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"005",
+"serviceName":"执法人员位置信息",
+"url":"http://222.85.161.189:10002/map/getCurrentLocationByType.shtm?type=1",
+"visitTime":"2017/08/08 10:26:15",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"006",
+"serviceName":"综合执法系统区域服务",
+"url":"http://222.85.161.189:10002/dept/getAreaData.shtm?sys=4",
+"visitTime":"2017/07/18 09:00:22",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"007",
+"serviceName":"综合执法概述信息",
+"url":"http://222.85.161.189:10002/zhzfv2/getZhzfOverview.shtm?sys=4&areacode=00&startTime=2017-01-01&endTime=2017-10-16",
+"visitTime":"2017/06/01 11:20:23",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"008",
+"serviceName":"区划下包含的部门列表",
+"url":"http://222.85.161.189:10002/dept/getDeptsByPId.shtm",
+"visitTime":"2017/05/11 20:10:46",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"009",
+"serviceName":"综合执法人员性别分析服务",
+"url":"http://222.85.161.189:10002/voice/getVoiceSexRatioByParams.shtm",
+"visitTime":"2017/05/07 11:32:02",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"010",
+"serviceName":"综合执法人员年龄分析服务",
+"url":"http://222.85.161.189:10002/voice/getVoiceAgeRatioByParams.shtm",
+"visitTime":"2017/05/07 11:33:12",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"015",
+"serviceName":"综合执法人员编制分析服务",
+"url":"http://222.85.161.189:10002/voice/getVoiceStaffAnalyis.shtm",
+"visitTime":"2017/05/07 11:34:33",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"016",
+"serviceName":"综合执法人员职位分析服务",
+"url":"http://222.85.161.189:10002/voice/getVoiceJobAnalyis.shtm",
+"visitTime":"2017/05/07 11:35:58",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"017",
+"serviceName":"综合执法案件增量分析服务",
+"url":"http://222.85.161.189:10002/zhzfV3/getCaseIncrease.shtm",
+"visitTime":"2017/05/06 09:49:58",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"018",
+"serviceName":"综合执法各部门案件分析服务",
+"url":"http://222.85.161.189:10002/zhzf/getZhzfCaseCountInDept.shtm",
+"visitTime":"2017/05/06 09:55:58",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"019",
+"serviceName":"综合执法案件类型分析服务",
+"url":"http://222.85.161.189:10002/zhzf/getZhzfCaseTypeCountInDept.shtm",
+"visitTime":"2017/05/06 10:53:08",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"020",
+"serviceName":"综合执法案件状态分析服务",
+"url":"http://222.85.161.189:10002/zhzf/getZhzfCaseStatusCountInDept.shtm",
+"visitTime":"2017/05/06 10:57:23",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"021",
+"serviceName":"综合执法人员诚信服务",
+"url":"http://222.85.161.189:10002/zhzfv2/getZfryCXPH.shtm",
+"visitTime":"2017/05/05 11:00:23",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"022",
+"serviceName":"综合执法现场管理增量服务",
+"url":"http://222.85.161.189:10002/voice/getXCGLIncreaseAnalysis.shtm",
+"visitTime":"2017/04/05 16:00:11",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"023",
+"serviceName":"综合执法部门内现场管理数量分析服务",
+"url":"http://222.85.161.189:10002/zhzf/getXCGLCountInDept.shtm",
+"visitTime":"2017/04/05 16:04:22",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"024",
+"serviceName":"综合执法现场管状态分析服务",
+"url":"http://222.85.161.189:10002/zhzf/getXCGLStatusCountInDept.shtm",
+"visitTime":"2017/04/05 16:14:12",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"025",
+"serviceName":"综合执法现场管时段分析服务",
+"url":"http://222.85.161.189:10002/zhzf/getXcglTimeAnalysis.shtm",
+"visitTime":"2017/04/05 16:24:12",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"026",
+"serviceName":"舆情正负面分析服务",
+"url":"http://222.85.161.87:7001/api/yqfx/GetEffect",
+"visitTime":"2017/03/13 09:14:09",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"027",
+"serviceName":"舆情来源分析服务",
+"url":"http://222.85.161.87:7001/api/yqfx/GetLaiYuan",
+"visitTime":"2017/03/13 09:20:12",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"028",
+"serviceName":"舆情站点分析服务",
+"url":"http://222.85.161.87:7001/api/yqfx/GetWebSite",
+"visitTime":"2017/03/13 09:24:24",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"029",
+"serviceName":"舆情事件分析服务",
+"url":"http://222.85.161.87:7001/api/yqfx/GetYqfx",
+"visitTime":"2017/03/13 09:34:46",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"029",
+"serviceName":"舆情关键字提取服务",
+"url":"http://222.85.161.87:7001/api/ApiInformation/WarnKeyIndex",
+"visitTime":"2017/03/13 09:44:46",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"030",
+"serviceName":"12319概述信息服务",
+"url":"http://222.85.161.189:10002/voice/getS123Overview.shtm",
+"visitTime":"2017/02/11 09:43:41",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"031",
+"serviceName":"12319案件概述信息服务",
+"url":"http://222.85.161.189:10002/voice/getProjInfo.shtm",
+"visitTime":"2017/02/11 09:46:21",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"032",
+"serviceName":"12319案件增量服务",
+"url":"http://222.85.161.189:10002/voice/getProjIncrease.shtm",
+"visitTime":"2017/02/11 09:52:29",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"033",
+"serviceName":"12319风险预警服务",
+"url":"http://222.85.161.189:10002/voice/getRiskInfo.shtm",
+"visitTime":"2017/02/11 09:55:48",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"034",
+"serviceName":"12319部门诚信排行服务",
+"url":"http://222.85.161.189:10002/voice/getJgCXPH.shtm",
+"visitTime":"2017/02/11 10:02:22",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"035",
+"serviceName":"百姓拍概述信息服务",
+"url":"http://222.85.161.189:10002/bxp/getBxpOverview.shtm",
+"visitTime":"2017/02/22 12:00:20",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"036",
+"serviceName":"百姓拍案件概述信息服务",
+"url":"http://222.85.161.189:10002/bxp/getProjInfo.shtm",
+"visitTime":"2017/02/22 15:01:20",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"037",
+"serviceName":"百姓拍案件增量服务",
+"url":"http://222.85.161.189:10002/bxp/getProjIncrease.shtm",
+"visitTime":"2017/02/22 15:04:10",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"038",
+"serviceName":"百姓拍风险预警服务",
+"url":"http://222.85.161.189:10002/bxp/getRiskInfo.shtm",
+"visitTime":"2017/02/22 15:14:12",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"039",
+"serviceName":"百姓拍机构诚信排行服务",
+"url":"http://222.85.161.189:10002/bxp/getJgCXPH.shtm",
+"visitTime":"2017/02/22 15:15:52",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"040",
+"serviceName":"渣土系统基础数据服务",
+"url":"http://222.85.161.189:10002/ztys/getZTCsum.shtm",
+"visitTime":"2017/01/12 11:15:52",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"041",
+"serviceName":"渣土运输企业数量统计服务",
+"url":"http://58.42.235.168:8001/gy/getEnterpriseStatic.shtm",
+"visitTime":"2017/01/12 11:16:50",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"042",
+"serviceName":"渣土消纳场数量统计服务",
+"url":"http://58.42.235.168:8001/gy/getXNCStatic.shtm",
+"visitTime":"2017/01/12 11:19:22",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"043",
+"serviceName":"渣土违规增量服务",
+"url":"http://222.85.161.189:10002/ztys/getZTCWZIncrease.shtm",
+"visitTime":"2017/01/12 11:22:11",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"044",
+"serviceName":"渣土系统预警服务",
+"url":"http://222.85.161.189:10002/ztys/getZtcAlarmStatisticsInArea.shtm",
+"visitTime":"2017/01/12 11:25:31",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"045",
+"serviceName":"渣土系统报警服务",
+"url":"http://222.85.161.189:10002/ztys/getZtcBJSum.shtm",
+"visitTime":"2017/01/12 11:29:22",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"046",
+"serviceName":"渣土企业诚信排行服务",
+"url":"http://222.85.161.189:10002/ztys/getQyCXPH.shtm",
+"visitTime":"2017/01/12 11:32:17",
+"visitUnit":"城管局",
+"note":""
+},
+{
+  "id":"047",
+"serviceName":"渣土驾驶人诚信排行服务",
+"url":"http://222.85.161.189:10002/ztys/getJsrCXPH.shtm",
+"visitTime":"2017/01/12 11:40:27",
+"visitUnit":"城管局",
+"note":""
+}
+]
+}
