@@ -9,13 +9,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 /**
  * @author liukai
  */
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity(debug = true)
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().anyRequest().permitAll();
+        http.headers().frameOptions().sameOrigin();
         http.csrf().disable();
 //        http
 //                .antMatcher("/**")
