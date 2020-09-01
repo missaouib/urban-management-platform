@@ -1,6 +1,6 @@
 package com.unicom.demo;
 
-import com.unicom.SystemConstant;
+import com.unicom.constant.SystemConstant;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DemoDialogController {
 
 
-    private final String prefix = "demo/modal";
+    private final String prefix = "/demo/modal";
 
 
     /**
