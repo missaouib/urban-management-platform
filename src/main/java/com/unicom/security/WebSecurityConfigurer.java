@@ -15,18 +15,12 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().anyRequest().permitAll();
-        http.headers().frameOptions().sameOrigin();
-        http.csrf().disable();
-//        http
-//                .antMatcher("/**")
-//                .authorizeRequests()
-//                .anyRequest().authenticated()
-//                .and()
-//                .logout().logoutSuccessUrl("http://192.168.23.41:25047/cas/logout")
-//                .and()
-//                .oauth2Login()
-//                .successHandler(new SimpleUrlAuthenticationSuccessHandler("/"));
+        http
+                .authorizeRequests().anyRequest().permitAll()
+                .and()
+                .headers().frameOptions().sameOrigin()
+                .and()
+                .csrf().disable();
     }
 
     @Override

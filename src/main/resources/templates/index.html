@@ -2,6 +2,7 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>城市综合服务管理平台</title>
+    <link rel="icon" href="../static/favicon.ico" th:href="@{/favicon.ico}" type="image/x-icon"/>
     <link rel="stylesheet" href="../static/js/bootstrap/css/bootstrap.min.css" th:href="@{/js/bootstrap/css/bootstrap.min.css}">
     <link rel="stylesheet" href="../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}">
     <link rel="stylesheet" href="../static/css/index.css" th:href="@{/css/index.css}">
@@ -31,22 +32,6 @@
                             <ul class="dropdown-menu pull-right">
                                 <li><a class="menuItem" data-id="userInfo" href=""><i class="fa fa-user"></i>个人信息</a></li>
                                 <li><a><i class="fa fa-trash-o"></i>清空缓存</a></li>
-                                <li id="color"><a><i class="fa fa-paint-brush"></i>皮肤设置</a>
-                                    <div style="position: absolute;left:-90px;top:50px;border: 1px #eee solid;box-shadow: 0 6px 12px rgba(0,0,0,.175);display: none" id="color_div">
-                                     <ul class="color_ul">
-                                         <li style="background-color: green;color:green"></li>
-                                         <li style="background-color: #3c8dbc;color: #3c8dbc"></li>
-                                         <li style="background-color: red;color: red"></li>
-                                         <li style="background-color: green;color:green"></li>
-                                         <li style="background-color: #3c8dbc;color: #3c8dbc"></li>
-                                         <li style="background-color: red;color: red"></li>
-                                         <li style="background-color: green;color:green"></li>
-                                         <li style="background-color: #3c8dbc;color: #3c8dbc"></li>
-                                         <li style="background-color: red;color: red"></li>
-                                     </ul>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
                                 <li onclick="back()"><a><i class="ace-icon fa fa-power-off"></i>安全退出</a></li>
                             </ul>
                         </li>
@@ -114,22 +99,6 @@
         var colorIndex = 0;
         $(function () {
             changeColor(colorIndex);
-            $(".hidden-xs").click(function () {
-                $("#color_div").hide();
-            });
-            $("#color").hover(function () {
-                $("#color_div").show();
-            });
-            $(".color_ul li").each(function (index) {
-                $(this).click(function () {
-                    if (index < 5) {
-                        changeColor(index)
-                    } else {
-                        changeColor(0)
-                    }
-
-                })
-            })
         });
         function changeColor(index){
             var logo = $(".logo");
@@ -146,37 +115,7 @@
                 header.addClass("header1");
                 treeview_menu.addClass("treeview-menu1");
                 aa.addClass("a0");
-
-                logo.removeClass("logo2");
-                navbar.removeClass("navbar2");
-                left_Side.removeClass("left-side2");
-                header.removeClass("header2");
-                treeview_menu.removeClass("treeview-menu2");
-                aa.removeClass("a2");
-
-                logo.removeClass("logo3");
-                navbar.removeClass("navbar3");
-                left_Side.removeClass("left-side3");
-                header.removeClass("header3");
-                treeview_menu.removeClass("treeview-menu3");
-                aa.removeClass("a3");
-
-                logo.removeClass("logo4");
-                navbar.removeClass("navbar4");
-                left_Side.removeClass("left-side4");
-                header.removeClass("header4");
-                treeview_menu.removeClass("treeview-menu4");
-                aa.removeClass("a4");
-
-                logo.removeClass("logo5");
-                navbar.removeClass("navbar5");
-                left_Side.removeClass("left-side5");
-                header.removeClass("header5");
-                treeview_menu.removeClass("treeview-menu5");
-                aa.removeClass("a5");
             }
-
-
         }
     </script>
 
