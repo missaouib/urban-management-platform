@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class DemoDialogController {
 
 
-    private String prefix = "demo/modal";
+    private final String prefix = "demo/modal";
 
 
     /**
@@ -23,7 +23,7 @@ public class DemoDialogController {
      */
     @GetMapping("/layer")
     public String layer() {
-        return SystemConstant.asdf + prefix + "/layer";
+        return SystemConstant.PAGE + prefix + "/layer";
     }
 
     /**
@@ -31,7 +31,7 @@ public class DemoDialogController {
      */
     @GetMapping("/modals")
     public String modals() {
-        return SystemConstant.asdf + prefix + "/modals";
+        return SystemConstant.PAGE + prefix + "/modals";
     }
 
 
