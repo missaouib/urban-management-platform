@@ -1,6 +1,8 @@
 package com.unicom.framework.web;
 
 import com.unicom.constant.SystemConstant;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -17,8 +19,15 @@ public class LoginController {
      */
     @GetMapping("/login")
     public String login() {
+        if (alreadyLogin()) {
+            return "redirect:/index";
+        }
         return SystemConstant.PAGE + "/login";
     }
 
+
+    private boolean alreadyLogin() {
+        return !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken);
+    }
 
 }

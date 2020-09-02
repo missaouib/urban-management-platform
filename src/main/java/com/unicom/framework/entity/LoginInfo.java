@@ -2,11 +2,13 @@ package com.unicom.framework.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 
 /**
@@ -26,6 +28,11 @@ public class LoginInfo {
     private String id;
 
     private String username;
+
+    private String ip;
+
+    @CreatedDate
+    private LocalDateTime createTime;
 
 
 }

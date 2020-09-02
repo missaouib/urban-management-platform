@@ -27,7 +27,7 @@
                         <li class="dropdown user user-menu" style="margin:46px 20px 0 0">
 
                             <div class="dropdown-toggle" data-toggle="dropdown" style="width: 162px;height:36px !important;background-image: url(img/password.png);line-height: 36px !important;font-size: 12px;text-align: center">
-                                <span style="margin-bottom: 50px">Administrator</span>
+                                <span style="margin-bottom: 50px" th:sec:authentication="principal.username">Administrator</span>
                             </div>
                             <ul class="dropdown-menu pull-right">
                                 <li><a class="menuItem" data-id="userInfo" href=""><i class="fa fa-user"></i>个人信息</a></li>
@@ -93,11 +93,14 @@
     <script src="../../static/js/jquery/jQuery-2.2.0.min.js" th:src="@{/js/jquery/jQuery-2.2.0.min.js}"></script>
     <script src="../../static/js/bootstrap/js/bootstrap.min.js" th:src="@{/js/bootstrap/js/bootstrap.min.js}"></script>
     <script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
-    <script>
+    <script type="text/javascript" th:inline="javascript">
+
+        let url = /*[[@{/logout}]]*/ "/logout";
+
         function back(){
-            window.location.href = 'login.html'
+            window.location.href = url;
         }
-        var colorIndex = 0;
+        let colorIndex = 0;
         $(function () {
             changeColor(colorIndex);
         });
