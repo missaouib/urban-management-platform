@@ -74,73 +74,53 @@
             url: url,
             dataType: "json",
             pagination: true, //分页
-            pageSize: 10,
-            pageNumber: 1,
+            // pageSize: 10,
+            // pageNumber: 1,
             search: false, //显示搜索框
+            pageList: [10],
+            sidePagination: "server",
             contentType: "application/x-www-form-urlencoded",
-            queryParams:null,
+            queryParams: null,
+            responseHandler: function (result) {
+                // console.log(result);
+                // return result.data.content;
+                return { rows: result.data.content, total: result.data.totalElements };
+            },
             columns: [
-                {
-                    title: '序列号',
-                    field: 'id',
-                    align: 'center',
-                    valign: 'middle'
-                },
+                // {
+                //     title: '账号',
+                //     field: 'username',
+                //     align: 'center',
+                //     valign: 'middle'
+                // },
                 {
                     title: '账号',
                     field: 'username',
                     align: 'center',
                     valign: 'middle'
-                }
-                ,
+                },
                 {
-                    title: "ip",
-                    field: 'name',
+                    title: "登录地址",
+                    field: 'ip',
                     align: 'center',
                     valign: 'middle'
                 },
-                {
-                    title: '单位类型',
-                    field: 'type',
-                    align: 'center',
-                    valign: 'middle'
-                },
-                {
-                    title: '成立时间',
-                    field: 'time',
-                    align: 'center',
-                    valign: 'middle'
-                },
-                {
-                    title: '所在区域',
-                    field: 'location',
-                    align: 'center'
-                },
-                {
-                    title: '法定代表人',
-                    field: 'person',
-                    align: 'center'
-                },
-                {
-                    title: '联系电话',
-                    field: 'tele',
-                    align: 'center'
-                },
-                {
-                    title: '企业化工行业分类',
-                    field: 'type01',
-                    align: 'center'
-                },
-                {
-                    title: '安全等级',
-                    field: 'class',
-                    align: 'center'
-                },
-                {
-                    title: '主要产品与规模',
-                    field: 'mode',
-                    align: 'center'
-                },
+                // {
+                //     title: '成立时间',
+                //     field: 'time',
+                //     align: 'center',
+                //     valign: 'middle'
+                // },
+                // {
+                //     title: '所在区域',
+                //     field: 'location',
+                //     align: 'center'
+                // },
+                // {
+                //     title: '法定代表人',
+                //     field: 'person',
+                //     align: 'center'
+                // },
                 {
                     title: '操作',
                     field: '',
@@ -148,24 +128,24 @@
                     formatter: function (value, row) {
                         var e = '<a  href="#" title="" onclick="edit(\'' + row.id + '\')">查看详情</a> ';
                         var d = '<a  href="#" title="" onclick="edit(\'' + row.id + '\')">单体分析</a> ';
-                        return e+d;
+                        return e + d;
                     }
                 }
             ]
         });
     });
-    function edit() {
-        var Name = "单位详情";
-        var Href = "conmpanyTail.html";
-        var data_id = $("#add").attr('data-id');
-        window.parent.$.learuntab.myAddTab(Name, Href, data_id);
-    }
-    function carAnalysis(){
-        var Name = "从业单位分析";
-        var Href = "unit_analysis.html";
-        var data_id = $("#add").attr('data-id');
-        window.parent.$.learuntab.myAddTab(Name, Href, data_id);
-    }
+    // function edit() {
+    //     var Name = "单位详情";
+    //     var Href = "conmpanyTail.html";
+    //     var data_id = $("#add").attr('data-id');
+    //     window.parent.$.learuntab.myAddTab(Name, Href, data_id);
+    // }
+    // function carAnalysis(){
+    //     var Name = "从业单位分析";
+    //     var Href = "unit_analysis.html";
+    //     var data_id = $("#add").attr('data-id');
+    //     window.parent.$.learuntab.myAddTab(Name, Href, data_id);
+    // }
     //    function openLayer(){
     //        layer.open({
     //            type: 2,
