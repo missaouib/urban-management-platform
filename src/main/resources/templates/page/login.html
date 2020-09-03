@@ -28,6 +28,12 @@
 <!--    <script src="js/common.js"></script>-->
 <script type="text/javascript" th:inline="javascript">
 
+    if (window.top !== window.self) {
+        alert('未登录或登录超时。请重新登录');
+        window.top.location = window.location
+    }
+
+
     let loginUrl = /*[[@{/login}]]*/ "/login";
 
     function login() {

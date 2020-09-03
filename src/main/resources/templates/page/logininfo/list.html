@@ -80,7 +80,19 @@
             pageList: [10],
             sidePagination: "server",
             contentType: "application/x-www-form-urlencoded",
-            queryParams: null,
+            queryParams: function(params) {
+                var curParams = {
+                    // 传递参数查询参数
+                    size:         params.limit,
+                    page:         params.offset / params.limit,
+                    // searchValue:    params.search,
+                    // orderByColumn:  params.sort,
+                    // isAsc:          params.order
+                };
+                // var currentId = $.common.isEmpty(table.options.formId) ? $('form').attr('id') : table.options.formId;
+                // return $.extend(curParams, $.common.formToJSON(currentId));
+                return curParams;
+            },
             responseHandler: function (result) {
                 // console.log(result);
                 // return result.data.content;
@@ -105,12 +117,12 @@
                     align: 'center',
                     valign: 'middle'
                 },
-                // {
-                //     title: '成立时间',
-                //     field: 'time',
-                //     align: 'center',
-                //     valign: 'middle'
-                // },
+                {
+                    title: '登录时间',
+                    field: 'createTime',
+                    align: 'center',
+                    valign: 'middle'
+                },
                 // {
                 //     title: '所在区域',
                 //     field: 'location',

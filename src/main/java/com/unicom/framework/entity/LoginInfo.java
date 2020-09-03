@@ -1,13 +1,13 @@
 package com.unicom.framework.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 
@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "sys_login_info")
+@EntityListeners(AuditingEntityListener.class)
 public class LoginInfo {
 
 
@@ -32,6 +33,8 @@ public class LoginInfo {
     private String ip;
 
     @CreatedDate
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
 
