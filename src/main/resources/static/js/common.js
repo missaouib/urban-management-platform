@@ -145,6 +145,15 @@ function getSelectedRows() {
 				// table.set();
 				// $.modal.open("添加" + table.options.modalName, $.operate.addUrl(id));
 			// }
+
+			// 添加信息，以tab页展现
+			addTab: function () {
+				// table.set();
+				// $.modal.openTab("添加" + table.options.modalName, $.operate.addUrl(id));
+
+
+				window.parent.$.learuntab.myAddTab('新增用户','/user/add','');
+			},
 		}
 
 	});

@@ -1,4 +1,4 @@
-package com.unicom.framework.entity;
+package com.unicom.framework.logininfo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.unicom.framework.web.demo;
+package com.unicom.framework.logininfo.web.demo;
 
 import com.unicom.constant.SystemConstant;
 import org.springframework.stereotype.Controller;

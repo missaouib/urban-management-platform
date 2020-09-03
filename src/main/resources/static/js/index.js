@@ -490,6 +490,30 @@
                     "F_ModifyUserName": "超级管理员"
                 },
                 {
+                    "F_ModuleId": "1100041123",
+                    "F_ParentId": "1000",
+                    "F_EnCode": "SysManage",
+                    "F_FullName": "用户管理",
+                    "F_Icon": "fa fa-user",
+                    "F_UrlAddress": "/user",
+                    "F_Target": "expand",
+                    "F_IsMenu": 0,
+                    "F_AllowExpand": 1,
+                    "F_IsPublic": 0,
+                    "F_AllowEdit": null,
+                    "F_AllowDelete": null,
+                    "F_SortCode": 2,
+                    "F_DeleteMark": 0,
+                    "F_EnabledMark": 1,
+                    "F_Description": null,
+                    "F_CreateDate": null,
+                    "F_CreateUserId": null,
+                    "F_CreateUserName": null,
+                    "F_ModifyDate": "2015-11-17 11:22:46",
+                    "F_ModifyUserId": "System",
+                    "F_ModifyUserName": "超级管理员"
+                },
+                {
                     "F_ModuleId": "11000",
                     "F_ParentId": "1000",
                     "F_EnCode": "SysManage",
@@ -502,7 +526,7 @@
                     "F_IsPublic": 0,
                     "F_AllowEdit": null,
                     "F_AllowDelete": null,
-                    "F_SortCode": 1,
+                    "F_SortCode": 3,
                     "F_DeleteMark": 0,
                     "F_EnabledMark": 1,
                     "F_Description": null,
@@ -592,20 +616,7 @@
     $(function () {
         var url = window.location.href;
         var urlNum = url.split("=")[1];
-        if (urlNum == 0) {
-            $("#myFrame").attr("src", "home1.html")
-        } else if (urlNum == 1) {
-            $("#myFrame").attr("src", "home2.html")
-        }
-        else if (urlNum == 2) {
-            $("#myFrame").attr("src", "home3.html")
-        }
-        else if (urlNum == 3) {
-            $("#myFrame").attr("src", "home4.html")
-        }
-        else if (urlNum == 4) {
-            $("#myFrame").attr("src", "home.html")
-        }
+
         $.learunindex.load();
         $.learunindex.loadMenu(urlNum);
         $.learuntab.init();

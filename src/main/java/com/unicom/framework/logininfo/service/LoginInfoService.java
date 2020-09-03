@@ -1,7 +1,7 @@
-package com.unicom.framework.service;
+package com.unicom.framework.logininfo.service;
 
-import com.unicom.framework.dao.LoginInfoRepository;
-import com.unicom.framework.entity.LoginInfo;
+import com.unicom.framework.logininfo.dao.LoginInfoRepository;
+import com.unicom.framework.logininfo.entity.LoginInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

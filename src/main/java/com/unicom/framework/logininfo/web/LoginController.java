@@ -1,4 +1,4 @@
-package com.unicom.framework.web;
+package com.unicom.framework.logininfo.web;
 
 import com.unicom.constant.SystemConstant;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;

@@ -1,9 +1,9 @@
-package com.unicom.framework.web;
+package com.unicom.framework.logininfo.web;
 
 import com.unicom.constant.SystemConstant;
 import com.unicom.framework.Result;
-import com.unicom.framework.entity.LoginInfo;
-import com.unicom.framework.service.LoginInfoService;
+import com.unicom.framework.logininfo.entity.LoginInfo;
+import com.unicom.framework.logininfo.service.LoginInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
