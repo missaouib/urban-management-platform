@@ -5,6 +5,7 @@
     <title>登录日志</title>
     <link th:href="@{/plugins/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/plugins/bootstrap-table/dist/bootstrap-table.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/plugins/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css">
     <link th:href="@{/css/table.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
@@ -19,32 +20,32 @@
 
     <div class="notice_check">
         <p>
-            <label class="">从业单位：</label>
-            <input type="text" class="find_input" placeholder="">
-            <label class="">所在区域：</label>
-            <select class="find_input"><option>全部</option>
-                <option>成都</option>
-                <option>绵阳</option>
-                <option>德阳</option>
-                <option>简阳</option>
-                <option>资阳</option>
-                <option>泸州</option>
-                <option>宜宾</option>
-                <option>自贡</option>
-                <option>达州</option>
-                <option>巴中</option>
-                <option>甘孜阿坝州</option>
-                <option>凉山州</option>
-            </select>
-            <label class="">单位类型：</label>
-            <select class="find_input"><option>全部</option>
-                <option>生产单位</option>
-                <option>存储单位</option>
-                <option>运输单位</option>
-                <option>使用单位</option>
-            </select>
+            <label class="">账号：</label>
+            <input type="text" class="find_input" placeholder="" name="username">
+<!--            <label class="">所在区域：</label>-->
+<!--            <select class="find_input"><option>全部</option>-->
+<!--                <option>成都</option>-->
+<!--                <option>绵阳</option>-->
+<!--                <option>德阳</option>-->
+<!--                <option>简阳</option>-->
+<!--                <option>资阳</option>-->
+<!--                <option>泸州</option>-->
+<!--                <option>宜宾</option>-->
+<!--                <option>自贡</option>-->
+<!--                <option>达州</option>-->
+<!--                <option>巴中</option>-->
+<!--                <option>甘孜阿坝州</option>-->
+<!--                <option>凉山州</option>-->
+<!--            </select>-->
+<!--            <label class="">单位类型：</label>-->
+<!--            <select class="find_input"><option>全部</option>-->
+<!--                <option>生产单位</option>-->
+<!--                <option>存储单位</option>-->
+<!--                <option>运输单位</option>-->
+<!--                <option>使用单位</option>-->
+<!--            </select>-->
             <button class="check_btn">查询</button>
-            <button onclick="carAnalysis()" class="check_btn1">全局分析</button>
+<!--            <button onclick="carAnalysis()" class="check_btn1">全局分析</button>-->
         </p>
     </div>
 
@@ -81,8 +82,11 @@
             pageList: [10],
             sidePagination: "server",
             loadingFontSize: 13,
-            showRefresh: true,                   // 是否显示刷新按钮
-            showToggle: true,                     // 是否显示详细视图和列表视图的切换按钮
+            showRefresh: true,                         // 是否显示刷新按钮
+            showToggle: true,                          // 是否显示详细视图和列表视图的切换按钮
+            showColumns: true,                         // 是否显示隐藏某列下拉框
+            // cardView: true,                         // 是否启用显示卡片视图
+            // detailView: true,                       // 是否启用显示细节视图
             contentType: "application/x-www-form-urlencoded",
             queryParams: function(params) {
                 var curParams = {
