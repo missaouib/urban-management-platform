@@ -3,10 +3,9 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
     <title>用户管理</title>
-    <link th:href="@{/plugins/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet" type="text/css">
-    <link th:href="@{/plugins/bootstrap-table/dist/bootstrap-table.css}" rel="stylesheet" type="text/css">
-    <link th:href="@{/plugins/fontawesome-free/css/all.css}" rel="stylesheet" type="text/css">
-    <link th:href="@{/css/table.css}" rel="stylesheet" type="text/css">
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+
 </head>
 <body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
 <div class="notice_main ">
@@ -73,11 +72,9 @@
 </div>
 
 
-<script type="text/javascript" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/plugins/bootstrap/dist/js/bootstrap.bundle.js}"></script>
-<script type="text/javascript" th:src="@{/plugins/bootstrap-table/dist/bootstrap-table.js}"></script>
-<script type="text/javascript" th:src="@{/plugins/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js}"></script>
-<script type="text/javascript" th:src="@{/js/common.js}"></script>
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+
 <script type="text/javascript" th:inline="javascript">
 
     let url = /*[[@{/logininfo/search}]]*/ "/json/unit.json";

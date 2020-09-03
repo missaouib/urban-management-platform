@@ -5,45 +5,29 @@
 
 <!-- 通用CSS -->
 <div th:fragment="common_css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.min.css}">
-    <!-- Ionicons -->
-    <link rel="stylesheet" th:href="@{/plugins/ionicons/css/ionicons.min.css}">
-    <!-- DataTables -->
-    <link rel="stylesheet" th:href="@{/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css}">
-    <link rel="stylesheet" th:href="@{/plugins/datatables-responsive/css/responsive.bootstrap4.min.css}">
-    <!-- Theme style -->
-    <link rel="stylesheet" th:href="@{/dist/css/adminlte.min.css}">
-    <!-- LayerUI -->
-    <link rel="stylesheet" th:href="@{/plugins/layer/theme/default/layer.css}">
-
-    <link rel="stylesheet" th:href="@{/dist/css/common.css}">
+    <link rel="stylesheet" th:href="@{/plugins/bootstrap/dist/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.css}">
 </div>
 
 <!-- 通用JS -->
 <div th:fragment="common_js">
-    <!-- jQuery -->
-    <script th:src="@{/plugins/jquery/jquery.min.js}"></script>
-    <!-- Bootstrap 4 -->
-    <script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
-    <!-- DataTables -->
-    <script th:src="@{/plugins/datatables/jquery.dataTables.min.js}"></script>
-    <script th:src="@{/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js}"></script>
-    <script th:src="@{/plugins/datatables-responsive/js/dataTables.responsive.min.js}"></script>
-    <script th:src="@{/plugins/datatables-responsive/js/responsive.bootstrap4.min.js}"></script>
-    <!-- AdminLTE App -->
-    <script th:src="@{/dist/js/adminlte.min.js}"></script>
-    <!-- AdminLTE for demo purposes -->
-    <!-- jquery-validation -->
-    <script th:src="@{/plugins/jquery-validation/jquery.validate.min.js}"></script>
-    <script th:src="@{/plugins/jquery-validation/additional-methods.min.js}"></script>
-    <!--   jquery.serializejson.min -->
-    <script th:src="@{/dist/js/jquery.serializejson.min.js}"></script>
-    <!-- layerUI   -->
-    <script th:src="@{/plugins/layer/layer.js}"></script>
-    <script th:src="@{/dist/js/demo.js}"></script>
-    <script th:src="@{/dist/js/common.js}"></script>
+    <script th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
+    <script th:src="@{/plugins/bootstrap/dist/js/bootstrap.bundle.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
 </div>
+
+
+
+<div th:fragment="bootstrap_table_css">
+    <link rel="stylesheet" th:href="@{/plugins/bootstrap-table/dist/bootstrap-table.css}">
+    <link rel="stylesheet" th:href="@{/css/table.css}">
+</div>
+
+<div th:fragment="bootstrap_table_js">
+    <script type="text/javascript" th:src="@{/plugins/bootstrap-table/dist/bootstrap-table.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js}"></script>
+</div>
+
 
 <!--ztree CSS-->
 <div th:fragment="ztree_css">
@@ -58,29 +42,6 @@
     <script th:src="@{/plugins/zTree/js/jquery.ztree.all.js}"></script>
     <script th:src="@{/plugins/zTree/demo/js/fuzzysearch.js}"></script>
     <script th:src="@{/dist/js/ztreetools.js}"></script>
-</div>
-
-
-<!-- 地图 js-->
-<div th:fragment="map_js">
-    <script th:src="@{/dist/js/ol.js}"></script>
-</div>
-
-
-<!-- 地图 css-->
-<div th:fragment="map_css">
-    <script th:src="@{/dist/css/ol.css}"></script>
-</div>
-
-<div th:fragment="bootstrap_table_css">
-    <link rel="stylesheet" th:href="@{/plugins/bootstrap-table/bootstrap-table.css}">
-</div>
-
-
-<div th:fragment="bootstrap_table_js">
-    <script th:src="@{/plugins/popper/umd/popper.js}"></script>
-    <script th:src="@{/plugins/bootstrap-table/bootstrap-table.js}"></script>
-    <script th:src="@{/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js}"></script>
 </div>
 
 
