@@ -888,3 +888,8 @@ ul{list-style: none}
 .validate_from button{height: 40px;padding: 0 34px;border: 1px #5483d6 solid;background-color: #228dcc;line-height: 40px;border-radius: 4px;color: #fff;margin-left: 6px}
 .validate_bot{border: 1px #fbf1d5 solid;background-color: #fffbf3}
 .validate_bot .ts li{font-size: 14px;line-height: 34px}
+
+.fixed-table-pagination{background: white;}
+.pagination-info{font-size: 12px;height: 30px;display: block;margin: 6px 0 10px 20px;color: #0D8BBD;line-height: 50px!important;}
+.pagination{font-size: 12px;margin-right: 10px;padding: 3px 0 0 0;}
+.pagination .active .page-link{background-color: #0D8BBD!important;}
