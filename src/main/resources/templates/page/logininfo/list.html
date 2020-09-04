@@ -72,7 +72,7 @@
             url: url,
             dataType: "json",
             pagination: true, //分页
-            paginationLoop: false,
+            paginationLoop: true,
             // pageSize: 10,
             // pageNumber: 1,
             search: false, //显示搜索框
@@ -90,7 +90,8 @@
                 var curParams = {
                     // 传递参数查询参数
                     size:         params.limit,
-                    page:         params.offset / params.limit,
+                    page:         params.offset / params.limit
+                    // start:        params.offset / params.limit
                     // searchValue:    params.search,
                     // orderByColumn:  params.sort,
                     // isAsc:          params.order

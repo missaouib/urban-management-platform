@@ -32,6 +32,8 @@ public class User implements UserDetails {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
+    private String name;
+
     private String username;
 
     private String password;

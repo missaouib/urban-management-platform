@@ -117,6 +117,20 @@ function getSelectedRows() {
 					}
 				});
 			},
+
+
+			// 打开遮罩层
+			loading: function (message) {
+				layer.msg(message, {icon: 16, shade: 0.5, time: 0});
+			},
+
+			// 关闭遮罩层
+			closeLoading: function () {
+				layer.closeAll('dialog');
+			},
+
+
+
 		},
 		common: {
 			// 判断字符串是否为空
@@ -139,6 +153,35 @@ function getSelectedRows() {
 
 		},
 		operate: {
+
+			//    liukai
+			submit: function(url, type, dataType, data, callback) {
+				let config = {
+					url: url,
+					type: type,
+					dataType: dataType,
+					data: data,
+					beforeSend: function () {
+						$.modal.loading("正在处理中，请稍后...");
+					},
+					success: function (result) {
+						if (typeof callback == "function") {
+							callback(result);
+						}
+						// $.operate.ajaxSuccess(result);
+					}
+				};
+				$.ajax(config)
+			},
+
+			// post请求传输   liukai
+			post: function (url, data, callback) {
+				$.operate.submit(url, "post", "json", data, callback);
+			},
+			// get请求传输    liukai
+			get: function(url, callback) {
+				$.operate.submit(url, "get", "json", "", callback);
+			},
 			// add: function () {
 			// 	console.log('enter operate add function');
 			// 	window.location.href = 'http://baidu.com';
