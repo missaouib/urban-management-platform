@@ -50,7 +50,7 @@
 
     <div class="clear"></div>
 
-    <table id="table" class="table_style" style="margin: 0 auto" > </table>
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
 </div>
 
 <div class="btn-group-sm" id="toolbar">
@@ -77,56 +77,27 @@
 
 <script type="text/javascript" th:inline="javascript">
 
-    let url = /*[[@{/logininfo/search}]]*/ "/json/unit.json";
-
-
     $(function () {
-        $('#table').bootstrapTable({
-            method: "get",
-            striped: true,
-            singleSelect: false,
-            url: url,
-            dataType: "json",
-            pagination: true, //分页
-            paginationLoop: false,
-            // pageSize: 10,
-            // pageNumber: 1,
-            search: false, //显示搜索框
-            pageList: [10],
-            sidePagination: "server",
-            loadingFontSize: 13,
-            showRefresh: true,                         // 是否显示刷新按钮
-            showToggle: true,                          // 是否显示详细视图和列表视图的切换按钮
-            showColumns: true,                         // 是否显示隐藏某列下拉框
-            // cardView: true,                         // 是否启用显示卡片视图
-            // detailView: true,                       // 是否启用显示细节视图
-            contentType: "application/x-www-form-urlencoded",
-            toolbar: '#toolbar',                     // 指定工作栏
-            queryParams: function(params) {
-                var curParams = {
-                    // 传递参数查询参数
-                    size:         params.limit,
-                    page:         params.offset / params.limit,
-                    // searchValue:    params.search,
-                    // orderByColumn:  params.sort,
-                    // isAsc:          params.order
-                };
-                // var currentId = $.common.isEmpty(table.options.formId) ? $('form').attr('id') : table.options.formId;
-                // return $.extend(curParams, $.common.formToJSON(currentId));
-                return curParams;
-            },
-            responseHandler: function (result) {
-                // console.log(result);
-                // return result.data.content;
-                return { rows: result.data.content, total: result.data.totalElements };
-            },
+        queryUserList();
+    })
+
+
+    let searchUrl = /*[[@{/logininfo/search}]]*/ "/json/unit.json";
+
+
+    function queryUserList() {
+        var options = {
+            url: searchUrl,
+            // createUrl: prefix + "/add",
+            // updateUrl: prefix + "/edit/{id}",
+            // removeUrl: prefix + "/remove",
+            // exportUrl: prefix + "/export",
+            // importUrl: prefix + "/importData",
+            // importTemplateUrl: prefix + "/importTemplate",
+            // sortName: "createTime",
+            // sortOrder: "desc",
+            // modalName: "用户",
             columns: [
-                // {
-                //     title: '账号',
-                //     field: 'username',
-                //     align: 'center',
-                //     valign: 'middle'
-                // },
                 {
                     title: '账号',
                     field: 'username',
@@ -145,16 +116,6 @@
                     align: 'center',
                     valign: 'middle'
                 },
-                // {
-                //     title: '所在区域',
-                //     field: 'location',
-                //     align: 'center'
-                // },
-                // {
-                //     title: '法定代表人',
-                //     field: 'person',
-                //     align: 'center'
-                // },
                 {
                     title: '操作',
                     field: '',
@@ -165,21 +126,117 @@
                         return e + d;
                     }
                 }
-            ]
-        });
-    });
-    function edit() {
-        var Name = "单位详情";
-        var Href = "conmpanyTail.html";
-        var data_id = $("#add").attr('data-id');
-        window.parent.$.learuntab.myAddTab(Name, Href, data_id);
+                ]
+        };
+        $.table.init(options);
     }
-    function carAnalysis(){
-        var Name = "从业单位分析";
-        var Href = "unit_analysis.html";
-        var data_id = $("#add").attr('data-id');
-        window.parent.$.learuntab.myAddTab(Name, Href, data_id);
-    }
+
+
+
+
+
+    // $(function () {
+    //     $('#table').bootstrapTable({
+    //         method: "get",
+    //         striped: true,
+    //         singleSelect: false,
+    //         url: url,
+    //         dataType: "json",
+    //         pagination: true, //分页
+    //         paginationLoop: false,
+    //         // pageSize: 10,
+    //         // pageNumber: 1,
+    //         search: false, //显示搜索框
+    //         pageList: [10],
+    //         sidePagination: "server",
+    //         loadingFontSize: 13,
+    //         showRefresh: true,                         // 是否显示刷新按钮
+    //         showToggle: true,                          // 是否显示详细视图和列表视图的切换按钮
+    //         showColumns: true,                         // 是否显示隐藏某列下拉框
+    //         // cardView: true,                         // 是否启用显示卡片视图
+    //         // detailView: true,                       // 是否启用显示细节视图
+    //         contentType: "application/x-www-form-urlencoded",
+    //         toolbar: '#toolbar',                     // 指定工作栏
+    //         queryParams: function(params) {
+    //             var curParams = {
+    //                 // 传递参数查询参数
+    //                 size:         params.limit,
+    //                 page:         params.offset / params.limit,
+    //                 // searchValue:    params.search,
+    //                 // orderByColumn:  params.sort,
+    //                 // isAsc:          params.order
+    //             };
+    //             // var currentId = $.common.isEmpty(table.options.formId) ? $('form').attr('id') : table.options.formId;
+    //             // return $.extend(curParams, $.common.formToJSON(currentId));
+    //             return curParams;
+    //         },
+    //         responseHandler: function (result) {
+    //             // console.log(result);
+    //             // return result.data.content;
+    //             return { rows: result.data.content, total: result.data.totalElements };
+    //         },
+    //         columns: [
+    //             // {
+    //             //     title: '账号',
+    //             //     field: 'username',
+    //             //     align: 'center',
+    //             //     valign: 'middle'
+    //             // },
+    //             {
+    //                 title: '账号',
+    //                 field: 'username',
+    //                 align: 'center',
+    //                 valign: 'middle'
+    //             },
+    //             {
+    //                 title: "登录地址",
+    //                 field: 'ip',
+    //                 align: 'center',
+    //                 valign: 'middle'
+    //             },
+    //             {
+    //                 title: '登录时间',
+    //                 field: 'createTime',
+    //                 align: 'center',
+    //                 valign: 'middle'
+    //             },
+    //             // {
+    //             //     title: '所在区域',
+    //             //     field: 'location',
+    //             //     align: 'center'
+    //             // },
+    //             // {
+    //             //     title: '法定代表人',
+    //             //     field: 'person',
+    //             //     align: 'center'
+    //             // },
+    //             {
+    //                 title: '操作',
+    //                 field: '',
+    //                 align: 'center',
+    //                 formatter: function (value, row) {
+    //                     var e = '<a  href="#" title="" onclick="edit(\'' + row.id + '\')">查看详情</a> ';
+    //                     var d = '<a  href="#" title="" onclick="edit(\'' + row.id + '\')">单体分析</a> ';
+    //                     return e + d;
+    //                 }
+    //             }
+    //         ]
+    //     });
+    // });
+
+
+    // function edit() {
+    //     var Name = "单位详情";
+    //     var Href = "conmpanyTail.html";
+    //     var data_id = $("#add").attr('data-id');
+    //     window.parent.$.learuntab.myAddTab(Name, Href, data_id);
+    // }
+    // function carAnalysis(){
+    //     var Name = "从业单位分析";
+    //     var Href = "unit_analysis.html";
+    //     var data_id = $("#add").attr('data-id');
+    //     window.parent.$.learuntab.myAddTab(Name, Href, data_id);
+    // }
     //    function openLayer(){
     //        layer.open({
     //            type: 2,
