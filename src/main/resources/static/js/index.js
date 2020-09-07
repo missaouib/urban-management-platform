@@ -620,6 +620,109 @@
         $.learunindex.load();
         $.learunindex.loadMenu(urlNum);
         $.learuntab.init();
+        // 右键菜单实现
+        $.contextMenu({
+            selector: ".menuTab",
+            trigger: 'right',
+            autoHide: true,
+            items: {
+                "refresh": {
+                    name: "刷新页面",
+                    icon: "fa-refresh",
+                    callback: function(key, opt) {
+                        var currentId = $('.page-tabs-content').find('.active').attr('data-id');
+                        var target = $('.LRADMS_iframe[data-id="' + currentId + '"]');
+                        var url = target.attr('src');
+                        //$.loading(true);
+                        target.attr('src', url).load(function () {
+                            //$.loading(false);
+                        });
+                    }
+                },
+                "close_current": {
+                    name: "关闭当前",
+                    icon: "fa-close",
+                    callback: function(key, opt) {
+                        $('.page-tabs-content').find('.active i').trigger("click");
+                    }
+                },
+                "close_all": {
+                    name: "全部关闭",
+                    icon: "cut",
+                    callback: function(key, opt) {
+                        $('.page-tabs-content').children("[data-id]").find('.fa-remove').each(function () {
+                            $('.LRADMS_iframe[data-id="' + $(this).data('id') + '"]').remove();
+                            $(this).parents('a').remove();
+                        });
+                        $('.page-tabs-content').children("[data-id]:first").each(function () {
+                            $('.LRADMS_iframe[data-id="' + $(this).data('id') + '"]').show();
+                            $(this).addClass("active");
+                        });
+                        $('.page-tabs-content').css("margin-left", "0");
+                    }
+                },
+                // "step": "---------",
+                "full": {
+                    name: "全屏显示",
+                    icon: "fa-arrows-alt",
+                    callback: function(key, opt) {
+                        if (!$(this).attr('fullscreen')) {
+                            $(this).attr('fullscreen', 'true');
+                            $.learuntab.requestFullScreen();
+                        } else {
+                            $(this).removeAttr('fullscreen')
+                            $.learuntab.exitFullscreen();
+                        }
+                    }
+                },
+                "close_other": {
+                    name: "除此之外全部关闭",
+                    icon: "paste",
+                    callback: function(key, opt) {
+                        $('.page-tabs-content').children("[data-id]").find('.fa-remove').parents('a').not(".active").each(function () {
+                            $('.LRADMS_iframe[data-id="' + $(this).data('id') + '"]').remove();
+                            $(this).remove();
+                        });
+                        $('.page-tabs-content').css("margin-left", "0");
+                    }
+                },
+                // "close_left": {
+                //     name: "关闭左侧",
+                //     icon: "fa-reply",
+                //     callback: function(key, opt) {
+                //         setActiveTab(this);
+                //         this.prevAll('.menuTab').not(":last").each(function() {
+                //             if ($(this).hasClass('active')) {
+                //                 setActiveTab(this);
+                //             }
+                //             $('.RuoYi_iframe[data-id="' + $(this).data('id') + '"]').remove();
+                //             $(this).remove();
+                //         });
+                //         $('.page-tabs-content').css("margin-left", "0");
+                //     }
+                // },
+                // "close_right": {
+                //     name: "关闭右侧",
+                //     icon: "fa-share",
+                //     callback: function(key, opt) {
+                //         setActiveTab(this);
+                //         this.nextAll('.menuTab').each(function() {
+                //             $('.menuTab[data-id="' + $(this).data('id') + '"]').remove();
+                //             $(this).remove();
+                //         });
+                //     }
+                // },
+                // "open": {
+                //     name: "新窗口打开",
+                //     icon: "fa-link",
+                //     callback: function(key, opt) {
+                //         var target = $('.RuoYi_iframe[data-id="' + this.data('id') + '"]');
+                //         window.open(target.attr('src'));
+                //     }
+                // },
+            }
+        })
+
     });
 
 })(jQuery);
