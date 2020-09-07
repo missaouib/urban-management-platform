@@ -49,6 +49,30 @@ function getSelectedRows() {
 }
 
 
+let table = {
+	config: {},
+	// 当前实例配置
+	options: {},
+	// // 设置实例配置
+	// set: function(id) {
+	// 	if($.common.getLength(table.config) > 1) {
+	// 		let tableId = $.common.isEmpty(id) ? $(event.currentTarget).parents(".bootstrap-table").find("table.table").attr("id") : id;
+	// 		if ($.common.isNotEmpty(tableId)) {
+	// 			table.options = table.get(tableId);
+	// 		}
+	// 	}
+	// },
+	// // 获取实例配置
+	// get: function(id) {
+	// 	return table.config[id];
+	// },
+	// 记住选择实例组
+	rememberSelecteds: {},
+	// 记住选择ID组
+	rememberSelectedIds: {}
+};
+
+
 
 (function ($) {
 	$.extend({
@@ -91,7 +115,13 @@ function getSelectedRows() {
 					queryParams: $.table.queryParams,
 					rowStyle: {},
 				};
-				var options = $.extend(defaults, options);
+				options = $.extend(defaults, options);
+				table.options = options;
+				table.config[options.id] = options;
+
+				console.log(table);
+
+				// $.table.initEvent();
 
 				$('#' + options.id).bootstrapTable({
 					id: options.id,
@@ -215,6 +245,22 @@ function getSelectedRows() {
 				// } else {
 				// 	$.modal.alertWarning(res.msg);
 				// 	return { rows: [], total: 0 };
+				// }
+			},
+
+			// 搜索-默认第一个form
+			search: function(formId, tableId) {
+
+				console.log();
+
+
+				// table.set(tableId);
+				// table.options.formId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
+				// var params = $.common.isEmpty(tableId) ? $("#" + table.options.id).bootstrapTable('getOptions') : $("#" + tableId).bootstrapTable('getOptions');
+				// if($.common.isNotEmpty(tableId)){
+				// 	$("#" + tableId).bootstrapTable('refresh', params);
+				// } else{
+				// 	$("#" + table.options.id).bootstrapTable('refresh', params);
 				// }
 			},
 
