@@ -28,13 +28,16 @@ public class LoginInfo {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
+    @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false)
     private String ip;
 
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(nullable = false)
     private LocalDateTime createTime;
 
 
