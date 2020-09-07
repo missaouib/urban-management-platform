@@ -3,12 +3,14 @@ package com.unicom.framework;
 //import com.cucsi.gis.framework.exception.BaseException;
 //import com.cucsi.gis.framework.exception.ErrorType;
 //import com.cucsi.gis.framework.exception.SystemErrorType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.Instant;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 /**
  * 接口返回封装类
@@ -37,10 +39,12 @@ public class Result {
     /**
      * 时间戳
      */
-    private final Instant time;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private final LocalDateTime time;
 
     public Result() {
-        this.time = ZonedDateTime.now().toInstant();
+        this.time = LocalDateTime.now();
     }
 
     /**
@@ -67,7 +71,7 @@ public class Result {
         this.code = code;
         this.message = message;
         this.data = data;
-        this.time = ZonedDateTime.now().toInstant();
+        this.time = LocalDateTime.now();
     }
 
     /**
@@ -79,7 +83,7 @@ public class Result {
     public Result(String code, String message) {
         this.code = code;
         this.message = message;
-        this.time = ZonedDateTime.now().toInstant();
+        this.time = LocalDateTime.now();
     }
 
     /**

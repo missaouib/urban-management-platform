@@ -1,7 +1,7 @@
 package com.unicom.framework.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.unicom.framework.IpUtils;
+import com.unicom.common.util.IpUtils;
 import com.unicom.framework.Result;
 import com.unicom.framework.logininfo.entity.LoginInfo;
 import com.unicom.framework.logininfo.service.LoginInfoService;

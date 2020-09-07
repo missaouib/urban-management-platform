@@ -1,7 +1,7 @@
 package com.unicom.framework.logininfo.web;
 
-import com.unicom.constant.SystemConstant;
-import com.unicom.framework.Result;
+import com.unicom.common.constant.SystemConstant;
+import com.unicom.framework.annotations.ResponseResultBody;
 import com.unicom.framework.logininfo.entity.LoginInfo;
 import com.unicom.framework.logininfo.service.LoginInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
+@ResponseResultBody
 public class LoginInfoController {
 
     @Autowired
@@ -26,9 +27,8 @@ public class LoginInfoController {
 
 
     @GetMapping("/logininfo/search")
-    public Result search(LoginInfo loginInfo, @PageableDefault Pageable pageable) {
-        Page<LoginInfo> loginInfoPage = loginInfoService.search(loginInfo, pageable);
-        return Result.success(loginInfoPage);
+    public Page<LoginInfo> search(LoginInfo loginInfo, @PageableDefault Pageable pageable) {
+        return loginInfoService.search(loginInfo, pageable);
     }
 
 

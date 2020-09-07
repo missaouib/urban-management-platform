@@ -1,4 +1,4 @@
-package com.unicom.constant;
+package com.unicom.common.constant;
 
 /**
  * 系统常量

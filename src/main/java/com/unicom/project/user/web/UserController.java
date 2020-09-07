@@ -1,7 +1,7 @@
 package com.unicom.project.user.web;
 
-import com.unicom.constant.SystemConstant;
-import com.unicom.framework.Result;
+import com.unicom.common.constant.SystemConstant;
+import com.unicom.framework.annotations.ResponseResultBody;
 import com.unicom.project.user.entity.User;
 import com.unicom.project.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
+@ResponseResultBody
 public class UserController {
 
     @Autowired
@@ -27,9 +28,8 @@ public class UserController {
     }
 
     @PostMapping("/user/save")
-    public Result saveUser(User user) {
+    public void saveUser(User user) {
         userService.saveUser(user);
-        return Result.success();
     }
 
 

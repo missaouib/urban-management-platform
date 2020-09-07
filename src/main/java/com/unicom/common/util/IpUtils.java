@@ -1,4 +1,4 @@
-package com.unicom.framework;
+package com.unicom.common.util;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
