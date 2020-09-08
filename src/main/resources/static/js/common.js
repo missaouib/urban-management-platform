@@ -119,7 +119,6 @@ let table = {
 				table.options = options;
 				table.config[options.id] = options;
 
-				console.log(table);
 
 				// $.table.initEvent();
 
@@ -197,17 +196,11 @@ let table = {
 					// 传递参数查询参数
 					size: params.limit,
 					page: params.offset / params.limit,
-					sort: params.sort + ',' + params.order
-					// searchValue:    params.search,
-					// orderByColumn:  params.sort,
-					// isAsc:          params.order
+					sort: params.sort + ',' + params.order,
+					searchValue: params.search,
 				};
-				// var currentId = $.common.isEmpty(table.options.formId) ? $('form').attr('id') : table.options.formId;
-				// return $.extend(curParams, $.common.formToJSON(currentId));
-				return curParams;
-
-
-
+				var currentId = $.common.isEmpty(table.options.formId) ? $('form').attr('id') : table.options.formId;
+				return $.extend(curParams, $.common.formToJSON(currentId));
 
 				// var curParams = {
 				// 	// 传递参数查询参数
@@ -251,17 +244,15 @@ let table = {
 			// 搜索-默认第一个form
 			search: function(formId, tableId) {
 
-				console.log();
-
-
 				// table.set(tableId);
 				// table.options.formId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
-				// var params = $.common.isEmpty(tableId) ? $("#" + table.options.id).bootstrapTable('getOptions') : $("#" + tableId).bootstrapTable('getOptions');
-				// if($.common.isNotEmpty(tableId)){
-				// 	$("#" + tableId).bootstrapTable('refresh', params);
-				// } else{
-				// 	$("#" + table.options.id).bootstrapTable('refresh', params);
-				// }
+				let params = $.common.isEmpty(tableId) ? $("#" + table.options.id).bootstrapTable('getOptions') : $("#" + tableId).bootstrapTable('getOptions');
+				console.log(params);
+				if($.common.isNotEmpty(tableId)){
+					$("#" + tableId).bootstrapTable('refresh', params);
+				} else{
+					$("#" + table.options.id).bootstrapTable('refresh', params);
+				}
 			},
 
 
