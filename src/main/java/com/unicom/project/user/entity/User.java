@@ -11,6 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,7 +21,6 @@ import java.util.Collections;
  *
  * @author liukai
  */
-
 @Data
 @Entity
 @Table(name = "sys_user")
@@ -34,6 +34,7 @@ public class User implements UserDetails {
 
     private String name;
 
+    @NotBlank(message = "账号不能为空")
     private String username;
 
     private String password;
