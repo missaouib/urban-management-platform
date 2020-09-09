@@ -1,6 +1,6 @@
 package com.unicom.urban.management.web.framework.logininfo.web;
 
-import com.unicom.urban.management.web.common.constant.SystemConstant;
+import com.unicom.urban.management.common.constant.SystemConstant;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;

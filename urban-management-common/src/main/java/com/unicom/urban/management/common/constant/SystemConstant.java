@@ -1,4 +1,4 @@
-package com.unicom.urban.management.web.common.constant;
+package com.unicom.urban.management.common.constant;
 
 /**
  * 系统常量

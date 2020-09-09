@@ -1,7 +1,7 @@
-package com.unicom.urban.management.web.project.user.dao;
+package com.unicom.urban.management.dao.user;
 
+import com.unicom.urban.management.dao.CustomizeRepository;
 import com.unicom.urban.management.pojo.entity.User;
-import com.unicom.urban.management.web.framework.repository.CustomizeRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

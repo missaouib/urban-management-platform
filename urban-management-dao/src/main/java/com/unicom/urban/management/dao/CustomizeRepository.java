@@ -1,4 +1,4 @@
-package com.unicom.urban.management.web.framework.repository;
+package com.unicom.urban.management.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

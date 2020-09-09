@@ -1,9 +1,9 @@
 package com.unicom.urban.management.web.project.user.web;
 
+import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.entity.User;
-import com.unicom.urban.management.web.common.constant.SystemConstant;
-import com.unicom.urban.management.web.framework.annotations.ResponseResultBody;
-import com.unicom.urban.management.web.project.user.service.UserService;
+import com.unicom.urban.management.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

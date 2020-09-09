@@ -1,6 +1,6 @@
-package com.unicom.urban.management.web.framework.logininfo.service;
+package com.unicom.urban.management.service.logininfo;
 
-import com.unicom.urban.management.web.framework.logininfo.dao.LoginInfoRepository;
+import com.unicom.urban.management.dao.logininfo.LoginInfoRepository;
 import com.unicom.urban.management.pojo.entity.LoginInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,6 +1,6 @@
 package com.unicom.urban.management.web.framework;
 
-import com.unicom.urban.management.web.framework.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.MediaType;

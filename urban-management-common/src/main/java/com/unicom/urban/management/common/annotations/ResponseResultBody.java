@@ -1,4 +1,4 @@
-package com.unicom.urban.management.web.framework.annotations;
+package com.unicom.urban.management.common.annotations;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 

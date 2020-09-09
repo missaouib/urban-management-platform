@@ -18,7 +18,7 @@
 
         <dependency>
             <groupId>com.unicom</groupId>
-            <artifactId>urban-management-pojo</artifactId>
+            <artifactId>urban-management-service</artifactId>
             <version>0.0.1</version>
         </dependency>
 
@@ -107,7 +107,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.unicom.urban.management.web.Application</mainClass>
+                    <mainClass>com.unicom.urban.management.web.WebApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

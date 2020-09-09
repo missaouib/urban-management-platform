@@ -1,6 +1,6 @@
 package com.unicom.urban.management.web.framework.logininfo.web.demo;
 
-import com.unicom.urban.management.web.common.constant.SystemConstant;
+import com.unicom.urban.management.common.constant.SystemConstant;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

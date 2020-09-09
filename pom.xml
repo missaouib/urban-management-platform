@@ -23,6 +23,9 @@
         <module>urban-management-web</module>
         <module>urban-management-pojo</module>
         <module>urban-management-common</module>
+        <module>urban-management-api</module>
+        <module>urban-management-service</module>
+        <module>urban-management-dao</module>
     </modules>
 
     <dependencyManagement>

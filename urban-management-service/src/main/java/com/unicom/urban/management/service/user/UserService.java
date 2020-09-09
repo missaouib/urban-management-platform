@@ -1,7 +1,7 @@
-package com.unicom.urban.management.web.project.user.service;
+package com.unicom.urban.management.service.user;
 
+import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.pojo.entity.User;
-import com.unicom.urban.management.web.project.user.dao.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -2,9 +2,9 @@ package com.unicom.urban.management.web.framework.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unicom.urban.management.common.util.IpUtils;
+import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.entity.LoginInfo;
-import com.unicom.urban.management.web.framework.Result;
-import com.unicom.urban.management.web.framework.logininfo.service.LoginInfoService;
+import com.unicom.urban.management.service.logininfo.LoginInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
