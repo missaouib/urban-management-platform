@@ -22,6 +22,7 @@
     <modules>
         <module>urban-management-web</module>
         <module>urban-management-pojo</module>
+        <module>urban-management-common</module>
     </modules>
 
     <dependencyManagement>
