@@ -1,4 +1,4 @@
-package com.unicom.urban.management.web.common.util;
+package com.unicom.urban.management.common.util;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
