@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>仓储详情</title>
+    <link href="js/bstable/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table.css" rel="stylesheet" type="text/css">
+    <link href="css/addStyle.css" rel="stylesheet" type="text/css">
+    <link href="css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+    <style>
+        .notice_main1{border: none !important;}
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f5;
+            min-width: 1100px;
+            overflow: auto;
+        }
+
+        #box {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto 0;
+        }
+
+        #tabs ul {
+            height: 31px;
+            border-left: #ccc solid 1px;
+            border-bottom: #ccc solid 1px;
+        }
+
+        #tabs ul li {
+            float: left;
+            border-top: #ccc solid 1px;
+            border-right: #ccc solid 1px;
+        }
+
+        #tabs ul li a {
+            display: block;
+            padding: 0 12px;
+            line-height: 29px;
+            border: white solid 1px;
+            border-bottom: none;
+            background-color: #e0e0e0;
+            color: #271d1e;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /*当一个标题a获得焦点时的样式*/
+        #tabs ul li .current {
+            border-bottom: white solid 1px;
+            background-color: white;
+        }
+
+        #box_main {
+            /*border: #ccc solid 1px;*/
+            border-top: none;
+            background-color: #fff;
+            width: 100%;
+            /*height: 650px;*/
+        }
+
+        #box_main h3 {
+            line-height: 47px;
+            font-size: 22px;
+            color: #434142;
+            border-bottom: #e2e2e2 dashed 1px;
+            margin-bottom: 10px;
+        }
+
+        /*让一开始，所有的内容面板隐藏*/
+        #box_main > div {
+
+            display: none;
+
+        }
+
+        /*一开始，第一个内容面板显示*/
+        #box_main #gallery {
+            display: block;
+            width: 100%;
+            background-color: #ffffff !important;
+
+        }
+
+
+
+        #box_main p {
+            color: #999999;
+            font-size: 12px;
+            line-height: 21px;
+        }
+    </style>
+    <script src="js/jquery-2.2.0.min.js"></script>
+    <script>
+        $(init);
+        function init(){
+            // 遍历每一个li
+            $("#tabs .title").find("li").each(function(index){
+                $(this).on("click",function(){
+                    $(this).siblings().find("a").removeClass("current");
+                    $(this).find("a").addClass("current");
+                    $("#box_main>div").eq(index).fadeIn().siblings().stop().hide();
+                });
+            });
+        }
+    </script>
+</head>
+
+<body onload="tableLoad()">
+
+<div id="box">
+    <div id="tabs">
+        <ul class="title">
+            <li><a href="javascript:void(0)" class="current">基本信息</a></li>
+            <li><a href="javascript:void(0)">存储记录</a></li>
+        </ul>
+    </div>
+    <div id="box_main">
+
+        <div class="contact" style="display: block">
+            <table class="tailTable" border="1">
+                <tr>
+                    <td class="Tailtd_label"><label>仓储名称</label></td>
+                    <td class="TailTableTd">专用仓库</td>
+                    <td class="tableImg" colspan="2" rowspan="5"><img src="img/base.jpg"/> </td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>仓储编号</label></td>
+                    <td class="TailTableTd">SBNVG001</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>所在地址</label></td>
+                    <td class="TailTableTd">德阳市大人村</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>所属单位</label></td>
+                    <td class="TailTableTd">德阳仓库管理公司</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>负责人</label></td>
+                    <td class="TailTableTd">刘勇</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>联系人电话</label></td>
+                    <td class="TailTableTd" colspan="3">13516235231</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>面积</label></td>
+                    <td class="TailTableTd">500平米</td>
+                    <td class="Tailtd_label"><label>容量</label></td>
+                    <td class="TailTableTd">100吨</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>存储类型</label></td>
+                    <td class="TailTableTd">防腐蚀类</td>
+                    <td class="Tailtd_label"><label>仓储材质</label></td>
+                    <td class="TailTableTd">铜桶</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>修建时间</label></td>
+                    <td class="TailTableTd">2012-10-03</td>
+                    <td class="Tailtd_label"><label>启用时间</label></td>
+                    <td class="TailTableTd">2015-10-11</td>
+
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>是否有资质</label></td>
+                    <td class="TailTableTd" ><input type="radio" checked="checked" readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly"/><span class="tdSpan01">否</span></td>
+                    <td class="Tailtd_label"><label>资质编号</label></td>
+                    <td class="TailTableTd" >sb023651201</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>是否处在人员密集区</label></td>
+                    <td class="TailTableTd" ><input type="radio"  readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly" checked="checked"/><span class="tdSpan01">否</span></td>
+                    <td class="Tailtd_label"><label>100米内环境</label></td>
+                    <td class="TailTableTd" >道路和山丘</td>
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>是否处在交通要道</label></td>
+                    <td class="TailTableTd"><input type="radio"  readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly" checked="checked"/><span class="tdSpan01">否</span></td>
+                    <td class="Tailtd_label"><label>是否有应急处理措施</label></td>
+                    <td class="TailTableTd"><input type="radio"  readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly" checked="checked"/><span class="tdSpan01">否</span></td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>是否有专业消防装备</label></td>
+                    <td class="TailTableTd"><input type="radio"  readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly" checked="checked"/><span class="tdSpan01">否</span></td>
+                    <td class="Tailtd_label"><label>是否有腐毒标示</label></td>
+                    <td class="TailTableTd"><input type="radio"  readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly" checked="checked"/><span class="tdSpan01">否</span></td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>备注</label></td>
+                    <td class="TailTableTd" colspan="3">腐蚀类</td>
+
+                </tr>
+            </table>
+        </div>
+        <div class="contact">
+            <div class="notice_check">
+                <p>
+                    <label class="">物品名称：</label>
+                    <input type="text" class="find_input" placeholder="">
+                    <label class="">类型：</label>
+                    <select class="find_input">
+                        <option>腐蚀类</option>
+                        <option>易燃易爆</option>
+                        <option>有毒</option>
+                        <option>辐射类</option>
+                        <option>其它</option>
+                    </select>
+                    <label class="">储存日期：</label>
+                    <input type="date" class="find_input"  placeholder="">
+                    <button class="check_btn">查询</button>
+
+                </p>
+            </div>
+           <table id="table"></table>
+
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="js/jquery/jQuery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/layer_v2.1/layer/layer.js"></script>
+<script type="text/javascript" src="js/demo/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="js/ztree/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="js/ztree/jquery.ztree.exedit-3.5.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#table').bootstrapTable({
+            method: "get",
+            striped: true,
+            singleSelect: false,
+            url: "json/baselist.json",
+            dataType: "json",
+            pagination: true, //分页
+            pageSize: 10,
+            pageNumber: 1,
+            search: false, //显示搜索框
+            contentType: "application/x-www-form-urlencoded",
+            queryParams:null,
+            columns: [
+
+                {
+                    title: "编号",
+                    field: 'no',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '存储物品',
+                    field: 'name',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '物品类型',
+                    field: 'type',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '物品数量',
+                    field: 'num',
+                    align: 'center'
+                },
+                {
+                    title: '开始时间',
+                    field: 'time',
+                    align: 'center'
+                },
+                {
+                    title: '结束时间',
+                    field: 'time01',
+                    align: 'center'
+                },
+                {
+                    title: '物品所属人',
+                    field: 'person',
+                    align: 'center'
+                },
+                {
+                    title: '联系电话',
+                    field: 'tele',
+                    align: 'center'
+                },
+                {
+                    title: '物品所属单位',
+                    field: 'unit',
+                    align: 'center'
+                }
+
+            ]
+        });
+    });
+
+
+</script>
+
+
+</html>

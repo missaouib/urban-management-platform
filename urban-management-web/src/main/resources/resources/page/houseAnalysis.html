@@ -1,0 +1,366 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>统计表</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="css/table1.css" rel="stylesheet" type="text/css">
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="from_main" >
+    <div class="news_check">
+        <div class="check_left l_left">
+            <label>仓库类型：</label>
+            <select class="find_input" style="margin-right: 10px">
+                <option>防潮仓库</option>
+            </select>
+            <label>地理位置：</label>
+            <input type="text" placeholder="" style="margin-right: 10px">
+            <label>时间：</label>
+            <input type="date" placeholder=""><button>查询</button>
+        </div>
+        <div class="check_right r_right">
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-circle-arrow-down l_left"></span>打印</a>
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-download-alt l_left"></span>导出</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div style="padding: 0 10px 0 10px ;border: 1px #ccc solid;background-color: #fff;">
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p" style="text-align: center">仓库汇总信息</p>
+                <div >
+                    <table  class="annyTable01" border="1">
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">仓库类型：</td>
+                            <td colspan="9">大型仓库、中型仓库、冷藏仓库、防燃仓库、防爆仓库、防腐蚀仓库等</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 12%">仓库总数：</td>
+                            <td  colspan="3" style="color: red;font-weight: bold">15245个</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">仓库类型最多仓库：</td>
+                            <td  colspan="3">冷藏仓库（40%）</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">仓库类型最少仓库：</td>
+                            <td colspan="3">防爆仓库（8%）</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 12%">仓库最多区域：</td>
+                            <td  colspan="3">北区（23%）</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">易爆仓库最多区域：</td>
+                            <td  colspan="3">西区</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">最多仓库行业：</td>
+                            <td colspan="3">化学品行业（2542个）</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 12%">仓库使用率最高类型：</td>
+                            <td  colspan="3">防爆仓库（99%）</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">储存量变化趋势：</td>
+                            <td  colspan="3">随月份储存量减少</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">存储量同比（环比）：</td>
+                            <td colspan="3">储存量同比增加10%；环比减少5%</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">决策建议：</td>
+                            <td colspan="9" style="color: red;font-weight: bold">由于储存危险品量相对较多，应做好仓库管理工作（特别是对烟花爆竹、散装汽油类进行严格管理）。</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">仓库类型占比<span class="r_right">更多></span></p>
+                <div id="container" style="height:200px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">仓库类型</td>
+                            <td>大型仓库</td>
+                            <td>中型仓库</td>
+                            <td>小型仓库</td>
+                            <td>防燃仓库</td>
+                            <td>防爆仓库</td>
+                            <td>防腐蚀仓库</td>
+                            <td>冷藏仓库</td>
+                            <td>其它</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">仓库数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">仓库区域分析图<span class="r_right">更多></span></p>
+                <div id="container1" style="height:200px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">区域</td>
+                            <td>东区</td>
+                            <td>西区</td>
+                            <td>南区</td>
+                            <td>北区</td>
+                            <td>其它</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">仓库数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">各个行业仓库分析<span class="r_right">更多></span></p>
+                <div id="container2" style="height:250px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">行业单位</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">仓库数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">仓库使用率排行<span class="r_right">更多></span></p>
+                <div id="container3" style="height:250px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">仓库类型</td>
+                            <td>大型仓库</td>
+                            <td>中型仓库</td>
+                            <td>小型仓库</td>
+                            <td>防燃仓库</td>
+                            <td>防爆仓库</td>
+                            <td>防腐蚀仓库</td>
+                            <td>其它</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">利用率</td>
+                            <td>100%</td>
+                            <td>96%</td>
+                            <td>86%</td>
+                            <td>95%</td>
+                            <td>75%</td>
+                            <td>85%</td>
+                            <td>68%</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">排行</td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>6</td>
+                            <td>4</td>
+                            <td>3</td>
+                            <td>5</td>
+                            <td>7</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts charts_last">
+                <p class="charts_p">物品储存量走势图<span class="r_right">更多></span></p>
+                <div id="container4" style="height:250px"></div>
+                <table class="annyTable" border="1">
+                    <tr>
+                        <td class="first_td">月份</td>
+                        <td>一月</td>
+                        <td>二月</td>
+                        <td>三月</td>
+                        <td>四月</td>
+                        <td>五月</td>
+                        <td>六月</td>
+                        <td>七月</td>
+                        <td>八月</td>
+                        <td>九月</td>
+                        <td>十月</td>
+                        <td>十一月</td>
+                        <td>十二月</td>
+                    </tr>
+                    <tr>
+                        <td class="first_td">储存量（吨）</td>
+                        <td>1502</td>
+                        <td>2564</td>
+                        <td>2541</td>
+                        <td>3568</td>
+                        <td>4852</td>
+                        <td>2451</td>
+                        <td>251</td>
+                        <td>1456</td>
+                        <td>4852</td>
+                        <td>2451</td>
+                        <td>251</td>
+                        <td>1456</td>
+                    </tr>
+                    <tr>
+                        <td class="first_td">利用率</td>
+                        <td>85.2%</td>
+                        <td>75.2%</td>
+                        <td>65.2%</td>
+                        <td>95.2%</td>
+                        <td>55.2%</td>
+                        <td>95.2%</td>
+                        <td>75.2%</td>
+                        <td>65.2%</td>
+                        <td>55.2%</td>
+                        <td>95.2%</td>
+                        <td>75.2%</td>
+                        <td>65.2%</td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+        <div class="e_chart">
+            <div class="charts charts_last">
+                <p class="charts_p">各类物品储存量走势图<span class="r_right">更多></span></p>
+                <div id="container5" style="height:250px"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">物品类型</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">存储量（吨）</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">环比</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>-5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="e_chart">
+            <div class="charts charts_last">
+                <p class="charts_p">仓库分布图<span class="r_right"></span></p>
+                <div>
+                    <img src="img/ditu.png" style="width: 100%">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+</body>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script src="js/echarts-all.js"></script>
+<script src="js/analysis.js"></script>
+<script>
+    myEcharts();
+</script>
+</html>

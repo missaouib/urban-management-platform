@@ -1,0 +1,95 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="css/tail.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body style="border-radius: 8px;width: 900px">
+<form>
+<div class="top">
+    <div>
+        <div class="top_out">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td>序列号<span></span></td>
+                    <td><input type="text" id="xu"   ></td>
+                    <td>消息类型<span></span></td>
+                    <td>
+                        <input type="text" id="type">
+                    </td>
+                </tr>
+                <tr>
+                    <td>消息分组<span></span></td>
+                    <td>                        <input type="text" id="group"></td>
+                    <td>推送人<span></span></td>
+                    <td>                        <input type="text" id="person"></td>
+                </tr>
+                <tr>
+                    <td>消息级别<span></span></td>
+                    <td>
+                        <input type="text" id="level">
+                    </td>
+                    <td>消息状态<span></span></td>
+                    <td>
+                        <input type="text" id="status">
+                    </td>
+
+                </tr>
+                <tr>
+                    <td>备注<span></span></td>
+                    <td colspan = "8" style="text-align: left">
+                        <textarea id="note"  class="form_area" style="width: 97%;height: 200px"></textarea>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="notice_bot">
+        <div class="l_left"><input type="checkbox" checked="checked"/>保存并关闭窗口</div>
+        <div class="r_right but_p"><button class="but_close"  onclick="Cancel()">关闭</button></div>
+    </div>
+</div>
+</form>
+</body>
+<script src="js/jquery/jQuery-2.2.0.min.js"></script>
+
+<script src="js/layer_v2.1/layer/layer.js"></script>
+<script src="js/common.js"></script>
+<script>
+    $(function(){
+        $.ajax({
+            method: "GET",
+            url: "./json/news.json",
+            dataType: "json",
+            success: function(data){
+                var msg = data.data;
+                for(var i=0;i<msg.length;i++){
+                    if(parent.parsentId == msg[i].id ){
+                        $("#type").val(msg[i].type);
+                        $("#xu").val(msg[i].id);
+                        $("#level").val(msg[i].level);
+                        $("#group").val(msg[i].group);
+                        $("#status").val(msg[i].status);
+                        $("#person").val(msg[i].username);
+                        $("#note").val(msg[i].note);
+                    }
+                }
+            }
+        })
+    });
+    function Cancel() {
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+    function save(){
+        alert("保存成功",Cancel)
+
+    }
+</script>
+</html>
+

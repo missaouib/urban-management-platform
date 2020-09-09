@@ -1,0 +1,395 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>统计表</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table1.css" rel="stylesheet" type="text/css">
+
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="from_main" >
+    <div class="news_check">
+        <div class="check_left l_left">
+            <label>物品种类：</label>
+            <select class="find_input" style="margin-right: 10px">
+                <option>生化</option>
+            </select>
+            <label>地理位置：</label>
+            <select class="find_input" style="margin-right: 10px">
+                <option>成都</option>
+            </select>
+            <label>时间：</label>
+            <input type="date"  >
+            <button>查询</button>
+        </div>
+        <div class="check_right r_right">
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-circle-arrow-down l_left"></span>打印</a>
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-download-alt l_left"></span>导出</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div style="padding: 0 10px 0 10px ;border: 1px #ccc solid;background-color: #fff;">
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p" style="text-align: center">危险品汇总信息</p>
+                <div >
+                    <table  class="annyTable01" border="1">
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">危险品类型：</td>
+                            <td colspan="9">爆炸物品（炸药、雷管）、危险化学品、射钉器材、印章、机修、散装加油、保安和烟花爆竹等</td>
+                        </tr>
+
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 12%">危险品总量：</td>
+                            <td  colspan="3" style="color: red;font-weight: bold">25641吨</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">危险品占比最多类型：</td>
+                            <td  colspan="3">爆炸物品（40%）</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">危险品占比最少类型：</td>
+                            <td colspan="3">易燃物品（8%）</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 12%">危险品占比最大区域：</td>
+                            <td  colspan="3">成都（23%）</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">危险品生产最多类型：</td>
+                            <td  colspan="3">易燃品（2541吨）</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">危险品产量最多月份：</td>
+                            <td colspan="3">4月（6354吨）</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 12%">实际产量：</td>
+                            <td  colspan="3">25641吨</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">计划产量：</td>
+                            <td  colspan="3">25641吨</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">同比（环比）：</td>
+                            <td colspan="3">同比增加10%；环比增加5%</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">危险品变化趋势：</td>
+                            <td colspan="9">各类危险品需求呈上升趋势</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">决策建议：</td>
+                            <td colspan="9" style="color: red">由于危险品需求量和产量相对增加，需及时做好多危险品的管理和防范工作。</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">各类危险品占比分析<span class="r_right">更多></span></p>
+                <div id="container" style="height:200px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">物品类型</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">各区域危险品分布情况<span class="r_right">更多></span></p>
+                <div id="container1" style="height:200px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">区域</td>
+                            <td>东区</td>
+                            <td>西区</td>
+                            <td>南区</td>
+                            <td>北区</td>
+                            <td>其它</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">各类危险品生量分析<span class="r_right">更多></span></p>
+                <div id="container2" style="height:250px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">物品类型</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">产量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">各类危险品储量分析<span class="r_right">更多></span></p>
+                <div id="container3" style="height:250px;width: 98%;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">物品类型</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">储量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p">全年危险品数量变化趋势<span class="r_right">更多></span></p>
+                <div id="container5" style="height:250px;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">物品类型</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">物品数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">环比</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>-5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p">计划产量和实际产量对比<span class="r_right">更多></span></p>
+                <div id="container6" style="height:250px;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td"></td>
+                            <td class="">计划（吨）</td>
+                            <td class="">实际（吨）</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">物品数量</td>
+                            <td>5678</td>
+                            <td>5234</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+
+                        </tr>
+                        <tr>
+                            <td class="first_td">环比</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+</body>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/echarts-all.js"></script>
+<script src="js/goods_analysis.js"></script>
+<script>
+    $(function () {
+        $('#table').bootstrapTable({
+            method: "get",
+            striped: true,
+            singleSelect: false,
+            url: "json/role.json",
+            dataType: "json",
+            pagination: true, //分页
+            pageSize: 10,
+            pageNumber: 1,
+            search: false, //显示搜索框
+            contentType: "application/x-www-form-urlencoded",
+            queryParams:null,
+            columns: [
+
+                {
+                    title: "物品种类",
+                    field: 'id',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '数量',
+                    field: 'title',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '占比',
+                    field: 'date',
+                    align: 'center',
+                    valign: 'middle'
+                }
+
+            ]
+        });
+    });
+</script>
+</html>

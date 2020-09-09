@@ -1,0 +1,350 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>存储分析</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table1.css" rel="stylesheet" type="text/css">
+
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="from_main" >
+    <div class="news_check">
+        <div class="check_left l_left">
+            <label>危险品种类：</label>
+            <select class="find_input">
+            <option>易燃易爆</option>
+                <option>腐蚀</option>
+                <option>有毒</option>
+        </select>
+            <label>存储场所：</label>
+            <input type="text" />
+            <label>存储时间段：</label>
+            <input type="date" />
+        <button>查询</button>
+        </div>
+        <div class="check_right r_right">
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-circle-arrow-down l_left"></span>打印</a>
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-download-alt l_left"></span>导出</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div style="padding: 0 10px 0 10px ;border: 1px #ccc solid;background-color: #fff;">
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p" style="text-align: center">存储汇总信息</p>
+                <div >
+                    <table  class="annyTable01" border="1">
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">存储危险品种类：</td>
+                            <td>八大类</td>
+                            <td style="font-weight: bold;text-align: right">存储最多危险品种类：</td>
+                            <td style="color: #00a157">易燃类</td>
+                            <td style="font-weight: bold;text-align: right">存储最多的数量：</td>
+                            <td>1201吨</td>
+                            <td style="font-weight: bold;text-align: right">存储最多的占比：</td>
+                            <td>32.5%</td>
+                            <td style="font-weight: bold;text-align: right">存储最少危险品种类：</td>
+                            <td style="color: red">有毒</td>
+                            <td style="font-weight: bold;text-align: right">存储最少的数量：</td>
+                            <td>51001升</td>
+                            <td style="font-weight: bold;text-align: right">存储最少的占比：</td>
+                            <td>2.5%</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">存储场所：</td>
+                            <td>1201处</td>
+                            <td style="font-weight: bold;text-align: right">存储场所最多区域：</td>
+                            <td style="color: #00a157">新都区</td>
+                            <td style="font-weight: bold;text-align: right">最多场所数量：</td>
+                            <td>358处</td>
+                            <td style="font-weight: bold;text-align: right">最多存储场所占比：</td>
+                            <td>29.8%%</td>
+                            <td style="font-weight: bold;text-align: right">存储场所最少区域：</td>
+                            <td style="color: red">高新区</td>
+                            <td style="font-weight: bold;text-align: right">最少场所数量：</td>
+                            <td>13处</td>
+                            <td style="font-weight: bold;text-align: right">最少存储场所占比：</td>
+                            <td>1.08%%</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">危险品存储单位数：</td>
+                            <td>620家</td>
+                            <td style="font-weight: bold;text-align: right">存储量最多的单位：</td>
+                            <td style="color: #00a157">成都市高旺化工有限公司</td>
+                            <td style="font-weight: bold;text-align: right">存储量：</td>
+                            <td>15320吨</td>
+                            <td style="font-weight: bold;text-align: right">最多占比：</td>
+                            <td>15%</td>
+                            <td style="font-weight: bold;text-align: right">存储最最少的单位：</td>
+                            <td style="color: red">新都大和化工厂</td>
+                            <td style="font-weight: bold;text-align: right">最少的存储量：</td>
+                            <td  colspan="3">10吨</td>
+
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">存储时间最长：</td>
+                            <td>105天</td>
+                            <td style="font-weight: bold;text-align: right">存储最少时间：</td>
+                            <td style="color: #00a157">15天</td>
+                            <td style="font-weight: bold;text-align: right">场所与单位最远距离</td>
+                            <td>50公里</td>
+                            <td style="font-weight: bold;text-align: right">场所与单位最短距离：</td>
+                            <td>1.5公里</td>
+                            <td style="font-weight: bold;text-align: right">使用最频率存储场所：</td>
+                            <td style="color: red">新都区大化仓库（82次/年）</td>
+                            <td style="font-weight: bold;text-align: right">使用最少存储场所：</td>
+                            <td colspan="3">高新区大源仓库（5次/年）</td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">存储时间分析<span class="r_right">更多></span></p>
+                <div id="container" style="height:200px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">化学品种类</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                            <td>其它</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">存储天数</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">存储仓库地域分析<span class="r_right">更多></span></p>
+                <div id="container1" style="height:300px;width: 100%"></div>
+                <!--<div style="width: 100%;margin-top: 0px">-->
+                    <!--<table class="annyTable" border="1">-->
+                        <!--<tr>-->
+                            <!--<td class="first_td">车辆类型</td>-->
+                            <!--<td>卡车</td>-->
+                            <!--<td>挂车</td>-->
+                            <!--<td>防化车</td>-->
+                            <!--<td>普通货车</td>-->
+                            <!--<td>防爆车</td>-->
+                            <!--<td>液化车</td>-->
+                            <!--<td>冷藏车</td>-->
+                            <!--<td>其它</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td class="first_td">运输量</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td class="first_td">同比</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                        <!--</tr>-->
+                    <!--</table>-->
+                <!--</div>-->
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">各区域存储最分析<span class="r_right">更多></span></p>
+                <div id="container4" style="height:250px;width: 100%;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">物品类型</td>
+                            <td>高新区</td>
+                            <td>新都区</td>
+                            <td>成化区</td>
+                            <td>青羊区</td>
+                            <td>龙泉区</td>
+                            <td>金牛区</td>
+                            <td>锦江区</td>
+
+                        </tr>
+                        <tr>
+                            <td class="first_td">存储量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">各区域使用量走势图<span class="r_right">更多></span></p>
+                <div id="container5" style="height:250px;width: 100%;"></div>
+                <table class="annyTable" border="1">
+                    <tr>
+                        <td class="first_td">月份</td>
+                        <td>一月</td>
+                        <td>二月</td>
+                        <td>三月</td>
+                        <td>四月</td>
+                        <td>五月</td>
+                        <td>六月</td>
+                        <td>七月</td>
+                        <td>八月</td>
+                        <td>九月</td>
+                        <td>十月</td>
+                        <td>十一月</td>
+                        <td>十二月</td>
+                    </tr>
+                    <tr>
+                        <td class="first_td">使用量</td>
+                        <td>1502</td>
+                        <td>2564</td>
+                        <td>2541</td>
+                        <td>3568</td>
+                        <td>4852</td>
+                        <td>2451</td>
+                        <td>251</td>
+                        <td>1456</td>
+                        <td>4852</td>
+                        <td>2451</td>
+                        <td>251</td>
+                        <td>1456</td>
+                    </tr>
+                    <tr>
+                        <td class="first_td">同比</td>
+                        <td>85.2%</td>
+                        <td>75.2%</td>
+                        <td>65.2%</td>
+                        <td>95.2%</td>
+                        <td>55.2%</td>
+                        <td>95.2%</td>
+                        <td>75.2%</td>
+                        <td>65.2%</td>
+                        <td>55.2%</td>
+                        <td>95.2%</td>
+                        <td>75.2%</td>
+                        <td>65.2%</td>
+                    </tr>
+
+                </table>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p">存储变化态势与预测<span class="r_right">更多></span></p>
+                <div id="container7" style="height:250px;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td"></td>
+                            <td class="">旺季</td>
+                            <td class="">淡季</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">生产时段</td>
+                            <td>3月-8月</td>
+                            <td>9月-12月</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">存储时段</td>
+                            <td>4月-9月</td>
+                            <td>1月-3月</td>
+
+                        </tr>
+                        <tr>
+                            <td class="first_td">使用时段</td>
+                            <td>5月-12月</td>
+                            <td>1月-4月</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <!--<div class="e_chart">-->
+            <!--<div class="charts charts_last">-->
+                <!--<p class="charts_p">运输线路图<span class="r_right"></span></p>-->
+                <!--<div>-->
+                    <!--<img src="img/ditu.png" style="width: 100%">-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+
+</div>
+
+
+
+
+</body>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/echarts-all.js"></script>
+<script src="js/save_analysis.js"></script>
+</html>

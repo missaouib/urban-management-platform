@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <title>登录日志</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
+<div class="notice_main ">
+    <h6>登录日志</h6>
+    <div style="border-bottom: 1px #ccc solid;padding-bottom: 8px">
+        <p style="line-height: 24px;font-size: 14px;padding: 4px 0 0 36px ;color:#bb8940;background-image: url(img/ts_03.png);background-repeat: no-repeat;background-position: 10px 8px;font-weight: bold">温馨提示</p>
+        <ul class="ts">
+            <li><span>*</span>该页面主要显示的是登录日志查询界面。</li>
+        </ul>
+    </div>
+
+    <div class="notice_check">
+        <form id="logininfo-form">
+            <p>
+                <label class="">账号：</label>
+                <input type="text" class="find_input" name="username">
+                <input type="button" class="check_btn" onclick="$.table.search()" value="查询">
+                <!--            <button onclick="carAnalysis()" class="check_btn1">全局分析</button>-->
+            </p>
+        </form>
+    </div>
+
+    <div class="clear"></div>
+
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+
+    let url = /*[[@{/logininfo/search}]]*/ "/json/unit.json";
+
+
+    $(function () {
+        query();
+    });
+    function query() {
+        let options = {
+            url: url,
+            sortName: "createTime",
+            sortOrder: "desc",
+            columns: [
+                {
+                    title: '账号',
+                    field: 'username',
+                },
+                {
+                    title: "登录地址",
+                    field: 'ip',
+                },
+                {
+                    title: '登录时间',
+                    field: 'createTime',
+                    sortable: true
+                }
+            ]
+        };
+        $.table.init(options);
+    }
+</script>
+</body>
+</html>

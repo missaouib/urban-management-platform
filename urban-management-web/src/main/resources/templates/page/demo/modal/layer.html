@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <title>弹窗组件</title>
+    <link href="../../../../static/plugins/bootstrap/dist/css/bootstrap.min.css" th:href="@{/plugins/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet" type="text/css">
+    <link href="../../../../static/css/table1.css" th:href="@{/css/table1.css}" rel="stylesheet" type="text/css">
+    <link href="../../../../static/plugins/layer/theme/default/layer.css" th:href="@{/plugins/layer/theme/default/layer.css}" rel="stylesheet" type="text/css">
+</head>
+<style>
+    #e_chart .boxs{
+        padding: 10px;
+        background-color: #fff;
+    }
+    #e_chart .boxs p{
+        background: none;
+        font-size: 14px;
+    }
+    #e_chart .boxs .pborder{
+        border: none;
+        padding: 5px 0;
+    }
+    .tips{
+        padding-left: 10px;
+    }
+</style>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="from_main" >
+    <div style="padding: 0 10px 0 10px ;">
+        <div class="e_chart" id="e_chart">
+            <div class="charts l_left boxs">
+                <p style="font-size: 16px" class="charts_p">信息框</p>
+                <div id="container" style="width: 100%">
+                    <div class="tips">
+                        <p class="pborder">通过调用<code>$.modal.alert()</code>实现</p>
+                        <button type="button" class="btn btn-info" onclick="$.modal.alert('普通')">普通</button>
+                        <button type="button" class="btn btn-success" onclick="$.modal.alertSuccess('成功')">成功</button>
+                        <button type="button" class="btn btn-warning" onclick="$.modal.alertWarning('警告')">警告</button>
+                        <button type="button" class="btn btn-danger" onclick="$.modal.alertError('失败')">失败</button>
+                    </div>
+                </div>
+                <div style="width: 100%;margin-top: 30px">
+                </div>
+            </div>
+            <div class="charts l_left last_charts boxs">
+                <p class="charts_p" style="font-size: 16px">询问框</p>
+                <div id="container1" style="width: 100%">
+                    <div class="tips">
+                        <p class="pborder">通过调用<code>$.modal.confirm()</code>实现</p>
+                        <button type="button" class="btn btn-danger" onclick="$.modal.confirm('是否删除')">询问按钮</button>
+                    </div>
+                </div>
+                <div style="width: 100%;margin-top: 30px">
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../../../../static/plugins/jquery/dist/jquery.min.js" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
+<script type="text/javascript" src="../../../../static/plugins/layer/layer.js" th:src="@{/plugins/layer/layer.js}"></script>
+<script type="text/javascript" src="../../../../static/js/common.js" th:src="@{/js/common.js}"></script>
+</html>

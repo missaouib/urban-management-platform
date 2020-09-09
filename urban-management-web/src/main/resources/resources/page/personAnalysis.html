@@ -1,0 +1,296 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>运输分析</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table1.css" rel="stylesheet" type="text/css">
+
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="from_main" >
+    <div class="news_check">
+        <div class="check_left l_left">
+            <label>单位类型：</label>
+            <select class="find_input" style="margin-right: 10px">
+                <option>烟花爆竹</option>
+            </select>
+            <label>查询时间：</label>
+            <input type="date" >
+            <input type="date" >
+            <button>查询</button>
+        </div>
+        <div class="check_right r_right">
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-circle-arrow-down l_left"></span>打印</a>
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-download-alt l_left"></span>导出</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div style="padding: 0 10px 0 10px ;border: 1px #ccc solid;background-color: #fff;">
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p" style="text-align: center">从业人员汇总信息</p>
+                <div >
+                    <table  class="annyTable01" border="1">
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 12%">人员总和：</td>
+                            <td  colspan="3" style="color: red;font-weight: bold">22546人</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">人员从事最多行业：</td>
+                            <td colspan="3">散装加油（6692人）</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">人员从事最少行业：</td>
+                            <td  colspan="3">危险化学品（1204人）</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right;width: 12%">人员主要分布区域：</td>
+                            <td  colspan="3">西区（10201人）</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">人员分布最少区域：</td>
+                            <td colspan="3">北区（92人）</td>
+                            <td style="font-weight: bold;text-align: right;width: 12%">从业人员主要年龄段：</td>
+                            <td  colspan="3">青年（60%）</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">人员变化趋势：</td>
+                            <td colspan="9">通过全年从业人员流失情况分析，从业人员整体呈下降趋势；同比下降10%；环比下降6%</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">决策建议：</td>
+                            <td colspan="9" style="color: red">协调各区人员比例，达到人员平衡；控制人员流失，保证危险品各个流程的正常运转。</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">各从业单位人员占比<span class="r_right">更多></span></p>
+                <div id="container" style="height:200px;width: 100%;"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">从业单位</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">人员数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">各从业单位人员数量分析<span class="r_right">更多></span></p>
+                <div id="container1" style="height:230px;width: 100%;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">从业单位</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">人员数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>+3.2%</td>
+                            <td>+5.2%</td>
+                            <td>+8.2%</td>
+                            <td>-4.2%</td>
+                            <td>+2.2%</td>
+                            <td>-5.2%</td>
+                            <td>+0.2%</td>
+                            <td>-1.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">不同区域人员分布情况<span class="r_right">更多></span></p>
+                <div id="container2" style="height:200px;width: 100%;"></div>
+                <div style="width: 100%;margin-top: 10px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">区域</td>
+                            <td>东区</td>
+                            <td>西区</td>
+                            <td>南区</td>
+                            <td>北区</td>
+                            <td>其它</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">人员年龄段分析<span class="r_right">更多></span></p>
+                <div id="container3" style="height:200px;width: 98%;"></div>
+                <div style="width: 100%;margin-top: 10px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">年龄段</td>
+                            <td>青年</td>
+                            <td>中年</td>
+                            <td>老年</td>
+                            <td>其它</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p">不同时间段各单位人员流动情况<span class="r_right">更多></span></p>
+                <div id="container4" style="height:350px;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">从业单位</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">人员数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">环比</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+                            <td>-5.2%</td>
+                            <td>-5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+    </div>
+
+</div>
+
+
+
+
+</body>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/echarts-all.js"></script>
+<script src="js/person_analysis.js"></script>
+
+</html>

@@ -1,0 +1,47 @@
+﻿
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" href="css/login.css" />
+</head>
+<body>
+  
+    <div class="div_top">四川省公共安全管理系统</div>
+    <div class="login">
+        <div class="message">用户登录</div>
+        <div id="darkbannerwrap"></div>
+        <input name="action" value="login" type="hidden">
+        <input name="username" placeholder="用户名" id="userName"  type="text" >
+        <hr class="hr15">
+        <input name="password" placeholder="密码"  type="password" id="pass">
+        <hr class="hr15">
+        <input value="登录" style="width: 100%;" type="button" id="login_btn" onclick="Click()">
+        <hr class="hr20">
+        <a onclick="alert('请联系管理员')">忘记密码</a>
+    </div>
+    <div class="copyright">版权所有&nbsp;<span style="color: #f77118">2017 </span>杭州天夏科技股份集团有限公司</div>
+    <script src="js/jquery-2.2.0.min.js"></script>
+    <script src="js/layer_v2.1/layer/layer.js"></script>
+    <script src="js/common.js"></script>
+    <script>
+        function Click(){
+            var user = $("#userName").val();
+            if(user == "决策人"){
+                window.location.href = 'index.html?num=0'
+            }else if(user == "公安用户"){
+                window.location.href = 'index.html?num=1'
+            }else if(user == "非公安用户"){
+                window.location.href = 'index.html?num=2'
+            }else if(user == "管理员"){
+                window.location.href = 'index.html?num=3'
+            } else if (user == "admin") {
+                window.location.href = 'index.html?num=4'
+            }else{
+                alert("请输入正确的用户")
+            }
+        }
+    </script>
+</body>
+</html>

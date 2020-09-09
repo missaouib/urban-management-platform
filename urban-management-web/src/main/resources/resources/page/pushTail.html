@@ -1,0 +1,78 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="css/tail.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body style="border-radius: 8px;width: 900px">
+<form>
+    <div class="top">
+        <div>
+            <div class="top_out">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>分组名称<span></span></td>
+                        <td><input type="text" placeholder=""   ></td>
+                        <td>分组备注<span></span></td>
+                        <td>
+                            <input type="text" id="type">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>人员清单<span></span></td>
+                        <td colspan = "8" style="text-align: left">
+                            <div class="form_area" id="form_area" style="width: 97%;height: 420px;border: 1px #ccc solid;border-radius: 4px;overflow-y:auto">
+                            </div>
+                            <!--<textarea id="note"  class="form_area" style="width: 97%;height: 200px">-->
+                                <!---->
+                            <!--</textarea>-->
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="notice_bot">
+            <div class="l_left"><input type="checkbox" checked="checked"/>保存并关闭窗口</div>
+            <div class="r_right but_p"><button class="but_save"  onclick="save()">保存</button><button class="but_close"  onclick="Cancel()">关闭</button></div>
+        </div>
+    </div>
+</form>
+</body>
+<script src="js/jquery/jQuery-2.2.0.min.js"></script>
+
+<script src="js/layer_v2.1/layer/layer.js"></script>
+<!--<script src="js/common.js"></script>-->
+<script>
+    $(function(){
+        $.ajax({
+            method: "GET",
+            url: "./json/pushMan.json",
+            dataType: "json",
+            success: function(data){
+                var msg = data.data;
+                var person = msg[0].userList;
+                var str='';
+                for(var i=0;i<person.length;i++){
+                    str += '<div style="float: left;margin: 2px 0 0 4px;font-size: 14px;width: 80px"><input type="checkbox">'+person[i].username+'</div>'
+                }
+                $("#form_area").append(str)
+            }
+        })
+    });
+    function Cancel() {
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+    function save(){
+        alert("保存成功");
+        Cancel()
+
+    }
+</script>
+</html>
+

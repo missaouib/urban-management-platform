@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>单位详情</title>
+    <link href="js/bstable/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table.css" rel="stylesheet" type="text/css">
+    <link href="css/addStyle.css" rel="stylesheet" type="text/css">
+    <link href="css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+    <style>
+        .notice_main1{border: none !important;}
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f5;
+            min-width: 1100px;
+            overflow: auto;
+        }
+
+        #box {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto 0;
+        }
+
+        #tabs ul {
+            height: 31px;
+            border-left: #ccc solid 1px;
+            border-bottom: #ccc solid 1px;
+        }
+
+        #tabs ul li {
+            float: left;
+            border-top: #ccc solid 1px;
+            border-right: #ccc solid 1px;
+        }
+
+        #tabs ul li a {
+            display: block;
+            padding: 0 12px;
+            line-height: 29px;
+            border: white solid 1px;
+            border-bottom: none;
+            background-color: #e0e0e0;
+            color: #271d1e;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /*当一个标题a获得焦点时的样式*/
+        #tabs ul li .current {
+            border-bottom: white solid 1px;
+            background-color: white;
+        }
+
+        #box_main {
+            /*border: #ccc solid 1px;*/
+            border-top: none;
+            width: 100%;
+            /*height: 650px;*/
+        }
+
+        #box_main h3 {
+            line-height: 47px;
+            font-size: 22px;
+            color: #434142;
+            border-bottom: #e2e2e2 dashed 1px;
+            margin-bottom: 10px;
+        }
+
+        /*让一开始，所有的内容面板隐藏*/
+        #box_main > div {
+
+            display: none;
+
+        }
+
+        /*一开始，第一个内容面板显示*/
+        #box_main #gallery {
+            display: block;
+            width: 100%;
+            background-color: #ffffff !important;
+
+        }
+
+
+
+        #box_main p {
+            color: #999999;
+            font-size: 12px;
+            line-height: 21px;
+        }
+    </style>
+    <script src="js/jquery-2.2.0.min.js"></script>
+    <script>
+        $(init);
+        function init(){
+            // 遍历每一个li
+            $("#tabs .title").find("li").each(function(index){
+                $(this).on("click",function(){
+                    $(this).siblings().find("a").removeClass("current");
+                    $(this).find("a").addClass("current");
+                    $("#box_main>div").eq(index).fadeIn().siblings().stop().hide();
+                });
+            });
+        }
+    </script>
+</head>
+
+<body onload="tableLoad()">
+
+<div id="box">
+    <div id="tabs">
+        <ul class="title">
+            <li><a href="javascript:void(0)" class="current">基本信息</a></li>
+            <li><a href="javascript:void(0)">产品列表</a></li>
+            <li><a href="javascript:void(0)">资质列表</a></li>
+            <li><a href="javascript:void(0)">营销记录</a></li>
+            <li><a href="javascript:void(0)">事故记录</a></li>
+        </ul>
+    </div>
+    <div id="box_main">
+
+        <div class="contact" style="display: block">
+            <table class="tailTable" border="1">
+                <tr>
+                    <td class="Tailtd_label"><label>公司名称</label></td>
+                    <td class="TailTableTd" >四川省德阳市大宏化工有很责任公司</td>
+                    <td class="tableImg" rowspan="5" colspan="2"><img src="img/company1.png" /> </td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>工商营业执照编号</label></td>
+                    <td class="TailTableTd">301020162360231</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>公司性质</label></td>
+                    <td class="TailTableTd">民营</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>经营范围</label></td>
+                    <td class="TailTableTd">生产销售化工产品</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>法人代表</label></td>
+                    <td class="TailTableTd">李大河</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>公司地址</label></td>
+                    <td class="TailTableTd" colspan="3">四川德阳市创新路130号</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>注册时间</label></td>
+                    <td class="TailTableTd" colspan="3">2009-12-11</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>人员规模</label></td>
+                    <td class="TailTableTd" >300-500人</td>
+                    <td class="Tailtd_label"><label>主要产品及规模</label></td>
+                    <td class="TailTableTd" >盐酸（100吨/年）</td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="Tailtd_label"><label>企业分管安全负责人</label></td>
+                    <td class="TailTableTd" >罗大河</td>
+                    <td class="Tailtd_label"><label>联系电话</label></td>
+                    <td class="TailTableTd" >13813516232012</td>
+
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>化工行业分类</label></td>
+                    <td class="TailTableTd" >腐蚀类</td>
+                    <td class="Tailtd_label"><label>安全生产标准化等级</label></td>
+                    <td class="TailTableTd" >一级</td>
+
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>安全生产管理机构名称</label></td>
+                    <td class="TailTableTd" >安全管理部</td>
+                    <td class="Tailtd_label"><label>专职安全生产 管理人员人数</label></td>
+                    <td class="TailTableTd" >10人</td>
+
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>危险化学品作业人员人数</label></td>
+                    <td class="TailTableTd" >150人</td>
+                    <td class="Tailtd_label"><label>特种作业人员 人数</label></td>
+                    <td class="TailTableTd" >10人</td>
+
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>重点监管的危险化工工艺种数</label></td>
+                    <td class="TailTableTd" >2种</td>
+                    <td class="Tailtd_label"><label>重点监管的危险化工工艺名称</label></td>
+                    <td class="TailTableTd" >电解法</td>
+
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>危险化学品库房或仓储 场所建筑面积（平方米）</label></td>
+                    <td class="TailTableTd" >860平方米</td>
+                    <td class="Tailtd_label"><label>储罐（容器）总容积（立方米）</label></td>
+                    <td class="TailTableTd" >590立方米</td>
+
+
+                </tr>
+
+
+
+                <tr>
+                    <td class="Tailtd_label"><label>厂区边界外 1000米范围内的单位或设施情况</label></td>
+                    <td class="TailTableTd" colspan="3">工厂和高速路</td>
+
+                </tr>
+            </table>
+        </div>
+        <div class="contact">
+            <div class="notice_check">
+                <p>
+                    <label class="">产品批次：</label>
+                    <input type="text" class="find_input" placeholder="">
+                    <label class="">产品名称：</label>
+                    <input type="text" class="find_input" placeholder="">
+                    <label class="">生产日期：</label>
+                    <input type="date" class="find_input"  placeholder="">
+                    <button class="check_btn">查询</button>
+
+                </p>
+            </div>
+           <table id="table"></table>
+
+        </div>
+        <div class="contact" >
+            <div class="lawLeft01">
+                <h6>资质列表</h6>
+                <ul class="companyListUl">
+                    <li><a href="#" class="conpanyListActive">危险化学品安全生产许可证</a> <span>2015-06-1</span></li>
+                    <li><a href="#">危险化学品经营许可证</a> <span>2015-06-1</span></li>
+                    <li><a href="#">工业产品生产许可证</a> <span>2015-06-1</span></li>
+
+                </ul>
+            </div>
+
+            <div class="lawLeft03">
+                <h6>资质证书查看</h6>
+                <p class="lawLeft03p01">危险化学品生产资质</p>
+                <p class="lawLeft03p01"><img src="img/company1.png" class="companyImg"/> </p>
+
+            </div>
+
+        </div>
+        <div class="contact">
+            <div class="notice_check">
+                <p>
+                    <label class="">合同号：</label>
+                    <input type="text" class="find_input" placeholder="">
+                    <label class="">合同名称：</label>
+                    <input type="text" class="find_input" placeholder="">
+                    <label class="">销售日期：</label>
+                    <input type="date" class="find_input"  placeholder="">
+                    <button class="check_btn">查询</button>
+
+                </p>
+            </div>
+        <table id="table1"></table>
+
+    </div>
+        <div class="contact">
+            <div class="notice_check">
+                <p>
+                    <label class="">事故名称：</label>
+                    <input type="text" class="find_input" placeholder="">
+                    <label class="">级别：</label>
+                   <select class="find_input">
+                       <option>特大</option>
+                       <option>极大</option>
+                       <option>重大</option>
+                       <option>一般</option>
+                   </select>
+                    <label class="">发生日期：</label>
+                    <input type="date" class="find_input"  placeholder="">
+                    <button class="check_btn">查询</button>
+
+                </p>
+            </div>
+            <table id="table2"></table>
+
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="js/jquery/jQuery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/layer_v2.1/layer/layer.js"></script>
+<script type="text/javascript" src="js/demo/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="js/ztree/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="js/ztree/jquery.ztree.exedit-3.5.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $(".companyListUl li a").click(function () {
+            $(this).addClass("conpanyListActive").parents().siblings().find("a").removeClass("conpanyListActive");
+
+        })
+        $('#table').bootstrapTable({
+            method: "get",
+            striped: true,
+            singleSelect: false,
+            url: "json/unitstory.json",
+            dataType: "json",
+            pagination: true, //分页
+            pageSize: 10,
+            pageNumber: 1,
+            search: false, //显示搜索框
+            contentType: "application/x-www-form-urlencoded",
+            queryParams:null,
+            columns: [
+
+                {
+                    title: "产品批次",
+                    field: 'no',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '产品名称',
+                    field: 'name',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '产品类型',
+                    field: 'type',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '别名',
+                    field: 'work',
+                    align: 'center'
+                },
+                {
+                    title: '分子式',
+                    field: 'content',
+                    align: 'center'
+                },
+
+                {
+                    title: '数量',
+                    field: 'num',
+                    align: 'center'
+                }
+            ]
+        });
+        $('#table1').bootstrapTable({
+            method: "get",
+            striped: true,
+            singleSelect: false,
+            url: "json/unitbuylist.json",
+            dataType: "json",
+            pagination: false, //分页
+            pageSize: 10,
+            pageNumber: 1,
+            search: false, //显示搜索框
+            contentType: "application/x-www-form-urlencoded",
+            queryParams:null,
+            columns: [
+
+                {
+                    title: "合同编号",
+                    field: 'no',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '合同名称',
+                    field: 'name',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '销售物品',
+                    field: 'goods',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '销售数量',
+                    field: 'num',
+                    align: 'center'
+                },
+                {
+                    title: '购方单位',
+                    field: 'unit',
+                    align: 'center'
+                },
+                {
+                    title: '联系电话',
+                    field: 'tele',
+                    align: 'center'
+                },
+                {
+                    title: '经办人',
+                    field: 'person',
+                    align: 'center'
+                },
+                {
+                    title: '销售时间',
+                    field: 'time',
+                    align: 'center'
+                }
+
+            ]
+        });
+        $('#table2').bootstrapTable({
+            method: "get",
+            striped: true,
+            singleSelect: false,
+            url: "json/unitstorlist.json",
+            dataType: "json",
+            pagination: false, //分页
+            pageSize: 10,
+            pageNumber: 1,
+            search: false, //显示搜索框
+            contentType: "application/x-www-form-urlencoded",
+            queryParams:null,
+            columns: [
+
+                {
+                    title: "编号",
+                    field: 'no',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '事故名称',
+                    field: 'name',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '事故类型',
+                    field: 'type',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '发生时间',
+                    field: 'time',
+                    align: 'center'
+                },
+                {
+                    title: '危险级别',
+                    field: 'class',
+                    align: 'center'
+                },
+                {
+                    title: '伤亡人数',
+                    field: 'num',
+                    align: 'center'
+                },
+                {
+                    title: '财产损失',
+                    field: 'lost',
+                    align: 'center'
+                },
+                {
+                    title: '责任人',
+                    field: 'person01',
+                    align: 'center'
+                },
+                {
+                    title: '处理单位',
+                    field: 'person',
+                    align: 'center'
+                },
+
+                {
+                    title: '处罚方式',
+                    field: 'type01',
+                    align: 'center'
+                }
+            ]
+        });
+    });
+
+
+</script>
+
+
+</html>

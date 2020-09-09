@@ -1,0 +1,266 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>危险物品周边分析</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table1.css" rel="stylesheet" type="text/css">
+
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="from_main" >
+    <div class="news_check">
+        <div class="check_left l_left">
+            <label>生产单位：</label>
+            <input type="text" />
+
+            <label>使用地域：</label>
+            <input type="text" />
+            <label>存储地域：</label>
+            <input type="text" />
+
+        <button>查询</button>
+        </div>
+        <div class="check_right r_right">
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-circle-arrow-down l_left"></span>打印</a>
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-download-alt l_left"></span>导出</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div style="padding: 0 10px 0 10px ;border: 1px #ccc solid;background-color: #fff;">
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p" style="text-align: center">危险物品周边汇总信息</p>
+                <div >
+                    <table  class="annyTable01" border="1">
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">生产单位人员分布总人口：</td>
+                            <td>230万</td>
+                            <td style="font-weight: bold;text-align: right">人口分布最密集生产单位：</td>
+                            <td style="color: #00a157">新都市大华化工厂</td>
+                            <td style="font-weight: bold;text-align: right">分布数量：</td>
+                            <td>2.3万人</td>
+                            <td style="font-weight: bold;text-align: right">最多的占比：</td>
+                            <td>1%%</td>
+                            <td style="font-weight: bold;text-align: right">人口分布最少生产单位：</td>
+                            <td style="color: red">成都大业化工厂</td>
+                            <td style="font-weight: bold;text-align: right">分布数量：</td>
+                            <td>239人</td>
+                            <td style="font-weight: bold;text-align: right">最少的占比：</td>
+                            <td>0.013%</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">存储区域人员分布总人口：</td>
+                            <td>230万</td>
+                            <td style="font-weight: bold;text-align: right">人口分布最密集存储区域：</td>
+                            <td style="color: #00a157">新都区</td>
+                            <td style="font-weight: bold;text-align: right">分布数量：</td>
+                            <td>2.3万人</td>
+                            <td style="font-weight: bold;text-align: right">最多的占比：</td>
+                            <td>1%%</td>
+                            <td style="font-weight: bold;text-align: right">人口分布最少存储区域：</td>
+                            <td style="color: red">高新区</td>
+                            <td style="font-weight: bold;text-align: right">分布数量：</td>
+                            <td>2390人</td>
+                            <td style="font-weight: bold;text-align: right">最少的占比：</td>
+                            <td>0.13%</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">使用区域人员分布总人口：</td>
+                            <td>230万</td>
+                            <td style="font-weight: bold;text-align: right">人口分布最密集使用区域：</td>
+                            <td style="color: #00a157">成华成</td>
+                            <td style="font-weight: bold;text-align: right">分布数量：</td>
+                            <td>2.3万人</td>
+                            <td style="font-weight: bold;text-align: right">最多的占比：</td>
+                            <td>1%%</td>
+                            <td style="font-weight: bold;text-align: right">人口分布最少使用区域：</td>
+                            <td style="color: red">高新区</td>
+                            <td style="font-weight: bold;text-align: right">分布数量：</td>
+                            <td>2390人</td>
+                            <td style="font-weight: bold;text-align: right">最少的占比：</td>
+                            <td>0.13%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">生产单位人口分布图<span class="r_right">更多></span></p>
+                <div id="container" style="height:330px;width: 100%"></div>
+                <!--<div style="width: 100%;margin-top: 30px">-->
+                    <!--<table class="annyTable" border="1">-->
+                        <!--<tr>-->
+                            <!--<td class="first_td">月份</td>-->
+                            <!--<td>一月</td>-->
+                            <!--<td>二月</td>-->
+                            <!--<td>三月</td>-->
+                            <!--<td>四月</td>-->
+                            <!--<td>五月</td>-->
+                            <!--<td>六月</td>-->
+                            <!--<td>七月</td>-->
+                            <!--<td>八月</td>-->
+                            <!--<td>九月</td>-->
+                            <!--<td>十月</td>-->
+                            <!--<td>十一月</td>-->
+                            <!--<td>十二月</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td class="first_td">使用量</td>-->
+                            <!--<td>1502</td>-->
+                            <!--<td>2564</td>-->
+                            <!--<td>2541</td>-->
+                            <!--<td>3568</td>-->
+                            <!--<td>4852</td>-->
+                            <!--<td>2451</td>-->
+                            <!--<td>251</td>-->
+                            <!--<td>1456</td>-->
+                            <!--<td>4852</td>-->
+                            <!--<td>2451</td>-->
+                            <!--<td>251</td>-->
+                            <!--<td>1456</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td class="first_td">同比</td>-->
+                            <!--<td>85.2%</td>-->
+                            <!--<td>75.2%</td>-->
+                            <!--<td>65.2%</td>-->
+                            <!--<td>95.2%</td>-->
+                            <!--<td>55.2%</td>-->
+                            <!--<td>95.2%</td>-->
+                            <!--<td>75.2%</td>-->
+                            <!--<td>65.2%</td>-->
+                            <!--<td>55.2%</td>-->
+                            <!--<td>95.2%</td>-->
+                            <!--<td>75.2%</td>-->
+                            <!--<td>65.2%</td>-->
+                        <!--</tr>-->
+
+                    <!--</table>-->
+                <!--</div>-->
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">存储区域人员分布图<span class="r_right">更多></span></p>
+                <div id="container1" style="height:330px;width: 100%"></div>
+                <!--<div style="width: 100%;margin-top: 0px">-->
+                    <!--<table class="annyTable" border="1">-->
+                        <!--<tr>-->
+                            <!--<td class="first_td">车辆类型</td>-->
+                            <!--<td>卡车</td>-->
+                            <!--<td>挂车</td>-->
+                            <!--<td>防化车</td>-->
+                            <!--<td>普通货车</td>-->
+                            <!--<td>防爆车</td>-->
+                            <!--<td>液化车</td>-->
+                            <!--<td>冷藏车</td>-->
+                            <!--<td>其它</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td class="first_td">运输量</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td class="first_td">同比</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                        <!--</tr>-->
+                    <!--</table>-->
+                <!--</div>-->
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">使用区域人员分布<span class="r_right">更多></span></p>
+                <div id="container4" style="height:300px;width: 100%;"></div>
+
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">各区域人员变化情况<span class="r_right">更多></span></p>
+                <div id="container5" style="height:300px;width: 100%;"></div>
+
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p">人口分布预测<span class="r_right">更多></span></p>
+                <div id="container7" style="height:250px;"></div>
+
+                <div class="charts l_left ">
+                <p class="charts_p">生产单位区域事故分布<span class="r_right">更多></span></p>
+                <div id="container8" style="height:250px;width: 100%;"></div>
+
+
+            </div>
+                <div class="charts l_left last_charts">
+                    <p class="charts_p">存储区域事故分布<span class="r_right">更多></span></p>
+                    <div id="container9" style="height:250px;width: 100%;"></div>
+
+
+                </div>
+            </div>
+            <div class="clear"></div>
+
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">使用区域事故分布<span class="r_right">更多></span></p>
+                <div id="container10" style="height:300px;width: 100%;"></div>
+
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">各区域事故变化情况<span class="r_right">更多></span></p>
+                <div id="container11" style="height:300px;width: 100%;"></div>
+
+
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <!--<div class="e_chart">-->
+            <!--<div class="charts charts_last">-->
+                <!--<p class="charts_p">运输线路图<span class="r_right"></span></p>-->
+                <!--<div>-->
+                    <!--<img src="img/ditu.png" style="width: 100%">-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+
+</div>
+
+
+
+
+</body>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/echarts-all.js"></script>
+<script src="js/rim_analysis.js"></script>
+</html>

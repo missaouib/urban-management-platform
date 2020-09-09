@@ -1,0 +1,110 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>无标题文档</title>
+    <link href="css/tail.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+</head>
+<body style="border-radius: 8px;width: 680px" onload="init()">
+<form>
+    <div class="top table2_top">
+        <div>
+            <div class="top_out">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>数据源名称<span>*</span></td>
+                        <td colspan = "8" style="text-align: left">
+                            <input type="text"  id="name" style="width: 586px">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>数据源地址<span></span></td>
+                        <td><input type="text" id="host"></td>
+                        <td>端口<span></span></td>
+                        <td><input type="text" class="long_text" id="port"></td>
+                    </tr>
+                    <tr>
+                        <td>数据源类型<span></span></td>
+                        <td>
+                            <select id="type">
+
+                            </select>
+                        </td>
+                        <td>数据库名称<span></span></td>
+                        <td><input type="text" id="dbname"></td>
+                    </tr>
+                    <tr>
+                        <td>用户名<span></span></td>
+                        <td><input type="text" id="username"></td>
+                        <td>密码<span></span></td>
+                        <td><input type="text" class="long_text" id="password"></td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="notice_bot">
+            <div class="l_left"><input type="checkbox" checked="checked"/>保存并关闭窗口</div>
+            <div class="r_right but_p"><button class="but_save" type="submit" onclick="save()">保存</button><button class="but_close" onclick="Cancel()">关闭</button></div>
+        </div>
+    </div>
+</form>
+<script src="js/jquery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script>
+    function Cancel() {
+        var index = parent.layer.getFrameIndex(window.name);
+        parent.layer.close(index);
+    }
+    function save(){
+
+
+        var name=$("#name").val();
+
+        if(name!=""){
+            alert("保存成功");
+            Cancel();
+        }
+
+        else if(name==""){
+            alert("名称不能为空");
+        }
+
+
+    }
+    function init() {
+        $.ajax({
+            url:"json/数据源管理.json",
+            type:"post",
+            dataType:"json",
+            success:function (res) {
+                if(res) {
+                    var data = res.data;
+                   $.each(data,function (index) {
+                      if(parent.ID==data[index].id){
+                          $("#name").val(data[index].name);
+                          $("#host").val(data[index].host);
+                          $("#port").val(data[index].port);
+                          $("#type").text(data[index].type);
+                          $("#dbname").val(data[index].dbname);
+                          $("#username").val(data[index].username);
+                          $("#password").val(data[index].password);
+                      }
+
+                   })
+
+                }
+
+
+
+            }
+        })
+
+    }
+</script>
+</body>
+</html>

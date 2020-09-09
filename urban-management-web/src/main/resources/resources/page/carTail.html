@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>车辆详情</title>
+    <link href="js/bstable/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table.css" rel="stylesheet" type="text/css">
+    <link href="css/addStyle.css" rel="stylesheet" type="text/css">
+    <link href="css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+    <style>
+        .notice_main1{border: none !important;}
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f5;
+            min-width: 1100px;
+            overflow: auto;
+        }
+
+        #box {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto 0;
+        }
+
+        #tabs ul {
+            height: 31px;
+            border-left: #ccc solid 1px;
+            border-bottom: #ccc solid 1px;
+        }
+
+        #tabs ul li {
+            float: left;
+            border-top: #ccc solid 1px;
+            border-right: #ccc solid 1px;
+        }
+
+        #tabs ul li a {
+            display: block;
+            padding: 0 12px;
+            line-height: 29px;
+            border: white solid 1px;
+            border-bottom: none;
+            background-color: #e0e0e0;
+            color: #271d1e;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /*当一个标题a获得焦点时的样式*/
+        #tabs ul li .current {
+            border-bottom: white solid 1px;
+            background-color: white;
+        }
+
+        #box_main {
+            /*border: #ccc solid 1px;*/
+            border-top: none;
+            background-color: #fff;
+            width: 100%;
+            /*height: 650px;*/
+        }
+
+        #box_main h3 {
+            line-height: 47px;
+            font-size: 22px;
+            color: #434142;
+            border-bottom: #e2e2e2 dashed 1px;
+            margin-bottom: 10px;
+        }
+
+        /*让一开始，所有的内容面板隐藏*/
+        #box_main > div {
+
+            display: none;
+
+        }
+
+        /*一开始，第一个内容面板显示*/
+        #box_main #gallery {
+            display: block;
+            width: 100%;
+            background-color: #ffffff !important;
+
+        }
+
+
+
+        #box_main p {
+            color: #999999;
+            font-size: 12px;
+            line-height: 21px;
+        }
+    </style>
+    <script src="js/jquery-2.2.0.min.js"></script>
+    <script>
+        $(init);
+        function init(){
+            // 遍历每一个li
+            $("#tabs .title").find("li").each(function(index){
+                $(this).on("click",function(){
+                    $(this).siblings().find("a").removeClass("current");
+                    $(this).find("a").addClass("current");
+                    $("#box_main>div").eq(index).fadeIn().siblings().stop().hide();
+                });
+            });
+        }
+    </script>
+</head>
+
+<body onload="tableLoad()">
+
+<div id="box">
+    <div id="tabs">
+        <ul class="title">
+            <li><a href="javascript:void(0)" class="current">基本信息</a></li>
+            <li><a href="javascript:void(0)">运输记录</a></li>
+            <li><a href="javascript:void(0)">驾驶员信息</a></li>
+        </ul>
+    </div>
+    <div id="box_main">
+
+        <div class="contact" style="display: block">
+            <table class="tailTable" border="1">
+                <tr>
+                    <td class="Tailtd_label"><label>运输经营许可证编号</label></td>
+                    <td class="TailTableTd" colspan="2">012017002351</td>
+                    <td class="tableImg" rowspan="5"><img src="img/carIcon.png" /> </td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>车牌号/船舶编号/火车编号/飞机编号</label></td>
+                    <td class="TailTableTd" colspan="2">川K32015</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>运输类型</label></td>
+                    <td class="TailTableTd" colspan="2">道路运输（罐车运输）</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>剧毒化学品运输通行证编号</label></td>
+                    <td class="TailTableTd" colspan="2">012017002351</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>驾驶证号</label></td>
+                    <td class="TailTableTd" colspan="2">012017002351</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>驾驶员姓名</label></td>
+                    <td class="TailTableTd" colspan="3">何冰</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>押运员姓名</label></td>
+                    <td class="TailTableTd">周林</td>
+                    <td class="Tailtd_label"><label>危险货物运输操作证编号</label></td>
+                    <td class="TailTableTd">012017002351</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>所属运输公司</label></td>
+                    <td class="TailTableTd" colspan="3">德阳光华运输公司</td>
+
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>购买时间</label></td>
+                    <td class="TailTableTd" >2015-12-13</td>
+                    <td class="Tailtd_label"><label>报废时间</label></td>
+                    <td class="TailTableTd" >2025-12-13</td>
+
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>最大充装量</label></td>
+                    <td class="TailTableTd" >10吨</td>
+                    <td class="Tailtd_label"><label>运输证核定载重（吨）</label></td>
+                    <td class="TailTableTd" >10吨</td>
+
+
+                </tr>
+
+                <tr>
+                    <td class="Tailtd_label"><label>是否有压力表</label></td>
+                    <td class="TailTableTd"><input type="radio" checked="checked" readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly"/><span class="tdSpan01">否</span></td>
+                    <td class="Tailtd_label"><label>是否有液位计</label></td>
+                    <td class="TailTableTd"><input type="radio" checked="checked" readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly"/><span class="tdSpan01">否</span></td>
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>是否有防液板</label></td>
+                    <td class="TailTableTd"><input type="radio" checked="checked" readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly"/><span class="tdSpan01">否</span></td>
+                    <td class="Tailtd_label"><label>是否有速断阀</label></td>
+                    <td class="TailTableTd"><input type="radio" checked="checked" readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly"/><span class="tdSpan01">否</span></td>
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>是否有应急器材</label></td>
+                    <td class="TailTableTd"><input type="radio" checked="checked" readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly"/><span class="tdSpan01">否</span></td>
+                    <td class="Tailtd_label"><label>是否有毒爆腐标志</label></td>
+                    <td class="TailTableTd"><input type="radio" checked="checked" readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly"/><span class="tdSpan01">否</span></td>
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>是否有导静电带</label></td>
+                    <td class="TailTableTd"><input type="radio" checked="checked" readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly"/><span class="tdSpan01">否</span></td>
+                    <td class="Tailtd_label"><label>是否有安全阀</label></td>
+                    <td class="TailTableTd"><input type="radio" checked="checked" readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly"/><span class="tdSpan01">否</span></td>
+                </tr>
+            </table>
+        </div>
+        <div class="contact">
+            <div class="notice_check">
+                <p>
+                    <label class="">号码：</label>
+                    <input type="text" class="find_input" placeholder="请输入车牌号/船舶编号/火车编号/飞机编号">
+                    <label class="">物品名称：</label>
+                    <input type="text" class="find_input" placeholder="">
+                    <label class="">运输类型：</label>
+                    <select class="find_input">
+                        <option>道路运输</option>
+                        <option>水路运输</option>
+                        <option>铁路运输</option>
+                        <option>航空运输</option>
+                    </select>
+                    </p>
+                <p style="margin-top: 10px">
+                    <label class="">运输日期：</label>
+                    <input type="date" class="find_input"  placeholder="">
+                    <button class="check_btn">查询</button>
+
+                </p>
+            </div>
+           <table id="table"></table>
+
+        </div>
+        <div class="contact">
+            <table class="tailTable" border="1">
+                <tr>
+                    <td class="Tailtd_label"><label>姓名</label></td>
+                    <td class="TailTableTd" colspan="2">何冰</td>
+                    <td class="tableImg" rowspan="5"><img src="img/user01.jpg" /> </td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>身份证号</label></td>
+                    <td class="TailTableTd" colspan="2">511500197203062361</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>驾驶证类型</label></td>
+                    <td class="TailTableTd" colspan="2">货车驾照</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>驾驶证编号</label></td>
+                    <td class="TailTableTd" colspan="2">511521230126533</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>性别</label></td>
+                    <td class="TailTableTd" colspan="2"><input type="radio" checked="checked" readonly="readonly"/><span class="tdSpan">男</span><input type="radio"  readonly="readonly"/><span class="tdSpan01">女</span></td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>危险货物运输操作证编号</label></td>
+                    <td class="TailTableTd">s12036231521</td>
+                    <td class="Tailtd_label"><label>颁发机构</label></td>
+                    <td class="TailTableTd">四川省公共安全管理局</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>出生年月</label></td>
+                    <td class="TailTableTd" >1973-02-21</td>
+                    <td class="Tailtd_label"><label>户口所在地</label></td>
+                    <td class="TailTableTd" >四川德阳市高新社区301号</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>常住地址</label></td>
+                    <td class="TailTableTd">四川德阳市高新社区301号</td>
+                    <td class="Tailtd_label"><label>工作单位</label></td>
+                    <td class="TailTableTd">四川德阳市大华运输公司</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>联系电话</label></td>
+                    <td class="TailTableTd">13892635102</td>
+                    <td class="Tailtd_label"><label>从业年限</label></td>
+                    <td class="TailTableTd">5年</td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>最高学历</label></td>
+                    <td class="TailTableTd">高中</td>
+                    <td class="Tailtd_label"><label>毕业学校</label></td>
+                    <td class="TailTableTd">德阳市第十中心</td>
+
+                </tr>
+
+                <tr>
+                    <td class="Tailtd_label"><label>是否有涉毒</label></td>
+                    <td class="TailTableTd" colspan="3"><input type="radio" checked="checked" readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly"/><span class="tdSpan01">否</span></td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>是否有犯罪前科</label></td>
+                    <td class="TailTableTd" colspan="3"><input type="radio" checked="checked" readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly"/><span class="tdSpan01">否</span></td>
+
+                </tr>
+                <tr>
+                    <td class="Tailtd_label"><label>是否外籍</label></td>
+                    <td class="TailTableTd" colspan="3"><input type="radio" checked="checked" readonly="readonly"/><span class="tdSpan">是</span><input type="radio"  readonly="readonly"/><span class="tdSpan01">否</span></td>
+
+                </tr>
+
+            </table>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script src="js/jquery/jQuery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/layer_v2.1/layer/layer.js"></script>
+<script type="text/javascript" src="js/demo/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="js/ztree/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="js/ztree/jquery.ztree.exedit-3.5.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#table').bootstrapTable({
+            method: "get",
+            striped: true,
+            singleSelect: false,
+            url: "json/carmes01.json",
+            dataType: "json",
+            pagination: true, //分页
+            pageSize: 10,
+            pageNumber: 1,
+            search: false, //显示搜索框
+            contentType: "application/x-www-form-urlencoded",
+            queryParams:null,
+            columns: [
+
+                {
+                    title: "编号",
+                    field: 'no',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '运输物品',
+                    field: 'name',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '运输类型',
+                    field: 'type',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '号码',
+                    field: 'no01',
+                    align: 'center',
+                    valign: 'middle'
+                },
+                {
+                    title: '运输重量',
+                    field: 'num',
+                    align: 'center'
+                },
+                {
+                    title: '起始地',
+                    field: 'addr01',
+                    align: 'center'
+                },
+                {
+                    title: '目的地',
+                    field: 'add02',
+                    align: 'center'
+                },
+                {
+                    title: '开始时间',
+                    field: 'time01',
+                    align: 'center'
+                },
+                {
+                    title: '结束时间',
+                    field: 'time02',
+                    align: 'center'
+                },
+                {
+                    title: '驾驶人',
+                    field: 'person',
+                    align: 'center'
+                },
+                {
+                    title: '押运员',
+                    field: 'person01',
+                    align: 'center'
+                },
+                {
+                    title: '负责人',
+                    field: 'person02',
+                    align: 'center'
+                },
+                {
+                    title: '所属单位',
+                    field: 'unit',
+                    align: 'center'
+                },
+                {
+                    title: '有无违规',
+                    field: 'res',
+                    align: 'center'
+                }
+
+            ]
+        });
+    });
+
+
+</script>
+
+
+</html>

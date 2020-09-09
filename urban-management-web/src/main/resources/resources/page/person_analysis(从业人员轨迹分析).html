@@ -1,0 +1,160 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>单个分析</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table1.css" rel="stylesheet" type="text/css">
+
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="from_main" >
+    <div class="news_check">
+        <div class="check_left l_left">
+            <label>区域：</label>
+            <select class="find_input">
+                <option>成都</option>
+
+
+        </select>
+
+            <label>年份：</label>
+            <input type="date" class="find_input"/>
+
+
+        <button>查询</button>
+        </div>
+        <div class="check_right r_right">
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-circle-arrow-down l_left"></span>打印</a>
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-download-alt l_left"></span>导出</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div style="padding: 0 10px 0 10px ;border: 1px #ccc solid;background-color: #fff;">
+
+
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p">从业人员轨迹分析<span class="r_right">更多></span></p>
+                <div id="container7" style="height:250px;"></div>
+                <!--<div style="width: 100%;margin-top: 0px">-->
+                    <!--<table class="annyTable" border="1">-->
+                        <!--<tr>-->
+                            <!--<td class="first_td">区域名称</td>-->
+                            <!--<td>成都</td>-->
+                            <!--<td>绵阳</td>-->
+                            <!--<td>德阳</td>-->
+                            <!--<td>泸州</td>-->
+                            <!--<td>宜宾</td>-->
+                            <!--<td>自贡</td>-->
+
+
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td class="first_td">从业人员数</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+                            <!--<td>102</td>-->
+
+
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td class="first_td">同比</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+                            <!--<td>5.2%</td>-->
+
+                            <!--<-->
+                        <!--</tr>-->
+
+                    <!--</table>-->
+                <!--</div>-->
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+</body>
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/echarts-all.js"></script>
+
+<script>
+   
+    $(function(){
+        var myChart = echarts.init($("#container7")[0]);
+        var heatData = [];
+        for (var i = 0; i < 15; ++i) {
+            heatData.push([
+                100 + Math.random() * 20,
+                24 + Math.random() * 16,
+                Math.random()
+            ]);
+        }
+        for (var j = 0; j < 10; ++j) {
+            var x = 100 + Math.random() * 16;
+            var y = 24 + Math.random() * 12;
+            var cnt = 30 * Math.random();
+            for (var i = 0; i < cnt; ++i) {
+                heatData.push([
+                    x + Math.random() * 2,
+                    y + Math.random() * 2,
+                    Math.random()
+                ]);
+            }
+        }
+
+        option = {
+            backgroundColor: '#fff',
+
+            tooltip : {
+                trigger: 'item',
+                formatter: '{b}'
+            },
+
+            series : [
+                {
+                    name: '四川',
+                    type: 'map',
+                    mapType: 'china',
+                    roam: true,
+                    hoverable: false,
+                    data:[],
+                    heatmap: {
+                        minAlpha: 0.1,
+                        data: heatData
+                    },
+                    itemStyle: {
+                        normal: {
+                            borderColor:'rgba(100,149,237,0.6)',
+                            borderWidth:0.5,
+                            areaStyle: {
+                                color: '#1b1b1b'
+                            }
+                        }
+                    }
+                }
+            ]
+        };
+        myChart.setOption(option);
+    });
+</script>
+</html>

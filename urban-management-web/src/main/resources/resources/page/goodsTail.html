@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>详情界面</title>
+    <!--<link href="js/bstable/css/bootstrap.min.css" rel="stylesheet" type="text/css">-->
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table.css" rel="stylesheet" type="text/css">
+    <link href="css/addStyle.css" rel="stylesheet" type="text/css">
+    <link href="css/zTreeStyle/zTreeStyle.css" rel="stylesheet" type="text/css" />
+    <style>
+        .notice_main1{border: none !important;}
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f5f5f5;
+            min-width: 1100px;
+            overflow: auto;
+        }
+
+        #box {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto 0;
+        }
+
+        #tabs ul {
+            height: 31px;
+            border-left: #ccc solid 1px;
+            border-bottom: #ccc solid 1px;
+        }
+
+        #tabs ul li {
+            float: left;
+            border-top: #ccc solid 1px;
+            border-right: #ccc solid 1px;
+        }
+
+        #tabs ul li a {
+            display: block;
+            padding: 0 12px;
+            line-height: 29px;
+            border: white solid 1px;
+            border-bottom: none;
+            background-color: #e0e0e0;
+            color: #271d1e;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        /*当一个标题a获得焦点时的样式*/
+        #tabs ul li .current {
+            border-bottom: white solid 1px;
+            background-color: white;
+        }
+
+        #box_main {
+            /*border: #ccc solid 1px;*/
+            border-top: none;
+            background-color: #fff;
+            width: 100%;
+            /*height: 650px;*/
+        }
+
+        #box_main h3 {
+            line-height: 47px;
+            font-size: 22px;
+            color: #434142;
+            border-bottom: #e2e2e2 dashed 1px;
+            margin-bottom: 10px;
+        }
+
+        /*让一开始，所有的内容面板隐藏*/
+        #box_main > div {
+
+            display: none;
+
+        }
+
+        /*一开始，第一个内容面板显示*/
+        #box_main #gallery {
+            display: block;
+            width: 100%;
+            background-color: #ffffff !important;
+
+        }
+        .goodsFlow{
+            float: left;
+            width: 17.5%;
+
+        }
+        .goodsFlow01{
+            float: right;
+            width: 21%;
+            margin-top: 80px;
+
+        }
+        .goodsBorder{
+            border-left: 1px dashed #0089db;
+        }
+        .goodIMg{
+            width: 100%;
+            float: left;
+            background-image: url("img/flow01.png");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+            font-weight: bold;
+            font-size: 20px;
+            letter-spacing: 5px;
+            color: #ffffff;
+            margin-top: 10px;
+        }
+        .goodImgerror{
+            background-image: url("img/flow03.png") !important;
+        }
+        .goodImgeable{
+            background-image: url("img/flow02.png") !important;
+        }
+        .goodsText{
+            width: 100%;
+            height: 150px;
+
+            margin-top: 5px;
+            float: left;
+            margin-left: 5%;
+            text-indent: 8px;
+            color: #8a6d3b;
+        }
+        .goodsText label{
+            font-weight: bold;
+
+        }
+        .iconFlow{
+            float: left;width: 10%;
+            height: 20px;
+            background-image: url("img/rowIcon.png");
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            margin-top: 180px;
+        }
+        .iconFlow01{
+            float: right;
+            width: 18%;
+            height: 150px;
+
+
+        }
+        .iconFlow02{
+            float: right;
+            width: 10%;
+            height: 20px;
+            background-image: url("img/rowIconLeft.png");
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            margin-top: 100px;
+          margin-right: -7%;
+
+
+
+        }
+
+
+
+        #box_main p {
+
+            font-size: 12px;
+            line-height: 21px;
+        }
+    </style>
+    <script src="js/jquery-2.2.0.min.js"></script>
+    <script>
+        $(init);
+        function init(){
+            // 遍历每一个li
+            $("#tabs .title").find("li").each(function(index){
+                $(this).on("click",function(){
+                    $(this).siblings().find("a").removeClass("current");
+                    $(this).find("a").addClass("current");
+                    $("#box_main>div").eq(index).fadeIn().siblings().stop().hide();
+                });
+            });
+        }
+    </script>
+</head>
+
+<body onload="tableLoad()">
+
+<div id="box">
+    <div id="tabs">
+        <ul class="title">
+            <li><a href="javascript:void(0)" class="current">基本信息</a></li>
+            <!--<li><a href="javascript:void(0)">历史记录</a></li>-->
+
+        </ul>
+    </div>
+    <div id="box_main">
+        <div id="gallery">
+        <div class="policTaliLeft">
+    <table class="tailTable" border="1">
+        <tr><td class="Tailtd_label"><label>产品批次</label></td>
+            <td class="TailTableTd">sb120122222</td>
+            <td class="Tailtd_label"><label>危险品种类</label></td>
+            <td class="TailTableTd">腐蚀</td>
+        </tr>
+        <tr><td class="Tailtd_label"><label>产品名称/英文</label></td>
+            <td class="TailTableTd">盐酸/Chloran；Hydrochloric Acid</td>
+            <td class="Tailtd_label"><label>别名</label></td>
+            <td class="TailTableTd">氢氯酸</td>
+        </tr>
+        <tr><td class="Tailtd_label"><label>分子式</label></td>
+            <td class="TailTableTd">HCl(aq)</td>
+            <td class="Tailtd_label"><label>分子量</label></td>
+            <td class="TailTableTd">36.5</td>
+
+        </tr>
+        <tr><td class="Tailtd_label"><label>熔点</label></td>
+            <td class="TailTableTd">-27.32℃（247K，38%溶液）</td>
+            <td class="Tailtd_label"><label>沸点</label></td>
+            <td class="TailTableTd">110℃（383K，20.2%溶液）；48℃（321K，38%溶液）</td>
+        </tr>
+        <tr><td class="Tailtd_label"><label>工艺</label></td>
+            <td class="TailTableTd">电解法</td>
+            <td class="Tailtd_label"><label>包装/容器</label></td>
+            <td class="TailTableTd">铜桶</td>
+        </tr>
+        <tr><td class="Tailtd_label"><label>安全危害</label></td>
+            <td class="TailTableTd">三级</td>
+            <td class="Tailtd_label"><label>环境危害</label></td>
+            <td class="TailTableTd">二级</td>
+        </tr>
+        <tr><td class="Tailtd_label"><label>生产时间</label></td>
+            <td class="TailTableTd">2017/01/02</td>
+            <td class="Tailtd_label"><label>生产厂家</label></td>
+            <td class="TailTableTd">四川省成都市新都区xxxx厂</td>
+        </tr>
+        <tr><td class="Tailtd_label"><label>保持期</label></td>
+            <td class="TailTableTd">2年</td>
+            <td class="Tailtd_label"><label>检验结果</label></td>
+            <td class="TailTableTd">合格</td>
+        </tr>
+
+
+    </table>
+            <div class="clear"></div>
+
+            <div class="tailLeft01">
+                <h6>物品轨迹图</h6>
+
+<div class="goodsFlow">
+    <div class="goodsText goodsBorder" >
+        <p>&nbsp;&nbsp; </p>
+        <p> &nbsp;&nbsp;  </p>
+        <p><label>生产批次：</label>sb120122222</p>
+        <p><label>生产厂家：</label>四川省成都市龙华化工有限公司</p>
+        <p><label>生产日期：</label>2017-05-13</p>
+        <p><label>批量数据：</label>102吨</p>
+        <p><label>储存仓库：</label>成华区化工仓库</p>
+    </div>
+    <div class="goodIMg">生产</div>
+</div>
+                <div class="iconFlow"></div>
+                <div class="goodsFlow">
+                    <div class="goodsText goodsBorder">
+                        <p><label>运输线路：</label>线路一</p>
+                        <p><label>车牌号：</label>KA32102</p>
+                        <p><label>车辆类型：</label>货车</p>
+                        <p><label>司机：</label>罗竺</p>
+                        <p><label>承运单位：</label>四川大守运输公司</p>
+                        <p><label>开始时间：</label>2017-06-03:13:30:11</p>
+                        <p><label>结束时间：</label>2017-06-03:13:30:11</p>
+                    </div>
+                    <div class="goodIMg goodImgerror">运输</div>
+                </div>
+                <div class="iconFlow"></div>
+                <div class="goodsFlow" >
+                    <div class="goodsText goodsBorder">
+                        <p><label>仓库名称：</label>成华区大华化工存储</p>
+                        <p><label>储存量：</label>2000吨</p>
+                        <p><label>储存类型：</label>防腐蚀类</p>
+                        <p><label>储存物品：</label>盐酸</p>
+                        <p><label>所属单位：</label>龙华化工有限公司</p>
+                        <p><label>开始时间：</label>2017-06-03</p>
+
+                    </div>
+                    <div class="goodIMg">储存</div>
+
+                </div>
+
+
+                <div class="iconFlow"></div>
+                <div class="goodsFlow">
+                    <div class="goodsText goodsBorder" >
+                        <p><label>销售日期：</label>2017-06-25</p>
+                        <p><label>购买方：</label>绵阳销售公司</p>
+                        <p><label>销售方：</label>成都龙华化工有限公司</p>
+                        <p><label>经办人：</label>李江河</p>
+                        <p><label>经办人电话：</label>13612365321</p>
+                        <p><label>储存仓库：</label>大华工业仓库</p>
+                    </div>
+                    <div class="goodIMg">销售</div>
+                </div>
+
+                <div class="iconFlow01"><img src="img/iconRow01.png" style="margin-left: 35%"/> </div>
+                <div class="goodsFlow01">
+                    <div class="goodIMg" style="margin-left: 33%">运输</div>
+                    <div class="goodsText goodsBorder" style="margin-left: 35%">
+                        <p><label>运输线路：</label>线路一</p>
+                        <p><label>车牌号：</label>KA32102</p>
+                        <p><label>车辆类型：</label>货车</p>
+                        <p><label>司机：</label>罗竺</p>
+                        <p><label>承运单位：</label>四川大守运输公司</p>
+                        <p><label>开始时间：</label>2017-06-03:13:30:11</p>
+                        <p><label>结束时间：</label>2017-06-03:13:30:11</p>
+                    </div>
+                </div>
+                <div class="iconFlow02"></div>
+                <div class="goodsFlow01">
+                    <div class="goodIMg goodImgeable" style="color: #666" >使用</div>
+                </div>
+
+
+            </div>
+            <div class="tailLeft02">
+            </div>
+
+        </div>
+            </div>
+
+       </div>
+
+
+        </div>
+
+
+    </div>
+</div>
+
+</body>
+<script src="js/jquery/jQuery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/layer_v2.1/layer/layer.js"></script>
+<script type="text/javascript" src="js/demo/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="js/ztree/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="js/ztree/jquery.ztree.exedit-3.5.js"></script>
+
+
+
+</html>

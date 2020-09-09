@@ -1,0 +1,349 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+    <title>运输分析</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="js/bstable/css/bootstrap-table.css" rel="stylesheet" type="text/css">
+    <link href="css/table1.css" rel="stylesheet" type="text/css">
+
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="from_main" >
+    <div class="news_check">
+        <div class="check_left l_left">
+            <label>车辆类型：</label>
+            <select class="find_input" style="margin-right: 10px">
+            <option>卡车</option>
+        </select>
+            <label>时间段：</label>
+            <input type="date" >
+            <input type="date" >
+        <button>查询</button>
+        </div>
+        <div class="check_right r_right">
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-circle-arrow-down l_left"></span>打印</a>
+            <a class="btn btn-default"><span class=" glyphicon glyphicon-download-alt l_left"></span>导出</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+    <div style="padding: 0 10px 0 10px ;border: 1px #ccc solid;background-color: #fff;">
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p" style="text-align: center">运输车辆汇总信息</p>
+                <div >
+                    <table  class="annyTable01" border="1">
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">车辆类型：</td>
+                            <td>六大类</td>
+                            <td style="font-weight: bold;text-align: right">最多的车辆类型：</td>
+                            <td style="color: #00a157">货车</td>
+                            <td style="font-weight: bold;text-align: right">最多的车辆类型数量：</td>
+                            <td>1201辆</td>
+                            <td style="font-weight: bold;text-align: right">最多的车辆类型占比：</td>
+                            <td>32.5%</td>
+                            <td style="font-weight: bold;text-align: right">最少的车辆类型：</td>
+                            <td style="color: red">挂车</td>
+                            <td style="font-weight: bold;text-align: right">最少的车辆类型数量：</td>
+                            <td>51辆</td>
+                            <td style="font-weight: bold;text-align: right">最少的车辆类型占比：</td>
+                            <td>2.5%</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">运输线路条数：</td>
+                            <td>12条</td>
+                            <td style="font-weight: bold;text-align: right">最多的运输线路：</td>
+                            <td style="color: #00a157">线路三</td>
+                            <td style="font-weight: bold;text-align: right">运输量：</td>
+                            <td>15320吨</td>
+                            <td style="font-weight: bold;text-align: right">最多运输线路占比：</td>
+                            <td>22.5%</td>
+                            <td style="font-weight: bold;text-align: right">最少的运输线路：</td>
+                            <td style="color: red">线路七</td>
+                            <td style="font-weight: bold;text-align: right">最少的运输线路量：</td>
+                            <td>510吨</td>
+                            <td style="font-weight: bold;text-align: right">最少的运输线路占比：</td>
+                            <td>2.5%</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">从业单位数：</td>
+                            <td>120家</td>
+                            <td style="font-weight: bold;text-align: right">最多的单位：</td>
+                            <td style="color: #00a157">单位一</td>
+                            <td style="font-weight: bold;text-align: right">总运输量：</td>
+                            <td>15320吨</td>
+                            <td style="font-weight: bold;text-align: right">最多运输量：</td>
+                            <td>2200</td>
+                            <td style="font-weight: bold;text-align: right">最少的单位：</td>
+                            <td style="color: red">单位三</td>
+                            <td style="font-weight: bold;text-align: right">最少的运输量：</td>
+                            <td  colspan="3">10吨</td>
+
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold;text-align: right">影响最大的外界因素：</td>
+                            <td>因素一</td>
+                            <td style="font-weight: bold;text-align: right">影响量：</td>
+                            <td style="color: #00a157">2310</td>
+                            <td style="font-weight: bold;text-align: right">影响最小因素：</td>
+                            <td>因素六</td>
+                            <td style="font-weight: bold;text-align: right">影响量：</td>
+                            <td>200</td>
+                            <td style="font-weight: bold;text-align: right">运输最大时间段：</td>
+                            <td style="color: red">xxxxx</td>
+                            <td style="font-weight: bold;text-align: right">运输最小时间段：</td>
+                            <td colspan="3">xxx</td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">车辆类型占比<span class="r_right">更多></span></p>
+                <div id="container" style="height:200px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 30px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">车辆类型</td>
+                            <td>卡车</td>
+                            <td>挂车</td>
+                            <td>防化车</td>
+                            <td>普通货车</td>
+                            <td>防爆车</td>
+                            <td>液化车</td>
+                            <td>冷藏车</td>
+                            <td>其它</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">车辆数量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">占比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">不同类型车辆运输量分析<span class="r_right">更多></span></p>
+                <div id="container1" style="height:230px;width: 100%"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">车辆类型</td>
+                            <td>卡车</td>
+                            <td>挂车</td>
+                            <td>防化车</td>
+                            <td>普通货车</td>
+                            <td>防爆车</td>
+                            <td>液化车</td>
+                            <td>冷藏车</td>
+                            <td>其它</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">运输量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="e_chart">
+            <div class="charts l_left">
+                <p class="charts_p">各类危险品运输量分析<span class="r_right">更多></span></p>
+                <div id="container4" style="height:250px;width: 100%;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td">物品类型</td>
+                            <td>爆炸物品</td>
+                            <td>化学品</td>
+                            <td>射钉器材</td>
+                            <td>印章</td>
+                            <td>机修</td>
+                            <td>散装加油</td>
+                            <td>典当</td>
+                            <td>烟花爆竹</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">运输量</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                            <td>102</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                            <td>5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="charts l_left last_charts">
+                <p class="charts_p">各类危险品运输量走势图<span class="r_right">更多></span></p>
+                <div id="container5" style="height:250px;width: 100%;"></div>
+                <table class="annyTable" border="1">
+                    <tr>
+                        <td class="first_td">月份</td>
+                        <td>一月</td>
+                        <td>二月</td>
+                        <td>三月</td>
+                        <td>四月</td>
+                        <td>五月</td>
+                        <td>六月</td>
+                        <td>七月</td>
+                        <td>八月</td>
+                        <td>九月</td>
+                        <td>十月</td>
+                        <td>十一月</td>
+                        <td>十二月</td>
+                    </tr>
+                    <tr>
+                        <td class="first_td">运输量</td>
+                        <td>1502</td>
+                        <td>2564</td>
+                        <td>2541</td>
+                        <td>3568</td>
+                        <td>4852</td>
+                        <td>2451</td>
+                        <td>251</td>
+                        <td>1456</td>
+                        <td>4852</td>
+                        <td>2451</td>
+                        <td>251</td>
+                        <td>1456</td>
+                    </tr>
+                    <tr>
+                        <td class="first_td">同比</td>
+                        <td>85.2%</td>
+                        <td>75.2%</td>
+                        <td>65.2%</td>
+                        <td>95.2%</td>
+                        <td>55.2%</td>
+                        <td>95.2%</td>
+                        <td>75.2%</td>
+                        <td>65.2%</td>
+                        <td>55.2%</td>
+                        <td>95.2%</td>
+                        <td>75.2%</td>
+                        <td>65.2%</td>
+                    </tr>
+
+                </table>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts l_left last_charts" style="width: 100%">
+                <p class="charts_p">实际运输总量和预测运输总量对比分析<span class="r_right">更多></span></p>
+                <div id="container7" style="height:250px;"></div>
+                <div style="width: 100%;margin-top: 0px">
+                    <table class="annyTable" border="1">
+                        <tr>
+                            <td class="first_td"></td>
+                            <td class="">计划运输量（吨）</td>
+                            <td class="">实际运输量（吨）</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">运输量</td>
+                            <td>5678</td>
+                            <td>5234</td>
+                        </tr>
+                        <tr>
+                            <td class="first_td">同比</td>
+                            <td>+5.2%</td>
+                            <td>+5.2%</td>
+
+                        </tr>
+                        <tr>
+                            <td class="first_td">环比</td>
+                            <td>-5.2%</td>
+                            <td>+5.2%</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div class="e_chart">
+            <div class="charts charts_last">
+                <p class="charts_p">运输线路图<span class="r_right"></span></p>
+                <div>
+                    <img src="img/ditu.png" style="width: 100%">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+</body>
+
+
+<script type="text/javascript" src="js/jquery-2.2.0.min.js"></script>
+<script src="js/bstable/js/bootstrap.min.js"></script>
+<script src="js/bstable/js/bootstrap-table.js"></script>
+<script src="js/bstable/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="js/echarts-all.js"></script>
+<script src="js/transport_analysis.js"></script>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <title>模态窗口</title>
+    <link href="../../../../static/plugins/bootstrap/dist/css/bootstrap.min.css" th:href="@{/plugins/bootstrap/dist/css/bootstrap.min.css}" rel="stylesheet" type="text/css">
+    <link href="../../../../static/css/table1.css" th:href="@{/css/table1.css}" rel="stylesheet" type="text/css">
+    <link href="../../../../static/plugins/layer/theme/default/layer.css" th:href="@{/plugins/layer/theme/default/layer.css}" rel="stylesheet" type="text/css">
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1000px;overflow: auto">
+<div class="from_main" >
+    <div style="padding: 0 10px 0 10px ;">
+        <div class="e_chart">
+            <div class="charts l_left" style="padding: 10px;background: #fff">
+                <p class="charts_p" style="background: none;font-size: 16px;">弹窗</p>
+                <div id="container" style="width: 100%;margin-top: 10px">
+                    <div>
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-default">默认模态窗口</button>
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-sm">小的模态窗口</button>
+                    </div>
+                </div>
+                <div style="width: 100%;margin-top: 30px">
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">默认窗口</h4>
+            </div>
+            <div class="modal-body">
+                <p>内容</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade" id="modal-sm">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">小的窗口</h4>
+            </div>
+            <div class="modal-body">
+                <p>内容</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确认</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+
+</body>
+<script type="text/javascript" src="../../../../static/plugins/jquery/dist/jquery.min.js" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
+<script type="text/javascript" src="../../../../static/plugins/bootstrap/dist/js/bootstrap.bundle.min.js" th:src="@{/plugins/bootstrap/dist/js/bootstrap.bundle.min.js}"></script>
+<script type="text/javascript" src="../../../../static/plugins/layer/layer.js" th:src="@{/plugins/layer/layer.js}"></script>
+<script type="text/javascript" src="../../../../static/js/common.js" th:src="@{/js/common.js}"></script>
+</html>
