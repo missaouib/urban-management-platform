@@ -30,8 +30,10 @@ public class User {
     private String name;
 
     @NotBlank(message = "账号不能为空")
+    @Column(nullable = false)
     private String username;
 
+    @Column(nullable = false)
     private String password;
 
     @CreatedDate

@@ -34,6 +34,10 @@ public class LoginInfo {
     @Column(nullable = false)
     private String ip;
 
+    private String browser;
+
+    private String os;
+
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

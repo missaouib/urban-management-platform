@@ -17,6 +17,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.1.2.RELEASE</spring-boot.version>
         <spring-security-oauth2-authorization-server.version>0.0.1</spring-security-oauth2-authorization-server.version>
+        <UserAgentUtils.version>1.21</UserAgentUtils.version>
     </properties>
 
     <modules>
@@ -42,6 +43,15 @@
                 <artifactId>spring-security-oauth2-authorization-server</artifactId>
                 <version>${spring-security-oauth2-authorization-server.version}</version>
             </dependency>
+
+            <!-- 解析客户端操作系统、浏览器等 -->
+            <dependency>
+                <groupId>eu.bitwalker</groupId>
+                <artifactId>UserAgentUtils</artifactId>
+                <version>${UserAgentUtils.version}</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 

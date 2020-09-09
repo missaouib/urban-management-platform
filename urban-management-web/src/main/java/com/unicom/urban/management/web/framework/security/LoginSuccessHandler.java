@@ -5,6 +5,7 @@ import com.unicom.urban.management.common.util.IpUtils;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.entity.LoginInfo;
 import com.unicom.urban.management.service.logininfo.LoginInfoService;
+import eu.bitwalker.useragentutils.UserAgent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -48,10 +49,20 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     private void saveLoginInfo(HttpServletRequest request, Authentication authentication) {
+        UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
+        // 获取客户端操作系统
+        String os = userAgent.getOperatingSystem().getName();
+        // 获取客户端浏览器
+        String browser = userAgent.getBrowser().getName();
+
+
         LoginInfo loginInfo = new LoginInfo();
         loginInfo.setUsername(authentication.getName());
         loginInfo.setIp(getIpAddress(request));
+        loginInfo.setOs(os);
+        loginInfo.setBrowser(browser);
         loginInfoService.save(loginInfo);
+
     }
 
 
