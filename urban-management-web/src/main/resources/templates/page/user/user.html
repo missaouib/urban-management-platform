@@ -18,34 +18,13 @@
     </div>
 
     <div class="notice_check">
-        <p>
-            <label class="">从业单位：</label>
-            <input type="text" class="find_input" placeholder="">
-            <label class="">所在区域：</label>
-            <select class="find_input"><option>全部</option>
-                <option>成都</option>
-                <option>绵阳</option>
-                <option>德阳</option>
-                <option>简阳</option>
-                <option>资阳</option>
-                <option>泸州</option>
-                <option>宜宾</option>
-                <option>自贡</option>
-                <option>达州</option>
-                <option>巴中</option>
-                <option>甘孜阿坝州</option>
-                <option>凉山州</option>
-            </select>
-            <label class="">单位类型：</label>
-            <select class="find_input"><option>全部</option>
-                <option>生产单位</option>
-                <option>存储单位</option>
-                <option>运输单位</option>
-                <option>使用单位</option>
-            </select>
-            <button class="check_btn">查询</button>
-            <button onclick="carAnalysis()" class="check_btn1">全局分析</button>
-        </p>
+        <form id="search-form">
+            <p>
+                <label class="">账号：</label>
+                <input type="text" class="find_input" name="username">
+                <input type="button" class="check_btn" onclick="$.table.search()" value="查询">
+            </p>
+        </form>
     </div>
 
     <div class="clear"></div>
@@ -82,7 +61,7 @@
     })
 
 
-    let searchUrl = /*[[@{/logininfo/search}]]*/ "/json/unit.json";
+    let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
 
 
     function queryUserList() {
@@ -106,11 +85,11 @@
                     field: 'username'
                 },
                 {
-                    title: "登录地址",
-                    field: 'ip'
+                    title: '姓名',
+                    field: 'name'
                 },
                 {
-                    title: '登录时间',
+                    title: '创建时间',
                     field: 'createTime'
                 },
                 {
