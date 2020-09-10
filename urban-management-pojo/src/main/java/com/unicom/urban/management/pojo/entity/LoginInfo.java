@@ -38,6 +38,8 @@ public class LoginInfo {
 
     private String os;
 
+    private String message;
+
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
@@ -17,6 +18,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AuthenticationSuccessHandler authenticationSuccessHandler;
+
+    @Autowired
+    private AuthenticationFailureHandler authenticationFailureHandler;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -31,6 +35,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login").permitAll()
                 .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
                 .and()
                 .headers().frameOptions().sameOrigin()
                 .and()

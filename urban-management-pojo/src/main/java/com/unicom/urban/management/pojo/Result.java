@@ -145,6 +145,10 @@ public class Result {
 //        return new Result(errorType, message);
 //    }
 
+    public static Result fail(String code, String message) {
+        return new Result(code, message);
+    }
+
     /**
      * 系统异常类并返回结果数据
      *
