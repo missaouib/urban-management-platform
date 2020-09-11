@@ -902,4 +902,4 @@ ul{list-style: none}
 body{height: 100vh!important;}
 .dropdown-menu {top:164px!important;left: -58px!important;}
 .bootstrap-table .fixed-table-container .table thead th .desc ,.bootstrap-table .fixed-table-container .table thead th .asc{position: absolute;top: 1px;right: 50%;margin-right: -45px}
-#bootstrap-table th:nth-child(6){position: relative!important;}
+t#bootstrap-table th{position: relative!important;}
