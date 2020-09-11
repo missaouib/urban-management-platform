@@ -1,26 +1,22 @@
 package com.unicom.urban.management.pojo.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDateTime;
 
 /**
  * 登录日志
  *
  * @author liukai
  */
-@Data
+@Setter
+@Getter
 @Entity
 @Table(name = "sys_user")
-@EntityListeners(AuditingEntityListener.class)
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -35,11 +31,6 @@ public class User {
 
     @Column(nullable = false)
     private String password;
-
-    @CreatedDate
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createTime;
 
 
 }
