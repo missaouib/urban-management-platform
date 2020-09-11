@@ -51,7 +51,6 @@
                 <version>${UserAgentUtils.version}</version>
             </dependency>
 
-
         </dependencies>
     </dependencyManagement>
 

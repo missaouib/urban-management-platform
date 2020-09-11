@@ -2,11 +2,16 @@ package com.unicom.urban.management.service.user;
 
 import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.pojo.entity.User;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -17,10 +22,18 @@ public class UserService {
 
 
     public Page<User> search(User user, Pageable pageable) {
-        if (StringUtils.isEmpty(user.getUsername())) {
-            return userRepository.findAll(pageable);
-        }
-        return userRepository.findByUsername(user.getUsername(), pageable);
+        return userRepository.findAll((Specification<User>) (root, query, criteriaBuilder) -> {
+            List<Predicate> list = new ArrayList<>();
+            if (StringUtils.isNotEmpty(user.getName())) {
+                list.add(criteriaBuilder.equal(root.get("name").as(String.class), user.getName()));
+            }
+            if (StringUtils.isNotEmpty(user.getUsername())) {
+                list.add(criteriaBuilder.equal(root.get("username").as(String.class), user.getUsername()));
+            }
+
+            Predicate[] p = new Predicate[list.size()];
+            return criteriaBuilder.and(list.toArray(p));
+        }, pageable);
     }
 
 
