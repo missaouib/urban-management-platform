@@ -15,3 +15,9 @@ spring:
       ddl-auto: update
     show-sql: false
     open-in-view: false
+
+
+  activiti:
+    history-level: full
+    check-process-definitions: false
+    db-history-used: true
