@@ -77,7 +77,7 @@
             // exportUrl: prefix + "/export",
             // importUrl: prefix + "/importData",
             // importTemplateUrl: prefix + "/importTemplate",
-            sortName: "createTime",
+            sortName: "updateTime",
             sortOrder: "desc",
             modalName: "用户",
             columns: [
@@ -95,6 +95,11 @@
                 {
                     title: '创建时间',
                     field: 'createTime'
+                },
+                {
+                    title: '修改时间',
+                    field: 'updateTime',
+                    sortable: true
                 },
                 {
                     title: '操作',

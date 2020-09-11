@@ -87,7 +87,7 @@ var table = {
 					sortName: "",
 					sortOrder: "asc",
 					pagination: true,
-					paginationLoop: false,
+					paginationLoop: true,
 					pageSize: 10,
 					pageNumber: 1,
 					pageList: [10],
