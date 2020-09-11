@@ -63,19 +63,21 @@
 
     let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
 
+    let addUrl = /*[[@{/user/add}]]*/ "/user/add";
+
 
     function queryUserList() {
         var options = {
             url: searchUrl,
-            // createUrl: prefix + "/add",
+            createUrl: addUrl,
             // updateUrl: prefix + "/edit/{id}",
             // removeUrl: prefix + "/remove",
             // exportUrl: prefix + "/export",
             // importUrl: prefix + "/importData",
             // importTemplateUrl: prefix + "/importTemplate",
-            // sortName: "createTime",
-            // sortOrder: "desc",
-            // modalName: "用户",
+            sortName: "createTime",
+            sortOrder: "desc",
+            modalName: "用户",
             columns: [
                 {
                     checkbox: true

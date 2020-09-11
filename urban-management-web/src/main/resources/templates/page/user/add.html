@@ -17,11 +17,11 @@
                     <tr>
                         <td>姓名<span>*</span></td>
                         <td>
-                            <input type="text" required="required" minlength="2" name="name">
+                            <input class="find_input" type="text" name="name" value="123123">
                         </td>
                         <td>登录账号<span>*</span></td>
                         <td>
-                            <input type="text" required="required" minlength="2" name="username">
+                            <input class="find_input" type="text" name="username" value="123">
                         </td>
                     </tr>
 <!--                    <tr>-->
@@ -109,7 +109,9 @@
 
         var data = $('#userForm').serialize();
 
-        $.operate.post(url, data);
+        // $.operate.post(url, data);
+
+        $.operate.saveTab(url, data);
 
 
 

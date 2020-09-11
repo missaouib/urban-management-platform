@@ -1,23 +1,23 @@
 
 //重写alert
-window.alert = function(msg, callback){
-	parent.layer.alert(msg, function(index){
-		parent.layer.close(index);
-		if(typeof(callback) === "function"){
-			callback("ok");
-		}
-	});
-};
+// window.alert = function(msg, callback){
+// 	parent.layer.alert(msg, function(index){
+// 		parent.layer.close(index);
+// 		if(typeof(callback) === "function"){
+// 			callback("ok");
+// 		}
+// 	});
+// };
 
 //重写confirm式样框
-window.confirm = function(msg, callback){
-	parent.layer.confirm(msg, {btn: ['确定','取消']},
-	function(){//确定事件
-		if(typeof(callback) === "function"){
-			callback("ok");
-		}
-	});
-};
+// window.confirm = function(msg, callback){
+// 	parent.layer.confirm(msg, {btn: ['确定','取消']},
+// 	function(){//确定事件
+// 		if(typeof(callback) === "function"){
+// 			callback("ok");
+// 		}
+// 	});
+// };
 
 //选择一条记录
 function getSelectedRow() {
@@ -49,23 +49,23 @@ function getSelectedRows() {
 }
 
 
-let table = {
+var table = {
 	config: {},
 	// 当前实例配置
 	options: {},
-	// // 设置实例配置
-	// set: function(id) {
-	// 	if($.common.getLength(table.config) > 1) {
-	// 		let tableId = $.common.isEmpty(id) ? $(event.currentTarget).parents(".bootstrap-table").find("table.table").attr("id") : id;
-	// 		if ($.common.isNotEmpty(tableId)) {
-	// 			table.options = table.get(tableId);
-	// 		}
-	// 	}
-	// },
-	// // 获取实例配置
-	// get: function(id) {
-	// 	return table.config[id];
-	// },
+	// 设置实例配置
+	set: function(id) {
+		if($.common.getLength(table.config) > 1) {
+			let tableId = $.common.isEmpty(id) ? $(event.currentTarget).parents(".bootstrap-table").find("table.table").attr("id") : id;
+			if ($.common.isNotEmpty(tableId)) {
+				table.options = table.get(tableId);
+			}
+		}
+	},
+	// 获取实例配置
+	get: function(id) {
+		return table.config[id];
+	},
 	// 记住选择实例组
 	rememberSelecteds: {},
 	// 记住选择ID组
@@ -121,7 +121,9 @@ let table = {
 				table.config[options.id] = options;
 
 
-				// $.table.initEvent();
+				$.table.initEvent();
+
+				console.log(table);
 
 				$('#' + options.id).bootstrapTable({
 					id: options.id,
@@ -191,6 +193,98 @@ let table = {
 
 
 			},
+			// 初始化事件
+			initEvent: function() {
+				// 实例ID信息
+				var optionsIds = $.table.getOptionsIds();
+				// 监听事件处理
+				// $(optionsIds).on(TABLE_EVENTS, function () {
+				// 	table.set($(this).attr("id"));
+				// });
+				// 选中、取消、全部选中、全部取消（事件）
+				// $(optionsIds).on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table", function (e, rowsAfter, rowsBefore) {
+				// 	// 复选框分页保留保存选中数组
+				// 	var rows = $.common.equals("uncheck-all", e.type) ? rowsBefore : rowsAfter;
+				// 	var rowIds = $.table.affectedRowIds(rows);
+				// 	if ($.common.isNotEmpty(table.options.rememberSelected) && table.options.rememberSelected) {
+				// 		func = $.inArray(e.type, ['check', 'check-all']) > -1 ? 'union' : 'difference';
+				// 		var selectedIds = table.rememberSelectedIds[table.options.id];
+				// 		if($.common.isNotEmpty(selectedIds)) {
+				// 			table.rememberSelectedIds[table.options.id] = _[func](selectedIds, rowIds);
+				// 		} else {
+				// 			table.rememberSelectedIds[table.options.id] = _[func]([], rowIds);
+				// 		}
+				// 		var selectedRows = table.rememberSelecteds[table.options.id];
+				// 		if($.common.isNotEmpty(selectedRows)) {
+				// 			table.rememberSelecteds[table.options.id] = _[func](selectedRows, rows);
+				// 		} else {
+				// 			table.rememberSelecteds[table.options.id] = _[func]([], rows);
+				// 		}
+				// 	}
+				// });
+				// 加载成功、选中、取消、全部选中、全部取消（事件）
+				// $(optionsIds).on("check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table load-success.bs.table", function () {
+				// 	var toolbar = table.options.toolbar;
+				// 	var uniqueId = table.options.uniqueId;
+				// 	// 工具栏按钮控制
+				// 	var rows = $.common.isEmpty(uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(uniqueId);
+				// 	// 非多个禁用
+				// 	$('#' + toolbar + ' .multiple').toggleClass('disabled', !rows.length);
+				// 	// 非单个禁用
+				// 	$('#' + toolbar + ' .single').toggleClass('disabled', rows.length!=1);
+				// });
+				// 图片预览事件
+				// $(optionsIds).off("click").on("click", '.img-circle', function() {
+				// 	var src = $(this).attr('src');
+				// 	var target = $(this).data('target');
+				// 	if($.common.equals("self", target)) {
+				// 		var height = $(this).data('height');
+				// 		var width = $(this).data('width');
+				// 		// 如果是移动端，就使用自适应大小弹窗
+				// 		if ($.common.isMobile()) {
+				// 			width = 'auto';
+				// 			height = 'auto';
+				// 		}
+				// 		layer.open({
+				// 			title: false,
+				// 			type: 1,
+				// 			closeBtn: true,
+				// 			shadeClose: true,
+				// 			area: ['auto', 'auto'],
+				// 			content: "<img src='" + src + "' height='" + height + "' width='" + width + "'/>"
+				// 		});
+				// 	} else if ($.common.equals("blank", target)) {
+				// 		window.open(src);
+				// 	}
+				// });
+				// 单击tooltip事件
+				// $(optionsIds).on("click", '.tooltip-show', function() {
+				// 	var target = $(this).data('target');
+				// 	var input = $(this).prev();
+				// 	if ($.common.equals("copy", target)) {
+				// 		input.select();
+				// 		document.execCommand("copy");
+				// 	} else if ($.common.equals("open", target)) {
+				// 		parent.layer.alert(input.val(), {
+				// 			title: "信息内容",
+				// 			shadeClose: true,
+				// 			btn: ['确认'],
+				// 			btnclass: ['btn btn-primary'],
+				// 		});
+				// 	}
+				// });
+			},
+
+			// 获取实例ID，如存在多个返回#id1,#id2 delimeter分隔符
+			getOptionsIds: function(separator) {
+				var _separator = $.common.isEmpty(separator) ? "," : separator;
+				var optionsIds = "";
+				$.each(table.config, function(key, value){
+					optionsIds += "#" + key + _separator;
+				});
+				return optionsIds.substring(0, optionsIds.length - 1);
+			},
+
 			// 查询条件
 			queryParams: function(params) {
 				let curParams = {
@@ -255,7 +349,13 @@ let table = {
 					$("#" + table.options.id).bootstrapTable('refresh', params);
 				}
 			},
-
+			// 刷新表格
+			refresh: function (tableId) {
+				var currentId = $.common.isEmpty(tableId) ? table.options.id : tableId;
+				$("#" + currentId).bootstrapTable('refresh', {
+					silent: true
+				});
+			},
 
 		},
 		modal: {
@@ -273,6 +373,15 @@ let table = {
 				}
 				return icon;
 			},
+			// 消息提示
+			msg: function(content, type) {
+				if (type != undefined) {
+					layer.msg(content, { icon: $.modal.icon(type), time: 1000, shift: 5 });
+				} else {
+					layer.msg(content);
+				}
+			},
+
 			alert: function (message, callback, type) {
 				layer.alert(message, {
 					icon: $.modal.icon(type),
@@ -324,6 +433,22 @@ let table = {
 				layer.closeAll('dialog');
 			},
 
+			// 成功消息
+			msgSuccess: function(content) {
+				$.modal.msg(content, modal_status.SUCCESS);
+			},
+
+
+
+			// 选卡页方式打开
+			openTab: function (title, url) {
+				createMenuItem(title, url);
+			},
+
+			// 关闭选项卡
+			closeTab: function (dataId) {
+				closeItem(dataId);
+			},
 
 
 		},
@@ -344,10 +469,80 @@ let table = {
 			// 获取searchForm表单转换成字符串
 			searchForm: function (formId) {
 				return $('#' + formId).serialize(formId);
-			}
+			},
+
+
+
+
+
+
+
+			// 获取obj对象长度
+			getLength: function(obj) {
+				var count = 0;
+				for (var i in obj) {
+					if (obj.hasOwnProperty(i)) {
+						count++;
+					}
+				}
+				return count;
+			},
+
+
+
+
 
 		},
 		operate: {
+			// 保存选项卡信息
+			saveTab: function(url, data, callback) {
+				var config = {
+					url: url,
+					type: "post",
+					dataType: "json",
+					data: data,
+					beforeSend: function () {
+						$.modal.loading("正在处理中，请稍后...");
+					},
+					success: function(result) {
+						if (typeof callback == "function") {
+							callback(result);
+						}
+						$.operate.successTabCallback(result);
+					}
+				};
+				$.ajax(config)
+			},
+			// 选项卡成功回调执行事件（父窗体静默更新）
+			successTabCallback: function(result) {
+				if (result.code === web_status.SUCCESS) {
+					var topWindow = $(window.parent.document);
+					var currentId = $('.page-tabs-content', topWindow).find('.active').attr('data-panel');
+					var $contentWindow = $('.LRADMS_iframe[data-id="' + currentId + '"]', topWindow)[0].contentWindow;
+					// $.modal.close();
+					$contentWindow.$.modal.msgSuccess(result.message);
+					$contentWindow.$(".layui-layer-padding").removeAttr("style");
+
+					if ($contentWindow.table.options.type === table_type.bootstrapTable) {
+						$contentWindow.$.table.refresh();
+					} else if ($contentWindow.table.options.type === table_type.bootstrapTreeTable) {
+						// $contentWindow.$.treeTable.refresh();
+					}
+
+					$.modal.closeTab();
+				} else if (result.code === web_status.WARNING) {
+					$.modal.alertWarning(result.msg)
+				} else {
+					$.modal.alertError(result.msg);
+				}
+				// $.modal.closeLoading();
+			},
+			// 添加访问地址
+			addUrl: function(id) {
+				var url = $.common.isEmpty(id) ? table.options.createUrl.replace("{id}", "") : table.options.createUrl.replace("{id}", id);
+				return url;
+			},
+
 
 			//    liukai
 			submit: function(url, type, dataType, data, callback) {
@@ -385,12 +580,11 @@ let table = {
 			// }
 
 			// 添加信息，以tab页展现
-			addTab: function () {
-				// table.set();
-				// $.modal.openTab("添加" + table.options.modalName, $.operate.addUrl(id));
+			addTab: function (id) {
+				table.set();
+				$.modal.openTab("添加" + table.options.modalName, $.operate.addUrl(id));
 
 
-				window.parent.$.learuntab.myAddTab('新增用户','/user/add','');
 			},
 		}
 
@@ -406,3 +600,91 @@ modal_status = {
 	FAIL: "error",
 	WARNING: "warning"
 };
+/** 消息状态码 */
+web_status = {
+	SUCCESS: "0",
+	FAIL: 500,
+	WARNING: 301
+};
+
+/** 表格类型 */
+table_type = {
+	bootstrapTable: 0,
+	bootstrapTreeTable: 1
+};
+
+
+function createMenuItem(title, url) {
+	var panelUrl = window.frameElement.getAttribute('data-id');
+	var topWindow = $(window.parent.document);
+	$(".navbar-custom-menu>ul>li.open").removeClass("open");
+	var dataId = url;
+	var dataUrl = url;
+	var menuName = title;
+	var flag = true;
+	if (dataUrl == undefined || $.trim(dataUrl).length == 0) {
+		return false;
+	}
+	$('.menuTab').each(function () {
+		if ($(this).data('id') == dataUrl) {
+			if (!$(this).hasClass('active')) {
+				$(this).addClass('active').siblings('.menuTab').removeClass('active');
+				$.learuntab.scrollToTab(this);
+				$('.mainContent .LRADMS_iframe').each(function () {
+					if ($(this).data('id') == dataUrl) {
+						$(this).show().siblings('.LRADMS_iframe').hide();
+						return false;
+					}
+				});
+			}
+			flag = false;
+			return false;
+		}
+	});
+	if (flag) {
+
+		var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '" data-panel="' + panelUrl + '">' + menuName + ' <i class="fa fa-remove"></i></a>';
+		$('.menuTab', topWindow).removeClass('active');
+
+		var str1 = '<iframe class="LRADMS_iframe" id="iframe' + dataId + '" name="iframe' + dataId + '"  width="100%" height="100%" src="' + dataUrl + '" data-panel="' + panelUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless style="display: inline"></iframe>';
+		$('.mainContent', topWindow).find('iframe.LRADMS_iframe').hide();
+		$('.mainContent', topWindow).append(str1);
+		//$.loading(true);
+		// $('.mainContent iframe:visible').load(function () {
+			//$.loading(false);
+		// });
+		//if(count>1){
+		//    $('.menuTabs .page-tabs-content').pop().append(str);
+		//    $.learuntab.scrollToTab($('.menuTab.active'));
+		//}
+		//else {
+		$('.menuTabs .page-tabs-content', topWindow).append(str);
+		window.parent.$.learuntab.scrollToTab($('.menuTab.active'));
+		//}
+
+	}
+	return false;
+}
+
+function closeItem(dataId) {
+	var topWindow = $(window.parent.document);
+	if ($.common.isNotEmpty(dataId)) {
+		window.parent.$.modal.closeLoading();
+		// 根据dataId关闭指定选项卡
+		$('.menuTab[data-id="' + dataId + '"]', topWindow).remove();
+		// 移除相应tab对应的内容区
+		$('.mainContent .RuoYi_iframe[data-id="' + dataId + '"]', topWindow).remove();
+		return;
+	}
+	var panelUrl = window.frameElement.getAttribute('data-panel');
+	$('.page-tabs-content .active i', topWindow).click();
+	if ($.common.isNotEmpty(panelUrl)) {
+		$('.menuTab[data-id="' + panelUrl + '"]', topWindow).addClass('active').siblings('.menuTab').removeClass('active');
+		$('.mainContent .RuoYi_iframe', topWindow).each(function () {
+			if ($(this).data('id') == panelUrl) {
+				$(this).show().siblings('.RuoYi_iframe').hide();
+				return false;
+			}
+		});
+	}
+}
