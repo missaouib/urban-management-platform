@@ -2,12 +2,15 @@ package com.unicom.urban.management.web.framework;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.pojo.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
@@ -18,6 +21,7 @@ import java.lang.annotation.Annotation;
  *
  * @author liukai
  */
+@Slf4j
 @RestControllerAdvice
 public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
 
@@ -40,4 +44,16 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
         }
         return Result.success(body);
     }
+
+
+    /**
+     * 自定义验证异常
+     */
+    @ExceptionHandler(BindException.class)
+    public Result validatedBindException(BindException e) {
+        String message = e.getAllErrors().get(0).getDefaultMessage();
+        return Result.fail("1111", message);
+    }
+
+
 }

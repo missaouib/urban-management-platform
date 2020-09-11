@@ -531,9 +531,9 @@ var table = {
 
 					$.modal.closeTab();
 				} else if (result.code === web_status.WARNING) {
-					$.modal.alertWarning(result.msg)
+					$.modal.alertWarning(result.message)
 				} else {
-					$.modal.alertError(result.msg);
+					$.modal.alertError(result.message);
 				}
 				// $.modal.closeLoading();
 			},

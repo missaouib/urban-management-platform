@@ -19,12 +19,16 @@ public class LoginController {
      */
     @GetMapping("/login")
     public String login() {
-        if (alreadyLogin()) {
-            return "redirect:/index";
-        }
+        return alreadyLogin() ? forwadIndexPage() : loginPage();
+    }
+
+    private String loginPage() {
         return SystemConstant.PAGE + "/login";
     }
 
+    private String forwadIndexPage() {
+        return "redirect:/index";
+    }
 
     private boolean alreadyLogin() {
         return !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken);

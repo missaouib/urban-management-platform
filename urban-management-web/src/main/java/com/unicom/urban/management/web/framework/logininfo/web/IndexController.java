@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController {
 
-    @GetMapping({SystemConstant.URL_PREFIX + "/index", SystemConstant.URL_PREFIX + "/"})
+    @GetMapping({"/index", "/"})
     public String index() {
         return SystemConstant.PAGE + "/index";
     }
