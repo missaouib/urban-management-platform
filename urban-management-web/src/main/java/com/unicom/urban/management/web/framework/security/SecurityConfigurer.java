@@ -1,5 +1,6 @@
 package com.unicom.urban.management.web.framework.security;
 
+import com.unicom.urban.management.common.constant.SystemConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,7 +34,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login").permitAll()
+                .loginPage(SystemConstant.LOGIN_PAGE).permitAll()
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
                 .and()
@@ -50,7 +51,17 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/page/**", "/bpmnjs/**", "/css/**", "/dist/**", "/fonts/**", "/img/**", "/js/**", "/json/**", "/plugins/**", "/favicon.ico");
+        web.ignoring().antMatchers(
+                "/page/**",
+                "/bpmnjs/**",
+                "/css/**",
+                "/dist/**",
+                "/fonts/**",
+                "/img/**",
+                "/js/**",
+                "/json/**",
+                "/plugins/**",
+                "/favicon.ico");
     }
 
 }

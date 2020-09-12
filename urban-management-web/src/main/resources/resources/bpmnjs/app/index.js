@@ -187,4 +187,14 @@ $(function() {
   }, 500);
 
   bpmnModeler.on('commandStack.changed', exportArtifacts);
+
+
+
+  // 下载bpmb
+  $('#downloadBPMN').on('click', function () {
+    alert('down');
+  });
+
+
 });
+

@@ -10,6 +10,8 @@ public class SystemConstant {
 
     public final static String PAGE = "page";
 
+    public final static String LOGIN_PAGE = "/login";
+
     /**
      * 明文为123456
      */
