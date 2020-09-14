@@ -202,37 +202,37 @@ var table = {
 				// 	table.set($(this).attr("id"));
 				// });
 				// 选中、取消、全部选中、全部取消（事件）
-				// $(optionsIds).on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table", function (e, rowsAfter, rowsBefore) {
-				// 	// 复选框分页保留保存选中数组
-				// 	var rows = $.common.equals("uncheck-all", e.type) ? rowsBefore : rowsAfter;
-				// 	var rowIds = $.table.affectedRowIds(rows);
-				// 	if ($.common.isNotEmpty(table.options.rememberSelected) && table.options.rememberSelected) {
-				// 		func = $.inArray(e.type, ['check', 'check-all']) > -1 ? 'union' : 'difference';
-				// 		var selectedIds = table.rememberSelectedIds[table.options.id];
-				// 		if($.common.isNotEmpty(selectedIds)) {
-				// 			table.rememberSelectedIds[table.options.id] = _[func](selectedIds, rowIds);
-				// 		} else {
-				// 			table.rememberSelectedIds[table.options.id] = _[func]([], rowIds);
-				// 		}
-				// 		var selectedRows = table.rememberSelecteds[table.options.id];
-				// 		if($.common.isNotEmpty(selectedRows)) {
-				// 			table.rememberSelecteds[table.options.id] = _[func](selectedRows, rows);
-				// 		} else {
-				// 			table.rememberSelecteds[table.options.id] = _[func]([], rows);
-				// 		}
-				// 	}
-				// });
+				$(optionsIds).on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table", function (e, rowsAfter, rowsBefore) {
+					// 复选框分页保留保存选中数组
+					var rows = $.common.equals("uncheck-all", e.type) ? rowsBefore : rowsAfter;
+					var rowIds = $.table.affectedRowIds(rows);
+					if ($.common.isNotEmpty(table.options.rememberSelected) && table.options.rememberSelected) {
+						func = $.inArray(e.type, ['check', 'check-all']) > -1 ? 'union' : 'difference';
+						var selectedIds = table.rememberSelectedIds[table.options.id];
+						if($.common.isNotEmpty(selectedIds)) {
+							table.rememberSelectedIds[table.options.id] = _[func](selectedIds, rowIds);
+						} else {
+							table.rememberSelectedIds[table.options.id] = _[func]([], rowIds);
+						}
+						var selectedRows = table.rememberSelecteds[table.options.id];
+						if($.common.isNotEmpty(selectedRows)) {
+							table.rememberSelecteds[table.options.id] = _[func](selectedRows, rows);
+						} else {
+							table.rememberSelecteds[table.options.id] = _[func]([], rows);
+						}
+					}
+				});
 				// 加载成功、选中、取消、全部选中、全部取消（事件）
-				// $(optionsIds).on("check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table load-success.bs.table", function () {
-				// 	var toolbar = table.options.toolbar;
-				// 	var uniqueId = table.options.uniqueId;
-				// 	// 工具栏按钮控制
-				// 	var rows = $.common.isEmpty(uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(uniqueId);
-				// 	// 非多个禁用
-				// 	$('#' + toolbar + ' .multiple').toggleClass('disabled', !rows.length);
-				// 	// 非单个禁用
-				// 	$('#' + toolbar + ' .single').toggleClass('disabled', rows.length!=1);
-				// });
+				$(optionsIds).on("check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table load-success.bs.table", function () {
+					var toolbar = table.options.toolbar;
+					var uniqueId = table.options.uniqueId;
+					// 工具栏按钮控制
+					var rows = $.common.isEmpty(uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(uniqueId);
+					// 非多个禁用
+					$('#' + toolbar + ' .multiple').toggleClass('disabled', !rows.length);
+					// 非单个禁用
+					$('#' + toolbar + ' .single').toggleClass('disabled', rows.length!=1);
+				});
 				// 图片预览事件
 				// $(optionsIds).off("click").on("click", '.img-circle', function() {
 				// 	var src = $(this).attr('src');
@@ -356,6 +356,49 @@ var table = {
 					silent: true
 				});
 			},
+			// 查询表格指定列值
+			selectColumns: function(column) {
+				var rows = $.map($("#" + table.options.id).bootstrapTable('getSelections'), function (row) {
+					return $.common.getItemField(row, column);
+				});
+				if ($.common.isNotEmpty(table.options.rememberSelected) && table.options.rememberSelected) {
+					var selectedRows = table.rememberSelecteds[table.options.id];
+					if($.common.isNotEmpty(selectedRows)) {
+						rows = $.map(table.rememberSelecteds[table.options.id], function (row) {
+							return $.common.getItemField(row, column);
+						});
+					}
+				}
+				return $.common.uniqueFn(rows);
+			},
+			// 查询表格首列值
+			selectFirstColumns: function() {
+				var rows = $.map($("#" + table.options.id).bootstrapTable('getSelections'), function (row) {
+					return $.common.getItemField(row, table.options.columns[1].field);
+				});
+				if ($.common.isNotEmpty(table.options.rememberSelected) && table.options.rememberSelected) {
+					var selectedRows = table.rememberSelecteds[table.options.id];
+					if($.common.isNotEmpty(selectedRows)) {
+						rows = $.map(selectedRows, function (row) {
+							return $.common.getItemField(row, table.options.columns[1].field);
+						});
+					}
+				}
+				return $.common.uniqueFn(rows);
+			},
+			// 获取当前页选中或者取消的行ID
+			affectedRowIds: function(rows) {
+				var column = $.common.isEmpty(table.options.uniqueId) ? table.options.columns[1].field : table.options.uniqueId;
+				var rowIds;
+				if ($.isArray(rows)) {
+					rowIds = $.map(rows, function(row) {
+						return $.common.getItemField(row, column);
+					});
+				} else {
+					rowIds = [rows[column]];
+				}
+				return rowIds;
+			},
 
 		},
 		modal: {
@@ -462,6 +505,11 @@ var table = {
 			isNotEmpty: function (value) {
 				return !$.common.isEmpty(value);
 			},
+
+			// 比较两个字符串（大小写敏感）
+			equals: function (str, that) {
+				return str == that;
+			},
 			// 获取form下所有的字段并转换为json对象
 			formToJSON: function (formId) {
 				return $('#' + formId).serializeJSON();
@@ -471,9 +519,31 @@ var table = {
 				return $('#' + formId).serialize(formId);
 			},
 
+			// 数组去重
+			uniqueFn: function(array) {
+				var result = [];
+				var hashObj = {};
+				for (var i = 0; i < array.length; i++) {
+					if (!hashObj[array[i]]) {
+						hashObj[array[i]] = true;
+						result.push(array[i]);
+					}
+				}
+				return result;
+			},
 
-
-
+			// 获取节点数据，支持多层级访问
+			getItemField: function (item, field) {
+				var value = item;
+				if (typeof field !== 'string' || item.hasOwnProperty(field)) {
+					return item[field];
+				}
+				var props = field.split('.');
+				for (var p in props) {
+					value = value && value[props[p]];
+				}
+				return value;
+			},
 
 
 
@@ -542,9 +612,6 @@ var table = {
 				var url = $.common.isEmpty(id) ? table.options.createUrl.replace("{id}", "") : table.options.createUrl.replace("{id}", id);
 				return url;
 			},
-
-
-			//    liukai
 			submit: function(url, type, dataType, data, callback) {
 				let config = {
 					url: url,
@@ -558,12 +625,56 @@ var table = {
 						if (typeof callback == "function") {
 							callback(result);
 						}
-						// $.operate.ajaxSuccess(result);
+						$.operate.ajaxSuccess(result);
 					}
 				};
 				$.ajax(config)
 			},
+			// 保存结果弹出msg刷新table表格
+			ajaxSuccess: function (result) {
+				if (result.code == web_status.SUCCESS && table.options.type == table_type.bootstrapTable) {
+					$.modal.msgSuccess(result.message);
+					$.table.refresh();
+				} else if (result.code == web_status.SUCCESS && table.options.type == table_type.bootstrapTreeTable) {
+					$.modal.msgSuccess(result.message);
+					// $.treeTable.refresh();
+				} else if (result.code == web_status.SUCCESS && $.common.isEmpty(table.options.type)) {
+					$.modal.msgSuccess(result.message)
+				}  else if (result.code == web_status.WARNING) {
+					$.modal.alertWarning(result.message)
+				}  else {
+					$.modal.alertError(result.message);
+				}
+				$.modal.closeLoading();
+			},
+			// 删除信息
+			remove: function(id) {
+				table.set();
+				$.modal.confirm("确定删除该条" + table.options.modalName + "信息吗？", function() {
+					var url = $.common.isEmpty(id) ? table.options.removeUrl : table.options.removeUrl.replace("{id}", id);
+					if(table.options.type == table_type.bootstrapTreeTable) {
+						$.operate.get(url);
+					} else {
+						var data = { "ids": id };
+						$.operate.submit(url, "post", "json", data);
+					}
+				});
 
+			},
+			// 批量删除信息
+			removeBatch: function() {
+				table.set();
+				var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+				if (rows.length == 0) {
+					$.modal.alertWarning("请至少选择一条记录");
+					return;
+				}
+				$.modal.confirm("确认要删除选中的" + rows.length + "条数据吗?", function() {
+					var url = table.options.removeUrl;
+					var data = { "ids": rows.join() };
+					$.operate.submit(url, "post", "json", data);
+				});
+			},
 			// post请求传输   liukai
 			post: function (url, data, callback) {
 				$.operate.submit(url, "post", "json", data, callback);

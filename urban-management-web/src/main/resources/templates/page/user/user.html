@@ -41,7 +41,7 @@
     <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">
         <i class="fa fa-edit"></i> 修改
     </a>
-    <a class="btn btn-danger multiple disabled" onclick="$.operate.removeAll()">
+    <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">
         <i class="fa fa-remove"></i> 删除
     </a>
 <!--    <a class="btn btn-info" onclick="$.table.importExcel()">-->
@@ -67,16 +67,19 @@
 
     let addUrl = /*[[@{/user/add}]]*/ "/user/add";
 
+    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
+
 
     function queryUserList() {
         var options = {
             url: searchUrl,
             createUrl: addUrl,
             // updateUrl: prefix + "/edit/{id}",
-            // removeUrl: prefix + "/remove",
+            removeUrl: removeUrl,
             // exportUrl: prefix + "/export",
             // importUrl: prefix + "/importData",
             // importTemplateUrl: prefix + "/importTemplate",
+            uniqueId: "id",
             sortName: "updateTime",
             sortOrder: "desc",
             modalName: "用户",
@@ -105,12 +108,12 @@
                     title: '操作',
                     field: '',
                     formatter: function (value, row) {
-                        var e = '<a  href="#" title="" onclick="edit(\'' + row.id + '\')">查看详情</a> ';
-                        var d = '<a  href="#" title="" onclick="edit(\'' + row.id + '\')">单体分析</a> ';
-                        return e + d;
+                        var e = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
+                        // var d = '<a  href="#" title="" onclick="edit(\'' + row.id + '\')">单体分析</a> ';
+                        return e;
                     }
                 }
-                ]
+            ]
         };
         $.table.init(options);
     }

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @ResponseResultBody
@@ -44,9 +43,9 @@ public class UserController {
         userService.saveUser(user);
     }
 
-    @PostMapping("/user/delete")
-    public void deleteUser(List<User> userList) {
-        userService.removeUser(userList);
+    @PostMapping("/user/remove")
+    public void deleteUser(String ids) {
+        userService.removeUser(ids);
     }
 
     @PostMapping("/user/existsByUsername")

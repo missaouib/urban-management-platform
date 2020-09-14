@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -48,8 +49,19 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void removeUser(List<User> userList) {
-        userRepository.deleteInBatch(userList);
+    public void removeUser(String ids) {
+
+        if (checkUser(ids)) {
+
+        }
+        userRepository.deleteUserWithIds(Arrays.asList(ids.split(",")));
+    }
+
+    /**
+     * 检查用户是否可以被删除
+     */
+    private boolean checkUser(String ids) {
+        return true;
     }
 
     public boolean existsByUsername(String username) {
