@@ -394,6 +394,30 @@ var table = {
 			},
 
 		},
+		form: {
+			// 表单重置
+			reset: function(formId, tableId) {
+				table.set(tableId);
+				var currentId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
+				$("#" + currentId)[0].reset();
+				if (table.options.type == table_type.bootstrapTable) {
+					if($.common.isEmpty(tableId)){
+						$("#" + table.options.id).bootstrapTable('refresh');
+					} else{
+						$("#" + tableId).bootstrapTable('refresh');
+					}
+				} else if (table.options.type == table_type.bootstrapTreeTable) {
+					if($.common.isEmpty(tableId)){
+						$("#" + table.options.id).bootstrapTreeTable('refresh', []);
+					} else{
+						$("#" + tableId).bootstrapTreeTable('refresh', []);
+					}
+				}
+			},
+		},
+
+
+
 		modal: {
 			// 显示图标
 			icon: function (type) {
@@ -605,6 +629,21 @@ var table = {
 				var url = $.common.isEmpty(id) ? table.options.createUrl.replace("{id}", "") : table.options.createUrl.replace("{id}", id);
 				return url;
 			},
+			// 修改访问地址
+			editUrl: function(id) {
+				var url = "/404.html";
+				if ($.common.isNotEmpty(id)) {
+					url = table.options.updateUrl.replace("{id}", id);
+				} else {
+					var id = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+					if (id.length == 0) {
+						$.modal.alertWarning("请至少选择一条记录");
+						return;
+					}
+					url = table.options.updateUrl.replace("{id}", id);
+				}
+				return url;
+			},
 			submit: function(url, type, dataType, data, callback) {
 				let config = {
 					url: url,
@@ -687,8 +726,12 @@ var table = {
 			addTab: function (id) {
 				table.set();
 				$.modal.openTab("添加" + table.options.modalName, $.operate.addUrl(id));
+			},
 
-
+			// 修改信息，以tab页展现
+			editTab: function(id) {
+				table.set();
+				$.modal.openTab("修改" + table.options.modalName, $.operate.editUrl(id));
 			},
 		}
 

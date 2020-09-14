@@ -56,6 +56,22 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public void updateUser(User user) {
+
+        User userFormDatabase = userRepository.getOne(user.getId());
+
+        userFormDatabase.setName(user.getName());
+
+        userFormDatabase.setMobileNumber(user.getMobileNumber());
+
+        userRepository.save(userFormDatabase);
+
+    }
+
+    public User findById(String id) {
+        return userRepository.getOne(id);
+    }
+
     private void initPassword(User user) {
         user.setPassword(passwordService.getDefaultPassword());
     }

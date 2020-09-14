@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,6 +38,21 @@ public class UserController {
     @GetMapping("/user/search")
     public Page<User> search(User user, @PageableDefault Pageable pageable) {
         return userService.search(user, pageable);
+    }
+
+
+    @GetMapping("/user/edit/{id}")
+    public ModelAndView edit(@PathVariable String id, Model model) {
+        User user = userService.findById(id);
+
+        model.addAttribute("user", user);
+
+        return new ModelAndView(SystemConstant.PAGE + "/user/edit");
+    }
+
+    @PostMapping("/user/update")
+    public void updateUser(User user) {
+        userService.updateUser(user);
     }
 
     @PostMapping("/user/save")
