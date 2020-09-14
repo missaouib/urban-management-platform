@@ -902,4 +902,9 @@ ul{list-style: none}
 body{height: 100vh!important;}
 .dropdown-menu {top:164px!important;left: -58px!important;}
 .bootstrap-table .fixed-table-container .table thead th .desc ,.bootstrap-table .fixed-table-container .table thead th .asc{position: absolute;top: 1px;right: 50%;margin-right: -45px}
-#bootstrap-table th{position: relative!important;}
+.bootstrap-table .fixed-table-container .table thead th .both{position: absolute;top: 1px;right: 50%;margin-right: -45px}
+.table_style th{position: relative!important;}
+.multiple{background-color: #ed5565!important;border-color: #ed5565!important;}
+.single{background-color: #1c84c6!important;border-color: #1c84c6!important;}
+.btn-success{background-color:#1ab394!important;border-color: #1ab394!important; }
+
