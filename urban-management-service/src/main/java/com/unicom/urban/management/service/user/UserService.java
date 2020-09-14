@@ -52,4 +52,8 @@ public class UserService {
         userRepository.deleteInBatch(userList);
     }
 
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
 }

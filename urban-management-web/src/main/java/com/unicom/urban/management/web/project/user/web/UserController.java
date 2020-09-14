@@ -49,5 +49,10 @@ public class UserController {
         userService.removeUser(userList);
     }
 
+    @PostMapping("/user/existsByUsername")
+    public void existsByUsername(String username) {
+        userService.existsByUsername(username);
+    }
+
 
 }

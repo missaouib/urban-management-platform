@@ -11,5 +11,7 @@ public interface UserRepository extends CustomizeRepository<User, String> {
 
     Page<User> findByUsername(String username, Pageable pageable);
 
+    Boolean existsByUsername(String username);
+
 
 }
