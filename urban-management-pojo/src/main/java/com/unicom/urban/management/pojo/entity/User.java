@@ -1,5 +1,6 @@
 package com.unicom.urban.management.pojo.entity;
 
+import com.unicom.urban.management.common.annotations.validation.MobileNumber;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -37,6 +38,13 @@ public class User extends BaseEntity {
 
     @Column(nullable = false)
     private String password;
+
+    /**
+     * 手机号码
+     */
+    @NotBlank(message = "手机号码不能为空")
+    @MobileNumber(message = "手机号码格式不正确")
+    private String mobileNumber;
 
 
 }
