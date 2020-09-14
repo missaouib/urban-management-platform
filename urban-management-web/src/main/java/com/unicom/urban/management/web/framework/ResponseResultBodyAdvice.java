@@ -1,6 +1,7 @@
 package com.unicom.urban.management.web.framework;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.pojo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
@@ -52,7 +53,16 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(BindException.class)
     public Result validatedBindException(BindException e) {
         String message = e.getAllErrors().get(0).getDefaultMessage();
-        return Result.fail("1111", message);
+        return Result.fail("301", message);
+    }
+
+
+    /**
+     * 数据校验异常
+     */
+    @ExceptionHandler(DataValidException.class)
+    public Result dataValidException(DataValidException e) {
+        return Result.fail("301", e.getMessage());
     }
 
 

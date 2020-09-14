@@ -310,39 +310,32 @@ var table = {
 			},
 			// 请求获取数据后处理回调函数
 			responseHandler: function(result) {
-
-
-				return {rows: result.data.content, total: result.data.totalElements};
-
-
-				// if (typeof table.get(this.id).responseHandler == "function") {
-				// 	table.get(this.id).responseHandler(res);
-				// }
-				// if (res.code == 0) {
-				// 	if ($.common.isNotEmpty(table.options.sidePagination) && table.options.sidePagination == 'client') {
-				// 		return res.rows;
-				// 	} else {
-				// 		if ($.common.isNotEmpty(table.options.rememberSelected) && table.options.rememberSelected) {
-				// 			var column = $.common.isEmpty(table.options.uniqueId) ? table.options.columns[1].field : table.options.uniqueId;
-				// 			$.each(res.rows, function(i, row) {
-				// 				row.state = $.inArray(row[column], table.rememberSelectedIds[table.options.id]) !== -1;
-				// 			})
-				// 		}
-				// 		return { rows: res.rows, total: res.total };
-				// 	}
-				// } else {
-				// 	$.modal.alertWarning(res.msg);
-				// 	return { rows: [], total: 0 };
-				// }
+				if (typeof table.get(this.id).responseHandler == "function") {
+					table.get(this.id).responseHandler(result);
+				}
+				if (result.code === web_status.SUCCESS) {
+					if ($.common.isNotEmpty(table.options.sidePagination) && table.options.sidePagination === 'client') {
+						return result.rows;
+					} else {
+						if ($.common.isNotEmpty(table.options.rememberSelected) && table.options.rememberSelected) {
+							var column = $.common.isEmpty(table.options.uniqueId) ? table.options.columns[1].field : table.options.uniqueId;
+							$.each(result.data.content, function(i, row) {
+								row.state = $.inArray(row[column], table.rememberSelectedIds[table.options.id]) !== -1;
+							})
+						}
+						return {rows: result.data.content, total: result.data.totalElements};
+					}
+				} else {
+					$.modal.alertWarning(result.message);
+					return { rows: [], total: 0 };
+				}
 			},
 
 			// 搜索-默认第一个form
 			search: function(formId, tableId) {
-
-				// table.set(tableId);
-				// table.options.formId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
+				table.set(tableId);
+				table.options.formId = $.common.isEmpty(formId) ? $('form').attr('id') : formId;
 				let params = $.common.isEmpty(tableId) ? $("#" + table.options.id).bootstrapTable('getOptions') : $("#" + tableId).bootstrapTable('getOptions');
-				console.log(params);
 				if($.common.isNotEmpty(tableId)){
 					$("#" + tableId).bootstrapTable('refresh', params);
 				} else{
@@ -675,11 +668,11 @@ var table = {
 					$.operate.submit(url, "post", "json", data);
 				});
 			},
-			// post请求传输   liukai
+			// post请求传输
 			post: function (url, data, callback) {
 				$.operate.submit(url, "post", "json", data, callback);
 			},
-			// get请求传输    liukai
+			// get请求传输
 			get: function(url, callback) {
 				$.operate.submit(url, "get", "json", "", callback);
 			},

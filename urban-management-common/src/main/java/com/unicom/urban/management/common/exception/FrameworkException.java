@@ -5,7 +5,7 @@ package com.unicom.urban.management.common.exception;
  *
  * @author liukai
  */
-public class FrameworkException extends RuntimeException {
+public class FrameworkException extends BaseException {
 
 
 }

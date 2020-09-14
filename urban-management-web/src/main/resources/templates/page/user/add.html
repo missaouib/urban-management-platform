@@ -17,11 +17,11 @@
                     <tr>
                         <td>姓名<span>*</span></td>
                         <td>
-                            <input class="find_input" type="text" name="name" value="123123">
+                            <input class="find_input" type="text" name="name" value="">
                         </td>
                         <td>登录账号<span>*</span></td>
                         <td>
-                            <input class="find_input" type="text" name="username" value="123">
+                            <input class="find_input" type="text" name="username" value="">
                         </td>
                     </tr>
 <!--                    <tr>-->
@@ -106,16 +106,8 @@
         $.modal.closeLoading();
     }
     function save(){
-
         var data = $('#userForm').serialize();
-
-        // $.operate.post(url, data);
-
         $.operate.saveTab(url, data);
-
-
-
-
     }
 </script>
 </body>

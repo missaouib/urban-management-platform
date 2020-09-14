@@ -23,8 +23,14 @@ public class User extends BaseEntity {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
+    /**
+     * 账号
+     */
     private String name;
 
+    /**
+     * 账号
+     */
     @NotBlank(message = "账号不能为空")
     @Column(nullable = false, unique = true)
     private String username;

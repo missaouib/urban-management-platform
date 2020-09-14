@@ -50,7 +50,7 @@ public class UserController {
 
     @PostMapping("/user/existsByUsername")
     public void existsByUsername(String username) {
-        userService.existsByUsername(username);
+        userService.usernameAlreadyExists(username);
     }
 
 

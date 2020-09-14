@@ -5,5 +5,5 @@ package com.unicom.urban.management.common.exception;
  *
  * @author liukai
  */
-public class BusinessException extends RuntimeException {
+public class BusinessException extends BaseException {
 }

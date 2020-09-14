@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.user;
 
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.service.password.PasswordService;
@@ -45,8 +46,18 @@ public class UserService {
 
 
     public void saveUser(User user) {
-        user.setPassword(passwordService.getDefaultPassword());
+
+        if (usernameAlreadyExists(user.getUsername())) {
+            throw new DataValidException("账号已经存在");
+        }
+
+        initPassword(user);
+
         userRepository.save(user);
+    }
+
+    private void initPassword(User user) {
+        user.setPassword(passwordService.getDefaultPassword());
     }
 
     public void removeUser(String ids) {
@@ -64,7 +75,7 @@ public class UserService {
         return true;
     }
 
-    public boolean existsByUsername(String username) {
+    public boolean usernameAlreadyExists(String username) {
         return userRepository.existsByUsername(username);
     }
 
