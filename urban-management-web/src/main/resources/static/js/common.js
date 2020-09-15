@@ -123,8 +123,6 @@ var table = {
 
 				$.table.initEvent();
 
-				console.log(table);
-
 				$('#' + options.id).bootstrapTable({
 					id: options.id,
 					url: options.url,                                   // 请求后台的URL（*）

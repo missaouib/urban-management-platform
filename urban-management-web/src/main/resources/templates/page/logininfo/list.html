@@ -5,6 +5,7 @@
     <title>登录日志</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
 </head>
 <body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
 <div class="notice_main ">
@@ -22,7 +23,7 @@
                 <label class="">账号：</label>
                 <input type="text" class="find_input" name="username">
                 <label class="">登录时间：</label>
-                <input type="text" class="find_input input-append date" name="username" id="loginTime">
+                <input type="text" class="find_input datepicker" name="username" id="loginTime">
                 <input type="button" class="check_btn" onclick="$.table.search()" value="查询">
                 <input type="button" class="check_btn1" onclick="$.form.reset()" value="重置查询">
             </p>
@@ -37,6 +38,7 @@
 
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 
 <script type="text/javascript" th:inline="javascript">
 
@@ -44,7 +46,8 @@
 
 
     $(function () {
-        $("#loginTime").datetimepicker({
+        $(".datepicker").datepicker({
+            language: 'zh-CN',
             format: "yyyy-mm-dd"
         });
         query();
