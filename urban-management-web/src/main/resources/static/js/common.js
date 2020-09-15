@@ -701,7 +701,7 @@ var table = {
 					$.modal.alertWarning("请至少选择一条记录");
 					return;
 				}
-				$.modal.confirm("确认要删除选中的" + rows.length + "条数据吗?", function() {
+				$.modal.confirm("确认要删除选中的 " + rows.length + " 条数据吗?", function() {
 					var url = table.options.removeUrl;
 					var data = { "ids": rows.join() };
 					$.operate.submit(url, "post", "json", data);
