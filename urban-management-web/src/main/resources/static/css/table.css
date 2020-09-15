@@ -899,7 +899,6 @@ ul{list-style: none}
 .find_input{padding: 0 0 0 10px}
 .bootstrap-table{padding: 0 10px 10px 10px!important;}
 body{height: 100vh!important;}
-.keep-open .dropdown-menu{top:200px!important;}
 .bootstrap-table .fixed-table-container .table thead th .desc ,.bootstrap-table .fixed-table-container .table thead th .asc{position: absolute;top: 1px;right: 50%;margin-right: -45px}
 .bootstrap-table .fixed-table-container .table thead th .both{position: absolute;top: 1px;right: 50%;margin-right: -45px}
 .table_style th{position: relative!important;}
