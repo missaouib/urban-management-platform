@@ -94,7 +94,7 @@ var table = {
 					// pageList: [10, 25, 50],
 					toolbar: "toolbar",
 					loadingFontSize: 13,
-					striped: false,
+					striped: true,
 					escape: false,
 					firstLoad: true,
 					showFooter: false,
@@ -827,9 +827,9 @@ function closeItem(dataId) {
 	$('.page-tabs-content .active i', topWindow).click();
 	if ($.common.isNotEmpty(panelUrl)) {
 		$('.menuTab[data-id="' + panelUrl + '"]', topWindow).addClass('active').siblings('.menuTab').removeClass('active');
-		$('.mainContent .RuoYi_iframe', topWindow).each(function () {
+		$('.mainContent .LRADMS_iframe', topWindow).each(function () {
 			if ($(this).data('id') == panelUrl) {
-				$(this).show().siblings('.RuoYi_iframe').hide();
+				$(this).show().siblings('.LRADMS_iframe').hide();
 				return false;
 			}
 		});

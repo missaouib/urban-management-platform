@@ -18,11 +18,11 @@
                     <tr>
                         <td>姓名<span>*</span></td>
                         <td>
-                            <input class="find_input" type="text" name="username" th:value="${user.username}">
-                        </td>
-                        <td>登录账号<span>*</span></td>
-                        <td>
                             <input class="find_input" type="text" name="name" th:value="${user.name}">
+                        </td>
+                        <td>登录账号</td>
+                        <td>
+                            <input class="find_input" type="text" th:value="${user.username}" readonly="readonly" disabled="disabled">
                         </td>
                     </tr>
                     <tr>
