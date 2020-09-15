@@ -896,11 +896,10 @@ ul{list-style: none}
 .page-list{font-size: 12px;height: 30px;display: block;margin: 6px 0 10px 20px;color: #0D8BBD;line-height: 50px!important;}
 .page-list button{font-size: 8px}
 .dropdown-menu a{width: 100%;height: 20px;text-align: center;line-height: 20px;padding: 2px 0}
-.dropdown-menu{top: 47px!important;transform: translate3d(0px, -120px, 0px) !important}
 .find_input{padding: 0 0 0 10px}
 .bootstrap-table{padding: 0 10px 10px 10px!important;}
 body{height: 100vh!important;}
-.dropdown-menu {top:164px!important;left: -58px!important;}
+.keep-open .dropdown-menu{top:200px!important;}
 .bootstrap-table .fixed-table-container .table thead th .desc ,.bootstrap-table .fixed-table-container .table thead th .asc{position: absolute;top: 1px;right: 50%;margin-right: -45px}
 .bootstrap-table .fixed-table-container .table thead th .both{position: absolute;top: 1px;right: 50%;margin-right: -45px}
 .table_style th{position: relative!important;}
