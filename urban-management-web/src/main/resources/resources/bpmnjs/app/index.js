@@ -1,200 +1,144 @@
+
 import $ from 'jquery';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
-
+//import propertiesPanelModule from '../resources/properties-panel';
 import propertiesPanelModule from 'bpmn-js-properties-panel';
-// import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
-// import camundaModdleDescriptor from 'camunda-bpmn-moddle/resources/camunda.json';
 import propertiesProviderModule from '../resources/properties-panel/provider/activiti';
 import activitiModdleDescriptor from '../resources/activiti.json';
 import customTranslate from '../resources/customTranslate/customTranslate';
 import customControlsModule from '../resources/customControls';
-
-import {
-  debounce
-} from 'min-dash';
-
+import tools from '../resources/tools'
 import diagramXML from '../resources/newDiagram.bpmn';
+const proHost = window.location.protocol + "//" + window.location.host;
+const href = window.location.href.split("bpmnjs")[0];
+const key = href.split(window.location.host)[1];
+const publicurl = proHost + key;
 
-
-var container = $('#js-drop-zone');
-
-var canvas = $('#js-canvas');
-
-// var bpmnModeler = new BpmnModeler({
-//   container: canvas,
-//   propertiesPanel: {
-//     parent: '#js-properties-panel'
-//   },
-//   additionalModules: [
-//     propertiesPanelModule,
-//     propertiesProviderModule
-//   ],
-//   moddleExtensions: {
-//     camunda: camundaModdleDescriptor
-//   }
-// });
+// 添加翻译组件
 var customTranslateModule = {
-  translate: ['value', customTranslate]
+    translate: ['value', customTranslate]
 };
-
-
+debugger
+var container = $('#js-drop-zone');
+var canvas = $('#js-canvas');
 var bpmnModeler = new BpmnModeler({
-  container: canvas,
-  propertiesPanel: {
-    parent: '#js-properties-panel'
-  },
-  additionalModules: [
-    propertiesPanelModule,
-    propertiesProviderModule,
-    customControlsModule,
-    customTranslateModule
-  ],
-  moddleExtensions: {
-    activiti:activitiModdleDescriptor
-  }
+    container: canvas,
+    propertiesPanel: {
+        parent: '#js-properties-panel'
+    },
+    additionalModules: [
+        propertiesPanelModule,
+        propertiesProviderModule,
+        customControlsModule,
+        customTranslateModule
+    ],
+    moddleExtensions: {
+        activiti:activitiModdleDescriptor
+    }
 });
 container.removeClass('with-diagram');
-
-function createNewDiagram() {
-  openDiagram(diagramXML);
-}
-
-async function openDiagram(xml) {
-
-  try {
-
-    await bpmnModeler.importXML(xml);
-
-    container
-      .removeClass('with-error')
-      .addClass('with-diagram');
-  } catch (err) {
-
-    container
-      .removeClass('with-diagram')
-      .addClass('with-error');
-
-    container.find('.error pre').text(err.message);
-
-    console.error(err);
-  }
-}
-
-function registerFileDrop(container, callback) {
-
-  function handleFileSelect(e) {
-    e.stopPropagation();
-    e.preventDefault();
-
-    var files = e.dataTransfer.files;
-
-    var file = files[0];
-
-    var reader = new FileReader();
-
-    reader.onload = function(e) {
-
-      var xml = e.target.result;
-
-      callback(xml);
-    };
-
-    reader.readAsText(file);
-  }
-
-  function handleDragOver(e) {
-    e.stopPropagation();
-    e.preventDefault();
-
-    e.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-  }
-
-  container.get(0).addEventListener('dragover', handleDragOver, false);
-  container.get(0).addEventListener('drop', handleFileSelect, false);
-}
-
-
-////// file drag / drop ///////////////////////
-
-// check file api availability
+// 判断浏览器支持程度
 if (!window.FileList || !window.FileReader) {
-  window.alert(
-    'Looks like you use an older browser that does not support drag and drop. ' +
-    'Try using Chrome, Firefox or the Internet Explorer > 10.');
+    window.alert('请使用谷歌、火狐、IE10+浏览器');
 } else {
-  registerFileDrop(container, openDiagram);
+    tools.registerFileDrop(container, tools.createDiagram(diagramXML, bpmnModeler, container));
 }
 
-// bootstrap diagram functions
 
-$(function() {
-
-  $('#js-create-diagram').click(function(e) {
-    e.stopPropagation();
-    e.preventDefault();
-
-    createNewDiagram();
-  });
-
-  var downloadLink = $('#js-download-diagram');
-  var downloadSvgLink = $('#js-download-svg');
-
-  $('.buttons a').click(function(e) {
-    if (!$(this).is('.active')) {
-      e.preventDefault();
-      e.stopPropagation();
+$(function () {
+    // 创建bpmn
+    var param = tools.getUrlParam(window.location.href)
+        $('.item').show()
+    if (param.type === 'addBpmn') {
+        tools.createDiagram(diagramXML, bpmnModeler, container);
+    } else if (param.type === 'lookBpmn') { //编辑bpmn
+        debugger
+        $('.item').hide()
+        $('.download').show()
+        const Id = param.deploymentFileUUID || '6d4af2dc-bab0-11ea-b584-3cf011eaafca'
+        const Name=param.deploymentName || 'String.bpmn'
+        const instanceId=param.instanceId
+        var param={
+            "deploymentId":Id,
+            "resourceName":decodeURI(Name)
+        }
+        if(instanceId){
+            var param1={
+                instanceId
+            }
+            $.ajax({
+                url: publicurl+'activitiHistory/gethighLine',
+                type: 'GET',
+                data: param1,
+                dataType:'json',
+                success: function (result) {
+                  var ColorJson=tools.getByColor(result.obj)
+                    $.ajax({
+                        url: publicurl+'processDefinition/getDefinitionXML',
+                        type: 'GET',
+                        data: param,
+                        dataType:'text',
+                        success: function (result) {
+                            var newXmlData = result
+                            tools.createDiagram(newXmlData, bpmnModeler, container);
+                            setTimeout(function () {
+                                for (var i in ColorJson) {
+                                    tools.setColor(ColorJson[i],bpmnModeler)
+                                }
+                            }, 200)
+                        },
+                        error: function (err) {
+                            console.log(err)
+                        }
+                    });
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            });
+        }else{
+            //加载后台方法获取xml
+            $.ajax({
+                url: publicurl+'processDefinition/getDefinitionXML',
+                type: 'GET',
+                data: param,
+                dataType:'text',
+                success: function (result) {
+                    var newXmlData = result
+                    tools.createDiagram(newXmlData, bpmnModeler, container);
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            });
+        }
+    } else if(param.type === "historyBpmn") { // bpmn历史
+        $('.item').hide()
+        $('.download').show()
     }
-  });
+    // 点击新增
+    $('#js-download-diagram').on("click", function () {
+       tools.syopen('alert')
+    })
 
-  function setEncoded(link, name, data) {
-    var encodedData = encodeURIComponent(data);
-
-    if (data) {
-      link.addClass('active').attr({
-        'href': 'data:application/bpmn20-xml;charset=UTF-8,' + encodedData,
-        'download': name
-      });
-    } else {
-      link.removeClass('active');
-    }
-  }
-
-  var exportArtifacts = debounce(async function() {
-
-    try {
-
-      const { svg } = await bpmnModeler.saveSVG();
-
-      setEncoded(downloadSvgLink, 'diagram.svg', svg);
-    } catch (err) {
-
-      console.error('Error happened saving SVG: ', err);
-
-      setEncoded(downloadSvgLink, 'diagram.svg', null);
-    }
-
-    try {
-
-      const { xml } = await bpmnModeler.saveXML({ format: true });
-
-      setEncoded(downloadLink, 'diagram.bpmn', xml);
-    } catch (err) {
-
-      console.log('Error happened saving XML: ', err);
-
-      setEncoded(downloadLink, 'diagram.bpmn', null);
-    }
-  }, 500);
-
-  bpmnModeler.on('commandStack.changed', exportArtifacts);
+    // 点击取消
+    $('.cancel').on("click",function () {
+        tools.syhide('alert')
+    })
+    // 点击确定
+    $('#sure').on('click',function(){
+       // const text=$("#deploymentName").val()
+        tools.saveBpmn(bpmnModeler)
+    })
 
 
 
-  // 下载bpmb
-  $('#downloadBPMN').on('click', function () {
-    alert('down');
-  });
-
-
+    // 点击下载
+    $("#downloadBpmn").on("click", function () {
+        tools.downLoad(bpmnModeler)
+    })
+    // 点击上传
+    $("#uploadFile").on("change", function () {
+        tools.upload(bpmnModeler,container)
+    })
 });
-

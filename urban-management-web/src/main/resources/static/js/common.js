@@ -313,7 +313,7 @@ var table = {
 				}
 				if (result.code === web_status.SUCCESS) {
 					if ($.common.isNotEmpty(table.options.sidePagination) && table.options.sidePagination === 'client') {
-						return result.rows;
+						return result.data.content;
 					} else {
 						if ($.common.isNotEmpty(table.options.rememberSelected) && table.options.rememberSelected) {
 							var column = $.common.isEmpty(table.options.uniqueId) ? table.options.columns[1].field : table.options.uniqueId;
