@@ -19,14 +19,14 @@ public class LoginController {
      */
     @GetMapping("/login")
     public String login() {
-        return alreadyLogin() ? forwadIndexPage() : loginPage();
+        return alreadyLogin() ? toIndexPage() : toLoginPage();
     }
 
-    private String loginPage() {
+    private String toLoginPage() {
         return SystemConstant.PAGE + "/login";
     }
 
-    private String forwadIndexPage() {
+    private String toIndexPage() {
         return "redirect:/index";
     }
 
