@@ -1,4 +1,4 @@
-package com.unicom.urban.management.web.project.user.web;
+package com.unicom.urban.management.web.project.user;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
