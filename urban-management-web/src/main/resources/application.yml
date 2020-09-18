@@ -21,4 +21,4 @@ spring:
     history-level: full
     check-process-definitions: false
     db-history-used: true
-    use-strong-uuids: true
+    db-identity-used: false
