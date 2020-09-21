@@ -12,14 +12,13 @@
 <div class="login">
     <div class="message">用户登录</div>
     <div id="darkbannerwrap"></div>
-    <form method="post" id="loginForm" th:action="@{/login}">
-        <input name="action" value="login" type="hidden">
-        <input name="username" placeholder="账号" id="username" type="text" value="admin">
+    <form id="loginForm">
+        <input name="username" placeholder="账号" id="username" type="text">
         <hr class="hr15">
-        <input name="password" placeholder="密码" type="password" id="pass" value="123456">
+        <input name="password" placeholder="密码" id="password" type="password">
         <hr class="hr15">
-        <input value="登录" style="width: 100%;" type="button" onclick="login()" id="login_btn">
     </form>
+    <input value="登录" style="width: 100%;" type="button" onclick="login()" id="login_btn">
     <hr class="hr20">
 </div>
 <div class="copyright">版权所有&nbsp;<span style="color: #f77118">2020 </span>中国联通</div>
@@ -39,12 +38,20 @@
 
     let loginUrl = /*[[@{/login}]]*/ "/login";
 
+    let PUBLIC_KEY = [[${PUBLIC_KEY}]];
+
+
     function login() {
-        let serialize = $('#loginForm').serialize();
+        let password = $('#password').val();
+        let data = {
+            username: $('#username').val(),
+            password: encryptPassword(password)
+        }
+
         $.ajax({
             type: 'POST',
             url: loginUrl,
-            data: serialize,
+            data: data,
             success: function (result) {
                 if (result.code === '0') {
                     window.location.href = loginUrl;
@@ -53,6 +60,13 @@
                 }
             }
         });
+    }
+
+
+    function encryptPassword(password) {
+        let encrypt = new JSEncrypt();
+        encrypt.setPublicKey(PUBLIC_KEY);
+        return encrypt.encrypt(password);
     }
 
 

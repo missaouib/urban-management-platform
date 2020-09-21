@@ -2,52 +2,39 @@ package com.unicom.urban.management.web.framework.security;
 
 import com.unicom.urban.management.common.constant.SystemConstant;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 /**
  * @author liukai
  */
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity(debug = true)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private AuthenticationSuccessHandler authenticationSuccessHandler;
-
-    @Autowired
-    private AuthenticationFailureHandler authenticationFailureHandler;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
+    private BrowserSecurityConfigurer browserSecurityConfigurer;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.apply(browserSecurityConfigurer);
         http
-                .antMatcher("/**")
                 .authorizeRequests()
+                .antMatchers(SystemConstant.LOGIN_PAGE).permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage(SystemConstant.LOGIN_PAGE).permitAll()
-                .successHandler(authenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler)
-                .and()
+//                .formLogin()
+//                .loginPage(SystemConstant.LOGIN_PAGE).permitAll()
+//                .successHandler(authenticationSuccessHandler)
+//                .failureHandler(authenticationFailureHandler)
+//                .and()
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .csrf().disable();
+        http.exceptionHandling().authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint(SystemConstant.LOGIN_PAGE));
     }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
-    }
-
 
     @Override
     public void configure(WebSecurity web) {
