@@ -14,10 +14,11 @@
 td{border: none !important;}
 .table tr td:nth-child(2n+1){text-align: right;font-size: 12px;width:84px;line-height: 28px;}
 .top_out{margin: 20px 0 20px 0}
-.top td{padding: 0 3px 8px 0 !important;}
+.top td{padding: 0 0 8px 0 !important;}
 .top td span{color: red;margin:3px 1px 0 2px;display: inline-block ;float: right;vertical-align: middle;line-height: 28px;width: 6px;text-align: center;}
 .top select,.top input[type=text],.top input[type=password]{color: #999;text-align: left;width: 247px;height:28px;border-radius: 4px;font-size: 12px;border: 1px #ccc solid}
-.top td textarea{width: 586px;height: 70px;resize: none;border-radius: 4px;border: 1px #ccc solid}
+.top td textarea{width: 100%;height: 70px;resize: none;border-radius: 4px;border: 1px #ccc solid;padding: 0 5px}
+
 .notice_bot>div{font-size: 12px;margin-left: 10px;color: #07141e;line-height: 28px}
 .notice_bot>div input{margin:0 2px 0 0;vertical-align: middle}
 .div_form>div{margin: 5px}
@@ -32,22 +33,18 @@ td{border: none !important;}
 
 
 
-.top td{padding: 0 3px 8px 0 !important;}
 .top td span{color: red;margin:3px 1px 0 2px;display: inline-block ;float: right;vertical-align: middle;line-height: 28px;width: 6px;text-align: center;}
 .top .frist_input{width: 791px !important;}
 .top select,.top input[type=text],.top input[type=password]{color: #999;text-align: left;width: 342px;height:28px;border-radius: 4px;font-size: 12px;border: 1px #ccc solid}
-.top td textarea{width: 586px;height: 70px;resize: none;border-radius: 4px;border: 1px #ccc solid}
 
 .top .td_select{width: 78px;margin-right: 2px}
 .form_area{width: 791px}
 
 ::-webkit-input-placeholder,:-ms-input-placeholder  {color:#999;}
 .table tr td:nth-child(2n+1){text-align: right;font-size: 12px;width:84px;line-height: 40px;}
-.top td{padding: 0 3px 8px 0 !important;}
 .top td span{color: red;margin:3px 1px 0 2px;display: inline-block ;float: right;vertical-align: middle;line-height: 28px;width: 6px;text-align: center;}
 .top .frist_input{width: 791px !important;}
 .top select,.top input[type=text],.top input[type=password]{text-align: left;width: 342px;height:28px;border-radius: 4px;font-size: 12px;border: 1px #ccc solid}
-.top td textarea{width: 586px;height: 70px;resize: none;border-radius: 4px;border: 1px #ccc solid}
 .top .td_select{width: 78px;margin-right: 2px}
 .form_area{width: 791px}
 
@@ -81,5 +78,13 @@ td{border: none !important;}
 
 /*table2_tail*/
 .table2_top td span{color: red;margin:3px 1px 0 2px;display: inline-block ;float: right;vertical-align: middle;line-height: 28px;width: 6px;text-align: center;}
-.table2_top select,.table2_top input[type=text],.table2_top input[type=password],.table2_top input[type=email],#dropdownMenu1{text-align: left;width: 247px;height:28px;border-radius: 4px;font-size: 12px;border: 1px #ccc solid}
+.table2_top select,.table2_top input[type=text],.table2_top input[type=password],.table2_top input[type=email],#dropdownMenu1{text-align: left;width: 100%;height:28px;border-radius: 4px;font-size: 12px;border: 1px #ccc solid}
 tbody tr:hover{background-color: white!important;}
+.row1{width: 100vw;height: 100vh}
+.row{width: 100vw;height: 90vh}
+.row-h4{padding: 10px 0 0 0 }
+.map{width: 100%;height: 100%}
+.card{height: 100%}
+.leftBox{width: 48%}
+.rightBox{width: 49%;float: right;margin-left: 20px}
+td input{padding: 0 5px!important;width: 100%}
