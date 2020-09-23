@@ -8,99 +8,119 @@
     <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;width: 680px">
-<form id="userForm">
-    <div class="top table2_top">
-        <div>
-            <div class="top_out">
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <td>姓名<span>*</span></td>
-                        <td>
-                            <input class="find_input" type="text" name="name" value="">
-                        </td>
-                        <td>登录账号<span>*</span></td>
-                        <td>
-                            <input class="find_input" type="text" name="username" value="">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>手机号码<span>*</span></td>
-                        <td>
-                            <input class="find_input" type="text" name="mobileNumber" value="">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>问题描述<span></span></td>
-                        <td colspan = "8" style="text-align: left"><textarea></textarea></td>
-                    </tr>
-                    <tr>
-                        <td>安全级别<span></span></td>
-                        <td>
-                            <select >
-                                <option>特大</option>
-                                <option>级大</option>
-                                <option>一般</option>
-                                <option>微小</option>
-                            </select>
-                        </td>
-                        <td>发现时间<span></span></td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>所属企业<span></span></td>
-                        <td>
-                            <input type="text">
-                        </td>
-                        <td>企业负责人<span></span></td>
-                        <td>
-                            <input type="text">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>指派部门<span></span></td>
-                        <td><select >
-                            <option>公共安监</option>
-                            <option>成都分公司</option>
-                            <option>杭州总部</option>
-                        </select></td>
-                        <td>处理时间<span></span></td>
-                        <td><input type="text" ></td>
-                    </tr>
-                    <tr>
-                        <td>问题状态<span></span></td>
-                        <td><select >
-                            <option>未指派</option>
-                            <!--<option>已经指派</option>-->
-                            <!--<option>未处理</option>-->
-                            <!--<option>已处理</option>-->
-                            <!--<option>已关闭</option>-->
-                        </select></td>
-                        <td>关闭时间<span></span></td>
-                        <td><input type="text" ></td>
-                    </tr>
+<div class="row" style="width: 100vw;height: 100vh">
+    <div class="col-md-12">
+        <div class="row" style="width: 100vw;height: 90vh">
+            <div class="col-6">
+                <form id="userForm">
+                    <div class="top table2_top">
+                        <div>
+                            <div class="top_out">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td>姓名<span>*</span></td>
+                                        <td>
+                                            <input class="find_input" type="text" name="name" value="">
+                                        </td>
+                                        <td>登录账号<span>*</span></td>
+                                        <td>
+                                            <input class="find_input" type="text" name="username" value="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>手机号码<span>*</span></td>
+                                        <td>
+                                            <input class="find_input" type="text" name="mobileNumber" value="">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>问题描述<span></span></td>
+                                        <td colspan = "8"><textarea></textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td>安全级别<span></span></td>
+                                        <td>
+                                            <select >
+                                                <option>特大</option>
+                                                <option>级大</option>
+                                                <option>一般</option>
+                                                <option>微小</option>
+                                            </select>
+                                        </td>
+                                        <td>发现时间<span></span></td>
+                                        <td>
+                                            <input type="text">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>所属企业<span></span></td>
+                                        <td>
+                                            <input type="text">
+                                        </td>
+                                        <td>企业负责人<span></span></td>
+                                        <td>
+                                            <input type="text">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>指派部门<span></span></td>
+                                        <td><select >
+                                            <option>公共安监</option>
+                                            <option>成都分公司</option>
+                                            <option>杭州总部</option>
+                                        </select></td>
+                                        <td>处理时间<span></span></td>
+                                        <td><input type="text" ></td>
+                                    </tr>
+                                    <tr>
+                                        <td>问题状态<span></span></td>
+                                        <td><select >
+                                            <option>未指派</option>
+                                            <!--<option>已经指派</option>-->
+                                            <!--<option>未处理</option>-->
+                                            <!--<option>已处理</option>-->
+                                            <!--<option>已关闭</option>-->
+                                        </select></td>
+                                        <td>关闭时间<span></span></td>
+                                        <td><input type="text" ></td>
+                                    </tr>
 
-                    <tr>
-                        <td>处理结果<span></span></td>
-                        <td colspan = "8" style="text-align: left"><textarea></textarea></td>
-                    </tr>
-                    </tbody>
-                </table>
+                                    <tr>
+                                        <td>处理结果<span></span></td>
+                                        <td colspan = "8"><textarea></textarea></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="notice_bot">
+                                <!--            <div class="l_left">-->
+                                <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                                <!--            </div>-->
+                                <div class="r_right but_p">
+                                    <button class="but_save" type="button" onclick="save()">保存</button>
+                                    <button class="but_close" onclick="Cancel()">关闭</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
             </div>
-        </div>
-        <div class="notice_bot">
-<!--            <div class="l_left">-->
-<!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-<!--            </div>-->
-            <div class="r_right but_p">
-                <button class="but_save" type="button" onclick="save()">保存</button>
-                <button class="but_close" onclick="Cancel()">关闭</button>
+            <div class="col-6">
+                <div class="h4" style="padding: 10px 0 0 0 ">
+                    <h4>地图</h4>
+                </div>
+                <div class="card" style="height: 100%">
+                    <div class="card-body">
+                        <div class="map" id="map" style="width: 100%;height: 100%"></div>
+                    </div><!-- /.card-body -->
+                </div><!-- /.card -->
             </div>
         </div>
     </div>
-</form>
+</div>
+
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
 

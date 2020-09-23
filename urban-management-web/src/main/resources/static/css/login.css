@@ -141,3 +141,11 @@ hr.hr20 {
     text-align: center;
     text-shadow: 5px 5px 5px #000;
 }
+.input-val{
+    width: 45% !important;
+}
+.canvas{
+    width: 45%;
+    height: 50px;
+    float: right;
+}
