@@ -79,6 +79,12 @@
                 <version>${activiti.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.activiti</groupId>
+                <artifactId>activiti-common-rest</artifactId>
+                <version>${activiti.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

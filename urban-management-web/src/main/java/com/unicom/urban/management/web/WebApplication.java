@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 /**
  * @author liukai
  */
-@ComponentScan(value = "com.unicom.urban.management")
+@ComponentScan(value = {"com.unicom.urban.management", "org.activiti.rest.diagram.services"})
 @EntityScan(basePackages = "com.unicom.urban.management.pojo.entity")
 @EnableJpaRepositories(basePackages = "com.unicom.urban.management.dao")
 @EnableJpaAuditing
