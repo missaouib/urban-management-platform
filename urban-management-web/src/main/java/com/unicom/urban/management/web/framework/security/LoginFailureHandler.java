@@ -2,6 +2,8 @@ package com.unicom.urban.management.web.framework.security;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.unicom.urban.management.common.exception.authentication.BadCaptchaException;
+import com.unicom.urban.management.common.exception.authentication.CaptchaExpiredException;
 import com.unicom.urban.management.pojo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +34,6 @@ public class LoginFailureHandler extends AbstractAuthenticationHandler implement
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
 
         // 记录登录日志
-
-
         String content = getContentByException(exception);
 
         saveLoginInfo(request, response, content);
@@ -49,11 +49,14 @@ public class LoginFailureHandler extends AbstractAuthenticationHandler implement
      */
     public String getContentByException(AuthenticationException exception) throws JsonProcessingException {
         String content = null;
-        if (exception instanceof UsernameNotFoundException) {
+        if (exception instanceof UsernameNotFoundException || exception instanceof BadCredentialsException) {
             content = objectMapper.writeValueAsString(Result.fail("302", "账号或密码错误"));
         }
-        if (exception instanceof BadCredentialsException) {
-            content = objectMapper.writeValueAsString(Result.fail("302", "账号或密码错误"));
+        if (exception instanceof BadCaptchaException) {
+            content = objectMapper.writeValueAsString(Result.fail("302", "验证码错误！请重新输入"));
+        }
+        if (exception instanceof CaptchaExpiredException) {
+            content = objectMapper.writeValueAsString(Result.fail("302", "验证码已过期，请点击验证码刷新"));
         }
         return content;
     }

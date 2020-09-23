@@ -39,14 +39,18 @@ public class UsernamePasswordCaptchaAuthenticationFilter extends UsernamePasswor
             password = "";
         }
 
+        if (captcha == null) {
+            captcha = "";
+        }
+
         username = username.trim();
 
-        UsernamePasswordCaptchaAuthenticationToken authRequest = new UsernamePasswordCaptchaAuthenticationToken(username, password, captcha);
+        UsernamePasswordCaptchaAuthenticationToken usernamePasswordCaptchaAuthenticationToken = new UsernamePasswordCaptchaAuthenticationToken(username, password, captcha);
 
         // Allow subclasses to set the "details" property
-        setDetails(request, authRequest);
+        setDetails(request, usernamePasswordCaptchaAuthenticationToken);
 
-        return this.getAuthenticationManager().authenticate(authRequest);
+        return this.getAuthenticationManager().authenticate(usernamePasswordCaptchaAuthenticationToken);
 
     }
 

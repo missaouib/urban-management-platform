@@ -24,15 +24,13 @@ public class LoginSuccessHandler extends AbstractAuthenticationHandler implement
     @Autowired
     private ObjectMapper objectMapper;
 
-    private final static String LOGIN_SUCCESS_MESSAGE = "成功";
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
-        // 记录登录日志
-        saveLoginInfo(request, response, LOGIN_SUCCESS_MESSAGE);
+        String content = objectMapper.writeValueAsString(Result.success());
 
-        String content = objectMapper.writeValueAsString(Result.success(LOGIN_SUCCESS_MESSAGE));
+        // 记录登录日志
+        saveLoginInfo(request, response, content);
 
         handleResponse(request, response, content);
 

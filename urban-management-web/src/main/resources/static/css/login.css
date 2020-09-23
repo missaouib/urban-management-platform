@@ -1,29 +1,32 @@
-﻿*{
+﻿* {
     font: 13px/1.5 '微软雅黑', Verdana, Helvetica, Arial, sans-serif;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     -box-sizing: border-box;
-    padding:0;
-    margin:0;
-    list-style:none;
+    padding: 0;
+    margin: 0;
+    list-style: none;
     box-sizing: border-box;
 }
 
 
-body,html{
-    height:100%;
-    overflow:hidden;
+body, html {
+    height: 100%;
+    overflow: hidden;
 }
-body{
-  background-image: url("../img/timg.jpg");
-    background-size:100% 100% ;
+
+body {
+    background-image: url("../img/timg.jpg");
+    background-size: 100% 100%;
 }
-a{
-    color:#2e619a;
-    text-decoration:none;
-    cursor:pointer;
+
+a {
+    color: #2e619a;
+    text-decoration: none;
+    cursor: pointer;
 }
-.div_top{
+
+.div_top {
     width: 100%;
     padding-top: 15px;
     padding-bottom: 15px;
@@ -35,7 +38,8 @@ a{
     text-shadow: 3px 3px 3px #000;
 
 }
-.login{
+
+.login {
     margin: 20px auto 0 auto;
     min-height: 420px;
     max-width: 420px;
@@ -48,13 +52,15 @@ a{
     box-sizing: border-box;
     box-shadow: 3px 3px 5px #000;
 }
-a.logo{
+
+a.logo {
     display: block;
     height: 58px;
     width: 167px;
     margin: 0 auto 30px auto;
     background-size: 167px 42px;
 }
+
 .message {
     margin: 10px 0 0 -58px;
     padding: 18px 10px 18px 60px;
@@ -64,6 +70,7 @@ a.logo{
     font-size: 18px;
     font-weight: bold;
 }
+
 #darkbannerwrap {
 
     width: 18px;
@@ -83,9 +90,10 @@ input[type=email], select {
     padding: 0px 16px;
     font-size: 14px;
     color: #555555;
-    outline:none;
-    width:100%;
+    outline: none;
+    width: 100%;
 }
+
 input[type=text]:focus,
 input[type=file]:focus,
 input[type=password]:focus,
@@ -95,7 +103,7 @@ input[type=email]:focus, select:focus {
 
 
 input[type=submit],
-input[type=button]{
+input[type=button] {
     display: inline-block;
     vertical-align: middle;
     padding: 12px 24px;
@@ -111,10 +119,11 @@ input[type=button]{
     border-radius: 3px;
     border: none;
     -webkit-appearance: none;
-    outline:none;
-    width:100%;
+    outline: none;
+    width: 100%;
     letter-spacing: 15px;
 }
+
 hr.hr15 {
     height: 15px;
     border: none;
@@ -122,6 +131,7 @@ hr.hr15 {
     padding: 0px;
     width: 100%;
 }
+
 hr.hr20 {
     height: 20px;
     border: none;
@@ -131,21 +141,24 @@ hr.hr20 {
     color: #2e619a;
 }
 
-.copyright{
-    font-size:14px;
-    color:rgba(255,255,255,0.85);
-    display:block;
-    position:absolute;
-    bottom:15px;
-   width: 100%;
+.copyright {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    display: block;
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
     text-align: center;
     text-shadow: 5px 5px 5px #000;
 }
-.input-val{
+
+.input-val {
     width: 45% !important;
 }
-.canvas{
+
+.canvas {
     width: 45%;
     height: 50px;
     float: right;
+    cursor: pointer;
 }
