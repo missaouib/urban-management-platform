@@ -674,24 +674,22 @@
             trigger: 'right',
             autoHide: true,
             items: {
-                "refresh": {
-                    name: "刷新页面",
-                    icon: "fa-refresh",
-                    callback: function(key, opt) {
-                        var currentId = $('.page-tabs-content').find('.active').attr('data-id');
-                        var target = $('.LRADMS_iframe[data-id="' + currentId + '"]');
-                        var url = target.attr('src');
-                        //$.loading(true);
-                        target.attr('src', url).load(function () {
-                            //$.loading(false);
-                        });
-                    }
-                },
                 "close_current": {
                     name: "关闭当前",
                     icon: "fa-close",
                     callback: function(key, opt) {
                         $('.page-tabs-content').find('.active i').trigger("click");
+                    }
+                },
+                "close_other": {
+                    name: "除此之外全部关闭",
+                    icon: "paste",
+                    callback: function(key, opt) {
+                        $('.page-tabs-content').children("[data-id]").find('.fa-remove').parents('a').not(".active").each(function () {
+                            $('.LRADMS_iframe[data-id="' + $(this).data('id') + '"]').remove();
+                            $(this).remove();
+                        });
+                        $('.page-tabs-content').css("margin-left", "0");
                     }
                 },
                 "close_all": {
@@ -709,6 +707,19 @@
                         $('.page-tabs-content').css("margin-left", "0");
                     }
                 },
+                "refresh": {
+                    name: "刷新页面",
+                    icon: "fa-refresh",
+                    callback: function(key, opt) {
+                        var currentId = $('.page-tabs-content').find('.active').attr('data-id');
+                        var target = $('.LRADMS_iframe[data-id="' + currentId + '"]');
+                        var url = target.attr('src');
+                        //$.loading(true);
+                        target.attr('src', url).load(function () {
+                            //$.loading(false);
+                        });
+                    }
+                },
                 // "step": "---------",
                 "full": {
                     name: "全屏显示",
@@ -721,17 +732,6 @@
                             $(this).removeAttr('fullscreen')
                             $.learuntab.exitFullscreen();
                         }
-                    }
-                },
-                "close_other": {
-                    name: "除此之外全部关闭",
-                    icon: "paste",
-                    callback: function(key, opt) {
-                        $('.page-tabs-content').children("[data-id]").find('.fa-remove').parents('a').not(".active").each(function () {
-                            $('.LRADMS_iframe[data-id="' + $(this).data('id') + '"]').remove();
-                            $(this).remove();
-                        });
-                        $('.page-tabs-content').css("margin-left", "0");
                     }
                 },
                 // "close_left": {
