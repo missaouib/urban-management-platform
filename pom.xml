@@ -103,4 +103,13 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>wangzj129-grouppath-c981aa9e-maven-group</id>
+            <name>胜智云私服</name>
+            <url>http://192.168.30.126:31233/repository/wangzj129-grouppath-c981aa9e-maven-group/</url>
+        </repository>
+    </repositories>
+
+
 </project>
