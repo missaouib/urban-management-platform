@@ -1,6 +1,5 @@
 package com.unicom.urban.management.web.framework.security;
 
-import cn.unicom.hlj.snr.gem.ruby.repository.Repository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unicom.urban.management.pojo.Result;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +23,6 @@ public class LoginSuccessHandler extends AbstractAuthenticationHandler implement
 
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Autowired
-    protected Repository repository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
