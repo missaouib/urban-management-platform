@@ -18,7 +18,7 @@
         <input name="password" placeholder="密码" id="password" type="password">
         <hr class="hr15">
         <img id="captchaImg" th:src="@{/captcha.jpeg}" class="canvas" alt="验证码" title="点击图片刷新验证码" onclick="changeCaptcha()">
-        <input name="input-val" class="input-val" placeholder="请输入验证码" id="captcha" type="text" >
+        <input name="input-val" class="input-val" placeholder="请输入验证码" id="captcha" type="text" maxlength="4">
         <hr class="hr15">
     </form>
     <input value="登录" style="width: 100%;" type="button" onclick="login()" id="login_btn">
