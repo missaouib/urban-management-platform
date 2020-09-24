@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
 
     <name>urban-management-platform</name>
-    <description>城市综合服务管理平台</description>
+    <description>城市综合管理服务平台</description>
 
 
     <properties>
@@ -36,6 +36,7 @@
 
     <dependencyManagement>
         <dependencies>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
