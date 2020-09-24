@@ -27,10 +27,15 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>cn.unicom.hlj.snr.firebird</groupId>-->
-<!--            <artifactId>firebirds-eye-starter</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>cn.unicom.hlj.snr.firebird</groupId>
+            <artifactId>firebirds-eye-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.unicom.hlj.snr.firebird</groupId>
+            <artifactId>firebirds-plume-after-login-starter</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
