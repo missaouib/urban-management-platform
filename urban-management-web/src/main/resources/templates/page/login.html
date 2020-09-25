@@ -62,6 +62,9 @@
             type: 'POST',
             url: loginUrl,
             data: data,
+            beforeSend: function () {
+                layer.msg('正在登录 请稍后...', {icon: 16, shade: 0.5, time: 0});
+            },
             success: function (result) {
                 if (result.code === '0') {
                     window.location.href = loginUrl;
