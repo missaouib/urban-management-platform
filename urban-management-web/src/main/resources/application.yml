@@ -16,12 +16,23 @@ spring:
     show-sql: false
     open-in-view: true
 
-
   activiti:
     history-level: full
     check-process-definitions: false
     db-history-used: true
     db-identity-used: false
+
+  servlet:
+    multipart:
+      # 单个文件大小
+      max-file-size: 10MB
+      # 设置总上传的文件大小
+      max-request-size: 40MB
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    database: 1
 
 fdfs:
   so-timeout: 1501                      #上传的超时时间
