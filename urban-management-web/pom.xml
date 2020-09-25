@@ -37,6 +37,16 @@
 <!--            <artifactId>firebirds-plume-after-login-starter</artifactId>-->
 <!--        </dependency>-->
 
+<!--        <dependency>-->
+<!--            <groupId>cn.unicom.hlj.snr.firebird</groupId>-->
+<!--            <artifactId>firebirds-pinions-starter</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>cn.unicom.hlj.snr.firebird</groupId>-->
+<!--            <artifactId>firebirds-pinions-web-aop-starter</artifactId>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity5</artifactId>

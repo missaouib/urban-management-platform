@@ -56,7 +56,7 @@ public class LoginFailureHandler extends AbstractAuthenticationHandler implement
             content = objectMapper.writeValueAsString(Result.fail("302", "验证码错误！请重新输入"));
         }
         if (exception instanceof CaptchaExpiredException) {
-            content = objectMapper.writeValueAsString(Result.fail("302", "验证码已过期，请点击验证码刷新"));
+            content = objectMapper.writeValueAsString(Result.fail("302", "验证码已过期，情重新输入"));
         }
         return content;
     }

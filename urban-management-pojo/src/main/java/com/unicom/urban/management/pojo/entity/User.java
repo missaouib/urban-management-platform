@@ -9,7 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 /**
- * 登录日志
+ * 用户
  *
  * @author liukai
  */
@@ -25,12 +25,12 @@ public class User extends BaseEntity {
     private String id;
 
     /**
-     * 账号
+     * 姓名
      */
     private String name;
 
     /**
-     * 账号
+     * 登录账号
      */
     @NotBlank(message = "账号不能为空")
     @Column(nullable = false, unique = true)

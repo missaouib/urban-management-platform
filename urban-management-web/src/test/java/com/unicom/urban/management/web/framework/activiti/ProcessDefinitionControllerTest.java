@@ -1,4 +1,4 @@
-package com.unicom.urban.management.web.project.activiti;
+package com.unicom.urban.management.web.framework.activiti;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,5 +1,6 @@
 package com.unicom.urban.management.common.util;
 
+import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -20,10 +21,11 @@ public class FileUploadUtil extends FileUtils {
     @Autowired
     protected FastFileStorageClient storageClient;
 
-    public void uploadFile(MultipartFile file) throws IOException {
+    public String uploadFile(MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
         String extension = FilenameUtils.getExtension(originalFilename);
-        storageClient.uploadFile(file.getInputStream(), file.getSize(), extension, null);
+        StorePath storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(), extension, null);
+        return storePath.getFullPath();
     }
 
 }

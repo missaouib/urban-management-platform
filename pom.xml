@@ -107,6 +107,18 @@
                 <version>${firebirds.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>cn.unicom.hlj.snr.firebird</groupId>
+                <artifactId>firebirds-pinions-starter</artifactId>
+                <version>${firebirds.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.unicom.hlj.snr.firebird</groupId>
+                <artifactId>firebirds-pinions-web-aop-starter</artifactId>
+                <version>${firebirds.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
