@@ -16,7 +16,7 @@ body, html {
 }
 
 body {
-    background-image: url("../img/背景图.png");
+    background-image: url("../img/bg.png");
     background-size: 100% 100%;
 }
 
@@ -69,13 +69,13 @@ text-align: center;
     left: 15px;
 }
 .icon1{
-    background-image: url("../img/用户.png");
+    background-image: url("../img/user.png");
 }
 .icon2{
-    background-image: url("../img/密码.png");
+    background-image: url("../img/password.png");
 }
 .icon3{
-    background-image: url("../img/验证码.png");
+    background-image: url("../img/code.png");
 }
 .login {
     margin: 20px auto 0 auto;
@@ -85,7 +85,7 @@ text-align: center;
     margin-left: auto;
     margin-right: auto;
     /* overflow-x: hidden; */
-    background-image: url("../img/边框.png");
+    background-image: url("../img/solid.png");
     background-size: 100% 100%;
 }
 
@@ -178,11 +178,15 @@ hr.hr20 {
 }
 
 .canvas {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 99;
     width: 40%;
     height: 50px;
     border-radius: 5px;
     float: right;
-    cursor: pointer;
+    cursor:pointer;
 }
 .ortion{
     width: 100%;
