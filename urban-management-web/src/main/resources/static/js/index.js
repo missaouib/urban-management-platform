@@ -252,9 +252,7 @@
                     scrollVal = $.learuntab.calSumWidth($(tabElement).prevAll());
                 }
             }
-            $('.page-tabs-content').animate({
-                marginLeft: 0 - scrollVal + 'px'
-            }, "fast");
+            $('.page-tabs-content').animate({marginLeft: 0 - scrollVal + 'px'}, "fast");
         },
         scrollToTab: function (element) {
             var marginLeftVal = $.learuntab.calSumWidth($(element).prevAll()), marginRightVal = $.learuntab.calSumWidth($(element).nextAll());
