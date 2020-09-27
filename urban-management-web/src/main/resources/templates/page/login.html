@@ -9,7 +9,7 @@
 <body>
 
 <div class="div_top">
-   城市综合服务管理平台
+    城市综合管理服务平台
 </div>
 <div class="underTop">Urban integrated management service platform</div>
 <div class="login">
@@ -28,9 +28,10 @@
         </div>
 
         <hr class="hr20">
-        <img id="captchaImg" th:src="@{/captcha.jpeg}" class="canvas" alt="验证码" title="点击图片刷新验证码" onclick="changeCaptcha()">
+
         <div class="inpBox">
             <div class="icon icon3"></div>
+            <img id="captchaImg" th:src="@{/captcha.jpeg}" class="canvas" alt="验证码" title="点击图片刷新验证码" onclick="changeCaptcha()">
             <input name="input-val" class="input-val" placeholder="请输入验证码" id="captcha" type="text" maxlength="4" >
         </div>
 
