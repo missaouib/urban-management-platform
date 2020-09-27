@@ -1,6 +1,6 @@
 package com.unicom.urban.management.web.framework.security;
 
-import com.unicom.urban.management.common.util.IpUtils;
+import cn.hutool.extra.servlet.ServletUtil;
 import com.unicom.urban.management.pojo.entity.LoginInfo;
 import com.unicom.urban.management.service.logininfo.LoginInfoService;
 import eu.bitwalker.useragentutils.UserAgent;
@@ -56,7 +56,7 @@ public abstract class AbstractAuthenticationHandler {
 
 
     private String getIpAddress(HttpServletRequest request) {
-        return IpUtils.getIpAddr(request);
+        return ServletUtil.getClientIP(request);
     }
 
 }
