@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Setter
@@ -19,7 +20,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity {
+public class BaseEntity implements Serializable {
 
 
     @CreatedDate

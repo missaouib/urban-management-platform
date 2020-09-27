@@ -1,6 +1,11 @@
 package com.unicom.urban.management.web.framework.cache;
 
+import org.springframework.cache.CacheManager;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.cache.RedisCacheWriter;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 
 /**
  * redis缓存配置
@@ -8,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @author liukai
  */
 @Configuration
-public class RedisConfigurer {
+public class RedisCacheConfigurer {
 
 
 //    @Bean
@@ -27,6 +32,11 @@ public class RedisConfigurer {
 //                //设置value序列化器
 //                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer((valueSerializer())));
 //        return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(factory)).cacheDefaults(cacheConfig).build();
+//    }
+
+//    @Bean
+//    public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+//        return RedisCacheManager.builder(RedisCacheWriter.nonLockingRedisCacheWriter(redisConnectionFactory)).build();
 //    }
 
 
