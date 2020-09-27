@@ -85,12 +85,12 @@ tbody tr:hover{background-color: white!important;}
 .row{width: 100vw;height: 90vh}
 .row-h4{padding: 10px 0 0 0 }
 .map{width: 100%;height: 100%}
-.card{height: 100%}
+.card{height: 100%;margin-top: 10px}
 .leftBox{width: 48%}
 .rightBox{width: 49%;float: right;margin-left: 20px}
 td input{padding: 0 5px!important;width: 100%}
 .timeBox{width: 100%;padding: 10px 17px;display: inline-block;background: #fff;border: 1px solid #E6E9ED;margin-left: 5px}
-.timeTitle{border-bottom: 2px solid #E6E9ED;padding: 1px 5px 6px;}
+.timeTitle{border-bottom: 2px solid #E6E9ED;padding: 1px 5px 4px 0;margin-top: 10px}
 .timeAfter:after{content: ".";display: block;height: 0;clear: both;visibility: hidden;}
 .timeContent{padding: 0 6px;margin-top: 5px}
 ul,li{list-style: none}

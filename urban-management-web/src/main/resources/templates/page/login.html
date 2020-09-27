@@ -8,21 +8,37 @@
 </head>
 <body>
 
-<div class="div_top">城市综合管理服务平台</div>
+<div class="div_top">
+   城市综合服务管理平台
+</div>
+<div class="underTop">Urban integrated management service platform</div>
 <div class="login">
-    <div class="message">用户登录</div>
+    <div class="message">登录账号</div>
     <div id="darkbannerwrap"></div>
     <form id="loginForm">
-        <input name="username" placeholder="账号" id="username" type="text">
-        <hr class="hr15">
-        <input name="password" placeholder="密码" id="password" type="password">
-        <hr class="hr15">
+        <div class="inpBox">
+            <div class="icon icon1"></div>
+            <input name="username" placeholder="账号" id="username" type="text" class="username">
+        </div>
+
+        <hr class="hr20">
+        <div class="inpBox">
+            <div class="icon icon2"></div>
+            <input name="password" placeholder="密码" id="password" type="password" class="password">
+        </div>
+
+        <hr class="hr20">
         <img id="captchaImg" th:src="@{/captcha.jpeg}" class="canvas" alt="验证码" title="点击图片刷新验证码" onclick="changeCaptcha()">
-        <input name="input-val" class="input-val" placeholder="请输入验证码" id="captcha" type="text" maxlength="4">
-        <hr class="hr15">
+        <div class="inpBox">
+            <div class="icon icon3"></div>
+            <input name="input-val" class="input-val" placeholder="请输入验证码" id="captcha" type="text" maxlength="4" >
+        </div>
+
+        <hr class="hr20">
     </form>
-    <input value="登录" style="width: 100%;" type="button" onclick="login()" id="login_btn">
-    <hr class="hr20">
+
+    <input value="登录" style="width: 100%;" type="button" onclick="login()" id="login_btn" class="login_btn">
+<!--    <span class="forget">忘记密码?</span>-->
 </div>
 <div class="copyright">版权所有&nbsp;<span style="color: #f77118">2020 </span>中国联通</div>
 <script type="text/javascript" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
@@ -32,6 +48,7 @@
 
 
 <script type="text/javascript" th:inline="javascript">
+
 
     if (window.top !== window.self) {
         alert('未登录或登录超时。请重新登录');
@@ -74,7 +91,11 @@
                 }
             }
         });
+
+
     }
+
+
 
 
     function encryptPassword(password) {
