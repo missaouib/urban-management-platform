@@ -1,0 +1,310 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    background: url('../img/pgone.png');
+    background-size: 100%;
+    overflow: hidden;
+    /* position: relative; */
+}
+
+.surround-box,
+.center-point {
+    position: absolute;
+    top: 50%;
+    left: 5.5%;
+    width: 175px;
+    height: 175px;
+    margin-left: 33px;
+    margin-top: -86.5px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(1, 94, 234, 0.68), rgba(0, 192, 250, 0.68));
+    /* background-size: 100% 100%; */
+}
+
+.post {
+    width: 360px;
+    height: 100%;
+    position: relative;
+    float: left;
+}
+
+.get {
+    width: 535px;
+    height: 245px;
+    float: right;
+    margin-top: 82px;
+    /* margin-right: 50px; */
+    color: blue;
+}
+
+.info {
+    position: relative;
+    width: 402px;
+    height: 99px;
+    font-size: 16px;
+    font-family: BDZongYi-A001;
+    font-weight: normal;
+    color: #BFDCFF;
+    margin-top: 70px;
+}
+
+.test {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.active {
+    width: 210px!important;
+    height: 120px!important;
+    font-size: 20px;
+    font-weight: 500;
+    background-image: url('../img/back.png')!important;
+}
+
+.testActive {
+    display: block!important;
+}
+
+.otherActive {
+    display: block!important;
+}
+
+.solid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 920px;
+    height: 405px;
+    /* margin: 0 auto; */
+    background: url("../img/solidbig.png") no-repeat;
+    background-size: 100%;
+}
+
+.circle {
+    /* 这里一定要绝对定位，这样位置才能铺开来 */
+    position: absolute;
+    top: 35px;
+    left: -10px;
+    width: 200px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    color: #fff;
+    background-size: 100% 100%;
+    background-image: url('../img/back.png');
+    transition: all 0.3s;
+}
+
+.circle1 {
+    /* rotateZ控制方向，每个元素旋转30度，12个元素刚好360度。translateY控制每个元素距中心点的距离 */
+    transform: rotateZ(203deg) translateY(190px);
+    z-index: 9;
+}
+
+.circle2 {
+    transform: rotateZ(159deg) translateY(190px) translateX(-2px);
+    z-index: 8;
+}
+
+.circle3 {
+    transform: rotateZ(115deg) translateY(190px) translateX(-3px);
+    z-index: 7;
+}
+
+.circle4 {
+    transform: rotateZ(72deg) translateY(190px) translateX(-2px);
+    z-index: 6;
+}
+
+.circle5 {
+    z-index: 5;
+    transform: rotateZ(29deg) translateY(191px) translateX(-1px);
+}
+
+.circle6 {
+    transform: rotateZ(-15deg) translateY(191px) translateX(-3px);
+    z-index: 4;
+}
+
+.active.circle1 {
+    transform: rotateZ(202deg) translateY(203px) translateX(0px);
+    z-index: 9;
+}
+
+.active.circle2 {
+    transform: rotateZ(159deg) translateY(207px) translateX(-2px);
+    z-index: 9;
+}
+
+.active.circle3 {
+    transform: rotateZ(116deg) translateY(203px) translateX(-5px);
+    z-index: 9;
+}
+
+.active.circle4 {
+    transform: rotateZ(74deg) translateY(199px) translateX(-3px);
+    z-index: 9;
+}
+
+.active.circle5 {
+    transform: rotateZ(31deg) translateY(188px) translateX(-1px);
+    z-index: 9;
+}
+
+.active.circle6 {
+    transform: rotateZ(-14deg) translateY(189px) translateX(-1px);
+    z-index: 9;
+}
+
+.top {
+    width: 100%;
+    height: 40px;
+    position: fixed;
+    top: 15px;
+    left: 0;
+}
+
+.title {
+    width: 240px;
+    height: 100%;
+    margin-left: 24px;
+    float: left;
+}
+
+img {
+    width: 100%;
+    height: 100%;
+}
+
+.logo {
+    width: 38px;
+    height: 38px;
+    float: left;
+    margin-right: 20px;
+}
+
+.name {
+    height: 18px;
+    font-size: 18px;
+    font-family: Microsoft YaHei;
+    line-height: 40px;
+    font-weight: 400;
+    color: #FFFFFF;
+    opacity: 0.6;
+}
+
+.users {
+    width: 100px;
+    height: 100%;
+    float: right;
+    margin-right: 100px;
+}
+
+.head {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    float: left;
+    margin-right: 10px;
+    overflow: hidden;
+}
+
+.username {
+    font-size: 13px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #FFFFFF;
+    opacity: 0.6;
+    line-height: 40px;
+}
+
+.quit {
+    width: 27px;
+    height: 28px;
+    border: 1px solid #FFFFFF;
+    opacity: 0.6;
+    border-radius: 5px;
+    overflow: hidden;
+    position: absolute;
+    right: 30px;
+    top: 6px;
+}
+
+.footer {
+    width: 380px;
+    height: 12px;
+    font-size: 10px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #FFFFFF;
+    line-height: 17px;
+    opacity: 0.6;
+    text-align: center;
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -190px;
+}
+
+.inner,
+.other {
+    width: 100%;
+    height: 50%;
+}
+
+.other {
+    font-size: 8px;
+    position: absolute;
+    top: 20px;
+    display: none;
+}
+
+.inner1,
+.inner2,
+.inner3 {
+    transform: rotate(180deg);
+    line-height: 0px;
+}
+
+.other1,
+.other2,
+.other3 {
+    transform: rotate(180deg);
+    line-height: 0px;
+}
+
+.work {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9;
+    display: none;
+}
+.workActive{
+    display: block;
+}
+.computer {
+    width: 56px;
+    height: 50px;
+    margin: 40px auto 20px auto;
+}
+
+.worktable {
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    color: white;
+}

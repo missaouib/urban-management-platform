@@ -18,6 +18,7 @@ body, html {
 body {
     background-image: url("../img/bg.png");
     background-size: 100% 100%;
+    position: relative;
 }
 
 a {
@@ -36,8 +37,10 @@ a {
     font-weight: 800;
     color: #FFFFFF;
     line-height: 17px;
-    margin: 100px auto 0 auto;
+    position: absolute;
+    top: 15%;
     background: linear-gradient(0deg, #63A3FF 0%, #EDF6FF 49.5849609375%, #72BEFF 100%);
+    letter-spacing: 10px;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
@@ -48,7 +51,9 @@ a {
     margin: 0 auto;
     font-weight: 400;
     color: #FFFFFF;
-    margin: 20px 0 40px 0;
+    position: absolute;
+    top: 23%;
+    width: 100%;
     line-height: 25px;
 text-align: center;
     background: linear-gradient(0deg, #63A3FF 0%, #EDF6FF 49.5849609375%, #72BEFF 100%);
@@ -78,8 +83,7 @@ text-align: center;
     background-image: url("../img/code.png");
 }
 .login {
-    margin: 20px auto 0 auto;
-    /*min-height: 420px;*/
+    max-height: 330px;
     max-width: 420px;
     padding: 20px;
     margin-left: auto;
@@ -87,6 +91,9 @@ text-align: center;
     /* overflow-x: hidden; */
     background-image: url("../img/solid.png");
     background-size: 100% 100%;
+    position: absolute;
+    top: 0;left: 0;right: 0;bottom: 0;
+    margin: auto;
 }
 
 a.logo {

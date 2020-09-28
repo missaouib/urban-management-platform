@@ -1,10 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/module.css}"/>
 </head>
-<body>
 
+<body>
+<div class="top">
+    <div class="title">
+        <div class="logo">
+            <img th:src="@{/img/logo.png}" alt="">
+        </div>
+        <div class="name">城市综合管理服务平台</div>
+    </div>
+    <div class="users">
+        <div class="head">
+            <img th:src="@{/img/logo.png}" alt="">
+        </div>
+        <div class="username">admin</div>
+    </div>
+    <div class="quit">
+        <img th:src="@{/img/out.png}" alt="">
+    </div>
+</div>
+<div class="solid">
+    <div class="post">
+        <div class="center-point">
+            <div class="work workActive">
+                <div class="computer">
+                    <img th:src="@{/img/computer.png}" alt="">
+                </div>
+                <p class="worktable">工作台</p>
+            </div>
+            <div class="work">
+                <div class="computer">
+                    <img th:src="@{/img/command.png}" alt="">
+                </div>
+                <p class="worktable">指挥协调</p>
+            </div>
+            <div class="work">
+                <div class="computer">
+                    <img th:src="@{/img/public.png}" alt="">
+                </div>
+                <p class="worktable">公众服务</p>
+            </div>
+            <div class="work">
+                <div class="computer">
+                    <img th:src="@{/img/workin.png}" alt="">
+                </div>
+                <p class="worktable">行业应用</p>
+            </div>
+            <div class="work">
+                <div class="computer">
+                    <img th:src="@{/img/change.png}" alt="">
+                </div>
+                <p class="worktable">数据汇集与交换</p>
+            </div>
+            <div class="work">
+                <div class="computer">
+                    <img th:src="@{/img/bigshow.png}" alt="">
+                </div>
+                <p class="worktable">大屏展示</p>
+            </div>
+        </div>
+        <div class="surround-box">
+            <div class="circle circle1 ">
+                <p class="inner inner1">工作台</p>
+                <p class="other other1">Work Bench</p>
+            </div>
+            <div class="circle circle2 ">
+                <p class="inner inner2">指挥协调</p>
+                <p class="other other2">Command coordination</p>
+            </div>
+            <div class="circle circle3 ">
+                <p class="inner inner3">公众服务</p>
+                <p class="other other3">public service</p>
+            </div>
+            <div class="circle circle4 ">
+                <p class="inner">行业应用</p>
+                <p class="other">Industry application</p>
+            </div>
+            <div class="circle circle5 ">
+                <p class="inner">数据汇集与交换</p>
+                <p class="other">collection exchange</p>
+            </div>
+            <div class="circle circle6 ">
+                <p class="inner">大屏展示</p>
+                <p class="other">Large screen display</p>
+            </div>
+        </div>
+    </div>
+    <div class="get">
+        <div class="info">
+            <div class="test testActive">个人信息（个人信息修改、密码修改、通讯录）注销功能、 返回（登陆成功页面）设置数值的图标：本周-上报数 本周-立案数 本周-派遣数 本周-结案数个人事信息展示： 当前登陆人的角色信息、参与数、在办数、办结数。</div>
+            <div class="test">指挥协调</div>
+            <div class="test">公众服务</div>
+            <div class="test">行业应用</div>
+            <div class="test">数据汇集与交换</div>
+            <div class="test">大屏展示</div>
+        </div>
+    </div>
+</div>
+<div class="footer">Copyright © 2020 联通（黑龙江）产业互联网有限公司</div>
 </body>
+<script type="text/javascript" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/module.js}"></script>
+
 </html>
