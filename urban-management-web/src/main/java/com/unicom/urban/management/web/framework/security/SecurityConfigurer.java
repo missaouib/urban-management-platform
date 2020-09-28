@@ -37,13 +37,12 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 "/captcha.jpeg",
                 "/page/**",
                 "/css/**",
-                "/dist/**",
                 "/fonts/**",
                 "/img/**",
                 "/js/**",
-                "/json/**",
                 "/plugins/**",
-                "/favicon.ico");
+                "/favicon.ico"
+        );
     }
 
 
