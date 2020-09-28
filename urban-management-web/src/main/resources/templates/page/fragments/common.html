@@ -10,7 +10,6 @@
     <link rel="stylesheet" th:href="@{/plugins/layer/theme/default/layer.css}">
     <link rel="stylesheet" th:href="@{/css/table.css}">
 </div>
-
 <!-- 通用JS -->
 <div th:fragment="common_js">
     <script th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
@@ -67,7 +66,7 @@
 
 
 
-
+<!--  校验插件  只有js  没有css-->
 <div th:fragment="jquery_validation_js">
     <script type="text/javascript" th:src="@{/plugins/jquery-validation/dist/jquery.validate.js}"></script>
     <script type="text/javascript" th:src="@{/plugins/jquery-validation/dist/additional-methods.js}"></script>
