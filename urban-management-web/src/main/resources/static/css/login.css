@@ -137,6 +137,7 @@ a.logo {
     color: white;
     font-size: 18px;
     opacity: 1;
+    cursor:pointer;
 }
 .forget{
     width: 100%;
