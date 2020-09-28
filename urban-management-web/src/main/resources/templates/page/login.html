@@ -61,6 +61,8 @@
 
     let captchaUrl = /*[[@{/captcha.jpeg?}]]*/ "/captcha.jpeg";
 
+    let moduleUrl = /*[[@{/module}]]*/ "/module";
+
     let PUBLIC_KEY = [[${PUBLIC_KEY}]];
 
 
@@ -85,7 +87,7 @@
             },
             success: function (result) {
                 if (result.code === '0') {
-                    window.location.href = loginUrl;
+                    window.location.href = moduleUrl;
                 } else {
                     changeCaptcha();
                     layer.msg(result.message);
