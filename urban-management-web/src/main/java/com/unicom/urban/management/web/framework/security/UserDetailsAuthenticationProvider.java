@@ -1,6 +1,7 @@
 package com.unicom.urban.management.web.framework.security;
 
 
+import cn.hutool.crypto.CryptoException;
 import com.unicom.urban.management.common.constant.CaptchaConstant;
 import com.unicom.urban.management.common.exception.authentication.BadCaptchaException;
 import com.unicom.urban.management.common.exception.authentication.CaptchaExpiredException;
@@ -53,6 +54,9 @@ public class UserDetailsAuthenticationProvider implements AuthenticationProvider
             additionalAuthenticationChecks(user, (UsernamePasswordCaptchaAuthenticationToken) authentication);
         } catch (AuthenticationException exception) {
             throw exception;
+        } catch (CryptoException exception) {
+            log.error("username:{} RSA解析密码出现错误", username);
+            throw new BadCredentialsException("RSA解析密码出现错误");
         }
 
 
