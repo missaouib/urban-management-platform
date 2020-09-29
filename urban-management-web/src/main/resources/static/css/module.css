@@ -308,3 +308,14 @@ img {
     font-weight: 700;
     color: white;
 }
+
+.otherActive.other1,
+.otherActive.other2,
+.otherActive.other3{
+    top: -14px;
+}
+.active .inner1,
+.active .inner2,
+.active .inner3{
+    margin-top: 10px;
+}
