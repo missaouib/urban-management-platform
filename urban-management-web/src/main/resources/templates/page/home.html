@@ -326,56 +326,111 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="innerBottom"></div>
-<!--                            <table class="table table-striped">-->
-<!--                                <thead>-->
-<!--                                <tr>-->
-<!--                                    <th>事件</th>-->
-<!--                                    <th>本周</th>-->
-<!--                                    <th>本月</th>-->
-<!--                                    <th>总数</th>-->
-<!--                                </tr>-->
-<!--                                </thead>-->
-<!--                                <tbody>-->
-<!--                                <tr>-->
-<!--                                    <td>公共设施</td>-->
-<!--                                    <td>1</td>-->
-<!--                                    <td>26</td>-->
-<!--                                    <td>28</td>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td>事件交通</td>-->
-<!--                                    <td>5</td>-->
-<!--                                    <td>30</td>-->
-<!--                                    <td>35</td>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td>市容环境</td>-->
-<!--                                    <td>4</td>-->
-<!--                                    <td>4</td>-->
-<!--                                    <td>12</td>-->
-<!--                                </tr>-->
+                            <div class="innerBottom">
+                                <div class="zara tiaoActive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>事件</th>
+                                            <th>本周</th>
+                                            <th>本月</th>
+                                            <th>总数</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>公共设施</td>
+                                            <td>1</td>
+                                            <td>26</td>
+                                            <td>28</td>
+                                        </tr>
+                                        <tr>
+                                            <td>事件交通</td>
+                                            <td>5</td>
+                                            <td>30</td>
+                                            <td>35</td>
+                                        </tr>
+                                        <tr>
+                                            <td>市容环境</td>
+                                            <td>4</td>
+                                            <td>4</td>
+                                            <td>12</td>
+                                        </tr>
 
-<!--                                <tr>-->
-<!--                                    <td>园林绿化</td>-->
-<!--                                    <td>6</td>-->
-<!--                                    <td>8</td>-->
-<!--                                    <td>17</td>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td>房屋土地</td>-->
-<!--                                    <td>7</td>-->
-<!--                                    <td>89</td>-->
-<!--                                    <td>30</td>-->
-<!--                                </tr>-->
-<!--                                <tr>-->
-<!--                                    <td>其他设施</td>-->
-<!--                                    <td>1</td>-->
-<!--                                    <td>26</td>-->
-<!--                                    <td>28</td>-->
-<!--                                </tr>-->
-<!--                                </tbody>-->
-<!--                            </table>-->
+                                        <tr>
+                                            <td>园林绿化</td>
+                                            <td>6</td>
+                                            <td>8</td>
+                                            <td>17</td>
+                                        </tr>
+                                        <tr>
+                                            <td>房屋土地</td>
+                                            <td>7</td>
+                                            <td>89</td>
+                                            <td>30</td>
+                                        </tr>
+                                        <tr>
+                                            <td>其他设施</td>
+                                            <td>1</td>
+                                            <td>26</td>
+                                            <td>28</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="zara">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>事件</th>
+                                            <th>本周</th>
+                                            <th>本月</th>
+                                            <th>总数</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td>设施</td>
+                                            <td>1</td>
+                                            <td>26</td>
+                                            <td>28</td>
+                                        </tr>
+                                        <tr>
+                                            <td>交通</td>
+                                            <td>5</td>
+                                            <td>30</td>
+                                            <td>35</td>
+                                        </tr>
+                                        <tr>
+                                            <td>环境</td>
+                                            <td>4</td>
+                                            <td>4</td>
+                                            <td>12</td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>绿化</td>
+                                            <td>6</td>
+                                            <td>8</td>
+                                            <td>17</td>
+                                        </tr>
+                                        <tr>
+                                            <td>土地</td>
+                                            <td>7</td>
+                                            <td>89</td>
+                                            <td>30</td>
+                                        </tr>
+                                        <tr>
+                                            <td>设施</td>
+                                            <td>1</td>
+                                            <td>26</td>
+                                            <td>28</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
                         </div>
                         <div class="col-md-4 bottomInner">
                             <div class="mannertable self">
@@ -558,7 +613,14 @@
 <!--<script src="../../static/js/bstable/js/bootstrap-table.js" th:src="@{js/bstable/js/bootstrap-table.js}"></script>-->
 <!--<script src="../../static/js/bstable/js/bootstrap-table-zh-CN.min.js" th:src="@{/js/bstable/js/bootstrap-table-zh-CN.min.js}"></script>-->
 <script type="text/javascript" th:inline="javascript">
-
+    $(function() {
+        $(".star").click(function() {
+            $(this).addClass("staractive").siblings(".star").removeClass("staractive");
+            $(".zara").eq($(this).index(".star")).addClass("tiaoActive").siblings(".zara").removeClass("tiaoActive");
+            // $(".tiao").eq($(this).index(".star")).addClass("tiaoActive").siblings(".tiao").removeClass("tiaoActive");
+            $(this).children(".tiao").addClass("tiaoActive").parent(".star").siblings('.star').children(".tiao").removeClass("tiaoActive");
+        })
+    })
 
     // $('#table').bootstrapTable({
     //     method: "get",
