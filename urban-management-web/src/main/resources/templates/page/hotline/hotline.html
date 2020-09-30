@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>热线上报</title>
     <th:block th:include="page/fragments/common :: common_css"/>
-
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;width: 680px">
@@ -93,7 +93,8 @@
                                     </tbody>
                                 </table>
                             </div>
-<!--                            时间轴-->
+                            <input id="input-id" type="file" data-preview-file-type="text" >
+                            <!--                            时间轴-->
                             <div class="timeBox">
                                 <div class="timeTitle">
                                     <h5>时间轴</h5>
@@ -165,10 +166,17 @@
 
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
-
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
 <script type="text/javascript" th:inline="javascript">
 
     let url = /*[[@{/user/save}]]*/ "/json/unit.json";
+
+
+    $(function(){
+        $("#input-id").fileinput({
+            language: 'zh'
+        });
+    })
 
     function Cancel() {
         $.modal.closeLoading();
