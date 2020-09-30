@@ -17,11 +17,28 @@
         <!--头部信息-->
         <header class="main-header" style="height: 82px;background-color: #333333;background-size: 100% 100%" >
             <a href="javascript:void (0)" class="logo" style="width: 561px;height: 82px;display: inline-block;">
-                <img src="../../static/img/title01.png" th:src="@{/img/title01.png}" style="margin-top: 10px"/>
+                <div class="logotop">
+                    <img th:src="@{/img/logo.png}" style=""/>
+                </div>
+                <div class="logoTitle">城市综合管理服务平台</div>
+                <div class="backHome">
+                    <i><img th:src="@{/img/hours.png}" ></i>
+                    <span>主界面</span>
+                </div>
             </a>
-            <div style="height: 82px;width: 220px;display: inline-block;position: absolute;right:14%">
-                <img src="../../static/img/PIC.png" th:src="@{/img/PIC.png}" style=""/>
+            <div class="headerRight">
+                <div class="date">
+                    <div class="Day">星期二</div>
+                    <div class="daily">2020年4月20日</div>
+                </div>
+                <div class="quitBtn">
+                    <span>退出</span>
+                    <i><img th:src="@{/img/quit.png}" ></i>
+                </div>
             </div>
+
+
+
             <nav class="navbar navbar-static-top" style="display:block;font-weight: 500;font-size: 14px;color: #fff;padding-left: 10px" >
                 <div class="navbar-custom-menu">
                     <ul class="nav navbar-nav">
@@ -52,7 +69,7 @@
                     <!--</div>-->
                 <!--</form>-->
                 <ul class="sidebar-menu" id="sidebar-menu" style="margin-top: 32px">
-                    <li class="header" style="background-color: #fff;">导航菜单</li>
+                    <li class="header" style="background: #1F3754;"></li>
                 </ul>
             </div>
         </div>
@@ -60,16 +77,17 @@
         <div id="content-wrapper" class="content-wrapper">
             <div class="content-tabs">
                 <button class="roll-nav roll-left tabLeft">
-                    <i class="fa fa-backward"></i>
+                    <div class="firsticon"><img th:src="@{/img/more.png}" ></div>
                 </button>
+
                 <nav class="page-tabs menuTabs">
                     <div class="page-tabs-content" style="margin-left: 0px;">
                         <a href="javascript:;" class="menuTab active" data-id="default.html">欢迎首页</a>
                     </div>
                 </nav>
-                <button class="roll-nav roll-right tabRight">
-                    <i class="fa fa-forward" style="margin-left: 3px;"></i>
-                </button>
+<!--                <button class="roll-nav roll-right tabRight">-->
+<!--                    <i class="fa fa-forward" style="margin-left: 3px;"></i>-->
+<!--                </button>-->
                 <div class="btn-group roll-nav roll-right">
                     <button class="dropdown tabClose" data-toggle="dropdown">
                         页签操作<i class="fa fa-caret-down" style="padding-left: 3px;"></i>
@@ -86,8 +104,12 @@
             <div class="content-iframe">
                 <div class="mainContent" id="content-main" style="margin: 10px; margin-bottom: 0; padding: 0;">
                     <iframe id="myFrame" class="LRADMS_iframe" width="100%" height="100%" src="home.html" th:src="@{/home}" frameborder="0" data-id="default.html"></iframe>
+
+
                 </div>
+
             </div>
+
         </div>
     </div>
     <!--  index.html的jquery版本不要修改  -->
