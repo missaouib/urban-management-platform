@@ -46,5 +46,8 @@ public class User extends BaseEntity {
     @MobileNumber(message = "手机号码格式不正确")
     private String mobileNumber;
 
+    @ManyToOne
+    private DictData sex;
+
 
 }

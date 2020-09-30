@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @ResponseResultBody
 public class LoginInfoController {
@@ -27,8 +30,12 @@ public class LoginInfoController {
 
 
     @GetMapping("/logininfo/search")
-    public Page<LoginInfo> search(LoginInfo loginInfo, @PageableDefault Pageable pageable) {
-        return loginInfoService.search(loginInfo, pageable);
+    public Map<String, Object> search(LoginInfo loginInfo, @PageableDefault Pageable pageable) {
+        Map<String, Object> map = new HashMap<>();
+        Page<LoginInfo> search = loginInfoService.search(loginInfo, pageable);
+        map.put("content", search.getContent());
+        map.put("totalElements", search.getTotalElements());
+        return map;
     }
 
 

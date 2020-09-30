@@ -2,6 +2,7 @@ package com.unicom.urban.management.service.user;
 
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.user.UserRepository;
+import com.unicom.urban.management.pojo.dto.UserDTO;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.service.password.PasswordService;
 import org.apache.commons.lang3.StringUtils;
@@ -29,14 +30,14 @@ public class UserService {
     private PasswordService passwordService;
 
 
-    public Page<User> search(User user, Pageable pageable) {
+    public Page<User> search(UserDTO userDTO, Pageable pageable) {
         return userRepository.findAll((Specification<User>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
-            if (StringUtils.isNotEmpty(user.getName())) {
-                list.add(criteriaBuilder.equal(root.get("name").as(String.class), user.getName()));
+            if (StringUtils.isNotEmpty(userDTO.getName())) {
+                list.add(criteriaBuilder.equal(root.get("name").as(String.class), userDTO.getName()));
             }
-            if (StringUtils.isNotEmpty(user.getUsername())) {
-                list.add(criteriaBuilder.equal(root.get("username").as(String.class), user.getUsername()));
+            if (StringUtils.isNotEmpty(userDTO.getUsername())) {
+                list.add(criteriaBuilder.equal(root.get("username").as(String.class), userDTO.getUsername()));
             }
 
             Predicate[] p = new Predicate[list.size()];
