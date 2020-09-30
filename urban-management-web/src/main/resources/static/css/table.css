@@ -906,3 +906,5 @@ body{height: 100vh!important;}
 .single{background-color: #1c84c6!important;border-color: #1c84c6!important;color: #FFFFFF!important;}
 .btn-success{background-color:#1ab394!important;border-color: #1ab394!important;color: #FFFFFF!important;}
 .btn-info{background-color: #23c6c8!important;border-color: #23c6c8!important;color: #FFFFFF!important;}
+.bootstrap-table .fixed-table-container .table thead .createTime,
+.bootstrap-table .fixed-table-container .table thead .updateTime{width: 250px!important;}
