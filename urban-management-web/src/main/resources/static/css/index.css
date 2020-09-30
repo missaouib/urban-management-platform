@@ -120,12 +120,14 @@ a:hover,a:active,a:focus{outline:none;text-decoration:none;color:#72afd2}
 .content-wrapper .content-tabs button i{color: #999;}
 .content-wrapper .content-tabs nav.page-tabs{margin-left:40px;width:100000px;height:40px;overflow:hidden}
 .content-wrapper .content-tabs nav.page-tabs .page-tabs-content{float:left}
-.content-wrapper .content-tabs .page-tabs a{display:block;float:left;border-right:solid 0px #ddd;padding:0 15px;padding-right:8px;text-decoration:none;color:#475059;}
+.content-wrapper .content-tabs .page-tabs a{color:#1C60F7!important;display:block;float:left;border-right:solid 0px #ddd;padding:0 15px;padding-right:8px;text-decoration:none;color:#475059;}
 .content-wrapper .content-tabs .page-tabs a:first-child{padding-right:15px;}
 /*.content-wrapper .content-tabs .page-tabs a.active{background: #222d32;color: #fff;border-right: solid 1px #2c3e50;}*/
-.content-wrapper .content-tabs .page-tabs a i{margin-top:-10px;right: 0px;position: relative;color: #999;}
+.content-wrapper .content-tabs .page-tabs a i{margin-top:-10px;right: 0px;position: relative;color: #1C60F7!important;}
 .content-wrapper .content-tabs .page-tabs a i:hover{color:#c00 !important;}
 .content-wrapper .content-tabs .page-tabs a.active i:hover{color:#fff !important;}
+.content-wrapper .content-tabs .page-tabs a.active i{color:white !important;}
+
 .content-wrapper .content-tabs .roll-right.tabRight{right:40px}
 .content-wrapper .content-tabs .roll-right.btn-group{right:40px;width:80px;padding:0}
 .content-wrapper .content-tabs .roll-right.btn-group button{width:80px}
@@ -289,7 +291,7 @@ font-size: 20px;
 .skin-blue .sidebar-menu > li.header1{color: #4b646f;background: #1a2226;}
 .skin-blue .sidebar-menu > li.active > a .a0{color: #ffffff;background: #1e282c;border-left-color: #3c8dbc;}
 .skin-blue .sidebar-menu > li > .treeview-menu1{margin: 0 1px;background: #2c3b41;}
-.content-wrapper .content-tabs .page-tabs a.active{background: #2c3b41;color: #fff;border-right: solid 1px #2c3e50;}
+.content-wrapper .content-tabs .page-tabs a.active{background: #1C5FF7;color: #fff;border-right: solid 1px #2c3e50;}
 
 .skin-blue .main-header .logo2{background-color: #a92626;color: #ffffff;border-bottom: 0 solid transparent;}
 .skin-blue .main-header .navbar2{background-color: #a92626;}
@@ -414,9 +416,9 @@ font-size: 20px;
     background: #1F3754!important;
 }
 .content-wrapper .content-tabs .page-tabs a.active{
-    background: #1F3754!important;
+    background: #1C5FF7!important;
+    color: white!important;
 }
 .mainContent{
     position: relative;
 }
-

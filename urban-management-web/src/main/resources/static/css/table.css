@@ -899,12 +899,15 @@ ul{list-style: none}
 .find_input{padding: 0 0 0 10px}
 .bootstrap-table{padding: 0 10px 10px 10px!important;}
 body{height: 100vh!important;}
-.bootstrap-table .fixed-table-container .table thead th .desc ,.bootstrap-table .fixed-table-container .table thead th .asc{position: absolute;top: 1px;right: 50%;margin-right: -45px}
-.bootstrap-table .fixed-table-container .table thead th .both{position: absolute;top: 1px;right: 50%;margin-right: -45px}
+.bootstrap-table .fixed-table-container .table thead th .desc ,
+.bootstrap-table .fixed-table-container .table thead th .asc{
+    /*position: absolute;top: 1px;right: 50%;margin-right: -45px;*/
+
+}
+/*.bootstrap-table .fixed-table-container .table thead th .both{position: absolute;top: 1px;right: 50%;margin-right: -45px}*/
 .table_style th{position: relative!important;}
 .multiple{background-color: #ed5565!important;border-color: #ed5565!important;color: #FFFFFF!important;}
 .single{background-color: #1c84c6!important;border-color: #1c84c6!important;color: #FFFFFF!important;}
 .btn-success{background-color:#1ab394!important;border-color: #1ab394!important;color: #FFFFFF!important;}
 .btn-info{background-color: #23c6c8!important;border-color: #23c6c8!important;color: #FFFFFF!important;}
-.bootstrap-table .fixed-table-container .table thead .createTime,
-.bootstrap-table .fixed-table-container .table thead .updateTime{width: 250px!important;}
+.bootstrap-table .fixed-table-container .table thead th .sortable {background-position: 62% 50% !important;}

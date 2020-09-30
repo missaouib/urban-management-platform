@@ -279,6 +279,7 @@ dl, dt, dd, ol, ul, li{ list-style:none;}
 .mationTitle{
     font-size: 18px;
     font-weight: 400;
+    color: #333333!important;
 }
 .self{
     padding: 10px 10px 10px 10px ;
@@ -338,7 +339,7 @@ table {
     float: right;
 }
 .buck{
-    line-height: 50px;float:left;font-size: 16px;font-weight: 600;margin-left: 20px;color: #364065;
+    line-height: 50px;float:left;font-size: 16px;font-weight: 600;margin-left: 20px;color: #333333;
 }
 .star{
     width: 50%;
@@ -351,7 +352,7 @@ table {
 .tiao{
     width: 50px;
     height: 10px;
-    background: #364065;
+    background: #1C5FF7;
     border-radius: 10px;
     margin:  0 auto;
     position: absolute;
@@ -364,7 +365,7 @@ table {
     display: block!important;
 }
 .staractive{
-    color: #364065;
+    color: #1C5FF7;
 }
 .innerBottom{
     width: 100%;
@@ -379,4 +380,5 @@ table {
     left: 0;
     display: none;
 }
+
 
