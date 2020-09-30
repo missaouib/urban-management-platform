@@ -135,7 +135,7 @@ dl, dt, dd, ol, ul, li{ list-style:none;}
 
 .manner{
     width: 100%;
-    height: 180px;
+    height: 190px;
 }
 .block{
     width: 50%;
@@ -264,14 +264,17 @@ dl, dt, dd, ol, ul, li{ list-style:none;}
     box-shadow: 1px 1px 6px 0px rgba(228, 228, 228, 0.5);
     border-radius: 5px;
 }
+.box3 .mation{
+    padding: 10px 0;
+}
 .mation{
     display: inline-block;
     width: 100%;
     height: 20%;
-    padding: 10px 0;
+    padding: 10px 0 10px 0;
 }
 .mation div{
-    font-size: 16px;
+    font-size: 12px;
 }
 .mationTitle{
     font-size: 18px;
@@ -280,11 +283,11 @@ dl, dt, dd, ol, ul, li{ list-style:none;}
 .self{
     padding: 10px 10px 10px 10px ;
     /*margin-bottom: 10px;*/
+    height: 100%;
 }
 table {
     padding: 0px 10px!important;
     margin-bottom: 0px!important;
-    height: 100% !important;
 }
 .bottomInner{
     margin-top: 10px;
@@ -296,7 +299,7 @@ table {
 }
 .newstip{
     float: left;
-    font-size: 12px;
+    font-size: 12px!important;
     font-family: Microsoft YaHei;
     background: #FF2A2A;
     border-radius: 5px;
@@ -305,8 +308,13 @@ table {
     display: none;
     margin-right: 5px;
 }
-.tipsMore{
-    margin-top: 10px;
+.mationstar{
+    width: 100%;
+    height: 40px!important;
+    padding: 10px 0!important;
+}
+.tipsMore,tips{
+
     font-size: 11px;
     font-family: Microsoft YaHei;
     font-weight: 400;
@@ -365,10 +373,10 @@ table {
 }
 .zara{
     width: 100%;
-    height: 100%;
     display: none;
     position: absolute;
     top: 0;
     left: 0;
     display: none;
 }
+

@@ -126,7 +126,7 @@ a:hover,a:active,a:focus{outline:none;text-decoration:none;color:#72afd2}
 .content-wrapper .content-tabs .page-tabs a i{margin-top:-10px;right: 0px;position: relative;color: #999;}
 .content-wrapper .content-tabs .page-tabs a i:hover{color:#c00 !important;}
 .content-wrapper .content-tabs .page-tabs a.active i:hover{color:#fff !important;}
-.content-wrapper .content-tabs .roll-right.tabRight{right:120px}
+.content-wrapper .content-tabs .roll-right.tabRight{right:40px}
 .content-wrapper .content-tabs .roll-right.btn-group{right:40px;width:80px;padding:0}
 .content-wrapper .content-tabs .roll-right.btn-group button{width:80px}
 .content-wrapper .content-tabs .roll-right.tabExit{background:#fff;height:39px;width:40px;outline:0}
