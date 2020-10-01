@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author liukai
  */
 @Controller
-public class ModuleController {
+public class MainController {
 
 
-    @GetMapping("/module")
-    public String module() {
-        return SystemConstant.PAGE + "/module";
+    @GetMapping({"/main", "/"})
+    public String main() {
+        return SystemConstant.PAGE + "/main";
     }
 
 

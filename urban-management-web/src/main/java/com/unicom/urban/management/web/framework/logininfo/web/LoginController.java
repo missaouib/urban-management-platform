@@ -30,7 +30,7 @@ public class LoginController {
      */
     @GetMapping("/login")
     public String login(Model model) {
-        return alreadyLogin() ? toIndexPage() : toLoginPage(model);
+        return alreadyLogin() ? toMainPage() : toLoginPage(model);
     }
 
     private String toLoginPage(Model model) {
@@ -38,8 +38,8 @@ public class LoginController {
         return SystemConstant.PAGE + "/login";
     }
 
-    private String toIndexPage() {
-        return "redirect:/index";
+    private String toMainPage() {
+        return "redirect:/";
     }
 
     private boolean alreadyLogin() {
