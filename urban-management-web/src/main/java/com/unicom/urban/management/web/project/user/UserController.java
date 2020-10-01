@@ -3,6 +3,7 @@ package com.unicom.urban.management.web.project.user;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.dto.UserDTO;
+import com.unicom.urban.management.pojo.entity.ChangePasswordDTO;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.user.UserService;
@@ -18,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @ResponseResultBody
@@ -72,6 +71,15 @@ public class UserController {
     @PostMapping("/user/existsByUsername")
     public void existsByUsername(String username) {
         userService.usernameAlreadyExists(username);
+    }
+
+
+    @PostMapping("/user/changePassword")
+    public void changePassword(@Valid ChangePasswordDTO changePasswordDTO) {
+
+
+
+
     }
 
 

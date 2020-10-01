@@ -8,13 +8,13 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class UserDTO {
 
+    @NotBlank(message = "姓名不能为空")
     private String name;
 
     @NotBlank(message = "账号不能为空")
     private String username;
 
-    @NotBlank(message = "手机号码不能为空")
-    @MobileNumber(message = "手机号码格式不正确")
+    @MobileNumber
     private String mobileNumber;
 
 }

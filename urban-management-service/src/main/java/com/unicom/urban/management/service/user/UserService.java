@@ -4,6 +4,7 @@ import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.dto.UserDTO;
+import com.unicom.urban.management.pojo.entity.ChangePasswordDTO;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.password.PasswordService;
@@ -77,6 +78,10 @@ public class UserService {
         userFormDatabase.setMobileNumber(user.getMobileNumber());
 
         userRepository.save(userFormDatabase);
+
+    }
+
+    public void changePassword(ChangePasswordDTO changePasswordDTO) {
 
     }
 
