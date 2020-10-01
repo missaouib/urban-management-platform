@@ -32,7 +32,6 @@ public class User extends BaseEntity {
     /**
      * 登录账号
      */
-    @NotBlank(message = "账号不能为空")
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -42,8 +41,6 @@ public class User extends BaseEntity {
     /**
      * 手机号码
      */
-    @NotBlank(message = "手机号码不能为空")
-    @MobileNumber(message = "手机号码格式不正确")
     private String mobileNumber;
 
     @ManyToOne

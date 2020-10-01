@@ -4,6 +4,7 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.dto.UserDTO;
 import com.unicom.urban.management.pojo.entity.User;
+import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,14 +40,8 @@ public class UserController {
 
 
     @GetMapping("/user/search")
-    public Map<String, Object> search(UserDTO userDTO, @PageableDefault Pageable pageable) {
-        Map<String, Object> map = new HashMap<>();
-        Page<User> search = userService.search(userDTO, pageable);
-
-        map.put("content", search.getContent());
-        map.put("totalElements", search.getTotalElements());
-        map.put("totalPages", search.getTotalPages());
-        return map;
+    public Page<UserVO> search(UserDTO userDTO, @PageableDefault Pageable pageable) {
+        return userService.search(userDTO, pageable);
     }
 
 
@@ -65,8 +60,8 @@ public class UserController {
     }
 
     @PostMapping("/user/save")
-    public void saveUser(@Valid User user) {
-        userService.saveUser(user);
+    public void saveUser(@Valid UserDTO userDTO) {
+        userService.saveUser(userDTO);
     }
 
     @PostMapping("/user/remove")

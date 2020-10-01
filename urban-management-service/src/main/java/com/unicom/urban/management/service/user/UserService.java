@@ -2,12 +2,15 @@ package com.unicom.urban.management.service.user;
 
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.user.UserRepository;
+import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.dto.UserDTO;
 import com.unicom.urban.management.pojo.entity.User;
+import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.password.PasswordService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -30,8 +33,8 @@ public class UserService {
     private PasswordService passwordService;
 
 
-    public Page<User> search(UserDTO userDTO, Pageable pageable) {
-        return userRepository.findAll((Specification<User>) (root, query, criteriaBuilder) -> {
+    public Page<UserVO> search(UserDTO userDTO, Pageable pageable) {
+        Page<User> page = userRepository.findAll((Specification<User>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
             if (StringUtils.isNotEmpty(userDTO.getName())) {
                 list.add(criteriaBuilder.equal(root.get("name").as(String.class), userDTO.getName()));
@@ -43,15 +46,23 @@ public class UserService {
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
+
+        List<UserVO> userVOList = UserMapper.INSTANCE.userListToUserVOList(page.getContent());
+
+        return new PageImpl<>(userVOList, page.getPageable(), page.getTotalElements());
     }
 
 
-    public void saveUser(User user) {
+    public void saveUser(UserDTO userDTO) {
 
-        if (usernameAlreadyExists(user.getUsername())) {
+        if (usernameAlreadyExists(userDTO.getUsername())) {
             throw new DataValidException("账号已经存在");
         }
 
+        User user = new User();
+        user.setName(userDTO.getName());
+        user.setUsername(userDTO.getUsername());
+        user.setMobileNumber(userDTO.getMobileNumber());
         initPassword(user);
 
         userRepository.save(user);

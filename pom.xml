@@ -23,6 +23,7 @@
         <activiti.version>5.22.0</activiti.version>
         <hutool-all.version>5.4.3</hutool-all.version>
         <firebirds.version>1.0.0-SNAPSHOT</firebirds.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
     </properties>
 
     <modules>
@@ -32,6 +33,7 @@
         <module>urban-management-api</module>
         <module>urban-management-service</module>
         <module>urban-management-dao</module>
+        <module>urban-management-mapper</module>
     </modules>
 
     <dependencyManagement>
@@ -127,7 +129,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
