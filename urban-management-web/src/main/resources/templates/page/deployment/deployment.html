@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <title>流程部署管理</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
+<div class="notice_main ">
+    <h6>流程部署管理</h6>
+    <div style="border-bottom: 1px #ccc solid;padding-bottom: 8px">
+        <p style="line-height: 24px;font-size: 14px;padding: 4px 0 0 36px ;color:#bb8940;background-image: url(img/ts_03.png);background-repeat: no-repeat;background-position: 10px 8px;font-weight: bold">温馨提示</p>
+        <ul class="ts">
+            <li><span>*</span>该页面主要显示的是流程部署查询界面。</li>
+        </ul>
+    </div>
+
+
+
+
+<!--    <div class="notice_check">-->
+<!--        <form id="search-form">-->
+<!--            <p>-->
+<!--                <label class="">账号：</label>-->
+<!--                <input type="text" class="find_input" name="username">-->
+<!--                <input type="button" class="check_btn" onclick="$.table.search()" value="查询">-->
+<!--                <input type="button" class="check_btn1" onclick="$.form.reset()" value="重置查询">-->
+<!--            </p>-->
+<!--        </form>-->
+<!--    </div>-->
+
+    <div class="clear"></div>
+
+
+    <div class="btn-group-sm" id="toolbar">
+        <a class="btn btn-success" onclick="$.operate.addTab()">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+<!--        <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">-->
+<!--            <i class="fa fa-edit"></i> 修改-->
+<!--        </a>-->
+<!--        <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">-->
+<!--            <i class="fa fa-remove"></i> 删除-->
+<!--        </a>-->
+        <a class="btn btn-info" onclick="importFile()">
+            <i class="fa fa-upload"></i> 导入
+        </a>
+        <!--    <a class="btn btn-warning" onclick="$.table.exportExcel()">-->
+        <!--        <i class="fa fa-download"></i> 导出-->
+        <!--    </a>-->
+    </div>
+
+<!--    <form method="post" action="/deployment/file" enctype="multipart/form-data">-->
+<!--        <input type="file" name="file">-->
+<!--        <input type="submit" value="提交">-->
+<!--    </form>-->
+
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+</div>
+
+<!-- 导入区域 -->
+<script id="importTpl" type="text/template">
+    <form enctype="multipart/form-data" class="mt20 mb10">
+        <div class="col-xs-offset-1">
+            <input type="file" id="file" name="file"/>
+<!--            <div class="mt10 pt5">-->
+<!--                <input type="checkbox" id="updateSupport" name="updateSupport" title="如果登录账户已经存在，更新这条数据。"> 是否更新已经存在的用户数据-->
+<!--                &nbsp;	<a onclick="$.table.importTemplate()" class="btn btn-default btn-xs"><i class="fa fa-file-excel-o"></i> 下载模板</a>-->
+<!--            </div>-->
+            <font color="red" class="pull-left mt10">
+                提示：仅允许导入“xls”或“xlsx”格式文件！
+            </font>
+        </div>
+    </form>
+</script>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        queryUserList();
+    })
+
+
+    let searchUrl = /*[[@{/deployment/search}]]*/ "/json/unit.json";
+
+    let addUrl = /*[[@{/user/add}]]*/ "/user/add";
+
+    let removeUrl = /*[[@{/deployment/remove}]]*/ "/deployment/remove";
+
+    let importUrl = /*[[@{/deployment/file}]]*/ "/deployment/file";
+
+    // let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
+
+
+    function queryUserList() {
+        var options = {
+            url: searchUrl,
+            createUrl: addUrl,
+            // updateUrl: editUrl,
+            removeUrl: removeUrl,
+            // exportUrl: prefix + "/export",
+            importUrl: importUrl,
+            // importTemplateUrl: prefix + "/importTemplate",
+            sidePagination: "client",
+            uniqueId: "deploymentID",
+            modalName: "流程部署",
+            columns: [
+                // {
+                //     checkbox: true
+                // },
+                {
+                    title: '部署ID',
+                    field: 'id'
+                },
+                {
+                    title: '名称',
+                    field: 'name'
+                },
+                {
+                    title: '部署时间',
+                    field: 'deploymentTime'
+                },
+                // {
+                //     title: '版本',
+                //     field: 'version'
+                // },
+                // {
+                //     title: '资源名称',
+                //     field: 'resourceName'
+                // },
+                {
+                    title: '操作',
+                    field: '',
+                    formatter: function (value, row) {
+                        var e = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
+                        return e;
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    }
+
+    function importFile() {
+        layer.open({
+            type: 1,
+            area: ['400px', '230px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '导入' + table.options.modalName + '数据',
+            content: $('#importTpl').html(),
+            btn: ['<i class="fa fa-check"></i> 导入', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: true,
+            btn1: function(index, layero){
+                var file = layero.find('#file').val();
+                // if (file == '' || (!$.common.endWith(file, '.xls') && !$.common.endWith(file, '.xlsx'))){
+                //     $.modal.msgWarning("请选择后缀为 “xls”或“xlsx”的文件。");
+                //     return false;
+                // }
+                var index = layer.load(2, {shade: false});
+                // $.modal.disable();
+                var formData = new FormData(layero.find('form')[0]);
+                $.ajax({
+                    url: table.options.importUrl,
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    success: function (result) {
+                        if (result.code === web_status.SUCCESS) {
+                            $.modal.closeAll();
+                            $.modal.alertSuccess(result.message);
+                            $.table.refresh();
+                        } else if (result.code === web_status.WARNING) {
+                            layer.close(index);
+                            $.modal.enable();
+                            $.modal.alertWarning(result.message)
+                        } else {
+                            layer.close(index);
+                            $.modal.enable();
+                            $.modal.alertError(result.message);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>

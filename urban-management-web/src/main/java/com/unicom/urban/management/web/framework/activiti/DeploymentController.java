@@ -1,22 +1,30 @@
 package com.unicom.urban.management.web.framework.activiti;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.exception.BusinessException;
+import com.unicom.urban.management.pojo.vo.DeploymentVO;
+import com.unicom.urban.management.service.activiti.DeploymentService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.repository.Deployment;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.zip.ZipInputStream;
 
 /**
- * 部署控制器
+ * 流程部署控制器
  *
  * @author liukai
  */
@@ -28,8 +36,21 @@ public class DeploymentController {
     @Autowired
     private RepositoryService repositoryService;
 
+    @Autowired
+    private DeploymentService deploymentService;
 
-    @PostMapping(value = "/deployment/text")
+    @GetMapping("/deployment")
+    public ModelAndView deployment() {
+        return new ModelAndView(SystemConstant.PAGE + "/deployment/deployment");
+    }
+
+    @GetMapping("/deployment/search")
+    public Page<DeploymentVO> search(@PageableDefault Pageable pageable) {
+        return deploymentService.search(pageable);
+    }
+
+
+    @PostMapping("/deployment/text")
     public void addDeploymentByString(@RequestParam String text) {
         Deployment deployment = repositoryService.createDeployment()
                 .addString("CreateWithBPMNJS.bpmn", text)
@@ -56,8 +77,13 @@ public class DeploymentController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            throw new BusinessException("上传流程文件出现异常");
+            throw new BusinessException("上传流程文件出现异常", e);
         }
+    }
+
+    @PostMapping("/deployment/remove")
+    public void remove(String ids) {
+        deploymentService.remove(ids);
     }
 
 }

@@ -21,7 +21,7 @@ spring:
     check-process-definitions: false
     db-history-used: true
     db-identity-used: false
-    job-executor-activate: true
+    job-executor-activate: false
 
   servlet:
     multipart:
@@ -60,3 +60,6 @@ fdfs:
 #    max-idle-per-key: 10
 #    #每个key对应的连接池最小空闲连接数
 #    max_idle_per_key: 5
+logging:
+  level:
+    org.activiti.engine: info

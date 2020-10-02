@@ -1,9 +1,11 @@
 package com.unicom.urban.management.web.framework;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.pojo.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.MediaType;
@@ -44,6 +46,14 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
             return body;
         }
         return Result.success(body);
+    }
+
+    /**
+     * 系统业务异常
+     */
+    @ExceptionHandler(BusinessException.class)
+    public Result businessException(BusinessException exception) {
+        return Result.fail("500", ExceptionUtils.getStackTrace(exception));
     }
 
 
