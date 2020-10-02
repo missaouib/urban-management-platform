@@ -7,14 +7,9 @@ package com.unicom.urban.management.common.exception;
  */
 public class DataValidException extends BaseException {
 
-    private final String message;
 
     public DataValidException(String message) {
-        this.message = message;
+        super(message);
     }
 
-    @Override
-    public String getMessage() {
-        return message;
-    }
 }

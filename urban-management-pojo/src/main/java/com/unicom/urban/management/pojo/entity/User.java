@@ -1,12 +1,10 @@
 package com.unicom.urban.management.pojo.entity;
 
-import com.unicom.urban.management.common.annotations.validation.MobileNumber;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 
 /**
  * 用户
@@ -42,6 +40,11 @@ public class User extends BaseEntity {
      * 手机号码
      */
     private String mobileNumber;
+
+    /**
+     * 邮箱
+     */
+    private String mail;
 
     @ManyToOne
     private DictData sex;

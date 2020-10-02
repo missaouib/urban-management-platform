@@ -1,6 +1,8 @@
 package com.unicom.urban.management.service.user;
 
+import com.unicom.urban.management.common.exception.BadPasswordException;
 import com.unicom.urban.management.common.exception.DataValidException;
+import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.dto.UserDTO;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
@@ -32,6 +35,9 @@ public class UserService {
 
     @Autowired
     private PasswordService passwordService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public Page<UserVO> search(UserDTO userDTO, Pageable pageable) {
@@ -82,6 +88,19 @@ public class UserService {
     }
 
     public void changePassword(ChangePasswordDTO changePasswordDTO) {
+        User user = userRepository.findByUsername(SecurityUtil.getUser().getUsername());
+
+        if (!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
+            throw new BadPasswordException("密码错误");
+        }
+
+        if (changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfigNewPassword())) {
+            throw new BadPasswordException("两次输入的密码不一致");
+        }
+
+        user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
+
+        userRepository.save(user);
 
     }
 

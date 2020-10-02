@@ -6,4 +6,7 @@ package com.unicom.urban.management.common.exception;
  * @author liukai
  */
 public class BusinessException extends BaseException {
+    public BusinessException(String message) {
+        super(message);
+    }
 }

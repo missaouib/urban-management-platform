@@ -21,6 +21,7 @@ spring:
     check-process-definitions: false
     db-history-used: true
     db-identity-used: false
+    job-executor-activate: true
 
   servlet:
     multipart:

@@ -7,5 +7,7 @@ package com.unicom.urban.management.common.exception;
  */
 public class FrameworkException extends BaseException {
 
-
+    public FrameworkException(String message) {
+        super(message);
+    }
 }

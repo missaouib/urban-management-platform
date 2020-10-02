@@ -103,6 +103,11 @@
 
         <dependency>
             <groupId>org.activiti</groupId>
+            <artifactId>activiti-spring-boot-starter-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.activiti</groupId>
             <artifactId>activiti-diagram-rest</artifactId>
         </dependency>
 
