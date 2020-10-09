@@ -120,6 +120,14 @@
     <script src="../../static/js/common.js" th:src="@{/js/common.js}"></script>
     <script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
     <script type="text/javascript" th:inline="javascript">
+        $(function () {
+            $(".backHome").click(function () {
+                alert("主页面")
+            })
+            $(".quitBtn").click(function () {
+                alert("退出")
+            })
+        })
 
         let url = /*[[@{/logout}]]*/ "/logout";
 
@@ -147,6 +155,9 @@
                 aa.addClass("a0");
             }
         }
+
+
+
     </script>
 
 </body>

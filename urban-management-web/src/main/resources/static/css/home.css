@@ -132,16 +132,16 @@ dl, dt, dd, ol, ul, li{ list-style:none;}
 .email .content table tbody tr td.time .td-wrap{ margin-left:10px; color:#969696;}
 
 
-
 .manner{
     width: 100%;
-    height: 190px;
+    height: 35%;
+    display: flex;
+    justify-content: space-between;
 }
+
 .block{
-    width: 50%;
-    float: left;
+   flex: 1;
     position: relative;
-    height: 100%;
 }
 .block img{
     width: 100%;
@@ -180,14 +180,15 @@ dl, dt, dd, ol, ul, li{ list-style:none;}
     bottom: 40px;
     right: 20px;
 }
+.userManner{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .userBox{
     width: 75%;
-    height: 60%;
-    position: absolute;
-    top: 0 ;left: 0;
-    right: 0;bottom: 0;
-    margin:  auto;
-    line-height: 100%;
+    height: 80%;
 }
 
 .headImg,.username{
@@ -201,8 +202,8 @@ dl, dt, dd, ol, ul, li{ list-style:none;}
 
 }
 .headerImg{
-    width: 80px;
-    height: 80px;
+    width: 89px;
+    height: 89px;
     position: absolute;
     top: 0;left: 0;right: 0;bottom: 0;
     margin: auto 0;
@@ -216,6 +217,8 @@ dl, dt, dd, ol, ul, li{ list-style:none;}
     font-weight: bold;
     color: #333333;
     margin-left: 15px;
+    display: flex;
+    align-items: center;
 
 }
 .headImg img{
@@ -223,17 +226,15 @@ dl, dt, dd, ol, ul, li{ list-style:none;}
 
 }
 .purpose{
-    width: 50%;
+  width: 48%;
     height: 100%;
     float: right;
-    margin-top: -10px;
-    position: absolute;
-    right: 0;
+    display: flex;
+    justify-content: space-between;
 }
 .book{
     width: 33%;
     height: 100%;
-    float: left;
     position: relative;
 }
 
@@ -263,10 +264,9 @@ dl, dt, dd, ol, ul, li{ list-style:none;}
     border: 1px solid #F2F3F5;
     box-shadow: 1px 1px 6px 0px rgba(228, 228, 228, 0.5);
     border-radius: 5px;
+    height: 60%;
 }
-.box3 .mation{
-    padding: 10px 0;
-}
+
 .mation{
     display: inline-block;
     width: 100%;
@@ -281,14 +281,11 @@ dl, dt, dd, ol, ul, li{ list-style:none;}
     font-weight: 400;
     color: #333333!important;
 }
-.self{
-    padding: 10px 10px 10px 10px ;
-    /*margin-bottom: 10px;*/
-    height: 100%;
-}
+
 table {
     padding: 0px 10px!important;
     margin-bottom: 0px!important;
+    height: 100% !important;
 }
 .bottomInner{
     margin-top: 10px;
@@ -380,5 +377,16 @@ table {
     left: 0;
     display: none;
 }
+.warps{
+    display: flex;
+    justify-content: space-between;
+}
+.vneterBox{
+    width: 33%;
+    height: 100%;
 
-
+}
+.warpsOther{
+    width: 100%;
+    height: 39%;
+}
