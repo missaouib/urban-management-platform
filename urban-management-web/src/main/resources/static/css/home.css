@@ -349,7 +349,7 @@ table {
 .tiao{
     width: 50px;
     height: 10px;
-    background: #1C5FF7;
+    background: #354e85;
     border-radius: 10px;
     margin:  0 auto;
     position: absolute;
@@ -362,7 +362,7 @@ table {
     display: block!important;
 }
 .staractive{
-    color: #1C5FF7;
+    color: #354e85;
 }
 .innerBottom{
     width: 100%;
