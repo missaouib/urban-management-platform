@@ -21,6 +21,11 @@ public class SystemConstant {
      */
     public final static String DEFAULT_PASSWORD = "{bcrypt}$2a$10$JGpFd4.EsRD5mayYRzSBoe31cdqBxgJo7lJ9/1RrpD5ywoHYbpAAm";
 
+    /**
+     * 超级管理员的ID
+     */
+    public final static String ADMIN_USER_ID = "1";
+
 //    public final static String URL_PREFIX = "";
 
 

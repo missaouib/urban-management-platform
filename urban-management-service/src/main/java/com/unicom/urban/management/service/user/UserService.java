@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.user;
 
+import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.exception.BadPasswordException;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
@@ -104,8 +105,9 @@ public class UserService {
 
     }
 
-    public User findById(String id) {
-        return userRepository.getOne(id);
+    public UserVO findById(String id) {
+        User user = userRepository.getOne(id);
+        return UserMapper.INSTANCE.userToUserVO(user);
     }
 
     private void initPassword(User user) {
@@ -136,7 +138,7 @@ public class UserService {
     }
 
     private boolean isAdmin(String id) {
-        return "818e5078-9561-4ed8-b8ba-3e29ed8b42d7".equals(id);
+        return SystemConstant.ADMIN_USER_ID.equals(id);
     }
 
     public boolean usernameAlreadyExists(String username) {

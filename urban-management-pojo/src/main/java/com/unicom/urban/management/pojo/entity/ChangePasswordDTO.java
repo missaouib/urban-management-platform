@@ -17,7 +17,7 @@ public class ChangePasswordDTO {
     /**
      * 新密码
      */
-    @Password(message = "密码必须是包含大写字母、小写字母、数字、特殊符号（不是字母，数字，下划线，汉字的字符）的8到16位的组合!")
+    @Password
     private String newPassword;
 
     /**

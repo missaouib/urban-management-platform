@@ -49,7 +49,7 @@ public class UserController {
 
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable String id, Model model) {
-        User user = userService.findById(id);
+        UserVO user = userService.findById(id);
 
         model.addAttribute("user", user);
 

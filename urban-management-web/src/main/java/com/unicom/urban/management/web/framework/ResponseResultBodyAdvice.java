@@ -48,6 +48,16 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
         return Result.success(body);
     }
 
+
+    /**
+     * 运行时异常
+     */
+    @ExceptionHandler(RuntimeException.class)
+    public Result runtimeException(RuntimeException exception) {
+        return Result.fail("500", ExceptionUtils.getStackTrace(exception));
+    }
+
+
     /**
      * 系统业务异常
      */
