@@ -120,20 +120,24 @@
     <script src="../../static/js/common.js" th:src="@{/js/common.js}"></script>
     <script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
     <script type="text/javascript" th:inline="javascript">
+
+        let logoutUrl = /*[[@{/logout}]]*/ "/logout";
+
+        let mainUrl = /*[[@{/main}]]*/ "/main";
+
+
         $(function () {
+
             $(".backHome").click(function () {
-                alert("主页面")
+                window.location.href = mainUrl;
             })
             $(".quitBtn").click(function () {
-                alert("退出")
+                window.location.href = logoutUrl;
             })
+
         })
 
-        let url = /*[[@{/logout}]]*/ "/logout";
 
-        function back(){
-            window.location.href = url;
-        }
         let colorIndex = 0;
         $(function () {
             changeColor(colorIndex);

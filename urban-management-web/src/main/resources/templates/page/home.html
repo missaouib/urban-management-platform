@@ -10,106 +10,17 @@
     <link rel="stylesheet" href="../../static/css/home.css" th:href="@{/css/home.css}"/>
     <link rel="stylesheet" href="../../static/css/index.css" th:href="@{/css/index.css}">
     <link rel="stylesheet" href="../../static/css/table.css" th:href="@{/css/table.css}">
-    <script src="../../static/js/jquery/jQuery-2.2.0.min.js" th:src="@{/js/jquery/jQuery-2.2.0.min.js}"></script>
-    <script src="../../static/js/echarts-all.js" th:src="@{/js/echarts-all.js}"></script>
 
     <!--    <script src="../../static/js/statistical.js" th:src="@{/js/statistical.js}"></script>-->
-    <script>
-        $(function(){
-            salesProportionMyEcharts();
-            profitProportionMyEcharts();
-        });
-        function salesProportionMyEcharts(){
-            var salesProportion = echarts.init($("#salesProportion")[0]);
-            var option = {
-
-                tooltip : {
-                    trigger: 'axis'
-                },
-                legend: {
-                    data:['计划', '实际']
-                },
-
-                calculable : true,
-                xAxis : [
-                    {
-                        type : 'category',
-                        boundaryGap : false,
-                        data : ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-                    }
-                ],
-                yAxis : [
-                    {
-                        type : 'value',
-
-                    }
-                ],
-                series : [
-                    {
-                        name:'计划',
-                        type:'line',
-                        data:[310, 302, 301, 34, 390, 330, 320,10, 302, 201, 334, 190,],
-
-
-                    },
-                    {
-                        name:'实际',
-                        type:'line',
-                        data:[320, 302, 301, 334, 390, 330, 320,120, 302, 201, 334, 110,],
-
-
-                    }
-
-                ]
-            };
-            salesProportion.setOption(option);
-        }
-        function profitProportionMyEcharts(){
-            var profitProportion = echarts.init($("#profitProportion")[0]);
-            var option = {
-                tooltip: {
-                    trigger: 'axis'
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月']
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [
-                    {
-                        name:'事故数',
-                        type:'line',
-                        stack: '（个）',
-                        data:[120, 132, 101, 134, 90, 230, 210, 132, 101, 134, 90, 230, 210, 132, 101, 134, 90, 230, 210, 132, 101, 134, 90, 230, 132, 101, 134, 90, 230, 210, 132, 101, 134, 90, 230]
-                    }
-                ]
-            };
-            profitProportion.setOption(option);
-        }
-    </script>
     <style>
-        .page-list{display: none !important;}
-        td{border: 1px #ccc solid !important;}
-        .charts span{margin-left: 10px}
-        .pagination{margin-right: 10px}
-        .pagination-detail{margin-top: 10px !important;}
-        .pagination-info{display: none !important;}
-        .matter .content .matter-content .matter-list li .matter-time{width: 46px}
-        .rows h2,.rows h5{color: #fff ;margin-bottom: 10px}
+        .page-list {display: none !important;}
+        td {border: 1px #ccc solid !important;}
+        .charts span {margin-left: 10px}
+        .pagination {margin-right: 10px}
+        .pagination-detail {margin-top: 10px !important;}
+        .pagination-info {display: none !important;}
+        .matter .content .matter-content .matter-list li .matter-time {width: 46px}
+        .rows h2, .rows h5 {color: #fff;margin-bottom: 10px}
     </style>
 </head>
 <body>
