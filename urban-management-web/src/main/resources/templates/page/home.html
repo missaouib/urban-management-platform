@@ -116,9 +116,9 @@
     <div id="areascontent">
         <div class="rows" style="margin-bottom: 0.8%; overflow: hidden;">
             <div style="float: left; width: 100%;">
-                <div style="height: 98vh;width:100%;position: relative; border: 1px solid #e6e6e6; overflow: hidden;">
-                    <div style="height: 56%">
-                        <div class="col-md-4 vneterBox box1" >
+                <div  style="height: 98vh;width:100%;position: relative; border: 1px solid #e6e6e6; overflow: hidden;">
+                    <div class="warps" style="height: 60%">
+                        <div class="vneterBox" >
                             <div class="manner">
                                 <div class="block">
                                     <img th:src="@{/img/ground1.png}" alt="">
@@ -134,7 +134,7 @@
                                 </div>
                             </div>
                             <!--                        表格处-->
-                            <div style="height: 100%">
+
                                 <div class="mannertable">
                                     <table class="table">
                                         <thead>
@@ -186,9 +186,9 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+
                         </div>
-                        <div class="col-md-4 vneterBox box2">
+                        <div class="vneterBox">
                             <div class="manner">
                                 <div class="block">
                                     <img th:src="@{/img/ground3.png}" alt="">
@@ -256,15 +256,17 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="col-md-4 vneterBox box3">
-                            <div class="manner" style="position: relative">
+                        <div class="vneterBox">
+                            <div class="manner userManner">
                                 <div class="userBox">
                                     <div class="headImg">
                                         <div class="headerImg">
                                             <img th:src="@{/img/header.png}" alt="">
                                         </div>
                                     </div>
-                                    <div class="username">管理员</div>
+                                    <div class="username">
+                                        <div class="adminName">管理员</div>
+                                    </div>
                                     <div class="purpose">
                                         <div class="book">
                                             <div class="bookBox">
@@ -287,8 +289,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!--                        表格处-->
-                            <div class="mannertable self">
+<!--                                                    表格处-->
+                            <div class="mannertable">
                                 <table class="table">
                                     <div class="mation mationTitle">
                                         个人信息
@@ -313,7 +315,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="height: 43%">
+                    <div class="row warpsOther" style="height: 43%">
                         <div class="col-md-8 bottomInner">
                             <div class="innerTop">
                                 <div class="buck">办事列表</div>
@@ -423,7 +425,7 @@
 
                         </div>
                         <div class="col-md-4 bottomInner">
-                            <div class="mannertable self">
+                            <div class="mannertable" style="height: 100%">
                                     <div class="mation mationTitle mationstar">
                                         <div class="tipss" style="font-size: 16px;float: left;">通知公告</div>
                                         <div class="tipsMore" style="float:right;font-size: 16px">更多</div>
