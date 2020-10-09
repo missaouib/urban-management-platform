@@ -49,5 +49,11 @@ public class User extends BaseEntity {
     @ManyToOne
     private DictData sex;
 
+    /**
+     * 头像图片URL
+     */
+    @Column(nullable = false)
+    private String profilePhotoUrl;
+
 
 }

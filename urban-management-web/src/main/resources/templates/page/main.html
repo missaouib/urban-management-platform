@@ -20,7 +20,7 @@
         <div class="head">
             <img th:src="@{/img/logo.png}" alt="">
         </div>
-        <div class="username">admin</div>
+        <div class="username" th:sec:authentication="principal.username"></div>
     </div>
     <div class="quit">
         <img th:src="@{/img/out.png}" alt="">
@@ -108,5 +108,9 @@
 </body>
 <script type="text/javascript" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    let logoutUrl = /*[[@{/logout}]]*/ "/logout";
+</script>
 
 </html>

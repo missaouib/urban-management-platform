@@ -1,6 +1,7 @@
 package com.unicom.urban.management.web.framework.security;
 
 import com.unicom.urban.management.dao.user.UserRepository;
+import com.unicom.urban.management.pojo.SecurityUserBean;
 import com.unicom.urban.management.pojo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,11 +23,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("用户不存在");
         }
 
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getUsername())
-                .password(user.getPassword())
-                .authorities("ROLE_USER")
-                .build();
+        SecurityUserBean userBean = new SecurityUserBean();
+
+        userBean.setId(userBean.getId());
+
+        userBean.setUsername(user.getName());
+
+        userBean.setPassword(user.getPassword());
+
+        return userBean;
 
     }
 

@@ -1,6 +1,6 @@
 package com.unicom.urban.management.pojo.entity;
 
-import com.unicom.urban.management.common.annotations.validation.Password;
+import com.unicom.urban.management.pojo.annotations.validation.Password;
 import lombok.Data;
 
 /**

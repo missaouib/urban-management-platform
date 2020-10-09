@@ -88,7 +88,7 @@ public class UserService {
     }
 
     public void changePassword(ChangePasswordDTO changePasswordDTO) {
-        User user = userRepository.findByUsername(SecurityUtil.getUser().getUsername());
+        User user = userRepository.findByUsername(SecurityUtil.getUsername());
 
         if (!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
             throw new BadPasswordException("密码错误");
@@ -113,18 +113,30 @@ public class UserService {
     }
 
     public void removeUser(String ids) {
+        List<String> idList = Arrays.asList(ids.split(","));
 
-        if (checkUser(ids)) {
+        if (checkUser(idList)) {
 
         }
-        userRepository.deleteUserWithIds(Arrays.asList(ids.split(",")));
+
+        userRepository.deleteUserWithIds(idList);
     }
 
     /**
      * 检查用户是否可以被删除
      */
-    private boolean checkUser(String ids) {
+    private boolean checkUser(List<String> ids) {
+        for (String id : ids) {
+            if (isAdmin(id)) {
+                throw new DataValidException("超级管理员角色不能删除");
+            }
+
+        }
         return true;
+    }
+
+    private boolean isAdmin(String id) {
+        return "818e5078-9561-4ed8-b8ba-3e29ed8b42d7".equals(id);
     }
 
     public boolean usernameAlreadyExists(String username) {

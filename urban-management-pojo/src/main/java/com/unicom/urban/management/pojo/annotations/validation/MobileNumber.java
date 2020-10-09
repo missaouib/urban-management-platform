@@ -1,4 +1,4 @@
-package com.unicom.urban.management.common.annotations.validation;
+package com.unicom.urban.management.pojo.annotations.validation;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

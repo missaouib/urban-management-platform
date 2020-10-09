@@ -1,4 +1,4 @@
-package com.unicom.urban.management.common.annotations.validation;
+package com.unicom.urban.management.pojo.annotations.validation;
 
 import org.springframework.util.StringUtils;
 
@@ -7,16 +7,16 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.regex.Pattern;
 
 /**
- * 校验手机号码
+ * 校验密码规则
  *
  * @author liukai
  */
-public class MobileNumberConstraintValidator implements ConstraintValidator<MobileNumber, String> {
+public class PasswordConstraintValidator implements ConstraintValidator<Password, String> {
 
-    private final static String PATTERN = "0?(13|14|15|18|19|16|17)[0-9]{9}";
+    private final static String PATTERN = "^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,16}$";
 
     @Override
-    public void initialize(MobileNumber constraintAnnotation) {
+    public void initialize(Password constraintAnnotation) {
 
     }
 

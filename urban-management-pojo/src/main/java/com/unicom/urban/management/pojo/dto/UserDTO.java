@@ -1,6 +1,6 @@
 package com.unicom.urban.management.pojo.dto;
 
-import com.unicom.urban.management.common.annotations.validation.MobileNumber;
+import com.unicom.urban.management.pojo.annotations.validation.MobileNumber;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

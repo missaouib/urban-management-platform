@@ -7,11 +7,12 @@ import org.activiti.engine.RuntimeService;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -75,14 +76,20 @@ public class ProcessDefinitionController {
         return map;
     }
 
+    @PostMapping("/processdef/remove")
+    public void delete(String ids) {
+        repositoryService.deleteDeployment(ids, false);
+    }
 
-    @PostMapping("/processdefXML")
-    public void getProcessDefinition(HttpServletResponse response, @RequestParam("deploymentId") String deploymentId, @RequestParam("resourceName") String resourceName) {
+
+    @GetMapping("/process/{deploymentId}/{resourceName}")
+    public void afd(@PathVariable String deploymentId, @PathVariable String resourceName, HttpServletRequest request, HttpServletResponse response) {
         try {
             InputStream inputStream = repositoryService.getResourceAsStream(deploymentId, resourceName);
             int count = inputStream.available();
             byte[] bytes = new byte[count];
-            response.setContentType("text/xml");
+//            response.setContentType("text/xml");
+            response.setContentType("image/png");
             OutputStream outputStream = response.getOutputStream();
             while (inputStream.read(bytes) != -1) {
                 outputStream.write(bytes);
@@ -92,12 +99,7 @@ public class ProcessDefinitionController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
 
-    @PostMapping("/processdef/remove")
-    public void delete(String ids) {
-        repositoryService.deleteDeployment(ids, false);
     }
-
 
 }

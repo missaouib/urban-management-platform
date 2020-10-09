@@ -8,6 +8,6 @@ $(function() {
     })
     // 退出点击事件
     $(".quit").click(function () {
-        alert(1)
+        window.location.href = logoutUrl;
     })
 })

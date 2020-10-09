@@ -1,6 +1,7 @@
 package com.unicom.urban.management.web.framework.jpa;//package com.unicom.framework.security;
 
 
+import com.unicom.urban.management.pojo.SecurityUserBean;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -29,8 +30,8 @@ public class SpringSecurityAuditorAware implements AuditorAware<String> {
                 .map(SecurityContext::getAuthentication)
                 .filter(Authentication::isAuthenticated)
                 .map(Authentication::getPrincipal)
-                .map(User.class::cast)
-                .map(User::getUsername);
+                .map(SecurityUserBean.class::cast)
+                .map(SecurityUserBean::getUsername);
     }
 
 }

@@ -16,8 +16,8 @@
 
         <dependency>
             <groupId>com.unicom</groupId>
-            <artifactId>urban-management-pojo</artifactId>
-            <version>0.0.1</version>
+            <artifactId>urban-management-common</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>

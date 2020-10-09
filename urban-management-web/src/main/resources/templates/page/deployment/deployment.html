@@ -138,13 +138,20 @@
                     title: '操作',
                     field: '',
                     formatter: function (value, row) {
-                        var e = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
-                        return e;
+                        var a = '<a  href="#" title="" onclick="view(\'' + row.id + '\')">查看</a> ';
+                        var b = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
+                        return a + b;
                     }
                 }
             ]
         };
         $.table.init(options);
+    }
+
+    function view(id) {
+        console.log(id);
+        $.modal.open("",'https://www.baidu.com/');
+
     }
 
     function importFile() {
