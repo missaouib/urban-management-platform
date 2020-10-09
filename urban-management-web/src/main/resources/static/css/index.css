@@ -406,6 +406,8 @@ font-size: 20px;
     font-weight: 500;
     margin: 20px 20px 0 0 ;
     position: relative;
+    cursor:pointer;
+
 }
 .quitBtn i{
     width: 20px;height: 20px;
