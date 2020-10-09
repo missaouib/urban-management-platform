@@ -1,4 +1,4 @@
-package com.unicom.urban.management.web.framework.security;
+package com.unicom.urban.management.common.configurer;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

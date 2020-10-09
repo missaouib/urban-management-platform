@@ -1,4 +1,4 @@
-package com.unicom.urban.management.web.framework.logininfo.web;
+package com.unicom.urban.management.web.project.index;
 
 import com.unicom.urban.management.common.constant.SystemConstant;
 import org.springframework.stereotype.Controller;
@@ -8,13 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @author liukai
  */
 @Controller
-public class MainController {
+public class IndexController {
 
-
-    @GetMapping({"/main", "/"})
-    public String main() {
-        return SystemConstant.PAGE + "/main";
+    @GetMapping("/index")
+    public String index() {
+        return SystemConstant.PAGE + "/index";
     }
-
 
 }
