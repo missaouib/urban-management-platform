@@ -41,6 +41,32 @@ body {
     margin-top: 82px;
     /* margin-right: 50px; */
     color: blue;
+    position: relative;
+}
+.intoBtn{
+    width: 135px;
+    height: 53px;
+    background: url('../img/bborder.png');
+    background-size: 100%;
+    position: absolute;
+    bottom: 15px;
+    right: 120px;
+    text-align: center;
+    line-height: 53px;
+    cursor:pointer;
+    font-size: 20px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+.robot{
+    width: 57px;
+    height: 65px;
+    position: absolute;
+    left: -40px;
+    bottom: 0;
+    background: url('../img/robot.png');
+    background-size: 100%;
 }
 
 .info {
@@ -205,7 +231,7 @@ img {
 }
 
 .users {
-    width: 100px;
+    width: 120px;
     height: 100%;
     float: right;
     margin-right: 100px;
