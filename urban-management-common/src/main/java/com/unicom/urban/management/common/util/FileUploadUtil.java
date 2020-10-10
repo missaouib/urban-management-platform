@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ public class FileUploadUtil extends FileUtils {
     @Autowired
     protected FastFileStorageClient storageClient;
 
-    public String uploadFile(MultipartFile file) throws IOException {
+    public String uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         String originalFilename = file.getOriginalFilename();
         String extension = FilenameUtils.getExtension(originalFilename);
         StorePath storePath = storageClient.uploadFile(file.getInputStream(), file.getSize(), extension, null);

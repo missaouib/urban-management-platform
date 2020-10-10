@@ -93,7 +93,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <input id="input-id" type="file" data-preview-file-type="text" >
+                            <input id="input-id" type="file" data-preview-file-type="text" name="file">
                             <!--                            时间轴-->
 <!--                            <div class="timeBox">-->
 <!--                                <div class="timeTitle">-->
@@ -375,12 +375,23 @@
 
     let url = /*[[@{/user/save}]]*/ "/json/unit.json";
 
+    let uploadUrl = /*[[@{/common/upload}]]*/ "/json/unit.json";
 
-    $(function(){
+
+    $(function () {
         $("#input-id").fileinput({
+            uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
             language: 'zh',
             theme: 'fa'
+        }).on('change', function (event) {
+            console.log("This event is triggered whenever a single file or multiple files are selected in the file input via the file browse button.");
+        }).on('fileselect', function (event, numFiles, label) {
+            console.log("This event is triggered after files are selected in the file input via the file browse button. This is slightly different than the change event in the sense that this will be triggered even if the file browse dialog is cancelled.")
         });
+
     })
 
     function Cancel() {

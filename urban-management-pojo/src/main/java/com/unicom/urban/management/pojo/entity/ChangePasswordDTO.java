@@ -3,6 +3,8 @@ package com.unicom.urban.management.pojo.entity;
 import com.unicom.urban.management.pojo.annotations.validation.Password;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * @author liukai
  */
@@ -12,6 +14,7 @@ public class ChangePasswordDTO {
     /**
      * 旧密码
      */
+    @NotBlank(message = "旧密码不能为空")
     private String oldPassword;
 
     /**

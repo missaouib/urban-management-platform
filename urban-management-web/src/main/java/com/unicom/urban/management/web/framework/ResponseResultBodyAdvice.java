@@ -54,6 +54,7 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @ExceptionHandler(RuntimeException.class)
     public Result runtimeException(RuntimeException exception) {
+        log.error("系统发生异常", exception);
         return Result.fail("500", ExceptionUtils.getStackTrace(exception));
     }
 
