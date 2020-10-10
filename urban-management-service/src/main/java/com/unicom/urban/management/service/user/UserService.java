@@ -18,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
@@ -37,10 +36,6 @@ public class UserService {
 
     @Autowired
     private PasswordService passwordService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
 
     public Page<UserVO> search(UserDTO userDTO, Pageable pageable) {
         Page<User> page = userRepository.findAll((Specification<User>) (root, query, criteriaBuilder) -> {
@@ -93,7 +88,7 @@ public class UserService {
     public void changePassword(ChangePasswordDTO changePasswordDTO) {
         User user = userRepository.findByUsername(SecurityUtil.getUsername());
 
-        if (!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
+        if (!passwordService.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
             throw new BadPasswordException("密码错误");
         }
 
@@ -101,7 +96,7 @@ public class UserService {
             throw new BadPasswordException("两次输入的密码不一致");
         }
 
-        user.setPassword(passwordEncoder.encode(changePasswordDTO.getNewPassword()));
+        user.setPassword(passwordService.encode(changePasswordDTO.getNewPassword()));
 
         userRepository.save(user);
 
