@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.user;
 
+import com.unicom.urban.management.common.annotations.Log;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.exception.BadPasswordException;
 import com.unicom.urban.management.common.exception.DataValidException;
@@ -61,6 +62,7 @@ public class UserService {
     }
 
 
+    @Log(logType = "", operationType = "save", logSubType = "操作日志", details = "保存用户")
     public void saveUser(UserDTO userDTO) {
 
         if (usernameAlreadyExists(userDTO.getUsername())) {
