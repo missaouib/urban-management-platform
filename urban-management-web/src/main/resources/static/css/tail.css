@@ -82,12 +82,12 @@ td{border: none !important;}
 .table2_top select,.table2_top input[type=text],.table2_top input[type=password],.table2_top input[type=email],#dropdownMenu1{text-align: left;width: 100%;height:28px;border-radius: 4px;font-size: 12px;border: 1px #ccc solid}
 tbody tr:hover{background-color: white!important;}
 .row1{width: 100vw;height: 100vh}
-.row{width: 100vw;height: 90vh}
+.row{width: 98vw;height: 90vh;display: flex;justify-content: space-between}
 .row-h4{padding: 10px 0 0 0 }
 .map{width: 100%;height: 100%}
 .card{height: 100%;margin-top: 10px}
 .leftBox{width: 48%}
-.rightBox{width: 49%;float: right;margin-left: 20px}
+.rightBox{width: 49%;}
 td input{padding: 0 5px!important;width: 100%}
 .timeBox{width: 100%;padding: 10px 17px;display: inline-block;background: #fff;border: 1px solid #E6E9ED;margin-left: 5px}
 .timeTitle{border-bottom: 2px solid #E6E9ED;padding: 1px 5px 4px 0;margin-top: 10px}
@@ -104,3 +104,333 @@ ul,li{list-style: none}
 .byWhat{font-size: 13px;line-height: 1.3;color: #aab6aa;padding: 3px}
 .state{margin-bottom: 10px;font-size: 13px;color: #aab6aa}
 .stateBtn{float: right;padding: 3px 10px;border-radius: 3px;margin: 0 5px 5px 0;}
+
+.active {
+    background-color: #364E86;
+    color: white;
+}
+
+.titlenav {
+    width: 100%;
+    height: 10%;
+}
+
+.name {
+    width: 100px;
+    height: 100%;
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner {
+    width: 100%;
+    height: 89%;
+    position: relative;
+}
+
+.tree {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+
+.treeActive {
+    display: block;
+}
+
+
+.titone,
+.endone {
+    width: 100%;
+    height: 50%!important;
+    display: flex;
+    align-self: center;
+}
+
+.gameTitle {
+    height: 33%;
+    display: flex;
+    justify-content: center;
+    font-size: 20px;
+    align-items: center;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #364E86;
+    padding: 0 5px;
+}
+
+.gameEnd {
+    display: flex;
+    height: 33%;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5px;
+}
+
+.endBox {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #364E86;
+}
+
+.endright {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.endBox em {
+    margin-right: 10px;
+}
+
+.enclosure {
+    width: 100px;
+    height: 20px;
+    text-align: center;
+    border: 2px solid #9A9A9A;
+    border-radius: 10px;
+    padding-left: 30px;
+    position: relative;
+    cursor: pointer;
+    position: relative;
+}
+.enclosure:hover{
+    background-color: #364E86;
+    color: white;
+    border-color: white;
+}
+.enclosure i{
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: url('../img/enclosure.png');
+    background-size: 100%;
+    top: 0px;
+    left: 9px;
+}
+.g_con {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.topExpress {
+    width: 710px;
+    height: 155px;
+    background: #fff;
+    margin: 10px auto;
+    display: flex;
+    border-radius: 10px;
+}
+
+.topExpress-left {
+    width: 100px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.topExpress-right {
+    font-size: 26px;
+    color: #333;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 0;
+}
+
+.topExpress-right-middle {
+    font-size: 22px;
+}
+
+.topExpress-right-bottom {
+    font-size: 20px;
+    color: #666;
+}
+
+.expressRecord {
+    width: 710px;
+    padding-top: 30px;
+    background: #fff;
+    padding-left: 50px;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+.expressRecord-getAddress {
+    width: 100%;
+    font-size: 22px;
+    color: #999;
+    display: flex;
+}
+
+.expressRecord-top {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.getAddress-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #999;
+    font-size: 18px;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 80px;
+}
+
+.getAddress-text {
+    margin-left: 20px;
+}
+
+.noReach-online-top-close {
+    width: 1px;
+    height: 50px;
+    background: #d7d7d7;
+    margin-left: 95px;
+}
+
+.expressRecord-single-close {
+    width: 100%;
+    height: 122px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+}
+
+.expressRecord-single-noReach-online-top-close {
+    display: flex;
+    flex-direction: column;
+}
+
+.online-top-closing {
+    width: 1px;
+    height: 50px;
+    background: none;
+    margin-left: 95px;
+}
+
+.online-top-close {
+    width: 1px;
+    height: 50px;
+    background: #364E86;
+    margin-left: 95px;
+}
+
+.dot-closing,
+.dot-close {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-left: 80px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    background: #E6E6E6;
+    border: 4px solid #D9D9D9;
+    border-radius: 50%;
+    z-index: 2;
+    position: relative;
+}
+
+.online-bottom {
+    width: 1px;
+    height: 50px;
+    background: #364E86;
+    margin-left: 95px;
+}
+
+.online-bottom-start {
+    width: 1px;
+    height: 50px;
+    /* background: #999; */
+    margin-left: 95px;
+}
+
+.expressRecord-text {
+    margin-left: 30px;
+    width: 60%;
+    height: 70%;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 9px 0px rgba(4, 20, 40, 0.1);
+    border-radius: 5px;
+    position: relative;
+}
+
+.expressRecord-statusing {
+    font-size: 26px;
+    color: #333;
+}
+
+.expressRecord-status-addressing {
+    font-size: 22px;
+    color: #333;
+}
+
+.expressRecord-status {
+    font-size: 26px;
+    color: #999;
+}
+
+.expressRecord-status-address {
+    font-size: 22px;
+    color: #999;
+}
+
+.expressRecord-dating {
+    position: absolute;
+    height: 100%;
+    /* top: 0;
+    bottom: 0; */
+    left: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: #333;
+}
+
+.expressRecord-date {
+    position: absolute;
+    height: 100%;
+    width: 10%;
+    /* top: 0;
+    bottom: 0; */
+    left: -20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.expressRecord-date-text {
+    font-size: 16px;
+}
+
+.expressRecord-date-time {
+    font-size: 16px;
+}
+
+.yes{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: -3px;left: -3px;
+    background: url('../img/yesg.png');
+    background-size: 100%;
+    display: none;
+}

@@ -95,43 +95,13 @@
                             </div>
                             <input id="input-id" type="file" data-preview-file-type="text" >
                             <!--                            时间轴-->
-                            <div class="timeBox">
-                                <div class="timeTitle">
-                                    <h5>时间轴</h5>
-                                    <div class="timeAfter"></div>
-                                </div>
-                                <div class="timeContent">
-                                    <ul class="timeUl">
-                                        <li class="timeLi">
-                                            <div class="timeBlok">
-                                                <div class="tag">
-                                                    <a href="#" class="tag-a tagA">
-                                                        <span>城管</span>
-                                                    </a>
-                                                </div>
-                                                <div class="tagContent">
-                                                    <p class="titleInfo">
-                                                        <a>城管平台</a>
-                                                    </p>
-                                                    <div class="byWhat">
-                                                        by
-                                                        <em>humen</em>
-                                                    </div>
-                                                    <div class="byWhat">
-                                                        <em>date</em>
-                                                    </div>
-                                                    <p class="state">
-                                                        状态
-                                                        <a>
-                                                            <button class="btn-primary stateBtn">详情</button>
-                                                        </a>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+<!--                            <div class="timeBox">-->
+<!--                                <div class="timeTitle">-->
+<!--                                    <h5>时间轴</h5>-->
+<!--                                    <div class="timeAfter"></div>-->
+<!--                                </div>-->
+<!--                                -->
+<!--                            </div>-->
 
 
                             <!--                            按钮-->
@@ -150,15 +120,238 @@
                 </form>
             </div>
             <div class="rightBox">
-                <div class="timeTitle">
-                    <h5>地图</h5>
-                    <div class="timeAfter"></div>
+                <div class="titlenav">
+                    <div class="name active">地图</div>
+                    <div class="name">事件详情</div>
+                    <div class="name">事件过程</div>
+                    <div class="name">流程图</div>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        <div class="map" id="map"></div>
-                    </div><!-- /.card-body -->
-                </div><!-- /.card -->
+                <div class="banner">
+                    <div class="tree treeActive">map</div>
+                    <div class="tree">
+                        事件
+                    </div>
+                    <div class="tree ">
+                        <div class="timeContent">
+                            <!--                                    <ul class="timeUl">-->
+                            <!--                                        <li class="timeLi">-->
+                            <!--                                            <div class="timeBlok">-->
+                            <!--                                                <div class="tag">-->
+                            <!--                                                    <a href="#" class="tag-a tagA">-->
+                            <!--                                                        <span>城管</span>-->
+                            <!--                                                    </a>-->
+                            <!--                                                </div>-->
+                            <!--                                                <div class="tagContent">-->
+                            <!--                                                    <p class="titleInfo">-->
+                            <!--                                                        <a>城管平台</a>-->
+                            <!--                                                    </p>-->
+                            <!--                                                    <div class="byWhat">-->
+                            <!--                                                        by-->
+                            <!--                                                        <em>humen</em>-->
+                            <!--                                                    </div>-->
+                            <!--                                                    <div class="byWhat">-->
+                            <!--                                                        <em>date</em>-->
+                            <!--                                                    </div>-->
+                            <!--                                                    <p class="state">-->
+                            <!--                                                        状态-->
+                            <!--                                                        <a>-->
+                            <!--                                                            <button class="btn-primary stateBtn">详情</button>-->
+                            <!--                                                        </a>-->
+                            <!--                                                    </p>-->
+                            <!--                                                </div>-->
+                            <!--                                            </div>-->
+                            <!--                                        </li>-->
+                            <!--                                    </ul>-->
+                            <div class='g_con'>
+                                <!-- 物流时间轴 -->
+                                <div class='expressRecord'>
+
+                                    <!-- 单个物流记录点时间轴：当前正在进行的物流状态 -->
+                                    <div class='expressRecord-single-close'>
+
+                                        <!-- 左边子容器 -->
+                                        <div class='expressRecord-single-noReach-online-top-close'>
+                                            <!-- 正在进行的时间轴上半个时间线 -->
+                                            <div class='online-top-closing'></div>
+                                            <!-- 正在进行的时间轴点 -->
+                                            <div class='dot-closing'>
+                                                <div class="yes blockActive"></div>
+                                            </div>
+                                            <!-- 正在进行的时间轴下半个时间线 -->
+                                            <div class='online-bottom'></div>
+                                        </div>
+
+                                        <!-- 右边子容器 -->
+                                        <div class='expressRecord-text'>
+                                            <div class="gameTitle titone">门头沟区域指挥中心</div>
+                                            <div class="gameEnd endone">
+                                                <div class="endBox">
+                                                    <em>by:</em> 管理员，调度员
+                                                </div>
+                                                <div class="endBox endright">
+                                                    2020/10/10 10:10:10
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 相对父级容器绝对定位的日期 -->
+                                        <div class='expressRecord-dating'>
+                                            <div class='expressRecord-date-text'>
+                                                立案
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- 单个物流记录点时间轴：已经过去的物流状态 -->
+                                    <div class='expressRecord-single-close'>
+                                        <div class='expressRecord-single-noReach-online-top-close'>
+                                            <div class='online-top-close'></div>
+                                            <div class='dot-close'>
+                                                <div class="yes blockActive"></div>
+                                            </div>
+                                            <div class='online-bottom'></div>
+                                        </div>
+
+                                        <div class='expressRecord-text'>
+                                            <div class="gameTitle">门头沟区域指挥中心</div>
+                                            <div class="gameEnd">
+                                                <div class="endBox">
+                                                    <em>回复内容:</em> 派遣
+                                                </div>
+                                                <div class="endBox"></div>
+                                            </div>
+                                            <div class="gameEnd">
+                                                <div class="endBox">
+                                                    <em>by:</em> 管理员，调度员
+                                                </div>
+                                                <div class="endBox endright">
+                                                    2020/10/10 10:10:10
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class='expressRecord-date'>
+                                            <div class='expressRecord-date-text'>
+                                                派遣
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class='expressRecord-single-close'>
+                                        <div class='expressRecord-single-noReach-online-top-close'>
+                                            <div class='online-top-close'></div>
+                                            <div class='dot-close'>
+                                                <div class="yes blockActive"></div>
+                                            </div>
+                                            <div class='online-bottom' style="background-color:#F2F3F5;"></div>
+                                        </div>
+
+                                        <div class='expressRecord-text'>
+                                            <div class="gameTitle">门头沟区域指挥中心</div>
+                                            <div class="gameEnd">
+                                                <div class="endBox">
+                                                    <em>回复内容:</em> 派遣
+                                                </div>
+                                                <div class="endBox enclosure"><i></i>附件详情</div>
+                                            </div>
+                                            <div class="gameEnd">
+                                                <div class="endBox">
+                                                    <em>by:</em> 管理员，调度员
+                                                </div>
+                                                <div class="endBox endright">
+                                                    2020/10/10 10:10:10
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class='expressRecord-date'>
+                                            <div class='expressRecord-date-text'>
+                                                办理回复
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class='expressRecord-single-close'>
+                                        <div class='expressRecord-single-noReach-online-top-close'>
+                                            <div class='online-top-close' style="background-color:#F2F3F5;"></div>
+                                            <div class='dot-close'>
+                                                <div class="yes"></div>
+                                            </div>
+                                            <div class='online-bottom' style="background-color:#F2F3F5;"></div>
+                                        </div>
+
+                                        <!-- <div class='expressRecord-text'>
+                                            <div class="gameTitle">门头沟区域指挥中心</div>
+                                            <div class="gameEnd">
+                                                <div class="endBox">
+                                                    <em>回复内容:</em> 派遣
+                                                </div>
+                                                <div class="endBox"></div>
+                                            </div>
+                                            <div class="gameEnd">
+                                                <div class="endBox">
+                                                    <em>by:</em> 管理员，调度员
+                                                </div>
+                                                <div class="endBox endright">
+                                                    2020/10/10 10:10:10
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+                                        <div class='expressRecord-date'>
+                                            <div class='expressRecord-date-text'>
+                                                核查
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div class='expressRecord-single-close'>
+                                        <div class='expressRecord-single-noReach-online-top-close'>
+                                            <div class='online-top-close' style="background-color:#F2F3F5;"></div>
+                                            <div class='dot-close'>
+                                                <div class="yes"></div>
+                                            </div>
+                                            <!-- 起始位置，下半个时间轴线不用 -->
+                                            <div class='online-bottom-start'></div>
+                                        </div>
+
+                                        <!-- <div class='expressRecord-text'>
+                                            <div class="gameTitle">门头沟区域指挥中心</div>
+                                            <div class="gameEnd">
+                                                <div class="endBox">
+                                                    <em>回复内容:</em> 派遣
+                                                </div>
+                                                <div class="endBox"></div>
+                                            </div>
+                                            <div class="gameEnd">
+                                                <div class="endBox">
+                                                    <em>by:</em> 管理员，调度员
+                                                </div>
+                                                <div class="endBox endright">
+                                                    2020/10/10 10:10:10
+                                                </div>
+                                            </div>
+                                        </div> -->
+
+                                        <div class='expressRecord-date'>
+                                            <div class='expressRecord-date-text'>
+                                                核查反馈
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tree">流程</div>
+                </div>
             </div>
         </div>
     </div>
@@ -168,6 +361,17 @@
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
 <th:block th:include="page/fragments/common :: fileUpload_js"/>
 <script type="text/javascript" th:inline="javascript">
+
+    $(function() {
+        $(".name").click(function() {
+            $(this).addClass("active").siblings(".name").removeClass("active");
+            $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
+        })
+        $(".enclosure").click(function () {
+            alert("附件详情")
+        })
+    })
+
 
     let url = /*[[@{/user/save}]]*/ "/json/unit.json";
 

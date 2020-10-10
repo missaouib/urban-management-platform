@@ -911,3 +911,7 @@ body{height: 100vh!important;}
 .btn-success{background-color:#1ab394!important;border-color: #1ab394!important;color: #FFFFFF!important;}
 .btn-info{background-color: #23c6c8!important;border-color: #23c6c8!important;color: #FFFFFF!important;}
 .bootstrap-table .fixed-table-container .table thead th .sortable {background-position: 62% 50% !important;}
+
+.blockActive{
+    display: block!important;
+}
