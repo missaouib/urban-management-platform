@@ -81,6 +81,7 @@
 
     function search() {
         var options = {
+            treeEnable: true,
             url: searchUrl,
             createUrl: addUrl,
             updateUrl: editUrl,
@@ -96,13 +97,22 @@
                 {
                     checkbox: true
                 },
-                // {
-                //     title: '账号',
-                //     field: 'username'
-                // },
+                {
+                    title: '',
+                    data: function (item) {
+                        if (item.children) {
+                            return '<span>+</span>';
+                        }
+                        return '';
+                    }
+                },
                 {
                     title: '菜单名称',
-                    field: 'name'
+                    field: 'name',
+                    data: function (item) {
+                        console.log(item);
+                        return item.name;
+                    }
                 },
                 // {
                 //     title: '手机号码',

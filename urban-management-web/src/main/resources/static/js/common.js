@@ -79,6 +79,8 @@ var table = {
 		table: {
 			init: function (options) {
 				let defaults = {
+					treeEnable: true,
+					parentIdField: 'parentId',
 					id: "bootstrap-table",
 					type: 0, // 0 代表bootstrapTable 1代表bootstrapTreeTable
 					method: 'get',
@@ -125,6 +127,8 @@ var table = {
 
 				$('#' + options.id).bootstrapTable({
 					id: options.id,
+					treeEnable: options.treeEnable,                     //
+					parentIdField: options.parentIdField,               //
 					url: options.url,                                   // 请求后台的URL（*）
 					contentType: "application/x-www-form-urlencoded",   // 编码类型
 					method: options.method,                             // 请求方式（*）
