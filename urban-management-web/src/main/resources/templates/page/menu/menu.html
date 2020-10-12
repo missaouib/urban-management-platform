@@ -98,26 +98,13 @@
                     checkbox: true
                 },
                 {
-                    title: '',
-                    data: function (item) {
-                        if (item.children) {
-                            return '<span>+</span>';
-                        }
-                        return '';
-                    }
+                    title: '菜单名称',
+                    field: 'name'
                 },
                 {
-                    title: '菜单名称',
-                    field: 'name',
-                    data: function (item) {
-                        console.log(item);
-                        return item.name;
-                    }
+                    title: '路径',
+                    field: 'path'
                 },
-                // {
-                //     title: '手机号码',
-                //     field: 'mobileNumber'
-                // },
                 {
                     title: '创建时间',
                     field: 'createTime',
@@ -137,7 +124,10 @@
                         return e;
                     }
                 }
-            ]
+            ],
+            // onPostBody: function () {
+            //     console.log('onPostBody');
+            // }
         };
         $.table.init(options);
     }

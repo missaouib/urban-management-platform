@@ -86,14 +86,35 @@
                                         <td><input type="text" ></td>
                                     </tr>
 
+<!--                                    <tr>-->
+<!--                                        <td>处理结果<span></span></td>-->
+<!--                                        <td colspan = "8"><textarea></textarea></td>-->
+<!--                                    </tr>-->
                                     <tr>
-                                        <td>处理结果<span></span></td>
-                                        <td colspan = "8"><textarea></textarea></td>
+                                        <td>图片<span></span></td>
+                                        <td>
+<!--                                            <input id="input-id" type="file" data-preview-file-type="text" name="file" multiple="multiple">-->
+                                            <button type="button" onclick="addPicture()">添加图片</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>视频<span></span></td>
+                                        <td>
+                                            <!--                                            <input id="input-id" type="file" data-preview-file-type="text" name="file" multiple="multiple">-->
+                                            <button type="button">添加视频</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>音频<span></span></td>
+                                        <td>
+                                            <!--                                            <input id="input-id" type="file" data-preview-file-type="text" name="file" multiple="multiple">-->
+                                            <button type="button">添加音频</button>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <input id="input-id" type="file" data-preview-file-type="text" name="file">
+
                             <!--                            时间轴-->
 <!--                            <div class="timeBox">-->
 <!--                                <div class="timeTitle">-->
@@ -384,10 +405,12 @@
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            hideThumbnailContent: true,               // 上传图片之后 是否隐藏缩略图
+            allowedFileExtensions : ['jpg', 'png','gif'],       //接收的文件后缀
+            maxFileCount: 2,                                  //最大文件数量
+            hideThumbnailContent: false,                         // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
-            showCaption: false,                       // 是否显示文件标题
-            showPreview: false,                       // 是否显示预览
+            // showCaption: false,                                 // 是否显示文件标题
+            // showPreview: false,                                 // 是否显示预览
             language: 'zh',
             theme: 'fa'
         }).on('change', function (event) {
@@ -405,6 +428,14 @@
         var data = $('#userForm').serialize();
         $.operate.saveTab(url, data);
     }
+
+    function addPicture() {
+
+
+    }
+
+
+
 </script>
 </body>
 </html>

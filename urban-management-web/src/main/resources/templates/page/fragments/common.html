@@ -33,9 +33,11 @@
 
 <!-- bootstrap-table -->
 <div th:fragment="bootstrap_table_css">
-    <link rel="stylesheet" th:href="@{/plugins/bootstrap-table/dist/bootstrap-table.css}">
+    <link rel="stylesheet" th:href="@{/plugins/jquery-treegrid/css/jquery.treegrid.css}">
+    <link rel="stylesheet" th:href="@{/plugins/bootstrap-table/dist/bootstrap-table.min.css}">
 </div>
 <div th:fragment="bootstrap_table_js">
+    <script type="text/javascript" th:src="@{/plugins/jquery-treegrid/js/jquery.treegrid.min.js}"></script>
     <script type="text/javascript" th:src="@{/plugins/bootstrap-table/dist/bootstrap-table.js}"></script>
     <script type="text/javascript" th:src="@{/plugins/bootstrap-table/dist/extensions/treegrid/bootstrap-table-treegrid.min.js}"></script>
     <script type="text/javascript" th:src="@{/plugins/bootstrap-table/dist/locale/bootstrap-table-zh-CN.js}"></script>

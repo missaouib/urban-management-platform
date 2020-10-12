@@ -12,9 +12,11 @@ public class MenuVO {
 
     private String name;
 
-    private String username;
+    private String path;
 
-    private String mobileNumber;
+    private String icon;
+
+    private String parentId;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;

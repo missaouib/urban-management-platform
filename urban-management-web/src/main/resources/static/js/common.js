@@ -127,8 +127,10 @@ var table = {
 
 				$('#' + options.id).bootstrapTable({
 					id: options.id,
-					treeEnable: options.treeEnable,                     //
-					parentIdField: options.parentIdField,               //
+					treeEnable: options.treeEnable,                     // 是否为tree table
+					treeShowField: 'name',                              //
+					parentIdField: 'parentId',                          //
+
 					url: options.url,                                   // 请求后台的URL（*）
 					contentType: "application/x-www-form-urlencoded",   // 编码类型
 					method: options.method,                             // 请求方式（*）
@@ -180,7 +182,7 @@ var table = {
 					fixedRightNumber: options.fixedRightNumber,         // 列冻结的个数（右侧）
 					onReorderRow: options.onReorderRow,                 // 当拖拽结束后处理函数
 					queryParams: options.queryParams,                   // 传递参数（*）
-					rowStyle: options.rowStyle,                         // 通过自定义函数设置行样式
+					// rowStyle: options.rowStyle,                         // 通过自定义函数设置行样式
 					footerStyle: options.footerStyle,                   // 通过自定义函数设置页脚样式
 					columns: options.columns,                           // 显示列信息（*）
 					data: options.data,                                 // 被加载的数据
@@ -188,6 +190,20 @@ var table = {
 					onLoadSuccess: $.table.onLoadSuccess,               // 当所有数据被加载时触发处理函数
 					exportOptions: options.exportOptions,               // 前端导出忽略列索引
 					detailFormatter: options.detailFormatter,           // 在行下面展示其他数据列表
+					onPostBody: function (data) {
+						console.log(data)
+						$($.table.getOptionsIds()).treegrid({
+							treeColumn: 1,
+							onChange: function() {
+								$($.table.getOptionsIds()).bootstrapTable('resetView')
+							}
+						})
+					}
+
+
+
+
+
 				});
 
 
