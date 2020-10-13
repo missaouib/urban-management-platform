@@ -97,6 +97,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.activiti</groupId>
+                <artifactId>activiti-modeler</artifactId>
+                <version>${activiti.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool-all.version}</version>
