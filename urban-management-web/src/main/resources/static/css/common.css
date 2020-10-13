@@ -1002,3 +1002,6 @@ justify-content: flex-end;
     right: 10%;
     margin-top: -10px;
 }
+.btn-primary,.btn-warning{
+    color: white!important;
+}
