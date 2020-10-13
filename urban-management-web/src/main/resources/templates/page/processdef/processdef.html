@@ -62,9 +62,18 @@
 
 <script id="modelDiv" type="text/template">
     <form action="" method="post">
-        名称: <input type="text" required="required" name="name">
-        <br/>
-        描述: <input type="text" required="required" name="description">
+        <div class="modelBox">
+            <label class="modelTitle" style="margin-top: 10px">名称:</label>
+            <div class="tan">!</div>
+            <input type="text" required="required" name="name" style="width: 70%">
+        </div>
+        <div class="modelBox">
+            <label class="modelTitle" style="margin-top: 10px">描述:</label>
+            <textarea type="text" cols="8" rows="3" required="required" name="description" style="width: 70%"></textarea>
+        </div>
+
+
+
     </form>
 
 </script>

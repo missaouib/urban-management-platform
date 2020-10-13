@@ -983,3 +983,22 @@ justify-content: flex-end;
     color: #fff;
     text-align: center;
 }
+.modelBox{
+    display: flex;
+    justify-content: end;
+    margin: 10px 0;
+    position: relative;
+}
+.tan{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color:red;
+    color: white;
+    text-align: center;
+    line-height: 20px;
+    position: absolute;
+    top:50%;
+    right: 10%;
+    margin-top: -10px;
+}
