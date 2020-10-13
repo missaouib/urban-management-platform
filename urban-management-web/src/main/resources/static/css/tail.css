@@ -105,8 +105,9 @@ ul,li{list-style: none}
 .stateBtn{float: right;padding: 3px 10px;border-radius: 3px;margin: 0 5px 5px 0;}
 /*.tipsMore{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}*/
 .active {
-    background-color: #364E86;
-    color: white;
+    /*background-color: #364E86;*/
+    /*color: white;*/
+    border-color: #dee2e6  #dee2e6 transparent #dee2e6!important;
 }
 
 .titlenav {
@@ -121,6 +122,8 @@ ul,li{list-style: none}
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 1px solid #dee2e6;
+    z-index: 2;
 }
 
 .banner {
