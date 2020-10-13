@@ -60,7 +60,14 @@
     <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
 </div>
 
+<script id="modelDiv" type="text/template">
+    <form action="" method="post">
+        名称: <input type="text" required="required" name="name">
+        <br/>
+        描述: <input type="text" required="required" name="description">
+    </form>
 
+</script>
 
 
 <th:block th:include="page/fragments/common :: common_js"/>
@@ -85,16 +92,53 @@
 
 
     function add() {
-        var btn = ['<i class="fa fa-check"></i> 确定', '<i class="fa fa-close"></i> 关闭'];
-        var options = {
-            title: '添加流程定义',
-            width: "900",
-            height: "320",
-            url: addUrl,
-            btn: btn,
-            callBack: doSubmit
-        };
-        $.modal.openOptions(options);
+        layer.open({
+            type: 1,
+            area: ['400px', '230px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '新增流程定义',
+            content: $('#modelDiv').html(),
+            btn: ['<i class="fa fa-check"></i> 确定', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: true,
+            btn1: function(index, layero){
+                // var file = layero.find('#file').val();
+                // // if (file == '' || (!$.common.endWith(file, '.xls') && !$.common.endWith(file, '.xlsx'))){
+                // //     $.modal.msgWarning("请选择后缀为 “xls”或“xlsx”的文件。");
+                // //     return false;
+                // // }
+                // var index = layer.load(2, {shade: false});
+                // // $.modal.disable();
+                var formData = new FormData(layero.find('form')[0]);
+                console.log(formData);
+                // $.ajax({
+                //     url: table.options.importUrl,
+                //     data: formData,
+                //     cache: false,
+                //     contentType: false,
+                //     processData: false,
+                //     type: 'POST',
+                //     success: function (result) {
+                //         if (result.code === web_status.SUCCESS) {
+                //             $.modal.closeAll();
+                //             $.modal.alertSuccess(result.message);
+                //             $.table.refresh();
+                //         } else if (result.code === web_status.WARNING) {
+                //             layer.close(index);
+                //             $.modal.enable();
+                //             $.modal.alertWarning(result.message)
+                //         } else {
+                //             layer.close(index);
+                //             $.modal.enable();
+                //             $.modal.alertError(result.message);
+                //         }
+                //     }
+                // });
+            }
+        });
     }
 
     function doSubmit(index, layero) {

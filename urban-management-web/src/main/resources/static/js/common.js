@@ -191,7 +191,6 @@ var table = {
 					exportOptions: options.exportOptions,               // 前端导出忽略列索引
 					detailFormatter: options.detailFormatter,           // 在行下面展示其他数据列表
 					onPostBody: function (data) {
-						console.log(data)
 						$($.table.getOptionsIds()).treegrid({
 							treeColumn: 1,
 							onChange: function() {
