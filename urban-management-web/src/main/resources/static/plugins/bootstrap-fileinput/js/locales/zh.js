@@ -15,7 +15,7 @@
     $.fn.fileinputLocales['zh'] = {
         fileSingle: '文件',
         filePlural: '个文件',
-        browseLabel: '选择 &hellip;',
+        browseLabel: '选择文件 &hellip;',
         removeLabel: '移除',
         removeTitle: '清除选中文件',
         cancelLabel: '取消',
