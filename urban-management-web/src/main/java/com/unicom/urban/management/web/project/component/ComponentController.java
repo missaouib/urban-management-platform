@@ -20,4 +20,9 @@ public class ComponentController {
         return new ModelAndView(SystemConstant.PAGE + "/component/component");
     }
 
+    @GetMapping("/component/import")
+    public ModelAndView componentImport() {
+        return new ModelAndView(SystemConstant.PAGE + "/component/import");
+    }
+
 }

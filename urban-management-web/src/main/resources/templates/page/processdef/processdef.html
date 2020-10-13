@@ -85,7 +85,7 @@
 
 
     function add() {
-        var btn = ['<i class="fa fa-check"></i> 点我回调', '<i class="fa fa-close"></i> 点我关闭'];
+        var btn = ['<i class="fa fa-check"></i> 确定', '<i class="fa fa-close"></i> 关闭'];
         var options = {
             title: '添加流程定义',
             width: "900",
@@ -97,9 +97,9 @@
         $.modal.openOptions(options);
     }
 
-
-    function doSubmit(){
-
+    function doSubmit(index, layero) {
+        console.log(index);
+        console.log(layero);
     }
 
     function search() {
