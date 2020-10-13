@@ -20,22 +20,3 @@
     color: #fff;
     text-align: center;
 }
-.content{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-}
-.leftBox{
-    width: 40%;
-    height: 100%;
-    padding: 10px;
-}
-.rightBox{
-    width: 59%;
-    height: 100%;
-    padding: 10px;
-}
-.leftInner,.rightInner{
-    border: 1px solid #f0f6e4;
-}

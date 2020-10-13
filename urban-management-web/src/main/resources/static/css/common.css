@@ -954,3 +954,32 @@ justify-content: flex-end;
     width: 100px;
     text-align: center;
 }
+.leftBox{
+    width: 40%;
+    height: 100%;
+    padding: 10px;
+}
+.rightBox{
+    width: 59%;
+    height: 100%;
+    padding: 10px;
+}
+.leftInner,.rightInner{
+    border: 1px solid #f0f6e4;
+}
+.content{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.check_btn1{
+    height: 30px;
+    border: none;
+    margin-left: 5px;
+    width: 65px;
+    border-radius: 4px;
+    background-color: #337ab7;
+    color: #fff;
+    text-align: center;
+}

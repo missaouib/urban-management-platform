@@ -9,60 +9,46 @@
 </head>
 <body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
 <div class="notice_main ">
+    <div class="content">
+        <div class="leftBox" style="width: 50%!important;">
+            <div class="leftInner">
 
-    <div class="notice_check">
-        <form id="search-form">
-            <p>
-                <label class="">分类</label>
-                <input type="text" readonly="readonly" id="typeStr" class="find_input">
-                <button type="button" class="addBtn"  data-toggle="modal" data-target="#modal-default">
-                 +
-                </button>
-                <label class="">名称</label>
-                <input type="text" class="find_input" name="name">
-                <input type="button" class="check_btn" onclick="$.table.search()" value="查询">
-                <input type="button" class="check_btn1" onclick="$.form.reset()" value="重置查询">
-            </p>
-        </form>
-    </div>
-
-<!--    <div class="clear"></div>-->
-
-
-    <div class="btn-group-sm" id="toolbar">
-        <a class="btn btn-info" onclick="$.table.importExcel()">
-            <i class="fa fa-upload"></i> 导入部件图层
-        </a>
-        <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">
-            <i class="fa fa-edit"></i> 查询
-        </a>
-        <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">
-            <i class="fa fa-remove"></i> 重置
-        </a>
-
-        <!--    <a class="btn btn-warning" onclick="$.table.exportExcel()">-->
-        <!--        <i class="fa fa-download"></i> 导出-->
-        <!--    </a>-->
-    </div>
-    <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">默认窗口</h4>
+<!--                tree-->
+                <div class="zTreeDemoBackground left">
+                    <ul id="treeDemo" class="ztree">zTree</ul>
                 </div>
-                <div class="modal-body">
-                    <p>zTree</p>
+
+
+                <div>
+                    <label class="modelTitle">图层名称</label>
+                    <input type="text" class="find_input" name="username">
                 </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">确认</button>
+
+                <div>
+                    <label class="modelTitle">EPSG</label>
+                    <select class="find_input">
+                        <option value="">--请选择--</option>
+                        <option th:value="1">1</option>
+                        <option th:value="2">2</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="modelTitle"></label>
+                    <input type="file" class="find_input" name="" style="padding: 0!important;">
+                </div>
+                <div style="padding-bottom: 20px;margin-right: 20px;display: flex;justify-content: flex-end" class="">
+                    <input type="button" class="check_btn1" onclick="" value="导入">
+<!--                    <input type="button" class="check_btn1" onclick="" value="修改">-->
+<!--                    <input type="button" class="check_btn1" onclick="" value="保存">-->
                 </div>
             </div>
+        </div>
+        <div class="rightBox" style="width: 50%!important;">
+
         </div>
     </div>
 
 
-    <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
 </div>
 
 
