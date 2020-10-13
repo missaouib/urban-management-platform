@@ -60,9 +60,6 @@
     <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
 </div>
 
-
-
-
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 
@@ -75,7 +72,7 @@
 
     let searchUrl = /*[[@{/processdef/search}]]*/ "/json/unit.json";
 
-    let addUrl = /*[[@{/processdef/model}]]*/ "/processdef/model";
+    let addUrl = /*[[@{/user/add}]]*/ "/user/add";
 
     let removeUrl = /*[[@{/processdef/remove}]]*/ "/processdef/remove";
 
@@ -85,20 +82,6 @@
 
 
     function add() {
-        var btn = ['<i class="fa fa-check"></i> 点我回调', '<i class="fa fa-close"></i> 点我关闭'];
-        var options = {
-            title: '添加流程定义',
-            width: "900",
-            height: "320",
-            url: addUrl,
-            btn: btn,
-            callBack: doSubmit
-        };
-        $.modal.openOptions(options);
-    }
-
-
-    function doSubmit(){
 
     }
 

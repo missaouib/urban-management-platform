@@ -41,6 +41,11 @@ public class ProcessDefinitionController {
         return new ModelAndView(SystemConstant.PAGE + "/processdef/processdef");
     }
 
+    @GetMapping("/processdef/model")
+    public ModelAndView model() {
+        return new ModelAndView(SystemConstant.PAGE + "/processdef/model");
+    }
+
 
     /**
      * 流程定义列表
