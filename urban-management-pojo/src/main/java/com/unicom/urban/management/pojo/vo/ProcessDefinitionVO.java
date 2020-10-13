@@ -16,7 +16,7 @@ public class ProcessDefinitionVO {
 
     private String description;
 
-    private int version;
+    private Integer version;
 
     private String resourceName;
 
@@ -24,11 +24,11 @@ public class ProcessDefinitionVO {
 
     private String diagramResourceName;
 
-    private boolean startFormKey;
+    private Boolean startFormKey;
 
-    private boolean graphicalNotation;
+    private Boolean graphicalNotation;
 
-    private boolean uspended;
+    private Boolean uspended;
 
     private String tenantId;
 

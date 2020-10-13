@@ -2,10 +2,13 @@ package com.unicom.urban.management.web.framework.activiti;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.pojo.vo.ProcessDefinitionVO;
+import com.unicom.urban.management.service.processdef.ProcessDefService;
 import org.activiti.engine.RepositoryService;
-import org.activiti.engine.RuntimeService;
-import org.activiti.engine.repository.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,13 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
- * 流程定义
+ * 流程定义管理
  *
  * @author liukai
  */
@@ -34,11 +33,7 @@ public class ProcessDefinitionController {
     private RepositoryService repositoryService;
 
     @Autowired
-    private RuntimeService runtimeService;
-
-
-//    @Autowired
-//    private ProcessDefinitionMapStruct processDefinitionMapStruct;
+    private ProcessDefService processDefService;
 
 
     @GetMapping("/processdef")
@@ -51,29 +46,8 @@ public class ProcessDefinitionController {
      * 流程定义列表
      */
     @GetMapping("/processdef/search")
-    public Map<String, Object> processDefinitionList() {
-
-        Map<String, Object> map = new HashMap<>();
-
-        List<HashMap<String, Object>> listMap = new ArrayList<>();
-        List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery().orderByProcessDefinitionVersion().desc().list();
-
-        for (ProcessDefinition pd : list) {
-            HashMap<String, Object> hashMap = new HashMap<>();
-            //System.out.println("流程定义ID："+pd.getId());
-            hashMap.put("processDefinitionID", pd.getId());
-            hashMap.put("name", pd.getName());
-            hashMap.put("key", pd.getKey());
-            hashMap.put("resourceName", pd.getResourceName());
-            hashMap.put("deploymentID", pd.getDeploymentId());
-            hashMap.put("version", pd.getVersion());
-            listMap.add(hashMap);
-        }
-
-
-        map.put("content", listMap);
-
-        return map;
+    public Page<ProcessDefinitionVO> processDefinitionList(@PageableDefault Pageable pageable) {
+        return processDefService.search(pageable);
     }
 
     @PostMapping("/processdef/remove")

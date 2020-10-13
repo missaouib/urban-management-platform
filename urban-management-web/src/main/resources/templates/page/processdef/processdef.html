@@ -2,18 +2,18 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
-    <title>流程部署管理</title>
+    <title>流程定义管理</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
 
 </head>
 <body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
 <div class="notice_main ">
-    <h6>流程部署管理</h6>
+    <h6>流程定义管理</h6>
     <div style="border-bottom: 1px #ccc solid;padding-bottom: 8px">
         <p style="line-height: 24px;font-size: 14px;padding: 4px 0 0 36px ;color:#bb8940;background-image: url(img/ts_03.png);background-repeat: no-repeat;background-position: 10px 8px;font-weight: bold">温馨提示</p>
         <ul class="ts">
-            <li><span>*</span>该页面主要显示的是流程部署查询界面。</li>
+            <li><span>*</span>该页面主要显示的是流程定义查询界面。</li>
         </ul>
     </div>
 
@@ -44,9 +44,9 @@
 <!--        <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">-->
 <!--            <i class="fa fa-remove"></i> 删除-->
 <!--        </a>-->
-        <a class="btn btn-info" onclick="importFile()">
-            <i class="fa fa-upload"></i> 导入
-        </a>
+<!--        <a class="btn btn-info" onclick="importFile()">-->
+<!--            <i class="fa fa-upload"></i> 导入-->
+<!--        </a>-->
         <!--    <a class="btn btn-warning" onclick="$.table.exportExcel()">-->
         <!--        <i class="fa fa-download"></i> 导出-->
         <!--    </a>-->
@@ -87,11 +87,11 @@
     })
 
 
-    let searchUrl = /*[[@{/deployment/search}]]*/ "/json/unit.json";
+    let searchUrl = /*[[@{/processdef/search}]]*/ "/json/unit.json";
 
     let addUrl = /*[[@{/user/add}]]*/ "/user/add";
 
-    let removeUrl = /*[[@{/deployment/remove}]]*/ "/deployment/remove";
+    let removeUrl = /*[[@{/processdef/remove}]]*/ "/processdef/remove";
 
     let importUrl = /*[[@{/deployment/file}]]*/ "/deployment/file";
 
@@ -109,37 +109,41 @@
             // importTemplateUrl: prefix + "/importTemplate",
             sidePagination: "client",
             uniqueId: "deploymentID",
-            modalName: "流程部署",
+            modalName: "流程定义",
             columns: [
                 // {
                 //     checkbox: true
                 // },
                 {
-                    title: '部署ID',
+                    title: '流程定义ID',
                     field: 'id'
+                },
+                {
+                    title: '部署ID',
+                    field: 'deploymentId'
                 },
                 {
                     title: '名称',
                     field: 'name'
                 },
                 {
-                    title: '部署时间',
-                    field: 'deploymentTime'
+                    title: 'KEY',
+                    field: 'key'
                 },
-                // {
-                //     title: '版本',
-                //     field: 'version'
-                // },
-                // {
-                //     title: '资源名称',
-                //     field: 'resourceName'
-                // },
+                {
+                    title: '资源名称',
+                    field: 'resourceName'
+                },
+                {
+                    title: '版本',
+                    field: 'version'
+                },
                 {
                     title: '操作',
                     field: '',
                     formatter: function (value, row) {
                         var a = '<a  href="#" title="" onclick="view(\'' + row.id + '\')">查看</a> ';
-                        var b = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
+                        var b = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.deploymentId + '\')">删除</a> ';
                         return a + b;
                     }
                 }

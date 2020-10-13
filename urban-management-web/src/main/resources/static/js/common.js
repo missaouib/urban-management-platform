@@ -736,10 +736,11 @@ var table = {
 					// $.treeTable.refresh();
 				} else if (result.code == web_status.SUCCESS && $.common.isEmpty(table.options.type)) {
 					$.modal.msgSuccess(result.message)
-				}  else if (result.code == web_status.WARNING) {
+				}  else if (result.code === web_status.WARNING) {
 					$.modal.alertWarning(result.message)
 				}  else {
 					$.modal.alertError(result.message);
+					return;
 				}
 				$.modal.closeLoading();
 			},
