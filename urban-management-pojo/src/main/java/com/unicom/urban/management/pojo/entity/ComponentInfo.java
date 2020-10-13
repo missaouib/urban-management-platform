@@ -28,35 +28,77 @@ public class ComponentInfo extends BaseEntity {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
+    /**
+     * 部件标识码
+     */
     private String objId;
 
+    /**
+     * 部件名称
+     */
     private String objName;
 
+    /**
+     * 主管部门代码
+     */
     private String deptCode1;
 
+    /**
+     * 主管部门名称
+     */
     private String deptName1;
 
+    /**
+     * 权属部门代码
+     */
     private String deptCode2;
 
+    /**
+     * 权属部门名称
+     */
     private String deptName2;
 
+    /**
+     * 养护部门代码
+     */
     private String deptCode3;
 
+    /**
+     * 养护部门名称
+     */
     private String deptName3;
 
+    /**
+     * 所在单元网格
+     */
     private String bgid;
 
+    /**
+     * 部件状态
+     */
     private String objState;
 
+    /**
+     * 初始日期
+     */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime ORDate;
 
+    /**
+     * 变更日期
+     */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime CHDate;
 
+    /**
+     * 数据来源
+     */
     private String  dataSource;
 
+    /**
+     * 备注
+     */
     private String note;
 }
