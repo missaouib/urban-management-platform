@@ -5,124 +5,87 @@
     <title>热线上报</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
 
-<!--    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">-->
+
+    <link th:href="@{/css/layertype.css}" rel="stylesheet" type="text/css">
 
 
 </head>
 <body style="border-radius: 8px;">
-    <div class="col-md-12">
-        <!-- jquery validation -->
-        <!-- /.card-header -->
-        <!-- form start -->
-        <div class="row">
-            <div class="col-4">
-                <div class="card" style="margin-top: 10px">
-<!--                    <div class="card-header">-->
-<!--                        <h3 class="card-title">查询项</h3>-->
-<!--                    </div>-->
-                    <div class="card-body">
-                        <form role="form">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="form-group col-12">
-                                        <label class="label_title">搜索</label>
-                                        <input type="text" placeholder="请输入关键字" id="key" class="form-control label_input">
-                                    </div>
-                                    <div class="form-group col-12"
-                                         style="text-align: right;margin-top: 20px;">
-                                        <button type="button" class="btn btn-primary" style="margin-right: 5px"
-                                                id="layerTypeButton"
-                                                onclick="toAttributeTemplateList()">要素库维护
-                                        </button>
-                                        <button type="button" class="btn btn-primary" style="margin-right: 5px"
-                                                id="toAttributeTemplateListButton"
-                                                onclick="toAttributeTemplateList()">维护属性
-                                        </button>
-                                        <button type="button" class="btn btn-primary"
-                                                disabled="disabled"
-                                                id="removeLayerSettingButton"
-                                                onclick="removeLayerSetting()">删除
-                                        </button>
-                                        <button type="button" class="btn btn-primary"
-                                                style="display: none;"
-                                                id="addLayerSettingDivButton"
-                                                onclick="addLayerSettingDiv()">新增
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                        <div class="zTreeDemoBackground left">
-                            <ul id="tree" class="ztree"></ul>
-                        </div>
-                    </div>
-                </div>
+<div class="content">
+    <div class="leftBox">
+        <div class="leftInner">
+            <div class="form-group">
+                <label class="">搜索</label>
+                <input type="text" class="find_input" name="username" placeholder="请输入关键字">
             </div>
-            <div class="col-8">
-                <div class="col-md-12" id="layerSettingData" style="margin-top: 10px" >
-                    <!-- jquery validation -->
-                    <div class="card card-primary">
-                        <div class="card-header">
-                            <h3 class="card-title">基础信息</h3>
-                        </div>
-                        <!-- /.card-header -->
-                        <!-- form start -->
-                        <form role="form" id="quickForm">
-                            <input type="hidden" id="upId" name="upId" >
-                            <input type="hidden" id="id" name="id" >
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label class="label_title"><i>*</i>名称</label>
-                                    <input type="text" class="form-control label_input" id="name" name="name">
-                                </div>
-                                <div class="form-group">
-                                    <label class="label_title"><i>*</i>编号</label>
-                                    <input type="text" class="form-control label_input" id="num" name="num">
-                                </div>
-                                <div class="form-group">
-                                    <label class="label_title"><i>*</i>排序值</label>
-                                    <input type="text" class="form-control label_input" id="sort" name="sort">
-                                </div>
-                                <div class="form-group">
-                                    <label class="label_title"><i>*</i>要素符号</label>
-                                    <select class="form-control label_input" id="type" name="type">
-                                        <option value="" selected="selected">--请选择--</option>
-                                        <option value="0e373fb1-4818-46d1-9f26-19cb0252e521">1</option>
-                                        <option value="63213929-fc38-4150-a2b5-6ed019536ff1">2</option>
-                                        <option value="de3e0438-adb1-4f71-86d4-78a233843aa1">3</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label class="label_title"><i>*</i>图层类型</label>
-                                    <input type="text" class="form-control label_input" id="" name="sort">
-                                </div>
-                            </div>
-
-
-                            <div style="text-align: right;padding-bottom: 50px;margin-right: 20px" class="btnGround">
-
-                                <button type="button" class="btn btn-primary" id="backLayerSettingButton"
-                                        onclick="goBackLayerSetting()">返回
-                                </button>
-
-                                <button type="button" class="btn btn-primary"
-                                        id="editLayerSettingButton"
-                                        style="display: block;margin-left: 10px"
-                                        onclick="editLayerSetting()">修改
-                                </button>
-
-                                <button type="submit" class="btn btn-primary" id="addLayerSettingButton"
-                                        style="display: none;margin-left: 10px;float: right">保存
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- /.card -->
+            <div class="form-group"
+                 style="text-align: right;margin-top: 20px;">
+                <div class="btn-group-sm " id="toolbar" style="padding: 10px">
+                    <a class="btn btn-success" onclick="">
+                        <i class="fa fa-plus"></i> 要素库维护
+                    </a>
+                    <a class="btn btn-info" onclick="">
+                        <i class="fa fa-upload"></i> 维护属性
+                    </a>
+                    <a class="btn btn-danger multiple disabled" onclick="">
+                        <i class="fa fa-remove"></i> 删除
+                    </a>
                 </div>
             </div>
         </div>
+
     </div>
+    <div class="rightBox">
+        <div class="rightInner">
+            <div class="card-header">
+                <h5 class="card-title">基础信息</h5>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form role="form" id="quickForm">
+                <input type="hidden" id="upId" name="upId" >
+                <input type="hidden" id="id" name="id" >
+                <div class="card-body">
+                    <div class="form-group basics">
+                        <label class=""><i>*</i>名称</label>
+                        <input type="text" class="find_input" id="name" name="username">
+                    </div>
+                    <div class="form-group basics">
+                        <label class=""><i>*</i>编号</label>
+                        <input type="text" class="find_input" id="num" name="num">
+                    </div>
+                    <div class="form-group basics">
+                        <label class=""><i>*</i>排序值</label>
+                        <input type="text" class="find_input" id="sort" name="sort">
+                    </div>
+                    <div class="form-group basics">
+                        <label class=""><i>*</i>要素符号</label>
+                        <select class="find_input" id="type" name="type">
+                            <option value="" selected="selected">--请选择--</option>
+                            <option value="0e373fb1-4818-46d1-9f26-19cb0252e521">1</option>
+                            <option value="63213929-fc38-4150-a2b5-6ed019536ff1">2</option>
+                            <option value="de3e0438-adb1-4f71-86d4-78a233843aa1">3</option>
+                        </select>
+                    </div>
+                    <div class="form-group basics">
+                        <label class=""><i>*</i>图层类型</label>
+                        <input type="text" class="find_input" id="" name="sort">
+                    </div>
+                </div>
+
+
+                <div style="padding-bottom: 20px;margin-right: 20px" class="">
+                    <input type="button" class="check_btn1" onclick="" value="返回">
+                    <input type="button" class="check_btn1" onclick="" value="修改">
+                    <input type="button" class="check_btn1" onclick="" value="保存">
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
 
 
 

@@ -5,103 +5,89 @@
     <title>热线上报</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <link th:href="@{/css/gird.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;">
-<div class="col-md-12">
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <form role="form" id="searchForm">
-                        <div class="row">
-                            <div class="form-group col-6">
-                                <label class="title_card">网格图层名称</label>
-                                <input type="text" class="form-control" id="sysName">
-                            </div>
-                            <div class="form-group col-6">
-                                <label class="title_card">所属责任部门</label>
-                                <select class="form-control" id="sysSts">
-                                    <option value="">--请选择--</option>
-                                    <option th:value="1">1</option>
-                                    <option th:value="2">2</option>
-                                </select>
-                            </div>
-                            <div class="form-group col-12" style="text-align: right;">
-                                <button type="button" class="btn btn-primary" onclick="add();">新增</button>
-                                <button type="button" class="btn btn-primary" onclick="search();" >查询</button>
-                                <button type="button" class="btn btn-primary" onclick="reSet();">重置</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <table id="dataTables" class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th>事件</th>
-                            <th>本周</th>
-                            <th>本月</th>
-                            <th>总数</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>市容环境</td>
-                            <td>1</td>
-                            <td>26</td>
-                            <td>28</td>
-                        </tr>
-                        <tr>
-                            <td>宣传广告</td>
-                            <td>5</td>
-                            <td>30</td>
-                            <td>35</td>
-                        </tr>
-                        <tr>
-                            <td>施工管理</td>
-                            <td>4</td>
-                            <td>4</td>
-                            <td>12</td>
-                        </tr>
+<div class="notice_check">
+    <form id="search-form">
+        <p>
+            <label class="">网格图层名称</label>
+            <input type="text" class="find_input" name="username">
+            <label class="">所属责任部门</label>
+            <select class="find_input" id="">
+                <option value="">--请选择--</option>
+                <option th:value="1">1</option>
+                <option th:value="2">2</option>
+            </select>
+<!--            <input type="button" class="check_btn" onclick="" value="新增">-->
 
-                        <tr>
-                            <td>突发事件</td>
-                            <td>6</td>
-                            <td>8</td>
-                            <td>17</td>
-                        </tr>
-                        <tr>
-                            <td>街面秩序</td>
-                            <td>7</td>
-                            <td>89</td>
-                            <td>30</td>
-                        </tr>
-                        <tr>
-                            <td>其他设施</td>
-                            <td>1</td>
-                            <td>26</td>
-                            <td>28</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
+        </p>
 
-            <!-- /.card -->
-        </div>
-        <!-- /.col -->
-    </div>
+    </form>
 
-    <!-- /.card -->
+</div>
+<div class="btn-group-sm" id="toolbar" style="padding: 10px">
+    <a class="btn btn-success" onclick="$.operate.addTab()">
+        <i class="fa fa-plus"></i> 新增
+    </a>
+    <a class="btn btn-info" onclick="$.table.importExcel()">
+        <i class="fa fa-upload"></i> 查询
+    </a>
+    <a class="btn btn-warning" onclick="$.table.exportExcel()">
+        <i class="fa fa-download"></i> 重置
+    </a>
+</div>
+<div class="mannertable" >
+    <table class="table">
+        <thead>
+        <tr>
+            <th>事件</th>
+            <th>本周</th>
+            <th>本月</th>
+            <th>总数</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>市容环境</td>
+            <td>1</td>
+            <td>26</td>
+            <td>28</td>
+        </tr>
+        <tr>
+            <td>宣传广告</td>
+            <td>5</td>
+            <td>30</td>
+            <td>35</td>
+        </tr>
+        <tr>
+            <td>施工管理</td>
+            <td>4</td>
+            <td>4</td>
+            <td>12</td>
+        </tr>
+
+        <tr>
+            <td>突发事件</td>
+            <td>6</td>
+            <td>8</td>
+            <td>17</td>
+        </tr>
+        <tr>
+            <td>街面秩序</td>
+            <td>7</td>
+            <td>89</td>
+            <td>30</td>
+        </tr>
+        <tr>
+            <td>其他设施</td>
+            <td>1</td>
+            <td>26</td>
+            <td>28</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 <!-- /.col -->
 </div>

@@ -257,15 +257,7 @@ dl, dt, dd, ol, ul, li{ list-style:none;}
     font-weight: 400;
     color: #010101;
 }
-.mannertable{
 
-    padding: 10px 10px 10px 10px;
-    background: #FFFFFF;
-    border: 1px solid #F2F3F5;
-    box-shadow: 1px 1px 6px 0px rgba(228, 228, 228, 0.5);
-    border-radius: 5px;
-    height: 60%;
-}
 
 .mation{
     display: inline-block;
