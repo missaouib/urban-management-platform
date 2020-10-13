@@ -423,7 +423,7 @@
         }).on('fileselect', function (event, numFiles, label) {
             console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
         }).on("filebatchselected", function (event, files) {
-            $(this).fileinput("upload");
+            // $(this).fileinput("upload");
         }).on("fileuploaded", function (event, data) {
             console.log('fileuploaded()      ');
 
