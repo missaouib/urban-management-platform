@@ -685,7 +685,7 @@
 .layui-layer-title{background-color: #3c8dbc !important;font-weight:500;color:#fff !important; border:none !important;height: 36px !important;line-height: 36px !important;}
 .layui-layer-rim {border: 0 solid #8D8D8D !important;border-radius: 5px;box-shadow: 0 5px 15px rgba(0,0,0,.4)!important;  }
 .notice_check{padding: 16px 15px;font-size: 12px}
-.notice_check p label{text-align: right;font-size: 12px;display: inline-block;width: 60px}
+.notice_check p label{text-align: right;font-size: 12px;display: inline-block;}
 .find_input{width: 198px;height: 30px;border:solid 1px #ccc;border-radius: 4px;}
 .notice_check .check_btn{height: 30px;border: none;margin-left: 5px;width: 65px;border-radius: 4px;background-color: #337ab7;color: #fff;padding-left: 18px;
     background-image: url(../img/1_03.png);background-repeat: no-repeat;background-position: 11px 8px}
@@ -926,11 +926,20 @@ body{height: 100vh!important;}
 .label_input{
     width: 80% !important;
 }
-.label_title i{
+.form-control i{
     color: red;
 }
 .btnGround{
     display: flex;
 width: 100%;
-    justify-content: flex-end;
+justify-content: flex-end;
+}
+.mannertable{
+
+    padding: 10px 10px 10px 10px;
+    background: #FFFFFF;
+    border: 1px solid #F2F3F5;
+    box-shadow: 1px 1px 6px 0px rgba(228, 228, 228, 0.5);
+    border-radius: 5px;
+    height: 60%;
 }
