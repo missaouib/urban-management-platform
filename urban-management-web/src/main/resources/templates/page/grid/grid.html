@@ -28,7 +28,7 @@
 
 </div>
 <div class="btn-group-sm" id="toolbar" style="padding: 10px">
-    <a class="btn btn-success" onclick="$.operate.addTab()">
+    <a class="btn btn-success"  data-toggle="modal" data-target="#modal-default" onclick="$.operate.addTab()">
         <i class="fa fa-plus"></i> 新增
     </a>
     <a class="btn btn-info" onclick="$.table.importExcel()">
@@ -93,7 +93,55 @@
 </div>
 
 
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">默认窗口</h4>
+            </div>
+            <div class="modal-body">
+                <div class="notice_check">
+                    <form >
+                        <p>
+                            <div>
+                                <label class="modelTitle">网格图层名称</label>
+                                <input type="text" class="find_input" name="username">
+                             </div>
+                        <div>
+                            <label class="modelTitle">创建日期</label>
+                            <input type="text" class="find_input" name="username">
+                        </div>
+                            <div>
+                                <label class="modelTitle">所属责任部门</label>
+                                <select class="find_input" id="">
+                                    <option value="">--请选择--</option>
+                                    <option th:value="1">1</option>
+                                    <option th:value="2">2</option>
+                                </select>
+                            </div>
+                        <div>
+                            <label class="modelTitle">备注</label>
+                            <input type="text" class="find_input" name="username">
+                        </div>
+
+                            <!--            <input type="button" class="check_btn" onclick="" value="新增">-->
+
+                        </p>
+
+                    </form>
+
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="pictureDiv" style="display: none">
+
 
 </div>
 

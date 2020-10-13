@@ -9,23 +9,16 @@
 </head>
 <body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
 <div class="notice_main ">
-    <h6>用户管理</h6>
-    <div style="border-bottom: 1px #ccc solid;padding-bottom: 8px">
-        <p style="line-height: 24px;font-size: 14px;padding: 4px 0 0 36px ;color:#bb8940;background-image: url(img/ts_03.png);background-repeat: no-repeat;background-position: 10px 8px;font-weight: bold">温馨提示</p>
-        <ul class="ts">
-            <li><span>*</span>该页面主要显示的是用户信息查询界面。</li>
-        </ul>
-    </div>
-
-
-
 
     <div class="notice_check">
         <form id="search-form">
             <p>
-                <label class="">账号：</label>
-                <input type="text" class="find_input" name="username">
-                <label class="">姓名：</label>
+                <label class="">分类</label>
+                <input type="text" readonly="readonly" id="typeStr" class="find_input">
+                <button type="button" class="addBtn"  data-toggle="modal" data-target="#modal-default">
+                 +
+                </button>
+                <label class="">名称</label>
                 <input type="text" class="find_input" name="name">
                 <input type="button" class="check_btn" onclick="$.table.search()" value="查询">
                 <input type="button" class="check_btn1" onclick="$.form.reset()" value="重置查询">
@@ -33,25 +26,39 @@
         </form>
     </div>
 
-    <div class="clear"></div>
+<!--    <div class="clear"></div>-->
 
 
     <div class="btn-group-sm" id="toolbar">
-        <a class="btn btn-success" onclick="$.operate.addTab()">
-            <i class="fa fa-plus"></i> 新增
+        <a class="btn btn-info" onclick="$.table.importExcel()">
+            <i class="fa fa-upload"></i> 导入部件图层
         </a>
         <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">
-            <i class="fa fa-edit"></i> 修改
+            <i class="fa fa-edit"></i> 查询
         </a>
         <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">
-            <i class="fa fa-remove"></i> 删除
+            <i class="fa fa-remove"></i> 重置
         </a>
-        <!--    <a class="btn btn-info" onclick="$.table.importExcel()">-->
-        <!--        <i class="fa fa-upload"></i> 导入-->
-        <!--    </a>-->
+
         <!--    <a class="btn btn-warning" onclick="$.table.exportExcel()">-->
         <!--        <i class="fa fa-download"></i> 导出-->
         <!--    </a>-->
+    </div>
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">默认窗口</h4>
+                </div>
+                <div class="modal-body">
+                    <p>zTree</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">确认</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 

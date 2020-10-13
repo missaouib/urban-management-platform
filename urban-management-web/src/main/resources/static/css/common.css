@@ -943,3 +943,14 @@ justify-content: flex-end;
     border-radius: 5px;
     height: 60%;
 }
+.addBtn {
+    padding: 5px;
+    margin-left: -20px;
+    background-color: #337ab7;
+    color: white;
+}
+
+.modelTitle{
+    width: 100px;
+    text-align: center;
+}
