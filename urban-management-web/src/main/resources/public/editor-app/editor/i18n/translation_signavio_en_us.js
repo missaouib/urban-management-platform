@@ -41,7 +41,7 @@ Signavio.I18N.Editor.Linking.CreateDiagram = "Create a new diagram";
 Signavio.I18N.Editor.Linking.UseDiagram = "Use existing diagram";
 Signavio.I18N.Editor.Linking.UseLink = "Use web link";
 Signavio.I18N.Editor.Linking.Close = "Close";
-Signavio.I18N.Editor.Linking.Cancel = "Cancel";
+Signavio.I18N.Editor.Linking.Cancel = "取消";
 Signavio.I18N.Editor.Linking.UseName = "Adopt diagram name";
 Signavio.I18N.Editor.Linking.UseNameHint = "Replaces the current name of the modeling element ({type}) with the name of the linked diagram.";
 Signavio.I18N.Editor.Linking.CreateTitle = "Establish link";
@@ -89,12 +89,12 @@ ORYX.I18N.PropertyWindow.ListView.dataViewLabel = "Already existing entries.";
 ORYX.I18N.PropertyWindow.ListView.dataViewEmptyText = "No list entries.";
 ORYX.I18N.PropertyWindow.ListView.addEntryLabel = "Add a new entry";
 ORYX.I18N.PropertyWindow.ListView.buttonAdd = "Add";
-ORYX.I18N.PropertyWindow.ListView.save = "Save";
-ORYX.I18N.PropertyWindow.ListView.cancel = "Cancel";
+ORYX.I18N.PropertyWindow.ListView.save = "保存";
+ORYX.I18N.PropertyWindow.ListView.cancel = "取消";
 
 if(!Signavio.I18N.Buttons) Signavio.I18N.Buttons = {};
-Signavio.I18N.Buttons.save		= "Save";
-Signavio.I18N.Buttons.cancel 	= "Cancel";
+Signavio.I18N.Buttons.save		= "保存";
+Signavio.I18N.Buttons.cancel 	= "取消";
 Signavio.I18N.Buttons.remove	= "Remove";
 
 if(!Signavio.I18N.btn) {Signavio.I18N.btn = {};}

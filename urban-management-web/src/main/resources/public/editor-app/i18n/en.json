@@ -4,10 +4,10 @@
     "PAGE.HEADER" : "Orchestration Details",
 
     "ACTION.OK" : "Ok",
-    "ACTION.SAVE" : "Save",
+    "ACTION.SAVE" : "保存",
     "ACTION.SAVE-AND-CLOSE" : "Save and close editor",
     "ACTION.SEND" : "Send",
-    "ACTION.CANCEL" : "Cancel",
+    "ACTION.CANCEL" : "取消",
     "ACTION.SELECT" : "Select",
     "ACTION.ADD" : "Add",
     "ACTION.REMOVE" : "Remove",
@@ -20,7 +20,7 @@
     "MAIN_NAVIGATION_SOLUTIONS" : "Solutions",
     
     "TOOLBAR.ACTION.CLOSE" : "Close the editor and go back to the overview page",
-    "TOOLBAR.ACTION.SAVE" : "Save the model",
+    "TOOLBAR.ACTION.SAVE" : "保存流程",
     "TOOLBAR.ACTION.VALIDATE": "Validate the model",
     "TOOLBAR.ACTION.CUT" : "Cut (select one or more elements in your business process)",
     "TOOLBAR.ACTION.COPY" : "Copy (select one or more elements in your business process)",
@@ -43,12 +43,12 @@
     "TOOLBAR.ACTION.HELP": "Start the guided tour",
     "TOOLBAR.ACTION.FEEDBACK": "Provide feedback",
     
-    "KICKSTART.PROCESS_TOOLBAR.ACTION.SAVE" : "Save the model",
+    "KICKSTART.PROCESS_TOOLBAR.ACTION.SAVE" : "保存流程",
     "KICKSTART.PROCESS_TOOLBAR.ACTION.VALIDATE": "Validate the model",
     "KICKSTART.PROCESS_TOOLBAR.ACTION.HELP": "Start the guided tour",
     "KICKSTART.PROCESS_TOOLBAR.ACTION.FEEDBACK": "Provide feedback",
     
-    "FORM_TOOLBAR.ACTION.SAVE" : "Save the model",
+    "FORM_TOOLBAR.ACTION.SAVE" : "保存流程",
     "FORM_TOOLBAR.ACTION.VALIDATE": "Validate the model",
     "FORM_TOOLBAR.ACTION.HELP": "Start the guided tour",
     "FORM_TOOLBAR.ACTION.FEEDBACK": "Provide feedback",

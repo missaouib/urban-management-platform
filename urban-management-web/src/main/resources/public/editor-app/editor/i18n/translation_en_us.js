@@ -127,14 +127,14 @@ ORYX.I18N.jPDLSupport.close = "Close";
 if(!ORYX.I18N.Save) ORYX.I18N.Save = {};
 
 ORYX.I18N.Save.group = "File";
-ORYX.I18N.Save.save = "Save";
-ORYX.I18N.Save.saveDesc = "Save";
+ORYX.I18N.Save.save = "保存";
+ORYX.I18N.Save.saveDesc = "保存";
 ORYX.I18N.Save.saveAs = "Save As...";
 ORYX.I18N.Save.saveAsDesc = "Save As...";
 ORYX.I18N.Save.unsavedData = "There are unsaved data, please save before you leave, otherwise your changes get lost!";
 ORYX.I18N.Save.newProcess = "New Process";
 ORYX.I18N.Save.saveAsTitle = "Save as...";
-ORYX.I18N.Save.saveBtn = "Save";
+ORYX.I18N.Save.saveBtn = "保存";
 ORYX.I18N.Save.close = "Close";
 ORYX.I18N.Save.savedAs = "Saved As";
 ORYX.I18N.Save.saved = "Saved!";
@@ -180,7 +180,7 @@ ORYX.I18N.PropertyWindow.rem = "Remove";
 ORYX.I18N.PropertyWindow.complex = "Editor for a Complex Type";
 ORYX.I18N.PropertyWindow.text = "Editor for a Text Type";
 ORYX.I18N.PropertyWindow.ok = "Ok";
-ORYX.I18N.PropertyWindow.cancel = "Cancel";
+ORYX.I18N.PropertyWindow.cancel = "取消";
 ORYX.I18N.PropertyWindow.dateFormat = "m/d/y";
 
 if(!ORYX.I18N.ShapeMenuPlugin) ORYX.I18N.ShapeMenuPlugin = {};
