@@ -317,6 +317,9 @@ table {
     font-family: Microsoft YaHei;
     font-weight: 400;
     color: #949494;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 .activeNews{
     display: block;
