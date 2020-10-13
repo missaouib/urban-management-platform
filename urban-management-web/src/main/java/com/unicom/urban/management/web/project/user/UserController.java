@@ -3,7 +3,7 @@ package com.unicom.urban.management.web.project.user;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.dto.UserDTO;
-import com.unicom.urban.management.pojo.entity.ChangePasswordDTO;
+import com.unicom.urban.management.pojo.dto.ChangePasswordDTO;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.user.UserService;

@@ -1,4 +1,4 @@
-package com.unicom.urban.management.pojo.entity;
+package com.unicom.urban.management.pojo.dto;
 
 import com.unicom.urban.management.pojo.annotations.validation.Password;
 import lombok.Data;

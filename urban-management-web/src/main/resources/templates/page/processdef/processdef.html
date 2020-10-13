@@ -103,7 +103,7 @@
     function add() {
         layer.open({
             type: 1,
-            area: ['400px', '230px'],
+            area: ['400px', '300px'],
             fix: false,
             //不固定
             maxmin: true,
@@ -123,29 +123,29 @@
                 // // $.modal.disable();
                 var formData = new FormData(layero.find('form')[0]);
                 console.log(formData);
-                // $.ajax({
-                //     url: table.options.importUrl,
-                //     data: formData,
-                //     cache: false,
-                //     contentType: false,
-                //     processData: false,
-                //     type: 'POST',
-                //     success: function (result) {
-                //         if (result.code === web_status.SUCCESS) {
-                //             $.modal.closeAll();
-                //             $.modal.alertSuccess(result.message);
-                //             $.table.refresh();
-                //         } else if (result.code === web_status.WARNING) {
-                //             layer.close(index);
-                //             $.modal.enable();
-                //             $.modal.alertWarning(result.message)
-                //         } else {
-                //             layer.close(index);
-                //             $.modal.enable();
-                //             $.modal.alertError(result.message);
-                //         }
-                //     }
-                // });
+                $.ajax({
+                    url: table.options.importUrl,
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    type: 'POST',
+                    success: function (result) {
+                        if (result.code === web_status.SUCCESS) {
+                            $.modal.closeAll();
+                            $.modal.alertSuccess(result.message);
+                            $.table.refresh();
+                        } else if (result.code === web_status.WARNING) {
+                            layer.close(index);
+                            $.modal.enable();
+                            $.modal.alertWarning(result.message)
+                        } else {
+                            layer.close(index);
+                            $.modal.enable();
+                            $.modal.alertError(result.message);
+                        }
+                    }
+                });
             }
         });
     }

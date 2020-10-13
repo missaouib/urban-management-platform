@@ -127,9 +127,9 @@ var table = {
 
 				$('#' + options.id).bootstrapTable({
 					id: options.id,
-					treeEnable: options.treeEnable,                     // 是否为tree table
-					treeShowField: 'name',                              //
-					parentIdField: 'parentId',                          //
+					// treeEnable: options.treeEnable,                     // 是否为tree table
+					// treeShowField: 'name',                              //
+					// parentIdField: 'parentId',                          //
 
 					url: options.url,                                   // 请求后台的URL（*）
 					contentType: "application/x-www-form-urlencoded",   // 编码类型
@@ -190,14 +190,14 @@ var table = {
 					onLoadSuccess: $.table.onLoadSuccess,               // 当所有数据被加载时触发处理函数
 					exportOptions: options.exportOptions,               // 前端导出忽略列索引
 					detailFormatter: options.detailFormatter,           // 在行下面展示其他数据列表
-					onPostBody: function (data) {
-						$($.table.getOptionsIds()).treegrid({
-							treeColumn: 1,
-							onChange: function() {
-								$($.table.getOptionsIds()).bootstrapTable('resetView')
-							}
-						})
-					}
+					// onPostBody: function (data) {
+					// 	$($.table.getOptionsIds()).treegrid({
+					// 		treeColumn: 1,
+					// 		onChange: function() {
+					// 			$($.table.getOptionsIds()).bootstrapTable('resetView')
+					// 		}
+					// 	})
+					// }
 
 
 

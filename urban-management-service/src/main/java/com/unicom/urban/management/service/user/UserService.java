@@ -8,7 +8,7 @@ import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.dto.UserDTO;
-import com.unicom.urban.management.pojo.entity.ChangePasswordDTO;
+import com.unicom.urban.management.pojo.dto.ChangePasswordDTO;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.password.PasswordService;
