@@ -5,378 +5,126 @@
     <title>热线上报</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
-    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
+
+<!--    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">-->
+
+
 </head>
-<body style="border-radius: 8px;width: 680px">
-<div class="row1">
+<body style="border-radius: 8px;">
     <div class="col-md-12">
+        <!-- jquery validation -->
+        <!-- /.card-header -->
+        <!-- form start -->
         <div class="row">
-            <div class="leftBox">
-                <form id="userForm">
-                    <div class="top table2_top">
-                        <div>
-                            <div class="top_out">
-                                <table class="table">
-                                    <tbody>
-                                    <tr>
-                                        <td>姓名<span>*</span></td>
-                                        <td>
-                                            <input class="find_input" type="text" name="name" value="">
-                                        </td>
-                                        <td>登录账号<span>*</span></td>
-                                        <td>
-                                            <input class="find_input" type="text" name="username" value="">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>手机号码<span>*</span></td>
-                                        <td>
-                                            <input class="find_input" type="text" name="mobileNumber" value="">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>问题描述<span></span></td>
-                                        <td colspan = "8"><textarea></textarea></td>
-                                    </tr>
-                                    <tr>
-                                        <td>安全级别<span></span></td>
-                                        <td>
-                                            <select >
-                                                <option>特大</option>
-                                                <option>级大</option>
-                                                <option>一般</option>
-                                                <option>微小</option>
-                                            </select>
-                                        </td>
-                                        <td>发现时间<span></span></td>
-                                        <td>
-                                            <input type="text">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>所属企业<span></span></td>
-                                        <td>
-                                            <input type="text">
-                                        </td>
-                                        <td>企业负责人<span></span></td>
-                                        <td>
-                                            <input type="text">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>指派部门<span></span></td>
-                                        <td><select >
-                                            <option>公共安监</option>
-                                            <option>成都分公司</option>
-                                            <option>杭州总部</option>
-                                        </select></td>
-                                        <td>处理时间<span></span></td>
-                                        <td><input type="text" ></td>
-                                    </tr>
-                                    <tr>
-                                        <td>问题状态<span></span></td>
-                                        <td><select >
-                                            <option>未指派</option>
-                                            <!--<option>已经指派</option>-->
-                                            <!--<option>未处理</option>-->
-                                            <!--<option>已处理</option>-->
-                                            <!--<option>已关闭</option>-->
-                                        </select></td>
-                                        <td>关闭时间<span></span></td>
-                                        <td><input type="text" ></td>
-                                    </tr>
-
-<!--                                    <tr>-->
-<!--                                        <td>处理结果<span></span></td>-->
-<!--                                        <td colspan = "8"><textarea></textarea></td>-->
-<!--                                    </tr>-->
-                                    <tr>
-                                        <td>图片<span></span></td>
-                                        <td>
-                                            <input id="input-id" type="file"  name="file" multiple="multiple">
-<!--                                            <button type="button" onclick="addPicture()">添加图片</button>-->
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>视频<span></span></td>
-                                        <td>
-                                            <!--                                            <input id="input-id" type="file" data-preview-file-type="text" name="file" multiple="multiple">-->
-                                            <button type="button">添加视频</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>音频<span></span></td>
-                                        <td>
-                                            <!--                                            <input id="input-id" type="file" data-preview-file-type="text" name="file" multiple="multiple">-->
-                                            <button type="button">添加音频</button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!--                            时间轴-->
-<!--                            <div class="timeBox">-->
-<!--                                <div class="timeTitle">-->
-<!--                                    <h5>时间轴</h5>-->
-<!--                                    <div class="timeAfter"></div>-->
-<!--                                </div>-->
-<!--                                -->
-<!--                            </div>-->
-
-
-                            <!--                            按钮-->
-                            <div class="notice_bot">
-                                <!--            <div class="l_left">-->
-                                <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-                                <!--            </div>-->
-                                <div class="r_right but_p">
-                                    <button class="but_save" type="button" onclick="save()">保存</button>
-                                    <button class="but_close" onclick="Cancel()">关闭</button>
+            <div class="col-4">
+                <div class="card" style="margin-top: 10px">
+<!--                    <div class="card-header">-->
+<!--                        <h3 class="card-title">查询项</h3>-->
+<!--                    </div>-->
+                    <div class="card-body">
+                        <form role="form">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="form-group col-12">
+                                        <label class="label_title">搜索</label>
+                                        <input type="text" placeholder="请输入关键字" id="key" class="form-control label_input">
+                                    </div>
+                                    <div class="form-group col-12"
+                                         style="text-align: right;margin-top: 20px;">
+                                        <button type="button" class="btn btn-primary" style="margin-right: 5px"
+                                                id="layerTypeButton"
+                                                onclick="toAttributeTemplateList()">要素库维护
+                                        </button>
+                                        <button type="button" class="btn btn-primary" style="margin-right: 5px"
+                                                id="toAttributeTemplateListButton"
+                                                onclick="toAttributeTemplateList()">维护属性
+                                        </button>
+                                        <button type="button" class="btn btn-primary"
+                                                disabled="disabled"
+                                                id="removeLayerSettingButton"
+                                                onclick="removeLayerSetting()">删除
+                                        </button>
+                                        <button type="button" class="btn btn-primary"
+                                                style="display: none;"
+                                                id="addLayerSettingDivButton"
+                                                onclick="addLayerSettingDiv()">新增
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
+                        </form>
+                        <div class="zTreeDemoBackground left">
+                            <ul id="tree" class="ztree"></ul>
                         </div>
-
                     </div>
-                </form>
-            </div>
-            <div class="rightBox">
-                <div class="titlenav">
-                    <div class="name active">地图</div>
-                    <div class="name">事件详情</div>
-                    <div class="name">事件过程</div>
-                    <div class="name">流程图</div>
                 </div>
-                <div class="banner">
-                    <div class="tree treeActive">map</div>
-                    <div class="tree">
-                        事件
-                    </div>
-                    <div class="tree ">
-                        <div class="timeContent">
-                            <!--                                    <ul class="timeUl">-->
-                            <!--                                        <li class="timeLi">-->
-                            <!--                                            <div class="timeBlok">-->
-                            <!--                                                <div class="tag">-->
-                            <!--                                                    <a href="#" class="tag-a tagA">-->
-                            <!--                                                        <span>城管</span>-->
-                            <!--                                                    </a>-->
-                            <!--                                                </div>-->
-                            <!--                                                <div class="tagContent">-->
-                            <!--                                                    <p class="titleInfo">-->
-                            <!--                                                        <a>城管平台</a>-->
-                            <!--                                                    </p>-->
-                            <!--                                                    <div class="byWhat">-->
-                            <!--                                                        by-->
-                            <!--                                                        <em>humen</em>-->
-                            <!--                                                    </div>-->
-                            <!--                                                    <div class="byWhat">-->
-                            <!--                                                        <em>date</em>-->
-                            <!--                                                    </div>-->
-                            <!--                                                    <p class="state">-->
-                            <!--                                                        状态-->
-                            <!--                                                        <a>-->
-                            <!--                                                            <button class="btn-primary stateBtn">详情</button>-->
-                            <!--                                                        </a>-->
-                            <!--                                                    </p>-->
-                            <!--                                                </div>-->
-                            <!--                                            </div>-->
-                            <!--                                        </li>-->
-                            <!--                                    </ul>-->
-                            <div class='g_con'>
-                                <!-- 物流时间轴 -->
-                                <div class='expressRecord'>
-
-                                    <!-- 单个物流记录点时间轴：当前正在进行的物流状态 -->
-                                    <div class='expressRecord-single-close'>
-
-                                        <!-- 左边子容器 -->
-                                        <div class='expressRecord-single-noReach-online-top-close'>
-                                            <!-- 正在进行的时间轴上半个时间线 -->
-                                            <div class='online-top-closing'></div>
-                                            <!-- 正在进行的时间轴点 -->
-                                            <div class='dot-closing'>
-                                                <div class="yes blockActive"></div>
-                                            </div>
-                                            <!-- 正在进行的时间轴下半个时间线 -->
-                                            <div class='online-bottom'></div>
-                                        </div>
-
-                                        <!-- 右边子容器 -->
-                                        <div class='expressRecord-text'>
-                                            <div class="gameTitle titone">门头沟区域指挥中心</div>
-                                            <div class="gameEnd endone">
-                                                <div class="endBox">
-                                                    <em>by:</em> 管理员，调度员
-                                                </div>
-                                                <div class="endBox endright">
-                                                    2020/10/10 10:10:10
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- 相对父级容器绝对定位的日期 -->
-                                        <div class='expressRecord-dating'>
-                                            <div class='expressRecord-date-text'>
-                                                立案
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <!-- 单个物流记录点时间轴：已经过去的物流状态 -->
-                                    <div class='expressRecord-single-close'>
-                                        <div class='expressRecord-single-noReach-online-top-close'>
-                                            <div class='online-top-close'></div>
-                                            <div class='dot-close'>
-                                                <div class="yes blockActive"></div>
-                                            </div>
-                                            <div class='online-bottom'></div>
-                                        </div>
-
-                                        <div class='expressRecord-text'>
-                                            <div class="gameTitle">门头沟区域指挥中心</div>
-                                            <div class="gameEnd">
-                                                <div class="endBox">
-                                                    <em>回复内容:</em> 派遣
-                                                </div>
-                                                <div class="endBox"></div>
-                                            </div>
-                                            <div class="gameEnd">
-                                                <div class="endBox">
-                                                    <em>by:</em> 管理员，调度员
-                                                </div>
-                                                <div class="endBox endright">
-                                                    2020/10/10 10:10:10
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class='expressRecord-date'>
-                                            <div class='expressRecord-date-text'>
-                                                派遣
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class='expressRecord-single-close'>
-                                        <div class='expressRecord-single-noReach-online-top-close'>
-                                            <div class='online-top-close'></div>
-                                            <div class='dot-close'>
-                                                <div class="yes blockActive"></div>
-                                            </div>
-                                            <div class='online-bottom' style="background-color:#F2F3F5;"></div>
-                                        </div>
-
-                                        <div class='expressRecord-text'>
-                                            <div class="gameTitle">门头沟区域指挥中心</div>
-                                            <div class="gameEnd">
-                                                <div class="endBox">
-                                                    <em>回复内容:</em> 派遣
-                                                </div>
-                                                <div class="endBox enclosure"><i></i>附件详情</div>
-                                            </div>
-                                            <div class="gameEnd">
-                                                <div class="endBox">
-                                                    <em>by:</em> 管理员，调度员
-                                                </div>
-                                                <div class="endBox endright">
-                                                    2020/10/10 10:10:10
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class='expressRecord-date'>
-                                            <div class='expressRecord-date-text'>
-                                                办理回复
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-
-                                    <div class='expressRecord-single-close'>
-                                        <div class='expressRecord-single-noReach-online-top-close'>
-                                            <div class='online-top-close' style="background-color:#F2F3F5;"></div>
-                                            <div class='dot-close'>
-                                                <div class="yes"></div>
-                                            </div>
-                                            <div class='online-bottom' style="background-color:#F2F3F5;"></div>
-                                        </div>
-
-                                        <!-- <div class='expressRecord-text'>
-                                            <div class="gameTitle">门头沟区域指挥中心</div>
-                                            <div class="gameEnd">
-                                                <div class="endBox">
-                                                    <em>回复内容:</em> 派遣
-                                                </div>
-                                                <div class="endBox"></div>
-                                            </div>
-                                            <div class="gameEnd">
-                                                <div class="endBox">
-                                                    <em>by:</em> 管理员，调度员
-                                                </div>
-                                                <div class="endBox endright">
-                                                    2020/10/10 10:10:10
-                                                </div>
-                                            </div>
-                                        </div> -->
-
-                                        <div class='expressRecord-date'>
-                                            <div class='expressRecord-date-text'>
-                                                核查
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class='expressRecord-single-close'>
-                                        <div class='expressRecord-single-noReach-online-top-close'>
-                                            <div class='online-top-close' style="background-color:#F2F3F5;"></div>
-                                            <div class='dot-close'>
-                                                <div class="yes"></div>
-                                            </div>
-                                            <!-- 起始位置，下半个时间轴线不用 -->
-                                            <div class='online-bottom-start'></div>
-                                        </div>
-
-                                        <!-- <div class='expressRecord-text'>
-                                            <div class="gameTitle">门头沟区域指挥中心</div>
-                                            <div class="gameEnd">
-                                                <div class="endBox">
-                                                    <em>回复内容:</em> 派遣
-                                                </div>
-                                                <div class="endBox"></div>
-                                            </div>
-                                            <div class="gameEnd">
-                                                <div class="endBox">
-                                                    <em>by:</em> 管理员，调度员
-                                                </div>
-                                                <div class="endBox endright">
-                                                    2020/10/10 10:10:10
-                                                </div>
-                                            </div>
-                                        </div> -->
-
-                                        <div class='expressRecord-date'>
-                                            <div class='expressRecord-date-text'>
-                                                核查反馈
-                                            </div>
-
-                                        </div>
-                                    </div>
-
+            </div>
+            <div class="col-8">
+                <div class="col-md-12" id="layerSettingData" style="margin-top: 10px" >
+                    <!-- jquery validation -->
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">基础信息</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <!-- form start -->
+                        <form role="form" id="quickForm">
+                            <input type="hidden" id="upId" name="upId" >
+                            <input type="hidden" id="id" name="id" >
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label class="label_title"><i>*</i>名称</label>
+                                    <input type="text" class="form-control label_input" id="name" name="name">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label_title"><i>*</i>编号</label>
+                                    <input type="text" class="form-control label_input" id="num" name="num">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label_title"><i>*</i>排序值</label>
+                                    <input type="text" class="form-control label_input" id="sort" name="sort">
+                                </div>
+                                <div class="form-group">
+                                    <label class="label_title"><i>*</i>要素符号</label>
+                                    <select class="form-control label_input" id="type" name="type">
+                                        <option value="" selected="selected">--请选择--</option>
+                                        <option value="0e373fb1-4818-46d1-9f26-19cb0252e521">1</option>
+                                        <option value="63213929-fc38-4150-a2b5-6ed019536ff1">2</option>
+                                        <option value="de3e0438-adb1-4f71-86d4-78a233843aa1">3</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="label_title"><i>*</i>图层类型</label>
+                                    <input type="text" class="form-control label_input" id="" name="sort">
                                 </div>
                             </div>
-                        </div>
+
+
+                            <div style="text-align: right;padding-bottom: 50px;margin-right: 20px" class="btnGround">
+
+                                <button type="button" class="btn btn-primary" id="backLayerSettingButton"
+                                        onclick="goBackLayerSetting()">返回
+                                </button>
+
+                                <button type="button" class="btn btn-primary"
+                                        id="editLayerSettingButton"
+                                        style="display: block;margin-left: 10px"
+                                        onclick="editLayerSetting()">修改
+                                </button>
+
+                                <button type="submit" class="btn btn-primary" id="addLayerSettingButton"
+                                        style="display: none;margin-left: 10px;float: right">保存
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="tree">流程</div>
+                    <!-- /.card -->
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+
 
 <div id="pictureDiv" style="display: none">
 
@@ -387,89 +135,36 @@
 <th:block th:include="page/fragments/common :: fileUpload_js"/>
 <script type="text/javascript" th:inline="javascript">
 
-    $(function() {
-        $(".name").click(function() {
-            $(this).addClass("active").siblings(".name").removeClass("active");
-            $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
-        })
-        $(".enclosure").click(function () {
-            alert("附件详情")
-        })
-    })
-
-
-    let url = /*[[@{/user/save}]]*/ "/json/unit.json";
-
-    let uploadUrl = /*[[@{/common/upload}]]*/ "/json/unit.json";
-
-
-    $(function () {
-        $("#input-id").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        }).on('change', function (event) {
-            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        }).on('fileselect', function (event, numFiles, label) {
-            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        }).on("filebatchselected", function (event, files) {
-            $(this).fileinput("upload");
-        }).on("fileuploaded", function (event, data) {
-            console.log('fileuploaded()      ');
-
-            if (data.response.code === web_status.FAIL) {
-                console.log("上传文件失败");
+    var setting = {
+        data: {
+            simpleData: {
+                enable: true
             }
-            console.log(data);
-        }).on('filedeleted', function(event, key) {
-            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            console.log(id);
-        }).on('fileclear', function (event) {
-            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-            console.log(event);
-        }).on('filecleared', function (event) {
-            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-            console.log(event);
-        }).on('filepredelete', function(event, key) {
-            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function(event, id) {
-            console.log('filesuccessremove()   ')
-            console.log(id);
-        });
+        }
+    };
 
-    })
+    var data = [{
+        id: 1,
+        pId: 0,
+        name: "父节点1",
+        open:true,//该节点默认打开
+    },
+        {
+            id: 11,
+            pId: 1,
+            name: "子节点1",
 
-    function Cancel() {
-        $.modal.closeLoading();
-    }
-    function save(){
-        var data = $('#userForm').serialize();
-        $.operate.saveTab(url, data);
-    }
+        },
+        {
+            id: 12,
+            pId: 1,
+            name: "子节点2"
+        }
+    ];
 
-    function addPicture() {
-        // $.modal.open();
-
-    }
-
+    $(document).ready(function() {
+        $.fn.zTree.init($("#tree"), setting, data);
+    });
 
 
 </script>

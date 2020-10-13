@@ -915,3 +915,22 @@ body{height: 100vh!important;}
 .blockActive{
     display: block!important;
 }
+.label_title{
+    width: 20%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    float: left;
+}
+.label_input{
+    width: 80% !important;
+}
+.label_title i{
+    color: red;
+}
+.btnGround{
+    display: flex;
+width: 100%;
+    justify-content: flex-end;
+}
