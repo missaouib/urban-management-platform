@@ -20,7 +20,7 @@ public class XssFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         XssHttpServletRequestWrapper xssRequest = new XssHttpServletRequestWrapper(request);
-        filterChain.doFilter(xssRequest, response);
+        filterChain.doFilter(request, response);
     }
 
 
