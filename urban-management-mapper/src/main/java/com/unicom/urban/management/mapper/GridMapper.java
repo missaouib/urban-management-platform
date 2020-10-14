@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 /**
- * 网格实体类
+ * 网格mapper
  *
  * @author jiangwen
  */

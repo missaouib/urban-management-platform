@@ -21,7 +21,11 @@ public class KVService {
         this.kvRepository = kvRepository;
     }
 
-    public List<KV> getKv(String tableName,String fieldName){
-        return kvRepository.findByTableNameAndFieldName(tableName,fieldName);
+    public List<KV> getKv(String tableName, String fieldName) {
+        return kvRepository.findByTableNameAndFieldName(tableName, fieldName);
+    }
+
+    public KV findOneById(String KvId) {
+        return kvRepository.getOne(KvId);
     }
 }

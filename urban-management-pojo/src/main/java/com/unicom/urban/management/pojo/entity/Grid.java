@@ -28,6 +28,9 @@ public class Grid extends BaseEntity {
 
     private String remark;
 
+    /**
+     * 区域分类
+     */
     @ManyToOne
     @JoinColumn
     private KV kv;
@@ -46,7 +49,9 @@ public class Grid extends BaseEntity {
 
     private int sts;
 
-    private String url;
+    @ManyToOne
+    @JoinColumn
+    private Release release;
 
     @ManyToOne
     @JoinColumn

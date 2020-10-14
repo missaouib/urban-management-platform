@@ -57,7 +57,6 @@ public class GridService {
 
     public void update(GridDTO gridDTO) {
         Grid grid = findOne(gridDTO);
-        grid.setLayerGridName(gridDTO.getLayerGridName());
         grid.setRemark(gridDTO.getRemark());
         grid.setInitialDate(gridDTO.getInitialDate());
         grid.setDept(gridDTO.getDept());
