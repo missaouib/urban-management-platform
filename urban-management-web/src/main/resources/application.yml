@@ -15,6 +15,9 @@ spring:
       ddl-auto: update
     show-sql: true
     open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true                 # 格式化SQL
 
   activiti:
     history-level: full
