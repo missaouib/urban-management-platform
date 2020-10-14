@@ -772,9 +772,10 @@ var table = {
 			},
 			// 保存结果弹出msg刷新table表格
 			ajaxSuccess: function (result) {
-				if (result.code == web_status.SUCCESS && table.options.type == table_type.bootstrapTable) {
+				if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTable) {
 					$.modal.msgSuccess(result.message);
 					$.table.refresh();
+					return;
 				} else if (result.code == web_status.SUCCESS && table.options.type == table_type.bootstrapTreeTable) {
 					$.modal.msgSuccess(result.message);
 					// $.treeTable.refresh();
