@@ -55,5 +55,11 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String profilePhotoUrl;
 
+    private int sts;
+
+    @ManyToOne
+    @JoinColumn
+    private Dept dept;
+
 
 }
