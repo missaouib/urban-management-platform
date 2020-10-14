@@ -12,7 +12,7 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-public class Release {
+public class Release extends BaseEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")
