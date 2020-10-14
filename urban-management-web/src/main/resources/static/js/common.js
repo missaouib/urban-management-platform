@@ -220,9 +220,14 @@ var table = {
 				// });
 				// 选中、取消、全部选中、全部取消（事件）
 				$(optionsIds).on("check.bs.table check-all.bs.table uncheck.bs.table uncheck-all.bs.table", function (e, rowsAfter, rowsBefore) {
+
+					console.log('选中、取消、全部选中、全部取消（事件）');
+
 					// 复选框分页保留保存选中数组
 					var rows = $.common.equals("uncheck-all", e.type) ? rowsBefore : rowsAfter;
 					var rowIds = $.table.affectedRowIds(rows);
+					console.log(rows);
+					console.log(rowIds);
 					if ($.common.isNotEmpty(table.options.rememberSelected) && table.options.rememberSelected) {
 						func = $.inArray(e.type, ['check', 'check-all']) > -1 ? 'union' : 'difference';
 						var selectedIds = table.rememberSelectedIds[table.options.id];
@@ -397,11 +402,11 @@ var table = {
 				return $.common.uniqueFn(rows);
 			},
 			// 获取当前页选中或者取消的行ID
-			affectedRowIds: function(rows) {
+			affectedRowIds: function (rows) {
 				var column = $.common.isEmpty(table.options.uniqueId) ? table.options.columns[1].field : table.options.uniqueId;
 				var rowIds;
 				if ($.isArray(rows)) {
-					rowIds = $.map(rows, function(row) {
+					rowIds = $.map(rows, function (row) {
 						return $.common.getItemField(row, column);
 					});
 				} else {
@@ -707,7 +712,7 @@ var table = {
 			successTabCallback: function(result) {
 				if (result.code === web_status.SUCCESS) {
 					var topWindow = $(window.parent.document);
-					var currentId = $('.page-tabs-content', topWindow).find('.active').attr('data-panel');
+					var currentId = $('.page-tabs-content', topWindow).find('.active').attr('parent-panel');
 					var $contentWindow = $('.LRADMS_iframe[data-id="' + currentId + '"]', topWindow)[0].contentWindow;
 					// $.modal.close();
 					$contentWindow.$.modal.msgSuccess(result.message);
@@ -894,10 +899,10 @@ function createMenuItem(title, url) {
 	});
 	if (flag) {
 
-		var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '" data-panel="' + panelUrl + '">' + menuName + ' <i class="fa fa-remove"></i></a>';
+		var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '" parent-panel="' + panelUrl + '">' + menuName + ' <i class="fa fa-remove"></i></a>';
 		$('.menuTab', topWindow).removeClass('active');
 
-		var str1 = '<iframe class="LRADMS_iframe" id="' + dataId + '" name="iframe' + dataId + '"  width="100%" height="100%" src="' + dataUrl + '" data-panel="' + panelUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless style="display: inline"></iframe>';
+		var str1 = '<iframe class="LRADMS_iframe" id="' + dataId + '" name="iframe' + dataId + '"  width="100%" height="100%" src="' + dataUrl + '" parent-panel="' + panelUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless style="display: inline"></iframe>';
 		$('.mainContent', topWindow).find('iframe.LRADMS_iframe').hide();
 		$('.mainContent', topWindow).append(str1);
 		//$.loading(true);
@@ -927,7 +932,7 @@ function closeItem(dataId) {
 		$('.mainContent .RuoYi_iframe[data-id="' + dataId + '"]', topWindow).remove();
 		return;
 	}
-	var panelUrl = window.frameElement.getAttribute('data-panel');
+	var panelUrl = window.frameElement.getAttribute('parent-panel');
 	$('.page-tabs-content .active i', topWindow).click();
 	if ($.common.isNotEmpty(panelUrl)) {
 		$('.menuTab[data-id="' + panelUrl + '"]', topWindow).addClass('active').siblings('.menuTab').removeClass('active');

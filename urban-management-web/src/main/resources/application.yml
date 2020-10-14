@@ -22,6 +22,7 @@ spring:
     db-history-used: true
     db-identity-used: false
     job-executor-activate: false
+    async-executor-enabled: false
 
   servlet:
     multipart:
@@ -62,4 +63,4 @@ fdfs:
 #    max_idle_per_key: 5
 logging:
   level:
-    org.activiti.engine: info
+    org.activiti.engine: debug

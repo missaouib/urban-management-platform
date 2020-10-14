@@ -32,4 +32,6 @@ public class ProcessDefinitionVO {
 
     private String tenantId;
 
+    private String modelerId;
+
 }

@@ -5,7 +5,7 @@
 
     "ACTION.OK" : "Ok",
     "ACTION.SAVE" : "保存",
-    "ACTION.SAVE-AND-CLOSE" : "Save and close editor",
+    "ACTION.SAVE-AND-CLOSE" : "保存并关闭编辑器",
     "ACTION.SEND" : "Send",
     "ACTION.CANCEL" : "取消",
     "ACTION.SELECT" : "Select",
@@ -267,12 +267,12 @@
     "PROPERTY.SEQUENCEFLOW.CONDITION.VARIABLE.NO-OUTCOMES-AVAILABLE" : "No outcomes available",
     "PROPERTY.SEQUENCEFLOW.CONDITION.NO-CONDITION-DISPLAY" : "No condition",
     
-    "MODEL.SAVE.TITLE" : "Save model",
-    "MODEL.NAME" : "Name",
-    "MODEL.DESCRIPTION" : "Description",
+    "MODEL.SAVE.TITLE" : "保存流程实例",
+    "MODEL.NAME" : "名称",
+    "MODEL.DESCRIPTION" : "描述",
     "MODEL.SAVE.NEWVERSION" : "Save this as a new version?  This means you can always go back to a previous version",
     "MODEL.SAVE.COMMENT" : "Comment",
-    "MODEL.SAVE.SAVING" : "Saving model",
+    "MODEL.SAVE.SAVING" : "保存模型",
     "MODEL.LASTMODIFIEDDATE" : "Last saved",
     "MODEL.SAVE.ERROR": "Unexpected error: could not save model",
     

@@ -36,8 +36,11 @@
 
     <div class="btn-group-sm" id="toolbar">
         <a class="btn btn-success" onclick="add()">
-            <i class="fa fa-plus"></i> 新增
+            <i class="fa fa-plus"></i> 绘制流程图
         </a>
+<!--        <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">-->
+<!--            <i class="fa fa-edit"></i> 修改-->
+<!--        </a>-->
 <!--        <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">-->
 <!--            <i class="fa fa-edit"></i> 修改-->
 <!--        </a>-->
@@ -61,27 +64,25 @@
 </div>
 
 <script id="modelDiv" type="text/template">
-    <form action="" method="post">
+    <form action="" method="post" id="modelForm">
         <div class="modelBox">
             <label class="modelTitle" style="margin-top: 10px">名称:</label>
             <div class="tan">!</div>
-            <input type="text" required="required" name="name" style="width: 70%">
+            <input type="text" required="required" name="name" id="name" style="width: 70%">
         </div>
         <div class="modelBox">
             <label class="modelTitle" style="margin-top: 10px">描述:</label>
-            <textarea type="text" cols="8" rows="3" required="required" name="description" style="width: 70%"></textarea>
+            <textarea type="text" cols="8" rows="3" required="required" name="description" style="width: 70%" id="description"></textarea>
         </div>
-
-
-
     </form>
-
 </script>
 
 
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 
+</body>
+</html>
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
@@ -93,62 +94,17 @@
 
     let addUrl = /*[[@{/processdef/model}]]*/ "/processdef/model";
 
+    let editUrl = /*[[@{/modeler.html?modelId={id}}]]*/ "/modeler.html";
+
     let removeUrl = /*[[@{/processdef/remove}]]*/ "/processdef/remove";
 
-    let importUrl = /*[[@{/deployment/file}]]*/ "/deployment/file";
+    let activitiUrl = /*[[@{/activiti/create}]]*/ "/deployment/file";
+
+    let modelUrl = /*[[@{/modeler.html?modelId=}]]*/ "/modeler.html";
+
+
 
     // let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
-
-
-    function add() {
-        layer.open({
-            type: 1,
-            area: ['400px', '300px'],
-            fix: false,
-            //不固定
-            maxmin: true,
-            shade: 0.3,
-            title: '新增流程定义',
-            content: $('#modelDiv').html(),
-            btn: ['<i class="fa fa-check"></i> 确定', '<i class="fa fa-remove"></i> 取消'],
-            // 弹层外区域关闭
-            shadeClose: true,
-            btn1: function(index, layero){
-                // var file = layero.find('#file').val();
-                // // if (file == '' || (!$.common.endWith(file, '.xls') && !$.common.endWith(file, '.xlsx'))){
-                // //     $.modal.msgWarning("请选择后缀为 “xls”或“xlsx”的文件。");
-                // //     return false;
-                // // }
-                // var index = layer.load(2, {shade: false});
-                // // $.modal.disable();
-                var formData = new FormData(layero.find('form')[0]);
-                console.log(formData);
-                $.ajax({
-                    url: table.options.importUrl,
-                    data: formData,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    type: 'POST',
-                    success: function (result) {
-                        if (result.code === web_status.SUCCESS) {
-                            $.modal.closeAll();
-                            $.modal.alertSuccess(result.message);
-                            $.table.refresh();
-                        } else if (result.code === web_status.WARNING) {
-                            layer.close(index);
-                            $.modal.enable();
-                            $.modal.alertWarning(result.message)
-                        } else {
-                            layer.close(index);
-                            $.modal.enable();
-                            $.modal.alertError(result.message);
-                        }
-                    }
-                });
-            }
-        });
-    }
 
     function doSubmit(index, layero) {
         console.log(index);
@@ -159,18 +115,15 @@
         var options = {
             url: searchUrl,
             createUrl: addUrl,
-            // updateUrl: editUrl,
+            updateUrl: editUrl,
             removeUrl: removeUrl,
-            // exportUrl: prefix + "/export",
-            importUrl: importUrl,
-            // importTemplateUrl: prefix + "/importTemplate",
             sidePagination: "client",
-            uniqueId: "deploymentID",
+            uniqueId: "deploymentId",
             modalName: "流程定义",
             columns: [
-                // {
-                //     checkbox: true
-                // },
+                {
+                    checkbox: true
+                },
                 {
                     title: '流程定义ID',
                     field: 'id'
@@ -188,6 +141,10 @@
                     field: 'key'
                 },
                 {
+                    title: '模型ID',
+                    field: 'modelerId'
+                },
+                {
                     title: '资源名称',
                     field: 'resourceName'
                 },
@@ -199,7 +156,7 @@
                     title: '操作',
                     field: '',
                     formatter: function (value, row) {
-                        var a = '<a  href="#" title="" onclick="view(\'' + row.id + '\')">查看</a> ';
+                        var a = '<a  href="#" title="" onclick="$.operate.editTab(\'' + row.modelerId + '\')">编辑</a> ';
                         var b = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.deploymentId + '\')">删除</a> ';
                         return a + b;
                     }
@@ -209,53 +166,50 @@
         $.table.init(options);
     }
 
-    function view(id) {
-        console.log(id);
-        $.modal.open("",'https://www.baidu.com/');
 
-    }
-
-    function importFile() {
+    function add() {
         layer.open({
             type: 1,
-            area: ['400px', '230px'],
+            area: ['400px', '300px'],
             fix: false,
             //不固定
             maxmin: true,
             shade: 0.3,
-            title: '导入' + table.options.modalName + '数据',
-            content: $('#importTpl').html(),
-            btn: ['<i class="fa fa-check"></i> 导入', '<i class="fa fa-remove"></i> 取消'],
+            title: '新增流程定义',
+            content: $('#modelDiv').html(),
+            btn: ['<i class="fa fa-check"></i> 创建', '<i class="fa fa-remove"></i> 取消'],
             // 弹层外区域关闭
-            shadeClose: true,
+            shadeClose: false,
             btn1: function(index, layero){
-                var file = layero.find('#file').val();
-                // if (file == '' || (!$.common.endWith(file, '.xls') && !$.common.endWith(file, '.xlsx'))){
-                //     $.modal.msgWarning("请选择后缀为 “xls”或“xlsx”的文件。");
-                //     return false;
-                // }
-                var index = layer.load(2, {shade: false});
-                // $.modal.disable();
-                var formData = new FormData(layero.find('form')[0]);
+                // var index = layer.load(2, {shade: false});
+                // // $.modal.disable();
+                // var formData = new FormData(layero.find('form')[0]);
+                var formData = $('#modelForm').serialize();
+                console.log(formData);
+
+
                 $.ajax({
-                    url: table.options.importUrl,
+                    url: activitiUrl,
                     data: formData,
                     cache: false,
-                    contentType: false,
+                    // contentType: false,
                     processData: false,
+
                     type: 'POST',
                     success: function (result) {
+                        console.log(result);
                         if (result.code === web_status.SUCCESS) {
-                            $.modal.closeAll();
-                            $.modal.alertSuccess(result.message);
-                            $.table.refresh();
+                            layer.close(index);
+                            // $.modal.alertSuccess(result.message);
+                            // $.table.refresh();
+                            $.modal.openTab('流程图绘制', modelUrl + result.data.modelId);
                         } else if (result.code === web_status.WARNING) {
-                            layer.close(index);
-                            $.modal.enable();
-                            $.modal.alertWarning(result.message)
+                            // layer.close(index);
+                            // $.modal.enable();
+                            // $.modal.alertWarning(result.message)
                         } else {
-                            layer.close(index);
-                            $.modal.enable();
+                            // layer.close(index);
+                            // $.modal.enable();
                             $.modal.alertError(result.message);
                         }
                     }
@@ -266,5 +220,3 @@
 
 
 </script>
-</body>
-</html>
