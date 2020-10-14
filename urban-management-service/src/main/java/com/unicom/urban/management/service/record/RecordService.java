@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.record;
 
 import com.unicom.urban.management.dao.record.RecordRepository;
+import com.unicom.urban.management.pojo.entity.Record;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +18,9 @@ public class RecordService {
 
     @Autowired
     private RecordRepository recordRepository;
+
+    public void save(Record record) {
+        recordRepository.save(record);
+    }
 
 }

@@ -1,10 +1,8 @@
 package com.unicom.urban.management.service.release;
 
+import com.unicom.urban.management.common.constant.StsConstant;
 import com.unicom.urban.management.dao.release.ReleaseRepository;
-import com.unicom.urban.management.mapper.ReleaseMapper;
-import com.unicom.urban.management.pojo.dto.ReleaseDTO;
-import com.unicom.urban.management.pojo.entity.KV;
-import com.unicom.urban.management.service.kv.KVService;
+import com.unicom.urban.management.pojo.entity.Release;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,14 +19,10 @@ public class ReleaseService {
 
     @Autowired
     private ReleaseRepository releaseRepository;
-    @Autowired
-    private KVService kvService;
 
-    public void save(ReleaseDTO releaseDTO) {
-        ReleaseMapper.INSTANCE.ReleaseDTOToRelease(releaseDTO);
-        ReleaseMapper.INSTANCE.ReleaseDTOToRelease(releaseDTO);
-        ReleaseMapper.INSTANCE.ReleaseDTOToRelease(releaseDTO);
-        KV kv = kvService.findOneById("kvId");
+    public Release save(Release release) {
+        release.setSts(StsConstant.EDITING);
+        return releaseRepository.save(release);
     }
 
 }

@@ -2,6 +2,8 @@ package com.unicom.urban.management.mapper;
 
 import com.unicom.urban.management.pojo.dto.GridDTO;
 import com.unicom.urban.management.pojo.entity.Grid;
+import com.unicom.urban.management.pojo.entity.Record;
+import com.unicom.urban.management.pojo.entity.Release;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -43,5 +45,21 @@ public interface GridMapper {
      * @return 实体
      */
     Grid gridDTOToGrid(GridDTO gridDTO);
+
+    /**
+     * dto转Release
+     *
+     * @param gridDTO dto
+     * @return Release
+     */
+    Release GridDTOToRelease(GridDTO gridDTO);
+
+    /**
+     * dto转Record
+     *
+     * @param gridDTO dto
+     * @return Record
+     */
+    Record GridDTOToRecord(GridDTO gridDTO);
 
 }

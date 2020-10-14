@@ -16,4 +16,19 @@ public class StsConstant {
      * 在用
      */
     public static final Integer INUSE = 0;
+
+    /**
+     * 编辑中
+     */
+    public static final Integer EDITING = 0;
+
+    /**
+     * 发布
+     */
+    public static final Integer RELEASE = 1;
+
+    /**
+     * 未发布
+     */
+    public static final Integer UNRELEASED = 2;
 }
