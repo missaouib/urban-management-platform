@@ -1,36 +1,35 @@
 package com.unicom.urban.management.pojo.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 /**
- * 部件分类
- *
  * @author 顾志杰
- * @date 2020/10/13-19:02
+ * @date 2020/10/14-18:08
  */
-@Getter
-@Setter
-@Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
-public class ComponentType extends BaseEntity {
-
+public class KV {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    private String name;
+    private String tableName;
 
-    private Integer num;
+    private String fieldName;
 
-    @ManyToOne
-    private ComponentType parent;
+    private String value;
+
+    private Integer sts;
 }

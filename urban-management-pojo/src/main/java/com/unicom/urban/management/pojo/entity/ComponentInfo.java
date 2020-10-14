@@ -1,9 +1,7 @@
 package com.unicom.urban.management.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -18,6 +16,8 @@ import java.time.LocalDateTime;
  * @author 顾志杰
  * @date 2020/10/13-19:04
  */
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -41,32 +41,32 @@ public class ComponentInfo extends BaseEntity {
     /**
      * 主管部门代码
      */
-    private String deptCode1;
+    private String mainDeptCode;
 
     /**
      * 主管部门名称
      */
-    private String deptName1;
+    private String mainDeptName;
 
     /**
      * 权属部门代码
      */
-    private String deptCode2;
+    private String ownershipDeptCode;
 
     /**
      * 权属部门名称
      */
-    private String deptName2;
+    private String ownershipDeptName;
 
     /**
      * 养护部门代码
      */
-    private String deptCode3;
+    private String maintenanceDeptCode;
 
     /**
      * 养护部门名称
      */
-    private String deptName3;
+    private String maintenanceDeptName;
 
     /**
      * 所在单元网格
@@ -83,14 +83,14 @@ public class ComponentInfo extends BaseEntity {
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime ORDate;
+    private LocalDateTime initialDate;
 
     /**
      * 变更日期
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime CHDate;
+    private LocalDateTime changeDate;
 
     /**
      * 数据来源
