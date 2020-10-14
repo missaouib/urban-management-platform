@@ -10,10 +10,10 @@ public class StsConstant {
     /**
      * 删除
      */
-    public static final String DELETE = "1";
+    public static final Integer DELETE = 1;
 
     /**
      * 在用
      */
-    public static final String INUSE = "0";
+    public static final Integer INUSE = 0;
 }
