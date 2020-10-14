@@ -26,9 +26,11 @@ public class Grid extends BaseEntity {
 
     private String gridName;
 
-    private String layerId;
-
     private String remark;
+
+    @ManyToOne
+    @JoinColumn
+    private KV kv;
 
     private String area;
 
