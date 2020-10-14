@@ -1,8 +1,6 @@
 package com.unicom.urban.management.pojo.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -13,6 +11,8 @@ import javax.persistence.*;
  * @author 顾志杰
  * @date 2020/10/13-18:59
  */
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
