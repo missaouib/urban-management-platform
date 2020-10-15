@@ -71,14 +71,16 @@ class Publish<<发布实体类>>{
     -layerId : String     //图层ID:当发布后GIS平台将把该图层ID返回城管中，城管再次添加元素可以找到对应GIS平台的哪个图层
     -url : String         //GIS平台提供的发布的图层地址
     -kv : Kv              //类型：编辑的是部件、网格。
-    -sts : int            //状态：用于判断是编辑中、发布、未发布等状态
+    -sts : int            //状态：用于判断是发布、未发布状态
     -user : User          //用于记录谁发布的
+    -componentType : ComponentType
 }
 class Record<<编辑实体类>>{
     -id : String
     -coordinate : String  //坐标
     -user : User
     -release : Release
+    -sts : String //判断该记录是编辑中、发布
 }
 
 class Kv<<Kv实体类>>{
