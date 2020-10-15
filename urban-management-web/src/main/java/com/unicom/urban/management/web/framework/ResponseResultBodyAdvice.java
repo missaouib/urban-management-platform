@@ -83,7 +83,7 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(BindException.class)
     public Result validatedBindException(BindException e) {
         String message = e.getAllErrors().get(0).getDefaultMessage();
-        return Result.fail("301", message);
+        return Result.fail("400", message);
     }
 
 
@@ -92,7 +92,7 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @ExceptionHandler(DataValidException.class)
     public Result dataValidException(DataValidException e) {
-        return Result.fail("301", e.getMessage());
+        return Result.fail("400", e.getMessage());
     }
 
 
