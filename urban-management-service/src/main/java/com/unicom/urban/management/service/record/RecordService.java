@@ -19,8 +19,8 @@ public class RecordService {
     @Autowired
     private RecordRepository recordRepository;
 
-    public void save(Record record) {
-        recordRepository.save(record);
+    public Record save(Record record) {
+        return recordRepository.save(record);
     }
 
 }

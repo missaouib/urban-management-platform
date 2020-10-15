@@ -701,7 +701,7 @@ var table = {
 						$.modal.loading("正在处理中，请稍后...");
 					},
 					success: function (result) {
-						if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTable) {
+						if (result.code === web_status.SUCCESS) {
 							$.modal.msgSuccess(result.message);
 							setTimeout("window.location.reload()", 2000);
 							return;

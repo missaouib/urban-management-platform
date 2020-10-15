@@ -38,7 +38,7 @@ public class GridController {
         return new ModelAndView(SystemConstant.PAGE + "/grid/gridSave");
     }
 
-    @PostMapping("/getGridList")
+    @GetMapping("/getGridList")
     public List<GridVO> getGridList() {
         return gridService.search();
     }

@@ -58,7 +58,7 @@ public class GridService {
         List<Grid> gridList = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
             list.add(criteriaBuilder.equal(root.get("record").get("createBy").get("id").as(String.class), SecurityUtil.getUserId()));
-            list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.EDITING));
+            list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.INUSE));
             list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class), StsConstant.INUSE));
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
@@ -76,7 +76,7 @@ public class GridService {
             if (publishes.size() > 0) {
                 savePublish = publishes.get(0);
             } else {
-                Publish publish = GridMapper.INSTANCE.gridDTOToPublish(gridDTO);
+                Publish publish = new Publish();
                 KV oneById = kvService.findOneById("28526efe-3db5-415b-8c7a-d0e3a49cab8f");
                 publish.setKv(oneById);
                 publish.setName("网格");
@@ -86,7 +86,7 @@ public class GridService {
 
         Record record = GridMapper.INSTANCE.gridDTOToRecord(gridDTO);
         record.setPublish(savePublish);
-        recordService.save(record);
+        Record saveRecord = recordService.save(record);
 
         Grid grid = GridMapper.INSTANCE.gridDTOToGrid(gridDTO);
         grid.setPublish(savePublish);
@@ -94,6 +94,7 @@ public class GridService {
         String userId = SecurityUtil.getUserId();
         User user = userService.findOne(userId);
         grid.setDept(user.getDept());
+        grid.setRecord(saveRecord);
         gridRepository.save(grid);
     }
 

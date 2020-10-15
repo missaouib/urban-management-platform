@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>热线上报</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: map_css"/>
@@ -9,10 +9,11 @@
     <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
 <style>
-    .table tr td:nth-child(2n+1){
+    .table tr td:nth-child(2n+1) {
         width: 15% !important;
     }
-    .titlenav{
+
+    .titlenav {
         width: 100%;
         height: 30px;
         position: absolute;
@@ -22,11 +23,13 @@
         align-items: center;
         z-index: 99;
     }
-    .topFun{
+
+    .topFun {
         padding: 2px;
         margin: 0px 5px;
     }
-    .notice_bot>div {
+
+    .notice_bot > div {
         font-size: 12px;
         margin-left: 10px;
         color: #07141e;
@@ -64,7 +67,7 @@
                                 <tr>
                                     <td>区域分类<span>*</span></td>
                                     <td>
-                                        <select id="gridKvId" name="kv[id]" required>
+                                        <select id="gridKvId" name="kv" required>
                                             <option value="">请选择</option>
                                             <option value="454310fe-7b45-49b0-9910-36e777e6fdcc">1类</option>
                                             <option value="e117bf07-0408-4623-98c3-f358ebeca8b1">2类</option>
@@ -112,31 +115,31 @@
                     <!--    </div>-->
                 </form>
             </div>
-            <div class="rightBox"  style="position: relative">
-<!--                <div class="card" style="margin-top: 0px">-->
-<!--                    <div class="card-body" >-->
-                        <div class="titlenav">
-                            <div class="">
-                                <div>+</div>
-                                <div>-</div>
-                            </div>
-                            <button class="btn-primary topFun addPencle">新增</button>
-                            <button class="btn-primary topFun">删除</button>
-                        </div>
-                        <div class="map" id="map" style="width: 100%"></div>
+            <div class="rightBox" style="position: relative">
+                <!--                <div class="card" style="margin-top: 0px">-->
+                <!--                    <div class="card-body" >-->
+                <div class="titlenav">
+                    <div class="">
+                        <div>+</div>
+                        <div>-</div>
+                    </div>
+                    <button class="btn-primary topFun addPencle">新增</button>
+                    <button class="btn-primary topFun">删除</button>
+                </div>
+                <div class="map" id="map" style="width: 100%"></div>
 
-                        <!--                                        line and pie-->
-                        <div id="popup" class="ol-popup">
-                            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                            <div id="popup-content">
-                                <ul id="message">
+                <!--                                        line and pie-->
+                <div id="popup" class="ol-popup">
+                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                    <div id="popup-content">
+                        <ul id="message">
 
-                                </ul>
-                            </div>
-                        </div>
+                        </ul>
+                    </div>
+                </div>
 
-<!--                    </div>&lt;!&ndash; /.card-body - ->-->
-<!--                </div>&lt;!&ndash; /.card &ndash;&gt;-->
+                <!--                    </div>&lt;!&ndash; /.card-body - ->-->
+                <!--                </div>&lt;!&ndash; /.card &ndash;&gt;-->
             </div>
         </div>
     </div>
@@ -146,33 +149,39 @@
 
 </div>
 
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
 <script type="text/javascript" th:inline="javascript">
 
     let url = /*[[@{/user/save}]]*/ "/json/unit.json";
     let gridSaveUrl = /*[[@{/grid/gridSave}]]*/ "/grid/gridSave";
+    let getGridListUrl = /*[[@{/grid/getGridList}]]*/ "/grid/getGridList";
 
 
     function saveGrid() {
         let data = $('#gridForm').serialize();
         $.operate.saveAndReload(gridSaveUrl, data);
-        console.log("data", data);
-        /*$.ajax({
-            url: gridSaveUrl,
-            type: "post",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            success: function (data) {
-                console.log("data", data);
+    }
+
+    $(function () {
+        getGridList();
+    });
+
+    function getGridList() {
+        $.operate.get(getGridListUrl, function (e) {
+            let data = e.data;
+            for (let i = 0; i < data.length; i++) {
+                console.log("e.id", data[i].id);
+                console.log("e.coordinate", data[i].coordinate);
             }
-        })*/
-        // saveAndReload()
+        })
     }
 
 </script>
-<th:block th:include="page/fragments/common :: common_js"/>
-<th:block th:include="page/fragments/common :: map_js"/>
-<th:block th:include="page/fragments/common :: jquery_validation_js"/>
-<th:block th:include="page/fragments/common :: fileUpload_js"/>
+
 <script type="text/javascript" th:inline="javascript">
     var center = ol.proj.transform([126.62, 45.74], "EPSG:4326", "EPSG:3857");
     var raster = new ol.layer.Tile({
@@ -220,18 +229,18 @@
         t = map.getEventCoordinate(e);
         $("#coordinate").val(t);
 
-            //面:Polygon
-            tarr.push(t)
-            var newStr = [];
-            for (var i = 0; i < tarr.length - 1; i++) {
-                newStr.push(tarr[i])
-            }
-            newStr.push(newStr[0])
-            var array = newStr.join("-")
+        //面:Polygon
+        tarr.push(t)
+        var newStr = [];
+        for (var i = 0; i < tarr.length - 1; i++) {
+            newStr.push(tarr[i])
+        }
+        newStr.push(newStr[0])
+        var array = newStr.join("-")
         $("#coordinate").val(array)
-            if (array.length != 0) {
-                $("#coordinate").val(array)
-            }
+        if (array.length != 0) {
+            $("#coordinate").val(array)
+        }
 
     });
     var selectSingleClick = new ol.interaction.Select();
@@ -261,6 +270,7 @@
 
     layerMap.getSource().addFeature(multiPolygon);
     setPolygon(Polygons)
+
     function setPolygon(Polygons) {
         let Polygon = new ol.Feature({
             geometry: new ol.geom.Polygon(Polygons),
