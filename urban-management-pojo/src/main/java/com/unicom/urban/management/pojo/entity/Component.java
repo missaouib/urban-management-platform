@@ -32,9 +32,7 @@ public class Component extends BaseEntity {
     private Integer sts;
 
     @ManyToOne
-    private Publish release;
+    private Publish publish;
 
-    @ManyToOne
-    private KV kv;
 
 }

@@ -3,10 +3,8 @@ package com.unicom.urban.management.pojo.entity;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * 部件分类
@@ -30,6 +28,9 @@ public class ComponentType extends BaseEntity {
     private String name;
 
     private Integer num;
+
+    @OneToMany(mappedBy = "parent")
+    private List<ComponentType> children;
 
     @ManyToOne
     private ComponentType parent;

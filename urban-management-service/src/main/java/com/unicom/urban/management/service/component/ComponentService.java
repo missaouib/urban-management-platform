@@ -7,6 +7,7 @@ import com.unicom.urban.management.mapper.ComponentMapper;
 import com.unicom.urban.management.pojo.dto.ComponentDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.ComponentVO;
+import com.unicom.urban.management.service.componenttype.ComponentTypeService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.record.RecordService;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -37,11 +40,14 @@ public class ComponentService {
 
     private final RecordService recordService;
 
+    private final ComponentTypeService componentTypeService;
+
     @Autowired
-    public ComponentService(ComponentRepository componentRepository, PublishService releaseService, RecordService recordService) {
+    public ComponentService(ComponentRepository componentRepository, PublishService releaseService, RecordService recordService, ComponentTypeService componentTypeService) {
         this.componentRepository = componentRepository;
         this.releaseService = releaseService;
         this.recordService = recordService;
+        this.componentTypeService = componentTypeService;
     }
 
     /**
@@ -53,12 +59,46 @@ public class ComponentService {
     public List<ComponentVO> getComponentList(ComponentDTO component) {
         List<Component> componentList = componentRepository.findAll((Specification<Component>) (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
-            if(StringUtils.isNotBlank(component.getComponentTypeId())){
+            if (StringUtils.isNotBlank(component.getComponentTypeId())) {
+                CriteriaBuilder.In<Object> in = criteriaBuilder.in(root.get("componentType").get("id"));
+                List<String> type = componentTypeService.getComponentTypeIds(component.getComponentTypeId());
+                type.forEach(in::value);
+                list.add(in);
+            }
+            if (StringUtils.isNotBlank(component.getObjId())) {
+                list.add(criteriaBuilder.like(root.get("componentInfo").get("objId").as(String.class), "%" + component.getObjId() + "%"));
+            }
+            if (StringUtils.isNotBlank(component.getObjName())) {
+                list.add(criteriaBuilder.like(root.get("componentInfo").get("objName").as(String.class), "%" + component.getObjName() + "%"));
+            }
+            if (StringUtils.isNotBlank(component.getMainDeptCode())) {
+                list.add(criteriaBuilder.like(root.get("componentInfo").get("mainDeptCode").as(String.class), "%" + component.getMainDeptCode() + "%"));
+            }
+            if (StringUtils.isNotBlank(component.getMainDeptName())) {
+                list.add(criteriaBuilder.like(root.get("componentInfo").get("mainDeptName").as(String.class), "%" + component.getMainDeptName() + "%"));
+            }
+            if (StringUtils.isNotBlank(component.getOwnershipDeptCode())) {
+                list.add(criteriaBuilder.like(root.get("componentInfo").get("ownershipDeptCode").as(String.class), "%" + component.getOwnershipDeptCode() + "%"));
+            }
+            if (StringUtils.isNotBlank(component.getOwnershipDeptName())) {
+                list.add(criteriaBuilder.like(root.get("componentInfo").get("ownershipDeptName").as(String.class), "%" + component.getOwnershipDeptName() + "%"));
+            }
+            if (StringUtils.isNotBlank(component.getMaintenanceDeptCode())) {
+                list.add(criteriaBuilder.like(root.get("componentInfo").get("maintenanceDeptCode").as(String.class), "%" + component.getMaintenanceDeptCode() + "%"));
+            }
+            if (StringUtils.isNotBlank(component.getMaintenanceDeptName())) {
+                list.add(criteriaBuilder.like(root.get("componentInfo").get("maintenanceDeptName").as(String.class), "%" + component.getMaintenanceDeptName() + "%"));
+            }
+            if (StringUtils.isNotBlank(component.getBgid())) {
+                list.add(criteriaBuilder.equal(root.get("componentInfo").get("bgid").get("id").as(String.class), component.getBgid()));
+            }
+            if (StringUtils.isNotBlank(component.getObjState())) {
+                list.add(criteriaBuilder.equal(root.get("componentInfo").get("objState").get("id").as(String.class), component.getObjState()));
+            }
+            if (StringUtils.isNotBlank(component.getDataSource())) {
+                list.add(criteriaBuilder.equal(root.get("componentInfo").get("dataSource").get("id").as(String.class), component.getDataSource()));
+            }
 
-            }
-            if(StringUtils.isNotBlank(component.getObjId())){
-//                list.add(criteriaBuilder.like("").as(String.class),"%"+component.getObjId()+"%");
-            }
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         });
@@ -87,6 +127,7 @@ public class ComponentService {
 
     /**
      * 获取部件
+     *
      * @param component 条件
      * @return T
      */
@@ -101,15 +142,15 @@ public class ComponentService {
 
     /**
      * 添加部件
+     *
      * @param dto 参数
      */
-    public void saveComponent(ComponentDTO dto){
-        Publish release = this.saveRelease(dto.getReleaseName());
-        this.saveRecord(dto.getCoordinate(),release);
+    public void saveComponent(ComponentDTO dto) {
+        Publish publish = new Publish();
+        publish.setId(dto.getPublish());
         Grid grid = new Grid();
         grid.setId(dto.getBgid());
 
-        KV kv = KV.builder().id(dto.getKvId()).build();
         KV objState = KV.builder().id(dto.getObjState()).build();
         KV datasource = KV.builder().id(dto.getDataSource()).build();
         ComponentType componentType = ComponentType.builder().id(dto.getComponentTypeId()).build();
@@ -133,8 +174,7 @@ public class ComponentService {
                 .componentInfo(componentInfo)
                 .componentType(componentType)
                 .sts(StsConstant.INUSE)
-                .kv(kv)
-                .release(release)
+                .publish(publish)
                 .build();
         componentRepository.save(component);
 
@@ -157,10 +197,10 @@ public class ComponentService {
         recordService.save(record);
     }
 
-    public void saveComponent(List<ComponentDTO> dtos){
-        dtos.forEach(c->{
+    public void saveComponent(List<ComponentDTO> dtos) {
+        dtos.forEach(c -> {
             Optional<Component> ifnull = componentRepository.findById(c.getId());
-            if(ifnull.isPresent()){
+            if (ifnull.isPresent()) {
                 KV objState = KV.builder().id(c.getObjState()).build();
                 KV datasource = KV.builder().id(c.getDataSource()).build();
                 Component component = ifnull.get();

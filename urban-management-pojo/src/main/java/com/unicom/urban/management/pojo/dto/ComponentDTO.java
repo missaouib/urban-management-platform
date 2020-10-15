@@ -17,7 +17,6 @@ public class ComponentDTO {
 
     private String componentTypeId;
 
-    private String kvId;
 
     /**
      * 部件标识码
@@ -93,7 +92,7 @@ public class ComponentDTO {
      */
     private String note;
 
-    private String releaseName;
+    private String publish;
 
     private String coordinate;
 

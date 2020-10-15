@@ -3,11 +3,12 @@ package com.unicom.urban.management.web.project.component;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.dto.ComponentDTO;
-import com.unicom.urban.management.pojo.entity.ComponentType;
+import com.unicom.urban.management.pojo.entity.KV;
 import com.unicom.urban.management.pojo.vo.ComponentTypeVO;
 import com.unicom.urban.management.pojo.vo.ComponentVO;
 import com.unicom.urban.management.service.component.ComponentService;
 import com.unicom.urban.management.service.componenttype.ComponentTypeService;
+import com.unicom.urban.management.service.kv.KVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,10 +31,13 @@ public class ComponentController {
 
     private final ComponentService componentService;
 
+    private final KVService kvService;
+
     @Autowired
-    public ComponentController(ComponentTypeService componentTypeService, ComponentService componentService) {
+    public ComponentController(ComponentTypeService componentTypeService, ComponentService componentService, KVService kvService) {
         this.componentTypeService = componentTypeService;
         this.componentService = componentService;
+        this.kvService = kvService;
     }
 
 
@@ -60,5 +64,15 @@ public class ComponentController {
     @GetMapping("/componentList")
     public List<ComponentVO> componentList(ComponentDTO dto){
         return componentService.getComponentList(dto);
+    }
+
+    @GetMapping("/objState")
+    public List<KV> objState(){
+        return kvService.getKv("componentInfo","objState");
+    }
+
+    @GetMapping("/dataSource")
+    public List<KV> dataSource(){
+        return kvService.getKv("componentInfo","dataSource");
     }
 }

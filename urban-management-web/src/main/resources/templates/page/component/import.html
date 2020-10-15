@@ -7,6 +7,7 @@
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <link th:href="@{/css/import.css}" rel="stylesheet" type="text/css">
     <th:block th:include="page/fragments/common :: map_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
 
 
 </head>
@@ -24,6 +25,7 @@
                 <p>
                     <label class="">图层分类</label>
                     <input type="text" readonly="readonly" id="typeStr" class="find_input" disabled>
+                    <input type="text" readonly="readonly" id="componentTypeId" class="find_input" disabled>
                 </p>
                 <p>
                     <label class="">图层名称</label>
@@ -36,22 +38,39 @@
                 <p class="attribute">属性信息</p>
                 <p>
                     <label class="">部件标识码</label>
-                    <input type="text" class="find_input" name="name">
+                    <input type="text" class="find_input" name="objId">
                     <label class="">部件名称</label>
-                    <input type="text" class="find_input" name="name">
+                    <input type="text" class="find_input" name="objName">
                 </p>
                 <p>
                     <label class="">主管部门代码</label>
-                    <input type="text" class="find_input" name="name">
+                    <input type="text" class="find_input" name="mainDeptCode">
                     <label class="">主管部门名称</label>
-                    <input type="text" class="find_input" name="name">
+                    <input type="text" class="find_input" name="mainDeptName">
                 </p>
                 <p>
                     <label class="">权属单位代码</label>
-                    <input type="text" class="find_input" name="name">
+                    <input type="text" class="find_input" name="ownershipDeptCode">
                     <label class="">权属单位名称</label>
-                    <input type="text" class="find_input" name="name">
+                    <input type="text" class="find_input" name="ownershipDeptName">
                 </p>
+                <p>
+                    <label class="">养护部门代码</label>
+                    <input type="text" class="find_input" name="maintenanceDeptCode">
+                    <label class="">养护部门名称</label>
+                    <input type="text" class="find_input" name="maintenanceDeptName">
+                </p>
+                <p>
+                    <label class="">所在网格</label>
+                    <select id="bgid"></select>
+                    <label class="">部件状态</label>
+                    <select id="objState" ></select>
+                </p>
+                <p>
+                    <label class="">所在网格</label>
+                    <select id="dataSource"></select>
+                </p>
+
                 <p class="function_btn">
                     <input type="button" class="check_btn1" onclick="" value="删除">
                     <input type="button" class="check_btn1" onclick="" value="修改">
@@ -72,12 +91,46 @@
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: map_js"/>
-
+<th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
+    var setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parent'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        if(treeNode.children === undefined){
+            $("#typeStr").val(treeNode.name);x
+        }
+    }
 
     $(function () {
         queryUserList();
+        $.operate.get(componentTypeUrl, function (e) {
+            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        })
+        $.operate.get(objStateUrl, function (e) {
+            console.log(e)
+        })
+        $.operate.get(dataSourceUrl, function (e) {
+            console.log(e)
+        })
     })
 
 
@@ -88,6 +141,14 @@
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
 
     let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
+
+    let componentTypeUrl = /*[[@{/componentType}]]*/ "/componentType";
+
+    let objStateUrl = /*[[@{/objState}]]*/ "/objState";
+
+    let dataSourceUrl = /*[[@{/dataSource}]]*/ "/dataSource";
+
+
 
     function queryUserList() {
         var options = {
