@@ -61,9 +61,9 @@ public class User extends BaseEntity {
 
     private int sts;
 
-//    @ManyToOne
-//    @JoinColumn
-//    private Dept dept;
+    @ManyToOne
+    @JoinColumn
+    private Dept dept;
 
 
 }
