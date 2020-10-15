@@ -5,6 +5,8 @@
     <title>用户管理</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+
     <link th:href="@{/css/component.css}" rel="stylesheet" type="text/css">
 
 </head>
@@ -58,9 +60,9 @@
                     <option>2</option>
                 </select>
                 <label class="">初始日期</label>
-                <input type="text" class="find_input" name="name">
+                <input type="text" class="find_input datepicker" readonly="readonly">
                 <label class="">变更日期</label>
-                <input type="text" class="find_input" name="name">
+                <input type="text" class="find_input datepicker" readonly="readonly">
             </p>
             <p>
                 <label class="">数据来源</label>
@@ -75,25 +77,6 @@
             </p>
 
         </form>
-    </div>
-
-    <!--    <div class="clear"></div>-->
-
-
-    <div class="btn-group-sm" id="toolbar">
-        <a class="btn btn-primary" onclick="$.table.importExcel()">
-            <i class="fa fa-upload"></i> 导入部件图层
-        </a>
-        <a class="btn btn-info" onclick="$.table.importExcel()">
-            <i class="fa fa-search"></i> 查询
-        </a>
-        <a class="btn btn-warning" onclick="$.table.exportExcel()">
-            <i class="fa fa-retweet"></i> 重置
-        </a>
-
-        <!--    <a class="btn btn-warning" onclick="$.table.exportExcel()">-->
-        <!--        <i class="fa fa-download"></i> 导出-->
-        <!--    </a>-->
     </div>
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
@@ -111,8 +94,6 @@
             </div>
         </div>
     </div>
-
-
     <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
     <div class="notice_check">
         <p>
@@ -123,15 +104,23 @@
 </div>
 
 
-
-
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+
 
 <script type="text/javascript" th:inline="javascript">
 
+
+
+
     $(function () {
+        $(".datepicker").datepicker({
+            language: 'zh-CN',
+            format: "yyyy-mm-dd"
+        });
         queryUserList();
+
     })
 
 

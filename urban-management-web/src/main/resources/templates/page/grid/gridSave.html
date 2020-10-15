@@ -6,6 +6,8 @@
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: map_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
     <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
 <style>
@@ -84,13 +86,13 @@
                                 <tr>
                                     <td>初始日期<span>*</span></td>
                                     <td>
-                                        <input type="text" id="initialDate" name="initialDate"/>
+                                        <input type="text" class=" datepicker" readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>终止日期<span>*</span></td>
                                     <td>
-                                        <input type="text" id="terminationDate" name="terminationDate"/>
+                                        <input type="text" class=" datepicker" readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
@@ -154,6 +156,8 @@
 <th:block th:include="page/fragments/common :: map_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
 <th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <script type="text/javascript" th:inline="javascript">
 
     let url = /*[[@{/user/save}]]*/ "/json/unit.json";
@@ -167,6 +171,10 @@
     }
 
     $(function () {
+        $(".datepicker").datepicker({
+            language: 'zh-CN',
+            format: "yyyy-mm-dd"
+        });
         getGridList();
     });
 

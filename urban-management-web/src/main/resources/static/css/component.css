@@ -3,3 +3,6 @@
     width: 80px;
     display: inline-block;
 }
+.notice_check p{
+    padding: 5px 0;
+}
