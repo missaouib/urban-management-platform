@@ -1,0 +1,146 @@
+@startuml
+title 城管类图
+class User <<用户实体类>>{
+    -id: String
+    -name : String
+    -sts : int
+    -dept : Dept
+}
+
+class Dept<<责任部门实体类>>{
+    -id: String
+    -deptName : String
+    -sts : int
+    -level : String
+    -parent : Dept
+}
+
+class Grid<<网格实体类>>{
+    -id: String
+    -gridCode : String
+    -gridName : String
+    -remark : String
+    -kv : Kv
+    -area : String
+    -initialDate : date
+    -terminationDate : date
+    -sts : int
+    -dept : Dept
+    -user : User
+    -release : Release
+}
+
+class Component<<部件实体类>>{
+    -id: String
+    -componentType : ComponentType
+    -componentInfo : ComponentInfo
+    -sts : int  // 用于记录该部件删除
+    -kv : Kv       // 部件状态
+    -release : Release
+}
+
+class ComponentType<<部件分类实体类>>{
+    -id: String
+    -name: String
+    -num: int
+    -parent: ComponentType
+}
+
+class ComponentInfo<<部件信息实体类>>{
+    -id : String
+    -objId : String
+    -objName : String
+    -mainDeptCode : String
+    -mainDept : String
+    -ownershipDeptCode : String
+    -ownershipDeptName : String
+    -maintenanceDeptCode : String
+    -maintenanceDeptName  : String
+    -bgid : Grid
+    -objState : String
+    -initialDate : date
+    -changeDate : date
+    -dataSource : String
+    -note : String
+}
+
+class Publish<<发布实体类>>{
+    -id : String
+    -name : String
+    -layerId : String     //图层ID:当发布后GIS平台将把该图层ID返回城管中，城管再次添加元素可以找到对应GIS平台的哪个图层
+    -url : String         //GIS平台提供的发布的图层地址
+    -kv : Kv              //类型：编辑的是部件、网格。
+    -sts : int            //状态：用于判断是编辑中、发布、未发布等状态
+    -user : User          //用于记录谁发布的
+}
+class Record<<编辑实体类>>{
+    -id : String
+    -coordinate : String  //坐标
+    -user : User
+    -release : Release
+}
+
+class Kv<<Kv实体类>>{
+    -id : String
+    -tableName : String
+    -fieldName : String
+    -value : String
+    -sts : int
+}
+
+
+
+class ComponentController<<部件界面类>>{
+    -ComponentService
+    -ComponentTypeService
+    -ComponentInfoService
+    +ComponentList(component):Component[*]         // 查询部件集合
+    +ComponentTypeList():ComponentType[*]          // 获取部件分类集合
+    +saveComponentList(Component[*]):boolean       // 保存部件
+}
+
+class ComponentService<<部件业务类>>{
+    -ComponentInfoService
+    +getComponentList(component):Component[*]      // 查询部件集合
+    +getComponent(component) :component
+    +saveComponentList(component[*]): boolean
+    +saveComponent(component) : boolean
+}
+class ComponentTypeService<<部件分类业务类>>{
+    +getComponentTypeList():ComponentType[*]       // 获取部件分类集合
+    +getComponentType(component):ComponentType     // 获取部件分类
+}
+class ComponentInfoService<<部件信息业务类>>{
+    +getComponentInfo(component):ComponentInfo          // 查询部件详情
+    +saveComponentInfoList(ComponentInfo[*]) : boolean  //批量保存
+    +saveComponentInfo(ComponentInfo) : boolean
+}
+
+class ReleaseController<<发布界面类>>{
+
+}
+class ReleaseService<<发布业务类>>{
+
+}
+
+class EditingController<<编辑界面类>>{
+
+}
+class EditingService<<编辑业务类>>{
+
+}
+class ImportController<<导入界面类>>{
+
+}
+class ImportService<<导入业务类>>{
+
+}
+
+
+
+
+
+
+
+
+@enduml
