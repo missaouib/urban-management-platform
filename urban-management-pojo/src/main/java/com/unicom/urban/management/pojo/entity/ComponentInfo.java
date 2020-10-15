@@ -78,7 +78,8 @@ public class ComponentInfo extends BaseEntity {
     /**
      * 部件状态
      */
-    private String objState;
+    @ManyToOne
+    private KV objState;
 
     /**
      * 初始日期
@@ -97,7 +98,8 @@ public class ComponentInfo extends BaseEntity {
     /**
      * 数据来源
      */
-    private String  dataSource;
+    @ManyToOne
+    private KV  dataSource;
 
     /**
      * 备注

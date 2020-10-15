@@ -5,6 +5,7 @@ import com.unicom.urban.management.pojo.entity.ComponentType;
 import com.unicom.urban.management.pojo.vo.ComponentTypeVO;
 import com.unicom.urban.management.pojo.vo.ComponentVO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -30,5 +31,6 @@ public interface ComponentTypeMapper {
      * @param componentType from
      * @return class
      */
+    @Mapping(source = "parent.id", target = "parent")
     ComponentTypeVO componentTypeToComponentTypeVO(ComponentType componentType);
 }

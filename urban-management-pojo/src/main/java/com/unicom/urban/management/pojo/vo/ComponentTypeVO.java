@@ -8,4 +8,11 @@ import lombok.Data;
  */
 @Data
 public class ComponentTypeVO {
+
+    private String id;
+
+    private String name;
+
+    private String parent;
+
 }

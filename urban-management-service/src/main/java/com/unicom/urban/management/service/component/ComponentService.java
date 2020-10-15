@@ -9,6 +9,7 @@ import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.ComponentVO;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.record.RecordService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -52,7 +53,12 @@ public class ComponentService {
     public List<ComponentVO> getComponentList(ComponentDTO component) {
         List<Component> componentList = componentRepository.findAll((Specification<Component>) (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
+            if(StringUtils.isNotBlank(component.getComponentTypeId())){
 
+            }
+            if(StringUtils.isNotBlank(component.getObjId())){
+//                list.add(criteriaBuilder.like("").as(String.class),"%"+component.getObjId()+"%");
+            }
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         });
@@ -104,6 +110,8 @@ public class ComponentService {
         grid.setId(dto.getBgid());
 
         KV kv = KV.builder().id(dto.getKvId()).build();
+        KV objState = KV.builder().id(dto.getObjState()).build();
+        KV datasource = KV.builder().id(dto.getDataSource()).build();
         ComponentType componentType = ComponentType.builder().id(dto.getComponentTypeId()).build();
         ComponentInfo componentInfo = ComponentInfo.builder()
                 .objId(dto.getObjId())
@@ -115,10 +123,10 @@ public class ComponentService {
                 .maintenanceDeptCode(dto.getMaintenanceDeptCode())
                 .maintenanceDeptName(dto.getMaintenanceDeptName())
                 .bgid(grid)
-                .objState(dto.getObjState())
+                .objState(objState)
                 .initialDate(dto.getInitialDate())
                 .changeDate(dto.getChangeDate())
-                .dataSource(dto.getDataSource())
+                .dataSource(datasource)
                 .note(dto.getNote())
                 .build();
         Component component = Component.builder()
@@ -153,6 +161,8 @@ public class ComponentService {
         dtos.forEach(c->{
             Optional<Component> ifnull = componentRepository.findById(c.getId());
             if(ifnull.isPresent()){
+                KV objState = KV.builder().id(c.getObjState()).build();
+                KV datasource = KV.builder().id(c.getDataSource()).build();
                 Component component = ifnull.get();
                 Grid grid = new Grid();
                 grid.setId(c.getBgid());
@@ -165,10 +175,10 @@ public class ComponentService {
                 component.getComponentInfo().setMaintenanceDeptCode(c.getMaintenanceDeptCode());
                 component.getComponentInfo().setMaintenanceDeptName(c.getMaintenanceDeptName());
                 component.getComponentInfo().setBgid(grid);
-                component.getComponentInfo().setObjState(c.getObjState());
+                component.getComponentInfo().setObjState(objState);
                 component.getComponentInfo().setInitialDate(c.getInitialDate());
                 component.getComponentInfo().setChangeDate(c.getChangeDate());
-                component.getComponentInfo().setDataSource(c.getDataSource());
+                component.getComponentInfo().setDataSource(datasource);
                 componentRepository.saveAndFlush(component);
             }
         });
