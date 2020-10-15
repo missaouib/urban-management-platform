@@ -67,7 +67,7 @@
                     <select id="objState" ></select>
                 </p>
                 <p>
-                    <label class="">所在网格</label>
+                    <label class="">数据来源</label>
                     <select id="dataSource"></select>
                 </p>
 
@@ -122,14 +122,29 @@
 
     $(function () {
         queryUserList();
-        $.operate.get(componentTypeUrl, function (e) {
+        $.ajaxUtil.get(componentTypeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
-        $.operate.get(objStateUrl, function (e) {
-            console.log(e)
+        $.ajaxUtil.get(objStateUrl, function (e) {
+            var objStateStr = "<option value=''>--请选择--</option>";
+            $(e.data).each(function (index,value) {
+                objStateStr += "<option value='"+value.id+"'>"+value.value+"</option>"
+            })
+            $("#objState").append(objStateStr);
         })
-        $.operate.get(dataSourceUrl, function (e) {
-            console.log(e)
+        $.ajaxUtil.get(dataSourceUrl, function (e) {
+            var datasourceStr = "<option value=''>--请选择--</option>";
+            $(e.data).each(function (index,value) {
+                datasourceStr += "<option value='"+value.id+"'>"+value.value+"</option>"
+            })
+            $("#dataSource").append(datasourceStr);
+        })
+        $.ajaxUtil.get(gridUrl, function (e) {
+            var gridStr = "<option value=''>--请选择--</option>";
+            $(e.data).each(function (index,value) {
+                gridStr += "<option value='"+value.id+"'>"+value.gridName+"</option>"
+            })
+            $("#bgid").append(gridStr);
         })
     })
 
@@ -147,6 +162,8 @@
     let objStateUrl = /*[[@{/objState}]]*/ "/objState";
 
     let dataSourceUrl = /*[[@{/dataSource}]]*/ "/dataSource";
+
+    let gridUrl = /*[[@{/grid}]]*/ "/grid";
 
 
 

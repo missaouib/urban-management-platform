@@ -6,8 +6,10 @@ import com.unicom.urban.management.pojo.dto.ComponentDTO;
 import com.unicom.urban.management.pojo.entity.KV;
 import com.unicom.urban.management.pojo.vo.ComponentTypeVO;
 import com.unicom.urban.management.pojo.vo.ComponentVO;
+import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.service.component.ComponentService;
 import com.unicom.urban.management.service.componenttype.ComponentTypeService;
+import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,11 +35,14 @@ public class ComponentController {
 
     private final KVService kvService;
 
+    private final GridService gridService;
+
     @Autowired
-    public ComponentController(ComponentTypeService componentTypeService, ComponentService componentService, KVService kvService) {
+    public ComponentController(ComponentTypeService componentTypeService, ComponentService componentService, KVService kvService, GridService gridService) {
         this.componentTypeService = componentTypeService;
         this.componentService = componentService;
         this.kvService = kvService;
+        this.gridService = gridService;
     }
 
 
@@ -74,5 +79,10 @@ public class ComponentController {
     @GetMapping("/dataSource")
     public List<KV> dataSource(){
         return kvService.getKv("componentInfo","dataSource");
+    }
+
+    @GetMapping("/grid")
+    public List<GridVO> grd(){
+        return gridService.searchAll();
     }
 }

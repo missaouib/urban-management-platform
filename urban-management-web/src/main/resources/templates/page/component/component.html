@@ -6,7 +6,7 @@
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
-
+    <th:block th:include="page/fragments/common :: ztree_css"/>
     <link th:href="@{/css/component.css}" rel="stylesheet" type="text/css">
 
 </head>
@@ -18,7 +18,8 @@
         <form id="search-form">
             <p>
                 <label class="">分类</label>
-                <input type="text" readonly="readonly" id="typeStr" class="find_input">
+                <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
+                <input type="hidden" readonly="readonly" id="componentTypeId" class="find_input">
                 <button type="button" class="addBtn"  data-toggle="modal" data-target="#modal-default">
                     +
                 </button>
@@ -85,10 +86,14 @@
                     <h4 class="modal-title">默认窗口</h4>
                 </div>
                 <div class="modal-body">
-                    <p>zTree</p>
+                    <div class="tree">
+                        <div class="treeDemo">
+                            <ul id="treeDemo" class="ztree">zTree</ul>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary">确认</button>
                 </div>
             </div>
@@ -159,13 +164,41 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 
-
+<th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
+    var setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parent'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        $("#typeStr").val(treeNode.name);
+        $("#componentTypeId").val(treeNode.id);
+        $(".closemodal").click();
+    }
 
 
 
     $(function () {
+        $.ajaxUtil.get(componentTypeUrl, function (e) {
+            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        })
         $(".datepicker").datepicker({
             language: 'zh-CN',
             format: "yyyy-mm-dd"
@@ -174,6 +207,7 @@
 
     })
 
+    let componentTypeUrl = /*[[@{/componentType}]]*/ "/componentType";
 
     let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
 
