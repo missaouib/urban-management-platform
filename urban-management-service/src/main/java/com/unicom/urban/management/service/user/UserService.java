@@ -7,8 +7,8 @@ import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.mapper.UserMapper;
-import com.unicom.urban.management.pojo.dto.UserDTO;
 import com.unicom.urban.management.pojo.dto.ChangePasswordDTO;
+import com.unicom.urban.management.pojo.dto.UserDTO;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.password.PasswordService;
@@ -105,6 +105,10 @@ public class UserService {
     public UserVO findById(String id) {
         User user = userRepository.getOne(id);
         return UserMapper.INSTANCE.userToUserVO(user);
+    }
+
+    public User findOne(String id) {
+        return userRepository.getOne(id);
     }
 
     private void initPassword(User user) {

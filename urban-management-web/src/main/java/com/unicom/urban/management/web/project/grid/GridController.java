@@ -19,4 +19,6 @@ public class GridController {
     public ModelAndView grid() {
         return new ModelAndView(SystemConstant.PAGE + "/grid/grid");
     }
+
+
 }

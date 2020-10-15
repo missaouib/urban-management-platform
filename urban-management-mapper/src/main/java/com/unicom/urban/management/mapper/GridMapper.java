@@ -52,7 +52,7 @@ public interface GridMapper {
      * @param gridDTO dto
      * @return Release
      */
-    Release GridDTOToRelease(GridDTO gridDTO);
+    Release gridDTOToRelease(GridDTO gridDTO);
 
     /**
      * dto转Record
@@ -60,6 +60,6 @@ public interface GridMapper {
      * @param gridDTO dto
      * @return Record
      */
-    Record GridDTOToRecord(GridDTO gridDTO);
+    Record gridDTOToRecord(GridDTO gridDTO);
 
 }

@@ -52,7 +52,7 @@ public class GridDTO {
     /**
      * 类型：编辑的是部件、网格
      */
-    private KV releaseKv;
+    private KV Kv;
 
     private String releaseName;
 
