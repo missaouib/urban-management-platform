@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.publish;
 
+import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.StsConstant;
 import com.unicom.urban.management.dao.release.PublishRepository;
 import com.unicom.urban.management.pojo.entity.Publish;
@@ -22,12 +23,12 @@ public class PublishService {
     private PublishRepository publishRepository;
 
     public Publish save(Publish release) {
-        release.setSts(StsConstant.EDITING);
+        release.setSts(StsConstant.UNRELEASED);
         return publishRepository.save(release);
     }
 
     public List<Publish> allByKvId() {
-        return publishRepository.findAllByKv_Id("28526efe-3db5-415b-8c7a-d0e3a49cab8f");
+        return publishRepository.findAllByKv_Id(KvConstant.KV_RELEASE_GRID);
     }
 
 }

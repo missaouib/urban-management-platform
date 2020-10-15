@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.record;
 
+import com.unicom.urban.management.common.constant.StsConstant;
 import com.unicom.urban.management.dao.record.RecordRepository;
 import com.unicom.urban.management.pojo.entity.Record;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class RecordService {
     private RecordRepository recordRepository;
 
     public Record save(Record record) {
+        record.setSts(StsConstant.EDITING);
         return recordRepository.save(record);
     }
 

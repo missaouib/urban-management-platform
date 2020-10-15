@@ -1,7 +1,8 @@
 package com.unicom.urban.management.service.grid;
 
+import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.StsConstant;
-import com.unicom.urban.management.common.exception.BaseException;
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.grid.GridRepository;
 import com.unicom.urban.management.mapper.GridMapper;
@@ -58,7 +59,7 @@ public class GridService {
         List<Grid> gridList = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
             list.add(criteriaBuilder.equal(root.get("record").get("createBy").get("id").as(String.class), SecurityUtil.getUserId()));
-            list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.INUSE));
+            list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.EDITING));
             list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class), StsConstant.INUSE));
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
@@ -76,13 +77,13 @@ public class GridService {
         Publish savePublish;
         List<Publish> publishes = publishService.allByKvId();
         if (publishes.size() > 1) {
-            throw new BaseException("网格图层应保持唯一");
+            throw new DataValidException("网格图层应保持唯一");
         } else {
             if (publishes.size() > 0) {
                 savePublish = publishes.get(0);
             } else {
                 Publish publish = new Publish();
-                KV oneById = kvService.findOneById("28526efe-3db5-415b-8c7a-d0e3a49cab8f");
+                KV oneById = kvService.findOneById(KvConstant.KV_RELEASE_GRID);
                 publish.setKv(oneById);
                 publish.setName("网格");
                 savePublish = publishService.save(publish);
