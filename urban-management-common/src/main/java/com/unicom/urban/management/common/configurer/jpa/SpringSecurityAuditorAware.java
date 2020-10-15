@@ -1,11 +1,10 @@
 package com.unicom.urban.management.common.configurer.jpa;
 
 
+import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.SecurityUserBean;
+import com.unicom.urban.management.pojo.entity.User;
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -21,16 +20,18 @@ import java.util.Optional;
  * @date 2020/6/10 16:11
  */
 @Component
-public class SpringSecurityAuditorAware implements AuditorAware<String> {
+public class SpringSecurityAuditorAware implements AuditorAware<User> {
 
     @Override
-    public Optional<String> getCurrentAuditor() {
-        return Optional.ofNullable(SecurityContextHolder.getContext())
-                .map(SecurityContext::getAuthentication)
-                .filter(Authentication::isAuthenticated)
-                .map(Authentication::getPrincipal)
-                .map(SecurityUserBean.class::cast)
-                .map(SecurityUserBean::getUsername);
+    public Optional<User> getCurrentAuditor() {
+
+        SecurityUserBean securityUserBean = SecurityUtil.getUser();
+
+        User user = new User();
+        user.setId(securityUserBean.getId());
+
+        return Optional.of(user);
+
     }
 
 }

@@ -3,6 +3,8 @@ package com.unicom.urban.management.pojo.entity;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
@@ -14,6 +16,8 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
+@SQLDelete(sql = "update sys_user set sts = 1 where id = ?")
+@Where(clause = "sts = 0")
 @Table(name = "sys_user")
 public class User extends BaseEntity {
 
@@ -46,8 +50,8 @@ public class User extends BaseEntity {
      */
     private String mail;
 
-    @ManyToOne
-    private DictData sex;
+//    @ManyToOne
+//    private DictData sex;
 
     /**
      * 头像图片URL
