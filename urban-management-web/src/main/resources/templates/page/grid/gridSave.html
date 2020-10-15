@@ -250,7 +250,7 @@
         let data = features[0].H.data;
         console.log("features[0]", features[0])
         console.log("data", data)
-
+        alert(data.id)
         if (features.length > 0) {
 
         }
@@ -269,13 +269,13 @@
     });
 
     layerMap.getSource().addFeature(multiPolygon);
-    setPolygon(Polygons)
+    setPolygon(Polygons,2)
 
-    function setPolygon(Polygons) {
+    function setPolygon(Polygons,data) {
         let Polygon = new ol.Feature({
             geometry: new ol.geom.Polygon(Polygons),
             data: {
-                // id: data,
+                id: data,
                 // name: name,
                 coordinate: Polygons
             }
