@@ -94,7 +94,58 @@
             </div>
         </div>
     </div>
-    <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+    <table id="bootstrap-table" class="table_style selfTable" style="margin: 0 auto;width: 100%!important;padding: 5px" >
+        <thead>
+        <tr>
+            <th>序号</th>
+            <th>编辑</th>
+            <th>分类</th>
+            <th>部件标识码</th>
+            <th>部件名称</th>
+            <th>主管部门代码</th>
+            <th>主管部门名称</th>
+            <th>权属单位代码</th>
+            <th>权属单位名称</th>
+            <th>养护单位代码</th>
+            <th>养护单位名称</th>
+            <th>所在单元网格</th>
+            <th>部件状态</th>
+            <th>初始日期</th>
+            <th>变更日期</th>
+            <th>数据来源</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td><input type="checkbox"></td>
+            <td>部件上升</td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td>
+                <select >
+                    <option>1</option>
+                    <option>2</option>
+                </select>
+            </td>
+            <td><input type="text" class=" datepicker" readonly="readonly"></td>
+            <td><input type="text" class=" datepicker" readonly="readonly"></td>
+            <td>
+                <select >
+                    <option>1</option>
+                    <option>2</option>
+                </select>
+            </td>
+        </tr>
+        </tbody>
+    </table>
     <div class="notice_check">
         <p>
             <input type="button" class="check_btn1" onclick="" value="更新">
@@ -145,40 +196,28 @@
             sortName: "updateTime",
             sortOrder: "desc",
             modalName: "用户",
+
             columns: [
                 {
-                    checkbox: true
-                },
-                {
-                    title: '账号',
-                    field: 'username'
-                },
-                {
-                    title: '姓名',
-                    field: 'name'
-                },
-                {
-                    title: '手机号码',
-                    field: 'mobileNumber'
-                },
-                {
-                    title: '创建时间',
-                    field: 'createTime',
-                    sortable: true,
-                },
-                {
-                    title: '修改时间',
-                    field: 'updateTime',
-                    sortable: true,
-
-                },
-                {
+                    field: 'id',
+                    title: 'ID',
+                    formatter:idForm,
+                    width:'25%'
+                }, {
+                    field: 'name',
+                    title: '名字',
+                    width:'25%',
+                    formatter:nameForm,
+                }, {
+                    field: 'price',
+                    title: '价格',
+                    width:'25%',
+                    formatter:priceForm
+                }, {
+                    field:'id',
                     title: '操作',
-                    field: '',
-                    formatter: function (value, row) {
-                        var e = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
-                        return e;
-                    }
+                    width:'25%',
+                    formatter:doSome
                 }
             ]
         };

@@ -775,8 +775,8 @@ h6{font-weight: bold;padding-left: 10px;line-height: 31px;border-bottom: 1px #cc
 
 .table_td{color: #3665a9;text-align: right;background-color: #f5f5f5;width: 90px}
 .table_td p{display: inline-block}
-.table_td span,.table span{color: red;display: inline-block;vertical-align:middle;text-align: center}
-.form-horizontal .tabel_name label{text-align: right;font-size: 12px}
+/*.table_td span,.table span{color: red;display: inline-block;vertical-align:middle;text-align: center}*/
+/*.form-horizontal .tabel_name label{text-align: right;font-size: 12px}*/
 .book_con01 td{text-align: right;color: #475059}
 .book_con01 .sex{text-align: left}
 .book_con01 td:nth-child(2n):hover,.book_con01 tr:hover{background-color: #fff !important;}
@@ -1009,11 +1009,7 @@ justify-content: flex-end;
 .table2_top .table td{
     position: relative;
 }
-/** 表单验证 样式布局 **/
-/*.control-label.is-required:before {*/
-/*    content: '* ';*/
-/*    color: red;*/
-/*}*/
+
 
 label.error {
     position: absolute;
@@ -1071,3 +1067,6 @@ label.error {
     top: 1px;
     max-width: none;
 }
+/*.bs-checkbox {*/
+/*    padding: 0 0 0 5px!important;*/
+/*}*/
