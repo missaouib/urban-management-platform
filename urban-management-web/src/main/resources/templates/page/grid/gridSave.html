@@ -1,10 +1,239 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: map_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
+<style>
+    .table tr td:nth-child(2n+1){
+        width: 15% !important;
+    }
+    .titlenav{
+        width: 100%;
+        height: 30px;
+        position: absolute;
+        top: 10px;
+        left: 20px;
+        display: flex;
+        align-items: center;
+        z-index: 99;
+    }
+    .topFun{
+        padding: 2px;
+        margin: 0px 5px;
+    }
+</style>
 <body>
+<div class="row1">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="leftBox">
+                <form id="userForm">
+                    <div class="top table2_top">
+                        <!--        <div>-->
+                        <div class="top_out">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td>单元网格标识码<span>*</span></td>
+                                    <td>
+                                        <input type="text" id="realname" name="realname"/>
+                                    </td>
 
+                                </tr>
+                                <tr>
+                                    <td>单元网格名称<span>*</span></td>
+                                    <td>
+                                        <input type="text" id="phone" name="phone"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>区域分类<span>*</span></td>
+                                    <td>
+                                        <select id="safeLevel" name="safeLevel" required>
+                                            <option>请选择</option>
+                                            <option>级大</option>
+                                            <option>一般</option>
+                                            <option>微小</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>面积<span>*</span></td>
+                                    <td>
+                                        <input type="text" id="" name="username"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>初始日期<span>*</span></td>
+                                    <td>
+                                        <input type="text" id="" name="username"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>终止日期<span>*</span></td>
+                                    <td>
+                                        <input type="text" id="" name="username"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>问题描述<span>*</span></td>
+                                    <td><textarea id="problemescription" name="problemescription" required></textarea></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="notice_bot">
+                            <!--            <div class="l_left">-->
+                            <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                            <!--            </div>-->
+                            <div class="r_right but_p">
+                                <button class="but_save" type="submit" onclick="submitHandler()">保存</button>
+                                <button class="but_close" onclick="Cancel()">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--    </div>-->
+                </form>
+            </div>
+            <div class="rightBox"  style="position: relative">
+<!--                <div class="card" style="margin-top: 0px">-->
+<!--                    <div class="card-body" >-->
+                        <div class="titlenav">
+                            <div class="">
+                                <div>+</div>
+                                <div>-</div>
+                            </div>
+                            <button class="btn-primary topFun">新增</button>
+                            <button class="btn-primary topFun">删除</button>
+                        </div>
+                        <div class="map" id="map" style="width: 100%"></div>
+
+                        <!--                                        line and pie-->
+                        <div id="popup" class="ol-popup">
+                            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                            <div id="popup-content">
+                                <ul id="message">
+
+                                </ul>
+                            </div>
+                        </div>
+
+<!--                    </div>&lt;!&ndash; /.card-body - ->-->
+<!--                </div>&lt;!&ndash; /.card &ndash;&gt;-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pictureDiv" style="display: none">
+
+</div>
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<script type="text/javascript" th:inline="javascript">
+    var center = ol.proj.transform([126.62, 45.74], "EPSG:4326", "EPSG:3857");
+    var raster = new ol.layer.Tile({
+        source: new ol.source.OSM()
+    });
+    var source = new ol.source.Vector({wrapX: false});
+    //ol.layer.Vector用于显示在客户端渲染的矢量数据。
+    var vector = new ol.layer.Vector({
+        source: source
+    });
+    var map = new ol.Map({
+        target: 'map',
+        layers: [raster, vector],
+        view: new ol.View({
+            // projection: "EPSG:" + epsg,
+            center: center,
+            zoom: 12
+        })
+    });
+
+    var draw = new ol.interaction.Draw({
+        source: source,
+        //点：Point   线:LineString      面:Polygon
+        type: "Polygon",
+    });
+    map.addInteraction(draw)
+    draw.on('drawstart', function () {
+        tarr.splice(0)
+    })
+    draw.on('drawend', function () {
+        source.clear();
+    });
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
+
+    var tarr = [];
+    var t;
+    $("#map").click(function (e) {
+        t = map.getEventCoordinate(e);
+        $("#realname").val(t);
+
+            //面:Polygon
+            tarr.push(t)
+            var newStr = [];
+            for (var i = 0; i < tarr.length - 1; i++) {
+                newStr.push(tarr[i])
+            }
+            newStr.push(newStr[0])
+            var array = newStr.join("-")
+            $("#realname").val(array)
+            if (array.length != 0) {
+                $("#realname").val(array)
+            }
+
+    });
+    var selectSingleClick = new ol.interaction.Select();
+    map.addInteraction(selectSingleClick);
+    selectSingleClick.on('select', function (e) {
+        var features = e.target.getFeatures().getArray();
+        let data = features[0].H.data;
+        console.log(features[0],data)
+
+        if (features.length > 0) {
+
+        }
+    });
+    //固定的面
+    var Polygons = [
+        [
+            [14098274.077604493, 5744048.473396081], [14094566.881732661, 5740952.773750531], [14097930.11097721, 5738659.662901975], [14101331.5587359, 5741831.79957581], [14098274.077604493, 5744048.473396081]
+        ]
+    ];
+    var polygon = new ol.geom.Polygon(Polygons);
+    //polygon.applyTransform(ol.proj.getTransform('EPSG:4326', 'EPSG:3857'));//经纬度坐标需要转换
+    var multiPolygon = new ol.Feature({
+        geometry: polygon
+    });
+
+    layerMap.getSource().addFeature(multiPolygon);
+    setPolygon(Polygons)
+    function setPolygon(Polygons) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(Polygons),
+            data: {
+                // id: data,
+                // name: name,
+                coordinate: Polygons
+            }
+        });
+        // console.log(Polygon)
+        layerMap.getSource().addFeature(Polygon);
+    }
+
+</script>
 </body>
 </html>
