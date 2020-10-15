@@ -472,6 +472,29 @@
                     "F_ModifyDate": "2015-11-17 11:22:46",
                     "F_ModifyUserId": "System",
                     "F_ModifyUserName": "超级管理员"
+                }, {
+                    "F_ModuleId": "0502",
+                    "F_ParentId": "001",
+                    "F_EnCode": "SysManage",
+                    "F_FullName": "文件上传",
+                    "F_Icon": "fa fa-wrench",
+                    "F_UrlAddress": "/default",
+                    "F_Target": "expand",
+                    "F_IsMenu": 0,
+                    "F_AllowExpand": 1,
+                    "F_IsPublic": 0,
+                    "F_AllowEdit": null,
+                    "F_AllowDelete": null,
+                    "F_SortCode": 1,
+                    "F_DeleteMark": 0,
+                    "F_EnabledMark": 1,
+                    "F_Description": null,
+                    "F_CreateDate": null,
+                    "F_CreateUserId": null,
+                    "F_CreateUserName": null,
+                    "F_ModifyDate": "2015-11-17 11:22:46",
+                    "F_ModifyUserId": "System",
+                    "F_ModifyUserName": "超级管理员"
                 },
 
 
@@ -825,12 +848,12 @@
                     "F_ModifyUserName": "超级管理员"
                 },
                 {
-                    "F_ModuleId": "100655551235031232",
+                    "F_ModuleId": "100655551235031233",
                     "F_ParentId": "1006555550123",
                     "F_EnCode": "SysManage",
-                    "F_FullName": "部件导入",
+                    "F_FullName": "单元网格编辑",
                     "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/component/import",
+                    "F_UrlAddress": "/gridSave",
                     "F_Target": "expand",
                     "F_IsMenu": 0,
                     "F_AllowExpand": 1,

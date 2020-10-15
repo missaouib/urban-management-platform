@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 public class GridVO {
 
-    private String gridName;
+    private String id;
 
     private String deptName;
 
