@@ -20,5 +20,10 @@ public class GridController {
         return new ModelAndView(SystemConstant.PAGE + "/grid/grid");
     }
 
+    @GetMapping("/gridSave")
+    public ModelAndView gridSave() {
+        return new ModelAndView(SystemConstant.PAGE + "/grid/gridSave");
+    }
+
 
 }
