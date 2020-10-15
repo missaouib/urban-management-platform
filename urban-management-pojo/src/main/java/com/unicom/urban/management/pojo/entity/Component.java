@@ -23,18 +23,18 @@ public class Component extends BaseEntity {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    private String layerId;
-
-    private String componentName;
-
     @ManyToOne
     private ComponentType componentType;
 
     @OneToOne
     private ComponentInfo componentInfo;
 
-    private String url;
+    private Integer sts;
 
-    private String sts;
+    @ManyToOne
+    private Release release;
+
+    @ManyToOne
+    private KV kv;
 
 }
