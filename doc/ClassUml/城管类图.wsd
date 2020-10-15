@@ -80,7 +80,7 @@ class Record<<编辑实体类>>{
     -coordinate : String  //坐标
     -user : User
     -release : Release
-    -sts : String //判断该记录是编辑中、发布
+    -sts : int //判断该记录是编辑中、发布
 }
 
 class Kv<<Kv实体类>>{
