@@ -2,8 +2,8 @@ package com.unicom.urban.management.mapper;
 
 import com.unicom.urban.management.pojo.dto.GridDTO;
 import com.unicom.urban.management.pojo.entity.Grid;
+import com.unicom.urban.management.pojo.entity.Publish;
 import com.unicom.urban.management.pojo.entity.Record;
-import com.unicom.urban.management.pojo.entity.Release;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -35,7 +35,7 @@ public interface GridMapper {
      * @param grid 实体
      * @return vo
      */
-    @Mapping(source = "dept.deptName", target = "deptName")
+    @Mapping(source = "record.coordinate", target = "coordinate")
     GridVO gridToGridVO(Grid grid);
 
     /**
@@ -52,7 +52,7 @@ public interface GridMapper {
      * @param gridDTO dto
      * @return Release
      */
-    Release gridDTOToRelease(GridDTO gridDTO);
+    Publish gridDTOToRelease(GridDTO gridDTO);
 
     /**
      * dto转Record

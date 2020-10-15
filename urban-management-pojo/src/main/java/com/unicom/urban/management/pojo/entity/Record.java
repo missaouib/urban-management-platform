@@ -26,10 +26,11 @@ public class Record extends BaseEntity {
 
     @ManyToOne
     @JoinColumn
-    private User user;
+    private Publish release;
 
-    @ManyToOne
-    @JoinColumn
-    private Release release;
+    /**
+     * 状态：用于判断是编辑中、发布等状态
+     */
+    private int sts;
 
 }

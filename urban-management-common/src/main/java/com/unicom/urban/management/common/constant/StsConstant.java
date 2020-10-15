@@ -7,10 +7,6 @@ package com.unicom.urban.management.common.constant;
  * @date 2020/10/14-19:12
  */
 public class StsConstant {
-    /**
-     * 删除
-     */
-    public static final Integer DELETE = 1;
 
     /**
      * 在用
@@ -18,17 +14,22 @@ public class StsConstant {
     public static final Integer INUSE = 0;
 
     /**
+     * 删除
+     */
+    public static final Integer DELETE = 1;
+
+    /**
      * 编辑中
      */
-    public static final Integer EDITING = 0;
+    public static final Integer EDITING = 2;
 
     /**
      * 发布
      */
-    public static final Integer RELEASE = 1;
+    public static final Integer RELEASE = 3;
 
     /**
      * 未发布
      */
-    public static final Integer UNRELEASED = 2;
+    public static final Integer UNRELEASED = 4;
 }

@@ -1,9 +1,6 @@
 package com.unicom.urban.management.pojo.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 /**
  * 网格实体类
@@ -15,9 +12,6 @@ public class GridVO {
 
     private String id;
 
-    private String deptName;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createTime;
+    private String coordinate;
 
 }

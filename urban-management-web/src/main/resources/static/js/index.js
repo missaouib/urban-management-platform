@@ -853,7 +853,7 @@
                     "F_EnCode": "SysManage",
                     "F_FullName": "单元网格编辑",
                     "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/gridSave",
+                    "F_UrlAddress": "/grid/gridSave",
                     "F_Target": "expand",
                     "F_IsMenu": 0,
                     "F_AllowExpand": 1,

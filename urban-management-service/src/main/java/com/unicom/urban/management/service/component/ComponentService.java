@@ -3,13 +3,12 @@ package com.unicom.urban.management.service.component;
 import com.unicom.urban.management.common.constant.StsConstant;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.component.ComponentRepository;
-import com.unicom.urban.management.dao.record.RecordRepository;
 import com.unicom.urban.management.mapper.ComponentMapper;
 import com.unicom.urban.management.pojo.dto.ComponentDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.ComponentVO;
+import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.record.RecordService;
-import com.unicom.urban.management.service.release.ReleaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -33,11 +32,12 @@ public class ComponentService {
 
     private final ComponentRepository componentRepository;
 
-    private final ReleaseService releaseService;
+    private final PublishService releaseService;
 
     private final RecordService recordService;
+
     @Autowired
-    public ComponentService(ComponentRepository componentRepository, ReleaseService releaseService, RecordService recordService) {
+    public ComponentService(ComponentRepository componentRepository, PublishService releaseService, RecordService recordService) {
         this.componentRepository = componentRepository;
         this.releaseService = releaseService;
         this.recordService = recordService;
@@ -98,7 +98,7 @@ public class ComponentService {
      * @param dto 参数
      */
     public void saveComponent(ComponentDTO dto){
-        Release release = this.saveRelease(dto.getReleaseName());
+        Publish release = this.saveRelease(dto.getReleaseName());
         this.saveRecord(dto.getCoordinate(),release);
         Grid grid = new Grid();
         grid.setId(dto.getBgid());
@@ -132,9 +132,9 @@ public class ComponentService {
 
     }
 
-    private Release saveRelease(String releaseName){
-        Release release = new Release();
-        release.setReleaseName(releaseName);
+    private Publish saveRelease(String releaseName) {
+        Publish release = new Publish();
+        release.setName(releaseName);
         User user = new User();
         user.setId(SecurityUtil.getUserId());
         release.setUser(user);
@@ -142,7 +142,7 @@ public class ComponentService {
         return releaseService.save(release);
     }
 
-    private void saveRecord(String coordinate,Release release){
+    private void saveRecord(String coordinate, Publish release) {
         Record record = new Record();
         record.setCoordinate(coordinate);
         record.setRelease(release);

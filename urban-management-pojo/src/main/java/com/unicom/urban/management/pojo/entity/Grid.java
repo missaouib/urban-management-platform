@@ -51,7 +51,11 @@ public class Grid extends BaseEntity {
 
     @ManyToOne
     @JoinColumn
-    private Release release;
+    private Publish publish;
+
+    @ManyToOne
+    @JoinColumn
+    private Record record;
 
     @ManyToOne
     @JoinColumn

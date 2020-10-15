@@ -12,14 +12,14 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-public class Release extends BaseEntity {
+public class Publish extends BaseEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    private String releaseName;
+    private String name;
 
     /**
      * 图层ID:当发布后GIS平台将把该图层ID返回城管中，城管再次添加元素可以找到对应GIS平台的哪个图层
@@ -39,7 +39,7 @@ public class Release extends BaseEntity {
     private KV kv;
 
     /**
-     * 状态：用于判断是编辑中、发布、未发布等状态
+     * 状态：用于判断是发布、未发布等状态
      */
     private int sts;
 

@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.grid;
 
 import com.unicom.urban.management.common.constant.StsConstant;
+import com.unicom.urban.management.common.exception.BaseException;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.grid.GridRepository;
 import com.unicom.urban.management.mapper.GridMapper;
@@ -8,8 +9,8 @@ import com.unicom.urban.management.pojo.dto.GridDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.service.kv.KVService;
+import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.record.RecordService;
-import com.unicom.urban.management.service.release.ReleaseService;
 import com.unicom.urban.management.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,9 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,7 +38,7 @@ public class GridService {
     @Autowired
     private RecordService recordService;
     @Autowired
-    private ReleaseService releaseService;
+    private PublishService publishService;
     @Autowired
     private KVService kvService;
     @Autowired
@@ -48,12 +47,6 @@ public class GridService {
     public Page<GridVO> search(GridDTO gridDTO, Pageable pageable) {
         Page<Grid> page = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
-            /*if (StringUtils.isNotEmpty(userDTO.getName())) {
-                list.add(criteriaBuilder.equal(root.get("name").as(String.class), userDTO.getName()));
-            }
-            if (StringUtils.isNotEmpty(userDTO.getUsername())) {
-                list.add(criteriaBuilder.equal(root.get("username").as(String.class), userDTO.getUsername()));
-            }*/
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
@@ -61,28 +54,44 @@ public class GridService {
         return new PageImpl<>(gridVOList, page.getPageable(), page.getTotalElements());
     }
 
-//    public List<GridVO>
+    public List<GridVO> search() {
+        List<Grid> gridList = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
+            List<Predicate> list = new ArrayList<>();
+            list.add(criteriaBuilder.equal(root.get("record").get("").get("id").as(String.class), SecurityUtil.getUserId()));
+            list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.EDITING));
+            list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class), StsConstant.INUSE));
+            Predicate[] p = new Predicate[list.size()];
+            return criteriaBuilder.and(list.toArray(p));
+        });
+        return GridMapper.INSTANCE.gridListToGridVOList(gridList);
+    }
 
     public void save(GridDTO gridDTO) {
 
-        Release release = GridMapper.INSTANCE.gridDTOToRelease(gridDTO);
-        KV oneById = kvService.findOneById("28526efe-3db5-415b-8c7a-d0e3a49cab8f");
-        release.setKv(oneById);
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-        String format = formatter.format(new Date());
-        release.setReleaseName("网格" + format);
-        Release saveRelease = releaseService.save(release);
+        Publish saveRelease;
+        List<Publish> publishes = publishService.allByKvId();
+        if (publishes.size() > 1) {
+            throw new BaseException("网格图层应保持唯一");
+        } else {
+            if (publishes.size() > 0) {
+                saveRelease = publishes.get(0);
+            } else {
+                Publish release = GridMapper.INSTANCE.gridDTOToRelease(gridDTO);
+                KV oneById = kvService.findOneById("28526efe-3db5-415b-8c7a-d0e3a49cab8f");
+                release.setKv(oneById);
+                release.setName("网格");
+                saveRelease = publishService.save(release);
+            }
+        }
 
         Record record = GridMapper.INSTANCE.gridDTOToRecord(gridDTO);
         record.setRelease(saveRelease);
         recordService.save(record);
 
-
         Grid grid = GridMapper.INSTANCE.gridDTOToGrid(gridDTO);
-        grid.setRelease(saveRelease);
+        grid.setPublish(saveRelease);
         grid.setSts(StsConstant.INUSE);
         User user = userService.findOne(SecurityUtil.getUserId());
-        grid.setUser(user);
         grid.setDept(user.getDept());
         gridRepository.save(grid);
     }
