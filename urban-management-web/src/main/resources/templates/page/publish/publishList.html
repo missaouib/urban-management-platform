@@ -1,10 +1,84 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: map_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <link th:href="@{/css/publishList.css}" rel="stylesheet" type="text/css">
 </head>
-<body>
+<style>
 
+</style>
+<body>
+<div class="infoBox">
+    <div class="radioInput">
+        <p>
+            <input type="radio" value="1" name="handsom">第一个
+        </p>
+        <p>
+            <input type="radio" value="2" name="handsom">第二个
+        </p>
+        <p>
+            <input type="radio" value="3" name="handsom">第三个
+        </p>
+
+    </div>
+    <div class="maps">
+        <div class="map" id="map" style="width: 100%;height: 100%"></div>
+    </div>
+</div>
+
+<div id="pictureDiv" style="display: none">
+
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+
+
+<script type="text/javascript" th:inline="javascript">
+    var center = ol.proj.transform([126.62, 45.74], "EPSG:4326", "EPSG:3857");
+    var raster = new ol.layer.Tile({
+        source: new ol.source.OSM()
+    });
+    var source = new ol.source.Vector({wrapX: false});
+    //ol.layer.Vector用于显示在客户端渲染的矢量数据。
+    var vector = new ol.layer.Vector({
+        source: source
+    });
+    var map = new ol.Map({
+        target: 'map',
+        layers: [raster, vector],
+        view: new ol.View({
+            // projection: "EPSG:" + epsg,
+            center: center,
+            zoom: 12
+        })
+    });
+
+
+    $('input[type=radio][name=handsom]').change(function() {
+        if (this.value == '1') {
+            alert("1");
+        }
+        else if (this.value == '2') {
+            alert(2)
+        }else if (this.value == '3') {
+            alert(3)
+        }
+    });
+
+
+
+</script>
 </body>
 </html>
