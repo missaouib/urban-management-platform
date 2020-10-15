@@ -17,6 +17,9 @@ $(function() {
     $(".quit").click(function () {
         window.location.href = logoutUrl;
     })
+    $(".intoBtn").click(function () {
+        alert(1)
+    })
     window.onload = function () {
         if ($(".identification").val() == 1){
             $(".noFlat").css("display","block")
