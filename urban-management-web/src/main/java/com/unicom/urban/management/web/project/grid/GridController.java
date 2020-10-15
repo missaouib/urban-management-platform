@@ -7,10 +7,7 @@ import com.unicom.urban.management.pojo.dto.GridDTO;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.service.grid.GridService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -46,6 +43,23 @@ public class GridController {
     @PostMapping("/gridSave")
     public Result gridSave(GridDTO gridDTO) {
         gridService.save(gridDTO);
+        return Result.success("新增成功");
+    }
+
+    @PostMapping("/gridUpdate")
+    public Result gridUpdate(GridDTO gridDTO) {
+        gridService.update(gridDTO);
+        return Result.success("新增成功");
+    }
+
+    @GetMapping("/getGridOne/{gridId}")
+    public GridVO getGridList(@PathVariable String gridId) {
+        return gridService.search(gridId);
+    }
+
+    @PostMapping("/gridDelete")
+    public Result gridDelete(String gridId) {
+        gridService.delete(gridId);
         return Result.success("新增成功");
     }
 

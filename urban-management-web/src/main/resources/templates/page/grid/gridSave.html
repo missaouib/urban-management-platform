@@ -52,6 +52,7 @@
                         <div class="top_out">
                             <table class="table">
                                 <tbody>
+                                <input type="hidden" id="id" name="id"/>
                                 <tr>
                                     <td>单元网格标识码<span>*</span></td>
                                     <td>
@@ -59,7 +60,7 @@
                                     </td>
 
                                 </tr>
-                                <input type="text" id="coordinate" name="coordinate"/>
+                                <input type="hidden" id="coordinate" name="coordinate"/>
                                 <tr>
                                     <td>单元网格名称<span>*</span></td>
                                     <td>
@@ -108,7 +109,9 @@
                             <!--            </div>-->
                             <div class="r_right but_p">
                                 <button class="but_save" type="button" onclick="saveGrid()">保存</button>
-                                <button class="but_esc" style="display: none;margin-left: 10px">修改</button>
+                                <button class="but_esc" type="button" style="display: none;margin-left: 10px"
+                                        onclick="updateGrid()">修改
+                                </button>
                                 <button class="but_close" onclick="Cancel()">关闭</button>
                             </div>
                         </div>
@@ -126,7 +129,7 @@
                         <div>-</div>
                     </div>
                     <button class="btn-primary topFun addPencle">新增</button>
-                    <button class="btn-primary topFun">删除</button>
+                    <button class="btn-primary topFun" type="button" onclick="deleteGrid()">删除</button>
                 </div>
                 <div class="map" id="map" style="width: 100%"></div>
 
@@ -162,12 +165,26 @@
 
     let url = /*[[@{/user/save}]]*/ "/json/unit.json";
     let gridSaveUrl = /*[[@{/grid/gridSave}]]*/ "/grid/gridSave";
+    let gridUpdateUrl = /*[[@{/grid/gridUpdate}]]*/ "/grid/gridUpdate";
+    let gridDeleteUrl = /*[[@{/grid/gridDelete}]]*/ "/grid/gridDelete";
     let getGridListUrl = /*[[@{/grid/getGridList}]]*/ "/grid/getGridList";
 
 
     function saveGrid() {
         let data = $('#gridForm').serialize();
         $.operate.saveAndReload(gridSaveUrl, data);
+    }
+
+    function updateGrid() {
+        let data = $('#gridForm').serialize();
+        $.operate.saveAndReload(gridUpdateUrl, data);
+    }
+
+    function deleteGrid() {
+        let data = {
+            gridId: $("#id").val()
+        };
+        $.operate.saveAndReload(gridDeleteUrl, data);
     }
 
     $(function () {
@@ -182,8 +199,18 @@
         $.operate.get(getGridListUrl, function (e) {
             let data = e.data;
             for (let i = 0; i < data.length; i++) {
-                console.log("e.id", data[i].id);
-                console.log("e.coordinate", data[i].coordinate);
+                let data1 = data[i].coordinate;
+                let split = data1.split("-");
+                let polygonArray = [];
+                let polygonArrayEnd = [];
+                for (let j = 0; j < split.length; j++) {
+                    let pointArray = [];
+                    pointArray.push(split[j].split(",")[0]);
+                    pointArray.push(split[j].split(",")[1]);
+                    polygonArray.push(pointArray);
+                    polygonArrayEnd.push(polygonArray);
+                }
+                setPolygon(polygonArrayEnd, data[i].id);
             }
         })
     }
@@ -254,14 +281,23 @@
     var selectSingleClick = new ol.interaction.Select();
     map.addInteraction(selectSingleClick);
     selectSingleClick.on('select', function (e) {
-        var features = e.target.getFeatures().getArray();
-        let data = features[0].H.data;
-        console.log("features[0]", features[0])
-        console.log("data", data)
-        alert(data.id)
-        if (features.length > 0) {
-
-        }
+        let features = e.target.getFeatures().getArray();
+        let dataId = features[0].H.data.id;
+        console.log("data", dataId);
+        let getGridOneUrl = /*[[@{/grid/getGridOne/}]]+dataId*/ "/grid/getGridOne/" + dataId;
+        $.operate.get(getGridOneUrl, function (e) {
+            console.log("e", e);
+            let data = e.data;
+            $("#id").val(data.id);
+            $("#coordinate").val(data.coordinate);
+            $("#area").val(data.area);
+            $("#gridCode").val(data.gridCode);
+            $("#gridName").val(data.gridName);
+            $("#initialDate").val(data.initialDate);
+            $("#remark").val(data.remark);
+            $("#terminationDate").val(data.terminationDate);
+            $("#gridKvId").val(data.kv);
+        });
         $(".but_esc").addClass("blockActive")
     });
     //固定的面
@@ -277,9 +313,8 @@
     });
 
     layerMap.getSource().addFeature(multiPolygon);
-    setPolygon(Polygons,2)
 
-    function setPolygon(Polygons,data) {
+    function setPolygon(Polygons, data) {
         let Polygon = new ol.Feature({
             geometry: new ol.geom.Polygon(Polygons),
             data: {
@@ -288,7 +323,6 @@
                 coordinate: Polygons
             }
         });
-        // console.log(Polygon)
         layerMap.getSource().addFeature(Polygon);
     }
 
