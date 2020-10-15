@@ -26,6 +26,15 @@
         padding: 2px;
         margin: 0px 5px;
     }
+    .notice_bot>div {
+        font-size: 12px;
+        margin-left: 10px;
+        color: #07141e;
+        line-height: 28px;
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
 </style>
 <body>
 <div class="row1">
@@ -92,7 +101,9 @@
                             <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                             <!--            </div>-->
                             <div class="r_right but_p">
+
                                 <button class="but_save" type="submit" onclick="submitHandler()">保存</button>
+                                <button class="but_esc" style="display: none;margin-left: 10px">修改</button>
                                 <button class="but_close" onclick="Cancel()">关闭</button>
                             </div>
                         </div>
@@ -109,7 +120,7 @@
                                 <div>+</div>
                                 <div>-</div>
                             </div>
-                            <button class="btn-primary topFun">新增</button>
+                            <button class="btn-primary topFun addPencle">新增</button>
                             <button class="btn-primary topFun">删除</button>
                         </div>
                         <div class="map" id="map" style="width: 100%"></div>
@@ -158,19 +169,23 @@
             zoom: 12
         })
     });
+    //画笔
+    $(".addPencle").click(function () {
+        var draw = new ol.interaction.Draw({
+            source: source,
+            //点：Point   线:LineString      面:Polygon
+            type: "Polygon",
+        });
+        map.addInteraction(draw)
+        draw.on('drawstart', function () {
+            tarr.splice(0)
+        })
+        draw.on('drawend', function () {
+            source.clear();
+        });
+        $(".but_esc").removeClass("blockActive")
+    })
 
-    // var draw = new ol.interaction.Draw({
-    //     source: source,
-    //     //点：Point   线:LineString      面:Polygon
-    //     type: "Polygon",
-    // });
-    // map.addInteraction(draw)
-    // draw.on('drawstart', function () {
-    //     tarr.splice(0)
-    // })
-    // draw.on('drawend', function () {
-    //     source.clear();
-    // });
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),
     });
@@ -206,6 +221,7 @@
         if (features.length > 0) {
 
         }
+        $(".but_esc").addClass("blockActive")
     });
     //固定的面
     var Polygons = [
