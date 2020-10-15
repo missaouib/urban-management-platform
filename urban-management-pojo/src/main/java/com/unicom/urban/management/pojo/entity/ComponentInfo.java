@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
 
 /**
@@ -71,7 +72,8 @@ public class ComponentInfo extends BaseEntity {
     /**
      * 所在单元网格
      */
-    private String bgid;
+    @ManyToOne
+    private Grid bgid;
 
     /**
      * 部件状态
