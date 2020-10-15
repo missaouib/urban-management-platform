@@ -18,7 +18,7 @@ $(function() {
         window.location.href = logoutUrl;
     })
     $(".intoBtn").click(function () {
-        alert(1)
+        window.location.href = indexUrl;
     })
     window.onload = function () {
         if ($(".identification").val() == 1){
