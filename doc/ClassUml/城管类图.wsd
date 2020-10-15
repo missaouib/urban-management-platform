@@ -4,7 +4,6 @@ class User <<用户实体类>>{
     -id: String
     -name : String
     -sts : int
-    -dept : Dept
 }
 
 class Dept<<责任部门实体类>>{
@@ -13,6 +12,7 @@ class Dept<<责任部门实体类>>{
     -sts : int
     -level : String
     -parent : Dept
+    -userList : User[*]
 }
 
 class Grid<<网格实体类>>{
@@ -112,7 +112,6 @@ class ComponentTypeService<<部件分类业务类>>{
     +getComponentType(component):ComponentType     // 获取部件分类
 }
 class ComponentInfoService<<部件信息业务类>>{
-    +getComponentInfo(component):ComponentInfo          // 查询部件详情
 }
 
 class ReleaseController<<发布界面类>>{
