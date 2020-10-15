@@ -2,53 +2,68 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
-    <title>网格导入</title>
+    <title>用户管理</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <link th:href="@{/css/import.css}" rel="stylesheet" type="text/css">
+    <th:block th:include="page/fragments/common :: map_css"/>
+
 
 </head>
+
 <body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
-<div class="notice_main ">
-    <div class="content">
-        <div class="leftBox" style="width: 50%!important;">
-            <div class="leftInner">
-
-<!--                tree-->
-<!--                <div class="zTreeDemoBackground left">-->
-<!--                    <ul id="treeDemo" class="ztree">zTree</ul>-->
-<!--                </div>-->
-
-
-                <div>
-                    <label class="modelTitle">网格名称</label>
-                    <input type="text" class="find_input" name="username">
-                </div>
-
-<!--                <div>-->
-<!--                    <label class="modelTitle">EPSG</label>-->
-<!--                    <select class="find_input">-->
-<!--                        <option value="">&#45;&#45;请选择&#45;&#45;</option>-->
-<!--                        <option th:value="1">1</option>-->
-<!--                        <option th:value="2">2</option>-->
-<!--                    </select>-->
-<!--                </div>-->
-                <div>
-                    <label class="modelTitle"></label>
-                    <input type="file" class="find_input" name="" style="padding: 0!important;">
-                </div>
-                <div style="padding-bottom: 20px;margin-right: 20px;display: flex;justify-content: flex-end" class="">
-                    <input type="button" class="check_btn1" onclick="" value="导入">
-<!--                    <input type="button" class="check_btn1" onclick="" value="修改">-->
-<!--                    <input type="button" class="check_btn1" onclick="" value="保存">-->
-                </div>
-            </div>
-        </div>
-        <div class="rightBox" style="width: 50%!important;">
-
+<div class="innerBox">
+    <div class="tree">
+        <div class="treeDemo">
+            <ul id="treeDemo" class="ztree">zTree</ul>
         </div>
     </div>
-
-
+    <div class="tabels">
+        <div class="notice_check">
+            <form id="search-form">
+                <p>
+                    <label class="">图层分类</label>
+                    <input type="text" readonly="readonly" id="typeStr" class="find_input" disabled>
+                </p>
+                <p>
+                    <label class="">图层名称</label>
+                    <input type="text" readonly="readonly"  class="find_input" disabled>
+                </p>
+                <p>
+                    <label class="">位置信息</label>
+                    <input type="text" readonly="readonly"  class="find_input" >
+                </p>
+                <p class="attribute">属性信息</p>
+                <p>
+                    <label class="">部件标识码</label>
+                    <input type="text" class="find_input" name="name">
+                    <label class="">部件名称</label>
+                    <input type="text" class="find_input" name="name">
+                </p>
+                <p>
+                    <label class="">主管部门代码</label>
+                    <input type="text" class="find_input" name="name">
+                    <label class="">主管部门名称</label>
+                    <input type="text" class="find_input" name="name">
+                </p>
+                <p>
+                    <label class="">权属单位代码</label>
+                    <input type="text" class="find_input" name="name">
+                    <label class="">权属单位名称</label>
+                    <input type="text" class="find_input" name="name">
+                </p>
+                <p class="function_btn">
+                    <input type="button" class="check_btn1" onclick="" value="删除">
+                    <input type="button" class="check_btn1" onclick="" value="修改">
+                    <input type="button" class="check_btn1" onclick="" value="保存">
+                    <input type="button" class="check_btn1" onclick="" value="返回">
+                </p>
+            </form>
+        </div>
+    </div>
+    <div class="maps">
+        <div class="map" id="map" style="width: 100%;height: 100%"></div>
+    </div>
 </div>
 
 
@@ -56,8 +71,10 @@
 
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
 
 <script type="text/javascript" th:inline="javascript">
+
 
     $(function () {
         queryUserList();
@@ -126,6 +143,41 @@
     }
 
 
+    var center = ol.proj.transform([126.62, 45.74], "EPSG:4326", "EPSG:3857");
+    var raster = new ol.layer.Tile({
+        source: new ol.source.OSM()
+    });
+    var source = new ol.source.Vector({wrapX: false});
+    //ol.layer.Vector用于显示在客户端渲染的矢量数据。
+    var vector = new ol.layer.Vector({
+        source: source
+    });
+    var map = new ol.Map({
+        target: 'map',
+        layers: [raster, vector],
+        view: new ol.View({
+            // projection: "EPSG:" + epsg,
+            center: center,
+            zoom: 12
+        })
+    });
+
+    var draw = new ol.interaction.Draw({
+        source: source,
+        //点：Point   线:LineString      面:Polygon
+        type: "Polygon",
+    });
+    map.addInteraction(draw)
+    draw.on('drawstart', function () {
+        tarr.splice(0)
+    })
+    draw.on('drawend', function () {
+        source.clear();
+    });
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
 </script>
 </body>
 </html>

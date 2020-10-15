@@ -5,8 +5,10 @@
     <title>用户管理</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <link th:href="@{/css/component.css}" rel="stylesheet" type="text/css">
 
 </head>
+
 <body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
 <div class="notice_main ">
 
@@ -16,17 +18,66 @@
                 <label class="">分类</label>
                 <input type="text" readonly="readonly" id="typeStr" class="find_input">
                 <button type="button" class="addBtn"  data-toggle="modal" data-target="#modal-default">
-                 +
+                    +
                 </button>
-                <label class="">名称</label>
-                <input type="text" class="find_input" name="name">
-                <input type="button" class="check_btn" onclick="$.table.search()" value="查询">
-                <input type="button" class="check_btn1" onclick="$.form.reset()" value="重置查询">
+                <!--                <label class="">名称</label>-->
+                <!--                <input type="text" class="find_input" name="name" >-->
+                <input type="button" class="check_btn" onclick="" value="查询">
+                <input type="button" class="check_btn1" onclick="" value="更多检索">
+                <input type="button" class="check_btn1" onclick="" value="重置">
             </p>
+            <p>
+                <label class="">插件标识码</label>
+                <input type="text" class="find_input" name="name">
+                <label class="">部件名称</label>
+                <input type="text" class="find_input" name="name">
+                <label class="">主管部门代码</label>
+                <input type="text" class="find_input" name="name">
+            </p>
+            <p>
+                <label class="">主管部门名称</label>
+                <input type="text" class="find_input" name="name">
+                <label class="">权属单位代码</label>
+                <input type="text" class="find_input" name="name">
+                <label class="">权属单位名称</label>
+                <input type="text" class="find_input" name="name">
+            </p>
+            <p>
+                <label class="">养护单位代码</label>
+                <input type="text" class="find_input" name="name">
+                <label class="">养护单位名称</label>
+                <input type="text" class="find_input" name="name">
+                <label class="">所在单元网格</label>
+                <input type="text" class="find_input" name="name">
+            </p>
+            <p>
+                <label class="">部件状态</label>
+                <select class="find_input" id="safeLevel" name="safeLevel" required>
+                    <option>请选择</option>
+                    <option>1</option>
+                    <option>2</option>
+                </select>
+                <label class="">初始日期</label>
+                <input type="text" class="find_input" name="name">
+                <label class="">变更日期</label>
+                <input type="text" class="find_input" name="name">
+            </p>
+            <p>
+                <label class="">数据来源</label>
+                <select class="find_input" name="safeLevel" required>
+                    <option>请选择</option>
+                    <option>1</option>
+                    <option>2</option>
+                </select>
+                <input type="button" class="check_btn" onclick="" value="查询">
+                <input type="button" class="check_btn1" onclick="" value="精简检索">
+                <input type="button" class="check_btn1" onclick="" value="重置">
+            </p>
+
         </form>
     </div>
 
-<!--    <div class="clear"></div>-->
+    <!--    <div class="clear"></div>-->
 
 
     <div class="btn-group-sm" id="toolbar">
@@ -63,6 +114,12 @@
 
 
     <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+    <div class="notice_check">
+        <p>
+            <input type="button" class="check_btn1" onclick="" value="更新">
+        </p>
+    </div>
+
 </div>
 
 
@@ -143,3 +200,4 @@
 </script>
 </body>
 </html>
+
