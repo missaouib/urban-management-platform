@@ -41,6 +41,7 @@ public class BaseEntity implements Serializable {
      */
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "create_by")
     private User createBy;
 
     /**
@@ -48,6 +49,7 @@ public class BaseEntity implements Serializable {
      */
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "update_by")
     private User updateBy;
 
 }
