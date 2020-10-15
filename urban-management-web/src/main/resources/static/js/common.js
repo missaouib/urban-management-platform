@@ -692,8 +692,34 @@ var table = {
 
 			// 保存提交当前表单数据 然后刷新当前选项卡页面
 			saveAndReload(url, data) {
-				$.operate.post(url, data);
-				setTimeout("window.location.reload()", 2000);
+				let config = {
+					url: url,
+					type: 'post',
+					dataType: 'json',
+					data: data,
+					beforeSend: function () {
+						$.modal.loading("正在处理中，请稍后...");
+					},
+					success: function (result) {
+						if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTable) {
+							$.modal.msgSuccess(result.message);
+							setTimeout("window.location.reload()", 2000);
+							return;
+						} else if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTreeTable) {
+							$.modal.msgSuccess(result.message);
+						} else if (result.code === web_status.SUCCESS && $.common.isEmpty(table.options.type)) {
+							$.modal.msgSuccess(result.message)
+						} else if (result.code === web_status.WARNING) {
+							$.modal.alertWarning(result.message)
+						} else {
+							$.modal.alertError(result.message);
+							return;
+						}
+						$.modal.closeLoading();
+					}
+				};
+				$.ajax(config)
+
 			},
 
 			// 保存选项卡信息
