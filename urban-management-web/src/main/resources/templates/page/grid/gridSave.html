@@ -197,7 +197,7 @@
     });
 
     function getGridList() {
-        $.operate.get(getGridListUrl, function (e) {
+        $.ajaxUtil.get(getGridListUrl, function (e) {
             let data = e.data;
             for (let i = 0; i < data.length; i++) {
                 let data1 = data[i].coordinate;
