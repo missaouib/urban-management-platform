@@ -112,8 +112,6 @@ class ComponentTypeService<<部件分类业务类>>{
 }
 class ComponentInfoService<<部件信息业务类>>{
     +getComponentInfo(component):ComponentInfo          // 查询部件详情
-    +saveComponentInfoList(ComponentInfo[*]) : boolean  //批量保存
-    +saveComponentInfo(ComponentInfo) : boolean
 }
 
 class ReleaseController<<发布界面类>>{
