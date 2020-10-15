@@ -41,7 +41,7 @@
     <div class="col-md-12">
         <div class="row">
             <div class="leftBox">
-                <form id="userForm">
+                <form id="gridForm">
                     <div class="top table2_top">
                         <!--        <div>-->
                         <div class="top_out">
@@ -50,48 +50,49 @@
                                 <tr>
                                     <td>单元网格标识码<span>*</span></td>
                                     <td>
-                                        <input type="text" id="realname" name="realname"/>
+                                        <input type="text" id="gridCode" name="gridCode"/>
                                     </td>
 
                                 </tr>
+                                <input type="text" id="coordinate" name="coordinate"/>
                                 <tr>
                                     <td>单元网格名称<span>*</span></td>
                                     <td>
-                                        <input type="text" id="phone" name="phone"/>
+                                        <input type="text" id="gridName" name="gridName"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>区域分类<span>*</span></td>
                                     <td>
-                                        <select id="safeLevel" name="safeLevel" required>
-                                            <option>请选择</option>
-                                            <option>级大</option>
-                                            <option>一般</option>
-                                            <option>微小</option>
+                                        <select id="gridKvId" name="kv[id]" required>
+                                            <option value="">请选择</option>
+                                            <option value="454310fe-7b45-49b0-9910-36e777e6fdcc">1类</option>
+                                            <option value="e117bf07-0408-4623-98c3-f358ebeca8b1">2类</option>
+                                            <option value="fd533d5b-b5d1-4fbc-b4cd-4ced27b7b0c4">3类</option>
                                         </select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>面积<span>*</span></td>
                                     <td>
-                                        <input type="text" id="" name="username"/>
+                                        <input type="text" id="area" name="area"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>初始日期<span>*</span></td>
                                     <td>
-                                        <input type="text" id="" name="username"/>
+                                        <input type="text" id="initialDate" name="initialDate"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>终止日期<span>*</span></td>
                                     <td>
-                                        <input type="text" id="" name="username"/>
+                                        <input type="text" id="terminationDate" name="terminationDate"/>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>问题描述<span>*</span></td>
-                                    <td><textarea id="problemescription" name="problemescription" required></textarea></td>
+                                    <td><textarea id="remark" name="remark" required></textarea></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -101,8 +102,7 @@
                             <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                             <!--            </div>-->
                             <div class="r_right but_p">
-
-                                <button class="but_save" type="submit" onclick="submitHandler()">保存</button>
+                                <button class="but_save" type="button" onclick="saveGrid()">保存</button>
                                 <button class="but_esc" style="display: none;margin-left: 10px">修改</button>
                                 <button class="but_close" onclick="Cancel()">关闭</button>
                             </div>
@@ -146,6 +146,29 @@
 
 </div>
 
+<script type="text/javascript" th:inline="javascript">
+
+    let url = /*[[@{/user/save}]]*/ "/json/unit.json";
+    let gridSaveUrl = /*[[@{/grid/gridSave}]]*/ "/grid/gridSave";
+
+
+    function saveGrid() {
+        let data = $('#gridForm').serialize();
+        $.operate.saveAndReload(gridSaveUrl, data);
+        console.log("data", data);
+        /*$.ajax({
+            url: gridSaveUrl,
+            type: "post",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (data) {
+                console.log("data", data);
+            }
+        })*/
+        // saveAndReload()
+    }
+
+</script>
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: map_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
@@ -195,7 +218,7 @@
     var t;
     $("#map").click(function (e) {
         t = map.getEventCoordinate(e);
-        $("#realname").val(t);
+        $("#coordinate").val(t);
 
             //面:Polygon
             tarr.push(t)
@@ -205,9 +228,9 @@
             }
             newStr.push(newStr[0])
             var array = newStr.join("-")
-            $("#realname").val(array)
+        $("#coordinate").val(array)
             if (array.length != 0) {
-                $("#realname").val(array)
+                $("#coordinate").val(array)
             }
 
     });
@@ -216,7 +239,8 @@
     selectSingleClick.on('select', function (e) {
         var features = e.target.getFeatures().getArray();
         let data = features[0].H.data;
-        console.log(features[0],data)
+        console.log("features[0]", features[0])
+        console.log("data", data)
 
         if (features.length > 0) {
 

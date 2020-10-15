@@ -2,6 +2,8 @@ package com.unicom.urban.management.web.project.grid;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.pojo.Result;
+import com.unicom.urban.management.pojo.dto.GridDTO;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.service.grid.GridService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +33,20 @@ public class GridController {
         return new ModelAndView(SystemConstant.PAGE + "/grid/grid");
     }
 
-    @GetMapping("/gridSave")
-    public ModelAndView gridSave() {
+    @GetMapping("/toGridSave")
+    public ModelAndView toGridSave() {
         return new ModelAndView(SystemConstant.PAGE + "/grid/gridSave");
     }
 
     @PostMapping("/getGridList")
     public List<GridVO> getGridList() {
         return gridService.search();
+    }
+
+    @PostMapping("/gridSave")
+    public Result gridSave(GridDTO gridDTO) {
+        gridService.save(gridDTO);
+        return Result.success("新增成功");
     }
 
 }

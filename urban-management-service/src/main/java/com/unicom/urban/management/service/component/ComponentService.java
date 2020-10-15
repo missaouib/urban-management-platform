@@ -150,10 +150,10 @@ public class ComponentService {
         return releaseService.save(release);
     }
 
-    private void saveRecord(String coordinate, Publish release) {
+    private void saveRecord(String coordinate, Publish publish) {
         Record record = new Record();
         record.setCoordinate(coordinate);
-        record.setRelease(release);
+        record.setPublish(publish);
         recordService.save(record);
     }
 

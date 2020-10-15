@@ -26,7 +26,7 @@ public class Record extends BaseEntity {
 
     @ManyToOne
     @JoinColumn
-    private Publish release;
+    private Publish publish;
 
     /**
      * 状态：用于判断是编辑中、发布等状态

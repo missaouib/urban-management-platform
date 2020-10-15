@@ -57,7 +57,7 @@ public class GridService {
     public List<GridVO> search() {
         List<Grid> gridList = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
-            list.add(criteriaBuilder.equal(root.get("record").get("").get("id").as(String.class), SecurityUtil.getUserId()));
+            list.add(criteriaBuilder.equal(root.get("record").get("createBy").get("id").as(String.class), SecurityUtil.getUserId()));
             list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.EDITING));
             list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class), StsConstant.INUSE));
             Predicate[] p = new Predicate[list.size()];
@@ -68,30 +68,31 @@ public class GridService {
 
     public void save(GridDTO gridDTO) {
 
-        Publish saveRelease;
+        Publish savePublish;
         List<Publish> publishes = publishService.allByKvId();
         if (publishes.size() > 1) {
             throw new BaseException("网格图层应保持唯一");
         } else {
             if (publishes.size() > 0) {
-                saveRelease = publishes.get(0);
+                savePublish = publishes.get(0);
             } else {
-                Publish release = GridMapper.INSTANCE.gridDTOToRelease(gridDTO);
+                Publish publish = GridMapper.INSTANCE.gridDTOToPublish(gridDTO);
                 KV oneById = kvService.findOneById("28526efe-3db5-415b-8c7a-d0e3a49cab8f");
-                release.setKv(oneById);
-                release.setName("网格");
-                saveRelease = publishService.save(release);
+                publish.setKv(oneById);
+                publish.setName("网格");
+                savePublish = publishService.save(publish);
             }
         }
 
         Record record = GridMapper.INSTANCE.gridDTOToRecord(gridDTO);
-        record.setRelease(saveRelease);
+        record.setPublish(savePublish);
         recordService.save(record);
 
         Grid grid = GridMapper.INSTANCE.gridDTOToGrid(gridDTO);
-        grid.setPublish(saveRelease);
+        grid.setPublish(savePublish);
         grid.setSts(StsConstant.INUSE);
-        User user = userService.findOne(SecurityUtil.getUserId());
+        String userId = SecurityUtil.getUserId();
+        User user = userService.findOne(userId);
         grid.setDept(user.getDept());
         gridRepository.save(grid);
     }

@@ -1,7 +1,6 @@
 package com.unicom.urban.management.pojo.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.unicom.urban.management.pojo.entity.KV;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -23,12 +22,12 @@ public class GridDTO {
      * 区域分类
      */
     @NotBlank(message = "区域分类不能为空")
-    private KV gridKv;
+    private String kv;
 
     @NotBlank(message = "单元网格标识码不能为空")
     private String gridCode;
 
-    @NotBlank(message = "单元网格不能为空")
+    @NotBlank(message = "单元网格名称不能为空")
     private String gridName;
 
     private String remark;
@@ -47,14 +46,6 @@ public class GridDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(nullable = false)
     private LocalDateTime terminationDate;
-
-    /* -Release----------------------------------- */
-    /**
-     * 类型：编辑的是部件、网格
-     */
-    private KV Kv;
-
-    private String releaseName;
 
     /* -Record----------------------------------- */
     /**
