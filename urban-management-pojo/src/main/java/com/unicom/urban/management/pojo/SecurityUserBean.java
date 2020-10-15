@@ -24,6 +24,16 @@ public class SecurityUserBean implements UserDetails {
 
     private String password;
 
+    /**
+     * 当前登录人所属部门ID
+     */
+    private String deptId;
+
+    /**
+     * 当前登录人所属部门名称
+     */
+    private String deptName;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

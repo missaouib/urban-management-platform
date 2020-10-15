@@ -689,6 +689,13 @@ var table = {
 
 		},
 		operate: {
+
+			// 保存提交当前表单数据 然后刷新当前选项卡页面
+			saveAndReload(url, data) {
+				$.operate.post(url, data);
+				setTimeout("window.location.reload()", 2000);
+			},
+
 			// 保存选项卡信息
 			saveTab: function(url, data, callback) {
 				var config = {

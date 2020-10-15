@@ -17,12 +17,34 @@ public abstract class SecurityUtil {
         return (SecurityUserBean) authentication.getPrincipal();
     }
 
+    /**
+     * 获取当前登录人的用户ID
+     */
     public static String getUserId() {
         return getUser().getId();
     }
 
+
+    /**
+     * 获取当前登录人的登录账号
+     */
     public static String getUsername() {
         return getUser().getUsername();
+    }
+
+    /**
+     * 获取当前登录人部门ID
+     */
+    public static String getDeptId() {
+        return getUser().getDeptId();
+    }
+
+
+    /**
+     * 获取当前登录人部门名称
+     */
+    public static String getDeptName() {
+        return getUser().getDeptName();
     }
 
 
