@@ -159,18 +159,18 @@
         })
     });
 
-    var draw = new ol.interaction.Draw({
-        source: source,
-        //点：Point   线:LineString      面:Polygon
-        type: "Polygon",
-    });
-    map.addInteraction(draw)
-    draw.on('drawstart', function () {
-        tarr.splice(0)
-    })
-    draw.on('drawend', function () {
-        source.clear();
-    });
+    // var draw = new ol.interaction.Draw({
+    //     source: source,
+    //     //点：Point   线:LineString      面:Polygon
+    //     type: "Polygon",
+    // });
+    // map.addInteraction(draw)
+    // draw.on('drawstart', function () {
+    //     tarr.splice(0)
+    // })
+    // draw.on('drawend', function () {
+    //     source.clear();
+    // });
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),
     });
