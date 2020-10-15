@@ -28,6 +28,7 @@ class Grid<<网格实体类>>{
     -dept : Dept
     -user : User
     -release : Release
+    -record : Record
 }
 
 class Component<<部件实体类>>{
