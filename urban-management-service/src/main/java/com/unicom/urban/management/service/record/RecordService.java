@@ -23,4 +23,8 @@ public class RecordService {
         return recordRepository.save(record);
     }
 
+    public void update(Record record) {
+        recordRepository.saveAndFlush(record);
+    }
+
 }

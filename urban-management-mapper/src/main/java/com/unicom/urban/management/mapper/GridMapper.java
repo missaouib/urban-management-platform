@@ -35,6 +35,7 @@ public interface GridMapper {
      * @return vo
      */
     @Mapping(source = "record.coordinate", target = "coordinate")
+    @Mapping(source = "kv.id", target = "kv")
     GridVO gridToGridVO(Grid grid);
 
     /**

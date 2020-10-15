@@ -66,6 +66,11 @@ public class GridService {
         return GridMapper.INSTANCE.gridListToGridVOList(gridList);
     }
 
+    public GridVO search(String gridId) {
+        Grid one = findOne(gridId);
+        return GridMapper.INSTANCE.gridToGridVO(one);
+    }
+
     public void save(GridDTO gridDTO) {
 
         Publish savePublish;
@@ -98,15 +103,35 @@ public class GridService {
         gridRepository.save(grid);
     }
 
+    public void delete(String id) {
+        Grid one = findOne(id);
+        one.setSts(StsConstant.DELETE);
+        gridRepository.saveAndFlush(one);
+    }
+
     public Grid findOne(GridDTO gridDTO) {
         Grid grid = GridMapper.INSTANCE.gridDTOToGrid(gridDTO);
         return gridRepository.getOne(grid.getId());
     }
 
+    public Grid findOne(String id) {
+        return gridRepository.getOne(id);
+    }
+
     public void update(GridDTO gridDTO) {
-        Grid grid = findOne(gridDTO);
+        Grid grid = findOne(gridDTO.getId());
+        grid.setKv(kvService.findOneById(gridDTO.getKv()));
+        grid.setGridCode(gridDTO.getGridCode());
+        grid.setGridName(gridDTO.getGridName());
         grid.setRemark(gridDTO.getRemark());
+        grid.setArea(gridDTO.getArea());
         grid.setInitialDate(gridDTO.getInitialDate());
+        grid.setTerminationDate(gridDTO.getTerminationDate());
+        gridRepository.saveAndFlush(grid);
+
+        Record record = grid.getRecord();
+        record.setCoordinate(gridDTO.getCoordinate());
+        recordService.update(record);
 
     }
 
