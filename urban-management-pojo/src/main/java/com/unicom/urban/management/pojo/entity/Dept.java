@@ -25,7 +25,10 @@ public class Dept extends BaseEntity {
 
     private String level;
 
-    @ManyToOne
+    /**
+     * 部门父节点
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Dept parent;
 

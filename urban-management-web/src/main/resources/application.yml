@@ -66,4 +66,6 @@ fdfs:
 #    max_idle_per_key: 5
 logging:
   level:
+    com.unicom: info
     org.activiti.engine: debug
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
