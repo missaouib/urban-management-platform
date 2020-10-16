@@ -50,4 +50,7 @@ public class Publish extends BaseEntity {
     @JoinColumn
     private User user;
 
+    @OneToOne
+    private ComponentType componentType;
+
 }
