@@ -5,6 +5,7 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -34,12 +35,12 @@ public class GridDTO {
     @NotBlank(message = "面积不能为空")
     private String area;
 
-    @NotBlank(message = "初始日期不能为空")
+    @NotNull(message = "初始日期不能为空")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime initialDate;
 
-    @NotBlank(message = "终止日期不能为空")
+    @NotNull(message = "终止日期不能为空")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime terminationDate;

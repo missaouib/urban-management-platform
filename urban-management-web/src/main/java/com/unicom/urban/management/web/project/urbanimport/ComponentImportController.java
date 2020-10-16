@@ -1,8 +1,8 @@
 package com.unicom.urban.management.web.project.urbanimport;
 
-import com.alibaba.fastjson.JSON;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.util.FileUploadUtil;
+import com.unicom.urban.management.common.util.JsonUtils;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.user.UserService;
@@ -12,13 +12,12 @@ import org.apache.http.HttpStatus;
 import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -74,7 +73,7 @@ public class ComponentImportController {
             Map<String, String> paramMap = new HashMap<>();
 
             paramMap.put("layerName", layerName);
-            StringBody paramBody = new StringBody(JSON.toJSONString(paramMap));
+            StringBody paramBody = new StringBody(JsonUtils.objectToJson(paramMap));
             //接口常规参数结束------------------------------------------------------
 
             reqEntity.addPart("paramBody", paramBody);
