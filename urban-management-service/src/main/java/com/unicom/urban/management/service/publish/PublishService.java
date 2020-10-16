@@ -49,4 +49,9 @@ public class PublishService {
         return PublishMapper.INSTANCE.publishListToPublishVOList(publishList);
     }
 
+    public List<PublishVO> searchTypeId(String typeId) {
+        List<Publish> publishList = publishRepository.findAllByKv_IdAndComponentType_id(KvConstant.KV_RELEASE_COMPONENT, typeId);
+        return PublishMapper.INSTANCE.publishListToPublishVOList(publishList);
+    }
+
 }

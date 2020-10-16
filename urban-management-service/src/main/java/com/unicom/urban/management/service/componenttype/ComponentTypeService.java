@@ -49,6 +49,10 @@ public class ComponentTypeService {
         throw new RuntimeException("没有该分类");
     }
 
+    public ComponentType getComponentType(String id) {
+        return componentTypeRepository.findById(id).orElse(new ComponentType());
+    }
+
     public List<String> getComponentTypeIds(String id) {
         Optional<ComponentType> ifnull = componentTypeRepository.findById(id);
         List<String> ids = new ArrayList<>();

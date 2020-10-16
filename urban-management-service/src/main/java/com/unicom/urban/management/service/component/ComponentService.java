@@ -1,7 +1,7 @@
 package com.unicom.urban.management.service.component;
 
+import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.StsConstant;
-import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.component.ComponentRepository;
 import com.unicom.urban.management.mapper.ComponentMapper;
 import com.unicom.urban.management.pojo.dto.ComponentDTO;
@@ -19,7 +19,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -147,7 +146,16 @@ public class ComponentService {
      */
     public void saveComponent(ComponentDTO dto) {
         Publish publish = new Publish();
-        publish.setId(dto.getPublish());
+        if(StringUtils.isNotBlank(dto.getPublish())){
+            publish.setId(dto.getPublish());
+        }else{
+            ComponentType componentType = componentTypeService.getComponentType(dto.getComponentTypeId());
+            publish.setComponentType(componentType);
+            publish.setName(componentType.getName());
+            publish = this.savePublish(publish);
+        }
+        this.saveRecord(dto.getCoordinate(),publish);
+
         Grid grid = new Grid();
         grid.setId(dto.getBgid());
 
@@ -180,16 +188,21 @@ public class ComponentService {
 
     }
 
-    private Publish saveRelease(String releaseName) {
-        Publish release = new Publish();
-        release.setName(releaseName);
-        User user = new User();
-        user.setId(SecurityUtil.getUserId());
-        release.setUser(user);
-        release.setKv(KV.builder().id("67369ef9-f2f9-4698-8c4e-f835a2af26b0").build());
-        return releaseService.save(release);
+    /**
+     * 添加发布
+     * @param publish
+     * @return
+     */
+    private Publish savePublish(Publish publish) {
+        publish.setKv(KV.builder().id(KvConstant.KV_RELEASE_COMPONENT).build());
+        return releaseService.save(publish);
     }
 
+    /**
+     * 添加位置
+     * @param coordinate
+     * @param publish
+     */
     private void saveRecord(String coordinate, Publish publish) {
         Record record = new Record();
         record.setCoordinate(coordinate);

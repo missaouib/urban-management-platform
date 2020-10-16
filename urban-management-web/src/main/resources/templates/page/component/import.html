@@ -21,19 +21,20 @@
     </div>
     <div class="tabels">
         <div class="notice_check">
-            <form id="search-form">
+            <form id="component">
                 <p>
                     <label class="">图层分类</label>
-                    <input type="text" readonly="readonly" id="typeStr" class="find_input" disabled>
-                    <input type="text" readonly="readonly" id="componentTypeId" class="find_input" disabled>
+                    <input type="text" readonly="readonly" id="typeStr" class="find_input" >
+                    <input type="hidden" readonly="readonly" name="componentTypeId" id="componentTypeId" class="find_input" >
                 </p>
                 <p>
                     <label class="">图层名称</label>
-                    <input type="text" readonly="readonly"  class="find_input" disabled>
+                    <input type="text" readonly="readonly" id="publish"  class="find_input" >
+                    <input type="hidden" readonly="readonly" id="publishId" name="publish" class="find_input" >
                 </p>
                 <p>
                     <label class="">位置信息</label>
-                    <input type="text" readonly="readonly"  class="find_input coor" >
+                    <input type="text" readonly="readonly" name="coordinate" class="find_input coor" >
                 </p>
                 <p class="attribute">属性信息</p>
                 <p>
@@ -62,19 +63,23 @@
                 </p>
                 <p>
                     <label class="">所在网格</label>
-                    <select id="bgid"></select>
+                    <select id="bgid" name="bgid"></select>
                     <label class="">部件状态</label>
-                    <select id="objState" ></select>
+                    <select id="objState" name="objState"></select>
                 </p>
                 <p>
                     <label class="">数据来源</label>
-                    <select id="dataSource"></select>
+                    <select id="dataSource" name="dataSource"></select>
+                </p>
+                <p>
+                    <label class="">备注</label>
+                    <input type="text" class="find_input" name="note">
                 </p>
 
                 <p class="function_btn">
                     <input type="button" class="check_btn1" onclick="" value="删除">
                     <input type="button" class="check_btn1" onclick="" value="修改">
-                    <input type="button" class="check_btn1" onclick="" value="保存">
+                    <input type="button" class="check_btn1" onclick="saveComponent()" value="保存">
                     <input type="button" class="check_btn1" onclick="" value="返回">
                 </p>
             </form>
@@ -116,7 +121,15 @@
 
     function zTreeOnClick(event, treeId, treeNode) {
         if(treeNode.children === undefined){
-            $("#typeStr").val(treeNode.name);x
+            $("#typeStr").val(treeNode.name);
+            $("#componentTypeId").val(treeNode.id);
+            $.ajaxUtil.get(publishUrl+"?typeId=" + treeNode.id, function (e) {
+                console.log(e)
+                $(e.data).each(function (index,value) {
+                    $("#publish").val(value.name);
+                    $("#publishId").val(value.id);
+                })
+            })
         }
     }
 
@@ -147,7 +160,10 @@
             $("#bgid").append(gridStr);
         })
     })
-
+    function saveComponent() {
+        let data = $('#component').serialize();
+        $.operate.saveAndReload(saveUrl, data);
+    }
 
     let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
 
@@ -164,6 +180,10 @@
     let dataSourceUrl = /*[[@{/dataSource}]]*/ "/dataSource";
 
     let gridUrl = /*[[@{/grid}]]*/ "/grid";
+
+    let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
+
+    let saveUrl = /*[[@{/component}]]*/ "/component";
 
 
 
@@ -294,19 +314,6 @@
         console.log(point.H.data.id)
     })
 
-    /*layerMap.getSource().addFeature(multiPolygon);*/
-
-    // function setPoint(x, y, data, name) {
-    //     let point = new ol.Feature({
-    //         geometry: new ol.geom.Point([x, y]),
-    //         data: {
-    //             id: data,
-    //             name: name,
-    //             coordinate: x + "," + y
-    //         }
-    //     });
-    //     layerMap.getSource().addFeature(point);
-    // }
 
 </script>
 </body>

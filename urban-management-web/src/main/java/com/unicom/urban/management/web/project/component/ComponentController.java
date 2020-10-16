@@ -7,14 +7,15 @@ import com.unicom.urban.management.pojo.entity.KV;
 import com.unicom.urban.management.pojo.vo.ComponentTypeVO;
 import com.unicom.urban.management.pojo.vo.ComponentVO;
 import com.unicom.urban.management.pojo.vo.GridVO;
+import com.unicom.urban.management.pojo.vo.PublishVO;
 import com.unicom.urban.management.service.component.ComponentService;
 import com.unicom.urban.management.service.componenttype.ComponentTypeService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
+import com.unicom.urban.management.service.publish.PublishService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -37,12 +38,15 @@ public class ComponentController {
 
     private final GridService gridService;
 
+    private final PublishService publishService;
+
     @Autowired
-    public ComponentController(ComponentTypeService componentTypeService, ComponentService componentService, KVService kvService, GridService gridService) {
+    public ComponentController(ComponentTypeService componentTypeService, ComponentService componentService, KVService kvService, GridService gridService, PublishService publishService) {
         this.componentTypeService = componentTypeService;
         this.componentService = componentService;
         this.kvService = kvService;
         this.gridService = gridService;
+        this.publishService = publishService;
     }
 
 
@@ -61,10 +65,16 @@ public class ComponentController {
         return componentTypeService.getComponentTypeList();
     }
 
-    @PostMapping("/component")
-    public void saveComponentList(@RequestBody List<ComponentDTO> dtos){
+    @PostMapping("/componentList")
+    public void saveComponentList(List<ComponentDTO> dtos){
         componentService.saveComponent(dtos);
     }
+    @PostMapping("/component")
+    public void saveComponent(ComponentDTO dto){
+        componentService.saveComponent(dto);
+    }
+
+
 
     @GetMapping("/componentList")
     public List<ComponentVO> componentList(ComponentDTO dto){
@@ -85,4 +95,11 @@ public class ComponentController {
     public List<GridVO> grd(){
         return gridService.searchAll();
     }
+
+    @GetMapping("/componentTypePublish")
+    public List<PublishVO> componentList(String typeId){
+       return publishService.searchTypeId(typeId);
+    }
+
+
 }

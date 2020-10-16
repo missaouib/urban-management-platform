@@ -26,7 +26,7 @@ public class Component extends BaseEntity {
     @ManyToOne
     private ComponentType componentType;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private ComponentInfo componentInfo;
 
     private Integer sts;
