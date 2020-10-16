@@ -92,12 +92,9 @@
             </div>
         </div>
         <div class="notice_bot">
-<!--            <div class="l_left">-->
-<!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-<!--            </div>-->
             <div class="r_right but_p">
                 <button class="but_save" type="button" onclick="save()">保存</button>
-                <button class="but_close" onclick="Cancel()">关闭</button>
+                <button class="but_close" onclick="$.modal.closeTab()">关闭</button>
             </div>
         </div>
     </div>
@@ -109,9 +106,6 @@
 
     let url = /*[[@{/user/update}]]*/ "/json/unit.json";
 
-    function Cancel() {
-        $.modal.closeLoading();
-    }
     function save(){
         var data = $('#userForm').serialize();
         $.operate.saveTab(url, data);
