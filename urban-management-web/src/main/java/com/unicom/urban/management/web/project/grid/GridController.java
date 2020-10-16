@@ -2,7 +2,6 @@ package com.unicom.urban.management.web.project.grid;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
-import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.GridDTO;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.service.grid.GridService;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -41,15 +41,13 @@ public class GridController {
     }
 
     @PostMapping("/gridSave")
-    public Result gridSave(GridDTO gridDTO) {
+    public void gridSave(@Valid GridDTO gridDTO) {
         gridService.save(gridDTO);
-        return Result.success("新增成功");
     }
 
     @PostMapping("/gridUpdate")
-    public Result gridUpdate(GridDTO gridDTO) {
+    public void gridUpdate(@Valid GridDTO gridDTO) {
         gridService.update(gridDTO);
-        return Result.success("新增成功");
     }
 
     @GetMapping("/getGridOne/{gridId}")
@@ -58,9 +56,8 @@ public class GridController {
     }
 
     @PostMapping("/gridDelete")
-    public Result gridDelete(String gridId) {
+    public void gridDelete(String gridId) {
         gridService.delete(gridId);
-        return Result.success("新增成功");
     }
 
 }

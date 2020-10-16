@@ -10,10 +10,11 @@ import lombok.Data;
 @Data
 public class RecordVO {
 
+    private String id;
+
     private String coordinate;
 
     private String type;
 
-    private String id;
 
 }
