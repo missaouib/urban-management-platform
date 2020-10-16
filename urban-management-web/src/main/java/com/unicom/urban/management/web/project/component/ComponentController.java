@@ -73,14 +73,14 @@ public class ComponentController {
         componentService.saveComponent(dtos);
     }
     @PostMapping("/component")
-    public void saveComponent(ComponentDTO dto){
+    public void saveComponent(@Valid ComponentDTO dto){
         componentService.saveComponent(dto);
     }
 
 
 
     @GetMapping("/componentList")
-    public List<ComponentVO> componentList(@Valid ComponentDTO dto){
+    public List<ComponentVO> componentList(ComponentDTO dto){
         return componentService.getComponentList(dto);
     }
 

@@ -3,6 +3,7 @@ package com.unicom.urban.management.pojo.vo;
 import lombok.Data;
 
 import javax.persistence.ManyToOne;
+import java.time.LocalDate;
 
 /**
  * @author 顾志杰
@@ -73,12 +74,12 @@ public class ComponentVO {
     /**
      * 初始日期
      */
-    private String initialDate;
+    private LocalDate initialDate;
 
     /**
      * 变更日期
      */
-    private String changeDate;
+    private LocalDate changeDate;
 
     /**
      * 数据来源

@@ -214,27 +214,30 @@ public class ComponentService {
         dtos.forEach(c -> {
             Optional<Component> ifnull = componentRepository.findById(c.getComponentId());
             if (ifnull.isPresent()) {
-                KV objState = KV.builder().id(c.getObjState()).build();
-                KV datasource = KV.builder().id(c.getDataSource()).build();
-                Component component = ifnull.get();
-                Grid grid = new Grid();
-                grid.setId(c.getBgid());
-                component.getComponentInfo().setObjId(c.getObjId());
-                component.getComponentInfo().setObjName(c.getObjName());
-                component.getComponentInfo().setMainDeptCode(c.getMainDeptCode());
-                component.getComponentInfo().setMainDeptName(c.getMainDeptCode());
-                component.getComponentInfo().setOwnershipDeptCode(c.getOwnershipDeptCode());
-                component.getComponentInfo().setOwnershipDeptName(c.getOwnershipDeptName());
-                component.getComponentInfo().setMaintenanceDeptCode(c.getMaintenanceDeptCode());
-                component.getComponentInfo().setMaintenanceDeptName(c.getMaintenanceDeptName());
-                component.getComponentInfo().setBgid(grid);
-                component.getComponentInfo().setObjState(objState);
-                component.getComponentInfo().setInitialDate(c.getInitialDate());
-                component.getComponentInfo().setChangeDate(c.getChangeDate());
-                component.getComponentInfo().setDataSource(datasource);
-                componentRepository.saveAndFlush(component);
+                this.update(ifnull.get(),c);
             }
         });
+    }
+
+    public void update(Component component,ComponentDTO c){
+        KV objState = KV.builder().id(c.getObjState()).build();
+        KV datasource = KV.builder().id(c.getDataSource()).build();
+        Grid grid = new Grid();
+        grid.setId(c.getBgid());
+        component.getComponentInfo().setObjId(c.getObjId());
+        component.getComponentInfo().setObjName(c.getObjName());
+        component.getComponentInfo().setMainDeptCode(c.getMainDeptCode());
+        component.getComponentInfo().setMainDeptName(c.getMainDeptCode());
+        component.getComponentInfo().setOwnershipDeptCode(c.getOwnershipDeptCode());
+        component.getComponentInfo().setOwnershipDeptName(c.getOwnershipDeptName());
+        component.getComponentInfo().setMaintenanceDeptCode(c.getMaintenanceDeptCode());
+        component.getComponentInfo().setMaintenanceDeptName(c.getMaintenanceDeptName());
+        component.getComponentInfo().setBgid(grid);
+        component.getComponentInfo().setObjState(objState);
+        component.getComponentInfo().setInitialDate(c.getInitialDate());
+        component.getComponentInfo().setChangeDate(c.getChangeDate());
+        component.getComponentInfo().setDataSource(datasource);
+        componentRepository.saveAndFlush(component);
     }
 
 
