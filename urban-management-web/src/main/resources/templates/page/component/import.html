@@ -33,7 +33,7 @@
                 </p>
                 <p>
                     <label class="">位置信息</label>
-                    <input type="text" readonly="readonly"  class="find_input" >
+                    <input type="text" readonly="readonly"  class="find_input coor" >
                 </p>
                 <p class="attribute">属性信息</p>
                 <p>
@@ -243,11 +243,11 @@
     var draw = new ol.interaction.Draw({
         source: source,
         //点：Point   线:LineString      面:Polygon
-        type: "Polygon",
+        type: "Point",
     });
     map.addInteraction(draw)
     draw.on('drawstart', function () {
-        tarr.splice(0)
+        // tarr.splice(0)
     })
     draw.on('drawend', function () {
         source.clear();
@@ -256,6 +256,58 @@
         source: new ol.source.Vector(),
     });
     map.addLayer(layerMap);
+
+    var t;
+    $("#map").click(function (e) {
+        t = map.getEventCoordinate(e);
+        $(".coor").val(t);
+
+    });
+
+
+    var selectSingleClick = new ol.interaction.Select();
+    map.addInteraction(selectSingleClick);
+    selectSingleClick.on('select', function (e) {
+        let features = e.target.getFeatures().getArray();
+        // let dataId = features[0].H.data.id;
+        console.log("data", features);
+
+    });
+
+
+    var point = new ol.Feature({
+        geometry: new ol.geom.Point([14093917.166992238, 5742844.590200588]),
+        data: {
+            id: 1
+        }
+    });
+    layerMap.getSource().addFeature(point);
+
+
+
+    /* ------------  点击事件  ------------------*/
+    var selectClick = new ol.interaction.Select();
+    map.addInteraction(selectClick);
+    selectClick.on('select', function (e) {
+        console.log(point)
+        console.log(point.H.data)
+        console.log(point.H.data.id)
+    })
+
+    /*layerMap.getSource().addFeature(multiPolygon);*/
+
+    // function setPoint(x, y, data, name) {
+    //     let point = new ol.Feature({
+    //         geometry: new ol.geom.Point([x, y]),
+    //         data: {
+    //             id: data,
+    //             name: name,
+    //             coordinate: x + "," + y
+    //         }
+    //     });
+    //     layerMap.getSource().addFeature(point);
+    // }
+
 </script>
 </body>
 </html>
