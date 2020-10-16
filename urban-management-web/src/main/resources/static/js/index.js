@@ -804,7 +804,7 @@
                     "F_ModuleId": "10065555123501232",
                     "F_ParentId": "1006555550123",
                     "F_EnCode": "SysManage",
-                    "F_FullName": "要素库管理",
+                    "F_FullName": "部件导入",
                     "F_Icon": "fa fa-wrench",
                     "F_UrlAddress": "/layertype",
                     "F_Target": "expand",

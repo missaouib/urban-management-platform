@@ -1,131 +1,100 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
     <title>部件导入</title>
-    <th:block th:include="page/fragments/common :: common_css"/>
-    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: common_css" />
+    <th:block th:include="page/fragments/common :: bootstrap_table_css" />
 
 </head>
-<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
-<div class="notice_main ">
-    <div class="content">
-        <div class="leftBox" style="width: 50%!important;">
-            <div class="leftInner">
 
-                <!--                tree-->
-                <div class="zTreeDemoBackground left">
-                    <ul id="treeDemo" class="ztree">zTree</ul>
-                </div>
-
-
-                <div>
-                    <label class="modelTitle">图层名称</label>
-                    <input type="text" class="find_input" name="username">
-                </div>
-
-<!--                <div>-->
-<!--                    <label class="modelTitle">EPSG</label>-->
-<!--                    <select class="find_input">-->
-<!--                        <option value="">&#45;&#45;请选择&#45;&#45;</option>-->
-<!--                        <option th:value="1">1</option>-->
-<!--                        <option th:value="2">2</option>-->
-<!--                    </select>-->
-<!--                </div>-->
-                <div>
-                    <label class="modelTitle"></label>
-                    <input type="file" class="find_input" name="" style="padding: 0!important;">
-                </div>
-                <div style="padding-bottom: 20px;margin-right: 20px;display: flex;justify-content: flex-end" class="">
-                    <input type="button" class="check_btn1" onclick="" value="导入">
-                    <!--                    <input type="button" class="check_btn1" onclick="" value="修改">-->
-                    <!--                    <input type="button" class="check_btn1" onclick="" value="保存">-->
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+    <div class="notice_main ">
+        <div class="content">
+            <div class="leftBox" style="width: 50%!important;">
+                <div class="leftInner">
+                    <!-- ztree-->
+                    <div class="zTreeDemoBackground left">
+                        <ul id="treeDemo" class="ztree">zTree</ul>
+                    </div>
+                    <form id="fileForm">
+                        <div>
+                            <label class="modelTitle">图层名称</label>
+                            <input type="text" class="find_input" name="layerName">
+                        </div>
+                        <div>
+                            <label class="modelTitle"></label>
+                            <input type="file" name="file" multiple="multiple">
+                        </div>
+                    <div style="padding-bottom: 20px;margin-right: 20px;display: flex;justify-content: flex-end" class="">
+                        <button type="button" id="btnAddFile" class="btn btn-primary"
+                                onclick="uploadFiles()">导入文件
+                        </button>
+                    </div>
+                    </form>
                 </div>
             </div>
-        </div>
-        <div class="rightBox" style="width: 50%!important;">
+            <div class="rightBox" style="width: 50%!important;">
 
+            </div>
         </div>
     </div>
+    <th:block th:include="page/fragments/common :: common_js" />
+    <th:block th:include="page/fragments/common :: bootstrap_table_js" />
+
+    <script type="text/javascript" th:inline="javascript">
 
 
-</div>
+        // function clickInput() {
+        //     $("#btnAddFile").attr("disabled",false);
+        // }
 
-
-
-
-<th:block th:include="page/fragments/common :: common_js"/>
-<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
-
-<script type="text/javascript" th:inline="javascript">
-
-    $(function () {
-        queryUserList();
-    })
-
-
-    let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
-
-    let addUrl = /*[[@{/user/add}]]*/ "/user/add";
-
-    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
-
-    let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
-
-    function queryUserList() {
-        var options = {
-            url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
-            // exportUrl: prefix + "/export",
-            // importUrl: prefix + "/importData",
-            // importTemplateUrl: prefix + "/importTemplate",
-            uniqueId: "id",
-            sortName: "updateTime",
-            sortOrder: "desc",
-            modalName: "用户",
-            columns: [
-                {
-                    checkbox: true
-                },
-                {
-                    title: '账号',
-                    field: 'username'
-                },
-                {
-                    title: '姓名',
-                    field: 'name'
-                },
-                {
-                    title: '手机号码',
-                    field: 'mobileNumber'
-                },
-                {
-                    title: '创建时间',
-                    field: 'createTime',
-                    sortable: true,
-                },
-                {
-                    title: '修改时间',
-                    field: 'updateTime',
-                    sortable: true,
-
-                },
-                {
-                    title: '操作',
-                    field: '',
-                    formatter: function (value, row) {
-                        var e = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
-                        return e;
+        function uploadFiles() {
+            let upload = /*[[@{/componentImport}]]*/ "/componentImport";
+            var formData = new FormData($("#fileForm")[0]);
+            $.ajax({
+                url: upload,
+                type: 'POST',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                    if(data.code != 0){
+                        $.modal.alertWarning("请选择正确文件格式！",function () {
+                        });
+                        return;
                     }
+                    let list = data.data[0];
+                    filePath = data.data[1];
+                    let epsgCode = data.data[2];
+                    let shpType = data.data[3];
+                    let layerType = findShpType(shpType);
+                    console.log("layerType=="+ layerType)
+                    if (layerType === '') {
+                        $.modal.alertWarning("导入文件未查询到图层类型，请确认文件数据是否正确！",function () {
+                        });
+                        return;
+                    }
+                    $("#layerType").html(layerType);
+                    $("#epsgSrc").val(epsgCode);
+                    $("#shpType").val(shpType);
+                    loadTable(list);
+                    $("#selectCol").show();
+                    $("#saveBtn").attr("disabled", false);
+                },
+                error: function (data) {
+                    $.modal.alertError(data.message,function () {
+                    });
                 }
-            ]
-        };
-        $.table.init(options);
-    }
+            });
+        }
 
 
-</script>
+
+    </script>
 </body>
+
 </html>
