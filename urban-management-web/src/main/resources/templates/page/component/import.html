@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
     <title>用户管理</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
@@ -12,7 +12,7 @@
 
 </head>
 
-<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
 <div class="innerBox">
     <div class="tree">
         <div class="treeDemo">
@@ -24,42 +24,44 @@
             <form id="component">
                 <p>
                     <label class="">图层分类</label>
-                    <input type="text" readonly="readonly" id="typeStr" class="find_input" >
-                    <input type="hidden" readonly="readonly" name="componentTypeId" id="componentTypeId" class="find_input" >
+                    <input type="text" readonly="readonly" id="typeStr" class="find_input">
+                    <input type="text" readonly="readonly" name="componentId" id="componentId" class="find_input">
+                    <input type="hidden" readonly="readonly" name="componentTypeId" id="componentTypeId"
+                           class="find_input">
                 </p>
                 <p>
                     <label class="">图层名称</label>
-                    <input type="text" readonly="readonly" id="publish"  class="find_input" >
-                    <input type="hidden" readonly="readonly" id="publishId" name="publish" class="find_input" >
+                    <input type="text" readonly="readonly" id="publish" class="find_input">
+                    <input type="hidden" readonly="readonly" id="publishId" name="publish" class="find_input">
                 </p>
                 <p>
                     <label class="">位置信息</label>
-                    <input type="text" readonly="readonly" name="coordinate" class="find_input coor" >
+                    <input type="text" readonly="readonly" id="coordinate" name="coordinate" class="find_input coor">
                 </p>
                 <p class="attribute">属性信息</p>
                 <p>
                     <label class="">部件标识码</label>
-                    <input type="text" class="find_input" name="objId">
+                    <input type="text" class="find_input" id="objId" name="objId">
                     <label class="">部件名称</label>
-                    <input type="text" class="find_input" name="objName">
+                    <input type="text" class="find_input" id="objName" name="objName">
                 </p>
                 <p>
                     <label class="">主管部门代码</label>
-                    <input type="text" class="find_input" name="mainDeptCode">
+                    <input type="text" class="find_input" id="mainDeptCode" name="mainDeptCode">
                     <label class="">主管部门名称</label>
-                    <input type="text" class="find_input" name="mainDeptName">
+                    <input type="text" class="find_input" id="mainDeptName" name="mainDeptName">
                 </p>
                 <p>
                     <label class="">权属单位代码</label>
-                    <input type="text" class="find_input" name="ownershipDeptCode">
+                    <input type="text" class="find_input" id="ownershipDeptCode" name="ownershipDeptCode">
                     <label class="">权属单位名称</label>
-                    <input type="text" class="find_input" name="ownershipDeptName">
+                    <input type="text" class="find_input" id="ownershipDeptName" name="ownershipDeptName">
                 </p>
                 <p>
                     <label class="">养护部门代码</label>
-                    <input type="text" class="find_input" name="maintenanceDeptCode">
+                    <input type="text" class="find_input" id="maintenanceDeptCode" name="maintenanceDeptCode">
                     <label class="">养护部门名称</label>
-                    <input type="text" class="find_input" name="maintenanceDeptName">
+                    <input type="text" class="find_input" id="maintenanceDeptName" name="maintenanceDeptName">
                 </p>
                 <p>
                     <label class="">所在网格</label>
@@ -73,7 +75,7 @@
                 </p>
                 <p>
                     <label class="">备注</label>
-                    <input type="text" class="find_input" name="note">
+                    <input type="text" class="find_input" id="note" name="note">
                 </p>
 
                 <p class="function_btn">
@@ -91,8 +93,6 @@
 
 
 </div>
-
-
 
 
 <th:block th:include="page/fragments/common :: common_js"/>
@@ -121,60 +121,68 @@
             }
         }
     };
+    var typeStr;
+    var componentTypeId;
+    var publish;
+    var publishId;
 
     function zTreeOnClick(event, treeId, treeNode) {
-        if(treeNode.children === undefined){
+        resetFrom();
+        if (treeNode.children === undefined) {
             $("#typeStr").val(treeNode.name);
             $("#componentTypeId").val(treeNode.id);
-            $.ajaxUtil.get(publishUrl+"?typeId=" + treeNode.id, function (e) {
-                console.log(e)
-                $(e.data).each(function (index,value) {
+            typeStr = treeNode.name;
+            componentTypeId = treeNode.id;
+            $.ajaxUtil.get(publishUrl + "?typeId=" + treeNode.id, function (e) {
+                $(e.data).each(function (index, value) {
                     $("#publish").val(value.name);
                     $("#publishId").val(value.id);
+
+                    publish = value.name;
+                    publishId = value.id;
+                })
+            })
+
+            $.ajaxUtil.get(recordUrl + "?typeId=" + treeNode.id, function (e) {
+                $(e.data).each(function (index, value) {
+                    var point = value.coordinate.split(",");
+                    setPoint(point[0], point[1], value.id, value.name);
                 })
             })
         }
     }
 
     $(function () {
-        queryUserList();
         $.ajaxUtil.get(componentTypeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
         $.ajaxUtil.get(objStateUrl, function (e) {
             var objStateStr = "<option value=''>--请选择--</option>";
-            $(e.data).each(function (index,value) {
-                objStateStr += "<option value='"+value.id+"'>"+value.value+"</option>"
+            $(e.data).each(function (index, value) {
+                objStateStr += "<option value='" + value.id + "'>" + value.value + "</option>"
             })
             $("#objState").append(objStateStr);
         })
         $.ajaxUtil.get(dataSourceUrl, function (e) {
             var datasourceStr = "<option value=''>--请选择--</option>";
-            $(e.data).each(function (index,value) {
-                datasourceStr += "<option value='"+value.id+"'>"+value.value+"</option>"
+            $(e.data).each(function (index, value) {
+                datasourceStr += "<option value='" + value.id + "'>" + value.value + "</option>"
             })
             $("#dataSource").append(datasourceStr);
         })
         $.ajaxUtil.get(gridUrl, function (e) {
             var gridStr = "<option value=''>--请选择--</option>";
-            $(e.data).each(function (index,value) {
-                gridStr += "<option value='"+value.id+"'>"+value.gridName+"</option>"
+            $(e.data).each(function (index, value) {
+                gridStr += "<option value='" + value.id + "'>" + value.gridName + "</option>"
             })
             $("#bgid").append(gridStr);
         })
     })
+
     function saveComponent() {
         let data = $('#component').serialize();
         $.operate.saveAndReload(saveUrl, data);
     }
-
-    let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
-
-    let addUrl = /*[[@{/user/add}]]*/ "/user/add";
-
-    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
-
-    let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
 
     let componentTypeUrl = /*[[@{/componentType}]]*/ "/componentType";
 
@@ -188,60 +196,9 @@
 
     let saveUrl = /*[[@{/component}]]*/ "/component";
 
+    let recordUrl = /*[[@{/recordVOS}]]*/ "/recordVOS";
 
-
-    function queryUserList() {
-        var options = {
-            url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
-            // exportUrl: prefix + "/export",
-            // importUrl: prefix + "/importData",
-            // importTemplateUrl: prefix + "/importTemplate",
-            uniqueId: "id",
-            sortName: "updateTime",
-            sortOrder: "desc",
-            modalName: "用户",
-            columns: [
-                {
-                    checkbox: true
-                },
-                {
-                    title: '账号',
-                    field: 'username'
-                },
-                {
-                    title: '姓名',
-                    field: 'name'
-                },
-                {
-                    title: '手机号码',
-                    field: 'mobileNumber'
-                },
-                {
-                    title: '创建时间',
-                    field: 'createTime',
-                    sortable: true,
-                },
-                {
-                    title: '修改时间',
-                    field: 'updateTime',
-                    sortable: true,
-
-                },
-                {
-                    title: '操作',
-                    field: '',
-                    formatter: function (value, row) {
-                        var e = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
-                        return e;
-                    }
-                }
-            ]
-        };
-        $.table.init(options);
-    }
+    let componentByRecordId = /*[[@{/componentByRecordId}]]*/ "/componentByRecordId";
 
 
     var center = ol.proj.transform([126.62, 45.74], "EPSG:4326", "EPSG:3857");
@@ -283,71 +240,61 @@
     var t;
     $("#map").click(function (e) {
         t = map.getEventCoordinate(e);
-        $(".coor").val(t);
-
-    });
-
-
-    var selectSingleClick = new ol.interaction.Select();
-    map.addInteraction(selectSingleClick);
-    selectSingleClick.on('select', function (e) {
-        let features = e.target.getFeatures().getArray();
-        // let dataId = features[0].H.data.id;
-        console.log("data", features);
-
-    });
-
-
-    var point = new ol.Feature({
-        geometry: new ol.geom.Point([14093917.166992238, 5742844.590200588]),
-        data: {
-            id: 1
+        if ($("#componentId").val() === "") {
+            $(".coor").val(t);
         }
     });
-    layerMap.getSource().addFeature(point);
-
 
 
     /* ------------  点击事件  ------------------*/
     var selectClick = new ol.interaction.Select();
     map.addInteraction(selectClick);
     selectClick.on('select', function (e) {
-        console.log(point)
-        console.log(point.H.data)
-        console.log(point.H.data.id)
+        var features = e.target.getFeatures().getArray();
+        let data = features[0].H.data;
+        if (undefined !== data) {
+            $.ajaxUtil.get(componentByRecordId + "?recordId=" + data.id, function (e) {
+                console.log(e)
+                $("#componentId").val(e.data.id);
+                $("#objId").val(e.data.objId);
+                $("#objName").val(e.data.objName);
+                $("#maintenanceDeptCode").val(e.data.maintenanceDeptCode);
+                $("#maintenanceDeptName").val(e.data.maintenanceDeptName);
+                $("#mainDeptCode").val(e.data.mainDeptCode);
+                $("#mainDeptName").val(e.data.mainDeptName);
+                $("#ownershipDeptCode").val(e.data.ownershipDeptCode);
+                $("#ownershipDeptName").val(e.data.ownershipDeptName);
+                $("#objState option[value='" + e.data.objStateId + "']").prop("selected", true);
+                $("#bgid option[value='" + e.data.bgid + "']").prop("selected", true);
+                $("#dataSource option[value='" + e.data.dataSourceId + "']").prop("selected", true);
+                $("#note").val(e.data.note);
+
+            })
+        } else {
+            resetFrom();
+            $("#publish").val(publish);
+            $("#publishId").val(publishId);
+            $("#typeStr").val(typeStr);
+            $("#componentTypeId").val(componentTypeId);
+        }
+
     })
 
-    // function searchMapElement() {
-    //     let data = {
-    //         id: layerId
-    //     }
-    //     $.ajax({
-    //         url: searchMapElementUrl,
-    //         type: "POST",
-    //         data: JSON.stringify(data),
-    //         contentType: "application/json",
-    //         success: function (result) {
-    //             let data = result.data;
-    //             // console.log(data)
-    //             if (!$.isEmptyObject(data)) {
-    //                 for (let i = 0; i < data.length; i++) {
-    //                     setPoint(data[i].multiPolygon.split(" ")[0], data[i].multiPolygon.split(" ")[1], data[i].mongo, data[i].name);
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
-    // function setPoint(x, y, data, name) {
-    //     let point = new ol.Feature({
-    //         geometry: new ol.geom.Point([x, y]),
-    //         data: {
-    //             id: data,
-    //             name: name,
-    //             coordinate: x + "," + y
-    //         }
-    //     });
-    //     layerMap.getSource().addFeature(point);
-    // }
+    function resetFrom() {
+        $('#component')[0].reset();
+    }
+
+    function setPoint(x, y, data, name) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                id: data,
+                name: name,
+                coordinate: x + "," + y
+            }
+        });
+        layerMap.getSource().addFeature(point);
+    }
 
 </script>
 </body>

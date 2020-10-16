@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 /**
@@ -13,59 +14,71 @@ import java.time.LocalDateTime;
 @Data
 public class ComponentDTO {
 
-    private String id;
+    private String componentId;
 
+
+    @NotBlank(message = "部件分类不能为空")
     private String componentTypeId;
 
 
     /**
      * 部件标识码
      */
+    @NotBlank(message = "部件标识码不能为空")
     private String objId;
 
     /**
      * 部件名称
      */
+    @NotBlank(message = "部件名称不能为空")
     private String objName;
 
     /**
      * 主管部门代码
      */
+    @NotBlank(message = "主管部门编码不能为空")
     private String mainDeptCode;
 
     /**
      * 主管部门名称
      */
+    @NotBlank(message = "主管部门名称不能为空")
     private String mainDeptName;
 
     /**
      * 权属部门代码
      */
+    @NotBlank(message = "权属部门编码不能为空")
     private String ownershipDeptCode;
 
     /**
      * 权属部门名称
      */
+    @NotBlank(message = "权属部门名称不能为空")
     private String ownershipDeptName;
 
     /**
      * 养护部门代码
      */
+    @NotBlank(message = "养护部门编码不能为空")
     private String maintenanceDeptCode;
 
     /**
      * 养护部门名称
      */
+    @NotBlank(message = "养护部门名称不能为空")
     private String maintenanceDeptName;
 
     /**
      * 所在单元网格
      */
+    @NotBlank(message = "所在单元网格不能为空")
     private String bgid;
 
     /**
      * 部件状态
      */
+    @NotBlank(message = "部件状态不能为空")
     private String objState;
 
     /**
@@ -85,6 +98,7 @@ public class ComponentDTO {
     /**
      * 数据来源
      */
+    @NotBlank(message = "数据来源不能为空")
     private String  dataSource;
 
     /**
@@ -92,8 +106,10 @@ public class ComponentDTO {
      */
     private String note;
 
+
     private String publish;
 
+    @NotBlank(message = "部件位置不能为空")
     private String coordinate;
 
 

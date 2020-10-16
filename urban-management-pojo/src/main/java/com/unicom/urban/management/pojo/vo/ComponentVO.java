@@ -1,12 +1,8 @@
 package com.unicom.urban.management.pojo.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.unicom.urban.management.pojo.entity.Grid;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
 
 /**
  * @author 顾志杰
@@ -16,6 +12,10 @@ import java.time.LocalDateTime;
 public class ComponentVO {
 
     private String id;
+
+    private String componentTypeId;
+
+    private String componentType;
 
     /**
      * 部件标识码
@@ -73,16 +73,18 @@ public class ComponentVO {
     /**
      * 初始日期
      */
-    private LocalDateTime initialDate;
+    private String initialDate;
 
     /**
      * 变更日期
      */
-    private LocalDateTime changeDate;
+    private String changeDate;
 
     /**
      * 数据来源
      */
     private String  dataSource;
     private String  dataSourceId;
+
+    private String note;
 }

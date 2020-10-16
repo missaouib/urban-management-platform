@@ -8,4 +8,5 @@ import com.unicom.urban.management.pojo.entity.Component;
  * @date 2020/10/13-19:33
  */
 public interface ComponentRepository extends CustomizeRepository<Component, String> {
+    Component findByRecord_Id(String recordId);
 }

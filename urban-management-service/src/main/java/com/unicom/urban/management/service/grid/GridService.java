@@ -69,7 +69,6 @@ public class GridService {
     public List<GridVO> searchAll() {
         List<Grid> gridList = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
-            list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class), StsConstant.INUSE));
             list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.RELEASE));
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));

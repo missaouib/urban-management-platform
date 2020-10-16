@@ -131,7 +131,7 @@ public class ComponentService {
      * @return T
      */
     public ComponentVO getComponent(ComponentDTO component) {
-        Optional<Component> byId = componentRepository.findById(component.getId());
+        Optional<Component> byId = componentRepository.findById(component.getComponentId());
         if (byId.isPresent()) {
             Component form = byId.orElse(new Component());
             return ComponentMapper.INSTANCE.componentToComponentVO(form);
@@ -154,7 +154,7 @@ public class ComponentService {
             publish.setName(componentType.getName());
             publish = this.savePublish(publish);
         }
-        this.saveRecord(dto.getCoordinate(),publish);
+        Record record = this.saveRecord(dto.getCoordinate(), publish);
 
         Grid grid = new Grid();
         grid.setId(dto.getBgid());
@@ -181,8 +181,8 @@ public class ComponentService {
         Component component = Component.builder()
                 .componentInfo(componentInfo)
                 .componentType(componentType)
-                .sts(StsConstant.INUSE)
                 .publish(publish)
+                .record(record)
                 .build();
         componentRepository.save(component);
 
@@ -203,16 +203,16 @@ public class ComponentService {
      * @param coordinate
      * @param publish
      */
-    private void saveRecord(String coordinate, Publish publish) {
+    private Record saveRecord(String coordinate, Publish publish) {
         Record record = new Record();
         record.setCoordinate(coordinate);
         record.setPublish(publish);
-        recordService.save(record);
+        return recordService.save(record);
     }
 
     public void saveComponent(List<ComponentDTO> dtos) {
         dtos.forEach(c -> {
-            Optional<Component> ifnull = componentRepository.findById(c.getId());
+            Optional<Component> ifnull = componentRepository.findById(c.getComponentId());
             if (ifnull.isPresent()) {
                 KV objState = KV.builder().id(c.getObjState()).build();
                 KV datasource = KV.builder().id(c.getDataSource()).build();
@@ -235,6 +235,12 @@ public class ComponentService {
                 componentRepository.saveAndFlush(component);
             }
         });
+    }
+
+
+    public ComponentVO getComponentByRecordId(String recordId){
+        Component byRecord_id = componentRepository.findByRecord_Id(recordId);
+        return ComponentMapper.INSTANCE.componentToComponentVO(byRecord_id);
     }
 
 }

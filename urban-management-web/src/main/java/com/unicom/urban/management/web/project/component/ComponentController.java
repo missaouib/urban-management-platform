@@ -4,21 +4,21 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.dto.ComponentDTO;
 import com.unicom.urban.management.pojo.entity.KV;
-import com.unicom.urban.management.pojo.vo.ComponentTypeVO;
-import com.unicom.urban.management.pojo.vo.ComponentVO;
-import com.unicom.urban.management.pojo.vo.GridVO;
-import com.unicom.urban.management.pojo.vo.PublishVO;
+import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.component.ComponentService;
 import com.unicom.urban.management.service.componenttype.ComponentTypeService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.publish.PublishService;
+import com.unicom.urban.management.service.record.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,13 +40,16 @@ public class ComponentController {
 
     private final PublishService publishService;
 
+    private final RecordService recordService;
+
     @Autowired
-    public ComponentController(ComponentTypeService componentTypeService, ComponentService componentService, KVService kvService, GridService gridService, PublishService publishService) {
+    public ComponentController(ComponentTypeService componentTypeService, ComponentService componentService, KVService kvService, GridService gridService, PublishService publishService, RecordService recordService) {
         this.componentTypeService = componentTypeService;
         this.componentService = componentService;
         this.kvService = kvService;
         this.gridService = gridService;
         this.publishService = publishService;
+        this.recordService = recordService;
     }
 
 
@@ -77,7 +80,7 @@ public class ComponentController {
 
 
     @GetMapping("/componentList")
-    public List<ComponentVO> componentList(ComponentDTO dto){
+    public List<ComponentVO> componentList(@Valid ComponentDTO dto){
         return componentService.getComponentList(dto);
     }
 
@@ -101,5 +104,17 @@ public class ComponentController {
        return publishService.searchTypeId(typeId);
     }
 
+    @GetMapping("/recordVOS")
+    public List<RecordVO> recordVOS(String typeId){
+        List<PublishVO> publishVOS = publishService.searchTypeId(typeId);
+        List<RecordVO> list = new ArrayList<>();
+        publishVOS.forEach(p-> list.addAll(recordService.findAllByPublishId(p.getId())));
+        return list;
+    }
+
+    @GetMapping("/componentByRecordId")
+    public ComponentVO componentByRecordId(String recordId){
+        return componentService.getComponentByRecordId(recordId);
+    }
 
 }

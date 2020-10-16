@@ -1,7 +1,10 @@
 package com.unicom.urban.management.pojo.entity;
 
+import com.unicom.urban.management.pojo.enums.Delete;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
@@ -17,6 +20,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@SQLDelete(sql = "update component set deleted = " + Delete.DELETE + " where id = ?")
+@Where(clause = "deleted = " + Delete.NORMAL)
 public class Component extends BaseEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -33,6 +38,9 @@ public class Component extends BaseEntity {
 
     @ManyToOne
     private Publish publish;
+
+    @OneToOne
+    private Record record;
 
 
 }
