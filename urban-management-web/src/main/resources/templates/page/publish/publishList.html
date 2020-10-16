@@ -102,6 +102,41 @@
             zoom: 12
         })
     });
+
+    function setPoint(x, y, data) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                id: data,
+                coordinate: x + "," + y
+            }
+        });
+        layerMap.getSource().addFeature(point);
+    }
+    // function setLine(res, data, name) {
+    //     let lines = new ol.Feature({
+    //         geometry: new ol.geom.LineString(res),
+    //         data: {
+    //             id: data,
+    //             name: name,
+    //             coordinate: res
+    //         }
+    //     });
+    //     // console.log(lines)
+    //     layerMap.getSource().addFeature(lines);
+    // }
+    function setPolygon(coordinates, data, name) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(coordinates),
+            data: {
+                id: data,
+                name: name,
+                coordinate: coordinates
+            }
+        });
+        // console.log(Polygon)
+        layerMap.getSource().addFeature(Polygon);
+    }
 </script>
 </body>
 </html>

@@ -8,38 +8,10 @@
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
-    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/girdSave.css}" rel="stylesheet" type="text/css">
 </head>
 <style>
-    .table tr td:nth-child(2n+1) {
-        width: 15% !important;
-    }
 
-    .titlenav {
-        width: 100%;
-        height: 30px;
-        position: absolute;
-        top: 10px;
-        left: 20px;
-        display: flex;
-        align-items: center;
-        z-index: 99;
-    }
-
-    .topFun {
-        padding: 2px;
-        margin: 0px 5px;
-    }
-
-    .notice_bot > div {
-        font-size: 12px;
-        margin-left: 10px;
-        color: #07141e;
-        line-height: 28px;
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-    }
 </style>
 <body>
 <div class="row1">
@@ -87,13 +59,13 @@
                                 <tr>
                                     <td>初始日期<span>*</span></td>
                                     <td>
-                                        <input type="text" class=" datepicker" readonly="readonly">
+                                        <input type="text" class="datepicker" readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>终止日期<span>*</span></td>
                                     <td>
-                                        <input type="text" class=" datepicker" readonly="readonly">
+                                        <input type="text" class="datepicker" readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
@@ -219,6 +191,9 @@
 </script>
 
 <script type="text/javascript" th:inline="javascript">
+    $(function () {
+        $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose:true, todayBtn: true, startView:4, minView:3});
+    })
     var center = ol.proj.transform([126.62, 45.74], "EPSG:4326", "EPSG:3857");
     var raster = new ol.layer.Tile({
         source: new ol.source.OSM()
