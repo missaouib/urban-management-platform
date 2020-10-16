@@ -46,7 +46,10 @@ public interface ComponentMapper {
             @Mapping(source = "componentInfo.initialDate", target = "initialDate", dateFormat = "yyyy-MM-dd HH:mm:ss"),
             @Mapping(source = "componentInfo.changeDate", target = "changeDate", dateFormat = "yyyy-MM-dd HH:mm:ss"),
             @Mapping(source = "componentInfo.dataSource.id", target = "dataSourceId"),
-            @Mapping(source = "componentInfo.dataSource.value", target = "dataSource")
+            @Mapping(source = "componentInfo.dataSource.value", target = "dataSource"),
+            @Mapping(source = "componentInfo.note", target = "note"),
+            @Mapping(source = "componentType.id", target = "componentTypeId"),
+            @Mapping(source = "componentType.name", target = "componentType")
     })
     ComponentVO componentToComponentVO(Component component);
 }
