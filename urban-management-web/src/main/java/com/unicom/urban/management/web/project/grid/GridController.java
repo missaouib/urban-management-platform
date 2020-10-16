@@ -53,7 +53,7 @@ public class GridController {
     }
 
     @GetMapping("/getGridOne/{gridId}")
-    public GridVO getGridList(@PathVariable String gridId) {
+    public GridVO getGridOne(@PathVariable String gridId) {
         return gridService.search(gridId);
     }
 

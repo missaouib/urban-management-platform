@@ -20,4 +20,13 @@ public interface RecordRepository extends CustomizeRepository<Record, String> {
      */
     List<Record> findAllByPublish_Id(String id);
 
+    /**
+     * 根据发布id查询编辑中的元素
+     *
+     * @param id
+     * @param sts
+     * @return
+     */
+    List<Record> findAllByPublish_IdAndSts(String id, int sts);
+
 }

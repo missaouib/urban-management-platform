@@ -34,7 +34,7 @@ public class Publish extends BaseEntity {
     /**
      * 类型：编辑的是部件、网格。
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private KV kv;
 
@@ -46,11 +46,11 @@ public class Publish extends BaseEntity {
     /**
      * 用于记录谁发布的
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User user;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private ComponentType componentType;
 
 }

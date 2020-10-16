@@ -33,6 +33,11 @@ public class RecordService {
     }
 
     public List<RecordVO> findAllByPublishId(String id) {
+        List<Record> allByPublishId = recordRepository.findAllByPublish_IdAndSts(id, StsConstant.EDITING);
+        return RecordMapper.INSTANCE.RecordListToRecordVOList(allByPublishId);
+    }
+
+    public List<RecordVO> findByPublishId(String id) {
         List<Record> allByPublishId = recordRepository.findAllByPublish_Id(id);
         return RecordMapper.INSTANCE.RecordListToRecordVOList(allByPublishId);
     }

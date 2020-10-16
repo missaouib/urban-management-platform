@@ -1,8 +1,11 @@
 package com.unicom.urban.management.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.unicom.urban.management.pojo.enums.Delete;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -15,6 +18,8 @@ import java.time.LocalDateTime;
  */
 @Data
 @Entity
+@SQLDelete(sql = "update grid set deleted = " + Delete.DELETE + " where id = ?")
+@Where(clause = "deleted = " + Delete.NORMAL)
 public class Grid extends BaseEntity {
 
     @Id
@@ -31,7 +36,7 @@ public class Grid extends BaseEntity {
     /**
      * 区域分类
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private KV kv;
 
@@ -47,21 +52,19 @@ public class Grid extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime terminationDate;
 
-    private int sts;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Publish publish;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Record record;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Dept dept;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User user;
 

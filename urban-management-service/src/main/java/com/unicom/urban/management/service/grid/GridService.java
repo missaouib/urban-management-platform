@@ -60,7 +60,6 @@ public class GridService {
             List<Predicate> list = new ArrayList<>();
             list.add(criteriaBuilder.equal(root.get("record").get("createBy").get("id").as(String.class), SecurityUtil.getUserId()));
             list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.EDITING));
-            list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class), StsConstant.INUSE));
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         });
@@ -107,7 +106,6 @@ public class GridService {
 
         Grid grid = GridMapper.INSTANCE.gridDTOToGrid(gridDTO);
         grid.setPublish(savePublish);
-        grid.setSts(StsConstant.INUSE);
         String userId = SecurityUtil.getUserId();
         User user = userService.findOne(userId);
         grid.setDept(user.getDept());
@@ -116,9 +114,7 @@ public class GridService {
     }
 
     public void delete(String id) {
-        Grid one = findOne(id);
-        one.setSts(StsConstant.DELETE);
-        gridRepository.saveAndFlush(one);
+        gridRepository.deleteById(id);
     }
 
     public Grid findOne(GridDTO gridDTO) {

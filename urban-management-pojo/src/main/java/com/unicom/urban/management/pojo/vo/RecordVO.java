@@ -14,4 +14,6 @@ public class RecordVO {
 
     private String type;
 
+    private String id;
+
 }

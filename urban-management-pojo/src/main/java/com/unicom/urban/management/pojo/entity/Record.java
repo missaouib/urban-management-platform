@@ -24,7 +24,7 @@ public class Record extends BaseEntity {
      */
     private String coordinate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Publish publish;
 
