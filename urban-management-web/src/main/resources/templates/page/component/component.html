@@ -177,6 +177,8 @@
 
         //点击全选框时触发的操作
         onCheckAll:function(rows){
+            $(".componentTable").removeAttr('disabled');
+            $(".componentSelect").removeAttr('disabled');
             console.log(rows);
             for(var i=0;i<rows.length;i++)
             {
@@ -193,23 +195,46 @@
         //点击每一个单选框时触发的操作
         onCheck:function(row){
             console.log(row);
-            console.log($(this).children())
             $(".selected .componentTable").removeAttr('disabled');
             $(".selected .componentSelect").removeAttr('disabled');
         },
 
         //取消每一个单选框时对应的操作；
 
-        onUncheck:function(row){
-            console.log(row);
-            $(".componentTable").attr('disabled','disabled');
-            $(".componentSelect").attr('disabled','disabled');
+        onUncheck:function(row,tr,flied){
+            let input = tr[0].parentNode.parentNode;
+            console.log(tr[0])
+            // console.log(input)
+            function sibling( elem ) {
+                var r = [];
+                var n = elem.parentNode.firstChild;
+                for ( ; n; n = n.nextSibling ) {
+                    if ( n.nodeType === 1 && n !== elem ) {
+                        r.push( n );
+                    }
+                }
+                return r;
+            }
+            var allBorther = sibling(input)
+            // console.log(allBorther[14].childNodes[1])
+            for(var i=0;i<10;i++){
+                var selectInput = allBorther[14].childNodes[1]
+                var selectInput2 = allBorther[11].childNodes[1]
+                selectInput.setAttribute('disabled','disabled');
+                selectInput2.setAttribute('disabled','disabled');
+                var input12=allBorther[12].childNodes[0]
+                var input13=allBorther[13].childNodes[0]
+                input12.setAttribute('disabled','disabled');
+                input13.setAttribute('disabled','disabled');
+                var inputs = allBorther[i+1].childNodes[0]
+                inputs.setAttribute('disabled','disabled');
+            }
         },
 
         ////取消所有
         onUncheckAll: function (row) {
-            $(".componentTable").removeAttr('disabled');
-            $(".componentSelect").removeAttr('disabled');
+            $(".componentTable").attr('disabled','disabled');
+            $(".componentSelect").attr('disabled','disabled');
         },
         columns: [
             {
@@ -249,7 +274,6 @@
                 field: 'departmentname',
                 title: '主管部门名称',
                 formatter:priceForm,
-                class:"componentTable"
             },
             {
                 field: 'Company',
@@ -261,7 +285,6 @@
                 field: 'Companyname',
                 title: '权属单位名称',
                 formatter:priceForm,
-                class:"componentTable"
             },
             {
                 field: 'Companycode',
@@ -333,6 +356,7 @@
             }});
 
     }
+
 
     var setting = {
         callback: {
