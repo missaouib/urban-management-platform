@@ -36,8 +36,7 @@ class Component<<部件实体类>>{
     -componentType : ComponentType
     -componentInfo : ComponentInfo
     -sts : int  // 用于记录该部件删除
-    -kv : Kv       // 部件状态
-    -release : Release
+    -publish : Publish
 }
 
 class ComponentType<<部件分类实体类>>{
@@ -58,10 +57,10 @@ class ComponentInfo<<部件信息实体类>>{
     -maintenanceDeptCode : String
     -maintenanceDeptName  : String
     -bgid : Grid
-    -objState : String
+    -objState : Kv
     -initialDate : date
     -changeDate : date
-    -dataSource : String
+    -dataSource : Kv
     -note : String
 }
 
@@ -79,8 +78,10 @@ class Record<<编辑实体类>>{
     -id : String
     -coordinate : String  //坐标
     -user : User
-    -release : Release
+    -publish : Publish
     -sts : int //判断该记录是编辑中、发布
+    -component : Component
+    -grid : Grid
 }
 
 class Kv<<Kv实体类>>{
