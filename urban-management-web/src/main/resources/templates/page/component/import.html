@@ -314,6 +314,37 @@
         console.log(point.H.data.id)
     })
 
+    // function searchMapElement() {
+    //     let data = {
+    //         id: layerId
+    //     }
+    //     $.ajax({
+    //         url: searchMapElementUrl,
+    //         type: "POST",
+    //         data: JSON.stringify(data),
+    //         contentType: "application/json",
+    //         success: function (result) {
+    //             let data = result.data;
+    //             // console.log(data)
+    //             if (!$.isEmptyObject(data)) {
+    //                 for (let i = 0; i < data.length; i++) {
+    //                     setPoint(data[i].multiPolygon.split(" ")[0], data[i].multiPolygon.split(" ")[1], data[i].mongo, data[i].name);
+    //                 }
+    //             }
+    //         }
+    //     });
+    // }
+    // function setPoint(x, y, data, name) {
+    //     let point = new ol.Feature({
+    //         geometry: new ol.geom.Point([x, y]),
+    //         data: {
+    //             id: data,
+    //             name: name,
+    //             coordinate: x + "," + y
+    //         }
+    //     });
+    //     layerMap.getSource().addFeature(point);
+    // }
 
 </script>
 </body>
