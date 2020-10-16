@@ -2,6 +2,7 @@ package com.unicom.urban.management.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.unicom.urban.management.pojo.enums.Delete;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;
@@ -51,5 +52,11 @@ public class BaseEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "update_by")
     private User updateBy;
+
+    /**
+     * 数据是否已被删除
+     */
+    @Column(length = 1)
+    private String deleted = Delete.NORMAL;
 
 }

@@ -18,7 +18,7 @@
                     <tr>
                         <td>姓名<span>*</span></td>
                         <td>
-                            <input type="text" id="realname" name="realname"/>
+                            <input type="text" id="name" name="name"/>
                         </td>
                         <td>登录账号<span>*</span></td>
                         <td>
@@ -28,7 +28,14 @@
                     <tr>
                         <td>手机号码<span>*</span></td>
                         <td>
-                           <input type="text" id="phone" name="phone"/>
+                           <input type="text" id="mobileNumber" name="mobileNumber"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>部门<span>*</span></td>
+                        <td>
+                            <input name="deptId" type="hidden" id="treeId"/>
+                            <input type="text" id="dept" name="dept" onclick="selectDeptTree()" placeholder="请选择部门"/>
                         </td>
                     </tr>
                     <tr>
@@ -59,7 +66,7 @@
      // 更改error文字
     jQuery.extend(jQuery.validator.messages, {
         required: "必填",
-        phone: "必填",
+        mobileNumber: "必填",
         remote: "请修正该字段",
         email: "请输入正确格式的电子邮件",
         url: "请输入合法的网址",
@@ -78,6 +85,19 @@
         min: jQuery.validator.format("请输入一个最小为{0} 的值")
     });
 
+     /* 用户管理-新增-选择部门树 */
+     function selectDeptTree() {
+         var treeId = $("#treeId").val();
+         var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+         var url = ctx + "system/dept/selectDeptTree/" + deptId;
+         var options = {
+             title: '选择部门',
+             width: "380",
+             url: url,
+             callBack: doSubmit
+         };
+         $.modal.openOptions(options);
+     }
 
     $("#userForm").validate({
         debug: true,
@@ -94,7 +114,7 @@
             },"json");
         },
         rules: {
-            realname: {
+            name: {
                 required: true
             },
             username: {
@@ -124,12 +144,12 @@
             // idcard: {
             //     card: true
             // },
-            phone: {
-                phone: true
+            mobileNumber: {
+                mobileNumber: true
             }
         },
         messages: {
-            // realname: {
+            // name: {
             //     required: "真实姓名不能为空"
             // },
             // username: {
@@ -158,16 +178,16 @@
             // idcard: {
             //     card: "请输入有效身份证号"
             // },
-            phone: {
-                phone: "必填"
+            mobileNumber: {
+                mobileNumber: "必填"
             }
         }
     });
     /*手机号格式验证*/
-    $.validator.addMethod("phone", function (value, element, params) {
+    $.validator.addMethod("mobileNumber", function (value, element, params) {
         var reg = /^1[34578]\d{9}$/;
         return reg.test(value);
-    }, "phone error");
+    }, "mobileNumber error");
 
     let url = /*[[@{/user/save}]]*/ "/json/unit.json";
 

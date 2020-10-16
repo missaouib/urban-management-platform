@@ -9,6 +9,7 @@ import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.dto.ChangePasswordDTO;
 import com.unicom.urban.management.pojo.dto.UserDTO;
+import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.password.PasswordService;
@@ -64,10 +65,24 @@ public class UserService {
             throw new DataValidException("账号已经存在");
         }
 
+        persistUser(userDTO);
+
+    }
+
+    /**
+     * 持久化user对象
+     */
+    private void persistUser(UserDTO userDTO) {
+        String deptId = userDTO.getDeptId();
+        Dept dept = new Dept();
+        dept.setId(deptId);
+
         User user = new User();
         user.setName(userDTO.getName());
         user.setUsername(userDTO.getUsername());
         user.setMobileNumber(userDTO.getMobileNumber());
+        user.setProfilePhotoUrl("http://www.baidu.com/");
+//        user.setDept(dept);
         initPassword(user);
 
         userRepository.save(user);
@@ -122,7 +137,12 @@ public class UserService {
 
         }
 
-        userRepository.deleteUserWithIds(idList);
+//        userRepository.deleteUserWithIds(idList);
+
+        for (String id : idList) {
+            userRepository.deleteById(id);
+        }
+
     }
 
     /**

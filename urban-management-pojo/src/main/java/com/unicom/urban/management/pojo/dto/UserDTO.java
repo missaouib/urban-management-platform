@@ -17,4 +17,6 @@ public class UserDTO {
     @MobileNumber
     private String mobileNumber;
 
+    private String deptId;
+
 }

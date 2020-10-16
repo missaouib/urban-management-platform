@@ -1,5 +1,6 @@
 package com.unicom.urban.management.pojo.entity;
 
+import com.unicom.urban.management.pojo.enums.Delete;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,8 +17,8 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@SQLDelete(sql = "update sys_user set sts = 1 where id = ?")
-@Where(clause = "sts = 0")
+@SQLDelete(sql = "update sys_user set deleted = " + Delete.DELETE + " where id = ?")
+@Where(clause = "deleted = " + Delete.NORMAL)
 @Table(name = "sys_user")
 public class User extends BaseEntity {
 
@@ -34,7 +35,7 @@ public class User extends BaseEntity {
     /**
      * 登录账号
      */
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = false)
     private String username;
 
     @Column(nullable = false)
