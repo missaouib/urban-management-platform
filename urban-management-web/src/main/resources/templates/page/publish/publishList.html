@@ -27,6 +27,7 @@
         </p>
 
     </div>
+    <button class="but_save" type="button" onclick="layerPublish()">发布</button>
     <div class="maps">
         <div class="map" id="map" style="width: 100%;height: 100%"></div>
     </div>
@@ -48,6 +49,7 @@
 
 
     let getPublishListUrl = /*[[@{/publish/getPublishList}]]*/ "/publish/getPublishList";
+    let layerPublishUrl = /*[[@{/publish/layerPublish}]]*/ "/publish/layerPublish";
 
     $(function () {
         getPublishList();
@@ -77,6 +79,13 @@
         let getPublishOneUrl = /*[[@{/publish/getPublishOne/}]]+id*/ "/publish/getPublishOne/" + id;
         $.ajaxUtil.get(getPublishOneUrl, function (e) {
             console.log("e", e);
+        })
+    }
+
+    function layerPublish() {
+        console.log(111);
+        $.operate.post(layerPublishUrl, {id: "111"}, function (e) {
+
         })
     }
 

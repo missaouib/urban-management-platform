@@ -42,5 +42,9 @@ public class RecordService {
         return RecordMapper.INSTANCE.RecordListToRecordVOList(allByPublishId);
     }
 
+    public void saveList(List<Record> recordList) {
+        recordRepository.saveAll(recordList);
+    }
+
 
 }

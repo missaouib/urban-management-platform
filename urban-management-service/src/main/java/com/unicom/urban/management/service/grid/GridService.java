@@ -142,4 +142,8 @@ public class GridService {
 
     }
 
+    public List<Grid> findAllByPublishIdAndRecordSts(String publishId) {
+        return gridRepository.findAllByPublish_IdAndRecord_Sts(publishId, StsConstant.EDITING);
+    }
+
 }
