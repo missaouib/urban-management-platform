@@ -100,6 +100,10 @@ class ComponentController<<部件界面类>>{
     +ComponentList(component):Component[*]         // 查询部件集合
     +ComponentTypeList():ComponentType[*]          // 获取部件分类集合
     +saveComponentList(Component[*]):boolean       // 保存部件
+    +componentImport():boolean
+    +objState() : Kv[*]
+    +dataSource() : Kv[*]
+    +grid() : Grid[*]
 }
 
 class ComponentService<<部件业务类>>{
