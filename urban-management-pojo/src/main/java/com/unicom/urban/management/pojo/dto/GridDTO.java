@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
@@ -38,13 +37,11 @@ public class GridDTO {
     @NotBlank(message = "初始日期不能为空")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
     private LocalDateTime initialDate;
 
     @NotBlank(message = "终止日期不能为空")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
     private LocalDateTime terminationDate;
 
     /* -Record----------------------------------- */
