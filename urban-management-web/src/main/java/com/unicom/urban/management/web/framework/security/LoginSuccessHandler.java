@@ -30,7 +30,7 @@ public class LoginSuccessHandler extends AbstractAuthenticationHandler implement
         String content = objectMapper.writeValueAsString(Result.success());
 
         // 记录登录日志
-        saveLoginInfo(request, response, content);
+//        saveLoginInfo(request, response, content);
 
         handleResponse(request, response, content);
 
