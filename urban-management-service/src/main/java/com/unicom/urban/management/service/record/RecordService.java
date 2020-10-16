@@ -2,7 +2,9 @@ package com.unicom.urban.management.service.record;
 
 import com.unicom.urban.management.common.constant.StsConstant;
 import com.unicom.urban.management.dao.record.RecordRepository;
+import com.unicom.urban.management.mapper.RecordMapper;
 import com.unicom.urban.management.pojo.entity.Record;
+import com.unicom.urban.management.pojo.vo.RecordVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +32,10 @@ public class RecordService {
         recordRepository.saveAndFlush(record);
     }
 
-    public List<Record> findAllByPublishId(String id) {
-        return recordRepository.findAllByPublish_Id(id);
+    public List<RecordVO> findAllByPublishId(String id) {
+        List<Record> allByPublishId = recordRepository.findAllByPublish_Id(id);
+        return RecordMapper.INSTANCE.RecordListToRecordVOList(allByPublishId);
     }
+
 
 }

@@ -15,7 +15,7 @@
 </style>
 <body>
 <div class="infoBox">
-    <div class="radioInput">
+    <div class="radioInput" id="publishList">
         <p>
             <input type="radio" value="1" name="handsom">第一个
         </p>
@@ -46,6 +46,7 @@
 
 <script type="text/javascript" th:inline="javascript">
 
+
     let getPublishListUrl = /*[[@{/publish/getPublishList}]]*/ "/publish/getPublishList";
 
     $(function () {
@@ -55,7 +56,28 @@
     function getPublishList() {
         $.ajaxUtil.get(getPublishListUrl, function (e) {
             console.log("e", e);
+            let data = e.data;
+            $("#publishList").empty();
+            let htmlStr = "";
+            for (let i = 0; i < data.length; i++) {
+                htmlStr += "<p>"
+                htmlStr += "<input type='radio' value='" + data[i].id + "' name='publish' onclick='radioPublish(this)'>" + data[i].name
+                htmlStr += "</p>"
+            }
+            $("#publishList").append(htmlStr);
         });
+    }
+
+    function radioPublish(data) {
+        console.log("value", data.value);
+        getPublishOneUrl(data.value);
+    }
+
+    function getPublishOneUrl(id) {
+        let getPublishOneUrl = /*[[@{/publish/getPublishOne/}]]+id*/ "/publish/getPublishOne/" + id;
+        $.ajaxUtil.get(getPublishOneUrl, function (e) {
+            console.log("e", e);
+        })
     }
 
 </script>
@@ -80,19 +102,6 @@
             zoom: 12
         })
     });
-
-
-    $('input[type=radio][name=handsom]').change(function () {
-        if (this.value == '1') {
-            alert("1");
-        } else if (this.value == '2') {
-            alert(2)
-        } else if (this.value == '3') {
-            alert(3)
-        }
-    });
-
-
 </script>
 </body>
 </html>

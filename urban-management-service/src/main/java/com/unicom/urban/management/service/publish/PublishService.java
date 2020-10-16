@@ -54,4 +54,5 @@ public class PublishService {
         return PublishMapper.INSTANCE.publishListToPublishVOList(publishList);
     }
 
+
 }
