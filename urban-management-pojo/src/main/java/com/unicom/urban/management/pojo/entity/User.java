@@ -1,6 +1,6 @@
 package com.unicom.urban.management.pojo.entity;
 
-import com.unicom.urban.management.pojo.enums.Delete;
+import com.unicom.urban.management.pojo.Delete;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -8,6 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+
 
 /**
  * 用户
@@ -19,7 +20,7 @@ import javax.persistence.*;
 @Entity
 @SQLDelete(sql = "update sys_user set deleted = " + Delete.DELETE + " where id = ?")
 @Where(clause = "deleted = " + Delete.NORMAL)
-@Table(name = "sys_user")
+@Table(name = "sys_user", indexes = {@Index(columnList = "deleted")})
 public class User extends BaseEntity {
 
     @Id

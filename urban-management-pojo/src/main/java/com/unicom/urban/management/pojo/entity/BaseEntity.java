@@ -2,7 +2,7 @@ package com.unicom.urban.management.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.unicom.urban.management.pojo.enums.Delete;
+import com.unicom.urban.management.pojo.Delete;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedBy;

@@ -1,7 +1,7 @@
 package com.unicom.urban.management.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.unicom.urban.management.pojo.enums.Delete;
+import com.unicom.urban.management.pojo.Delete;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
@@ -13,7 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * 部件信息
@@ -105,7 +104,7 @@ public class ComponentInfo extends BaseEntity {
      * 数据来源
      */
     @ManyToOne
-    private KV  dataSource;
+    private KV dataSource;
 
     /**
      * 备注

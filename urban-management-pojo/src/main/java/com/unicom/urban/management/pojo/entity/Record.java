@@ -1,6 +1,6 @@
 package com.unicom.urban.management.pojo.entity;
 
-import com.unicom.urban.management.pojo.enums.Delete;
+import com.unicom.urban.management.pojo.Delete;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;

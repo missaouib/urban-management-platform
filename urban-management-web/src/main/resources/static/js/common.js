@@ -785,7 +785,7 @@ var table = {
 				}
 				return url;
 			},
-			submit: function(url, type, dataType, data, callback) {
+			submit: function (url, type, dataType, data, callback) {
 				let config = {
 					url: url,
 					type: type,

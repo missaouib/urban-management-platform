@@ -1,4 +1,4 @@
-package com.unicom.urban.management.pojo.enums;
+package com.unicom.urban.management.pojo;
 
 public class Delete {
 
