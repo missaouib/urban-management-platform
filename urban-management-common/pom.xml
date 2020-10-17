@@ -73,6 +73,11 @@
             <artifactId>activiti-spring-boot-starter-jpa</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.uuid</groupId>
+            <artifactId>java-uuid-generator</artifactId>
+        </dependency>
+
     </dependencies>
 
 

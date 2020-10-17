@@ -24,6 +24,7 @@
         <hutool-all.version>5.4.3</hutool-all.version>
         <firebirds.version>1.0.0-SNAPSHOT</firebirds.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <java-uuid-generator.version>3.1.4</java-uuid-generator.version>
     </properties>
 
     <modules>
@@ -70,6 +71,12 @@
                 <groupId>com.github.tobato</groupId>
                 <artifactId>fastdfs-client</artifactId>
                 <version>${fastdfs-client.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.uuid</groupId>
+                <artifactId>java-uuid-generator</artifactId>
+                <version>${java-uuid-generator.version}</version>
             </dependency>
 
             <dependency>
