@@ -1,8 +1,11 @@
 package com.unicom.urban.management.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.unicom.urban.management.pojo.enums.Delete;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
@@ -24,6 +27,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@SQLDelete(sql = "update component_info set deleted = " + Delete.DELETE + " where id = ?")
+@Where(clause = "deleted = " + Delete.NORMAL)
 public class ComponentInfo extends BaseEntity {
     @Id
     @GeneratedValue(generator = "uuid2")

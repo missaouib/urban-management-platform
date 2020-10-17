@@ -211,39 +211,52 @@ public class ComponentService {
     }
 
     public void saveComponent(List<ComponentDTO> dtos) {
-        dtos.forEach(c -> {
-            Optional<Component> ifnull = componentRepository.findById(c.getComponentId());
-            if (ifnull.isPresent()) {
-                this.update(ifnull.get(),c);
-            }
-        });
+        dtos.forEach(this::update);
     }
 
-    public void update(Component component,ComponentDTO c){
-        KV objState = KV.builder().id(c.getObjState()).build();
-        KV datasource = KV.builder().id(c.getDataSource()).build();
-        Grid grid = new Grid();
-        grid.setId(c.getBgid());
-        component.getComponentInfo().setObjId(c.getObjId());
-        component.getComponentInfo().setObjName(c.getObjName());
-        component.getComponentInfo().setMainDeptCode(c.getMainDeptCode());
-        component.getComponentInfo().setMainDeptName(c.getMainDeptCode());
-        component.getComponentInfo().setOwnershipDeptCode(c.getOwnershipDeptCode());
-        component.getComponentInfo().setOwnershipDeptName(c.getOwnershipDeptName());
-        component.getComponentInfo().setMaintenanceDeptCode(c.getMaintenanceDeptCode());
-        component.getComponentInfo().setMaintenanceDeptName(c.getMaintenanceDeptName());
-        component.getComponentInfo().setBgid(grid);
-        component.getComponentInfo().setObjState(objState);
-        component.getComponentInfo().setInitialDate(c.getInitialDate());
-        component.getComponentInfo().setChangeDate(c.getChangeDate());
-        component.getComponentInfo().setDataSource(datasource);
-        componentRepository.saveAndFlush(component);
+    public void update(ComponentDTO c){
+        Optional<Component> ifnull = componentRepository.findById(c.getComponentId());
+        if (ifnull.isPresent()) {
+            Component component = ifnull.get();
+            KV objState = KV.builder().id(c.getObjState()).build();
+            KV datasource = KV.builder().id(c.getDataSource()).build();
+            Grid grid = new Grid();
+            grid.setId(c.getBgid());
+            component.getComponentInfo().setObjId(c.getObjId());
+            component.getComponentInfo().setObjName(c.getObjName());
+            component.getComponentInfo().setMainDeptCode(c.getMainDeptCode());
+            component.getComponentInfo().setMainDeptName(c.getMainDeptCode());
+            component.getComponentInfo().setOwnershipDeptCode(c.getOwnershipDeptCode());
+            component.getComponentInfo().setOwnershipDeptName(c.getOwnershipDeptName());
+            component.getComponentInfo().setMaintenanceDeptCode(c.getMaintenanceDeptCode());
+            component.getComponentInfo().setMaintenanceDeptName(c.getMaintenanceDeptName());
+            component.getComponentInfo().setBgid(grid);
+            component.getComponentInfo().setObjState(objState);
+            component.getComponentInfo().setInitialDate(c.getInitialDate());
+            component.getComponentInfo().setChangeDate(c.getChangeDate());
+            component.getComponentInfo().setDataSource(datasource);
+            componentRepository.saveAndFlush(component);
+        }
+
     }
 
-
+    /**
+     * 通过编辑id（位置）查询部件
+     * @param recordId string
+     * @return T
+     */
     public ComponentVO getComponentByRecordId(String recordId){
         Component byRecord_id = componentRepository.findByRecord_Id(recordId);
         return ComponentMapper.INSTANCE.componentToComponentVO(byRecord_id);
+    }
+
+    public void deleteComponent(String id){
+        Optional<Component> ifnull = componentRepository.findById(id);
+       if(ifnull.isPresent()){
+           Component component = ifnull.get();
+           recordService.delete(component.getRecord());
+           componentRepository.delete(component);
+       }
     }
 
 }

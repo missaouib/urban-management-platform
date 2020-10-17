@@ -46,5 +46,9 @@ public class RecordService {
         recordRepository.saveAll(recordList);
     }
 
+    public void delete(Record record){
+        recordRepository.delete(record);
+    }
+
 
 }

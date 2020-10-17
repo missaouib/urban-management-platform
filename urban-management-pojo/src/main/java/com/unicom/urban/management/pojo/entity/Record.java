@@ -1,7 +1,10 @@
 package com.unicom.urban.management.pojo.entity;
 
+import com.unicom.urban.management.pojo.enums.Delete;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
@@ -12,6 +15,8 @@ import javax.persistence.*;
  */
 @Data
 @Entity
+@SQLDelete(sql = "update record set deleted = " + Delete.DELETE + " where id = ?")
+@Where(clause = "deleted = " + Delete.NORMAL)
 public class Record extends BaseEntity {
 
     @Id

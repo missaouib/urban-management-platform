@@ -64,12 +64,12 @@
                     <label class="">养护部门名称</label>
                     <input type="text" class="find_input" id="maintenanceDeptName" name="maintenanceDeptName">
                 </p>
-<!--                <p>-->
-<!--                    <label class="">初始日期</label>-->
-<!--                    <input type="text" class="datepicker" readonly="readonly">-->
-<!--                    <label class="">变更日期</label>-->
-<!--                    <input type="text" class="datepicker" readonly="readonly">-->
-<!--                </p>-->
+                <!--                <p>-->
+                <!--                    <label class="">初始日期</label>-->
+                <!--                    <input type="text" class="datepicker" readonly="readonly">-->
+                <!--                    <label class="">变更日期</label>-->
+                <!--                    <input type="text" class="datepicker" readonly="readonly">-->
+                <!--                </p>-->
                 <p>
                     <label class="">所在网格</label>
                     <select id="bgid" name="bgid"></select>
@@ -86,10 +86,9 @@
                 </p>
 
                 <p class="function_btn">
-                    <input type="button" class="check_btn1" onclick="" value="删除">
+                    <input type="button" class="check_btn1" onclick="deleteComponent()" value="删除">
                     <input type="button" class="check_btn1" onclick="saveComponent()" value="修改">
                     <input type="button" class="check_btn1" onclick="saveComponent()" value="保存">
-                    <input type="button" class="check_btn1" onclick="" value="返回">
                 </p>
             </form>
         </div>
@@ -189,7 +188,16 @@
 
     function saveComponent() {
         let data = $('#component').serialize();
-        $.operate.saveAndReload(saveUrl, data);
+        if ($("#componentId").val() === null || $("componentId").val() === "") {
+            $.operate.saveAndReload(saveUrl, data);
+        } else {
+            $.operate.saveAndReload(updateUrl, data);
+        }
+    }
+
+    function deleteComponent() {
+        let data = $('#component').serialize();
+        $.operate.saveAndReload(deleteUrl, data);
     }
 
     let componentTypeUrl = /*[[@{/componentType}]]*/ "/componentType";
@@ -204,9 +212,13 @@
 
     let saveUrl = /*[[@{/component}]]*/ "/component";
 
+    let updateUrl = /*[[@{/updateComponent}]]*/ "/updateComponent";
+
     let recordUrl = /*[[@{/recordVOS}]]*/ "/recordVOS";
 
     let componentByRecordId = /*[[@{/componentByRecordId}]]*/ "/componentByRecordId";
+
+    let deleteUrl = /*[[@{/deleteComponent}]]*/ "/deleteComponent";
 
 
     var center = ol.proj.transform([126.62, 45.74], "EPSG:4326", "EPSG:3857");

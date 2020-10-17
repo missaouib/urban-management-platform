@@ -76,6 +76,15 @@ public class ComponentController {
     public void saveComponent(@Valid ComponentDTO dto){
         componentService.saveComponent(dto);
     }
+    @PostMapping("/updateComponent")
+    public void updateComponent(@Valid ComponentDTO dto){
+        componentService.update(dto);
+    }
+
+    @PostMapping("/deleteComponent")
+    public void deleteComponent(@Valid ComponentDTO dto){
+        componentService.deleteComponent(dto.getComponentId());
+    }
 
 
 
