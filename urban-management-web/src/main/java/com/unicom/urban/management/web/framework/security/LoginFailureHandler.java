@@ -36,7 +36,7 @@ public class LoginFailureHandler extends AbstractAuthenticationHandler implement
         // 记录登录日志
         String content = getContentByException(exception);
 
-        saveLoginInfo(request, response, content);
+//        saveLoginInfo(request, response, content);
 
         handleResponse(request, response, content);
 
