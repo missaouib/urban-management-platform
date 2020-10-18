@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
     <title>用户管理</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
@@ -11,7 +11,7 @@
 
 </head>
 
-<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
 <div class="notice_main ">
 
     <div class="notice_check">
@@ -20,45 +20,43 @@
                 <label class="">分类</label>
                 <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
                 <input type="hidden" readonly="readonly" id="componentTypeId" class="find_input">
-                <button type="button" class="addBtn"  data-toggle="modal" data-target="#modal-default">
+                <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">
                     +
                 </button>
                 <!--                <label class="">名称</label>-->
                 <!--                <input type="text" class="find_input" name="name" >-->
-                <input type="button" class="check_btn" onclick="" value="查询">
+                <input type="button" class="check_btn" onclick="search()" value="查询">
                 <input type="button" class="check_btn1" onclick="" value="更多检索">
                 <input type="button" class="check_btn1" onclick="" value="重置">
             </p>
             <p>
-                <label class="">插件标识码</label>
-                <input type="text" class="find_input" name="name">
+                <label class="">部件标识码</label>
+                <input type="text" class="find_input" id="objId" name="name">
                 <label class="">部件名称</label>
-                <input type="text" class="find_input" name="name">
+                <input type="text" class="find_input" id="objName" name="name">
                 <label class="">主管部门代码</label>
-                <input type="text" class="find_input" name="name">
+                <input type="text" class="find_input" id="mainDeptCode" name="name">
             </p>
             <p>
                 <label class="">主管部门名称</label>
-                <input type="text" class="find_input" name="name">
+                <input type="text" class="find_input" id="mainDeptName" name="name">
                 <label class="">权属单位代码</label>
-                <input type="text" class="find_input" name="name">
+                <input type="text" class="find_input" id="ownershipDeptCode" name="name">
                 <label class="">权属单位名称</label>
-                <input type="text" class="find_input" name="name">
+                <input type="text" class="find_input" id="ownershipDeptName" name="name">
             </p>
             <p>
                 <label class="">养护单位代码</label>
-                <input type="text" class="find_input" name="name">
+                <input type="text" class="find_input" id="maintenanceDeptCode" name="name">
                 <label class="">养护单位名称</label>
-                <input type="text" class="find_input" name="name">
+                <input type="text" class="find_input" id="maintenanceDeptName" name="name">
                 <label class="">所在单元网格</label>
-                <input type="text" class="find_input" name="name">
+                <select class="find_input" required id="bgid" name="bgid"></select>
             </p>
             <p>
                 <label class="">部件状态</label>
-                <select class="find_input" id="safeLevel" name="safeLevel" required>
-                    <option>请选择</option>
-                    <option>1</option>
-                    <option>2</option>
+                <select class="find_input" id="objState" name="objState" required>
+
                 </select>
                 <label class="">初始日期</label>
                 <input type="text" class="find_input datepicker" readonly="readonly">
@@ -67,10 +65,8 @@
             </p>
             <p>
                 <label class="">数据来源</label>
-                <select class="find_input" name="safeLevel" required>
-                    <option>请选择</option>
-                    <option>1</option>
-                    <option>2</option>
+                <select class="find_input" id="dataSource" name="safeLevel" required>
+
                 </select>
                 <input type="button" class="check_btn" onclick="" value="查询">
                 <input type="button" class="check_btn1" onclick="" value="精简检索">
@@ -107,8 +103,6 @@
     </div>
 
 
-    <button id="addBtn" onclick="add()">增加</button>
-
 </div>
 
 
@@ -124,24 +118,23 @@
 
 
         //点击全选框时触发的操作
-        onCheckAll:function(rows){
+        onCheckAll: function (rows) {
             $(".componentTable").removeAttr('disabled');
             $(".componentSelect").removeAttr('disabled');
             console.log(rows);
-            for(var i=0;i<rows.length;i++)
-            {
+            for (var i = 0; i < rows.length; i++) {
                 // addItem(rows[i]);
                 //alert(rows[i].ResultName)
             }
         },
         //  点击每行进行函数的触发
-         onClickRow : function(row, tr,flied){
+        onClickRow: function (row, tr, flied) {
 
 
-         },
+        },
 
         //点击每一个单选框时触发的操作
-        onCheck:function(row){
+        onCheck: function (row) {
             console.log(row);
             $(".selected .componentTable").removeAttr('disabled');
             $(".selected .componentSelect").removeAttr('disabled');
@@ -149,40 +142,42 @@
 
         //取消每一个单选框时对应的操作；
 
-        onUncheck:function(row,tr,flied){
+        onUncheck: function (row, tr, flied) {
             let input = tr[0].parentNode.parentNode;
             console.log(tr[0])
+
             // console.log(input)
-            function sibling( elem ) {
+            function sibling(elem) {
                 var r = [];
                 var n = elem.parentNode.firstChild;
-                for ( ; n; n = n.nextSibling ) {
-                    if ( n.nodeType === 1 && n !== elem ) {
-                        r.push( n );
+                for (; n; n = n.nextSibling) {
+                    if (n.nodeType === 1 && n !== elem) {
+                        r.push(n);
                     }
                 }
                 return r;
             }
+
             var allBorther = sibling(input)
             // console.log(allBorther[14].childNodes[1])
-            for(var i=0;i<10;i++){
+            for (var i = 0; i < 10; i++) {
                 var selectInput = allBorther[14].childNodes[1]
                 var selectInput2 = allBorther[11].childNodes[1]
-                selectInput.setAttribute('disabled','disabled');
-                selectInput2.setAttribute('disabled','disabled');
-                var input12=allBorther[12].childNodes[0]
-                var input13=allBorther[13].childNodes[0]
-                input12.setAttribute('disabled','disabled');
-                input13.setAttribute('disabled','disabled');
-                var inputs = allBorther[i+1].childNodes[0]
-                inputs.setAttribute('disabled','disabled');
+                selectInput.setAttribute('disabled', 'disabled');
+                selectInput2.setAttribute('disabled', 'disabled');
+                var input12 = allBorther[12].childNodes[0]
+                var input13 = allBorther[13].childNodes[0]
+                input12.setAttribute('disabled', 'disabled');
+                input13.setAttribute('disabled', 'disabled');
+                var inputs = allBorther[i + 1].childNodes[0]
+                inputs.setAttribute('disabled', 'disabled');
             }
         },
 
         ////取消所有
         onUncheckAll: function (row) {
-            $(".componentTable").attr('disabled','disabled');
-            $(".componentSelect").attr('disabled','disabled');
+            $(".componentTable").attr('disabled', 'disabled');
+            $(".componentSelect").attr('disabled', 'disabled');
             console.log(row)
         },
         columns: [
@@ -202,135 +197,197 @@
             {
                 field: 'objId',
                 title: '部件标识码',
-                formatter:priceForm,
+                formatter: priceForm,
 
             },
             {
                 field: 'objName',
                 title: '部件名称',
-                formatter:priceForm,
+                formatter: priceForm,
 
             },
             {
                 field: 'mainDeptCode',
                 title: '主管部门代码',
-                formatter:priceForm,
+                formatter: priceForm,
 
             },
             {
                 field: 'mainDeptName',
                 title: '主管部门名称',
-                formatter:priceForm,
+                formatter: priceForm,
             },
             {
                 field: 'ownershipDeptCode',
                 title: '权属单位代码',
-                formatter:priceForm,
+                formatter: priceForm,
 
             },
             {
                 field: 'ownershipDeptName',
                 title: '权属单位名称',
-                formatter:priceForm,
+                formatter: priceForm,
             },
             {
                 field: 'maintenanceDeptCode',
                 title: '养护单位代码',
-                formatter:priceForm,
+                formatter: priceForm,
 
             },
             {
                 field: 'maintenanceDeptName',
                 title: '养护单位名称',
-                formatter:priceForm,
+                formatter: priceForm,
 
             },
             {
                 field: 'grid',
                 title: '所在单元网格',
-                formatter:priceForm,
+                formatter: grid,
 
             },
             {
                 field: 'objState',
                 title: '部件状态',
-                formatter:objState,
+                formatter: objState,
 
             },
             {
                 field: 'initialDate',
                 title: '初始日期',
-                formatter:priceForm,
+                formatter: priceForm,
 
             },
             {
                 field: 'changeDate',
                 title: '变更日期',
-                formatter:priceForm,
+                formatter: priceForm,
 
             },
             {
                 field: 'sno',
                 title: '数据来源',
-                formatter:nameForm,
+                formatter: dataSource,
 
             },
 
         ],
-        data:[]
+        data: []
     });
+
     //input输入框
-    function priceForm(value,row,index){
-        return ['<input type="text" id="1plan'+row.id+'" data='+value+' value='+value+' onblur="addTarget('+row.id+',1)" disabled="disabled" class="componentTable">'].join("")
+    function priceForm(value, row, index) {
+        return ['<input type="text" id="1plan' + row.id + '" data=' + value + ' value=' + value + ' onblur="addTarget(' + row.id + ',1)" disabled="disabled" class="componentTable">'].join("")
     }
+
     //下拉列表
-    function objState(value,row,index){
-        console.log("obj",row)
+    function objState(value, row, index) {
         var objStateStr = "<select id=\"sele`+ row.id +`\" class=\"componentSelect\" disabled=\"disabled\">";
         $(objState.data).each(function (index, value) {
-            if(row.objStateId !== value.id){
+            if (row.objStateId !== value.id) {
                 objStateStr += "<option value='" + value.id + "'>" + value.value + "</option>"
-            }else{
+            } else {
                 objStateStr += "<option selected='selected' value='" + value.id + "'>" + value.value + "</option>"
             }
         })
         objStateStr += "</select>";
-        $("#objState").append(objStateStr);
         return objStateStr;
     }
-    function nameForm(value,row,index){
 
-        return "";
+    function dataSource(value, row, index) {
+        var dataSource = "<select id=\"sele`+ row.id +`\" class=\"componentSelect\" disabled=\"disabled\">";
+        $(datasourceData.data).each(function (index, value) {
+            if (row.objStateId !== value.id) {
+                dataSource += "<option value='" + value.id + "'>" + value.value + "</option>"
+            } else {
+                dataSource += "<option selected='selected' value='" + value.id + "'>" + value.value + "</option>"
+            }
+        })
+        return dataSource;
+    }
+
+    function grid(value, row, index) {
+        var grid = "<select id=\"sele`+ row.id +`\" class=\"componentSelect\" disabled=\"disabled\">";
+        $(gridData.data).each(function (index, value) {
+            if (row.objStateId !== value.id) {
+                grid += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+            } else {
+                grid += "<option selected='selected' value='" + value.id + "'>" + value.gridName + "</option>"
+            }
+        })
+        grid += "</select>";
+        return grid;
     }
 
 
-    function add(){
+    function search() {
+        $('#table').bootstrapTable('removeAll');
         var count = $('#table').bootstrapTable('getData').length;
-        $.ajaxUtil.get(searchUrl, function (e) {
-            console.log(e)
-            $(e.data).each(function (index,value) {
-                $('#table').bootstrapTable('insertRow',{index:count,row: {
-                        index:index+1,
-                        id:value.id,
-                        name:value.objId,
-                        componentType:value.componentType,
-                        objId:value.objId,
-                        objName:value.objName,
-                        mainDeptCode:value.mainDeptCode,
-                        mainDeptName:value.mainDeptName,
-                        ownershipDeptCode:value.ownershipDeptCode,
-                        ownershipDeptName:value.ownershipDeptName,
-                        maintenanceDeptCode:value.maintenanceDeptCode,
-                        maintenanceDeptName:value.maintenanceDeptName,
-                        bgname:value.bgname,
-                        bgid:value.bgid,
-                        objState:value.objState,
-                        objStateId:value.objStateId,
-                        initialDate:value.initialDate,
-                        changeDate:value.changeDate,
-                        dataSource:value.dataSource,
-                        dataSourceId:value.dataSourceId
-                    }});
+        var param = "?1=1";
+        if ($("#componentTypeId").val() !== "") {
+            param += "&componentTypeId=" + $("#componentTypeId").val();
+        }
+        if ($("#objId").val() !== "") {
+            param += "&objId=" + $("#objId").val();
+        }
+        if ($("#objName").val() !== "") {
+            param += "&objName=" + $("#objName").val();
+        }
+        if ($("#mainDeptCode").val() !== "") {
+            param += "&mainDeptCode=" + $("#mainDeptCode").val();
+        }
+        if ($("#mainDeptName").val() !== "") {
+            param += "&mainDeptName=" + $("#mainDeptName").val();
+        }
+        if ($("#ownershipDeptCode").val() !== "") {
+            param += "&ownershipDeptCode=" + $("#ownershipDeptCode").val();
+        }
+        if ($("#ownershipDeptName").val() !== "") {
+            param += "&ownershipDeptName=" + $("#ownershipDeptName").val();
+        }
+        if ($("#maintenanceDeptCode").val() !== "") {
+            param += "&maintenanceDeptCode=" + $("#maintenanceDeptCode").val();
+        }
+        if ($("#maintenanceDeptName").val() !== "") {
+            param += "&maintenanceDeptName=" + $("#maintenanceDeptName").val();
+        }
+        if ($("#bgid").val() !== "" && $("#objState").val() !== null) {
+            param += "&bgid=" + $("#bgid").val();
+        }
+        if ($("#objState").val() !== "" && $("#objState").val() !== null) {
+            param += "&objState=" + $("#objState").val();
+        }
+        if ($("#dataSource").val() !== "" && $("#dataSource").val() !== null) {
+            param += "&dataSource=" + $("#dataSource").val();
+        }
+
+
+        $.ajaxUtil.get(searchUrl + param, function (e) {
+            $(e.data).each(function (index, value) {
+                $('#table').bootstrapTable('insertRow', {
+                    index: count, row: {
+                        index: index + 1,
+                        id: value.id,
+                        name: value.objId,
+                        componentType: value.componentType,
+                        objId: value.objId,
+                        objName: value.objName,
+                        mainDeptCode: value.mainDeptCode,
+                        mainDeptName: value.mainDeptName,
+                        ownershipDeptCode: value.ownershipDeptCode,
+                        ownershipDeptName: value.ownershipDeptName,
+                        maintenanceDeptCode: value.maintenanceDeptCode,
+                        maintenanceDeptName: value.maintenanceDeptName,
+                        bgname: value.bgname,
+                        bgid: value.bgid,
+                        objState: value.objState,
+                        objStateId: value.objStateId,
+                        initialDate: value.initialDate,
+                        changeDate: value.changeDate,
+                        dataSource: value.dataSource,
+                        dataSourceId: value.dataSourceId
+                    }
+                });
             })
 
         })
@@ -364,7 +421,6 @@
     }
 
 
-
     $(function () {
         $.ajaxUtil.get(componentTypeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
@@ -382,14 +438,41 @@
 
     let objStateUrl = /*[[@{/objState}]]*/ "/objState";
 
+    let dataSourceUrl = /*[[@{/dataSource}]]*/ "/dataSource";
+
+    let gridUrl = /*[[@{/grid}]]*/ "/grid";
+
 
     $(function () {
         $.ajaxUtil.get(objStateUrl, function (e) {
+            var objStateStr = "<option value=''>--请选择--</option>";
+            $(e.data).each(function (index, value) {
+                objStateStr += "<option value='" + value.id + "'>" + value.value + "</option>"
+            })
+            $("#objState").append(objStateStr);
             objState = e;
+        });
+        $.ajaxUtil.get(gridUrl, function (e) {
+            var gridStr = "<option value=''>--请选择--</option>";
+            $(e.data).each(function (index, value) {
+                gridStr += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+            })
+            $("#bgid").append(gridStr);
+            gridData = e;
+        });
+        $.ajaxUtil.get(dataSourceUrl, function (e) {
+            var datasourceStr = "<option value=''>--请选择--</option>";
+            $(e.data).each(function (index, value) {
+                datasourceStr += "<option value='" + value.id + "'>" + value.value + "</option>"
+            })
+            $("#dataSource").append(datasourceStr);
+            datasourceData = e
         })
-        add();
+        search();
     })
     var objStare;
+    var gridData;
+    var datasourceData;
 </script>
 </body>
 </html>
