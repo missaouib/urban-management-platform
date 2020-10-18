@@ -144,8 +144,7 @@
 
         onUncheck: function (row, tr, flied) {
             let input = tr[0].parentNode.parentNode;
-            console.log(tr[0])
-
+            console.log(row)
             // console.log(input)
             function sibling(elem) {
                 var r = [];
@@ -159,17 +158,19 @@
             }
 
             var allBorther = sibling(input)
-            // console.log(allBorther[14].childNodes[1])
-            for (var i = 0; i < 10; i++) {
-                var selectInput = allBorther[14].childNodes[1]
-                var selectInput2 = allBorther[11].childNodes[1]
+            for (var i = 0; i < 9; i++) {
+                var selectInput = allBorther[10].childNodes[0]
+                var selectInput2 = allBorther[11].childNodes[0]
+                var selectInput3 = allBorther[14].childNodes[0]
                 selectInput.setAttribute('disabled', 'disabled');
+                selectInput3.setAttribute('disabled', 'disabled');
                 selectInput2.setAttribute('disabled', 'disabled');
                 var input12 = allBorther[12].childNodes[0]
                 var input13 = allBorther[13].childNodes[0]
                 input12.setAttribute('disabled', 'disabled');
                 input13.setAttribute('disabled', 'disabled');
-                var inputs = allBorther[i + 1].childNodes[0]
+                // var inputs = allBorther[i + 1].childNodes[0]
+                var inputs = allBorther[i + 2].childNodes[0]
                 inputs.setAttribute('disabled', 'disabled');
             }
         },
@@ -255,13 +256,13 @@
             {
                 field: 'initialDate',
                 title: '初始日期',
-                formatter: priceForm,
+                formatter: dateForm,
 
             },
             {
                 field: 'changeDate',
                 title: '变更日期',
-                formatter: priceForm,
+                formatter: dateForm,
 
             },
             {
@@ -278,6 +279,11 @@
     //input输入框
     function priceForm(value, row, index) {
         return ['<input type="text" id="1plan' + row.id + '" data=' + value + ' value=' + value + ' onblur="addTarget(' + row.id + ',1)" disabled="disabled" class="componentTable">'].join("")
+    }
+
+    //input输入框 时间插件！
+    function dateForm(value, row, index) {
+        return ['<input type="text" id="1plan' + row.id + '" data=' + value + ' value=' + value + ' onblur="addTarget(' + row.id + ',1)" disabled="disabled" class="componentTable datepicker"  readonly="readonly">'].join("")
     }
 
     //下拉列表
@@ -393,7 +399,35 @@
         })
     }
 
+    //id:这条数据的id  type :1,2,3:代表的是第几个目标值
+    function addTarget(id,type){
+        var writevalue=$("#"+type+"plan"+id).val(); //获取改变后的输入框的值
+        var oldvalue = $("#"+type+"plan"+id).attr("data"); //获取输入框原本的值t
+        if(!(writevalue==oldvalue)){//通过判断输入框的值是否改变，是否写入jsontarget改变的json数据
+            oldvalue=writevalue;
+            $("#"+type+"plan"+id).attr("data",oldvalue);
+            writeJson(id,type,writevalue);
+        }
 
+    }
+
+    //修改指定单元格值
+    function writeJson(id,type,writevalue){
+        var counts = $('#table').bootstrapTable('getData');
+        for(var i = 0;i<counts.length;i++){
+            if(counts[i].id == id){
+                $('#table').bootstrapTable('updateCell',{
+                    index:i,
+                    field:'price',
+                    value:writevalue
+                })
+            }
+        }
+    }
+    $(".check_btn1").click(function () {
+        var rows = $('#table').bootstrapTable('getSelections');
+        console.log(JSON.stringify(rows));
+    })
     var setting = {
         callback: {
             onClick: zTreeOnClick
@@ -421,12 +455,14 @@
     }
 
 
+
     $(function () {
         $.ajaxUtil.get(componentTypeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
+        // $('#datetimepicker').datetimepicker('remove');
         $(".datepicker").datepicker({
-            language: 'zh-CN',
+            language: 'zh-cn',
             format: "yyyy-mm-dd"
         });
 
