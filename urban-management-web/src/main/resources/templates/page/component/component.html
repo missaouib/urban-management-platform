@@ -365,8 +365,8 @@
         $.ajaxUtil.get(searchUrl + param, function (e) {
             $(e.data).each(function (index, value) {
                 $('#table').bootstrapTable('insertRow', {
-                    index: count, row: {
-                        index: index + 1,
+                    index: index, row: {
+                        index: index+1,
                         id: value.id,
                         name: value.objId,
                         componentType: value.componentType,

@@ -277,7 +277,6 @@
         let data = features[0].H.data;
         if (undefined !== data) {
             $.ajaxUtil.get(componentByRecordId + "?recordId=" + data.id, function (e) {
-                console.log(e)
                 $("#componentId").val(e.data.id);
                 $("#objId").val(e.data.objId);
                 $("#objName").val(e.data.objName);

@@ -85,7 +85,7 @@ public class ComponentController {
 
     @PostMapping("/deleteComponent")
     public void deleteComponent(@Valid ComponentDTO dto){
-        componentService.deleteComponent(dto.getComponentId());
+        componentService.deleteComponent(dto);
     }
 
 
