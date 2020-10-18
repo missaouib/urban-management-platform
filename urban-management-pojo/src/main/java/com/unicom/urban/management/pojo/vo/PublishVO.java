@@ -14,4 +14,8 @@ public class PublishVO {
 
     private String name;
 
+    private String layerId;
+
+    private String url;
+
 }

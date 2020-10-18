@@ -113,4 +113,7 @@ public class ComponentDTO {
     private String coordinate;
 
 
+    private String layerId;
+
+
 }

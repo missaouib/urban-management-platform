@@ -19,7 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 部件管理
@@ -114,12 +116,17 @@ public class ComponentController {
     }
 
     @GetMapping("/recordVOS")
-    public List<RecordVO> recordVOS(String typeId){
+    public Map recordVOS(String typeId){
+        Map<String,Object> map = new HashMap<>();
         List<PublishVO> publishVOS = publishService.searchTypeId(typeId);
         List<RecordVO> list = new ArrayList<>();
         publishVOS.forEach(p-> list.addAll(recordService.findAllByPublishId(p.getId())));
-        return list;
+        map.put("record",list);
+        map.put("publish",publishVOS);
+        return map;
     }
+
+
 
     @GetMapping("/componentByRecordId")
     public ComponentVO componentByRecordId(String recordId){

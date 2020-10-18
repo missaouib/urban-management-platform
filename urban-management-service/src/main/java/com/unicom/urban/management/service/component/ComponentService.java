@@ -145,10 +145,13 @@ public class ComponentService {
      * @param dto 参数
      */
     public void saveComponent(ComponentDTO dto) {
+        if(StringUtils.isNotBlank(dto.getLayerId())){
+            //TODO 新增gis平台数据
+        }
         Publish publish = new Publish();
-        if(StringUtils.isNotBlank(dto.getPublish())){
+        if (StringUtils.isNotBlank(dto.getPublish())) {
             publish.setId(dto.getPublish());
-        }else{
+        } else {
             ComponentType componentType = componentTypeService.getComponentType(dto.getComponentTypeId());
             publish.setComponentType(componentType);
             publish.setName(componentType.getName());
@@ -190,6 +193,7 @@ public class ComponentService {
 
     /**
      * 添加发布
+     *
      * @param publish
      * @return
      */
@@ -200,6 +204,7 @@ public class ComponentService {
 
     /**
      * 添加位置
+     *
      * @param coordinate
      * @param publish
      */
@@ -214,7 +219,7 @@ public class ComponentService {
         dtos.forEach(this::update);
     }
 
-    public void update(ComponentDTO c){
+    public void update(ComponentDTO c) {
         Optional<Component> ifnull = componentRepository.findById(c.getComponentId());
         if (ifnull.isPresent()) {
             Component component = ifnull.get();
@@ -242,21 +247,25 @@ public class ComponentService {
 
     /**
      * 通过编辑id（位置）查询部件
+     *
      * @param recordId string
      * @return T
      */
-    public ComponentVO getComponentByRecordId(String recordId){
+    public ComponentVO getComponentByRecordId(String recordId) {
         Component byRecord_id = componentRepository.findByRecord_Id(recordId);
         return ComponentMapper.INSTANCE.componentToComponentVO(byRecord_id);
     }
 
-    public void deleteComponent(String id){
-        Optional<Component> ifnull = componentRepository.findById(id);
-       if(ifnull.isPresent()){
-           Component component = ifnull.get();
-           recordService.delete(component.getRecord());
-           componentRepository.delete(component);
-       }
+    public void deleteComponent(ComponentDTO dto) {
+        if(StringUtils.isNotBlank(dto.getLayerId())){
+            //TODO 删除gis平台数据
+        }
+        Optional<Component> ifnull = componentRepository.findById(dto.getComponentId());
+        if (ifnull.isPresent()) {
+            Component component = ifnull.get();
+            recordService.delete(component.getRecord());
+            componentRepository.delete(component);
+        }
     }
 
 }

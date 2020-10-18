@@ -29,6 +29,8 @@
                     <input type="hidden" readonly="readonly" name="componentId" id="componentId" class="find_input">
                     <input type="hidden" readonly="readonly" name="componentTypeId" id="componentTypeId"
                            class="find_input">
+                    <input type="hidden" readonly="readonly" name="layerId" id="layerId" class="find_input">
+
                 </p>
                 <p>
                     <label class="">图层名称</label>
@@ -151,10 +153,11 @@
             })
 
             $.ajaxUtil.get(recordUrl + "?typeId=" + treeNode.id, function (e) {
-                $(e.data).each(function (index, value) {
+                $(e.data.record).each(function (index, value) {
                     var point = value.coordinate.split(",");
                     setPoint(point[0], point[1], value.id, value.name);
-                })
+                });
+                $("#layerId").val(e.data.publish.layerId == null && e.data.publish.layerId === "" ? "" : e.data.publish.layerId);
             })
         }
     }
