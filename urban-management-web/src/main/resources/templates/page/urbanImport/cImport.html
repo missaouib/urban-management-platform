@@ -2,9 +2,10 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>部件导入</title>
     <th:block th:include="page/fragments/common :: common_css" />
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css" />
 
 </head>
@@ -15,12 +16,13 @@
             <div class="leftBox" style="width: 50%!important;">
                 <div class="leftInner">
                     <!-- ztree-->
-                    <div class="zTreeDemoBackground left">
-                        <ul id="treeDemo" class="ztree">zTree</ul>
-                    </div>
+<!--                    <div class="zTreeDemoBackground left">-->
+<!--                        <ul id="treeDemo" class="ztree">zTree</ul>-->
+<!--                    </div>-->
                     <form id="fileForm">
+                        <input type="hidden" name="layerSettingType" value="1">
                         <div>
-                            <label class="modelTitle">图层名称</label>
+                            <label class="modelTitle">部件名称</label>
                             <input type="text" class="find_input" name="layerName">
                         </div>
                         <div>
@@ -45,11 +47,6 @@
 
     <script type="text/javascript" th:inline="javascript">
 
-
-        // function clickInput() {
-        //     $("#btnAddFile").attr("disabled",false);
-        // }
-
         function uploadFiles() {
             let upload = /*[[@{/componentImport}]]*/ "/componentImport";
             var formData = new FormData($("#fileForm")[0]);
@@ -66,24 +63,11 @@
                         $.modal.alertWarning("请选择正确文件格式！",function () {
                         });
                         return;
-                    }
-                    let list = data.data[0];
-                    filePath = data.data[1];
-                    let epsgCode = data.data[2];
-                    let shpType = data.data[3];
-                    let layerType = findShpType(shpType);
-                    console.log("layerType=="+ layerType)
-                    if (layerType === '') {
-                        $.modal.alertWarning("导入文件未查询到图层类型，请确认文件数据是否正确！",function () {
+                    }else {
+                        $.modal.alertSuccess('保存成功',function () {
+                            window.location.href = /*[[@{/urbanImport/cImport}]]*/ "/urbanImport/cImport";
                         });
-                        return;
                     }
-                    $("#layerType").html(layerType);
-                    $("#epsgSrc").val(epsgCode);
-                    $("#shpType").val(shpType);
-                    loadTable(list);
-                    $("#selectCol").show();
-                    $("#saveBtn").attr("disabled", false);
                 },
                 error: function (data) {
                     $.modal.alertError(data.message,function () {

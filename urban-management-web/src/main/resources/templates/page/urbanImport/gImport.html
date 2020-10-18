@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>网格导入</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <link th:href="@{/css/gird.css}" rel="stylesheet" type="text/css">
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
+<div class="notice_main ">
+    <div class="content">
+        <div class="leftBox" style="width: 50%!important;">
+            <div class="leftInner">
+
+                <form id="fileForm">
+                    <input type="hidden" name="layerSettingType" value="2">
+                <div>
+                    <label class="modelTitle">网格名称</label>
+                    <input type="text" class="find_input" name="layerName">
+                </div>
+                <div>
+                    <label class="modelTitle"></label>
+                    <input type="file" name="file" multiple="multiple">
+                </div>
+                <div style="padding-bottom: 20px;margin-right: 20px;display: flex;justify-content: flex-end" class="">
+                    <button type="button" id="btnAddFile" class="btn btn-primary"
+                            onclick="uploadFiles()">导入文件
+                    </button>
+                </div>
+                </form>
+            </div>
+        </div>
+        <div class="rightBox" style="width: 50%!important;">
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+
+    function uploadFiles() {
+        let upload = /*[[@{/gridImport}]]*/ "/gridImport";
+        var formData = new FormData($("#fileForm")[0]);
+        $.ajax({
+            url: upload,
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                if(data.code != 0){
+                    $.modal.alertWarning("请选择正确文件格式！",function () {
+                    });
+                    return;
+                }else {
+                    $.modal.alertSuccess('导入成功',function () {
+                        window.location.href = /*[[@{/urbanImport/gImport}]]*/ "/urbanImport/gImport";
+                    });
+                }
+            },
+            error: function (data) {
+                $.modal.alertError(data.message,function () {
+                });
+            }
+        });
+    }
+
+
+</script>
+</body>
+</html>
