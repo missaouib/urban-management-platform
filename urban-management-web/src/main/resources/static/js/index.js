@@ -1,5 +1,4 @@
-﻿
-(function ($) {
+﻿(function ($) {
 
 
     $.learuntab = {
@@ -97,8 +96,7 @@
                         }
                     });
                 }
-            }
-            else {
+            } else {
                 $(this).parents('.menuTab').remove();
                 $('.mainContent .LRADMS_iframe').each(function () {
                     if ($(this).data('id') == closeTabId) {
@@ -257,7 +255,8 @@
             $('.page-tabs-content').animate({marginLeft: 0 - scrollVal + 'px'}, "fast");
         },
         scrollToTab: function (element) {
-            var marginLeftVal = $.learuntab.calSumWidth($(element).prevAll()), marginRightVal = $.learuntab.calSumWidth($(element).nextAll());
+            var marginLeftVal = $.learuntab.calSumWidth($(element).prevAll()),
+                marginRightVal = $.learuntab.calSumWidth($(element).nextAll());
             var tabOuterWidth = $.learuntab.calSumWidth($(".content-tabs").children().not(".menuTabs"));
             var visibleWidth = $(".content-tabs").outerWidth(true) - tabOuterWidth;
             var scrollVal = 0;
@@ -497,19 +496,6 @@
                 //     "F_ModifyUserId": "System",
                 //     "F_ModifyUserName": "超级管理员"
                 // },
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
                 {
@@ -919,13 +905,62 @@
                     "F_ModifyDate": "2015-11-17 11:22:46",
                     "F_ModifyUserId": "System",
                     "F_ModifyUserName": "超级管理员"
-                }, {
+                },
+                {
                     "F_ModuleId": "100655551235031234",
                     "F_ParentId": "1006555550123",
                     "F_EnCode": "SysManage",
                     "F_FullName": "地图发布",
                     "F_Icon": "fa fa-wrench",
                     "F_UrlAddress": "/publish/toPublishList",
+                    "F_Target": "expand",
+                    "F_IsMenu": 0,
+                    "F_AllowExpand": 1,
+                    "F_IsPublic": 0,
+                    "F_AllowEdit": null,
+                    "F_AllowDelete": null,
+                    "F_SortCode": 1,
+                    "F_DeleteMark": 0,
+                    "F_EnabledMark": 1,
+                    "F_Description": null,
+                    "F_CreateDate": null,
+                    "F_CreateUserId": null,
+                    "F_CreateUserName": null,
+                    "F_ModifyDate": "2015-11-17 11:22:46",
+                    "F_ModifyUserId": "System",
+                    "F_ModifyUserName": "超级管理员"
+                },
+                {
+                    "F_ModuleId": "1006555550124",
+                    "F_ParentId": "1006555550",
+                    "F_EnCode": "SysManage",
+                    "F_FullName": "GIS数据管理",
+                    "F_Icon": "fa fa-wrench",
+                    "F_UrlAddress": "/default",
+                    "F_Target": "expand",
+                    "F_IsMenu": 0,
+                    "F_AllowExpand": 1,
+                    "F_IsPublic": 0,
+                    "F_AllowEdit": null,
+                    "F_AllowDelete": null,
+                    "F_SortCode": 1,
+                    "F_DeleteMark": 0,
+                    "F_EnabledMark": 1,
+                    "F_Description": null,
+                    "F_CreateDate": null,
+                    "F_CreateUserId": null,
+                    "F_CreateUserName": null,
+                    "F_ModifyDate": "2015-11-17 11:22:46",
+                    "F_ModifyUserId": "System",
+                    "F_ModifyUserName": "超级管理员"
+                },
+                {
+                    "F_ModuleId": "100655551235031235",
+                    "F_ParentId": "1006555550124",
+                    "F_EnCode": "SysManage",
+                    "F_FullName": "案件采集列表",
+                    "F_Icon": "fa fa-wrench",
+                    "F_UrlAddress": "/event/toEventList",
                     "F_Target": "expand",
                     "F_IsMenu": 0,
                     "F_AllowExpand": 1,
@@ -958,12 +993,16 @@
                     _html += '<a href="#">'
                     _html += '<i class="' + row.F_Icon + '"></i><span>' + row.F_FullName + '</span><i class="fa fa-angle-left pull-right"></i>'
                     _html += '</a>'
-                    var childNodes = $.learunindex.jsonWhere(data, function (v) { return v.F_ParentId == row.F_ModuleId });
+                    var childNodes = $.learunindex.jsonWhere(data, function (v) {
+                        return v.F_ParentId == row.F_ModuleId
+                    });
                     if (childNodes.length > 0) {
                         _html += '<ul class="treeview-menu">';
                         $.each(childNodes, function (i) {
                             var subrow = childNodes[i];
-                            var subchildNodes = $.learunindex.jsonWhere(data, function (v) { return v.F_ParentId == subrow.F_ModuleId });
+                            var subchildNodes = $.learunindex.jsonWhere(data, function (v) {
+                                return v.F_ParentId == subrow.F_ModuleId
+                            });
                             _html += '<li>';
                             if (subchildNodes.length > 0) {
                                 _html += '<a href="#"><i class="' + subrow.F_Icon + '"></i>' + subrow.F_FullName + '';
@@ -997,12 +1036,12 @@
                     e.parent("li").removeClass("active")
                 } else if (e.is(".treeview-menu") && !e.is(":visible")) {
                     var f = d.parents("ul").first(),
-                    g = f.find("ul:visible").slideUp(500);
+                        g = f.find("ul:visible").slideUp(500);
                     g.removeClass("menu-open");
                     var h = d.parent("li");
                     e.slideDown(500, function () {
                         e.addClass("menu-open"),
-                        f.find("li.active").removeClass("active")
+                            f.find("li.active").removeClass("active")
                         h.addClass("active");
 
                         var _height1 = $(window).height() - $("#sidebar-menu >li.active").position().top - 41;
@@ -1035,14 +1074,14 @@
                 "close_current": {
                     name: "关闭当前",
                     icon: "fa-close",
-                    callback: function(key, opt) {
+                    callback: function (key, opt) {
                         $('.page-tabs-content').find('.active i').trigger("click");
                     }
                 },
                 "close_other": {
                     name: "除此之外全部关闭",
                     icon: "paste",
-                    callback: function(key, opt) {
+                    callback: function (key, opt) {
                         $('.page-tabs-content').children("[data-id]").find('.fa-remove').parents('a').not(".active").each(function () {
                             $('.LRADMS_iframe[data-id="' + $(this).data('id') + '"]').remove();
                             $(this).remove();
@@ -1053,7 +1092,7 @@
                 "close_all": {
                     name: "全部关闭",
                     icon: "cut",
-                    callback: function(key, opt) {
+                    callback: function (key, opt) {
                         $('.page-tabs-content').children("[data-id]").find('.fa-remove').each(function () {
                             $('.LRADMS_iframe[data-id="' + $(this).data('id') + '"]').remove();
                             $(this).parents('a').remove();
@@ -1068,7 +1107,7 @@
                 "refresh": {
                     name: "刷新页面",
                     icon: "fa-refresh",
-                    callback: function(key, opt) {
+                    callback: function (key, opt) {
                         var currentId = $('.page-tabs-content').find('.active').attr('data-id');
                         var target = $('.LRADMS_iframe[data-id="' + currentId + '"]');
                         var url = target.attr('src');
@@ -1082,7 +1121,7 @@
                 "full": {
                     name: "全屏显示",
                     icon: "fa-arrows-alt",
-                    callback: function(key, opt) {
+                    callback: function (key, opt) {
                         if (!$(this).attr('fullscreen')) {
                             $(this).attr('fullscreen', 'true');
                             $.learuntab.requestFullScreen();

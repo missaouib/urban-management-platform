@@ -17,9 +17,19 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/event")
 public class EventController {
 
-    @GetMapping("/grid")
-    public ModelAndView grid() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/event");
+    @GetMapping("/toEventList")
+    public ModelAndView toEventList() {
+        return new ModelAndView(SystemConstant.PAGE + "/event/list");
+    }
+
+    @GetMapping("/toEventSave")
+    public ModelAndView toEventSave() {
+        return new ModelAndView(SystemConstant.PAGE + "/event/save");
+    }
+
+    @GetMapping("/toEventUpdate")
+    public ModelAndView toEventUpdate() {
+        return new ModelAndView(SystemConstant.PAGE + "/event/update");
     }
 
 }
