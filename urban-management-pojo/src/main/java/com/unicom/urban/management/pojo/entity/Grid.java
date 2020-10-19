@@ -34,7 +34,7 @@ public class Grid extends BaseEntity {
     private String remark;
 
     /**
-     * 区域分类
+     * 所属区域
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
