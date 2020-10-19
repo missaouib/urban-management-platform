@@ -72,42 +72,53 @@ public class PublishService {
         String url = "http://localhost:8099/api/layerAndElementAndAttribute/addLayer";
         String gridType = "网格";
         if (gridType.equals(type)) {
-
+            List<Grid> gridList = gridService.findAllByPublishIdAndRecordSts(publishId);
+            Publish publish = findOne(publishId);
+            ResponseEntity<Map> post = RestTemplateUtil.post(url, getGridJson(publish, gridList), Map.class);
+            System.out.println(post);
+            publish.setSts(StsConstant.RELEASE);
+            publish.setLayerId("layerId");
+            publish.setUrl("url");
+            publishRepository.saveAndFlush(publish);
+            List<Record> recordList = new ArrayList<>();
+            for (Grid grid : gridList) {
+                grid.getRecord().setSts(StsConstant.RELEASE);
+                recordList.add(grid.getRecord());
+            }
+            recordService.saveList(recordList);
         }
-        Map<String, Object> map = new HashMap<>();
-        List<Record> recordList = new ArrayList<>();
-        for (Grid grid : gridService.findAllByPublishIdAndRecordSts(publishId)) {
-            ResponseEntity<Map> post = RestTemplateUtil.post(url, getGridJson(grid), Map.class);
-            map = (Map<String, Object>) post;
-            grid.getRecord().setSts(StsConstant.RELEASE);
-            recordList.add(grid.getRecord());
-        }
-        recordService.saveList(recordList);
-        Publish publish = findOne(publishId);
-        publish.setSts(StsConstant.RELEASE);
-        publish.setLayerId("layerId");
-        publish.setUrl("url");
-        publishRepository.saveAndFlush(publish);
-
     }
 
-    private JSONObject getGridJson(Grid grid) {
-        Map<String, Object> layerSettingMap = new HashMap<>();
+    private JSONObject getGridJson(Publish publish, List<Grid> gridList) {
+        int one = 1;
+        Map<String, Object> layerSettingMap = new HashMap<>(one);
         layerSettingMap.put("id", KvConstant.LAYER_SETTING_GRID);
-        Map<String, Object> epsgMap = new HashMap<>();
+        Map<String, Object> epsgMap = new HashMap<>(one);
         epsgMap.put("id", KvConstant.E_PSG);
-        Map<String, Object> scaleMap = new HashMap<>();
+        Map<String, Object> scaleMap = new HashMap<>(one);
         scaleMap.put("id", KvConstant.SCALE);
-        Map<String, Object> layerMap = new HashMap<>();
-        layerMap.put("id", grid.getPublish().getLayerId());
-        layerMap.put("layerSetting", layerSettingMap);
+        int five = 5;
+        Map<String, Object> layerMap = new HashMap<>(five);
+        layerMap.put("id", publish.getLayerId());
         layerMap.put("epsg", epsgMap);
+        layerMap.put("layerSetting", layerSettingMap);
         layerMap.put("scale", scaleMap);
-        Map<String, Object> map = new HashMap<>();
-        map.put("data", "objId=" + grid.getGridCode());
-        map.put("coordinate", grid.getRecord().getCoordinate());
-        map.put("name", grid.getGridName());
+        layerMap.put("alias", publish.getName());
+
+        List<Map<String, Object>> mapList = new ArrayList<>(gridList.size());
+        for (Grid grid : gridList) {
+            int three = 3;
+            Map<String, Object> mapElementAndAttribute = new HashMap<>(three);
+            mapElementAndAttribute.put("data", "objId=" + grid.getGridCode());
+            mapElementAndAttribute.put("coordinate", grid.getRecord().getCoordinate());
+            mapElementAndAttribute.put("name", grid.getGridName());
+            mapList.add(mapElementAndAttribute);
+        }
+
+        int two = 2;
+        Map<String, Object> map = new HashMap<>(two);
         map.put("layer", layerMap);
+        map.put("elementAndAttributeList", mapList);
 
         return new JSONObject(map);
     }
