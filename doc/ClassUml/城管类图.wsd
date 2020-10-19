@@ -20,7 +20,7 @@ class Grid<<网格实体类>>{
     -gridCode : String
     -gridName : String
     -remark : String
-    -kv : Kv
+    -kv : Kv    //代表所属区域
     -area : String
     -initialDate : date
     -terminationDate : date
@@ -92,6 +92,54 @@ class Kv<<Kv实体类>>{
     -sts : int
 }
 
+class Event<<事件实体类>>{
+    -id : String
+    -eventCode : String
+    -eventTypeId : EventType
+    -conditionId : Condition
+    -describe : String
+    -timeLimit : TimeLimit
+    -gridId : Grid
+    -location : String
+    -name : User
+    -phone : int
+    -eventSource : Kv
+    -cadate : date
+    -longitude : double
+    -latitude : double
+    -region : Kv
+
+
+}
+
+class EventType<<事件分类实体类>>{
+    -eventTypeId : String
+    -eventTypeName : String
+    -mainTypeId : String
+    -mainTypeName : String
+    -subTypeId : String
+    -subTypeName : String
+}
+
+class EventFile<<事件附件实体类>>{
+    -id : String
+    -fileName : String
+    -eventId : Event
+    -fileType ：int
+}
+class Condition<<立案条件实体类>>{
+    -id : String
+    -evnetTypeId : String
+    -conditionValue : String
+}
+
+class TimeLimit<<时限实体类>>{
+    id : String
+    eventTypeId : EventType
+    level : Kv
+    timeLimit : int
+}
+
 
 
 class ComponentController<<部件界面类>>{
@@ -105,7 +153,7 @@ class ComponentController<<部件界面类>>{
     +objState() : Kv[*]
     +dataSource() : Kv[*]
     +grid() : Grid[*]
-    +recordVOS(ComponentType): Record[*]
+    +record(ComponentType): Record[*]
     +componentByRecordId(record) : Component[*]
 }
 
@@ -136,11 +184,10 @@ class PublisheService<<发布业务类>>{
     +layerPublish(publish) : boolean
 }
 
-class RecordController<<编辑界面类>>{
-
-}
 class RecordService<<编辑业务类>>{
-
+    +save(record) : boolean 
+    +update(record) : boolean
+    +findAllByPublishId() : Record[*]
 }
 class ImportController<<导入界面类>>{
     +componentImport(layerName,layerSettingType,shpType) : String
@@ -151,6 +198,21 @@ class ImportService<<导入业务类>>{
     +componentImport(layerName,layerSettingType,shpType) : String
     +gridImport(layerName,layerSettingType,shpType) : String
     +checkPublish(): boolean
+}
+
+class GridController<<网格界面类>>{
+    +getGridList() :  Grid[*]
+    +gridSave(grid) : boolean
+    +gridUpdate(grid) : boolean
+    +getGridOne(grid) : Grid
+    +gridDelete(grid) : boolean
+}
+
+class GridService<<网格业务类>>{
+    +search(grid) : Grid[*]
+    +delete(grid) : boolean
+    +update(grid) : boolean
+
 }
 
 
@@ -171,13 +233,30 @@ Component --> Publish
 ComponentInfo --|> Kv
 Publish --> Record
 Publish --|> Kv
+Event --> EventFile
+Event --> EventType
+Event --> Condition
+Event --|> Kv
+EventType --> TimeLimit
+
 
 
 ComponentController --> ComponentService
 ComponentController --> ComponentTypeService
 PublisheController --> PublisheService
-RecordController --> RecordService
 ImportController --> ImportService
+GridController --> GridService
+
+
+GridService --> RecordService
+GridService --> KVService
+GridService --> UserService
+PublishService --> RecordService
+PublishService --> GridService
+ComponentService --> PublishService
+ComponentService --> RecordService
+ComponentService --> ComponentTypeService
+
 
 
 ComponentService ..> Component
