@@ -11,7 +11,7 @@
 *,h1,label,td,tr{padding: 0 ;margin: 0 }
 .l_left{float: left}
 td{border: none !important;}
-.table tr td:nth-child(2n+1){text-align: right;font-size: 12px;width:84px;line-height: 28px;}
+.table tr td:nth-child(2n+1){font-size: 12px;width:84px;line-height: 28px;}
 .top_out{margin: 20px 0 20px 0}
 .top td{padding: 0 0 8px 0 !important;}
 .top td span{color: red;margin:3px 1px 0 2px;display: inline-block ;vertical-align: middle;line-height: 28px;width: 6px;text-align: center;}
@@ -41,7 +41,7 @@ td{border: none !important;}
 .form_area{width: 791px}
 
 ::-webkit-input-placeholder,:-ms-input-placeholder  {color:#999;}
-.table tr td:nth-child(2n+1){text-align: right;font-size: 12px;width:84px;line-height: 40px;}
+.table tr td:nth-child(2n+1){font-size: 12px;width:84px;line-height: 40px;color: black}
 .top td span{color: red;margin:3px 1px 0 2px;display: inline-block ;vertical-align: middle;line-height: 28px;width: 6px;text-align: center;}
 .top .frist_input{width: 791px !important;}
 .top select,.top input[type=text],.top input[type=password]{text-align: left;width: 342px;height:28px;border-radius: 4px;font-size: 12px;border: 1px #ccc solid}

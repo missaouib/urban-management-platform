@@ -1,0 +1,25 @@
+.content{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.leftContent{
+    width: 65%;
+}
+.rightContent{
+    width: 33%;
+}
+.leftContent,rightContent{
+    height: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 1px 1px 6px 0px rgba(228, 228, 228, 0.5);
+}
+.r_right{
+    display: flex!important;
+    justify-content: flex-end!important;
+}
+.r_right button{
+    margin: 0 10px;
+}

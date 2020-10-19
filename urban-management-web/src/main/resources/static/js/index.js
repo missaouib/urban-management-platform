@@ -934,7 +934,7 @@
                     "F_ModuleId": "1006555550124",
                     "F_ParentId": "1006555550",
                     "F_EnCode": "SysManage",
-                    "F_FullName": "GIS数据管理",
+                    "F_FullName": "无线采集子系统",
                     "F_Icon": "fa fa-wrench",
                     "F_UrlAddress": "/default",
                     "F_Target": "expand",
