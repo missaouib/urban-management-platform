@@ -9,6 +9,7 @@ import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.entity.KV;
 import com.unicom.urban.management.pojo.entity.Publish;
 import com.unicom.urban.management.pojo.entity.User;
+import com.unicom.urban.management.pojo.vo.PublishVO;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.user.UserService;
 import org.apache.http.HttpEntity;
@@ -128,8 +129,8 @@ public class ComponentImportController {
         Publish publish = new Publish();
         publish.setLayerId(layerId);
         KV kv = new KV();
-        kv.setValue(layerSettingType);
-        //publish.setKv(kv);
+        kv.setId("67369ef9-f2f9-4698-8c4e-f835a2af26b0");
+        publish.setKv(kv);
         publish.setName(layerName);
         User user = userService.findOne(SecurityUtil.getUserId());
         publish.setUser(user);
@@ -139,12 +140,12 @@ public class ComponentImportController {
     }
 
     /**
-     * 查询publish表中是有有网格
+     * 查询publish表中是否有网格
      * @return
      */
     private boolean checkPublish() {
         boolean f = false;
-        releaseService.search();
+
         return f;
     }
 }

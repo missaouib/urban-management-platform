@@ -126,8 +126,8 @@ public class GridImportController {
         Publish publish = new Publish();
         publish.setLayerId(layerId);
         KV kv = new KV();
-        kv.setValue(layerSettingType);
-        //publish.setKv(kv);
+        kv.setId("28526efe-3db5-415b-8c7a-d0e3a49cab8f");
+        publish.setKv(kv);
         publish.setName(layerName);
         User user = userService.findOne(SecurityUtil.getUserId());
         publish.setUser(user);
@@ -142,7 +142,6 @@ public class GridImportController {
      */
     private boolean checkPublish() {
         boolean f = false;
-        releaseService.search();
         return f;
     }
 }
