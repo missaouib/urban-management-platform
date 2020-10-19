@@ -29,6 +29,7 @@ class Grid<<网格实体类>>{
     -user : User
     -release : Release
     -record : Record
+    -publish : Publish
 }
 
 class Component<<部件实体类>>{
@@ -104,6 +105,8 @@ class ComponentController<<部件界面类>>{
     +objState() : Kv[*]
     +dataSource() : Kv[*]
     +grid() : Grid[*]
+    +recordVOS(ComponentType): Record[*]
+    +componentByRecordId(record) : Component[*]
 }
 
 class ComponentService<<部件业务类>>{
@@ -112,37 +115,75 @@ class ComponentService<<部件业务类>>{
     +getComponent(component) :component
     +saveComponentList(component[*]): boolean
     +saveComponent(component) : boolean
+    +savePublish(publis) : boolean
+    +saveRecord(record,publish) : boolean 
+    +getComponentByRecordId(record) : Component[*]
+    +deleteComponent(component) : boolean
 }
 class ComponentTypeService<<部件分类业务类>>{
     +getComponentTypeList():ComponentType[*]       // 获取部件分类集合
     +getComponentType(component):ComponentType     // 获取部件分类
 }
-class ComponentInfoService<<部件信息业务类>>{
+
+class PublisheController<<发布界面类>>{
+    +getPublishList() : Publish[*]
+    +getPublishOne() : Publish
+    +layerPublish(publish) : boolean
+}
+class PublisheService<<发布业务类>>{
+    +getPublishList() : Publish[*]
+    +getPublishOne() : Publish
+    +layerPublish(publish) : boolean
 }
 
-class ReleaseController<<发布界面类>>{
+class RecordController<<编辑界面类>>{
 
 }
-class ReleaseService<<发布业务类>>{
-
-}
-
-class EditingController<<编辑界面类>>{
-
-}
-class EditingService<<编辑业务类>>{
+class RecordService<<编辑业务类>>{
 
 }
 class ImportController<<导入界面类>>{
-
+    +componentImport(layerName,layerSettingType,shpType) : String
+    +gridImport(layerName,layerSettingType,shpType) : String
+    +checkPublish(): boolean
 }
 class ImportService<<导入业务类>>{
-
+    +componentImport(layerName,layerSettingType,shpType) : String
+    +gridImport(layerName,layerSettingType,shpType) : String
+    +checkPublish(): boolean
 }
 
 
 
 
+
+
+Dept --> User
+Grid --> User
+Grid --> Dept
+Grid --> Record
+Grid --> Publish
+Grid --|> Kv
+Component --> ComponentInfo
+Component --> ComponentType
+Component --> Record
+Component --> Publish
+ComponentInfo --|> Kv
+Publish --> Record
+Publish --|> Kv
+
+
+ComponentController --> ComponentService
+ComponentController --> ComponentTypeService
+PublisheController --> PublisheService
+RecordController --> RecordService
+ImportController --> ImportService
+
+
+ComponentService ..> Component
+PublisheService ..> Publish
+RecordService ..> Record
+ComponentTypeService ..> ComponentType
 
 
 
