@@ -101,10 +101,9 @@ class Event<<事件实体类>>{
     -timeLimit : TimeLimit
     -gridId : Grid
     -location : String
-    -name : User
+    -User : User
     -phone : int
     -eventSource : Kv
-    -cadate : date
     -longitude : double
     -latitude : double
     -region : Kv
@@ -129,7 +128,7 @@ class EventFile<<事件附件实体类>>{
 }
 class Condition<<立案条件实体类>>{
     -id : String
-    -evnetTypeId : String
+    -evnetTypeId : EventType
     -conditionValue : String
 }
 
