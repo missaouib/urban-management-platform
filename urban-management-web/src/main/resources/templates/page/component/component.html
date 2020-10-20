@@ -59,9 +59,13 @@
 
                 </select>
                 <label class="">初始日期</label>
-                <input type="text" class="find_input datepicker" readonly="readonly">
+                <input size="16" class="find_input form_datetime" type="text" value="" readonly>
+                <span class="add-on"><i class="icon-remove"></i></span>
+                <span class="add-on"><i class="icon-th"></i></span>
                 <label class="">变更日期</label>
-                <input type="text" class="find_input datepicker" readonly="readonly">
+                <input size="16" class="find_input form_datetime" type="text" value="" readonly>
+                <span class="add-on"><i class="icon-remove"></i></span>
+                <span class="add-on"><i class="icon-th"></i></span>
             </p>
             <p>
                 <label class="">数据来源</label>
@@ -96,12 +100,12 @@
         </div>
     </div>
     <table id="table" class="component"></table>
+    <button id="addBtn" onclick="add()">增加</button>
     <div class="notice_check">
         <p>
             <input type="button" class="check_btn1" onclick="" value="更新">
         </p>
     </div>
-
 
 </div>
 
@@ -109,9 +113,23 @@
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
-
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
+
+    ////日期插件
+    $('.form_datetime').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        format: "yyyy-mm-dd hh:ii:ss"
+    });
+
+
 
 
     $('#table').bootstrapTable({
@@ -141,7 +159,6 @@
         },
 
         //取消每一个单选框时对应的操作；
-
         onUncheck: function (row, tr, flied) {
             let input = tr[0].parentNode.parentNode;
             console.log(row)
@@ -156,21 +173,20 @@
                 }
                 return r;
             }
-
             var allBorther = sibling(input)
+
             for (var i = 0; i < 9; i++) {
-                var selectInput = allBorther[10].childNodes[0]
-                var selectInput2 = allBorther[11].childNodes[0]
-                var selectInput3 = allBorther[14].childNodes[0]
+                var selectInput = allBorther[10].childNodes[0];
+                var selectInput2 = allBorther[11].childNodes[0];
+                var selectInput3 = allBorther[14].childNodes[0];
                 selectInput.setAttribute('disabled', 'disabled');
                 selectInput3.setAttribute('disabled', 'disabled');
                 selectInput2.setAttribute('disabled', 'disabled');
-                var input12 = allBorther[12].childNodes[0]
-                var input13 = allBorther[13].childNodes[0]
+                var input12 = allBorther[12].childNodes[0];
+                var input13 = allBorther[13].childNodes[0];
                 input12.setAttribute('disabled', 'disabled');
                 input13.setAttribute('disabled', 'disabled');
-                // var inputs = allBorther[i + 1].childNodes[0]
-                var inputs = allBorther[i + 2].childNodes[0]
+                var inputs = allBorther[i + 2].childNodes[0];
                 inputs.setAttribute('disabled', 'disabled');
             }
         },
@@ -276,16 +292,16 @@
         data: []
     });
 
+
     //input输入框
-    function priceForm(value, row, index) {
+    function priceForm(value, row, index,field) {
+        // console.log(field)
         return ['<input type="text" id="1plan' + row.id + '" data=' + value + ' value=' + value + ' onblur="addTarget(' + row.id + ',1)" disabled="disabled" class="componentTable">'].join("")
     }
-
     //input输入框 时间插件！
-    function dateForm(value, row, index) {
-        return ['<input type="text" id="1plan' + row.id + '" data=' + value + ' value=' + value + ' onblur="addTarget(' + row.id + ',1)" disabled="disabled" class="componentTable datepicker"  readonly="readonly">'].join("")
+    function dateForm(value, row, index,field) {
+        return ['<input type="text" id="2plan' + row.id + '" data=' + value + ' value=' + value + ' onblur="addTarget(' + row.id + ',1,field)" disabled="disabled" class="find_input form_datetime componentTable"  readonly="readonly">'].join("")
     }
-
     //下拉列表
     function objState(value, row, index) {
         var objStateStr = "<select id=\"sele`+ row.id +`\" class=\"componentSelect\" disabled=\"disabled\">";
@@ -299,7 +315,6 @@
         objStateStr += "</select>";
         return objStateStr;
     }
-
     function dataSource(value, row, index) {
         var dataSource = "<select id=\"sele`+ row.id +`\" class=\"componentSelect\" disabled=\"disabled\">";
         $(datasourceData.data).each(function (index, value) {
@@ -311,7 +326,6 @@
         })
         return dataSource;
     }
-
     function grid(value, row, index) {
         var grid = "<select id=\"sele`+ row.id +`\" class=\"componentSelect\" disabled=\"disabled\">";
         $(gridData.data).each(function (index, value) {
@@ -324,8 +338,6 @@
         grid += "</select>";
         return grid;
     }
-
-
     function search() {
         $('#table').bootstrapTable('removeAll');
         var count = $('#table').bootstrapTable('getData').length;
@@ -371,7 +383,8 @@
         $.ajaxUtil.get(searchUrl + param, function (e) {
             $(e.data).each(function (index, value) {
                 $('#table').bootstrapTable('insertRow', {
-                    index: index, row: {
+                    index: index,
+                    row: {
                         index: index+1,
                         id: value.id,
                         name: value.objId,
@@ -398,8 +411,15 @@
 
         })
     }
-
-    //id:这条数据的id  type :1,2,3:代表的是第几个目标值
+    function add(){
+        var count = $('#table').bootstrapTable('getData').length;
+        $('#table').bootstrapTable('insertRow',{index:count,row: {
+                id:count+1,
+                name:'wz',
+                price:'2'
+            }});
+    }
+    // id:这条数据的id  type :1,2,3:代表的是第几个目标值
     function addTarget(id,type){
         var writevalue=$("#"+type+"plan"+id).val(); //获取改变后的输入框的值
         var oldvalue = $("#"+type+"plan"+id).attr("data"); //获取输入框原本的值t
@@ -408,8 +428,10 @@
             $("#"+type+"plan"+id).attr("data",oldvalue);
             writeJson(id,type,writevalue);
         }
-
     }
+    // $(".component").on("blue",".componentTable",function () {
+    //     console.log(1)
+    // })
 
     //修改指定单元格值
     function writeJson(id,type,writevalue){
@@ -418,12 +440,14 @@
             if(counts[i].id == id){
                 $('#table').bootstrapTable('updateCell',{
                     index:i,
-                    field:'price',
+                    field:'objId',
                     value:writevalue
                 })
             }
         }
     }
+
+
     $(".check_btn1").click(function () {
         var rows = $('#table').bootstrapTable('getSelections');
         console.log(JSON.stringify(rows));
@@ -454,18 +478,10 @@
         $(".closemodal").click();
     }
 
-
-
     $(function () {
         $.ajaxUtil.get(componentTypeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
-        // $('#datetimepicker').datetimepicker('remove');
-        $(".datepicker").datepicker({
-            language: 'zh-cn',
-            format: "yyyy-mm-dd"
-        });
-
     })
 
     let componentTypeUrl = /*[[@{/componentType}]]*/ "/componentType";

@@ -59,13 +59,17 @@
                                 <tr>
                                     <td>初始日期<span>*</span></td>
                                     <td>
-                                        <input type="text" class="datepicker" readonly="readonly">
+                                        <input size="16" class="form_datetime" type="text" value="" readonly>
+                                        <span class="add-on"><i class="icon-remove"></i></span>
+                                        <span class="add-on"><i class="icon-th"></i></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>终止日期<span>*</span></td>
                                     <td>
-                                        <input type="text" class="datepicker" readonly="readonly">
+                                        <input size="16" class="form_datetime" type="text" value="" readonly>
+                                        <span class="add-on"><i class="icon-remove"></i></span>
+                                        <span class="add-on"><i class="icon-th"></i></span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -193,6 +197,19 @@
 <script type="text/javascript" th:inline="javascript">
     $(function () {
         $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose:true, todayBtn: true, startView:4, minView:3});
+        ////日期插件
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+
     })
     var center = ol.proj.transform([126.62, 45.74], "EPSG:4326", "EPSG:3857");
     var raster = new ol.layer.Tile({
