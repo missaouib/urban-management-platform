@@ -7,7 +7,8 @@
     <th:block th:include="page/fragments/common :: common_css" />
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css" />
-
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <link th:href="@{/css/component.css}" rel="stylesheet" type="text/css">
 </head>
 
 <body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
@@ -16,11 +17,12 @@
             <div class="leftBox" style="width: 50%!important;">
                 <div class="leftInner">
                     <!-- ztree-->
-<!--                    <div class="zTreeDemoBackground left">-->
-<!--                        <ul id="treeDemo" class="ztree">zTree</ul>-->
-<!--                    </div>-->
+                    <div class="zTreeDemoBackground left">
+                        <ul id="treeDemo" class="ztree">zTree</ul>
+                    </div>
                     <form id="fileForm">
-                        <input type="hidden" name="layerSettingType" value="1">
+                        <input type="hidden" name="layerSettingType" value="1" />
+                        <input type="text" name="componentTypeId" id="componentTypeId" />
                         <div>
                             <label class="modelTitle">部件名称</label>
                             <input type="text" class="find_input" name="layerName">
@@ -44,11 +46,47 @@
     </div>
     <th:block th:include="page/fragments/common :: common_js" />
     <th:block th:include="page/fragments/common :: bootstrap_table_js" />
-
+    <th:block th:include="page/fragments/common :: ztree_js"/>
     <script type="text/javascript" th:inline="javascript">
+        var setting = {
+            callback: {
+                onClick: zTreeOnClick
+            },
+            data: {//数据加载
+                keep: {
+                    parent: true,
+                    leaf: true
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: 'id',
+                    pIdKey: 'parent'
+                },
+                key: {
+                    name: "name"
+                }
+            }
+        };
 
+        function zTreeOnClick(event, treeId, treeNode) {
+            $("#componentTypeId").val(treeNode.id);
+        }
+        $(function () {
+            $.ajaxUtil.get(componentTypeUrl, function (e) {
+                var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+            })
+            // $('#datetimepicker').datetimepicker('remove');
+            $(".datepicker").datepicker({
+                language: 'zh-cn',
+                format: "yyyy-mm-dd"
+            });
+
+        })
+
+        let componentTypeUrl = /*[[@{/componentType}]]*/ "/componentType";
+        let upload = /*[[@{/componentImport}]]*/ "/componentImport";
         function uploadFiles() {
-            let upload = /*[[@{/componentImport}]]*/ "/componentImport";
+
             var formData = new FormData($("#fileForm")[0]);
             $.ajax({
                 url: upload,
@@ -62,7 +100,6 @@
                     if(data.code != 0){
                         $.modal.alertWarning("请选择正确文件格式！",function () {
                         });
-                        return;
                     }else {
                         $.modal.alertSuccess('保存成功',function () {
                             window.location.href = /*[[@{/cImport}]]*/ "//cImport";

@@ -268,4 +268,18 @@ public class ComponentService {
         }
     }
 
+    /**
+     * 新增部件导入用
+     * @param component
+     */
+    public Component saveComponent4Import(Component component) {
+        return componentRepository.saveAndFlush(component);
+    }
+    /**
+     * 查询部件
+     * @param componentId 主键
+     */
+    public Component getOne(String componentId) {
+        return componentRepository.getOne(componentId);
+    }
 }

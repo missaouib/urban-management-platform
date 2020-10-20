@@ -146,4 +146,11 @@ public class GridService {
         return gridRepository.findAllByPublish_IdAndRecord_Sts(publishId, StsConstant.EDITING);
     }
 
+    /**
+     * 新增网格导入用
+     * @param grid 网格实体类
+     */
+    public void save4Import(Grid grid) {
+        gridRepository.saveAndFlush(grid);
+    }
 }
