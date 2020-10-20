@@ -100,7 +100,7 @@
         </div>
     </div>
     <table id="table" class="component"></table>
-    <button id="addBtn" onclick="add()">增加</button>
+<!--    <button id="addBtn" onclick="add()">增加</button>-->
     <div class="notice_check">
         <p>
             <input type="button" class="check_btn1" onclick="" value="更新">
@@ -411,14 +411,14 @@
 
         })
     }
-    function add(){
-        var count = $('#table').bootstrapTable('getData').length;
-        $('#table').bootstrapTable('insertRow',{index:count,row: {
-                id:count+1,
-                name:'wz',
-                price:'2'
-            }});
-    }
+    // function add(){
+    //     var count = $('#table').bootstrapTable('getData').length;
+    //     $('#table').bootstrapTable('insertRow',{index:count,row: {
+    //             id:count+1,
+    //             name:'wz',
+    //             price:'2'
+    //         }});
+    // }
     // id:这条数据的id  type :1,2,3:代表的是第几个目标值
     function addTarget(id,type){
         var writevalue=$("#"+type+"plan"+id).val(); //获取改变后的输入框的值
