@@ -86,13 +86,12 @@ class Kv<<Kv实体类>>{
     -sts : int
 }
 
-class Event<<事件实体类>>{
+class Event<<案件实体类>>{
     -id : String
     -eventCode : String
-    -eventTypeId : EventType
+    -eventTypeId : EventType     //分类id
     -conditionId : EventCondition
     -describe : String
-    -timeLimit : TimeLimit
     -gridId : Grid
     -location : String
     -User : User
@@ -100,9 +99,12 @@ class Event<<事件实体类>>{
     -eventSource : Kv
     -longitude : double
     -latitude : double
-    -region : Kv    //区域
     -taskId : String
+    -timeLimit : TimeLimit
+    -recTypeId : EventType       //问题类型     事件   部件
+    -region : Kv    //区域
     -eventSate : Kv  // 案件状态
+    -recTypeId : Kv  // 案件类型
     -timeLimit : TimeLimit
     -eventCondition : EventCondition
 }
@@ -259,7 +261,6 @@ Grid --> Record
 Grid --> Publish
 Grid --|> Kv
 Component --> ComponentInfo
-Component --> ComponentType
 Component --> Record
 Component --> Publish
 ComponentInfo --|> Kv
@@ -269,32 +270,31 @@ Event --> EventFile
 Event --> EventType
 Event --> EventCondition
 Event --|> Kv
+Event --|> EventTime
 EventType --> TimeLimit
 
 
 
-ComponentController --> ComponentService
-ComponentController --> ComponentTypeService
-PublisheController --> PublisheService
-ImportController --> ImportService
-GridController --> GridService
+
+' ComponentController --> ComponentService
+' PublisheController --> PublisheService
+' ImportController --> ImportService
+' GridController --> GridService
 
 
-GridService --> RecordService
-GridService --> KVService
-GridService --> UserService
-PublishService --> RecordService
-PublishService --> GridService
-ComponentService --> PublishService
-ComponentService --> RecordService
-ComponentService --> ComponentTypeService
+' GridService --> RecordService
+' GridService --> KVService
+' GridService --> UserService
+' PublishService --> RecordService
+' PublishService --> GridService
+' ComponentService --> PublishService
+' ComponentService --> RecordService
 
 
 
-ComponentService ..> Component
-PublisheService ..> Publish
-RecordService ..> Record
-ComponentTypeService ..> ComponentType
+' ComponentService ..> Component
+' PublisheService ..> Publish
+' RecordService ..> Record
 
 
 
