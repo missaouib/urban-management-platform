@@ -101,6 +101,7 @@ class Event<<案件实体类>>{
     -latitude : double
     -taskId : String
     -timeLimit : TimeLimit
+    -sts       : int             // 时间状态     未处理、处理中、关单
     -recTypeId : EventType       //问题类型     事件   部件
     -region : Kv    //区域
     -eventSate : Kv  // 案件状态
@@ -132,22 +133,34 @@ class EventCondition<<立案条件实体类>>{
     -eventTypeId : EventType
 }
 
-class TimeLimit<<时限实体类>>{
+class DeptTimeLimit<<专业部门时限实体类>>{
     -id : String
     -eventTypeId : EventType
     -level : Kv
-    -timeLimit : int
+    -timeLimit : int     //时限
 }
 
-class EventPhase<<事件阶段记录实体类>>{
+class ProcessTimeLimit<<流程时限实体类>>{
+    -id : String
+    -taskName : String
+    -level : Kv
+    -timeLimit : int     //时限  
+}
+
+class EventPhase<<流转记录实体类>>{
     -id : String
     -eventId : Event   
-    -eventPhase : Kv // 阶段待刘凯绘完整体的流程图  kvId 阶段
     -userId : User
-    -eventId : Event[*]
+    -taskId : String             //流程图实例id  (步骤) 
+    -taskName : String           //流程名
+    -opinions : String           //处理意见
+    -starTime : date
+    -endTime  : date
+    -deptTimeLimit  :  DeptTimeLimit
+    -processTimeLimit  :  ProcessTimeLimit
 }
 
-class EventTime<<事件时间记录实体类>>{
+class EventTime<<案件时间记录实体类>>{
     -id : String
     -eventId : Event
     -creatTime : Date           //上报时间
@@ -164,6 +177,10 @@ class EventTime<<事件时间记录实体类>>{
     -disposeDeadline : Date     //处置截至时间
     -disposeEndTime : Date      //处置结束时间
     -superviseTime : Date       //督查时间
+}
+
+class ReportStatistics<<上报统计>>{
+
 }
 
 
@@ -271,6 +288,7 @@ Event --> EventType
 Event --> EventCondition
 Event --|> Kv
 Event --|> EventTime
+Event --|> EventPhase
 EventType --> TimeLimit
 
 
