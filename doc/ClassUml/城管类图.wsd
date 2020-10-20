@@ -419,13 +419,15 @@ Component --> Publish
 ComponentInfo --|> Kv
 Publish --> Record
 Publish --|> Kv
-Event --> EventFile
 Event --> EventType
 Event --> EventCondition
 Event --|> Kv
 Event --|> EventTime
 Event --|> EventPhase
-EventType --> TimeLimit
+EventType -->  DeptTimeLimit
+EventPhase --> DeptTimeLimit 
+EventPhase --> ProcessTimeLimit 
+EventPhase --> EventFile
 ReportStatistics --> User
 VerifyStatistics --> User
 AcceptanceStatistics --> User
