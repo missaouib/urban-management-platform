@@ -91,11 +91,11 @@ class Event<<案件实体类>>{
     -eventCode : String
     -eventTypeId : EventType     //分类id
     -conditionId : EventCondition
-    -describe : String
+    -represent : String
     -gridId : Grid
     -location : String
     -User : User
-    -phone : int
+    -phone : String
     -eventSource : Kv
     -x : double
     -y : double
@@ -105,19 +105,15 @@ class Event<<案件实体类>>{
     -recTypeId : EventType       //问题类型     事件   部件
     -region : Kv    //区域
     -eventSate : Kv  // 案件状态
-    -recTypeId : Kv  // 案件类型
     -eventCondition : EventCondition
 }
 
 class EventType<<分类实体类>>{
     -id
-    -eventTypeCode
-    -eventTypeId
-    -eventTypeName
-    -mainTypeId
-    -mainTypeName
-    -subTypeId
-    -subTypeName
+    -code
+    -name
+    -level
+    -parentId
 }
 
 class EventFile<<事件附件实体类>>{
@@ -168,7 +164,7 @@ class EventTime<<案件时间记录实体类>>{
     -instTime : Date            //立案时间
     -dispatchTime : Date        //派遣时间
     -archiveTime : Date         //结案时间
-    -cancleTime : Date          //作废时间
+    -cancelTime : Date          //作废时间
     -sendVerifyTime : Date      //发核实时间
     -sendCheckTime : Date       //发核查时间
     -verifyTime  : Date         //核实时间
@@ -182,25 +178,25 @@ class EventTime<<案件时间记录实体类>>{
 class ReportStatistics<<上报统计>>{
     -id                   : String
     -userId               : User
-    -patrolReportNum	  : int       //监督员上报数
-    -publicReportNum	  : int       //公众举报数
-    -reportNum			  : int       //上报数
+    -patrolReport	      : int       //监督员上报
+    -publicReport	      : int       //公众举报
+    -report			      : int       //上报
     -reportPatrolId	      : int       //上报监督员标识
     -reportPatrolName	  : String    //上报监督员
-    -validPatrolReportNum : int       //监督员有效上报数
-    -validPublicReportNum : int       //公众举报有效上报数
-    -validReportNum		  : int       //有效上报数
+    -validPatrolReport    : int       //监督员有效上报
+    -validPublicReport    : int       //公众举报有效上报
+    -validReport		  : int       //有效上报
 }
 
 class VerifyStatistics<<核实统计>>{
     -id                     : String
     -userId                 : User
-    -needSendVerifyNum      : int          //应发核实数               
-    -sendVerifyNum          : int          //发核实数
-    -intimeSendVerifyNum    : int          //按时发核实数
-    -needVerifyNum          : int          //应核实数
-    -verifyNum              : int          //核实数
-    -intimeVerifyNum        : int          //按期核实数
+    -needSendVerify         : int          //应发核实               
+    -sendVerify             : int          //发核实
+    -intimeSendVerify       : int          //按时发核实
+    -needVerify             : int          //应核实
+    -verify                 : int          //核实
+    -intimeVerify           : int          //按期核实
     -sendVerifyHumanId      : int          //发核实人标识
     -sendVerifyHumanName    : String       //发核实人
     -sendVerifyHumanRoleId  : int          //发核实人岗位标识
@@ -209,24 +205,24 @@ class VerifyStatistics<<核实统计>>{
 }
 
 class AcceptanceStatistics<<受理统计>>{
-    -id                   : String
-    -userId               : User
-    -notOperateNum    : int     //不予受理数
-    -toOperateNum     : int     //待受理数
-    -intimeOperateNum : int     //按时受理数
-    -operateNum       : int     //受理数
+    -id               : String
+    -userId           : User
+    -notOperate       : int     //不予受理
+    -toOperate        : int     //待受理
+    -intimeOperate    : int     //按时受理
+    -operate          : int     //受理
     -operateHumanId   : int     //受理人标识
     -operateHumanName : String  //受理人
     -operateRoleId    : int     //受理人岗位标识
 
 }
 class CaseStatistics<<立案统计>>{
-    -id                   : String
-    -userId               : User
-    -instNum        :  int      //立案数
-    -intimeInstNum  :  int      //按时立案数
-    -toInstNum      :  int      //待立案数
-    -notInstNum     :  int      //不予立案数
+    -id             : String
+    -userId         : User
+    -inst           :  int      //立案
+    -intimeInst     :  int      //按时立案
+    -toInst         :  int      //待立案
+    -notInst        :  int      //不予立案
     -instHumanId    :  int      //立案人标识
     -instHumanName  :  String   //立案人
     -instRoleId     :  int      //立案人岗位标识
@@ -234,10 +230,10 @@ class CaseStatistics<<立案统计>>{
 class DispatchStatistics<<派遣统计>>{
     -id                   : String
     -userId               : User
-    -dispatchNum          : int      //派遣数         
-    -toDispatchNum        : int      //待派遣数       
-    -needDispatchNum      : int      //应派遣数       
-    -intimeDispatchNum    : int      //按时派遣数     
+    -dispatch             : int      //派遣         
+    -toDispatch           : int      //待派遣       
+    -needDispatch         : int      //应派遣       
+    -intimeDispatch       : int      //按时派遣     
     -dispatchHumanId      : int      //派遣员标识     
     -dispatchHumanName    : String   //派遣员         
     -dispatchHumanRoleId  : int      //派遣员岗位标识 
@@ -245,37 +241,37 @@ class DispatchStatistics<<派遣统计>>{
 class DisposalStatistics<<处置统计>>{
     -id                   : String
     -userId               : User
-    -disposeNum              : int      //处置数         
-    -needDisposeNum          : int      //应处置数       
-    -intimeDisposeNum        : int      //按时处置数     
-    -overtimeToDisposeNum    : int      //超时未处置数   
-    -overtimeDisposeNum      : int      //超时处置数     
-    -toDisposeNum            : int      //未处置数       
-    -disposeOpinion          : text     //处置意见       
-    -disposeUnitId           : int      //处置部门标识   
-    -disposeUnitName         : String   //处置部门   
+    -dispose              : int      //处置         
+    -needDispose          : int      //应处置       
+    -intimeDispose        : int      //按时处置     
+    -overtimeToDispose    : int      //超时未处置   
+    -overtimeDispose      : int      //超时处置     
+    -toDispose            : int      //未处置       
+    -disposeOpinion       : text     //处置意见       
+    -disposeUnitId        : int      //处置部门标识   
+    -disposeUnitName      : String   //处置部门   
 }
 class InspectionStatistics<<督查统计>>{
-    -id                   : String
-    -userId               : User
-    -intimeSuperviseNum    : int      //按时督查数   	
-    -needSuperviseNum      : int      //应督查数   		
-    -superviseNum          : int      //督查数    		
-    -toSuperviseNum        : int      //待督查数   		
+    -id                    : String
+    -userId                : User
+    -intimeSupervise       : int      //按时督查   	
+    -needSupervise         : int      //应督查   		
+    -supervise             : int      //督查    		
+    -toSupervise           : int      //待督查   		
     -superviseHumanId      : int      //督查人标识   	
     -superviseHumanName    : String   //督查人    		
     -superviseHumanRoleId  : int      //督查人岗位标识  
 }
 class VerificationStatistics<<核查统计>>{
-    -id                   : String
-    -userId               : User
-    -checkNum              : int      //核查数            
-    -needCheckNum          : int      //应核查数          
-    -intimeCheckNum        : int      //按时核查数        
-    -intimeSendCheckNum    : int      //按时发核查数      
-    -sendCheckNum          : int      //发核查数          
-    -needSendCheckNum      : int      //应发核查数        
-    -checkTransNum         : int      //核查批转数        
+    -id                    : String
+    -userId                : User
+    -check                 : int      //核查            
+    -needCheck             : int      //应核查          
+    -intimeCheck           : int      //按时核查        
+    -intimeSendCheck       : int      //按时发核查      
+    -sendCheck             : int      //发核查          
+    -needSendCheck         : int      //应发核查        
+    -checkTrans            : int      //核查批转        
     -checkPatrolId         : int      //核查监督员标识    
     -checkPatrolName       : String   //核查监督员        
     -checkTransHumanId     : int      //核查受理员标识    
@@ -287,38 +283,38 @@ class VerificationStatistics<<核查统计>>{
     -sendCheckHumanRoleId  : int      //发核查人岗位标识  
 }
 class ClosingStatistics<<结案统计>>{
-    -id                   : String
-    -userId               : User
-    -archiveNum             : int      //结案数          
-    -humanArchiveNum        : int      //值班长结案数    
-    -intimeHumanArchiveNum  : int      //值班长按时结案数
-    -needHumanArchiveNum    : int      //值班长应结案数  
-    -intimeArchiveNum       : int      //按期结案数      
-    -intimeToArchiveNum     : int      //按期未结案数    
-    -needArchiveNum         : int      //应结案数        
-    -overtimeArchiveNum     : int      //超期结案数      
-    -overtimeToArchiveNum   : int      //超期未结案数    
-    -toArchiveNum           : int      //未结案数        
-    -archiveHumanId         : int      //结案人标识      
-    -archiveHumanName       : String   //结案人          
-    -archiveHumanRoleId     : int      //结案人岗位标识  
+    -id                  : String
+    -userId              : User
+    -archive             : int      //结案          
+    -humanArchive        : int      //值班长结案    
+    -intimeHumanArchive  : int      //值班长按时结案
+    -needHumanArchive    : int      //值班长应结案  
+    -intimeArchive       : int      //按期结案      
+    -intimeToArchive     : int      //按期未结案    
+    -needArchive         : int      //应结案        
+    -overtimeArchive     : int      //超期结案      
+    -overtimeToArchive   : int      //超期未结案    
+    -toArchive           : int      //未结案        
+    -archiveHumanId      : int      //结案人标识      
+    -archiveHumanName    : String   //结案人          
+    -archiveHumanRoleId  : int      //结案人岗位标识  
 
 }
 class VoidStatistics<<作废统计>>{
-    -id                   : String
-    -userId               : User
-    -cancelNum      :  int       //作废数       
+    -id             :  String
+    -userId         :  User
+    -cancel         :  int       //作废       
     -cancelOpinion  :  text      //作废意见     
-    -hangNum        :  int       //挂账数       
-    -hisHangNum     :  int       //历史挂账数   
-    -postponeNum    :  int       //延期数       
-    -reworkNum      :  int       //返工数       
-    -multiReworkNum :  int       //返工次数     
+    -hang           :  int       //挂账       
+    -hisHang        :  int       //历史挂账   
+    -postpone       :  int       //延期       
+    -rework         :  int       //返工       
+    -multiRework    :  int       //返工次     
     -displayStyleId :  int       //显示类型标识 
-    -shuffleNum     :  int       //推诿数       
+    -shuffle        :  int       //推诿       
 }
 
-
+   
 
 
 
@@ -420,7 +416,7 @@ ComponentInfo --|> Kv
 Publish --> Record
 Publish --|> Kv
 Event --> EventType
-Event --> EventCondition
+EventCondition -->  EventType 
 Event --|> Kv
 Event --|> EventTime
 Event --|> EventPhase
