@@ -3,12 +3,10 @@ package com.unicom.urban.management.pojo.entity;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
- * 事件分类
+ * 分类实体类
  *
  * @author jiangwen
  */
@@ -19,16 +17,16 @@ public class EventType {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    private String eventTypeId;
+    private String id;
 
-    private String eventTypeName;
+    private String name;
 
-    private String mainTypeId;
+    private String code;
 
-    private String mainTypeName;
+    private String level;
 
-    private String subTypeId;
-
-    private String subTypeName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private EventType parentId;
 
 }

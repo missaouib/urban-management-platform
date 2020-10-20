@@ -6,7 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 /**
- * 立案条件
+ * 立案条件实体类
  *
  * @author jiangwen
  */

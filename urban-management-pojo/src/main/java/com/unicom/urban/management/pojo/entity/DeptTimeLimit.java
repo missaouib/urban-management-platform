@@ -6,25 +6,30 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 /**
- * 事件附件实体类
+ * 专业部门时限实体类
  *
  * @author jiangwen
  */
 @Data
 @Entity
-public class EventFile {
+public class DeptTimeLimit {
 
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    private String fileName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private EventType eventTypeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private Event eventId;
+    private KV level;
 
-    private int fileType;
+    /**
+     * 时限
+     */
+    private int timeLimit;
 
 }

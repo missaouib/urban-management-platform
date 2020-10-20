@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
+ * Kv实体类
+ *
  * @author 顾志杰
  * @date 2020/10/14-18:08
  */

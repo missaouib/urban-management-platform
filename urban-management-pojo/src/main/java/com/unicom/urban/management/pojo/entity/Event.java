@@ -9,7 +9,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 
 /**
- * 事件
+ * 案件实体类
  *
  * @author jiangwen
  */
@@ -53,18 +53,46 @@ public class Event extends BaseEntity {
     @JoinColumn
     private User user;
 
-    private int phone;
+    private String phone;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private KV eventSource;
 
-    private double longitude;
+    private double x;
 
-    private double latitude;
+    private double y;
 
+    private String taskId;
+
+    /**
+     * 区域
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private KV region;
+
+    /**
+     * 时间状态 未处理、处理中、关单
+     */
+    private int sts;
+
+    /**
+     * 问题类型 事件 部件
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private EventType recTypeId;
+
+    /**
+     * 案件状态
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private KV eventSate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private EventCondition eventCondition;
 
 }
