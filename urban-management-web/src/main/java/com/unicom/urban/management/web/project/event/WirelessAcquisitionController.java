@@ -15,31 +15,31 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * 案件
+ * 无线采集子系统
  *
  * @author jiangwen
  */
 @RestController
 @ResponseResultBody
 @RequestMapping("/event")
-public class EventController {
+public class WirelessAcquisitionController {
 
     @Autowired
     private EventService eventService;
 
-    @GetMapping("/toEventList")
-    public ModelAndView toEventList() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/list");
+    @GetMapping("/toWirelessAcquisitionList")
+    public ModelAndView toWirelessAcquisitionList() {
+        return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/list");
     }
 
-    @GetMapping("/toEventSave")
-    public ModelAndView toEventSave() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/save");
+    @GetMapping("/toWirelessAcquisitionListSave")
+    public ModelAndView toWirelessAcquisitionListSave() {
+        return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/save");
     }
 
-    @GetMapping("/toEventUpdate")
-    public ModelAndView toEventUpdate() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/update");
+    @GetMapping("/toWirelessAcquisitionListUpdate")
+    public ModelAndView toWirelessAcquisitionListUpdate() {
+        return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/update");
     }
 
     @GetMapping("/eventList")
