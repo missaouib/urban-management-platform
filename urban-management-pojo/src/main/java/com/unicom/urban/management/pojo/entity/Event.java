@@ -46,6 +46,9 @@ public class Event extends BaseEntity {
 
     private String location;
 
+    /**
+     * 上报人
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User user;

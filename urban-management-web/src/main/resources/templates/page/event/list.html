@@ -104,7 +104,7 @@
     })
 
 
-    let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
+    let searchUrl = /*[[@{/event/eventList}]]*/ "/event/eventList";
 
     let addUrl = /*[[@{/event/toEventSave}]]*/ "/user/add";
 
@@ -132,15 +132,15 @@
                 },
                 {
                     title: '问题描述',
-                    field: 'username'
+                    field: 'represent'
                 },
                 {
                     title: '上报人',
-                    field: 'name'
+                    field: 'userName'
                 },
                 {
                     title: '案件类型',
-                    field: 'mobileNumber'
+                    field: 'eventTypeName'
                 },
                 {
                     title: '创建时间',
