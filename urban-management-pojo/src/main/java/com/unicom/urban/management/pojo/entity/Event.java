@@ -23,30 +23,43 @@ public class Event extends BaseEntity {
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
+
     private String eventCode;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private EventType eventTypeId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private Condition conditionId;
-    private String describe;
+    private EventCondition conditionId;
+
+    private String represent;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private TimeLimit timeLimit;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Grid gridId;
+
     private String location;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User user;
+
     private int phone;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private KV eventSource;
+
     private double longitude;
+
     private double latitude;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private KV region;

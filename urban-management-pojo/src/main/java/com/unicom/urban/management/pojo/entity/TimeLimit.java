@@ -6,7 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 /**
- * 时限实体类
+ * 时限
  *
  * @author jiangwen
  */

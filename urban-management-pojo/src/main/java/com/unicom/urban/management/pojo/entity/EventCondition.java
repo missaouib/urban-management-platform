@@ -3,9 +3,7 @@ package com.unicom.urban.management.pojo.entity;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * 立案条件
@@ -14,14 +12,16 @@ import javax.persistence.Id;
  */
 @Data
 @Entity
-public class Condition {
+public class EventCondition {
 
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    private String eventTypeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private EventType eventTypeId;
 
     private String conditionValue;
 
