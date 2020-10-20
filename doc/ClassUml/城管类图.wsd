@@ -34,19 +34,13 @@ class Grid<<网格实体类>>{
 
 class Component<<部件实体类>>{
     -id: String
-    -componentType : ComponentType
+    -eventType : EventType
     -componentInfo : ComponentInfo
     -sts : int  // 用于记录该部件删除
     -publish : Publish
     -record : Record
 }
 
-class ComponentType<<部件分类实体类>>{
-    -id: String
-    -name: String
-    -num: int
-    -parent: ComponentType
-}
 
 class ComponentInfo<<部件信息实体类>>{
     -id : String
@@ -74,7 +68,7 @@ class Publish<<发布实体类>>{
     -kv : Kv              //类型：编辑的是部件、网格。
     -sts : int            //状态：用于判断是发布、未发布状态
     -user : User          //用于记录谁发布的
-    -componentType : ComponentType
+    -eventType : EventType
 }
 class Record<<编辑实体类>>{
     -id : String
@@ -96,7 +90,7 @@ class Event<<事件实体类>>{
     -id : String
     -eventCode : String
     -eventTypeId : EventType
-    -conditionId : Condition
+    -conditionId : EventCondition
     -describe : String
     -timeLimit : TimeLimit
     -gridId : Grid
@@ -106,18 +100,22 @@ class Event<<事件实体类>>{
     -eventSource : Kv
     -longitude : double
     -latitude : double
-    -region : Kv
-
-
+    -region : Kv    //区域
+    -taskId : String
+    -eventSate : Kv  // 案件状态
+    -timeLimit : TimeLimit
+    -eventCondition : EventCondition
 }
 
-class EventType<<事件分类实体类>>{
-    -eventTypeId : String
-    -eventTypeName : String
-    -mainTypeId : String
-    -mainTypeName : String
-    -subTypeId : String
-    -subTypeName : String
+class EventType<<分类实体类>>{
+    -id
+    -eventTypeCode 
+    -eventTypeId
+    -eventTypeName
+    -mainTypeId
+    -mainTypeName
+    -subTypeId
+    -subTypeName
 }
 
 class EventFile<<事件附件实体类>>{
@@ -126,27 +124,62 @@ class EventFile<<事件附件实体类>>{
     -eventId : Event
     -fileType ：int
 }
-class Condition<<立案条件实体类>>{
+class EventCondition<<立案条件实体类>>{
     -id : String
-    -evnetTypeId : EventType
     -conditionValue : String
+    -eventTypeId : EventType
 }
 
 class TimeLimit<<时限实体类>>{
-    id : String
-    eventTypeId : EventType
-    level : Kv
-    timeLimit : int
+    -id : String
+    -eventTypeId : EventType
+    -level : Kv
+    -timeLimit : int
 }
+
+class EventPhase<<事件阶段记录实体类>>{
+    -id : String
+    -eventId : Event   
+    -eventPhase : Kv // 阶段待刘凯绘完整体的流程图  kvId 阶段
+    -userId : User
+    -eventId : Event[*]
+}
+
+class EventTime<<事件时间记录实体类>>{
+    -id : String
+    -eventId : Event
+    -creatTime : Date           //上报时间
+    -operateTime : Date         //受理时间
+    -instTime : Date            //立案时间
+    -dispatchTime : Date        //派遣时间
+    -archiveTime : Date         //结案时间
+    -cancleTime : Date          //作废时间
+    -sendVerifyTime : Date      //发核实时间
+    -sendCheckTime : Date       //发核查时间
+    -verifyTime  : Date         //核实时间
+    -checkTime : Date           //核查时间
+    -disposeBeginTime : Date    //处置开始时间
+    -disposeDeadline : Date     //处置截至时间
+    -disposeEndTime : Date      //处置结束时间
+    -superviseTime : Date       //督查时间
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
 class ComponentController<<部件界面类>>{
     -ComponentService
-    -ComponentTypeService
     -ComponentInfoService
     +ComponentList(component):Component[*]         // 查询部件集合
-    +ComponentTypeList():ComponentType[*]          // 获取部件分类集合
     +saveComponentList(Component[*]):boolean       // 保存部件
     +componentImport():boolean
     +objState() : Kv[*]
@@ -234,7 +267,7 @@ Publish --> Record
 Publish --|> Kv
 Event --> EventFile
 Event --> EventType
-Event --> Condition
+Event --> EventCondition
 Event --|> Kv
 EventType --> TimeLimit
 
