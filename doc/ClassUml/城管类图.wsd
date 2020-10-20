@@ -97,8 +97,8 @@ class Event<<案件实体类>>{
     -User : User
     -phone : int
     -eventSource : Kv
-    -longitude : double
-    -latitude : double
+    -x : double
+    -y : double
     -taskId : String
     -timeLimit : TimeLimit
     -sts       : int             // 时间状态     未处理、处理中、关单
@@ -106,13 +106,12 @@ class Event<<案件实体类>>{
     -region : Kv    //区域
     -eventSate : Kv  // 案件状态
     -recTypeId : Kv  // 案件类型
-    -timeLimit : TimeLimit
     -eventCondition : EventCondition
 }
 
 class EventType<<分类实体类>>{
     -id
-    -eventTypeCode 
+    -eventTypeCode
     -eventTypeId
     -eventTypeName
     -mainTypeId
@@ -144,16 +143,17 @@ class ProcessTimeLimit<<流程时限实体类>>{
     -id : String
     -taskName : String
     -level : Kv
-    -timeLimit : int     //时限  
+    -timeLimit : int     //时限
 }
 
 class EventPhase<<流转记录实体类>>{
     -id : String
-    -eventId : Event   
+    -eventId : Event
     -userId : User
-    -taskId : String             //流程图实例id  (步骤) 
+    -taskId : String             //流程图实例id  (步骤)
     -taskName : String           //流程名
     -opinions : String           //处理意见
+    -eventFileId : EventFile     //附件
     -starTime : date
     -endTime  : date
     -deptTimeLimit  :  DeptTimeLimit
@@ -180,8 +180,144 @@ class EventTime<<案件时间记录实体类>>{
 }
 
 class ReportStatistics<<上报统计>>{
+    -id                   : String
+    -userId               : User
+    -patrolReportNum	  : int       //监督员上报数
+    -publicReportNum	  : int       //公众举报数
+    -reportNum			  : int       //上报数
+    -reportPatrolId	      : int       //上报监督员标识
+    -reportPatrolName	  : String    //上报监督员
+    -validPatrolReportNum : int       //监督员有效上报数
+    -validPublicReportNum : int       //公众举报有效上报数
+    -validReportNum		  : int       //有效上报数
+}
+
+class VerifyStatistics<<核实统计>>{
+    -id                     : String
+    -userId                 : User
+    -needSendVerifyNum      : int          //应发核实数               
+    -sendVerifyNum          : int          //发核实数
+    -intimeSendVerifyNum    : int          //按时发核实数
+    -needVerifyNum          : int          //应核实数
+    -verifyNum              : int          //核实数
+    -intimeVerifyNum        : int          //按期核实数
+    -sendVerifyHumanId      : int          //发核实人标识
+    -sendVerifyHumanName    : String       //发核实人
+    -sendVerifyHumanRoleId  : int          //发核实人岗位标识
+    -verifyPatrolId         : int          //核实监督员标识
+    -verifyPatrolName       : String       //核实监督员
+}
+
+class AcceptanceStatistics<<受理统计>>{
+    -id                   : String
+    -userId               : User
+    -notOperateNum    : int     //不予受理数
+    -toOperateNum     : int     //待受理数
+    -intimeOperateNum : int     //按时受理数
+    -operateNum       : int     //受理数
+    -operateHumanId   : int     //受理人标识
+    -operateHumanName : String  //受理人
+    -operateRoleId    : int     //受理人岗位标识
 
 }
+class CaseStatistics<<立案统计>>{
+    -id                   : String
+    -userId               : User
+    -instNum        :  int      //立案数
+    -intimeInstNum  :  int      //按时立案数
+    -toInstNum      :  int      //待立案数
+    -notInstNum     :  int      //不予立案数
+    -instHumanId    :  int      //立案人标识
+    -instHumanName  :  String   //立案人
+    -instRoleId     :  int      //立案人岗位标识
+}
+class DispatchStatistics<<派遣统计>>{
+    -id                   : String
+    -userId               : User
+    -dispatchNum          : int      //派遣数         
+    -toDispatchNum        : int      //待派遣数       
+    -needDispatchNum      : int      //应派遣数       
+    -intimeDispatchNum    : int      //按时派遣数     
+    -dispatchHumanId      : int      //派遣员标识     
+    -dispatchHumanName    : String   //派遣员         
+    -dispatchHumanRoleId  : int      //派遣员岗位标识 
+}
+class DisposalStatistics<<处置统计>>{
+    -id                   : String
+    -userId               : User
+    -disposeNum              : int      //处置数         
+    -needDisposeNum          : int      //应处置数       
+    -intimeDisposeNum        : int      //按时处置数     
+    -overtimeToDisposeNum    : int      //超时未处置数   
+    -overtimeDisposeNum      : int      //超时处置数     
+    -toDisposeNum            : int      //未处置数       
+    -disposeOpinion          : text     //处置意见       
+    -disposeUnitId           : int      //处置部门标识   
+    -disposeUnitName         : String   //处置部门   
+}
+class InspectionStatistics<<督查统计>>{
+    -id                   : String
+    -userId               : User
+    -intimeSuperviseNum    : int      //按时督查数   	
+    -needSuperviseNum      : int      //应督查数   		
+    -superviseNum          : int      //督查数    		
+    -toSuperviseNum        : int      //待督查数   		
+    -superviseHumanId      : int      //督查人标识   	
+    -superviseHumanName    : String   //督查人    		
+    -superviseHumanRoleId  : int      //督查人岗位标识  
+}
+class VerificationStatistics<<核查统计>>{
+    -id                   : String
+    -userId               : User
+    -checkNum              : int      //核查数            
+    -needCheckNum          : int      //应核查数          
+    -intimeCheckNum        : int      //按时核查数        
+    -intimeSendCheckNum    : int      //按时发核查数      
+    -sendCheckNum          : int      //发核查数          
+    -needSendCheckNum      : int      //应发核查数        
+    -checkTransNum         : int      //核查批转数        
+    -checkPatrolId         : int      //核查监督员标识    
+    -checkPatrolName       : String   //核查监督员        
+    -checkTransHumanId     : int      //核查受理员标识    
+    -checkTransHumanName   : String   //核查受理员        
+    -checkTransHumanRoleId : int      //核查受理员岗位标识
+    -checkTransTime        : datet    //核查批转时间      
+    -sendCheckHumanId      : int      //发核查人标识      
+    -sendCheckHumanName    : int      //发核查人          
+    -sendCheckHumanRoleId  : int      //发核查人岗位标识  
+}
+class ClosingStatistics<<结案统计>>{
+    -id                   : String
+    -userId               : User
+    -archiveNum             : int      //结案数          
+    -humanArchiveNum        : int      //值班长结案数    
+    -intimeHumanArchiveNum  : int      //值班长按时结案数
+    -needHumanArchiveNum    : int      //值班长应结案数  
+    -intimeArchiveNum       : int      //按期结案数      
+    -intimeToArchiveNum     : int      //按期未结案数    
+    -needArchiveNum         : int      //应结案数        
+    -overtimeArchiveNum     : int      //超期结案数      
+    -overtimeToArchiveNum   : int      //超期未结案数    
+    -toArchiveNum           : int      //未结案数        
+    -archiveHumanId         : int      //结案人标识      
+    -archiveHumanName       : String   //结案人          
+    -archiveHumanRoleId     : int      //结案人岗位标识  
+
+}
+class VoidStatistics<<作废统计>>{
+    -id                   : String
+    -userId               : User
+    -cancelNum      :  int       //作废数       
+    -cancelOpinion  :  text      //作废意见     
+    -hangNum        :  int       //挂账数       
+    -hisHangNum     :  int       //历史挂账数   
+    -postponeNum    :  int       //延期数       
+    -reworkNum      :  int       //返工数       
+    -multiReworkNum :  int       //返工次数     
+    -displayStyleId :  int       //显示类型标识 
+    -shuffleNum     :  int       //推诿数       
+}
+
 
 
 
@@ -215,7 +351,7 @@ class ComponentService<<部件业务类>>{
     +saveComponentList(component[*]): boolean
     +saveComponent(component) : boolean
     +savePublish(publis) : boolean
-    +saveRecord(record,publish) : boolean 
+    +saveRecord(record,publish) : boolean
     +getComponentByRecordId(record) : Component[*]
     +deleteComponent(component) : boolean
 }
@@ -236,7 +372,7 @@ class PublisheService<<发布业务类>>{
 }
 
 class RecordService<<编辑业务类>>{
-    +save(record) : boolean 
+    +save(record) : boolean
     +update(record) : boolean
     +findAllByPublishId() : Record[*]
 }
@@ -290,6 +426,18 @@ Event --|> Kv
 Event --|> EventTime
 Event --|> EventPhase
 EventType --> TimeLimit
+ReportStatistics --> User
+VerifyStatistics --> User
+AcceptanceStatistics --> User
+CaseStatistics --> User
+DispatchStatistics --> User
+DisposalStatistics --> User
+InspectionStatistics --> User
+VerificationStatistics --> User
+ClosingStatistics --> User
+VoidStatistics --> User
+
+
 
 
 
