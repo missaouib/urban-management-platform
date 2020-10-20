@@ -11,7 +11,7 @@
 </head>
 <body style="border-radius: 8px;">
 <div class="col-md-12" style="height: 100%">
-    <h3 class="bigTitle">11111111案件修改</h3>
+    <h3 class="bigTitle">案件修改</h3>
     <div class="content">
         <div class="leftBox">
             <form id="userForm">
@@ -34,16 +34,12 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span>*</span>立案条件</td>
+                                <td><span></span>诉求人</td>
                                 <td>
-                                    <select name="safeLevel" required>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
+                                    <input name="userName" value="小白" class="">
                                 </td>
-
+                                <td><span></span>联系方式</td>
+                                <td><input  name="handleTime" type="text" value="15645068888"></td>
                             </tr>
                             <tr>
                                 <td><span>*</span>问题描述</td>
@@ -51,8 +47,8 @@
                                 <td colspan="8"><textarea id="problemescription" name="problemescription"
                                                           required></textarea></td>
                             </tr>
-                            <tr>
-                                <td><span></span>案件等级</td>
+                            <tr class="col-12">
+                                <td><span></span>案件地址</td>
                                 <td>
                                     <select name="safeLevel">
                                         <option>一般</option>
@@ -66,61 +62,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span>*</span>所在区域</td>
-                                <td>
-                                    <select name="safeLevel" required>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </td>
-                                <td><span>*</span>所属网格</td>
-                                <td>
-                                    <select name="safeLevel" required>
-                                        <option>第一单元网格</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span>*</span>案件地址</td>
-                                <td colspan="8">
-                                    <input id="enterprise" name="enterprise" type="text" required>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span></span>上报人</td>
-                                <td style="text-align: left">张辉</td>
-                                <td><span></span>联系方式</td>
-                                <td><input id="handleTime" name="handleTime" type="text" value="15645068888"></td>
-                            </tr>
-                            <tr>
-                                <td><span></span>是否处理</td>
-                                <td style="text-align: left">
-                                    <input name="userName" placeholder="" class="" type="checkbox" required
-                                           style="width: 30px">
-                                </td>
-                                <td><span>*</span>问题来源</td>
-                                <td>
-                                    <select name="safeLevel" required>
-                                        <option>监督员上报</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span></span>创建时间</td>
-                                <td>
-                                    <input size="16" class="form_datetime" type="text" value="" readonly>
-
-                                </td>
-                            </tr>
-                            <tr>
                                 <td><span></span>位置坐标</td>
                                 <td>
                                     <input type="text" class="" readonly="readonly" disabled value="经度">
@@ -131,16 +72,19 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span>*</span>案件类型</td>
+                                <td><span></span>诉求时间</td>
                                 <td>
-                                    <select required>
-                                        <option>日常管理</option>
+                                    <input name="userName" value="2020-10-10" class="">
+                                </td>
+                                <td><span></span>问题来源</td>
+                                <td>
+                                    <select  name="safeLevel" required>
+                                        <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
                                         <option>4</option>
                                     </select>
                                 </td>
-
                             </tr>
 
                             <!--                                    <tr>-->
