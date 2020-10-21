@@ -3,6 +3,7 @@ package com.unicom.urban.management.web.project.event;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,8 +28,8 @@ public class SupervisionAcceptanceController {
         return new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/save");
     }
 
-    @GetMapping("/toSupervisionAcceptanceUpdate")
-    public ModelAndView toSupervisionAcceptanceUpdate() {
+    @GetMapping("/toSupervisionAcceptanceUpdate/{id}")
+    public ModelAndView toSupervisionAcceptanceUpdate(@PathVariable String id) {
         return new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/update");
     }
 
