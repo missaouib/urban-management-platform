@@ -20,9 +20,9 @@ spring:
         format_sql: true                 # 格式化SQL
 
   activiti:
-    history-level: full
+    history-level: none
     check-process-definitions: false
-    db-history-used: true
+    db-history-used: false
     db-identity-used: false
     job-executor-activate: false
     async-executor-enabled: false
@@ -69,6 +69,7 @@ fdfs:
 logging:
   level:
     com.unicom: info
+    org.springframework: warn
     org.activiti.engine: debug
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 gis:
