@@ -6,7 +6,7 @@ import com.unicom.urban.management.pojo.dto.ComponentDTO;
 import com.unicom.urban.management.pojo.entity.KV;
 import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.component.ComponentService;
-import com.unicom.urban.management.service.componenttype.ComponentTypeService;
+import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.publish.PublishService;
@@ -32,7 +32,7 @@ import java.util.Map;
 @ResponseResultBody
 public class ComponentController {
 
-    private final ComponentTypeService componentTypeService;
+    private final EventTypeService eventTypeService;
 
     private final ComponentService componentService;
 
@@ -45,8 +45,8 @@ public class ComponentController {
     private final RecordService recordService;
 
     @Autowired
-    public ComponentController(ComponentTypeService componentTypeService, ComponentService componentService, KVService kvService, GridService gridService, PublishService publishService, RecordService recordService) {
-        this.componentTypeService = componentTypeService;
+    public ComponentController(EventTypeService eventTypeService, ComponentService componentService, KVService kvService, GridService gridService, PublishService publishService, RecordService recordService) {
+        this.eventTypeService = eventTypeService;
         this.componentService = componentService;
         this.kvService = kvService;
         this.gridService = gridService;
@@ -65,9 +65,9 @@ public class ComponentController {
         return new ModelAndView(SystemConstant.PAGE + "/component/import");
     }
 
-    @GetMapping("/componentType")
-    public List<ComponentTypeVO> componentTypeList(){
-        return componentTypeService.getComponentTypeList();
+    @GetMapping("/eventType")
+    public List<EventTypeVO> componentTypeList(){
+        return eventTypeService.getEventTypeList();
     }
 
     @PostMapping("/componentList")

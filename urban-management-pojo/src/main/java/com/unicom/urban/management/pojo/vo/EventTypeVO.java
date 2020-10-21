@@ -7,7 +7,7 @@ import lombok.Data;
  * @date 2020/10/14-13:56
  */
 @Data
-public class ComponentTypeVO {
+public class EventTypeVO {
 
     private String id;
 

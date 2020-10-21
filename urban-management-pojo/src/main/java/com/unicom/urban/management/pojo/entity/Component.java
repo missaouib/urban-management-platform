@@ -29,7 +29,7 @@ public class Component extends BaseEntity {
     private String id;
 
     @ManyToOne
-    private ComponentType componentType;
+    private EventType eventType;
 
     @OneToOne(cascade = CascadeType.ALL)
     private ComponentInfo componentInfo;

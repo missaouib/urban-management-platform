@@ -208,7 +208,7 @@
                 class: "check"
             },
             {
-                field: 'componentType',
+                field: 'eventType',
                 title: '部件分类',
             },
             {
@@ -388,7 +388,7 @@
                         index: index+1,
                         id: value.id,
                         name: value.objId,
-                        componentType: value.componentType,
+                        eventType: value.eventType,
                         objId: value.objId,
                         objName: value.objName,
                         mainDeptCode: value.mainDeptCode,
@@ -484,7 +484,7 @@
         })
     })
 
-    let componentTypeUrl = /*[[@{/componentType}]]*/ "/componentType";
+    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
 
     let searchUrl = /*[[@{/componentList}]]*/ "/componentList";
 

@@ -1,13 +1,12 @@
 package com.unicom.urban.management.service.component;
 
 import com.unicom.urban.management.common.constant.KvConstant;
-import com.unicom.urban.management.common.constant.StsConstant;
 import com.unicom.urban.management.dao.component.ComponentRepository;
 import com.unicom.urban.management.mapper.ComponentMapper;
 import com.unicom.urban.management.pojo.dto.ComponentDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.ComponentVO;
-import com.unicom.urban.management.service.componenttype.ComponentTypeService;
+import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.record.RecordService;
 import org.apache.commons.lang3.StringUtils;
@@ -39,14 +38,14 @@ public class ComponentService {
 
     private final RecordService recordService;
 
-    private final ComponentTypeService componentTypeService;
+    private final EventTypeService eventTypeService;
 
     @Autowired
-    public ComponentService(ComponentRepository componentRepository, PublishService releaseService, RecordService recordService, ComponentTypeService componentTypeService) {
+    public ComponentService(ComponentRepository componentRepository, PublishService releaseService, RecordService recordService, EventTypeService eventTypeService) {
         this.componentRepository = componentRepository;
         this.releaseService = releaseService;
         this.recordService = recordService;
-        this.componentTypeService = componentTypeService;
+        this.eventTypeService = eventTypeService;
     }
 
     /**
@@ -60,7 +59,7 @@ public class ComponentService {
             List<Predicate> list = new ArrayList<>();
             if (StringUtils.isNotBlank(component.getComponentTypeId())) {
                 CriteriaBuilder.In<Object> in = criteriaBuilder.in(root.get("componentType").get("id"));
-                List<String> type = componentTypeService.getComponentTypeIds(component.getComponentTypeId());
+                List<String> type = eventTypeService.getComponentTypeIds(component.getComponentTypeId());
                 type.forEach(in::value);
                 list.add(in);
             }
@@ -152,9 +151,9 @@ public class ComponentService {
         if (StringUtils.isNotBlank(dto.getPublish())) {
             publish.setId(dto.getPublish());
         } else {
-            ComponentType componentType = componentTypeService.getComponentType(dto.getComponentTypeId());
-            publish.setComponentType(componentType);
-            publish.setName(componentType.getName());
+            EventType eventType = eventTypeService.getEventType(dto.getComponentTypeId());
+            publish.setEventType(eventType);
+            publish.setName(eventType.getName());
             publish = this.savePublish(publish);
         }
         Record record = this.saveRecord(dto.getCoordinate(), publish);
@@ -164,7 +163,7 @@ public class ComponentService {
 
         KV objState = KV.builder().id(dto.getObjState()).build();
         KV datasource = KV.builder().id(dto.getDataSource()).build();
-        ComponentType componentType = ComponentType.builder().id(dto.getComponentTypeId()).build();
+        EventType eventType = EventType.builder().id(dto.getComponentTypeId()).build();
         ComponentInfo componentInfo = ComponentInfo.builder()
                 .objId(dto.getObjId())
                 .objName(dto.getObjName())
@@ -183,7 +182,7 @@ public class ComponentService {
                 .build();
         Component component = Component.builder()
                 .componentInfo(componentInfo)
-                .componentType(componentType)
+                .eventType(eventType)
                 .publish(publish)
                 .record(record)
                 .build();

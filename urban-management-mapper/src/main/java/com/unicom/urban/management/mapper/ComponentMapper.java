@@ -48,8 +48,8 @@ public interface ComponentMapper {
             @Mapping(source = "componentInfo.dataSource.id", target = "dataSourceId"),
             @Mapping(source = "componentInfo.dataSource.value", target = "dataSource"),
             @Mapping(source = "componentInfo.note", target = "note"),
-            @Mapping(source = "componentType.id", target = "componentTypeId"),
-            @Mapping(source = "componentType.name", target = "componentType")
+            @Mapping(source = "eventType.id", target = "eventTypeId"),
+            @Mapping(source = "eventType.name", target = "eventType")
     })
     ComponentVO componentToComponentVO(Component component);
 }

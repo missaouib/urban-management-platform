@@ -1,7 +1,6 @@
 package com.unicom.urban.management.dao.kv;
 
 import com.unicom.urban.management.dao.CustomizeRepository;
-import com.unicom.urban.management.pojo.entity.ComponentType;
 import com.unicom.urban.management.pojo.entity.KV;
 
 import java.util.List;
