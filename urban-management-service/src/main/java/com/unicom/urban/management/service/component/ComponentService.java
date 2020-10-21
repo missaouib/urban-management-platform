@@ -57,9 +57,9 @@ public class ComponentService {
     public List<ComponentVO> getComponentList(ComponentDTO component) {
         List<Component> componentList = componentRepository.findAll((Specification<Component>) (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
-            if (StringUtils.isNotBlank(component.getComponentTypeId())) {
-                CriteriaBuilder.In<Object> in = criteriaBuilder.in(root.get("componentType").get("id"));
-                List<String> type = eventTypeService.getComponentTypeIds(component.getComponentTypeId());
+            if (StringUtils.isNotBlank(component.getEventTypeId())) {
+                CriteriaBuilder.In<Object> in = criteriaBuilder.in(root.get("eventType").get("id"));
+                List<String> type = eventTypeService.getComponentTypeIds(component.getEventTypeId());
                 type.forEach(in::value);
                 list.add(in);
             }
@@ -151,7 +151,7 @@ public class ComponentService {
         if (StringUtils.isNotBlank(dto.getPublish())) {
             publish.setId(dto.getPublish());
         } else {
-            EventType eventType = eventTypeService.getEventType(dto.getComponentTypeId());
+            EventType eventType = eventTypeService.getEventType(dto.getEventTypeId());
             publish.setEventType(eventType);
             publish.setName(eventType.getName());
             publish = this.savePublish(publish);
@@ -163,7 +163,7 @@ public class ComponentService {
 
         KV objState = KV.builder().id(dto.getObjState()).build();
         KV datasource = KV.builder().id(dto.getDataSource()).build();
-        EventType eventType = EventType.builder().id(dto.getComponentTypeId()).build();
+        EventType eventType = EventType.builder().id(dto.getEventTypeId()).build();
         ComponentInfo componentInfo = ComponentInfo.builder()
                 .objId(dto.getObjId())
                 .objName(dto.getObjName())

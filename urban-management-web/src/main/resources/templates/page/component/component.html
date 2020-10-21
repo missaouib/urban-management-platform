@@ -19,7 +19,7 @@
             <p>
                 <label class="">分类</label>
                 <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
-                <input type="hidden" readonly="readonly" id="componentTypeId" class="find_input">
+                <input type="hidden" readonly="readonly" id="eventTypeId" class="find_input">
                 <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">
                     +
                 </button>
@@ -342,8 +342,8 @@
         $('#table').bootstrapTable('removeAll');
         var count = $('#table').bootstrapTable('getData').length;
         var param = "?1=1";
-        if ($("#componentTypeId").val() !== "") {
-            param += "&componentTypeId=" + $("#componentTypeId").val();
+        if ($("#eventTypeId").val() !== "") {
+            param += "&eventTypeId=" + $("#eventTypeId").val();
         }
         if ($("#objId").val() !== "") {
             param += "&objId=" + $("#objId").val();
@@ -474,7 +474,7 @@
 
     function zTreeOnClick(event, treeId, treeNode) {
         $("#typeStr").val(treeNode.name);
-        $("#componentTypeId").val(treeNode.id);
+        $("#eventTypeId").val(treeNode.id);
         $(".closemodal").click();
     }
 

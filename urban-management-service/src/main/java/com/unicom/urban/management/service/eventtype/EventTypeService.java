@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.eventtype;
 
+import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.dao.eventtype.EventTypeRepository;
 import com.unicom.urban.management.mapper.EventTypeMapper;
 import com.unicom.urban.management.pojo.dto.ComponentTypeDTO;
@@ -33,8 +34,13 @@ public class EventTypeService {
      *
      * @return list
      */
-    public List<EventTypeVO> getEventTypeList() {
-        List<EventType> fromList = eventTypeRepository.findAll();
+    public List<EventTypeVO> getEventTypeList(int type) {
+        List<EventType> fromList;
+        if (KvConstant.COMPONENT_TYPE == type) {
+             fromList = eventTypeRepository.findAllByType(KvConstant.COMPONENT_TYPE);
+        }else{
+             fromList = eventTypeRepository.findAll();
+        }
         return EventTypeMapper.INSTANCE.eventTypeVOToEventTypeVOList(fromList);
     }
 
@@ -65,7 +71,7 @@ public class EventTypeService {
         if (eventType.getChildren() != null) {
             eventType.getChildren().forEach(c -> {
                 ids.add(c.getId());
-                this.getIds(ids,c);
+                this.getIds(ids, c);
             });
         }
     }

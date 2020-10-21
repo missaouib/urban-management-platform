@@ -36,4 +36,6 @@ public class EventType {
 
     @ManyToOne
     private EventType parent;
+
+    private Integer type;
 }

@@ -1,6 +1,7 @@
 package com.unicom.urban.management.web.project.component;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.dto.ComponentDTO;
 import com.unicom.urban.management.pojo.entity.KV;
@@ -67,7 +68,7 @@ public class ComponentController {
 
     @GetMapping("/eventType")
     public List<EventTypeVO> componentTypeList(){
-        return eventTypeService.getEventTypeList();
+        return eventTypeService.getEventTypeList(KvConstant.COMPONENT_TYPE);
     }
 
     @PostMapping("/componentList")
