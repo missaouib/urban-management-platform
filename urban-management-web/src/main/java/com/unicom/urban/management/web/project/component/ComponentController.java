@@ -3,6 +3,7 @@ package com.unicom.urban.management.web.project.component;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.mapper.ComponentMapper;
 import com.unicom.urban.management.pojo.dto.ComponentDTO;
 import com.unicom.urban.management.pojo.dto.ComponentInfoDTO;
 import com.unicom.urban.management.pojo.entity.KV;
@@ -47,6 +48,7 @@ public class ComponentController {
 
     private final RecordService recordService;
 
+
     @Autowired
     public ComponentController(EventTypeService eventTypeService, ComponentService componentService, KVService kvService, GridService gridService, PublishService publishService, RecordService recordService) {
         this.eventTypeService = eventTypeService;
@@ -75,8 +77,9 @@ public class ComponentController {
 
     @PostMapping("/componentList")
     public void saveComponentList(@RequestBody List<ComponentInfoDTO> dtos){
-        int i=0;
-//        componentService.saveComponent(dtos);
+        List<ComponentDTO> componentDTOS = ComponentMapper.INSTANCE.componentInfoDTOListToComponentDTOList(dtos);
+
+        componentService.saveComponent(componentDTOS);
     }
     @PostMapping("/component")
     public void saveComponent(@Valid ComponentDTO dto){

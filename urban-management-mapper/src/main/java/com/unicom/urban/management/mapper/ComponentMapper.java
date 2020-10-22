@@ -1,5 +1,7 @@
 package com.unicom.urban.management.mapper;
 
+import com.unicom.urban.management.pojo.dto.ComponentDTO;
+import com.unicom.urban.management.pojo.dto.ComponentInfoDTO;
 import com.unicom.urban.management.pojo.entity.Component;
 import com.unicom.urban.management.pojo.vo.ComponentVO;
 import org.mapstruct.Mapper;
@@ -52,4 +54,49 @@ public interface ComponentMapper {
             @Mapping(source = "eventType.name", target = "eventType")
     })
     ComponentVO componentToComponentVO(Component component);
+
+
+    @Mappings({
+            @Mapping(source = "id",target = "componentId"),
+            @Mapping(source = "objId",target = "objId"),
+            @Mapping(source = "objName",target = "objName"),
+            @Mapping(source = "mainDeptCode",target = "mainDeptCode"),
+            @Mapping(source = "mainDeptName",target = "mainDeptName"),
+            @Mapping(source = "ownershipDeptCode",target = "ownershipDeptCode"),
+            @Mapping(source = "ownershipDeptName",target = "ownershipDeptName"),
+            @Mapping(source = "maintenanceDeptCode",target = "maintenanceDeptCode"),
+            @Mapping(source = "maintenanceDeptName",target = "maintenanceDeptName"),
+            @Mapping(source = "bgid",target = "bgid"),
+            @Mapping(source = "objStateId",target = "objState"),
+            @Mapping(source = "initialDate",target = "initialDate"),
+            @Mapping(source = "changeDate",target = "changeDate"),
+            @Mapping(source = "dataSourceId",target = "dataSource"),
+    })
+    ComponentDTO componentInfoDTOToComponentDTO(ComponentInfoDTO componentInfoDTO);
+
+    List<ComponentDTO> componentInfoDTOListToComponentDTOList(List<ComponentInfoDTO> componentInfoDTOList);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

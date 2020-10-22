@@ -310,7 +310,7 @@
     var rows
     $(".check_btn1").click(function () {
         rows = $('#table').bootstrapTable('getSelections');
-        var data=new Array();
+        var data=[];
         $(rows).each(function (index,value) {
             data.push(value);
         })
@@ -318,14 +318,25 @@
             type:"post",
             url:updateUrl,
             data:JSON.stringify(data),
-            contentType:"json/application",
-            dataType:"json",
-            success: function(data){
-                console.log(data);
+            contentType: "application/json",
+            success: function(result){
+                if (result.code === web_status.SUCCESS) {
+                    $.modal.msgSuccess(result.message);
+                    setTimeout("window.location.reload()", 2000);
+                    return;
+                } else if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTreeTable) {
+                    $.modal.msgSuccess(result.message);
+                } else if (result.code === web_status.SUCCESS && $.common.isEmpty(table.options.type)) {
+                    $.modal.msgSuccess(result.message)
+                } else if (result.code === web_status.WARNING) {
+                    $.modal.alertWarning(result.message)
+                } else {
+                    $.modal.alertError(result.message);
+                    return;
+                }
+                $.modal.closeLoading();
             }
         });
-        // $.operate.saveAndReload(updateUrl, value);
-
     })
 
     function objStareChange(ele) {
