@@ -158,7 +158,7 @@
                     var point = value.coordinate.split(",");
                     setPoint(point[0], point[1], value.id, value.name);
                 });
-                $("#layerId").val(e.data.publish.layerId == null && e.data.publish.layerId === "" ? "" : e.data.publish.layerId);
+                $("#layerId").val(e.data.publish.layerId == null ? "" : e.data.publish.layerId);
             })
         }
     }
