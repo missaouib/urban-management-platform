@@ -7,7 +7,7 @@
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
-    <link th:href="@{/css/superList.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;">
 <div class="content">
@@ -105,49 +105,51 @@
                             <table class="table">
                                 <tbody>
                                 <tr>
-                                    <td><span></span>案卷号</td>
+                                    <td><span>*</span>案卷号</td>
                                     <td>
-                                        <input name="userName"  value="A203834879" class="" required>
+                                        <input name="userName" placeholder="" value="EA0293719" class="" type="text" readonly="readonly">
                                     </td>
-                                    <td><span></span>问题类型</td>
+                                    <td><span>*</span>问题类型</td>
                                     <td>
-                                        <input name="userName" value="事件类别-事件" class="" required>
+                                        <input name="userName" placeholder="" value="第一单元网格" class="" type="text" readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span></span>问题描述</td>
-                                    <td>
-                                        <input name="userName" value="第一单元网格" class="" required>
-                                    </td>
+                                    <td><span>*</span>问题描述</td>
+
+                                    <td colspan="8"><textarea id="problemescription" name="problemescription"
+                                                              required></textarea></td>
+
 
                                 </tr>
+
                                 <tr>
-                                    <td><span></span>案件地址</td>
+                                    <td><span>*</span>案件地址</td>
                                     <td>
-                                        <input name="userName" value="南岗区第一单元" class="" required>
+                                        <input name="userName" placeholder="" value="南岗区国民街" class="" type="text" readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>上报人</td>
                                     <td style="text-align: left">张辉</td>
                                     <td><span></span>联系方式</td>
-                                    <td><input id="handleTime" name="handleTime" type="text" value="15645068888"></td>
+                                    <td><input id="handleTime" name="handleTime" type="text" value="15645068888" readonly="readonly"></td>
                                 </tr>
 
                                 <tr>
                                     <td><span></span>创建时间</td>
                                     <td>
-                                        <input name="userName" value="A203834879" class="" required>
+                                        <input name="userName" placeholder=""value="2020-10-20" class="" type="text" readonly="readonly">
                                     </td>
                                     <td><span></span>问题来源</td>
                                     <td>
-                                        <input name="userName" value="A203834879" class="" required>
+                                        <input name="userName" placeholder="" value="监督员上报" class="" type="text" readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>位置坐标</td>
                                     <td>
-                                        <input type="text" style="width: 50%" class="find_input" readonly="readonly" disabled value="经度" >
+                                        <input type="text"  class="find_input" readonly="readonly" disabled value="经度" >
                                     </td>
                                     <td></td>
                                     <td>
@@ -155,9 +157,10 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span>*</span>附件详情</td>
+                                    <td><span></span>案件类型</td>
                                     <td>
-                                       <input type="file" class="">
+                                        <input type="file" class="" readonly="readonly">
+                                    </td>
                                     </td>
 
                                 </tr>
