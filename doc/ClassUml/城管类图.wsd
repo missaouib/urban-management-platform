@@ -101,7 +101,7 @@ class Event<<案件实体类>>{
     -taskId : String
     -timeLimit : TimeLimit
     -sts       : int             // 事件状态     派遣/挂起等等
-    -recTypeId : EventType       //问题类型     事件   部件
+    -recTypeId : Kv       //案件类型    日常  、转向普查、其他
     -region : Kv    //区域    一类区域  二类区域  三类区域
     -eventSate : Kv  // 案件状态
     -eventCondition : EventCondition
