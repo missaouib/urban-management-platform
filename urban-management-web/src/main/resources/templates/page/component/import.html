@@ -166,14 +166,15 @@
     $(function () {
         ////日期插件
         $('.form_date').datetimepicker({
-            language: 'zh-CN',
+            language: 'fr',
             weekStart: 1,
             todayBtn: 1,
             autoclose: 1,
             todayHighlight: 1,
             startView: 2,
+            minView: 2,
             forceParse: 0,
-            showMeridian: 1,
+            language: 'zh-CN', //语言
             format: "yyyy-mm-dd"
         });
         $.ajaxUtil.get(componentTypeUrl, function (e) {
