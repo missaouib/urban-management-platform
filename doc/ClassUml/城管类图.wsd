@@ -90,7 +90,6 @@ class Event<<案件实体类>>{
     -id : String
     -eventCode : String
     -eventTypeId : EventType     //分类id
-    -conditionId : EventCondition
     -represent : String
     -gridId : Grid
     -location : String
@@ -101,19 +100,20 @@ class Event<<案件实体类>>{
     -y : double
     -taskId : String
     -timeLimit : TimeLimit
-    -sts       : int             // 时间状态     未处理、处理中、关单
+    -sts       : int             // 事件状态     派遣/挂起等等
     -recTypeId : EventType       //问题类型     事件   部件
-    -region : Kv    //区域
+    -region : Kv    //区域    一类区域  二类区域  三类区域
     -eventSate : Kv  // 案件状态
     -eventCondition : EventCondition
 }
 
 class EventType<<分类实体类>>{
-    -id
-    -code
-    -name
-    -level
-    -parentId
+    -id   : String
+    -type : int
+    -code : String
+    -name : String
+    -level : int 
+    -parentId : String
 }
 
 class EventFile<<事件附件实体类>>{
