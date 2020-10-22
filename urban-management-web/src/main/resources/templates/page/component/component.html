@@ -158,6 +158,26 @@
         //取消每一个单选框时对应的操作；
         onUncheck: function (row, tr, flied) {
             console.log("取消每一个单选框时对应的操作",row)
+            let input = tr[0].parentNode.parentNode;
+            console.log(row)
+            // console.log(input)
+            function sibling(elem) {
+                var r = [];
+                var n = elem.parentNode.firstChild;
+                for (; n; n = n.nextSibling) {
+                    if (n.nodeType === 1 && n !== elem) {
+                        r.push(n);
+                    }
+                }
+                return r;
+            }
+            var allBorther = sibling(input)
+            var selectInput = allBorther[10].childNodes[0]
+            var selectInput2 = allBorther[11].childNodes[0]
+            var selectInput3 = allBorther[14].childNodes[0]
+            selectInput.setAttribute('disabled', 'disabled');
+            selectInput3.setAttribute('disabled', 'disabled');
+            selectInput2.setAttribute('disabled', 'disabled');
         },
 
         ////取消所有
@@ -183,40 +203,43 @@
             {
                 field: 'objId',
                 title: '部件标识码',
+                class: "contenteditable"
 
             },
             {
                 field: 'objName',
                 title: '部件名称',
-
+                class: "contenteditable"
             },
             {
                 field: 'mainDeptCode',
                 title: '主管部门代码',
-
+                class: "contenteditable"
             },
             {
                 field: 'mainDeptName',
                 title: '主管部门名称',
+                class: "contenteditable"
             },
             {
                 field: 'ownershipDeptCode',
                 title: '权属单位代码',
-
+                class: "contenteditable"
             },
             {
                 field: 'ownershipDeptName',
                 title: '权属单位名称',
+                class: "contenteditable"
             },
             {
                 field: 'maintenanceDeptCode',
                 title: '养护单位代码',
-
+                class: "contenteditable"
             },
             {
                 field: 'maintenanceDeptName',
                 title: '养护单位名称',
-
+                class: "contenteditable"
             },
             {
                 field: 'grid',
@@ -235,12 +258,12 @@
             {
                 field: 'initialDate',
                 title: '初始日期',
-
+                class: "contenteditable"
             },
             {
                 field: 'changeDate',
                 title: '变更日期',
-
+                class: "contenteditable"
             },
             {
                 field: 'sno',
@@ -251,7 +274,8 @@
 
         ],
         onClickCell: function(field, value, row, $element) {
-            $element.attr('contenteditable', true);
+
+            $(".contenteditable").attr('contenteditable', true);
             $element.blur(function() {
                 let index = $element.parent().data('index');
                 let tdValue = $element.html();
@@ -272,7 +296,7 @@
 
     //下拉列表
     function objState(value, row, index) {
-        var objStateStr = "<select id='objState' class=\"componentSelect\" disabled=\"disabled\" onchange='objStareChange(this)'>";
+        var objStateStr = "<select id='objState' class=\"componentSelect\" disabled='disabled' onchange='objStareChange(this)'>";
         $(objState.data).each(function (index, value) {
             if (row.objStateId !== value.id) {
                 objStateStr += "<option value='" + value.id + "'>" + value.value + "</option>"
@@ -284,7 +308,7 @@
         return objStateStr;
     }
     function dataSource(value, row, index) {
-        var dataSource = "<select id='dataSource' class=\"componentSelect\" disabled=\"disabled\" onchange='dataSourceChange(this)'>";
+        var dataSource = "<select id='dataSource' class=\"componentSelect\" disabled='disabled' onchange='dataSourceChange(this)'>";
         $(datasourceData.data).each(function (index, value) {
             if (row.objStateId !== value.id) {
                 dataSource += "<option value='" + value.id + "'>" + value.value + "</option>"
@@ -295,7 +319,7 @@
         return dataSource;
     }
     function grid(value, row, index) {
-        var grid = "<select  id='grid' class=\"componentSelect\" disabled=\"disabled\" onchange='gridChange(this)'>";
+        var grid = "<select  id='grid' class=\"componentSelect\" disabled='disabled' onchange='gridChange(this)'>";
         $(gridData.data).each(function (index, value) {
             if (row.objStateId !== value.id) {
                 grid += "<option value='" + value.id + "'>" + value.gridName + "</option>"
