@@ -51,6 +51,6 @@ public class Publish extends BaseEntity {
     private User user;
 
     @OneToOne(fetch = FetchType.LAZY)
-    private ComponentType componentType;
+    private EventType eventType;
 
 }

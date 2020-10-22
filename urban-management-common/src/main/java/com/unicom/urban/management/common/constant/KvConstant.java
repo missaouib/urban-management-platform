@@ -52,4 +52,10 @@ public class KvConstant {
     public static final String SCALE = "de95ba21-dfb7-4e61-86d1-3611eae45a5f";
 
 
+    /**
+     * 部件分类
+     */
+    public static final int COMPONENT_TYPE=1;
+
+
 }

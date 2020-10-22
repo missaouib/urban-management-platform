@@ -18,7 +18,7 @@ public class ComponentDTO {
 
 
     @NotBlank(message = "部件分类不能为空")
-    private String componentTypeId;
+    private String eventTypeId;
 
 
     /**

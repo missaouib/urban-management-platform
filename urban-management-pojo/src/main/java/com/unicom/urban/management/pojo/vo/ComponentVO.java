@@ -14,9 +14,9 @@ public class ComponentVO {
 
     private String id;
 
-    private String componentTypeId;
+    private String eventTypeId;
 
-    private String componentType;
+    private String eventType;
 
     /**
      * 部件标识码

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,13 +33,13 @@ public class WirelessAcquisitionController {
         return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/list");
     }
 
-    @GetMapping("/toWirelessAcquisitionListSave")
+    @GetMapping("/toWirelessAcquisitionSave")
     public ModelAndView toWirelessAcquisitionListSave() {
         return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/save");
     }
 
-    @GetMapping("/toWirelessAcquisitionListUpdate")
-    public ModelAndView toWirelessAcquisitionListUpdate() {
+    @GetMapping("/toWirelessAcquisitionUpdate/{id}")
+    public ModelAndView toWirelessAcquisitionListUpdate(@PathVariable String id) {
         return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/update");
     }
 

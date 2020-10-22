@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>热线上报</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
@@ -42,7 +42,7 @@
                             </td>
                             <td>上报人<span></span></td>
                             <td style="width: 35%">
-                                <select  name="kv" required>
+                                <select name="kv" required>
                                     <option value="">请选择</option>
                                     <option>1</option>
                                     <option>2</option>
@@ -59,9 +59,9 @@
             <!--    </div>-->
         </form>
 
-        <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+        <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
 
-        <div class="btn-group-sm" id="toolbar" >
+        <div class="btn-group-sm" id="toolbar">
             <a class="btn btn-success" onclick="$.operate.addTab()">
                 <i class="fa fa-plus"></i> 新增
             </a>
@@ -107,7 +107,7 @@
                                 <tr>
                                     <td><span></span>案卷号</td>
                                     <td>
-                                        <input name="userName"  value="A203834879" class="" required>
+                                        <input name="userName" value="A203834879" class="" required>
                                     </td>
                                     <td><span></span>问题类型</td>
                                     <td>
@@ -147,7 +147,8 @@
                                 <tr>
                                     <td><span></span>位置坐标</td>
                                     <td>
-                                        <input type="text" style="width: 50%" class="find_input" readonly="readonly" disabled value="经度" >
+                                        <input type="text" style="width: 50%" class="find_input" readonly="readonly"
+                                               disabled value="经度">
                                     </td>
                                     <td></td>
                                     <td>
@@ -157,7 +158,7 @@
                                 <tr>
                                     <td><span>*</span>附件详情</td>
                                     <td>
-                                       <input type="file" class="">
+                                        <input type="file" class="">
                                     </td>
 
                                 </tr>
@@ -194,8 +195,6 @@
 </div>
 
 
-
-
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
 <th:block th:include="page/fragments/common :: fileUpload_js"/>
@@ -206,7 +205,7 @@
 
     $(function () {
         queryUserList();
-        $(".tabTitle span").click(function() {
+        $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         })
@@ -285,17 +284,17 @@
 
     $("#userForm").validate({
         debug: true,
-        ignore:"",
-        submitHandler:function(form){
+        ignore: "",
+        submitHandler: function (form) {
             var params = $(form).serialize(); //串行化表单参数
-            $.post("user",params,function(result){
+            $.post("user", params, function (result) {
                 if (result.ok) {//注册成功
                     location.href = "register_ok.html";
-                }else{//注册失败
+                } else {//注册失败
                     alert(result.msg);
                     $("#checkImg").click();
                 }
-            },"json");
+            }, "json");
         },
         rules: {
             userName: {
@@ -330,7 +329,7 @@
             },
             handleTime: {
                 required: true
-            },charge: {
+            }, charge: {
                 required: true
             },
             question: {
@@ -392,7 +391,7 @@
         $.modal.closeLoading();
     }
 
-    function submitHandler(){
+    function submitHandler() {
         //先校验
         if (!$("form").valid()) {
             return;

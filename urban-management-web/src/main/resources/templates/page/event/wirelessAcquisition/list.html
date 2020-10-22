@@ -106,11 +106,12 @@
 
     let searchUrl = /*[[@{/event/toWirelessAcquisitionList}]]*/ "/event/eventList";
 
-    let addUrl = /*[[@{/event/toWirelessAcquisitionListSave}]]*/ "/user/add";
+    let addUrl = /*[[@{/event/toWirelessAcquisitionSave}]]*/ "/user/add";
+
 
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
 
-    let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
+    let editUrl = /*[[@{/user/toWirelessAcquisitionUpdate/{id}}]]*/ "/user/edit";
 
     function queryUserList() {
         var options = {

@@ -7,7 +7,6 @@ import com.unicom.urban.management.common.util.FileUploadUtil;
 import com.unicom.urban.management.common.util.JsonUtils;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.Result;
-import com.unicom.urban.management.pojo.dto.ComponentDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.service.component.ComponentService;
 import com.unicom.urban.management.service.grid.GridService;
@@ -201,7 +200,7 @@ public class ImportController {
         Component component = new Component();
         component.setPublish(publish);
         Component c = componentService.getOne(componentId);
-        component.setComponentType(c.getComponentType());
+        component.setEventType(c.getEventType());
         component.setSts(0);
         componentService.saveComponent4Import(component);
     }

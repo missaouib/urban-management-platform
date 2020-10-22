@@ -27,7 +27,7 @@
                     <label class="">图层分类</label>
                     <input type="text" readonly="readonly" id="typeStr" class="find_input">
                     <input type="hidden" readonly="readonly" name="componentId" id="componentId" class="find_input">
-                    <input type="hidden" readonly="readonly" name="componentTypeId" id="componentTypeId"
+                    <input type="hidden" readonly="readonly" name="eventTypeId" id="eventTypeId"
                            class="find_input">
                     <input type="hidden" readonly="readonly" name="layerId" id="layerId" class="find_input">
 
@@ -66,12 +66,12 @@
                     <label class="">养护部门名称</label>
                     <input type="text" class="find_input" id="maintenanceDeptName" name="maintenanceDeptName">
                 </p>
-                <!--                <p>-->
-                <!--                    <label class="">初始日期</label>-->
-                <!--                    <input type="text" class="datepicker" readonly="readonly">-->
-                <!--                    <label class="">变更日期</label>-->
-                <!--                    <input type="text" class="datepicker" readonly="readonly">-->
-                <!--                </p>-->
+                <p>
+                    <label class="">初始日期</label>
+                    <input size="16" class="form_date" name="initialDate" type="text"  readonly>
+                    <label class="">变更日期</label>
+                    <input size="16" class="form_date" name="changeDate" type="text" value="" readonly>
+                </p>
                 <p>
                     <label class="">所在网格</label>
                     <select id="bgid" name="bgid"></select>
@@ -131,17 +131,18 @@
         }
     };
     var typeStr;
-    var componentTypeId;
+    var eventTypeId;
     var publish;
     var publishId;
 
     function zTreeOnClick(event, treeId, treeNode) {
         resetFrom();
+        $("#coordinate").val(coordinate);
         if (treeNode.children === undefined) {
             $("#typeStr").val(treeNode.name);
-            $("#componentTypeId").val(treeNode.id);
+            $("#eventTypeId").val(treeNode.id);
             typeStr = treeNode.name;
-            componentTypeId = treeNode.id;
+            eventTypeId = treeNode.id;
             $.ajaxUtil.get(publishUrl + "?typeId=" + treeNode.id, function (e) {
                 $(e.data).each(function (index, value) {
                     $("#publish").val(value.name);
@@ -157,12 +158,24 @@
                     var point = value.coordinate.split(",");
                     setPoint(point[0], point[1], value.id, value.name);
                 });
-                $("#layerId").val(e.data.publish.layerId == null && e.data.publish.layerId === "" ? "" : e.data.publish.layerId);
+                $("#layerId").val(e.data.publish.layerId == null ? "" : e.data.publish.layerId);
             })
         }
     }
 
     $(function () {
+        ////日期插件
+        $('.form_date').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd"
+        });
         $.ajaxUtil.get(componentTypeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
@@ -191,7 +204,8 @@
 
     function saveComponent() {
         let data = $('#component').serialize();
-        if ($("#componentId").val() === null || $("componentId").val() === "") {
+        console.log($("#componentId").val())
+        if ($("#componentId").val() === null || $("#componentId").val() === "") {
             $.operate.saveAndReload(saveUrl, data);
         } else {
             $.operate.saveAndReload(updateUrl, data);
@@ -203,7 +217,7 @@
         $.operate.saveAndReload(deleteUrl, data);
     }
 
-    let componentTypeUrl = /*[[@{/componentType}]]*/ "/componentType";
+    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
 
     let objStateUrl = /*[[@{/objState}]]*/ "/objState";
 
@@ -264,10 +278,10 @@
     $("#map").click(function (e) {
         t = map.getEventCoordinate(e);
         if ($("#componentId").val() === "") {
-            $(".coor").val(t);
+            coordinate = t;
         }
     });
-
+    var coordinate;
 
     /* ------------  点击事件  ------------------*/
     var selectClick = new ol.interaction.Select();
@@ -297,7 +311,8 @@
             $("#publish").val(publish);
             $("#publishId").val(publishId);
             $("#typeStr").val(typeStr);
-            $("#componentTypeId").val(componentTypeId);
+            $("#eventTypeId").val(eventTypeId);
+            $("#coordinate").val(coordinate);
         }
 
     })
