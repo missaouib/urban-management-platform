@@ -310,10 +310,22 @@
     var rows
     $(".check_btn1").click(function () {
         rows = $('#table').bootstrapTable('getSelections');
-        console.log(rows[0])
-        console.log(JSON.stringify(rows));
-        // console.log(objStareN)
-        // console.log($("#grid").text())
+        var data=new Array();
+        $(rows).each(function (index,value) {
+            data.push(value);
+        })
+        $.ajax({
+            type:"post",
+            url:updateUrl,
+            data:JSON.stringify(data),
+            contentType:"json/application",
+            dataType:"json",
+            success: function(data){
+                console.log(data);
+            }
+        });
+        // $.operate.saveAndReload(updateUrl, value);
+
     })
 
     function objStareChange(ele) {
@@ -454,6 +466,8 @@
     let dataSourceUrl = /*[[@{/dataSource}]]*/ "/dataSource";
 
     let gridUrl = /*[[@{/grid}]]*/ "/grid";
+
+    let updateUrl = /*[[@{/componentList}]]*/ "/componentList";
 
 
     $(function () {

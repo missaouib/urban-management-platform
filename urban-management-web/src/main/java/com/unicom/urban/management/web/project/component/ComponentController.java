@@ -4,6 +4,7 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.dto.ComponentDTO;
+import com.unicom.urban.management.pojo.dto.ComponentInfoDTO;
 import com.unicom.urban.management.pojo.entity.KV;
 import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.component.ComponentService;
@@ -15,6 +16,7 @@ import com.unicom.urban.management.service.record.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -72,8 +74,9 @@ public class ComponentController {
     }
 
     @PostMapping("/componentList")
-    public void saveComponentList(List<ComponentDTO> dtos){
-        componentService.saveComponent(dtos);
+    public void saveComponentList(@RequestBody List<ComponentInfoDTO> dtos){
+        int i=0;
+//        componentService.saveComponent(dtos);
     }
     @PostMapping("/component")
     public void saveComponent(@Valid ComponentDTO dto){
