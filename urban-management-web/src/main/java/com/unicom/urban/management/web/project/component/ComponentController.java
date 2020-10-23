@@ -74,7 +74,10 @@ public class ComponentController {
     public List<EventTypeVO> componentTypeList(){
         return eventTypeService.getEventTypeList(KvConstant.COMPONENT_TYPE);
     }
-
+    @GetMapping("/aLLeventType")
+    public List<EventTypeVO> aLLeventType(){
+        return eventTypeService.getEventTypeList(2);
+    }
     @PostMapping("/componentList")
     public void saveComponentList(@RequestBody List<ComponentInfoDTO> dtos){
         List<ComponentDTO> componentDTOS = ComponentMapper.INSTANCE.componentInfoDTOListToComponentDTOList(dtos);
