@@ -73,7 +73,6 @@
         // console.log("value", data.value);
         getPublishOneUrl(data.value);
     }
-    var mapArr= [];
     function getPublishOneUrl(id) {
         let getPublishOneUrl = /*[[@{/publish/getPublishOne/}]]+id*/ "/publish/getPublishOne/" + id;
         $.ajaxUtil.get(getPublishOneUrl, function (e) {
@@ -83,20 +82,9 @@
                 setPoint(data[i].coordinate.split(",")[0], data[i].coordinate.split(",")[1], data[i].id, data[i].type);
             }
             setPolygon()
-            mapArr.push(id)
-            // layerMap.getSource().changed()
 
-            // layerMap.getSource().redraw()
-            // if (mapArr.length >1){
-
-            // }
         })
-        // map.removeLayer(layerMap);
-        // var layerMap = new ol.layer.Vector({
-        //     source: new ol.source.Vector(),
-        // });
-        // map.addLayer(layerMap);
-        // map.render();
+
     }
   $(".clear").click(function () {
       console.log(1)
