@@ -15,19 +15,15 @@
 </style>
 <body>
 <div class="infoBox">
-    <div class="radioInput" id="publishList">
-        <p>
-            <input type="radio" value="1" name="handsom">第一个
-        </p>
-        <p>
-            <input type="radio" value="2" name="handsom">第二个
-        </p>
-        <p>
-            <input type="radio" value="3" name="handsom">第三个
-        </p>
-
+    <div class="radioInput">
+        <div id="publishList"></div>
+        <div class="notice_bot">
+            <div class="r_right but_p">
+                <button class="but_save" type="button" onclick="layerPublish()">发布</button>
+                <button class="but_save clear" type="button" onclick="clear()">xxxx</button>
+            </div>
+        </div>
     </div>
-    <button class="but_save" type="button" onclick="layerPublish()">发布</button>
     <div class="maps">
         <div class="map" id="map" style="width: 100%;height: 100%"></div>
     </div>
@@ -57,33 +53,59 @@
 
     function getPublishList() {
         $.ajaxUtil.get(getPublishListUrl, function (e) {
-            console.log("e", e);
+            // console.log("e", e);
             let data = e.data;
             $("#publishList").empty();
             let htmlStr = "";
             for (let i = 0; i < data.length; i++) {
                 htmlStr += "<p>"
-                htmlStr += "<input type='radio' value='" + data[i].id + "' name='publish' onclick='radioPublish(this)'>" + data[i].name
+                htmlStr += "<input type='radio' value='" + data[i].id + "' name='publish' onclick='radioPublish(this)' class='radio'>" + data[i].name
                 htmlStr += "</p>"
             }
             $("#publishList").append(htmlStr);
         });
     }
+    $('#publishList').on("click",".radio",function () {
+        layerMap.getSource().clear()
+    })
 
     function radioPublish(data) {
-        console.log("value", data.value);
+        // console.log("value", data.value);
         getPublishOneUrl(data.value);
     }
-
+    var mapArr= [];
     function getPublishOneUrl(id) {
         let getPublishOneUrl = /*[[@{/publish/getPublishOne/}]]+id*/ "/publish/getPublishOne/" + id;
         $.ajaxUtil.get(getPublishOneUrl, function (e) {
             console.log("e", e);
+            let data = e.data;
+            for (let i = 0; i < data.length; i++) {
+                setPoint(data[i].coordinate.split(",")[0], data[i].coordinate.split(",")[1], data[i].id, data[i].type);
+            }
+            setPolygon()
+            mapArr.push(id)
+            // layerMap.getSource().changed()
+
+            // layerMap.getSource().redraw()
+            // if (mapArr.length >1){
+
+            // }
         })
+        // map.removeLayer(layerMap);
+        // var layerMap = new ol.layer.Vector({
+        //     source: new ol.source.Vector(),
+        // });
+        // map.addLayer(layerMap);
+        // map.render();
     }
+  $(".clear").click(function () {
+      console.log(1)
+      layerMap.getSource().clear()
+  })
+
+
 
     function layerPublish() {
-        console.log(111);
         $.operate.post(layerPublishUrl, {id: "111"}, function (e) {
 
         })
@@ -112,11 +134,17 @@
         })
     });
 
-    function setPoint(x, y, data) {
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
+
+    function setPoint(x, y, id,type) {
         let point = new ol.Feature({
             geometry: new ol.geom.Point([x, y]),
             data: {
-                id: data,
+                id: id,
+                type:type,
                 coordinate: x + "," + y
             }
         });
@@ -134,13 +162,18 @@
     //     // console.log(lines)
     //     layerMap.getSource().addFeature(lines);
     // }
-    function setPolygon(coordinates, data, name) {
+    function setPolygon() {
+        let coordinates = [
+            [
+            [14098274.077604493, 5744048.473396081], [14094566.881732661, 5740952.773750531], [14097930.11097721, 5738659.662901975], [14101331.5587359, 5741831.79957581], [14098274.077604493, 5744048.473396081]
+        ]
+        ];
         let Polygon = new ol.Feature({
             geometry: new ol.geom.Polygon(coordinates),
             data: {
-                id: data,
-                name: name,
-                coordinate: coordinates
+                // id: data,
+                // name: name,
+                // coordinate: coordinates
             }
         });
         // console.log(Polygon)
