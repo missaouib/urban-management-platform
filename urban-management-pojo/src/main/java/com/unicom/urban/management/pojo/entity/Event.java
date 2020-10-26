@@ -97,10 +97,6 @@ public class Event extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private KV eventSate;
-    /**
-     * 立案条件
-     */
-    private KV recTypeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
