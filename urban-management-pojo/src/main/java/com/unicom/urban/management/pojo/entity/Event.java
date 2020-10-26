@@ -28,22 +28,26 @@ public class Event extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private EventType eventTypeId;
-
+    private EventType eventType;
+    /**
+     * 立案条件
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private EventCondition conditionId;
+    private EventCondition condition;
 
     private String represent;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private TimeLimit timeLimit;
+    private DeptTimeLimit timeLimit;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private Grid gridId;
-
+    private Grid grid;
+    /**
+     * 案件地址
+     */
     private String location;
 
     /**
@@ -55,6 +59,9 @@ public class Event extends BaseEntity {
 
     private String phone;
 
+    /**
+     * 问题来源
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private KV eventSource;
@@ -82,7 +89,7 @@ public class Event extends BaseEntity {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private EventType recTypeId;
+    private EventType recType;
 
     /**
      * 案件状态
@@ -90,9 +97,16 @@ public class Event extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private KV eventSate;
-
+    /**
+     * 立案条件
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private EventCondition eventCondition;
-
+    /**
+     * 案件类型 日常管理、专项普查、其他
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private KV recTypeId;
 }

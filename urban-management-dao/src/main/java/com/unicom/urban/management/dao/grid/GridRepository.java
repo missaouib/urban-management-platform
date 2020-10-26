@@ -21,4 +21,5 @@ public interface GridRepository extends CustomizeRepository<Grid, String> {
      */
     List<Grid> findAllByPublish_IdAndRecord_Sts(String publishId, int sts);
 
+    List<Grid> findAllByKv_Id(String kvId);
 }

@@ -22,7 +22,7 @@
                     </div>
                     <form id="fileForm">
                         <input type="hidden" name="layerSettingType" value="1" />
-                        <input type="text" name="componentTypeId" id="componentTypeId" />
+                        <input type="hidden" name="eventTypeId" id="eventTypeId" />
                         <div>
                             <label class="modelTitle">部件名称</label>
                             <input type="text" class="find_input" name="layerName">
@@ -69,21 +69,16 @@
         };
 
         function zTreeOnClick(event, treeId, treeNode) {
-            $("#componentTypeId").val(treeNode.id);
+            $("#eventTypeId").val(treeNode.id);
         }
         $(function () {
-            $.ajaxUtil.get(componentTypeUrl, function (e) {
+            $.ajaxUtil.get(eventTypeUrl, function (e) {
                 var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
             })
-            // $('#datetimepicker').datetimepicker('remove');
-            $(".datepicker").datepicker({
-                language: 'zh-cn',
-                format: "yyyy-mm-dd"
-            });
 
         })
 
-        let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
+        let eventTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
         let upload = /*[[@{/componentImport}]]*/ "/componentImport";
         function uploadFiles() {
 

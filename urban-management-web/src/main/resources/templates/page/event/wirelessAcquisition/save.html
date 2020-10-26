@@ -7,6 +7,7 @@
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
     <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;">
@@ -24,23 +25,39 @@
                                 <td>
                                     <input  name="userName" value="A203834879" class="" required>
                                 </td>
-                                <td><span>*</span>问题类型</td>
-                                <td>
-                                    <div class="tree">
-                                        <div class="treeDemo">
-                                            <ul id="treeDemo" class="ztree">zTree</ul>
+                                <td>问题类型<span>*</span>
+                                    <input type="text" readonly="readonly" id="typeStr" class="find_input" />
+                                    <input type="hidden" readonly="readonly" id="eventTypeId" class="find_input">
+                                    <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">
+                                        +
+                                    </button>
+                                </td>
+                                <div class="modal fade" id="modal-default">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">默认窗口</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="tree">
+                                                    <div class="treeDemo">
+                                                        <ul id="treeDemo" class="ztree">zTree</ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer justify-content-between">
+                                                <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
+                                                <button type="button" class="btn btn-primary">确认</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </td>
+                                </div>
                             </tr>
                             <tr>
                                 <td><span>*</span>立案条件</td>
                                 <td>
-                                    <select  name="safeLevel" required>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
+                                    <select  name="eventCondition" id="eventCondition" required>
+
                                     </select>
                                 </td>
 
@@ -53,48 +70,44 @@
                             <tr>
                                 <td><span></span>案件等级</td>
                                 <td>
-                                    <select  name="safeLevel" >
-                                        <option>一般</option>
-                                        <option>2</option>
-                                        <option>3</option>
+                                    <select class="form-control" id="level" th:name="level" onchange="changeLevel()" required>
+                                        <option>--请选择--</option>
+                                        <option th:each="as:${level}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
                                     </select>
                                 </td>
                                 <td><span></span>处理时限</td>
                                 <td>
-                                    <input  name="userName" placeholder="" class="" type="text"  >
+                                    <input  name="timeLimit" id="deptTimeLimit" placeholder="" class="" type="text" disabled readonly>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span>*</span>所在区域</td>
                                 <td>
-                                    <select  name="safeLevel" required>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
+                                    <select class="form-control" id="region" onchange="changeRegion()" th:name="region" required>
+                                        <option value=""> --请选择-- </option>
+                                        <option th:each="as:${region}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
                                     </select>
                                 </td>
                                 <td><span>*</span>所属网格</td>
                                 <td>
-                                    <select  name="safeLevel" required>
-                                        <option>第一单元网格</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
+                                    <select  name="gridStr" id="grid" required>
+
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span>*</span>案件地址</td>
                                 <td colspan="8">
-                                    <input id="enterprise" name="enterprise" type="text" required>
+                                    <input id="location" name="location" type="text" required>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span></span>上报人</td>
                                 <td style="text-align: left">张辉</td>
                                 <td><span></span>联系方式</td>
-                                <td><input id="handleTime" name="handleTime" type="text" value="15645068888"></td>
+                                <td><input id="phone" name="phone" type="text" /></td>
                             </tr>
                             <tr>
                                 <td><span></span>是否处理</td>
@@ -103,39 +116,35 @@
                                 </td>
                                 <td><span>*</span>问题来源</td>
                                 <td>
-                                    <select  name="safeLevel" required>
-                                        <option>监督员上报</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
+                                    <select class="form-control" id="eventSource" th:name="eventSource" required>
+                                        <option th:each="as:${eventSource}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span></span>创建时间</td>
                                 <td>
-                                    <input size="16" class="form_datetime" type="text" value="" readonly>
+                                    <input size="16" class="form_datetime" type="text" value="" readonly />
 
                                 </td>
                             </tr>
                             <tr>
                                 <td><span></span>位置坐标</td>
                                 <td>
-                                    <input type="text" class="" readonly="readonly" disabled value="经度">
+                                    <input type="text" class="" readonly="readonly" disabled value="经度" name="x" />
                                 </td>
                                 <td></td>
                                 <td>
-                                    <input type="text" class="" readonly="readonly" disabled value="纬度">
+                                    <input type="text" class="" readonly="readonly" disabled value="纬度" name="y" />
                                 </td>
                             </tr>
                             <tr>
                                 <td><span>*</span>案件类型</td>
                                 <td>
-                                    <select  required>
-                                        <option>日常管理</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
+                                    <select class="form-control" id="recTypeId" th:name="recTypeId" required>
+                                        <option th:each="as:${recTypeId}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
                                     </select>
                                 </td>
 
@@ -205,9 +214,102 @@
 <th:block th:include="page/fragments/common :: map_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
+    let componentTypeUrl = /*[[@{/allEventType}]]*/ "/allEventType";
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+    let getDeptTimeLimitByLevelUrl = /*[[@{/event/getDeptTimeLimitByLevel}]]*/ "/event/getDeptTimeLimitByLevel";
+    let findAllByKvIdUrl = /*[[@{/event/findAllByKvId}]]*/ "/event/findAllByKvId";
+    let url = /*[[@{/user/save}]]*/ "/json/unit.json";
+    let uploadUrl = /*[[@{/common/upload}]]*/ "/json/unit.json";
+
+    var setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parent'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+    function zTreeOnClick(event, treeId, treeNode) {
+        $("#typeStr").val(treeNode.name);
+        $("#eventTypeId").val(treeNode.id);
+        $(".closemodal").click();
+        changeCondition();
+    }
+
+    function changeCondition() {
+        var eventTypeId = $("#eventTypeId").val();
+        var url = findEventConditionByEventTypeUrl + "/" + eventTypeId;
+        $.ajaxUtil.get(url, function (e) {
+            console.log(JSON.stringify(e))
+            var option;
+            if (e.code == 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#eventCondition").html(option);
+            }
+
+
+        });
+    }
+    function changeLevel() {
+        var eventTypeId = $("#eventTypeId").val();
+        if (eventTypeId == ''){
+            $.modal.alertWarning("请选择问题类型！")
+            return false;
+        }
+
+        var levelId = $("#level").val();
+        console.log("levelId==="+levelId)
+        var url = getDeptTimeLimitByLevelUrl + "/" + eventTypeId+"/"+levelId;
+        $.ajaxUtil.get(url, function (e) {
+            console.log(JSON.stringify(e))
+            var option;
+            if (e.code == 0) {
+                if (e.data == undefined){
+                    e.data = "";
+                }
+                $("#deptTimeLimit").value(e.data);
+            }
+
+
+        });
+    }
+    function changeRegion(){
+        var recTypeIdVal = $("#recTypeId").val();
+        var url = findAllByKvIdUrl + "/" + recTypeIdVal;
+        console.log("recTypeIdVal====="+ recTypeIdVal)
+        $.ajaxUtil.get(url, function (e) {
+            console.log(JSON.stringify(e))
+            var option;
+            if (e.code == 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid").html(option);
+            }
+
+
+        });
+    }
     $(function() {
+        $.ajaxUtil.get(componentTypeUrl, function (e) {
+            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        })
         $(".name").click(function() {
             $(this).addClass("active").siblings(".name").removeClass("active");
             $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
@@ -231,9 +333,6 @@
     })
 
 
-    let url = /*[[@{/user/save}]]*/ "/json/unit.json";
-
-    let uploadUrl = /*[[@{/common/upload}]]*/ "/json/unit.json";
 
 
     $(function () {
@@ -343,7 +442,7 @@
     // 更改校验文字
     jQuery.extend(jQuery.validator.messages, {
         required: "必填",
-        phone: "必填",
+        ·: "必填",
         remote: "请修正该字段",
         email: "请输入正确格式的电子邮件",
         url: "请输入合法的网址",

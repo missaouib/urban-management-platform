@@ -14,5 +14,5 @@ public class EventTypeVO {
     private String name;
 
     private String parent;
-
+    
 }

@@ -153,4 +153,14 @@ public class GridService {
     public void save4Import(Grid grid) {
         gridRepository.saveAndFlush(grid);
     }
+
+    /**
+     * 查询网格列表
+     * @param kvId
+     * @return
+     */
+    public List<GridVO> findAllByKvId(String kvId) {
+        List<Grid> gridList = gridRepository.findAllByKv_Id(kvId);
+        return GridMapper.INSTANCE.gridListToGridVOList(gridList);
+    }
 }

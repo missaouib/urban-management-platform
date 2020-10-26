@@ -1,9 +1,11 @@
 package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.dao.event.EventRepository;
+import com.unicom.urban.management.dao.eventcondition.EventConditionRespository;
 import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
+import com.unicom.urban.management.pojo.entity.EventCondition;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,8 @@ public class EventService {
 
     @Autowired
     private EventRepository eventRepository;
+    @Autowired
+    private EventConditionRespository eventConditionRespository;
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
@@ -43,4 +47,7 @@ public class EventService {
         return new PageImpl<>(eventVOList, page.getPageable(), page.getTotalElements());
     }
 
+    public List<EventCondition> findEventConditionByEventType(String eventTypeId) {
+        return eventConditionRespository.findAllByEventTypeId_Id(eventTypeId);
+    }
 }

@@ -33,7 +33,7 @@ public interface EventMapper {
      * @return vo
      */
     @Mapping(source = "user.name", target = "userName")
-    @Mapping(source = "eventTypeId.name", target = "eventTypeName")
+    @Mapping(source = "eventType.name", target = "eventTypeName")
     EventVO eventToEventVO(Event event);
 
 }

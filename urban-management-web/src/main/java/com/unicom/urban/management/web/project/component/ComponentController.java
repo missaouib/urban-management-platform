@@ -74,7 +74,7 @@ public class ComponentController {
     public List<EventTypeVO> componentTypeList(){
         return eventTypeService.getEventTypeList(KvConstant.COMPONENT_TYPE);
     }
-    @GetMapping("/aLLeventType")
+    @GetMapping("/allEventType")
     public List<EventTypeVO> aLLeventType(){
         return eventTypeService.getEventTypeList(2);
     }
