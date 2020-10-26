@@ -14,117 +14,113 @@
 
 </style>
 <body>
-<div class="row1">
-    <div class="col-md-12">
-        <div class="row">
-            <div class="leftBox">
-                <form id="gridForm">
-                    <div class="top table2_top">
-                        <!--        <div>-->
-                        <div class="top_out">
-                            <table class="table">
-                                <tbody>
-                                <input type="hidden" id="id" name="id"/>
-                                <tr>
-                                    <td>单元网格标识码<span>*</span></td>
-                                    <td>
-                                        <input type="text" id="gridCode" name="gridCode"/>
-                                    </td>
+<div class="content">
+        <div class="leftContent">
+            <form id="gridForm">
+                <div class="top table2_top">
+                    <!--        <div>-->
+                    <div class="top_out">
+                        <table class="table">
+                            <tbody>
+                            <input type="hidden" id="id" name="id"/>
+                            <tr>
+                                <td>单元网格标识码<span>*</span></td>
+                                <td>
+                                    <input type="text" id="gridCode" name="gridCode"/>
+                                </td>
 
-                                </tr>
-                                <input type="hidden" id="coordinate" name="coordinate"/>
-                                <tr>
-                                    <td>单元网格名称<span>*</span></td>
-                                    <td>
-                                        <input type="text" id="gridName" name="gridName"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>区域分类<span>*</span></td>
-                                    <td>
-                                        <select id="gridKvId" name="kv" required>
-                                            <option value="">请选择</option>
-                                            <option value="454310fe-7b45-49b0-9910-36e777e6fdcc">1类</option>
-                                            <option value="e117bf07-0408-4623-98c3-f358ebeca8b1">2类</option>
-                                            <option value="fd533d5b-b5d1-4fbc-b4cd-4ced27b7b0c4">3类</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>面积<span>*</span></td>
-                                    <td>
-                                        <input type="text" id="area" name="area"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>初始日期<span>*</span></td>
-                                    <td>
-                                        <input size="16" class="form_datetime" type="text" value="" readonly>
-                                        <span class="add-on"><i class="icon-remove"></i></span>
-                                        <span class="add-on"><i class="icon-th"></i></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>终止日期<span>*</span></td>
-                                    <td>
-                                        <input size="16" class="form_datetime" type="text" value="" readonly>
-                                        <span class="add-on"><i class="icon-remove"></i></span>
-                                        <span class="add-on"><i class="icon-th"></i></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>问题描述<span>*</span></td>
-                                    <td><textarea id="remark" name="remark" required></textarea></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="notice_bot">
-                            <!--            <div class="l_left">-->
-                            <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-                            <!--            </div>-->
-                            <div class="r_right but_p">
-                                <button class="but_save" type="button" onclick="saveGrid()">保存</button>
-                                <button class="but_esc" type="button" style="display: none;margin-left: 10px"
-                                        onclick="updateGrid()">修改
-                                </button>
-                                <button class="but_close" onclick="Cancel()">关闭</button>
-                            </div>
-                        </div>
+                            </tr>
+                            <input type="hidden" id="coordinate" name="coordinate"/>
+                            <tr>
+                                <td>单元网格名称<span>*</span></td>
+                                <td>
+                                    <input type="text" id="gridName" name="gridName"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>区域分类<span>*</span></td>
+                                <td>
+                                    <select id="gridKvId" name="kv" required>
+                                        <option value="">请选择</option>
+                                        <option value="454310fe-7b45-49b0-9910-36e777e6fdcc">1类</option>
+                                        <option value="e117bf07-0408-4623-98c3-f358ebeca8b1">2类</option>
+                                        <option value="fd533d5b-b5d1-4fbc-b4cd-4ced27b7b0c4">3类</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>面积<span>*</span></td>
+                                <td>
+                                    <input type="text" id="area" name="area"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>初始日期<span>*</span></td>
+                                <td>
+                                    <input size="16" class="form_datetime" type="text" value="" readonly>
+                                    <span class="add-on"><i class="icon-remove"></i></span>
+                                    <span class="add-on"><i class="icon-th"></i></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>终止日期<span>*</span></td>
+                                <td>
+                                    <input size="16" class="form_datetime" type="text" value="" readonly>
+                                    <span class="add-on"><i class="icon-remove"></i></span>
+                                    <span class="add-on"><i class="icon-th"></i></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>问题描述<span>*</span></td>
+                                <td><textarea id="remark" name="remark" required></textarea></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-
-                    <!--    </div>-->
-                </form>
-            </div>
-            <div class="rightBox" style="position: relative">
-                <!--                <div class="card" style="margin-top: 0px">-->
-                <!--                    <div class="card-body" >-->
-                <div class="titlenav">
-                    <div class="">
-                        <div>+</div>
-                        <div>-</div>
-                    </div>
-                    <button class="btn-primary topFun addPencle">新增</button>
-                    <button class="btn-primary topFun" type="button" onclick="deleteGrid()">删除</button>
-                </div>
-                <div class="map" id="map" style="width: 100%"></div>
-
-                <!--                                        line and pie-->
-                <div id="popup" class="ol-popup">
-                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                    <div id="popup-content">
-                        <ul id="message">
-
-                        </ul>
+                    <div class="notice_bot">
+                        <!--            <div class="l_left">-->
+                        <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                        <!--            </div>-->
+                        <div class="r_right but_p">
+                            <button class="but_save" type="button" onclick="saveGrid()">保存</button>
+                            <button class="but_esc" type="button" style="display: none;margin-left: 10px"
+                                    onclick="updateGrid()">修改
+                            </button>
+                            <button class="but_close" onclick="Cancel()">关闭</button>
+                        </div>
                     </div>
                 </div>
 
-                <!--                    </div>&lt;!&ndash; /.card-body - ->-->
-                <!--                </div>&lt;!&ndash; /.card &ndash;&gt;-->
+                <!--    </div>-->
+            </form>
+        </div>
+        <div class="rightContent" style="position: relative">
+            <!--                <div class="card" style="margin-top: 0px">-->
+            <!--                    <div class="card-body" >-->
+            <div class="titlenav">
+                <div class="">
+                    <div>+</div>
+                    <div>-</div>
+                </div>
+                <button class="btn-primary topFun addPencle">新增</button>
+                <button class="btn-primary topFun" type="button" onclick="deleteGrid()">删除</button>
             </div>
+            <div class="map" id="map" style="width: 100%;height: 100%"></div>
+
+            <!--                                        line and pie-->
+            <div id="popup" class="ol-popup">
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content">
+                    <ul id="message">
+
+                    </ul>
+                </div>
+            </div>
+
+            <!--                    </div>&lt;!&ndash; /.card-body - ->-->
+            <!--                </div>&lt;!&ndash; /.card &ndash;&gt;-->
         </div>
     </div>
-</div>
 
 <div id="pictureDiv" style="display: none">
 
