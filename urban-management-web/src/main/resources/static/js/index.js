@@ -768,7 +768,7 @@
                     "F_EnCode": "SysManage",
                     "F_FullName": "网格管理",
                     "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/grid",
+                    "F_UrlAddress": "/grid/grid",
                     "F_Target": "expand",
                     "F_IsMenu": 0,
                     "F_AllowExpand": 1,

@@ -2,6 +2,7 @@ package com.unicom.urban.management.web.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,8 @@ public class SupervisionAcceptanceController {
     }
 
     @GetMapping("/toSupervisionAcceptanceUpdate/{id}")
-    public ModelAndView toSupervisionAcceptanceUpdate(@PathVariable String id) {
+    public ModelAndView toSupervisionAcceptanceUpdate(@PathVariable String id, Model model) {
+        model.addAttribute("id", id);
         return new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/update");
     }
 

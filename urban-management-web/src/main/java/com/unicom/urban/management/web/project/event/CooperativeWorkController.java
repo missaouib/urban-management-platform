@@ -23,7 +23,7 @@ public class CooperativeWorkController {
     private EventService eventService;
 
     @GetMapping("/toCooperativeWorkList")
-    public ModelAndView toCooperativeWork() {
+    public ModelAndView toCooperativeWorkList() {
         return new ModelAndView(SystemConstant.PAGE + "/event/cooperativeWork/list");
     }
 

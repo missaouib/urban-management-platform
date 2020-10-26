@@ -73,7 +73,7 @@ public class Event extends BaseEntity {
     private KV region;
 
     /**
-     * 时间状态 未处理、处理中、关单
+     * 事件状态
      */
     private int sts;
 
@@ -82,14 +82,7 @@ public class Event extends BaseEntity {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private EventType recTypeId;
-
-    /**
-     * 案件状态
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private KV eventSate;
+    private KV recTypeId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn

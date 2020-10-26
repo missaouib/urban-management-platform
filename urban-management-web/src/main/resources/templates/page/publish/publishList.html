@@ -65,7 +65,8 @@
             $("#publishList").append(htmlStr);
         });
     }
-    $('#publishList').on("click",".radio",function () {
+
+    $('#publishList').on("click", ".radio", function () {
         layerMap.getSource().clear()
     })
 
@@ -73,24 +74,44 @@
         // console.log("value", data.value);
         getPublishOneUrl(data.value);
     }
+
     function getPublishOneUrl(id) {
         let getPublishOneUrl = /*[[@{/publish/getPublishOne/}]]+id*/ "/publish/getPublishOne/" + id;
         $.ajaxUtil.get(getPublishOneUrl, function (e) {
-            console.log("e", e);
             let data = e.data;
-            for (let i = 0; i < data.length; i++) {
-                setPoint(data[i].coordinate.split(",")[0], data[i].coordinate.split(",")[1], data[i].id, data[i].type);
+            if (data.length === 0) {
+                return false;
             }
-            setPolygon()
-
-        })
+            if (data[0].type === "部件") {
+                for (let i = 0; i < data.length; i++) {
+                    setPoint(data[i].coordinate.split(",")[0], data[i].coordinate.split(",")[1], data[i].id, data[i].type);
+                }
+            } else if (data[0].type === "网格") {
+                for (let i = 0; i < data.length; i++) {
+                    let data1 = data[i].coordinate;
+                    let split = data1.split("-");
+                    let polygonArray = [];
+                    let polygonArrayEnd = [];
+                    for (let j = 0; j < split.length; j++) {
+                        let pointArray = [];
+                        pointArray.push(split[j].split(",")[0]);
+                        pointArray.push(split[j].split(",")[1]);
+                        polygonArray.push(pointArray);
+                        polygonArrayEnd.push(polygonArray);
+                    }
+                    setPolygon(polygonArrayEnd, data[i].id);
+                }
+            } else {
+                console.log("error")
+            }
+        });
 
     }
-  $(".clear").click(function () {
-      console.log(1)
-      layerMap.getSource().clear()
-  })
 
+    $(".clear").click(function () {
+        console.log(1)
+        layerMap.getSource().clear()
+    })
 
 
     function layerPublish() {
@@ -127,44 +148,28 @@
     });
     map.addLayer(layerMap);
 
-    function setPoint(x, y, id,type) {
+    function setPoint(x, y, id, type) {
         let point = new ol.Feature({
             geometry: new ol.geom.Point([x, y]),
             data: {
                 id: id,
-                type:type,
+                type: type,
                 coordinate: x + "," + y
             }
         });
         layerMap.getSource().addFeature(point);
     }
-    // function setLine(res, data, name) {
-    //     let lines = new ol.Feature({
-    //         geometry: new ol.geom.LineString(res),
-    //         data: {
-    //             id: data,
-    //             name: name,
-    //             coordinate: res
-    //         }
-    //     });
-    //     // console.log(lines)
-    //     layerMap.getSource().addFeature(lines);
-    // }
-    function setPolygon() {
-        let coordinates = [
-            [
-            [14098274.077604493, 5744048.473396081], [14094566.881732661, 5740952.773750531], [14097930.11097721, 5738659.662901975], [14101331.5587359, 5741831.79957581], [14098274.077604493, 5744048.473396081]
-        ]
-        ];
+
+    function setPolygon(coordinates, id) {
+
         let Polygon = new ol.Feature({
             geometry: new ol.geom.Polygon(coordinates),
             data: {
-                // id: data,
+                id: id,
                 // name: name,
-                // coordinate: coordinates
+                coordinate: coordinates
             }
         });
-        // console.log(Polygon)
         layerMap.getSource().addFeature(Polygon);
     }
 </script>
