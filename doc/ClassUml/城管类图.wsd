@@ -99,7 +99,7 @@ class Event<<案件实体类>>{
     -x : double
     -y : double
     -taskId : String
-    -timeLimit : TimeLimit
+    -timeLimit : DeptTimeLimit
     -sts       : int             // 事件状态     派遣/挂起等等
     -recTypeId : Kv       //案件类型    日常  、转向普查、其他
     -region : Kv    //区域    一类区域  二类区域  三类区域

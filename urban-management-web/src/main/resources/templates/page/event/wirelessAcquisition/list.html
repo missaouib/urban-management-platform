@@ -150,12 +150,14 @@
     let componentTypeUrl = /*[[@{/allEventType}]]*/ "/allEventType";
     let searchUrl = /*[[@{/event/toWirelessAcquisitionList}]]*/ "/event/eventList";
 
-    let addUrl = /*[[@{/event/toWirelessAcquisitionSave}]]*/ "/user/add";
+    let searchUrl = /*[[@{/event/wirelessAcquisitionList}]]*/ "/event/wirelessAcquisitionList";
+
+    let addUrl = /*[[@{/event/toWirelessAcquisitionSave}]]*/ "/event/toWirelessAcquisitionSave";
 
 
-    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
+    let removeUrl = /*[[@{/event/remove}]]*/ "/event/remove";
 
-    let editUrl = /*[[@{/user/toWirelessAcquisitionUpdate/{id}}]]*/ "/user/edit";
+    let editUrl = /*[[@{/event/toWirelessAcquisitionUpdate/{id}}]]*/ "/event/toWirelessAcquisitionUpdate/{id}";
 
     function queryUserList() {
         var options = {

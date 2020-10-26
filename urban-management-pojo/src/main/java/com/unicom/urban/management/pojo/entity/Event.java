@@ -100,6 +100,8 @@ public class Event extends BaseEntity {
     /**
      * 立案条件
      */
+    private KV recTypeId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private EventCondition eventCondition;
