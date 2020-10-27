@@ -57,7 +57,7 @@ public class ProcessDefinitionController {
 
     @PostMapping("/processdef/remove")
     public void delete(String ids) {
-        repositoryService.deleteDeployment(ids, false);
+        repositoryService.deleteDeployment(ids, true);
     }
 
 
