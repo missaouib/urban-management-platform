@@ -35,7 +35,9 @@ public class Event extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private EventCondition condition;
-
+    /**
+     * 问题描述
+     */
     private String represent;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -85,11 +87,11 @@ public class Event extends BaseEntity {
     private int sts;
 
     /**
-     * 问题类型 事件 部件
+     * 案件类型 日常管理、专项普查、其他
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private EventType recType;
+    private KV recType;
 
     /**
      * 案件状态
@@ -101,10 +103,4 @@ public class Event extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private EventCondition eventCondition;
-    /**
-     * 案件类型 日常管理、专项普查、其他
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private KV recTypeId;
 }

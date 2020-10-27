@@ -22,7 +22,7 @@
                         <tr>
                             <td>问题描述<span></span></td>
                             <td>
-                                <input type="text" class="datepicker" readonly="readonly">
+                                <input type="text" class="datepicker" th:name="represent">
                             </td>
                             <td>问题类型<span>*</span>
                                 <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
@@ -40,7 +40,7 @@
                                         <div class="modal-body">
                                             <div class="tree">
                                                 <div class="treeDemo">
-                                                    <ul id="treeDemo" class="ztree">zTree</ul>
+                                                    <ul id="treeDemo" th:name="eventType" class="ztree">zTree</ul>
                                                 </div>
                                             </div>
                                         </div>
@@ -55,7 +55,7 @@
                         <tr>
                             <td>所属网格<span></span></td>
                             <td>
-                                <select id="gridKvId" name="kv" required>
+                                <select id="gridKvId" th:name="grid" >
                                     <option value="">请选择</option>
                                     <option>1</option>
                                     <option>2</option>
@@ -64,7 +64,7 @@
                             </td>
                             <td>上报人<span></span></td>
                             <td>
-                                <input type="text" name="mobileNumber" value="张辉"/>
+                                <input type="text" name="user" value="张辉"/>
                             </td>
                         </tr>
 
@@ -82,9 +82,9 @@
             <a class="btn btn-success" onclick="$.operate.addTab()">
                 <i class="fa fa-plus"></i> 新增
             </a>
-            <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">
-                <i class="fa fa-edit"></i> 修改
-            </a>
+<!--            <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">-->
+<!--                <i class="fa fa-edit"></i> 修改-->
+<!--            </a>-->
             <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">
                 <i class="fa fa-remove"></i> 重置
             </a>
@@ -197,153 +197,15 @@
                     title: '操作',
                     field: '',
                     formatter: function (value, row) {
-                        var e = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
-                        return e;
+                        var actions = [];
+                        actions.push('<a  href="#" title="" onclick="$.operate.editTab(\'' + row.id + '\')">修改</a> ');
+                        actions.push('<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ');
+                        return actions.join('');
                     }
                 }
             ]
         };
         $.table.init(options);
-    }
-
-    jQuery.extend(jQuery.validator.messages, {
-        required: "必填",
-        phone: "必填",
-        remote: "请修正该字段",
-        email: "请输入正确格式的电子邮件",
-        url: "请输入合法的网址",
-        date: "请输入合法的日期",
-        dateISO: "请输入合法的日期 (ISO).",
-        number: "请输入合法的数字",
-        digits: "只能输入整数",
-        creditcard: "请输入合法的信用卡号",
-        equalTo: "请再次输入相同的值",
-        accept: "请输入拥有合法后缀名的字符串",
-        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
-        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
-        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
-        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
-        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
-        min: jQuery.validator.format("请输入一个最小为{0} 的值")
-    });
-
-    $("#userForm").validate({
-        debug: true,
-        ignore:"",
-        submitHandler:function(form){
-            var params = $(form).serialize(); //串行化表单参数
-            $.post("user",params,function(result){
-                if (result.ok) {//注册成功
-                    location.href = "register_ok.html";
-                }else{//注册失败
-                    alert(result.msg);
-                    $("#checkImg").click();
-                }
-            },"json");
-        },
-        rules: {
-            userName: {
-                required: true
-            },
-            loginName: {
-                required: true,
-                // rangelength: [5, 8]
-            },
-            phonenumber: {
-                required: true,
-                // rangelength: [6, 12]
-            },
-            problemescription: {
-                required: true,
-                // rangelength: [6, 12],
-                /*重复密码需要与原密码相同的要求*/
-                // equalTo: "#pwd"
-            },
-            safeLevel: {
-                required: true
-            },
-            findTime: {
-                required: true,
-                // range: [26, 50]
-            },
-            enterprise: {
-                required: true
-            },
-            department: {
-                required: true
-            },
-            handleTime: {
-                required: true
-            },charge: {
-                required: true
-            },
-            question: {
-                required: true
-            },
-            closeTime: {
-                required: true,
-                // email: true
-            },
-            // idcard: {
-            //     card: true
-            // },
-            // phone: {
-            //     phone: true
-            // }
-        },
-        messages: {
-            // realname: {
-            //     required: "真实姓名不能为空"
-            // },
-            // username: {
-            //     required: "登录名不能为空",
-            //     rangelength: "登录名长度要在5-8位之间"
-            // },
-            // pwd: {
-            //     required: "密码不能为空",
-            //     rangelength: "密码长度在6-12位之间"
-            // },
-            // pwd2: {
-            //     required: "重复密码不能为空",
-            //     rangelength: "重复密码长度在6-12位之间",
-            //     equalTo: "重复密码与密码不一致"
-            // },
-            // sex: {
-            //     required: "请选择性别"
-            // },
-            // age: {
-            //     required: "年龄不能为空",
-            //     range: "年龄必须在26-50岁之间"
-            // },
-            // email: {
-            //     email: "请输入有效邮箱"
-            // },
-            // idcard: {
-            //     card: "请输入有效身份证号"
-            // },
-            // phone: {
-            //     phone: "必填"
-            // }
-        }
-    });
-    /*手机号格式验证*/
-    $.validator.addMethod("phone", function (value, element, params) {
-        var reg = /^1[34578]\d{9}$/;
-        return reg.test(value);
-    }, "phone error");
-
-    function Cancel() {
-        $.modal.closeLoading();
-    }
-
-    function submitHandler(){
-        //先校验
-        if (!$("form").valid()) {
-            return;
-
-        }
-        var data = $('#userForm').serialize();
-        $.operate.saveTab(url, data);
     }
 
 

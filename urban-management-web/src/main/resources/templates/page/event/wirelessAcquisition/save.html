@@ -27,7 +27,7 @@
                                 </td>
                                 <td>问题类型<span>*</span>
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input" />
-                                    <input type="hidden" readonly="readonly" id="eventTypeId" class="find_input">
+                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventType" class="find_input">
                                     <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">
                                         +
                                     </button>
@@ -40,11 +40,9 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="tree">
-                                                    <p>
                                                     <div class="treeDemo">
                                                         <ul id="treeDemo" class="ztree">zTree</ul>
                                                     </div>
-                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="modal-footer justify-content-between">
@@ -67,7 +65,7 @@
                             <tr>
                                 <td><span>*</span>问题描述</td>
                                 <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
-                                <td colspan = "8"><textarea id="problemescription" th:name="problemescription" required></textarea></td>
+                                <td colspan = "8"><textarea id="problemescription" th:name="represent" required></textarea></td>
                             </tr>
                             <tr>
                                 <td><span></span>案件等级</td>
@@ -137,12 +135,11 @@
                             <tr>
                                 <td><span>*</span>案件类型</td>
                                 <td>
-                                    <select class="form-control" id="recTypeId" th:name="recTypeId" required>
-                                        <option th:each="as:${recTypeId}" th:value="${as.id}"
+                                    <select class="form-control" id="recTypeId" th:name="recType" required>
+                                        <option th:each="as:${recType}" th:value="${as.id}"
                                                 th:text="${as.value}"></option>
                                     </select>
                                 </td>
-
                             </tr>
                             </tbody>
                         </table>
@@ -239,13 +236,15 @@
         $("#eventTypeId").val(treeNode.id);
         $(".closemodal").click();
         changeCondition();
+        createEventCode(treeNode.id);
     }
+    function createEventCode(eventTypeId){
 
+    }
     function changeCondition() {
         var eventTypeId = $("#eventTypeId").val();
         var url = findEventConditionByEventTypeUrl + "/" + eventTypeId;
         $.ajaxUtil.get(url, function (e) {
-            console.log(JSON.stringify(e))
             var option;
             if (e.code == 0) {
                 $(e.data).each(function (index, value) {
@@ -265,10 +264,8 @@
         }
 
         var levelId = $("#level").val();
-        console.log("levelId==="+levelId)
         var url = getDeptTimeLimitByLevelUrl + "/" + eventTypeId+"/"+levelId;
         $.ajaxUtil.get(url, function (e) {
-            console.log(JSON.stringify(e))
             var option;
             if (e.code == 0) {
                 if (e.data == 0){
@@ -283,9 +280,7 @@
     function changeRegion(){
         var regionVal = $("#region").val();
         var url = findAllByKvIdUrl + "/" + regionVal;
-        console.log("regionVal====="+ regionVal)
         $.ajaxUtil.get(url, function (e) {
-            console.log(JSON.stringify(e))
             var option;
             if (e.code == 0) {
                 $(e.data).each(function (index, value) {
@@ -561,13 +556,13 @@
         $.modal.closeLoading();
     }
 
-    function submitHandler(){
+    function submitHandler(sts){
         //先校验
         if (!$("form").valid()) {
             return;
         }
+
         var data = $('#userForm').serialize();
-        console.log(JSON.stringify(data))
         $.operate.saveTab(saveUrl, data);
     }
     function preReportHandler(){
@@ -576,7 +571,6 @@
             return;
         }
         var data = $('#userForm').serialize();
-        console.log(JSON.stringify(data))
         $.operate.saveTab(preReportUrl, data);
     }
 

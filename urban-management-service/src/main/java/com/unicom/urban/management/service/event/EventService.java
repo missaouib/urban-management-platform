@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.event;
 
+import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventRepository;
 import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
 import com.unicom.urban.management.mapper.EventConditionMapper;
@@ -7,8 +8,10 @@ import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventCondition;
+import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
+import com.unicom.urban.management.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,6 +38,8 @@ public class EventService {
     private EventRepository eventRepository;
     @Autowired
     private EventConditionRepository eventConditionRespository;
+    @Autowired
+    private UserService userService;
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
@@ -62,6 +67,8 @@ public class EventService {
      * @param event
      */
     public void save(Event event){
+        User user = userService.findOne(SecurityUtil.getUserId());
+        event.setUser(user);
         eventRepository.save(event);
     }
 }

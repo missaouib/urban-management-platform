@@ -3,6 +3,8 @@ package com.unicom.urban.management.pojo.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import javax.persistence.MapKey;
+import javax.persistence.MapKeyColumn;
 import java.time.LocalDateTime;
 
 /**

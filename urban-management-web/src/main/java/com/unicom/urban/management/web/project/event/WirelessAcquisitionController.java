@@ -1,6 +1,7 @@
 package com.unicom.urban.management.web.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.dto.EventDTO;
@@ -119,7 +120,7 @@ public class WirelessAcquisitionController {
     @RequestMapping("/save")
     public void save(Event event){
         event.setCreateTime(LocalDateTime.now());
-        event.setSts(-1);
+        event.setSts(EventConstant.SUPERVISE_SAVE);
         eventService.save(event);
     }
     /**
@@ -129,7 +130,7 @@ public class WirelessAcquisitionController {
     @RequestMapping("/preReport")
     public void preReport(Event event){
         event.setCreateTime(LocalDateTime.now());
-        event.setSts(0);
+        event.setSts(EventConstant.SUPERVISE_REPORTING);
         eventService.save(event);
     }
 }
