@@ -18,4 +18,6 @@ public class EventDTO {
 
     private String gridId;
 
+    private Integer sts;
+
 }
