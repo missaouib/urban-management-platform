@@ -55,7 +55,12 @@ public class KvConstant {
     /**
      * 部件分类
      */
-    public static final int COMPONENT_TYPE=1;
+    public static final int COMPONENT_TYPE = 1;
+
+    /**
+     * url
+     */
+    public static final String GIS_URL = "http://localhost:8099/api/layerAndElementAndAttribute/addLayer";
 
 
 }

@@ -3,6 +3,7 @@ package com.unicom.urban.management.service.publish;
 import cn.hutool.json.JSONObject;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.StsConstant;
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.RestTemplateUtil;
 import com.unicom.urban.management.dao.release.PublishRepository;
 import com.unicom.urban.management.mapper.PublishMapper;
@@ -69,16 +70,18 @@ public class PublishService {
     }
 
     public void layerPublish(String publishId, String type) {
-        String url = "http://localhost:8099/api/layerAndElementAndAttribute/addLayer";
         String gridType = "网格";
+        String partType = "部件";
         if (gridType.equals(type)) {
             List<Grid> gridList = gridService.findAllByPublishIdAndRecordSts(publishId);
             Publish publish = findOne(publishId);
-            ResponseEntity<Map> post = RestTemplateUtil.post(url, getGridJson(publish, gridList), Map.class);
+            ResponseEntity<Map> post = RestTemplateUtil.post(KvConstant.GIS_URL, getGridJson(publish, gridList), Map.class);
             System.out.println(post);
             publish.setSts(StsConstant.RELEASE);
-            publish.setLayerId("layerId");
-            publish.setUrl("url");
+            Object layerId = post.getBody().get("layerId");
+            publish.setLayerId(layerId.toString());
+            Object url = post.getBody().get("url");
+            publish.setUrl(url.toString());
             publishRepository.saveAndFlush(publish);
             List<Record> recordList = new ArrayList<>();
             for (Grid grid : gridList) {
@@ -86,6 +89,10 @@ public class PublishService {
                 recordList.add(grid.getRecord());
             }
             recordService.saveList(recordList);
+        } else if (partType.equals(type)) {
+
+        } else {
+            throw new DataValidException("");
         }
     }
 
