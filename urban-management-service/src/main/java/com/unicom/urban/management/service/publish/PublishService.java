@@ -85,9 +85,9 @@ public class PublishService {
             System.out.println(post);
             publish.setSts(StsConstant.RELEASE);
             Object layerId = post.getBody().get("layerId");
-            publish.setLayerId(layerId.toString());
+            publish.setLayerId(StringUtils.isNotBlank(publish.getLayerId())?publish.getLayerId():layerId.toString());
             Object url = post.getBody().get("url");
-            publish.setUrl(url.toString());
+            publish.setUrl(StringUtils.isNotBlank(publish.getUrl())?publish.getUrl():url.toString());
             publishRepository.saveAndFlush(publish);
             List<Record> recordList = new ArrayList<>();
             for (Grid grid : gridList) {
@@ -101,9 +101,9 @@ public class PublishService {
             ResponseEntity<Map> post = RestTemplateUtil.post(KvConstant.GIS_URL, getComponentJson(publish, components), Map.class);
             publish.setSts(StsConstant.RELEASE);
             Object layerId = post.getBody().get("layerId");
-            publish.setLayerId(layerId.toString());
+            publish.setLayerId(StringUtils.isNotBlank(publish.getLayerId())?publish.getLayerId():layerId.toString());
             Object url = post.getBody().get("url");
-            publish.setUrl(url.toString());
+            publish.setUrl(StringUtils.isNotBlank(publish.getUrl())?publish.getUrl():url.toString());
             publishRepository.saveAndFlush(publish);
             components.forEach(c->{
                 Record record = c.getRecord();
