@@ -28,8 +28,8 @@
             </a>
             <div class="headerRight">
                 <div class="date">
-                    <div class="Day">星期二</div>
-                    <div class="daily">2020年4月20日</div>
+                    <div class="Day" id="Day"></div>
+                    <div class="daily" id="daily"></div>
                 </div>
                 <div class="quitBtn">
                     <span>退出</span>
@@ -134,9 +134,46 @@
             $(".quitBtn").click(function () {
                 window.location.href = logoutUrl;
             })
-
+            init()
         })
 
+
+        function init(){
+            var date=new Date();
+            //年
+            var year=date.getFullYear();
+            //月
+            var month=date.getMonth()+1;
+            //日
+            var day=date.getDate();
+            //时
+            var hh=date.getHours();
+            //分
+            var mm=date.getMinutes();
+            //秒
+            var ss=date.getSeconds();
+            //周几
+            var week=date.getDay();
+            var rq=year+"年"+month+"月"+day+"日";
+            var weekDay;
+            if(week == 0){
+                weekDay = "星期日"
+            }else if(week == 1){
+                weekDay = "星期一"
+            }else if(week == 2){
+                weekDay = "星期二"
+            }else if(week == 3){
+                weekDay = "星期三"
+            }else if(week == 4){
+                weekDay = "星期四"
+            }else if(week == 5){
+                weekDay = "星期五"
+            }else if(week == 6){
+                weekDay = "星期六"
+            }
+            document.getElementById("Day").innerHTML=weekDay;
+            document.getElementById("daily").innerHTML=rq;
+        }
 
         let colorIndex = 0;
         $(function () {
