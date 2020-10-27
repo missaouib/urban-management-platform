@@ -3,9 +3,11 @@ package com.unicom.urban.management.service.eventtype;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.dao.eventtype.EventTypeRepository;
 import com.unicom.urban.management.mapper.EventTypeMapper;
+import com.unicom.urban.management.mapper.TreeMapper;
 import com.unicom.urban.management.pojo.dto.ComponentTypeDTO;
 import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.vo.EventTypeVO;
+import com.unicom.urban.management.pojo.vo.TreeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,9 +39,9 @@ public class EventTypeService {
     public List<EventTypeVO> getEventTypeList(int type) {
         List<EventType> fromList;
         if (KvConstant.COMPONENT_TYPE == type) {
-             fromList = eventTypeRepository.findAllByType(KvConstant.COMPONENT_TYPE);
-        }else{
-             fromList = eventTypeRepository.findAll();
+            fromList = eventTypeRepository.findAllByType(KvConstant.COMPONENT_TYPE);
+        } else {
+            fromList = eventTypeRepository.findAll();
         }
         return EventTypeMapper.INSTANCE.eventTypeVOToEventTypeVOList(fromList);
     }
@@ -74,5 +76,10 @@ public class EventTypeService {
                 this.getIds(ids, c);
             });
         }
+    }
+
+    public List<TreeVO> searchTree() {
+        List<EventType> eventTypeList = eventTypeRepository.findAll();
+        return TreeMapper.INSTANCE.eventTypeListToTreeVOList(eventTypeList);
     }
 }

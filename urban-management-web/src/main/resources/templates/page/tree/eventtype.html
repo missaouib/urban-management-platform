@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>选择事件类型</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+
+    <!--    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">-->
+</head>
+<body>
+
+    <div class="top table2_top">
+        <!--        <div>-->
+        <div class="top_out">
+<!--            <input id="treeId"   name="treeId"    type="hidden" th:value="${dept.deptId}"/>-->
+<!--            <input id="treeName" name="treeName"  type="hidden" th:value="${dept.deptName}"/>-->
+            <input id="treeId"   name="treeId"    type="hidden" />
+            <input id="treeName" name="treeName"  type="hidden" />
+            <div class="treeDemo">
+                <ul id="ztree" class="ztree"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!--    </div>-->
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+
+    var tree = [[${tree}]];
+
+
+    var setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parentId'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+
+    $(function () {
+        var zTreeObj = $.fn.zTree.init($("#ztree"), setting, tree);
+    })
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        console.log('zTreeOn');
+        var treeId = treeNode.id;
+        var treeName = treeNode.name;
+        $("#treeId").val(treeId);
+        $("#treeName").val(treeName);
+    }
+
+
+
+
+    /* 用户管理-新增-选择部门树 */
+    function selectDeptTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = ctx + "system/dept/selectDeptTree/" + deptId;
+        var options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+
+</script>
+</body>
+</html>
