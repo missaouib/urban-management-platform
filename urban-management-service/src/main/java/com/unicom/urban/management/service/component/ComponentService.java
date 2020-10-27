@@ -35,16 +35,16 @@ public class ComponentService {
 
     private final ComponentRepository componentRepository;
 
-    private final PublishService releaseService;
+    @Autowired
+    private  PublishService releaseService;
 
     private final RecordService recordService;
 
     private final EventTypeService eventTypeService;
 
     @Autowired
-    public ComponentService(ComponentRepository componentRepository, PublishService releaseService, RecordService recordService, EventTypeService eventTypeService) {
+    public ComponentService(ComponentRepository componentRepository,  RecordService recordService, EventTypeService eventTypeService) {
         this.componentRepository = componentRepository;
-        this.releaseService = releaseService;
         this.recordService = recordService;
         this.eventTypeService = eventTypeService;
     }
