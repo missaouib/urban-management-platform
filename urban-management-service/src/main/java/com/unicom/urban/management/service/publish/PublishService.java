@@ -15,6 +15,7 @@ import com.unicom.urban.management.pojo.vo.PublishVO;
 import com.unicom.urban.management.service.component.ComponentService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.record.RecordService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
@@ -125,7 +126,7 @@ public class PublishService {
         scaleMap.put("id", KvConstant.SCALE);
         int five = 5;
         Map<String, Object> layerMap = new HashMap<>(five);
-        layerMap.put("id", publish.getLayerId());
+        layerMap.put("id",StringUtils.isNotBlank(publish.getLayerId())?publish.getLayerId():"");
         layerMap.put("epsg", epsgMap);
         layerMap.put("layerSetting", layerSettingMap);
         layerMap.put("scale", scaleMap);
@@ -158,7 +159,7 @@ public class PublishService {
         scaleMap.put("id", KvConstant.SCALE);
         int five = 5;
         Map<String, Object> layerMap = new HashMap<>(five);
-        layerMap.put("id", publish.getLayerId());
+        layerMap.put("id", StringUtils.isNotBlank(publish.getLayerId())?publish.getLayerId():"");
         layerMap.put("epsg", epsgMap);
         layerMap.put("layerSetting", layerSettingMap);
         layerMap.put("scale", scaleMap);

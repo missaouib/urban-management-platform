@@ -26,11 +26,7 @@
                                         </td>
                                         <td><span>*</span>问题类型</td>
                                         <td>
-                                            <div class="tree">
-                                                <div class="treeDemo">
-                                                    <ul id="treeDemo" class="ztree">zTree</ul>
-                                                </div>
-                                            </div>
+                                            <input id="eventType" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
                                         </td>
                                     </tr>
                                     <tr>
@@ -236,6 +232,27 @@
     let url = /*[[@{/user/save}]]*/ "/json/unit.json";
 
     let uploadUrl = /*[[@{/common/upload}]]*/ "/json/unit.json";
+
+    function selectEventTypeTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择事件类型',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero){
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#treeId").val(body.find('#treeId').val());
+        $("#eventType").val(body.find('#treeName').val());
+        layer.close(index);
+    }
 
 
     $(function () {

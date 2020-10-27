@@ -31,10 +31,10 @@ public class EventType {
 
     private String level;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
     private List<EventType> children;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private EventType parent;
 
     private Integer type;

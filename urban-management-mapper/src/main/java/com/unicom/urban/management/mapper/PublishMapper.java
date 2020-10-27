@@ -3,6 +3,7 @@ package com.unicom.urban.management.mapper;
 import com.unicom.urban.management.pojo.entity.Publish;
 import com.unicom.urban.management.pojo.vo.PublishVO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public interface PublishMapper {
      * @param publish 实体
      * @return vo
      */
+    @Mapping(source = "kv.value", target = "type")
     PublishVO publishToPublishVO(Publish publish);
 
 }

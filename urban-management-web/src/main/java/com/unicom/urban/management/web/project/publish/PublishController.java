@@ -44,7 +44,7 @@ public class PublishController {
 
     @PostMapping("/layerPublish")
     public String layerPublish(String id, String type) {
-        /*publishService.layerPublish(id, type);*/
+        publishService.layerPublish(id, type);
         return "发布成功";
     }
 
