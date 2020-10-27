@@ -16,6 +16,8 @@
 <body>
 <div class="infoBox">
     <div class="radioInput">
+        <input type="hidden" id="dataValue" value=""/>
+        <input type="hidden" id="dataId" value=""/>
         <div id="publishList"></div>
         <div class="notice_bot">
             <div class="r_right but_p">
@@ -53,13 +55,12 @@
 
     function getPublishList() {
         $.ajaxUtil.get(getPublishListUrl, function (e) {
-            // console.log("e", e);
             let data = e.data;
             $("#publishList").empty();
             let htmlStr = "";
             for (let i = 0; i < data.length; i++) {
                 htmlStr += "<p>"
-                htmlStr += "<input type='radio' value='" + data[i].id + "' name='publish' onclick='radioPublish(this)' class='radio'>" + data[i].name
+                htmlStr += "<input type='radio' value='" + data[i].type + "' id='" + data[i].id + "' name='publish' onclick='radioPublish(this)' class='radio'>" + data[i].name
                 htmlStr += "</p>"
             }
             $("#publishList").append(htmlStr);
@@ -71,8 +72,9 @@
     })
 
     function radioPublish(data) {
-        // console.log("value", data.value);
-        getPublishOneUrl(data.value);
+        $("#dataId").val(data.id);
+        $("#dataValue").val(data.value);
+        getPublishOneUrl(data.id);
     }
 
     function getPublishOneUrl(id) {
@@ -115,8 +117,10 @@
 
 
     function layerPublish() {
-        $.operate.post(layerPublishUrl, {id: "111"}, function (e) {
-
+        let id = $("#dataId").val();
+        let type = $("#dataValue").val();
+        $.operate.post(layerPublishUrl, {id: id, type: type}, function (e) {
+            console.log("e", e);
         })
     }
 

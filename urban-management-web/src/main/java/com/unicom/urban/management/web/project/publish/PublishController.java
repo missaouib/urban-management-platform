@@ -44,7 +44,7 @@ public class PublishController {
 
     @PostMapping("/layerPublish")
     public String layerPublish(String id, String type) {
-        publishService.layerPublish("d1a09fb6-0293-4fd0-8410-a76b6f74ecd2", "部件");
+        publishService.layerPublish(id, type);
         return "发布成功";
     }
 

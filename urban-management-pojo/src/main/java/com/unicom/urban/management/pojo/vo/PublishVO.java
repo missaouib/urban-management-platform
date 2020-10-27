@@ -18,4 +18,6 @@ public class PublishVO {
 
     private String url;
 
+    private String type;
+
 }
