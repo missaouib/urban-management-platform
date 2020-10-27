@@ -37,7 +37,7 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
     @Autowired
-    private EventConditionRepository eventConditionRespository;
+    private EventConditionRepository eventConditionRepository;
     @Autowired
     private UserService userService;
 
@@ -58,7 +58,7 @@ public class EventService {
     }
 
     public List<EventConditionVO> findEventConditionByEventType(String eventTypeId) {
-        List<EventCondition> list = eventConditionRespository.findAllByEventTypeId_Id(eventTypeId);
+        List<EventCondition> list = eventConditionRepository.findAllByEventTypeId_Id(eventTypeId);
         if (list != null) {
             return EventConditionMapper.INSTANCE.eventConditionListToEventConditionVOList(list);
         }
