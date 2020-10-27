@@ -21,7 +21,7 @@ public class EventCondition {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private EventType eventTypeId;
+    private EventType eventType;
 
     private String conditionValue;
 

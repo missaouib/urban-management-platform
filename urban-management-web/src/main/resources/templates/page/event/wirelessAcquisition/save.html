@@ -23,7 +23,7 @@
                             <tr>
                                 <td><span>*</span>案卷号</td>
                                 <td>
-                                    <input  name="userName" value="A203834879" class="" required>
+                                    <input  th:name="eventCode" th:value="A203834879" class="" required>
                                 </td>
                                 <td>问题类型<span>*</span>
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input" />
@@ -40,9 +40,11 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="tree">
+                                                    <p>
                                                     <div class="treeDemo">
                                                         <ul id="treeDemo" class="ztree">zTree</ul>
                                                     </div>
+                                                    </p>
                                                 </div>
                                             </div>
                                             <div class="modal-footer justify-content-between">
@@ -56,7 +58,7 @@
                             <tr>
                                 <td><span>*</span>立案条件</td>
                                 <td>
-                                    <select  name="eventCondition" id="eventCondition" required>
+                                    <select  th:name="eventCondition" id="eventCondition" required>
 
                                     </select>
                                 </td>
@@ -65,7 +67,7 @@
                             <tr>
                                 <td><span>*</span>问题描述</td>
                                 <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
-                                <td colspan = "8"><textarea id="problemescription" name="problemescription" required></textarea></td>
+                                <td colspan = "8"><textarea id="problemescription" th:name="problemescription" required></textarea></td>
                             </tr>
                             <tr>
                                 <td><span></span>案件等级</td>
@@ -78,7 +80,7 @@
                                 </td>
                                 <td><span></span>处理时限</td>
                                 <td>
-                                    <input  name="timeLimit" id="deptTimeLimit" placeholder="" class="" type="text" disabled readonly>
+                                    <input  th:name="timeLimit" id="deptTimeLimit" placeholder="" class="" type="text" disabled readonly>
                                 </td>
                             </tr>
                             <tr>
@@ -92,7 +94,7 @@
                                 </td>
                                 <td><span>*</span>所属网格</td>
                                 <td>
-                                    <select  name="gridStr" id="grid" required>
+                                    <select  th:name="grid" id="grid" required>
 
                                     </select>
                                 </td>
@@ -100,7 +102,7 @@
                             <tr>
                                 <td><span>*</span>案件地址</td>
                                 <td colspan="8">
-                                    <input id="location" name="location" type="text" required>
+                                    <input id="location" th:name="location" type="text" required>
                                 </td>
                             </tr>
                             <tr>
@@ -112,7 +114,7 @@
                             <tr>
                                 <td><span></span>是否处理</td>
                                 <td style="text-align: left">
-                                    <input  name="userName" placeholder="" class="" type="checkbox" required style="width: 30px">
+<!--                                    <input  name="userName" placeholder="" class="" type="checkbox" required style="width: 30px">-->
                                 </td>
                                 <td><span>*</span>问题来源</td>
                                 <td>
@@ -120,13 +122,6 @@
                                         <option th:each="as:${eventSource}" th:value="${as.id}"
                                                 th:text="${as.value}"></option>
                                     </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span></span>创建时间</td>
-                                <td>
-                                    <input size="16" class="form_datetime" type="text" value="" readonly />
-
                                 </td>
                             </tr>
                             <tr>
@@ -149,11 +144,6 @@
                                 </td>
 
                             </tr>
-
-                            <!--                                    <tr>-->
-                            <!--                                        <td>处理结果<span></span></td>-->
-                            <!--                                        <td colspan = "8"><textarea></textarea></td>-->
-                            <!--                                    </tr>-->
                             </tbody>
                         </table>
                         <div class="send">
@@ -181,7 +171,7 @@
                         <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                         <!--            </div>-->
                         <div class="r_right but_p">
-                            <button class="but_save" style="margin-right: 10px">上报</button>
+                            <button class="but_save" style="margin-right: 10px" type="submit" onclick="reportHandler()">上报</button>
                             <button class="but_save" type="submit" onclick="submitHandler()">保存</button>
                             <button class="but_close" onclick="Cancel()">返回</button>
                         </div>
@@ -221,7 +211,8 @@
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
     let getDeptTimeLimitByLevelUrl = /*[[@{/event/getDeptTimeLimitByLevel}]]*/ "/event/getDeptTimeLimitByLevel";
     let findAllByKvIdUrl = /*[[@{/event/findAllByKvId}]]*/ "/event/findAllByKvId";
-    let url = /*[[@{/user/save}]]*/ "/json/unit.json";
+    let saveUrl = /*[[@{/event/save}]]*/ "/event/save";
+    let preReportUrl = /*[[@{/event/save}]]*/ "/event/preReport";
     let uploadUrl = /*[[@{/common/upload}]]*/ "/json/unit.json";
 
     var setting = {
@@ -258,7 +249,7 @@
             var option;
             if (e.code == 0) {
                 $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
                 });
                 $("#eventCondition").html(option);
             }
@@ -280,19 +271,19 @@
             console.log(JSON.stringify(e))
             var option;
             if (e.code == 0) {
-                if (e.data == undefined){
+                if (e.data == 0){
                     e.data = "";
                 }
-                $("#deptTimeLimit").value(e.data);
+                $("#deptTimeLimit").val(e.data);
             }
 
 
         });
     }
     function changeRegion(){
-        var recTypeIdVal = $("#recTypeId").val();
-        var url = findAllByKvIdUrl + "/" + recTypeIdVal;
-        console.log("recTypeIdVal====="+ recTypeIdVal)
+        var regionVal = $("#region").val();
+        var url = findAllByKvIdUrl + "/" + regionVal;
+        console.log("regionVal====="+ regionVal)
         $.ajaxUtil.get(url, function (e) {
             console.log(JSON.stringify(e))
             var option;
@@ -310,10 +301,10 @@
         $.ajaxUtil.get(componentTypeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
-        $(".name").click(function() {
-            $(this).addClass("active").siblings(".name").removeClass("active");
-            $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
-        })
+        // $(".name").click(function() {
+        //     $(this).addClass("active").siblings(".name").removeClass("active");
+        //     $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
+        // })
         $(".enclosure").click(function () {
             alert("附件详情")
         })
@@ -442,7 +433,7 @@
     // 更改校验文字
     jQuery.extend(jQuery.validator.messages, {
         required: "必填",
-        ·: "必填",
+        phone: "必填",
         remote: "请修正该字段",
         email: "请输入正确格式的电子邮件",
         url: "请输入合法的网址",
@@ -574,12 +565,20 @@
         //先校验
         if (!$("form").valid()) {
             return;
-
         }
         var data = $('#userForm').serialize();
-        $.operate.saveTab(url, data);
+        console.log(JSON.stringify(data))
+        $.operate.saveTab(saveUrl, data);
     }
-
+    function preReportHandler(){
+        //先校验
+        if (!$("form").valid()) {
+            return;
+        }
+        var data = $('#userForm').serialize();
+        console.log(JSON.stringify(data))
+        $.operate.saveTab(preReportUrl, data);
+    }
 
     // 地图
     var center = ol.proj.transform([126.62, 45.74], "EPSG:4326", "EPSG:3857");

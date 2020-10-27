@@ -1,11 +1,13 @@
 package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.dao.event.EventRepository;
-import com.unicom.urban.management.dao.eventcondition.EventConditionRespository;
+import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
+import com.unicom.urban.management.mapper.EventConditionMapper;
 import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventCondition;
+import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
     @Autowired
-    private EventConditionRespository eventConditionRespository;
+    private EventConditionRepository eventConditionRespository;
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
@@ -47,7 +49,19 @@ public class EventService {
         return new PageImpl<>(eventVOList, page.getPageable(), page.getTotalElements());
     }
 
-    public List<EventCondition> findEventConditionByEventType(String eventTypeId) {
-        return eventConditionRespository.findAllByEventTypeId_Id(eventTypeId);
+    public List<EventConditionVO> findEventConditionByEventType(String eventTypeId) {
+        List<EventCondition>  list = eventConditionRespository.findAllByEventTypeId_Id(eventTypeId);
+        if (list != null){
+            return EventConditionMapper.INSTANCE.eventConditionListToEventConditionVOList(list);
+        }
+        return null;
+    }
+
+    /**
+     * 保存事件
+     * @param event
+     */
+    public void save(Event event){
+        eventRepository.save(event);
     }
 }

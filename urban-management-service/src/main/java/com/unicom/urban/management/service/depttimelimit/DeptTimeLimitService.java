@@ -22,6 +22,9 @@ public class DeptTimeLimitService {
 
     public Integer findByEventType_IdAndLevel_Id(String eventTypeId, String levelId) {
         DeptTimeLimit deptTimeLimit = deptTimeLimitRepository.findByEventType_IdAndLevel_Id(eventTypeId, levelId);
+        if (deptTimeLimit == null){
+            return 0;
+        }
         return deptTimeLimit.getTimeLimit();
     }
 }

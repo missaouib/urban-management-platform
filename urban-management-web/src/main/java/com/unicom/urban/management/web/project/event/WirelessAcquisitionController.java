@@ -4,10 +4,8 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.dto.EventDTO;
-import com.unicom.urban.management.pojo.entity.EventCondition;
-import com.unicom.urban.management.pojo.entity.Grid;
-import com.unicom.urban.management.pojo.entity.KV;
-import com.unicom.urban.management.pojo.entity.User;
+import com.unicom.urban.management.pojo.entity.*;
+import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -90,7 +89,7 @@ public class WirelessAcquisitionController {
      * @return
      */
     @RequestMapping("/findEventConditionByEventType/{eventTypeId}")
-    private List<EventCondition> findEventConditionByEventType(@PathVariable String eventTypeId){
+    private List<EventConditionVO> findEventConditionByEventType(@PathVariable String eventTypeId){
         return eventService.findEventConditionByEventType(eventTypeId);
     }
 
@@ -111,5 +110,26 @@ public class WirelessAcquisitionController {
     @RequestMapping("/findAllByKvId/{kvId}")
     public List<GridVO> findAllByKvId(@PathVariable String kvId){
         return gridService.findAllByKvId(kvId);
+    }
+
+    /**
+     * 保存
+     * @param event
+     */
+    @RequestMapping("/save")
+    public void save(Event event){
+        event.setCreateTime(LocalDateTime.now());
+        event.setSts(-1);
+        eventService.save(event);
+    }
+    /**
+     * 准备上报
+     * @param event
+     */
+    @RequestMapping("/preReport")
+    public void preReport(Event event){
+        event.setCreateTime(LocalDateTime.now());
+        event.setSts(0);
+        eventService.save(event);
     }
 }
