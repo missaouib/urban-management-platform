@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.component;
 
 import com.unicom.urban.management.common.constant.KvConstant;
+import com.unicom.urban.management.common.constant.StsConstant;
 import com.unicom.urban.management.dao.component.ComponentRepository;
 import com.unicom.urban.management.mapper.ComponentMapper;
 import com.unicom.urban.management.pojo.dto.ComponentDTO;
@@ -146,6 +147,8 @@ public class ComponentService {
     public void saveComponent(ComponentDTO dto) {
         if(StringUtils.isNotBlank(dto.getLayerId())){
             //TODO 新增gis平台数据
+
+//            RestTemplateUtil.post();
         }
         Publish publish = new Publish();
         if (StringUtils.isNotBlank(dto.getPublish())) {
@@ -280,5 +283,10 @@ public class ComponentService {
      */
     public Component getOne(String componentId) {
         return componentRepository.getOne(componentId);
+    }
+
+
+    public List<Component> findAllByPublishIdAndRecordSts(String publishId){
+        return componentRepository.findAllByPublish_IdAndRecord_Sts(publishId, StsConstant.EDITING);
     }
 }
