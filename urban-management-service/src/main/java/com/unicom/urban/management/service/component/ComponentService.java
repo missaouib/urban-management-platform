@@ -145,11 +145,7 @@ public class ComponentService {
      * @param dto 参数
      */
     public void saveComponent(ComponentDTO dto) {
-        if(StringUtils.isNotBlank(dto.getLayerId())){
-            //TODO 新增gis平台数据
 
-//            RestTemplateUtil.post();
-        }
         Publish publish = new Publish();
         if (StringUtils.isNotBlank(dto.getPublish())) {
             publish.setId(dto.getPublish());
@@ -259,9 +255,7 @@ public class ComponentService {
     }
 
     public void deleteComponent(ComponentDTO dto) {
-        if(StringUtils.isNotBlank(dto.getLayerId())){
-            //TODO 删除gis平台数据
-        }
+
         Optional<Component> ifnull = componentRepository.findById(dto.getComponentId());
         if (ifnull.isPresent()) {
             Component component = ifnull.get();
