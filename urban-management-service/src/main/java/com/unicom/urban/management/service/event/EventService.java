@@ -99,10 +99,24 @@ public class EventService {
             code = 0 + code;
         }
         //部件（简称C）或事件（E）+大类代码+小类代码+××××××××××（年：4位，月：2位，日：2位，序号：2位）即C01012019041101
-        if (type == 1) {
-            eventCode = "C" + level + code + now + (maxNum + 1);
+        String maxNumStr = "";
+        if (maxNum == null) {
+            maxNum = 0;
+        }
+        maxNum++;
+        if (maxNum < 10) {
+            maxNumStr = "000" + maxNum;
+        } else if (maxNum < 100) {
+            maxNumStr = "00" + maxNum;
+        } else if (maxNum < 1000) {
+            maxNumStr = "0" + maxNum;
         } else {
-            eventCode = "E" + level + code + now + (maxNum + 1);
+            maxNumStr = String.valueOf(maxNum);
+        }
+        if (type == 1) {
+            eventCode = "C" + level + code + now + maxNumStr;
+        } else {
+            eventCode = "E" + level + code + now + maxNumStr;
         }
         return eventCode;
     }
