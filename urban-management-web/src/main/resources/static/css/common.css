@@ -1147,3 +1147,17 @@ label.error {
 .notice_bot .btn_search button{
     margin: 0px 5px!important;
 }
+.explain{
+    width: 100%;
+
+    padding: 0 10px 10px 10px!important;
+}
+.explain_box{
+    width: 100%;
+    border: 1px solid #dee2e6;
+    border-top: none;
+}
+.explain p{
+    padding-left: 40px;
+    font-size: 12px;
+}

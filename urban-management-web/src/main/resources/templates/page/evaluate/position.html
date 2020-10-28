@@ -9,7 +9,7 @@
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
 </head>
 <style>
-    .bootstrap-table{width: 100%}
+    .bootstrap-table{width: 100%;padding: 0 10px 0px 10px!important;}
 </style>
 <body style="border-radius: 8px;">
 <div class="bigTitle">监督员岗位评价</div>
@@ -56,96 +56,60 @@
 </div>
 <div class="contentTable">
     <table id="tables" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
-</div>
-<div class="bigTitle">受理员、值班长岗位评价</div>
-<div class="search_box">
-    <div class="search_inner">
-        <form class="details">
-            <div class="top table2_top">
-                <div class="top_out">
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <td><span></span>开始日期</td>
-                            <td>
-                                <input size="16" class="form_datetime" type="text" value="" readonly>
-                            </td>
-                            <td><span></span>结束日期</td>
-                            <td>
-                                <input size="16" class="form_datetime" type="text" value="" readonly>
-                            </td>
-                            <td style="float: right;margin-right: 5px">
-                                <button class="search_btn">查询</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-
-                <!--                            按钮-->
-                <div class="notice_bot">
-                    <!--            <div class="l_left">-->
-                    <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-                    <!--            </div>-->
-                    <div class="r_right but_p btn_search">
-                        <button class="but_save">本周</button>
-                        <button class="but_save">本月</button>
-                        <button class="but_save">本季</button>
-                        <button class="but_save">本年</button>
-                    </div>
-                </div>
-            </div>
-        </form>
+    <div class="explain">
+        <div class="explain_box">
+            <p style="padding-left: 0px">注：1)综合指标值中，各个指标的分值计算方法如下：</p>
+            <p>监督员有效上报率分值：监督员有效上报率×100</p>
+            <p>漏报率分值：（1-漏报率）×100</p>
+            <p>按时核实率分值：按时核实率×100</p>
+            <p>按期处置率分值：按期处置率×100</p>
+            <p style="padding-left: 25px">2）综合指标值的计算公式如下：</p>
+            <p>综合指标值=监督员有效上报率分值×40%+漏报率分值×20%+按时核实率分值×20%+按时核查率分值×20%</p>
+        </div>
     </div>
 </div>
+<div class="bigTitle">受理员岗位评价</div>
 <div class="contentTable">
     <table id="tableIn" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
-</div>
-<div class="bigTitle">派遣员岗位评价</div>
-<div class="search_box">
-    <div class="search_inner">
-        <form class="details">
-            <div class="top table2_top">
-                <div class="top_out">
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <td><span></span>开始日期</td>
-                            <td>
-                                <input size="16" class="form_datetime" type="text" value="" readonly>
-                            </td>
-                            <td><span></span>结束日期</td>
-                            <td>
-                                <input size="16" class="form_datetime" type="text" value="" readonly>
-                            </td>
-                            <td style="float: right;margin-right: 5px">
-                                <button class="search_btn">查询</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-
-                </div>
-
-                <!--                            按钮-->
-                <div class="notice_bot">
-                    <!--            <div class="l_left">-->
-                    <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-                    <!--            </div>-->
-                    <div class="r_right but_p btn_search">
-                        <button class="but_save">本周</button>
-                        <button class="but_save">本月</button>
-                        <button class="but_save">本季</button>
-                        <button class="but_save">本年</button>
-                    </div>
-                </div>
-            </div>
-        </form>
+    <div class="explain">
+        <div class="explain_box">
+            <p style="padding-left: 0px">注：1）综合指标值中，各个指标的分值计算方法如下：</p>
+            <p>受理数分值：2001 件以上 100 分；1201~2000 件 90 分；501~1200 件 75 分；301~500 件 60 分；101~300 件 40 分；100 件及以下 0 分</p>
+            <p>核实按时派发率分值：核实按时派发率×100</p>
+            <p>核查按时派发率分值：核查按时派发率×100</p>
+            <p style="padding-left: 25px">2）综合指标值的计算公式如下：</p>
+            <p>综合指标值=受理数分值×25%+核实按时派发率分值×40%+核查按时派发率分值×35%</p>
+        </div>
     </div>
 </div>
+<div class="bigTitle">值班长岗位评价</div>
+<div class="contentTable">
+    <table id="tableOn" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
+    <div class="explain">
+        <div class="explain_box">
+            <p style="padding-left: 0px">注：1）综合指标值中，各个指标的分值计算方法如下：</p>
+            <p>立案数分值：0~50 件 100 分；51~100 件 90 分；100~200 件 75 分；200~500 件 60 分；500~1000 件</p>
+            <p>按时立案率分值：按时立案率×100</p>
+            <p>准确立案率分值：准确立案率×100</p>
+            <p>按时结案率分值：按时结案率×100</p>
+            <p style="padding-left: 25px">2）综合指标值的计算公式如下：</p>
+            <p>综合指标值=按时立案率分值×25%+准确立案率分值×40%+按时结案率分值×35%</p>
+        </div>
+    </div>
+</div>
+<div class="bigTitle">派遣员岗位评价</div>
 <div class="contentTable">
     <table id="tableOf" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
+    <div class="explain">
+        <div class="explain_box">
+            <p style="padding-left: 0px">注：1）综合指标值中，各个指标的分值计算方法如下：</p>
+            <p>派遣数分值：2001 件以上 100 分；1201~2000 件 90 分；501~1200 件 75 分；301~500 件 60 分；101~300 件 40 分；100 件及以下 0 分</p>
+            <p>按时派遣率分值：按时派遣率×100</p>
+            <p>准确派遣率分值：准确立案率×100</p>
+            <p style="padding-left: 25px">2）综合指标值的计算公式如下：</p>
+            <p>综合指标值=派遣数分值×20%+按时派遣率根治×40%+准确派遣率分值×40%</p>
+        </div>
+    </div>
 </div>
 
 <th:block th:include="page/fragments/common :: common_js"/>
@@ -240,6 +204,37 @@
 
 
     $('#tableIn').bootstrapTable({
+        columns: [
+            {
+                field: 'index',
+                title: '序号',
+            },
+            {
+                title: '姓名',
+                class: "check"
+            },
+            {
+                field: 'eventType',
+                title: '立案数',
+            },
+            {
+                field: 'objId',
+                title: '按时立案数',
+            },
+            {
+                field: 'objName',
+                title: "按时立案率",
+            },
+            {
+                field: 'mainDeptCode',
+                title: '评价等级',
+            },
+        ],
+        data:[
+
+        ]
+    });
+    $('#tableOn').bootstrapTable({
         columns: [
             {
                 field: 'index',

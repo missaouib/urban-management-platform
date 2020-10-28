@@ -9,8 +9,7 @@
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
 </head>
 <style>
-    .bootstrap-table{width: 100%}
-
+    .bootstrap-table{width: 100%;padding: 0 10px 0px 10px!important;}
 </style>
 <body style="border-radius: 8px;">
 <div class="bigTitle">专业部门评价</div>
@@ -57,6 +56,18 @@
 </div>
 <div class="contents">
     <table id="table" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
+    <div class="explain">
+        <div class="explain_box">
+            <p style="padding-left: 0px">注：1）综合指标值中，各个指标的分值计算方法如下：</p>
+            <p>立案数分值：0~50 件 100 分；51~100 件 90 分；100~200 件 75 分；200~500 件 60 分；500~1000 件</p>
+            <p>40 分；1000件及以上0分。宜根据部门工作职责分组设定立案数分值</p>
+            <p>结案率分值：结案率×100</p>
+            <p>按期处置率分值：按期处置率×100</p>
+            <p>返工率分值：（1-返工率）×100</p>
+            <p style="padding-left: 25px">2）综合指标值的计算公式如下：</p>
+            <p>综合指标值=立案数分值×10%+结案数分值×30%+按期处置率分值×30%+返工率分值×30%</p>
+        </div>
+    </div>
 </div>
 
 <th:block th:include="page/fragments/common :: common_js"/>
@@ -112,19 +123,23 @@
             },
             {
                 field: 'ownershipDeptCode',
-                title: '按期结案数',
+                title: '按期处置数',
             },
             {
-                field: 'ownershipDeptCode',
-                title: '按期结案率',
+                field: 'ownershipDept',
+                title: '应处置数',
             },
             {
                 field: 'maintenanceDeptCode',
-                title: '返工数',
+                title: '按期处置率',
             },
             {
                 field: 'maintenanceDeptName',
-                title: '处置数',
+                title: '返工数',
+            },
+            {
+                field: 'maintenanceDep',
+                title: '按期处置率',
             },
             {
                 field: 'grid',
