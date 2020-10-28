@@ -43,6 +43,7 @@ public class GridDTO {
     /**
      * 坐标
      */
+    @NotBlank(message = "请绘制网格")
     private String coordinate;
 
 }

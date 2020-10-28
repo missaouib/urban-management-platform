@@ -38,4 +38,7 @@ public class EventType {
     private EventType parent;
 
     private Integer type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Dept dept;
 }
