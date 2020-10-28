@@ -6,6 +6,13 @@ class User <<用户实体类>>{
     -sts : int
 }
 
+class Role <<角色实体类>>{
+    -id: String
+    -name : String
+    -user : User
+    -sts : int
+}
+
 class Dept<<责任部门实体类>>{
     -id: String
     -deptName : String
@@ -149,99 +156,111 @@ class ProcessTimeLimit<<流程时限实体类>>{
 
 class Statistics<<流转统计实体类>>{
     -id                   : String
-    -eventId              : Event
-    -stateCdae  //状态时间   计算的时候转化成分
+    -event              : Event
     -starTime : date
     -endTime  : date
-    -taskId   : int
+    -task   : int
     -deptTimeLimit  :  DeptTimeLimit
     -processTimeLimit  :  ProcessTimeLimit
-    -opinions : String           //处理意见
-    -eventFileId : EventFile     //附件    
-    -patrolReport	      : int       //监督员上报
-    -publicReport	      : int       //公众举报
+    -opinions             : String    //处理意见
+    -eventFile            : EventFile //附件    
+    -patrolReport	      : int       //监督员上报  
+    -publicReport	      : int       //公众举报    = 漏报数
     -report			      : int       //上报
-    -reportPatrolId	      : User       //上报监督员标识
-    -reportPatrolName	  : User       //上报监督员
-    -validPatrolReport    : int       //监督员有效上报
+    -reportPatrol	      : User      //上报监督员标识
+    -reportPatrolName	  : User      //上报监督员
+    -validPatrolReport    : int       //监督员有效上报     立案+作废
     -validPublicReport    : int       //公众举报有效上报
     -validReport		  : int       //有效上报
-    -needSendVerify         : int           //应发核实               
-    -sendVerify             : int           //发核实
-    -intimeSendVerify       : int           //按时发核实
-    -needVerify             : int           //应核实
-    -verify                 : int           //核实
-    -intimeVerify           : int           //按期核实
-    -sendVerifyHumanId      : User          //发核实人标识
-    -sendVerifyHumanName    : User          //发核实人      受理员派遣给监督员
-    -sendVerifyHumanRoleId  : int           //发核实人岗位标识
-    -verifyPatrolId         : User          //核实监督员标识
-    -verifyPatrolName       : User          //核实监督员
-    -notOperate       : int     //不予受理
-    -toOperate        : int     //待受理
-    -intimeOperate    : int     //按时受理
-    -operate          : int     //受理
-    -operateHumanId   : User     //受理人标识
-    -operateHumanName : User  //受理人
-    -operateRoleId    : int     //受理人岗位标识
-    -inst           :  int      //立案
-    -intimeInst     :  int      //按时立案
-    -toInst         :  int      //待立案
-    -notInst        :  int      //不予立案
-    -instHumanId    :  User      //立案人标识m
-    -instHumanName  :  User   //立案人
-    -instRoleId     :  int      //立案人岗位标识
-    -dispatch             : int      //派遣     已经派遣      
-    -toDispatch           : int      //待派遣   等待派遣 
-    -needDispatch         : int      //应派遣   一共需要派遣    
-    -intimeDispatch       : int      //按时派遣     
-    -dispatchHumanId      : User      //派遣员标识     
-    -dispatchHumanName    : User   //派遣员         
-    -dispatchHumanRoleId  : int      //派遣员岗位标识 
-    -dispose              : int      //处置         
-    -needDispose          : int      //应处置       
-    -intimeDispose        : int      //按时处置     
+
+    -needVerify             : int           //应核实         监督员   应核实 = 受理员发给该监督员的核实的案件
+    -verify                 : int           //核实           监督员   有监督员回馈的核实结果的事
+    -intimeVerify           : int           //按时核实       监督员    不超期的 核实数
+    -verifyPatrol           : User          //核实监督员标识  监督员
+    -verifyPatrolName       : User          //核实监督员     监督员
+
+    -notOperate       : int     //不予受理       受理员
+    -toOperate        : int     //待受理   未批转值班长
+    -intimeOperate    : int     //按时受理  
+    -operate          : int     //受理    批转值班长 触发
+    -operateHuman     : User    //受理人标识
+    -operateHumanName : User    //受理人
+    -operateRole      : Role     //受理人岗位标识
+
+    -needSendVerify       : int     //应发核实     受理员   按时完成的核实  = 待发核实 + 已发核实              
+    -sendVerify           : int     //发核实       受理员   只要派出去就算
+    -intimeSendVerify     : int     //按时发核实   受理员   按时下发核实
+    -sendVerifyHumanName  : User    //发核实人姓名
+    -sendVerifyHuman      : User    //发核实人id
+    -sendVerifyHumanRole  : Role    //发核实人岗位标识
+
+
+    -sendCheck             : int      //发核查             受理员
+    -needSendCheck         : int      //应发核查           受理员 
+    -sendCheckHuman        : int      //发核查人标识       受理员
+    -sendCheckHumanName    : int      //发核查人          
+    -sendCheckHumanRole    : Role      //发核查人岗位标识  
+
+
+    -inst           :  int      //立案      值班长  立案
+    -intimeInst     :  int      //按时立案   值班长  不超时立案
+    -toInst         :  int      //待立案     值班长  未立案的数
+    -instHuman      :  User     //立案人标识
+    -instHumanName  :  User     //立案人
+    -instRole       :  Role     //立案人岗位标识
+
+    -close          :  int      //结案
+    -inTimeClose    :  int      //按时结案
+    -toClose        :  int      //待结案
+    -closeHuman     :  User     //结案人标识
+    -closeHumanName :  User     //结案人
+    -closeRole      :  Role     //结案人岗位标识
+
+
+
+    -dispatch             : int      //派遣        派遣员   已派遣     
+    -toDispatch           : int      //待派遣      派遣员  
+    -needDispatch         : int      //应派遣      派遣员   应派遣= 已派遣 + 未派遣    
+    -intimeDispatch       : int      //按时派遣    派遣员   = 未超时的派遣 
+    -accuracyDispatch     : int      //准确派遣数   未出现重新派的其他专业部门   结案触发
+    -errorDispatch        : int      //错误派遣     出现派遣2个或者以上的专业部门   结案触发     例如  第一派遣A  第二次派遣 A B 两个部门
+    -dispatchHuman        : User     //派遣员标识     
+    -dispatchHumanName    : User     //派遣员         
+    -dispatchHumanRole    : Role     //派遣员岗位标识 
+
+    -dispose              : int      //处置         //专业部门
+    -needDispose          : int      //应处置  
+    -toDispose            : int      //待处置                                      
+    -intimeDispose        : int      //按时处置   
     -overtimeToDispose    : int      //超时未处置   
-    -overtimeDispose      : int      //超时处置     
-    -toDispose            : int      //未处置       
-    -disposeOpinion       : text     //处置意见       
-    -disposeUnitId        : int      //处置部门标识   
+    -overtimeDispose      : int      //超时处置          
+    -disposeUnit          : int      //处置部门标识   
     -disposeUnitName      : String   //处置部门   
-    -intimeSupervise       : int      //按时督查   	
-    -needSupervise         : int      //应督查   		
-    -supervise             : int      //督查    		
-    -toSupervise           : int      //待督查   		
-    -superviseHumanId      : int      //督查人标识   	
-    -superviseHumanName    : String   //督查人    		
-    -superviseHumanRoleId  : int      //督查人岗位标识
-    -check                 : int      //核查            
-    -needCheck             : int      //应核查          
-    -intimeCheck           : int      //按时核查        
+
+
+    -needCheck             : int      //应核查          //监督员  
+    -intimeCheck           : int      //按时核查         
     -intimeSendCheck       : int      //按时发核查      
-    -sendCheck             : int      //发核查          
-    -needSendCheck         : int      //应发核查        
     -checkTrans            : int      //核查批转        
     -checkPatrolId         : int      //核查监督员标识    
     -checkPatrolName       : String   //核查监督员        
-    -checkTransHumanId     : int      //核查受理员标识    
+    -checkTransHuman       : int      //核查受理员标识    
     -checkTransHumanName   : String   //核查受理员        
-    -checkTransHumanRoleId : int      //核查受理员岗位标识
-    -checkTransTime        : datet    //核查批转时间      
-    -sendCheckHumanId      : int      //发核查人标识      
-    -sendCheckHumanName    : int      //发核查人          
-    -sendCheckHumanRoleId  : int      //发核查人岗位标识  
-    -cancel         :  int       //作废       
-    -cancelOpinion  :  text      //作废意见     
-    -hang           :  int       //挂账       
-    -hisHang        :  int       //历史挂账   
-    -postpone       :  int       //延期       
-    -rework         :  int       //返工       
-    -multiRework    :  int       //返工次     
+    -checkTransHumanRole   : Role     //核查受理员岗位标识
+    -checkTransTime        : date     //核查批转时间   
+  
+
+    -cancel         :  int       //作废   
+    -cancelDate     :  date      //作废时间 
+    -hang           :  int       //挂账  
+    -hangDate       ： date      //挂账时间             
+    -rework         :  int       //返工             二次或者多次派遣同一个专业部门   经历核查阶段  结案触发     
     -displayStyleId :  int       //显示类型标识 
     -shuffle        :  int       //推诿         
 }
 
 Dept --> User
+Role --> User
 Grid --> User
 Grid --> Dept
 Grid --> Record
@@ -254,13 +273,16 @@ ComponentInfo --|> Event
 Publish --> Record
 Publish --|> Kv
 Event --> EventType
-EventCondition -->  EventType 
 Event --|> Kv
 Event --|> Statistics
-EventType -->  DeptTimeLimit
+EventCondition -->  EventType 
+EventCondition -->  DeptTimeLimit
 Statistics --> DeptTimeLimit 
 Statistics --> ProcessTimeLimit 
 Statistics --> EventFile
+Statistics --> User
+Statistics --> Role
+
 
 
 ' class ComponentController<<部件界面类>>{
