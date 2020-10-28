@@ -10,18 +10,24 @@
 </head>
 <body>
 
-    <div class="top table2_top">
-        <!--        <div>-->
-        <div class="top_out">
-<!--            <input id="treeId"   name="treeId"    type="hidden" th:value="${dept.deptId}"/>-->
-<!--            <input id="treeName" name="treeName"  type="hidden" th:value="${dept.deptName}"/>-->
-            <input id="treeId"   name="treeId"    type="hidden" />
-            <input id="treeName" name="treeName"  type="hidden" />
-            <div class="treeDemo">
-                <ul id="ztree" class="ztree"></ul>
-            </div>
+<div class="content">
+    <!--        <div>-->
+    <div class="notice_check">
+        <!--            <input id="treeId"   name="treeId"    type="hidden" th:value="${dept.deptId}"/>-->
+        <!--            <input id="treeName" name="treeName"  type="hidden" th:value="${dept.deptName}"/>-->
+        <input id="treeId" name="treeId" type="hidden"/>
+        <input id="treeName" name="treeName" type="hidden"/>
+        <div id="search">
+            <label for="keyword">关键字：</label>
+            <input type="text" class="find_input" id="keyword">
+            <!--                <button class="btn" id="btn" onclick="$.tree.searchNode()"> 搜索 </button>-->
+            <input type="button" class="check_btn" value="搜索">
+        </div>
+        <div class="treeDemo">
+            <ul id="ztree" class="ztree"></ul>
         </div>
     </div>
+</div>
 
     <!--    </div>-->
 <th:block th:include="page/fragments/common :: common_js"/>
@@ -57,29 +63,12 @@
     })
 
     function zTreeOnClick(event, treeId, treeNode) {
-        console.log('zTreeOn');
         var treeId = treeNode.id;
         var treeName = treeNode.name;
         $("#treeId").val(treeId);
         $("#treeName").val(treeName);
     }
 
-
-
-
-    /* 用户管理-新增-选择部门树 */
-    function selectDeptTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = ctx + "system/dept/selectDeptTree/" + deptId;
-        var options = {
-            title: '选择部门',
-            width: "380",
-            url: url,
-            callBack: doSubmit
-        };
-        $.modal.openOptions(options);
-    }
 
 
 </script>

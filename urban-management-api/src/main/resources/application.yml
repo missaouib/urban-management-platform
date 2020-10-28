@@ -22,9 +22,9 @@ spring:
         format_sql: true                 # 格式化SQL
 
   activiti:
-    history-level: none
+    history-level: full
     check-process-definitions: false
-    db-history-used: false
+    db-history-used: true
     db-identity-used: false
     job-executor-activate: false
     async-executor-enabled: false

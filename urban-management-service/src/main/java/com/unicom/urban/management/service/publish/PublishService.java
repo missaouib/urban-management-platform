@@ -37,6 +37,8 @@ import java.util.Map;
 @Transactional(rollbackOn = Exception.class)
 public class PublishService {
 
+    private final String URL = "/layerAndElementAndAttribute/addLayer";
+
     @Autowired
     private PublishRepository publishRepository;
     @Autowired
@@ -81,7 +83,7 @@ public class PublishService {
         if (gridType.equals(type)) {
             List<Grid> gridList = gridService.findAllByPublishIdAndRecordSts(publishId);
             Publish publish = findOne(publishId);
-            ResponseEntity<Map> post = RestTemplateUtil.post(KvConstant.GIS_URL, getGridJson(publish, gridList), Map.class);
+            ResponseEntity<Map> post = RestTemplateUtil.post(KvConstant.GIS_URL+URL, getGridJson(publish, gridList), Map.class);
             System.out.println(post);
             publish.setSts(StsConstant.RELEASE);
             Object layerId = post.getBody().get("layerId");
@@ -98,7 +100,7 @@ public class PublishService {
         } else if (partType.equals(type)) {
             List<Component> components = componentService.findAllByPublishIdAndRecordSts(publishId);
             Publish publish = findOne(publishId);
-            ResponseEntity<Map> post = RestTemplateUtil.post(KvConstant.GIS_URL, getComponentJson(publish, components), Map.class);
+            ResponseEntity<Map> post = RestTemplateUtil.post(KvConstant.GIS_URL+URL, getComponentJson(publish, components), Map.class);
             publish.setSts(StsConstant.RELEASE);
             Object layerId = post.getBody().get("layerId");
             publish.setLayerId(StringUtils.isNotBlank(publish.getLayerId())?publish.getLayerId():layerId.toString());

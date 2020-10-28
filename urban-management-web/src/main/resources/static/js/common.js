@@ -579,7 +579,7 @@ var table = {
 				var _url = $.common.isEmpty(options.url) ? "/404.html" : options.url;
 				var _title = $.common.isEmpty(options.title) ? "系统窗口" : options.title;
 				var _width = $.common.isEmpty(options.width) ? "800" : options.width;
-				var _height = $.common.isEmpty(options.height) ? ($(window).height() - 50) : options.height;
+				var _height = $.common.isEmpty(options.height) ? ($(window).height() - 150) : options.height;
 				var _btn = ['<i class="fa fa-check"></i> 确认', '<i class="fa fa-close"></i> 关闭'];
 				if ($.common.isEmpty(options.yes)) {
 					options.yes = function(index, layero) {
