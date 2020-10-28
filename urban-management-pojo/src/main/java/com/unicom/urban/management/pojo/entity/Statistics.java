@@ -1,73 +1,68 @@
 package com.unicom.urban.management.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.unicom.urban.management.pojo.Delete;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
- * 网格实体类
+ * 流转统计实体类
  *
  * @author jiangwen
  */
 @Data
 @Entity
-@SQLDelete(sql = "update grid set deleted = " + Delete.DELETE + " where id = ?")
-@Where(clause = "deleted = " + Delete.NORMAL)
-public class Grid extends BaseEntity {
+public class Statistics {
 
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    private String gridCode;
-
-    private String gridName;
-
-    private String remark;
-
-    private String area;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private Grid parent;
+    private Event event;
 
     /**
-     * 等级 1区域 - 2街道 - 3社区 - 4网格
+     * 状态时间 计算的时候转化成分
      */
-    private int level;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(nullable = false)
+    private LocalDateTime stateCdae;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(nullable = false)
-    private LocalDateTime initialDate;
+    private LocalDateTime starTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(nullable = false)
-    private LocalDateTime terminationDate;
+    private LocalDateTime endTime;
+    int taskId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private Publish publish;
+    private DeptTimeLimit deptTimeLimit;
 
+    /**
+     * 处理意见
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private Record record;
+    private ProcessTimeLimit processTimeLimit;
 
+    private String opinions;
+
+    /**
+     * 附件
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private Dept dept;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private User user;
+    private EventFile eventFile;
 
 }

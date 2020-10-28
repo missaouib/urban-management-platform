@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -47,7 +46,12 @@ public class EventService {
     @Autowired
     private UserService userService;
     @Autowired
+    private EventTypeRepository eventTypeRepository;
+    @Autowired
+    private WorkService workService;
+
     private EventTypeService eventTypeService;
+
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
@@ -80,7 +84,8 @@ public class EventService {
     public void save(Event event) {
         User user = userService.findOne(SecurityUtil.getUserId());
         event.setUser(user);
-        eventRepository.save(event);
+        Event save = eventRepository.save(event);
+        workService.reportEvent(save.getId());
     }
 
     public String createCode(String eventTypeId) {
