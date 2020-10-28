@@ -90,9 +90,23 @@
                                                 th:text="${as.value}"></option>
                                     </select>
                                 </td>
-                                <td><span>*</span>所属网格</td>
+                                <td><span>*</span>所属街道</td>
                                 <td>
                                     <select  th:name="grid" id="grid" required>
+
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>所属社区</td>
+                                <td>
+                                    <select class="form-control" onchange="changeRegion()" th:name="region" required>
+                                        <option value=""> --请选择-- </option>
+                                    </select>
+                                </td>
+                                <td><span>*</span>所属网格</td>
+                                <td>
+                                    <select  th:name="grid"  required>
 
                                     </select>
                                 </td>
