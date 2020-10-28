@@ -128,29 +128,17 @@
 
 
 <script type="text/javascript" th:inline="javascript">
-    //哈尔滨底图
-    // var center = ol.proj.transform([126.62, 45.74], "EPSG:4326", "EPSG:3857");
-    // var raster = new ol.layer.Tile({
-    //     source: new ol.source.OSM()
-    // });
-    // var source = new ol.source.Vector({wrapX: false});
-    // //ol.layer.Vector用于显示在客户端渲染的矢量数据。
-    // var vector = new ol.layer.Vector({
-    //     source: source
-    // });
-    // var map = new ol.Map({
-    //     target: 'map',
-    //     layers: [raster, vector],
-    //     view: new ol.View({
-    //         // projection: "EPSG:" + epsg,
-    //         center: center,
-    //         zoom: 12
-    //     })
-    // });
 
 
-    // 沽源地图
     var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
+    // 沽源地图
+    var center = [115.68192, 41.66462];
+    var projection = new ol.proj.Projection({
+        code: 'EPSG:4326',
+        units: 'degrees',
+        axisOrientation: 'neu',
+        global: true
+    });
     var untiled = new ol.layer.Image({
         source: new ol.source.ImageWMS({
             ratio: 1,
@@ -172,7 +160,8 @@
         view: new ol.View({
             // projection: projection,
             center:center,
-            zoom:13
+            zoom:13,
+            projection: projection
         })
     });
 

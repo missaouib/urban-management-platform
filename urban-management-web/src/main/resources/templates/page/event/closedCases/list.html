@@ -453,8 +453,15 @@
     }
 
 
-    // 地图
     var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
+    // 沽源地图
+    var center = [115.68192, 41.66462];
+    var projection = new ol.proj.Projection({
+        code: 'EPSG:4326',
+        units: 'degrees',
+        axisOrientation: 'neu',
+        global: true
+    });
     var untiled = new ol.layer.Image({
         source: new ol.source.ImageWMS({
             ratio: 1,
@@ -476,7 +483,8 @@
         view: new ol.View({
             // projection: projection,
             center:center,
-            zoom:13
+            zoom:13,
+            projection: projection
         })
     });
 </script>
