@@ -18,12 +18,6 @@ public class GridDTO {
 
     private String id;
 
-    /**
-     * 区域分类
-     */
-    @NotBlank(message = "区域分类不能为空")
-    private String kv;
-
     @NotBlank(message = "单元网格标识码不能为空")
     private String gridCode;
 

@@ -3,10 +3,9 @@ package com.unicom.urban.management.web.project.event;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
-import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
-import com.unicom.urban.management.pojo.entity.*;
+import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.pojo.vo.GridVO;
@@ -28,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -113,8 +113,17 @@ public class WirelessAcquisitionController {
      * @param kvId 区域kvId
      */
     @RequestMapping("/findAllByKvId/{kvId}")
-    public List<GridVO> findAllByKvId(@PathVariable String kvId){
-        return gridService.findAllByKvId(kvId);
+    public List<GridVO> findAllByKvId(@PathVariable String kvId) {
+        List<GridVO> gridVOList = new ArrayList<>();
+        GridVO gridVO1 = new GridVO();
+        gridVO1.setId("15d84eb0-83d7-46a4-a8aa-fcfdad5aefee");
+        gridVO1.setGridName("2");
+        GridVO gridVO2 = new GridVO();
+        gridVO2.setId("b279dad8-df58-4276-9fc9-91d9180981bd");
+        gridVO2.setGridName("1");
+        gridVOList.add(gridVO1);
+        gridVOList.add(gridVO2);
+        return gridVOList;
     }
 
     /**

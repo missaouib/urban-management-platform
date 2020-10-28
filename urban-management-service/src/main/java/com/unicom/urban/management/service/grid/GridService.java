@@ -127,7 +127,6 @@ public class GridService {
 
     public void update(GridDTO gridDTO) {
         Grid grid = findOne(gridDTO.getId());
-        grid.setKv(kvService.findOneById(gridDTO.getKv()));
         grid.setGridCode(gridDTO.getGridCode());
         grid.setGridName(gridDTO.getGridName());
         grid.setRemark(gridDTO.getRemark());
@@ -159,8 +158,8 @@ public class GridService {
      * @param kvId
      * @return
      */
-    public List<GridVO> findAllByKvId(String kvId) {
+    /*public List<GridVO> findAllByKvId(String kvId) {
         List<Grid> gridList = gridRepository.findAllByKv_Id(kvId);
         return GridMapper.INSTANCE.gridListToGridVOList(gridList);
-    }
+    }*/
 }

@@ -23,8 +23,6 @@ public class GridVO {
 
     private String remark;
 
-    private String kv;
-
     private String area;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
