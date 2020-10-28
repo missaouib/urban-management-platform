@@ -899,7 +899,7 @@ ul{list-style: none}
 .dropdown-menu a{width: 100%;height: 20px;text-align: center;line-height: 20px;padding: 2px 0}
 .find_input{padding: 0 0 0 10px}
 .bootstrap-table{padding: 0 10px 10px 10px!important;}
-body{height: 100vh!important;}
+body{height: 100vh!important;width: 99% !important;margin: 0 auto}
 .bootstrap-table .fixed-table-container .table thead th .desc ,
 .bootstrap-table .fixed-table-container .table thead th .asc{
     /*position: absolute;top: 1px;right: 50%;margin-right: -45px;*/
@@ -1124,4 +1124,26 @@ label.error {
     font-size: 20px;
     line-height: 40px;
     padding-left: 20px;
+}
+.search_box{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 10px 10px;
+}
+.search_inner{
+    width: 50%;
+}
+.search_btn{
+    padding: 2px 7px;
+    background: #354e85!important;
+    color: white;
+    border-radius: 5px;
+}
+.notice_bot .btn_search{
+    display: flex;
+    justify-content: flex-end!important;
+}
+.notice_bot .btn_search button{
+    margin: 0px 5px!important;
 }

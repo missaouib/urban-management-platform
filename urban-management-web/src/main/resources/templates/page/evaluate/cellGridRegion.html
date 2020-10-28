@@ -1,10 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
 </head>
-<body>
-cellGridRegion cellGridRegion cellGridRegion
+<style>
+    .bootstrap-table{width: 100%}
+</style>
+<body style="border-radius: 8px;">
+<div class="bigTitle">单元网格区域评价</div>
+<div class="search_box">
+    <div class="search_inner">
+        <form class="details">
+            <div class="top table2_top">
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span></span>开始日期</td>
+                            <td>
+                                <input size="16" class="form_datetime" type="text" value="" readonly>
+                            </td>
+                            <td><span></span>结束日期</td>
+                            <td>
+                                <input size="16" class="form_datetime" type="text" value="" readonly>
+                            </td>
+                            <td style="float: right;margin-right: 5px">
+                                <button class="search_btn">查询</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!--                            按钮-->
+                <div class="notice_bot">
+                    <!--            <div class="l_left">-->
+                    <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                    <!--            </div>-->
+                    <div class="r_right but_p btn_search">
+                        <button class="but_save">本周</button>
+                        <button class="but_save">本月</button>
+                        <button class="but_save">本季</button>
+                        <button class="but_save">本年</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="contents">
+    <table id="table" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
+</div>
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        ////日期插件
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+    })
+    $('#table').bootstrapTable({
+        columns: [
+            {
+                field: 'index',
+                title: '序号',
+            },
+            {
+                title: '单元网格',
+                class: "check"
+            },
+            {
+                field: 'eventType',
+                title: '公众有效举报数',
+            },
+            {
+                field: 'objId',
+                title: '有效上报数',
+            },
+            {
+                field: 'objName',
+                title: "公众举报率",
+            },
+            {
+                field: 'mainDeptCode',
+                title: '立案数',
+            },
+            {
+                field: 'mainDeptName',
+                title: '结案数',
+            },
+            {
+                field: 'ownershipDeptCode',
+                title: '按期结案数',
+            },
+            {
+                field: 'ownershipDeptName',
+                title: '结案率',
+            },
+            {
+                field: 'maintenanceDeptCode',
+                title: '按期结案率',
+            },
+            {
+                field: 'maintenanceDeptName',
+                title: '处置数',
+            },
+            {
+                field: 'grid',
+                title: '按期处置数',
+
+            },
+            {
+                field: 'objState',
+                title: '按期处置率',
+
+            },
+            {
+                field: 'initialDate',
+                title: '综合指标',
+            },
+            {
+                field: 'changeDate',
+                title: "评价等级",
+            },
+        ],
+        data:[
+
+        ]
+    });
+
+
+
+</script>
 </body>
 </html>

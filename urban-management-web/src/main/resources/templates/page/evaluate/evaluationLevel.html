@@ -1,10 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
 </head>
-<body>
-evaluationLevel evaluationLevel evaluationLevel
+<style>
+    .bootstrap-table{width: 100%}
+</style>
+<body style="border-radius: 8px;">
+<div class="content">
+    <table id="table" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
+</div>
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    $('#table').bootstrapTable({
+        columns: [
+            {
+                field: "sort",
+                title: '分值',
+            },
+            {
+                field: 'eventType',
+                title: '评价等级',
+            },
+            {
+                field: 'objId',
+                title: '表示颜色',
+            },
+        ],
+        data:[
+            {
+                sort:"[90,100]",
+                eventType:"A",
+                objId:"绿色"
+            },
+            {
+                sort:"[75,90]",
+                eventType:"B",
+                objId:"蓝色"
+            },
+            {
+                sort:"[60,75]",
+                eventType:"C",
+                objId:"黄色"
+            },
+            {
+                sort:"[40,60]",
+                eventType:"D",
+                objId:"红色"
+            },
+            {
+                sort:"[0,40]",
+                eventType:"E",
+                objId:"黑色"
+            }
+        ]
+    });
+
+</script>
 </body>
 </html>

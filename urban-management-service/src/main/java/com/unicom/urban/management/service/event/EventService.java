@@ -42,7 +42,7 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
     @Autowired
-    private EventConditionRepository eventConditionRespository;
+    private EventConditionRepository eventConditionRepository;
     @Autowired
     private UserService userService;
     @Autowired
@@ -53,6 +53,9 @@ public class EventService {
             if (StringUtils.isNotBlank(eventDTO.getUserName())) {
                 list.add(criteriaBuilder.equal(root.get("user").get("username").as(String.class), eventDTO.getUserName()));
             }
+            if (eventDTO.getSts() != null) {
+                list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class), eventDTO.getSts()));
+            }
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
@@ -61,8 +64,8 @@ public class EventService {
     }
 
     public List<EventConditionVO> findEventConditionByEventType(String eventTypeId) {
-        List<EventCondition>  list = eventConditionRespository.findAllByEventTypeId_Id(eventTypeId);
-        if (list != null){
+        List<EventCondition> list = eventConditionRepository.findAllByEventTypeId_Id(eventTypeId);
+        if (list != null) {
             return EventConditionMapper.INSTANCE.eventConditionListToEventConditionVOList(list);
         }
         return null;
@@ -70,9 +73,10 @@ public class EventService {
 
     /**
      * 保存事件
+     *
      * @param event
      */
-    public void save(Event event){
+    public void save(Event event) {
         User user = userService.findOne(SecurityUtil.getUserId());
         event.setUser(user);
         eventRepository.save(event);
