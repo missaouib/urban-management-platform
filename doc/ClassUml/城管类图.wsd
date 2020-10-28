@@ -107,13 +107,11 @@ class Event<<案件实体类>>{
     -eventSource : Kv
     -x : double
     -y : double
-    -taskId : String
-    -timeLimit : DeptTimeLimit
-    -sts       : int             // 事件状态     派遣/挂起等等
-    -recTypeId : Kv       //案件类型    日常  、转向普查、其他
-    -region : Grid    //区域    一类区域  二类区域  三类区域
-    -eventSate : Kv  // 案件状态
-    -eventCondition : EventCondition
+    -task : String
+    -recTypeId : Kv      //案件类型    日常  、转向普查、其他
+    -region : Grid       //区域    一类区域  二类区域  三类区域
+    -eventSate : Kv      // 案件状态
+    -eptTimeLimit : DeptTimeLimit
 }
 
 class EventType<<分类实体类>>{
@@ -156,7 +154,7 @@ class ProcessTimeLimit<<流程时限实体类>>{
 
 class Statistics<<流转统计实体类>>{
     -id                   : String
-    -event              : Event
+    -event                : Event
     -starTime : date
     -endTime  : date
     -task   : int
