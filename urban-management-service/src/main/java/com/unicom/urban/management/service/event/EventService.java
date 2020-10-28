@@ -74,7 +74,7 @@ public class EventService {
     }
 
     public List<EventConditionVO> findEventConditionByEventType(String eventTypeId) {
-        List<EventCondition> list = eventConditionRepository.findAllByEventTypeId_IdAndParentIsNull(eventTypeId);
+        List<EventCondition> list = eventConditionRepository.findAllByEventTypeId_IdAndTypeAndParentIsNull(eventTypeId,1);
         if (list != null) {
             return EventConditionMapper.INSTANCE.eventConditionListToEventConditionVOList(list);
         }

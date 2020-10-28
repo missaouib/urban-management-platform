@@ -30,4 +30,6 @@ public class EventCondition {
 
     private String conditionValue;
 
+    private int type;
+
 }
