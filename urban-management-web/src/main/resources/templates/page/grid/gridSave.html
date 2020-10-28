@@ -57,7 +57,8 @@
                             <tr>
                                 <td>初始日期<span>*</span></td>
                                 <td>
-                                    <input size="16" class="form_datetime" type="text" value="" readonly>
+                                    <input size="16" class="form_datetime" id="initialDate" name="initialDate"
+                                           type="text" value="" readonly>
                                     <span class="add-on"><i class="icon-remove"></i></span>
                                     <span class="add-on"><i class="icon-th"></i></span>
                                 </td>
@@ -65,7 +66,8 @@
                             <tr>
                                 <td>终止日期<span>*</span></td>
                                 <td>
-                                    <input size="16" class="form_datetime" type="text" value="" readonly>
+                                    <input size="16" class="form_datetime" id="terminationDate" name="terminationDate"
+                                           type="text" value="" readonly>
                                     <span class="add-on"><i class="icon-remove"></i></span>
                                     <span class="add-on"><i class="icon-th"></i></span>
                                 </td>
@@ -312,6 +314,7 @@
         let getGridOneUrl = /*[[@{/grid/getGridOne/}]]+dataId*/ "/grid/getGridOne/" + dataId;
         $.ajaxUtil.get(getGridOneUrl, function (e) {
             let data = e.data;
+            console.log("data", data);
             $("#id").val(data.id);
             $("#coordinate").val(data.coordinate);
             $("#area").val(data.area);

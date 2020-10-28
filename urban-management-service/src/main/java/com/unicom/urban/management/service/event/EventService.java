@@ -105,7 +105,16 @@ public class EventService {
         User user = userService.findOne(SecurityUtil.getUserId());
         event.setUser(user);
         Event save = eventRepository.save(event);
-        workService.reportEvent(save.getId());
+
+    }
+
+    /**
+     * 上报至工作流
+     *
+     * @param eventId 事件id
+     */
+    public void reportEvent(String eventId) {
+        workService.reportEvent(eventId);
     }
 
     public String createCode(String eventTypeId) {
@@ -154,6 +163,15 @@ public class EventService {
      */
     public Event findOne(String eventId) {
         return eventRepository.getOne(eventId);
+    }
+
+    /**
+     * update
+     *
+     * @param event 需要操作的实体
+     */
+    public void update(Event event) {
+        eventRepository.saveAndFlush(event);
     }
 
 }
