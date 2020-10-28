@@ -10,5 +10,4 @@ import com.unicom.urban.management.pojo.entity.DeptTimeLimit;
  * @author liubozhi
  */
 public interface DeptTimeLimitRepository extends CustomizeRepository<DeptTimeLimit, String> {
-    DeptTimeLimit findByEventType_IdAndLevel_Id(String eventTypeId,String levelId);
 }

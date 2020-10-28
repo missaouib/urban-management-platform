@@ -1,9 +1,7 @@
 package com.unicom.urban.management.dao.eventcondition;
 
 import com.unicom.urban.management.dao.CustomizeRepository;
-import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventCondition;
-import com.unicom.urban.management.pojo.vo.EventConditionVO;
 
 import java.util.List;
 
@@ -13,5 +11,5 @@ import java.util.List;
  * @author liubozhi
  */
 public interface EventConditionRepository extends CustomizeRepository<EventCondition, String> {
-    List<EventCondition> findAllByEventTypeId_Id(String eventTypeId);
+    List<EventCondition> findAllByEventTypeId_IdAndParentIsNull(String eventTypeId);
 }

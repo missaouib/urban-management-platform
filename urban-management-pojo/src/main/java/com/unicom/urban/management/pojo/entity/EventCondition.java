@@ -19,6 +19,11 @@ public class EventCondition {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
+    private String region;
+
+    @ManyToOne
+    private EventCondition parent;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private EventType eventType;

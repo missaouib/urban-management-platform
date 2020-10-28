@@ -50,6 +50,7 @@ public class EventService {
     @Autowired
     private WorkService workService;
 
+    @Autowired
     private EventTypeService eventTypeService;
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
@@ -69,7 +70,7 @@ public class EventService {
     }
 
     public List<EventConditionVO> findEventConditionByEventType(String eventTypeId) {
-        List<EventCondition> list = eventConditionRepository.findAllByEventTypeId_Id(eventTypeId);
+        List<EventCondition> list = eventConditionRepository.findAllByEventTypeId_IdAndParentIsNull(eventTypeId);
         if (list != null) {
             return EventConditionMapper.INSTANCE.eventConditionListToEventConditionVOList(list);
         }

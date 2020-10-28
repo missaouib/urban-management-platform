@@ -21,7 +21,7 @@ public class DeptTimeLimit {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private EventType eventType;
+    private EventCondition eventCondition;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
@@ -31,5 +31,8 @@ public class DeptTimeLimit {
      * 时限
      */
     private int timeLimit;
+
+    @ManyToOne
+    private KV timeType;
 
 }
