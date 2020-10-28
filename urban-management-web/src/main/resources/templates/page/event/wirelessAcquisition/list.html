@@ -13,68 +13,18 @@
 <body style="border-radius: 8px;">
 <div class="content">
     <div class="leftContent">
-        <form id="userForm">
-            <div class="top table2_top">
-                <!--        <div>-->
-                <div class="top_out">
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <td>问题描述<span></span></td>
-                            <td>
-                                <input type="text" class="datepicker" th:name="represent">
-                            </td>
-                            <td>问题类型<span>*</span>
-                                <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
-                                <input type="hidden" readonly="readonly" id="eventTypeId" class="find_input">
-                                <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">
-                                    +
-                                </button>
-                            </td>
-                            <div class="modal fade" id="modal-default">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title">默认窗口</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="tree">
-                                                <div class="treeDemo">
-                                                    <ul id="treeDemo" th:name="eventType" class="ztree">zTree</ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer justify-content-between">
-                                            <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
-                                            <button type="button" class="btn btn-primary">确认</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </tr>
-                        <tr>
-                            <td>所属网格<span></span></td>
-                            <td>
-                                <select id="gridKvId" th:name="grid" >
-                                    <option value="">请选择</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </select>
-                            </td>
-                            <td>上报人<span></span></td>
-                            <td>
-                                <input type="text" name="user" value="张辉"/>
-                            </td>
-                        </tr>
+        <div class="notice_check">
+            <form id="search-form">
+                <p>
+                    <label class="">问题类型：</label>
+                    <input type="text" class="find_input" id="eventTypeName" onclick="selectEventTypeTree()" readonly="readonly">
+                    <input type="hidden" name="eventTypeId" id="eventTypeId">
+                    <input type="button" class="check_btn" onclick="$.table.search()" value="查询">
+                    <input type="button" class="check_btn1" onclick="$.form.reset()" value="重置查询">
+                </p>
+            </form>
+        </div>
 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!--    </div>-->
-        </form>
 
         <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
 
@@ -85,9 +35,9 @@
 <!--            <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">-->
 <!--                <i class="fa fa-edit"></i> 修改-->
 <!--            </a>-->
-            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">
-                <i class="fa fa-remove"></i> 重置
-            </a>
+<!--            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">-->
+<!--                <i class="fa fa-remove"></i> 重置-->
+<!--            </a>-->
         </div>
     </div>
     <div class="rightContent">
@@ -115,37 +65,31 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
-    var setting = {
-        callback: {
-            onClick: zTreeOnClick
-        },
-        data: {//数据加载
-            keep: {
-                parent: true,
-                leaf: true
-            },
-            simpleData: {
-                enable: true,
-                idKey: 'id',
-                pIdKey: 'parent'
-            },
-            key: {
-                name: "name"
-            }
-        }
-    };
 
-    function zTreeOnClick(event, treeId, treeNode) {
-        $("#typeStr").val(treeNode.name);
-        $("#eventTypeId").val(treeNode.id);
-        $(".closemodal").click();
-    }
     $(function () {
-        $.ajaxUtil.get(componentTypeUrl, function (e) {
-            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
-        })
         queryUserList();
     })
+
+    function selectEventTypeTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择问题类型',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero){
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#eventTypeId").val(body.find('#treeId').val());
+        $("#eventTypeName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
 
     let componentTypeUrl = /*[[@{/allEventType}]]*/ "/allEventType";
 
