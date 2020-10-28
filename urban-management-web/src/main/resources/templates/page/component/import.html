@@ -238,6 +238,8 @@
 
     let deleteUrl = /*[[@{/deleteComponent}]]*/ "/deleteComponent";
 
+    let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
+
 
     var center = ol.proj.transform([126.62, 45.74], "EPSG:4326", "EPSG:3857");
     var raster = new ol.layer.Tile({
@@ -291,6 +293,9 @@
         var features = e.target.getFeatures().getArray();
         let data = features[0].H.data;
         if (undefined !== data) {
+            $.ajaxUtil.get(getGisComponent,function (e) {
+                console.log(e.data)
+            });
             $.ajaxUtil.get(componentByRecordId + "?recordId=" + data.id, function (e) {
                 $("#componentId").val(e.data.id);
                 $("#objId").val(e.data.objId);

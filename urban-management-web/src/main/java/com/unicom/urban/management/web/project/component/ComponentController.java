@@ -3,6 +3,7 @@ package com.unicom.urban.management.web.project.component;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.common.util.RestTemplateUtil;
 import com.unicom.urban.management.mapper.ComponentMapper;
 import com.unicom.urban.management.pojo.dto.ComponentDTO;
 import com.unicom.urban.management.pojo.dto.ComponentInfoDTO;
@@ -15,6 +16,7 @@ import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.record.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -141,6 +143,13 @@ public class ComponentController {
     @GetMapping("/componentByRecordId")
     public ComponentVO componentByRecordId(String recordId){
         return componentService.getComponentByRecordId(recordId);
+    }
+
+    @GetMapping("/getGisComponent")
+    public String getGisComponent(String mongoId){
+        Map body = RestTemplateUtil.get(KvConstant.GIS_URL + "/queryMongoById?id="+mongoId, Map.class).getBody();
+        assert body != null;
+       return (String) body.get("objId");
     }
 
 }

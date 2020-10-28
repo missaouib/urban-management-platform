@@ -60,7 +60,7 @@ public class KvConstant {
     /**
      * url
      */
-    public static final String GIS_URL = "http://localhost:8099/api/layerAndElementAndAttribute/addLayer";
+    public static final String GIS_URL = "http://localhost:8099/api";
 
 
 }
