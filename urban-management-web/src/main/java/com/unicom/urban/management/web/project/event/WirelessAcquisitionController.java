@@ -11,6 +11,7 @@ import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.event.EventService;
+import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.user.UserService;
@@ -48,6 +49,8 @@ public class WirelessAcquisitionController {
     private KVService kvService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private EventTypeService eventTypeService;
     @GetMapping("/toWirelessAcquisitionList")
     public ModelAndView toWirelessAcquisitionList() {
         return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/list");
@@ -65,7 +68,7 @@ public class WirelessAcquisitionController {
         //问题来源
         model.addObject("eventSource", kvService.findByTableNameAndFieldName("event","eventSource"));
         //案件类型
-        model.addObject("recTypeId", kvService.findByTableNameAndFieldName("event","recTypeId"));
+        model.addObject("recType", kvService.findByTableNameAndFieldName("event","recType"));
         //获取当前登录人
 //        String userId = SecurityUtil.getUserId();
 //        User user = userService.findOne(userId);
@@ -132,5 +135,15 @@ public class WirelessAcquisitionController {
         event.setCreateTime(LocalDateTime.now());
         event.setSts(EventConstant.SUPERVISE_REPORTING);
         eventService.save(event);
+    }
+
+    /**
+     * 生成案卷号（案卷号：系统自动生成，生成规则：部件（简称C）或事件（E）+大类代码+小类代码+××××××××××（年：4位，月：2位，日：2位，序号：2位）即C01012019041101）
+     * @param eventTypeId
+     * @return
+     */
+    public String createEventCode(String eventTypeId) {
+        return eventService.createCode(eventTypeId);
+
     }
 }

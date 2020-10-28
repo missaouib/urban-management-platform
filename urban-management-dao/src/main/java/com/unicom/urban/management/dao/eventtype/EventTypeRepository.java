@@ -2,6 +2,7 @@ package com.unicom.urban.management.dao.eventtype;
 
 import com.unicom.urban.management.dao.CustomizeRepository;
 import com.unicom.urban.management.pojo.entity.EventType;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ import java.util.List;
  */
 public interface EventTypeRepository extends CustomizeRepository<EventType, String> {
     List<EventType> findAllByType(int type);
+
 }

@@ -3,11 +3,13 @@ package com.unicom.urban.management.service.event;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventRepository;
 import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
+import com.unicom.urban.management.dao.eventtype.EventTypeRepository;
 import com.unicom.urban.management.mapper.EventConditionMapper;
 import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventCondition;
+import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
@@ -22,6 +24,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +45,8 @@ public class EventService {
     private EventConditionRepository eventConditionRespository;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private EventTypeRepository eventTypeRepository;
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
@@ -70,5 +76,23 @@ public class EventService {
         User user = userService.findOne(SecurityUtil.getUserId());
         event.setUser(user);
         eventRepository.save(event);
+    }
+
+    public String createCode(String eventTypeId) {
+        String eventCode = "";
+        //查询当天最大序号
+        Integer maxNum = eventRepository.findMaxNum();
+        EventType eventType = eventTypeRepository.getOne(eventTypeId);
+        String level = eventType.getLevel();
+        String code = eventType.getCode();
+        int type = eventType.getType();
+        String now = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        //部件（简称C）或事件（E）+大类代码+小类代码+××××××××××（年：4位，月：2位，日：2位，序号：2位）即C01012019041101
+        if (type == 1) {
+            eventCode = "C" + level + code + now + (maxNum + 1);
+        } else {
+            eventCode = "E" + level + code + now + (maxNum + 1);
+        }
+        return eventCode;
     }
 }

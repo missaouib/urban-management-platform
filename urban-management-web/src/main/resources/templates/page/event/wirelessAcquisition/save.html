@@ -23,7 +23,7 @@
                             <tr>
                                 <td><span>*</span>案卷号</td>
                                 <td>
-                                    <input  th:name="eventCode" th:value="A203834879" class="" required>
+                                    <input  th:name="eventCode" id="eventCode" class="" required>
                                 </td>
                                 <td>问题类型<span>*</span>
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input" />
@@ -211,6 +211,7 @@
     let saveUrl = /*[[@{/event/save}]]*/ "/event/save";
     let preReportUrl = /*[[@{/event/save}]]*/ "/event/preReport";
     let uploadUrl = /*[[@{/common/upload}]]*/ "/json/unit.json";
+    let createEventCodeUrl = /*[[@{/event/createEventCode}]]*/ "/event/createEventCode";
 
     var setting = {
         callback: {
@@ -238,8 +239,17 @@
         changeCondition();
         createEventCode(treeNode.id);
     }
-    function createEventCode(eventTypeId){
 
+    /**
+     * 后台自动生成案卷号
+     * @param eventTypeId
+     */
+    function createEventCode(eventTypeId) {
+        $.ajaxUtil.get(createEventCodeUrl, function (e) {
+            if (e.code == 0) {
+                $("#eventCode").val(e.data);
+            }
+        })
     }
     function changeCondition() {
         var eventTypeId = $("#eventTypeId").val();
