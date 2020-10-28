@@ -2,6 +2,7 @@ package com.unicom.urban.management.service.activiti;
 
 import com.unicom.urban.management.pojo.entity.EventButton;
 import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -12,11 +13,20 @@ public interface ActivitiService {
     /**
      * 上报事件
      *
-     * @param eventId  事件ID
-     * @param userList 受理员的用户ID
+     * @param eventId     事件ID
+     * @param userList    受理员的用户ID
+     * @param eventSource 事件来源
      * @return 流程实例ID
      */
-    ProcessInstance reportEvent(String eventId, List<String> userList);
+    ProcessInstance reportEvent(String eventId, List<String> userList, String eventSource);
+
+    /**
+     * 根据流程实例ID获取任务Task
+     *
+     * @param processInstanceId 流程实例ID
+     * @return 任务
+     */
+    Task getTaskByProcessInstanceId(String processInstanceId);
 
 
     void xxx(String userId, Pageable pageable);

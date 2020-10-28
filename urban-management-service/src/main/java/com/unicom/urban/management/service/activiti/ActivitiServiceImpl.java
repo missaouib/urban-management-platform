@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.activiti;
 
+import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.dao.event.EventButtonRepository;
 import com.unicom.urban.management.pojo.entity.EventButton;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -50,12 +52,25 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
-    public ProcessInstance reportEvent(String eventId, List<String> userList) {
-        log.debug("-------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
-        log.debug("-------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
+    public ProcessInstance reportEvent(String eventId, List<String> userList, String eventSource) {
         Map<String, Object> variables = new HashMap<>(3);
         variables.put("shouliyuanList", userList);
-        return startProcessInstanceByKey(EVENT_KEY, eventId, variables);
+        variables.put("eventSource", eventSource);
+        ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
+        log.debug("-------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
+        log.debug("-------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
+        log.debug("-------------事件来源 eventSource:{}-----------------------------------------------", eventSource);
+        return processInstance;
+    }
+
+    @Override
+    public Task getTaskByProcessInstanceId(String processInstanceId) {
+        List<Task> taskList = taskService.createTaskQuery().processInstanceId(processInstanceId).list();
+        if (CollectionUtils.isEmpty(taskList)) {
+            log.error("task集合不应该为空");
+            throw new BusinessException("任务流转出现异常");
+        }
+        return taskList.get(0);
     }
 
     @Override
