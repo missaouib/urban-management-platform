@@ -683,7 +683,13 @@ var table = {
 			isMobile: function () {
 				return navigator.userAgent.match(/(Android|iPhone|SymbianOS|Windows Phone|iPad|iPod)/i);
 			},
-
+			// 空格截取
+			trim: function (value) {
+				if (value == null) {
+					return "";
+				}
+				return value.toString().replace(/(^\s*)|(\s*$)|\r|\n/g, "");
+			},
 
 
 
