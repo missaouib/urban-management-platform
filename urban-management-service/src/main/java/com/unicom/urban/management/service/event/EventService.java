@@ -13,6 +13,7 @@ import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
+import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class EventService {
     @Autowired
     private UserService userService;
     @Autowired
-    private EventTypeRepository eventTypeRepository;
+    private EventTypeService eventTypeService;
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
@@ -86,11 +87,17 @@ public class EventService {
         String eventCode = "";
         //查询当天最大序号
         Integer maxNum = eventRepository.findMaxNum();
-        EventType eventType = eventTypeRepository.getOne(eventTypeId);
+        EventType eventType = eventTypeService.getEventType(eventTypeId);
         String level = eventType.getLevel();
         String code = eventType.getCode();
         int type = eventType.getType();
         String now = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        if (level.length() == 1) {
+            level = 0 + level;
+        }
+        if (code.length() == 1) {
+            code = 0 + code;
+        }
         //部件（简称C）或事件（E）+大类代码+小类代码+××××××××××（年：4位，月：2位，日：2位，序号：2位）即C01012019041101
         if (type == 1) {
             eventCode = "C" + level + code + now + (maxNum + 1);

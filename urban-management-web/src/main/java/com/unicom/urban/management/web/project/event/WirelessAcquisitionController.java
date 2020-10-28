@@ -4,6 +4,7 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
@@ -142,8 +143,9 @@ public class WirelessAcquisitionController {
      * @param eventTypeId
      * @return
      */
-    public String createEventCode(String eventTypeId) {
-        return eventService.createCode(eventTypeId);
+    @RequestMapping("/createEventCode")
+    public Result createEventCode(String eventTypeId) {
+        return Result.success(eventService.createCode(eventTypeId));
 
     }
 }

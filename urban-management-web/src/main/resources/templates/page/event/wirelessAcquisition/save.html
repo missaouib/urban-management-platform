@@ -23,7 +23,7 @@
                             <tr>
                                 <td><span>*</span>案卷号</td>
                                 <td>
-                                    <input  th:name="eventCode" id="eventCode" class="" required>
+                                    <input  th:name="eventCode" id="eventCode" class="" disabled readonly required>
                                 </td>
                                 <td>问题类型<span>*</span>
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input" />
@@ -237,7 +237,7 @@
         $("#eventTypeId").val(treeNode.id);
         $(".closemodal").click();
         changeCondition();
-        createEventCode(treeNode.id);
+        createEventCode($("#eventTypeId").val());
     }
 
     /**
@@ -245,9 +245,13 @@
      * @param eventTypeId
      */
     function createEventCode(eventTypeId) {
-        $.ajaxUtil.get(createEventCodeUrl, function (e) {
+        console.log(eventTypeId)
+        var url = createEventCodeUrl+"?eventTypeId="+eventTypeId
+        $.ajaxUtil.get(url, function (e) {
+            console.log(e)
             if (e.code == 0) {
-                $("#eventCode").val(e.data);
+                var eventCode = e.data
+                $("#eventCode").val(eventCode);
             }
         })
     }
