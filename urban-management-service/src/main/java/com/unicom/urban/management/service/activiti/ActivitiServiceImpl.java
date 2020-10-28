@@ -40,7 +40,7 @@ public class ActivitiServiceImpl implements ActivitiService {
     @Autowired
     private EventButtonRepository eventButtonRepository;
 
-    private final static String EVENT_KEY = "hotline";
+    private final static String EVENT_KEY = "event";
 
     private ProcessInstance startProcessInstanceByKey(String processDefinitionKey, String businessKey) {
         return runtimeService.startProcessInstanceByKey(processDefinitionKey, businessKey);
