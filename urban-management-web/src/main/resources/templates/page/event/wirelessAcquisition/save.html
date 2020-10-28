@@ -23,11 +23,11 @@
                             <tr>
                                 <td><span>*</span>案卷号</td>
                                 <td>
-                                    <input  th:name="eventCode" id="eventCode" class="" disabled readonly required>
+                                    <input  th:name="eventCode" id="eventCode" class="" readonly required />
                                 </td>
                                 <td>问题类型<span>*</span>
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input" />
-                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventType" class="find_input">
+                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventType" class="find_input" />
                                     <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">
                                         +
                                     </button>
@@ -78,7 +78,7 @@
                                 </td>
                                 <td><span></span>处理时限</td>
                                 <td>
-                                    <input  th:name="timeLimit" id="deptTimeLimit" placeholder="" class="" type="text" disabled readonly>
+                                    <input  th:name="timeLimit" id="deptTimeLimit" placeholder="" class="" type="text" readonly>
                                 </td>
                             </tr>
                             <tr>
@@ -125,11 +125,11 @@
                             <tr>
                                 <td><span></span>位置坐标</td>
                                 <td>
-                                    <input type="text" class="" readonly="readonly" disabled value="经度" name="x" />
+                                    <input type="text" class="" readonly value="经度" name="x" disabled/>
                                 </td>
                                 <td></td>
                                 <td>
-                                    <input type="text" class="" readonly="readonly" disabled value="纬度" name="y" />
+                                    <input type="text" class="" readonly value="纬度" name="y" disabled/>
                                 </td>
                             </tr>
                             <tr>
@@ -245,10 +245,8 @@
      * @param eventTypeId
      */
     function createEventCode(eventTypeId) {
-        console.log(eventTypeId)
         var url = createEventCodeUrl+"?eventTypeId="+eventTypeId
         $.ajaxUtil.get(url, function (e) {
-            console.log(e)
             if (e.code == 0) {
                 var eventCode = e.data
                 $("#eventCode").val(eventCode);
