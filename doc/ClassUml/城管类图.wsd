@@ -129,12 +129,13 @@ class EventFile<<事件附件实体类>>{
     -eventId : Event
     -fileType ：int
 }
-class EventCondition<<立案条件实体类>>{
+class EventCondition<<条件实体类>>{
     -id : String
     -region : String   // 区域     不同区域立案条件不同 
     -parent : String
     -conditionValue : String
     -eventTypeId : EventType
+    -type : int    // 1 立案的条件   2 是结案条件  
 }
 
 class DeptTimeLimit<<专业部门时限实体类>>{
