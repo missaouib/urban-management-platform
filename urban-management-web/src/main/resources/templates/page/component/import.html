@@ -262,7 +262,7 @@
     let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
 
 
-    var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
+
     // 沽源地图
     var center = [115.68192, 41.66462];
     var projection = new ol.proj.Projection({
@@ -283,11 +283,15 @@
         })
     });
     var source = new ol.source.Vector({wrapX: false});
+    //ol.layer.Vector用于显示在客户端渲染的矢量数据。
+    var vector = new ol.layer.Vector({
+        source: source
+    });
 
     var map = new ol.Map({
         target: 'map',
         layers: [
-            untiled
+            untiled,vector
         ],
         view: new ol.View({
             // projection: projection,
@@ -296,6 +300,7 @@
             projection: projection
         })
     });
+    //画笔
 
     var draw = new ol.interaction.Draw({
         source: source,
@@ -304,11 +309,14 @@
     });
     map.addInteraction(draw)
     draw.on('drawstart', function () {
-        // tarr.splice(0)
+
     })
     draw.on('drawend', function () {
         source.clear();
     });
+
+
+
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),
     });
