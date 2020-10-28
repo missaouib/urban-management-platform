@@ -11,8 +11,10 @@ import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventCondition;
 import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.entity.User;
+import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
+import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +51,8 @@ public class EventService {
     private EventTypeRepository eventTypeRepository;
     @Autowired
     private WorkService workService;
+    @Autowired
+    private DeptTimeLimitService deptTimeLimitService;
 
     @Autowired
     private EventTypeService eventTypeService;
@@ -75,6 +79,21 @@ public class EventService {
             return EventConditionMapper.INSTANCE.eventConditionListToEventConditionVOList(list);
         }
         return null;
+    }
+
+    public List<EventConditionVO> findConditionValueByRegion(String region) {
+        List<EventCondition> list = eventConditionRepository.findAllByParent_Id(region);
+        if (list != null) {
+            return EventConditionMapper.INSTANCE.eventConditionListToEventConditionVOList(list);
+        }
+        return null;
+    }
+
+    public List<DeptTimeLimitVO> findDeptTimeLimitByCondition(String condition) {
+        return deptTimeLimitService.findDeptTimeLimitByCondition(condition);
+    }
+    public DeptTimeLimitVO findDeptTimeLimit(String timeLimit) {
+        return deptTimeLimitService.findDeptTimeLimit(timeLimit);
     }
 
     /**

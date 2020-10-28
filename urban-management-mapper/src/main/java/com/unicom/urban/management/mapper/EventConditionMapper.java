@@ -30,5 +30,6 @@ public interface EventConditionMapper {
      * @param eventCondition from
      * @return class
      */
+
     EventConditionVO EventConditionToEventConditionVO(EventCondition eventCondition);
 }

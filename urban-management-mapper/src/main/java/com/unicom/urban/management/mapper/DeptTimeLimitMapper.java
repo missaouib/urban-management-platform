@@ -1,16 +1,15 @@
 package com.unicom.urban.management.mapper;
 
 import com.unicom.urban.management.pojo.entity.DeptTimeLimit;
-import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
-import com.unicom.urban.management.pojo.vo.EventVO;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
 public interface DeptTimeLimitMapper {
-    EventMapper INSTANCE = Mappers.getMapper(EventMapper.class);
+    DeptTimeLimitMapper INSTANCE = Mappers.getMapper(DeptTimeLimitMapper.class);
 
     /**
      * 转list
@@ -18,7 +17,7 @@ public interface DeptTimeLimitMapper {
      * @param deptTimeLimitList list
      * @return vo
      */
-    List<DeptTimeLimitVO> eventListToEventVOList(List<DeptTimeLimit> deptTimeLimitList);
+    List<DeptTimeLimitVO> deptTimeLimitListTodeptTimeLimitVOList(List<DeptTimeLimit> deptTimeLimitList);
 
     /**
      * 转
@@ -26,5 +25,10 @@ public interface DeptTimeLimitMapper {
      * @param deptTimeLimit 实体
      * @return vo
      */
+    @Mappings({
+            @Mapping(source = "id", target = "id"),
+            @Mapping(source = "level.value", target = "level"),
+            @Mapping(source = "timeType.value", target = "timeType")
+    })
     DeptTimeLimitVO deptTimeLimitToDeptTimeLimitVO(DeptTimeLimit deptTimeLimit);
 }

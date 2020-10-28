@@ -6,6 +6,7 @@ import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
+import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.pojo.vo.GridVO;
@@ -89,13 +90,43 @@ public class WirelessAcquisitionController {
     }
 
     /**
-     * 获取立案条件
+     * 获取立案区域
      * @param eventTypeId
      * @return
      */
     @RequestMapping("/findEventConditionByEventType/{eventTypeId}")
     private List<EventConditionVO> findEventConditionByEventType(@PathVariable String eventTypeId){
         return eventService.findEventConditionByEventType(eventTypeId);
+    }
+
+    /**
+     * 获取立案条件
+     * @param region
+     * @return
+     */
+    @RequestMapping("/findConditionValueByRegion/{region}")
+    private List<EventConditionVO> findConditionValueByRegion(@PathVariable String region){
+        return eventService.findConditionValueByRegion(region);
+    }
+
+    /**
+     * 获取立案时限分类
+     * @param condition
+     * @return
+     */
+    @RequestMapping("/findDeptTimeLimitByCondition/{condition}")
+    private List<DeptTimeLimitVO> findDeptTimeLimitByCondition(@PathVariable String condition){
+        return eventService.findDeptTimeLimitByCondition(condition);
+    }
+
+    /**
+     * 获取立案时限
+     * @param deptTimeLimit
+     * @return
+     */
+    @RequestMapping("/findDeptTimeLimit/{deptTimeLimit}")
+    private DeptTimeLimitVO findDeptTimeLimit(@PathVariable String deptTimeLimit){
+        return eventService.findDeptTimeLimit(deptTimeLimit);
     }
 
     /**

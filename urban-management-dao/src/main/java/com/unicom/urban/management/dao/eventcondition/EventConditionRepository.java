@@ -12,4 +12,5 @@ import java.util.List;
  */
 public interface EventConditionRepository extends CustomizeRepository<EventCondition, String> {
     List<EventCondition> findAllByEventTypeId_IdAndParentIsNull(String eventTypeId);
+    List<EventCondition> findAllByParent_Id(String regionId);
 }
