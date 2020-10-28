@@ -20,14 +20,15 @@ class Grid<<网格实体类>>{
     -gridCode : String
     -gridName : String
     -remark : String
-    -kv : Kv    //代表所属区域
+    -parent : String 
+    -level : int 
     -area : String
     -initialDate : date
     -terminationDate : date
     -sts : int
     -dept : Dept
     -user : User
-    -release : Release
+    -publish : Publish
     -record : Record
     -publish : Publish
 }
@@ -89,6 +90,7 @@ class Kv<<Kv实体类>>{
 class Event<<案件实体类>>{
     -id : String
     -eventCode : String
+    -Component : ComponentInfo //部件编码
     -eventTypeId : EventType     //分类id
     -represent : String
     -gridId : Grid
@@ -102,7 +104,7 @@ class Event<<案件实体类>>{
     -timeLimit : DeptTimeLimit
     -sts       : int             // 事件状态     派遣/挂起等等
     -recTypeId : Kv       //案件类型    日常  、转向普查、其他
-    -region : Kv    //区域    一类区域  二类区域  三类区域
+    -region : Grid    //区域    一类区域  二类区域  三类区域
     -eventSate : Kv  // 案件状态
     -eventCondition : EventCondition
 }
@@ -124,15 +126,18 @@ class EventFile<<事件附件实体类>>{
 }
 class EventCondition<<立案条件实体类>>{
     -id : String
+    -region : String   // 区域     不同区域立案条件不同 
+    -parent : String
     -conditionValue : String
     -eventTypeId : EventType
 }
 
 class DeptTimeLimit<<专业部门时限实体类>>{
     -id : String
-    -eventTypeId : EventType
-    -level : Kv
+    -eventCondition : EventCondition   //立案条件外键
+    -level : Kv  //ABC 类   每一个立案条件 都有 ABC三类  对应三类时间
     -timeLimit : int     //时限
+    -timeType : Kv    // 时间类别  小时 天  分
 }
 
 class ProcessTimeLimit<<流程时限实体类>>{
@@ -142,81 +147,56 @@ class ProcessTimeLimit<<流程时限实体类>>{
     -timeLimit : int     //时限
 }
 
-class EventPhase<<流转记录实体类>>{
-    -id : String
-    -eventId : Event
-    -userId : User
-    -taskId : String             //流程图实例id  (步骤)
-    -taskName : String           //流程名
-    -opinions : String           //处理意见
-    -eventFileId : EventFile     //附件
+class Statistics<<流转统计实体类>>{
+    -id                   : String
+    -eventId              : Event
+    -stateCdae  //状态时间   计算的时候转化成分
     -starTime : date
     -endTime  : date
+    -taskId   : int
     -deptTimeLimit  :  DeptTimeLimit
     -processTimeLimit  :  ProcessTimeLimit
-}
-
-class EventTime<<案件时间记录实体类>>{
-    -id : String
-    -eventId : Event
-    -creatTime : Date           //上报时间
-    -operateTime : Date         //受理时间
-    -instTime : Date            //立案时间
-    -dispatchTime : Date        //派遣时间
-    -archiveTime : Date         //结案时间
-    -cancelTime : Date          //作废时间
-    -sendVerifyTime : Date      //发核实时间
-    -sendCheckTime : Date       //发核查时间
-    -verifyTime  : Date         //核实时间
-    -checkTime : Date           //核查时间
-    -disposeBeginTime : Date    //处置开始时间
-    -disposeDeadline : Date     //处置截至时间
-    -disposeEndTime : Date      //处置结束时间
-    -superviseTime : Date       //督查时间
-}
-
-class Statistics<<统计实体类>>{
-    -id                   : String
-    -userId               : User
+    -opinions : String           //处理意见
+    -eventFileId : EventFile     //附件    
     -patrolReport	      : int       //监督员上报
     -publicReport	      : int       //公众举报
     -report			      : int       //上报
-    -reportPatrolId	      : int       //上报监督员标识
-    -reportPatrolName	  : String    //上报监督员
+    -reportPatrolId	      : User       //上报监督员标识
+    -reportPatrolName	  : User       //上报监督员
     -validPatrolReport    : int       //监督员有效上报
     -validPublicReport    : int       //公众举报有效上报
     -validReport		  : int       //有效上报
-    -needSendVerify         : int          //应发核实               
-    -sendVerify             : int          //发核实
-    -intimeSendVerify       : int          //按时发核实
-    -needVerify             : int          //应核实
-    -verify                 : int          //核实
-    -intimeVerify           : int          //按期核实
-    -sendVerifyHumanId      : int          //发核实人标识
-    -sendVerifyHumanName    : String       //发核实人
-    -sendVerifyHumanRoleId  : int          //发核实人岗位标识
-    -verifyPatrolId         : int          //核实监督员标识
-    -verifyPatrolName       : String       //核实监督员
+    -needSendVerify         : int           //应发核实               
+    -sendVerify             : int           //发核实
+    -intimeSendVerify       : int           //按时发核实
+    -needVerify             : int           //应核实
+    -verify                 : int           //核实
+    -intimeVerify           : int           //按期核实
+    -sendVerifyHumanId      : User          //发核实人标识
+    -sendVerifyHumanName    : User          //发核实人      受理员派遣给监督员
+    -sendVerifyHumanRoleId  : int           //发核实人岗位标识
+    -verifyPatrolId         : User          //核实监督员标识
+    -verifyPatrolName       : User          //核实监督员
     -notOperate       : int     //不予受理
     -toOperate        : int     //待受理
     -intimeOperate    : int     //按时受理
     -operate          : int     //受理
-    -operateHumanId   : int     //受理人标识
-    -operateHumanName : String  //受理人
+    -operateHumanId   : User     //受理人标识
+    -operateHumanName : User  //受理人
     -operateRoleId    : int     //受理人岗位标识
     -inst           :  int      //立案
     -intimeInst     :  int      //按时立案
     -toInst         :  int      //待立案
     -notInst        :  int      //不予立案
-    -instHumanId    :  int      //立案人标识
-    -instHumanName  :  String   //立案人
+    -instHumanId    :  User      //立案人标识m
+    -instHumanName  :  User   //立案人
     -instRoleId     :  int      //立案人岗位标识
-    -dispatch             : int      //派遣         
-    -toDispatch           : int      //待派遣       
-    -needDispatch         : int      //应派遣       
+    -dispatch             : int      //派遣     已经派遣      
+    -toDispatch           : int      //待派遣   等待派遣 
+    -needDispatch         : int      //应派遣   一共需要派遣    
     -intimeDispatch       : int      //按时派遣     
-    -dispatchHumanId      : int      //派遣员标识     
-    -dispatchHumanName    : String   //派遣员         
+    -dispatchHumanId      : User      //派遣员标识     
+    -dispatchHumanName    : User   //派遣员         
     -dispatchHumanRoleId  : int      //派遣员岗位标识 
     -dispose              : int      //处置         
     -needDispose          : int      //应处置       
@@ -261,83 +241,6 @@ class Statistics<<统计实体类>>{
     -shuffle        :  int       //推诿         
 }
 
-
-class ComponentController<<部件界面类>>{
-    -ComponentService
-    -ComponentInfoService
-    +ComponentList(component):Component[*]         // 查询部件集合
-    +saveComponentList(Component[*]):boolean       // 保存部件
-    +componentImport():boolean
-    +objState() : Kv[*]
-    +dataSource() : Kv[*]
-    +grid() : Grid[*]
-    +record(ComponentType): Record[*]
-    +componentByRecordId(record) : Component[*]
-}
-
-class ComponentService<<部件业务类>>{
-    -ComponentInfoService
-    +getComponentList(component):Component[*]      // 查询部件集合
-    +getComponent(component) :component
-    +saveComponentList(component[*]): boolean
-    +saveComponent(component) : boolean
-    +savePublish(publis) : boolean
-    +saveRecord(record,publish) : boolean
-    +getComponentByRecordId(record) : Component[*]
-    +deleteComponent(component) : boolean
-}
-class ComponentTypeService<<部件分类业务类>>{
-    +getComponentTypeList():ComponentType[*]       // 获取部件分类集合
-    +getComponentType(component):ComponentType     // 获取部件分类
-}
-
-class PublisheController<<发布界面类>>{
-    +getPublishList() : Publish[*]
-    +getPublishOne() : Publish
-    +layerPublish(publish) : boolean
-}
-class PublisheService<<发布业务类>>{
-    +getPublishList() : Publish[*]
-    +getPublishOne() : Publish
-    +layerPublish(publish) : boolean
-}
-
-class RecordService<<编辑业务类>>{
-    +save(record) : boolean
-    +update(record) : boolean
-    +findAllByPublishId() : Record[*]
-}
-class ImportController<<导入界面类>>{
-    +componentImport(layerName,layerSettingType,shpType) : String
-    +gridImport(layerName,layerSettingType,shpType) : String
-    +checkPublish(): boolean
-}
-class ImportService<<导入业务类>>{
-    +componentImport(layerName,layerSettingType,shpType) : String
-    +gridImport(layerName,layerSettingType,shpType) : String
-    +checkPublish(): boolean
-}
-
-class GridController<<网格界面类>>{
-    +getGridList() :  Grid[*]
-    +gridSave(grid) : boolean
-    +gridUpdate(grid) : boolean
-    +getGridOne(grid) : Grid
-    +gridDelete(grid) : boolean
-}
-
-class GridService<<网格业务类>>{
-    +search(grid) : Grid[*]
-    +delete(grid) : boolean
-    +update(grid) : boolean
-
-}
-
-
-
-
-
-
 Dept --> User
 Grid --> User
 Grid --> Dept
@@ -347,53 +250,95 @@ Grid --|> Kv
 Component --> ComponentInfo
 Component --> Record
 Component --> Publish
-ComponentInfo --|> Kv
+ComponentInfo --|> Event
 Publish --> Record
 Publish --|> Kv
 Event --> EventType
 EventCondition -->  EventType 
 Event --|> Kv
-Event --|> EventTime
-Event --|> EventPhase
+Event --|> Statistics
 EventType -->  DeptTimeLimit
-EventPhase --> DeptTimeLimit 
-EventPhase --> ProcessTimeLimit 
-EventPhase --> EventFile
-ReportStatistics --> User
-VerifyStatistics --> User
-AcceptanceStatistics --> User
-CaseStatistics --> User
-DispatchStatistics --> User
-DisposalStatistics --> User
-InspectionStatistics --> User
-VerificationStatistics --> User
-ClosingStatistics --> User
-VoidStatistics --> User
+Statistics --> DeptTimeLimit 
+Statistics --> ProcessTimeLimit 
+Statistics --> EventFile
+
+
+' class ComponentController<<部件界面类>>{
+'     -ComponentService
+'     -ComponentInfoService
+'     +ComponentList(component):Component[*]         // 查询部件集合
+'     +saveComponentList(Component[*]):boolean       // 保存部件
+'     +componentImport():boolean
+'     +objState() : Kv[*]
+'     +dataSource() : Kv[*]
+'     +grid() : Grid[*]
+'     +record(ComponentType): Record[*]
+'     +componentByRecordId(record) : Component[*]
+' }
+
+' class ComponentService<<部件业务类>>{
+'     -ComponentInfoService
+'     +getComponentList(component):Component[*]      // 查询部件集合
+'     +getComponent(component) :component
+'     +saveComponentList(component[*]): boolean
+'     +saveComponent(component) : boolean
+'     +savePublish(publis) : boolean
+'     +saveRecord(record,publish) : boolean
+'     +getComponentByRecordId(record) : Component[*]
+'     +deleteComponent(component) : boolean
+' }
+' class ComponentTypeService<<部件分类业务类>>{
+'     +getComponentTypeList():ComponentType[*]       // 获取部件分类集合
+'     +getComponentType(component):ComponentType     // 获取部件分类
+' }
+
+' class PublisheController<<发布界面类>>{
+'     +getPublishList() : Publish[*]
+'     +getPublishOne() : Publish
+'     +layerPublish(publish) : boolean
+' }
+' class PublisheService<<发布业务类>>{
+'     +getPublishList() : Publish[*]
+'     +getPublishOne() : Publish
+'     +layerPublish(publish) : boolean
+' }
+
+' class RecordService<<编辑业务类>>{
+'     +save(record) : boolean
+'     +update(record) : boolean
+'     +findAllByPublishId() : Record[*]
+' }
+' class ImportController<<导入界面类>>{
+'     +componentImport(layerName,layerSettingType,shpType) : String
+'     +gridImport(layerName,layerSettingType,shpType) : String
+'     +checkPublish(): boolean
+' }
+' class ImportService<<导入业务类>>{
+'     +componentImport(layerName,layerSettingType,shpType) : String
+'     +gridImport(layerName,layerSettingType,shpType) : String
+'     +checkPublish(): boolean
+' }
+
+' class GridController<<网格界面类>>{
+'     +getGridList() :  Grid[*]
+'     +gridSave(grid) : boolean
+'     +gridUpdate(grid) : boolean
+'     +getGridOne(grid) : Grid
+'     +gridDelete(grid) : boolean
+' }
+
+' class GridService<<网格业务类>>{
+'     +search(grid) : Grid[*]
+'     +delete(grid) : boolean
+'     +update(grid) : boolean
+
+' }
 
 
 
 
 
 
-' ComponentController --> ComponentService
-' PublisheController --> PublisheService
-' ImportController --> ImportService
-' GridController --> GridService
-
-
-' GridService --> RecordService
-' GridService --> KVService
-' GridService --> UserService
-' PublishService --> RecordService
-' PublishService --> GridService
-' ComponentService --> PublishService
-' ComponentService --> RecordService
-
-
-
-' ComponentService ..> Component
-' PublisheService ..> Publish
-' RecordService ..> Record
 
 
 
