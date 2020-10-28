@@ -17,14 +17,13 @@
         <!--            <input id="treeName" name="treeName"  type="hidden" th:value="${dept.deptName}"/>-->
         <input id="treeId" name="treeId" type="hidden"/>
         <input id="treeName" name="treeName" type="hidden"/>
-        <div id="search">
-            <label for="keyword">关键字：</label>
-            <input type="text" class="find_input" id="keyword">
-            <!--                <button class="btn" id="btn" onclick="$.tree.searchNode()"> 搜索 </button>-->
-            <input type="button" class="check_btn" value="搜索">
-        </div>
+<!--        <div id="search" style="display: flex; justify-content: space-between;">-->
+<!--            <label for="keyword">关键字：</label>-->
+<!--            <input type="text" class="find_input" id="keyword">-->
+<!--            <input type="button" class="check_btn" value="搜索" onclick="$.tree.searchNode()">-->
+<!--        </div>-->
         <div class="treeDemo">
-            <ul id="ztree" class="ztree"></ul>
+            <ul id="tree" class="ztree"></ul>
         </div>
     </div>
 </div>
@@ -38,28 +37,13 @@
     var tree = [[${tree}]];
 
 
-    var setting = {
-        callback: {
-            onClick: zTreeOnClick
-        },
-        data: {
-            keep: {
-                parent: true,
-                leaf: true
-            },
-            simpleData: {
-                enable: true,
-                idKey: 'id',
-                pIdKey: 'parentId'
-            },
-            key: {
-                name: "name"
-            }
-        }
-    };
-
     $(function () {
-        var zTreeObj = $.fn.zTree.init($("#ztree"), setting, tree);
+        var options = {
+            expandLevel: 2,
+            datas: tree,
+            onClick : zTreeOnClick
+        };
+        $.tree.init(options);
     })
 
     function zTreeOnClick(event, treeId, treeNode) {
