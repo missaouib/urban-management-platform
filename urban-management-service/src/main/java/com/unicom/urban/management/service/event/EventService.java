@@ -125,4 +125,15 @@ public class EventService {
         }
         return eventCode;
     }
+
+    /**
+     * findOne
+     *
+     * @param eventId 事件id
+     * @return 事件
+     */
+    public Event findOne(String eventId) {
+        return eventRepository.getOne(eventId);
+    }
+
 }

@@ -21,12 +21,14 @@ public class WorkService {
 
     @Autowired
     private ActivitiService activitiService;
+    @Autowired
+    private EventService eventService;
 
     public void reportEvent(String eventId) {
         /*TODO 查询所有有受理员角色的人*/
         List<String> userList = new ArrayList<>();
         userList.add("userId");
-        ProcessInstance processInstance = activitiService.reportEvent(eventId, userList, null);
+        ProcessInstance processInstance = activitiService.reportEvent(eventId, userList, eventService.findOne(eventId).getEventSource().getId());
 
         Task task = activitiService.getTaskByProcessInstanceId(processInstance.getId());
         //TODO 返回task.getId() 用于event表保存
