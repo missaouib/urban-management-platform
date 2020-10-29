@@ -30,6 +30,20 @@ public interface ActivitiService {
 
 
     /**
+     * 查询组任务 (没有被领取的任务)
+     */
+    List<String> queryGroupEvent(String userId, String taskId, Pageable pageable);
+
+
+    /**
+     * 领取任务
+     *
+     * @param taskId taskId
+     * @param userId 领取任务的这个人的userId
+     */
+    void claim(String taskId, String userId);
+
+    /**
      * 根据taskId获取task
      *
      * @param taskId taskId

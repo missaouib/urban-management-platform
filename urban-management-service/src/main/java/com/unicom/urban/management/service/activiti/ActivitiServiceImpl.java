@@ -13,6 +13,7 @@ import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -91,6 +92,23 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
+    public List<String> queryGroupEvent(String userId, String taskId, Pageable pageable) {
+
+        TaskQuery taskQuery = taskService.createTaskQuery();
+
+        Task task = taskQuery.taskId(taskId).singleResult();
+
+        List<Task> taskList = taskQuery.taskCandidateUser(userId).taskName(task.getName()).listPage(pageable.getPageNumber(), pageable.getPageSize());
+
+        Set<String> taskIds = taskList.parallelStream().map(Task::getProcessDefinitionId).collect(Collectors.toSet());
+
+        List<ProcessInstance> processInstanceList = runtimeService.createProcessInstanceQuery().processInstanceIds(taskIds).list();
+
+        return processInstanceList.parallelStream().map(ProcessInstance::getBusinessKey).collect(Collectors.toList());
+
+    }
+
+    @Override
     public Task getTaskById(String taskId) {
         return taskService.createTaskQuery().taskId(taskId).singleResult();
     }
@@ -108,6 +126,10 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     }
 
+    @Override
+    public void claim(String taskId, String userId) {
+        taskService.claim(taskId, userId);
+    }
 
     @Override
     public void complete(String taskId) {
