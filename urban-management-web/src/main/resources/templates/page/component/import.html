@@ -141,6 +141,7 @@
     var publishId;
 
     function zTreeOnClick(event, treeId, treeNode) {
+        $("#layerId").val("");
         publish="";
         publishId="";
         resetFrom();
@@ -157,22 +158,26 @@
                     $("#publishId").val(value.id);
                     publish = value.name;
                     publishId = value.id;
-                    if (value.layerId != null){
-                        let layer = value.workName+":"+value.layerGroup;
+                    if (value.url != null){
+                        var urlParam = value.url.split("?");
+                        var url = urlParam[0];
+                        var param = urlParam[1];
+                        console.log(url+","+param)
+
                         var ImageVector = new ol.layer.Tile({
                             source: new ol.source.TileWMS({
-                                url: value.url,
+                                url: url,
                                 params: {
                                     'VERSION': '1.1.1',
                                     tiled: true,
-                                    "LAYERS": layer,
-                                    "exceptions": '',
-                                    tilesOrigin: 114.844384 + "," + 41.232426
+                                    "LAYERS": param,
+                                    "exceptions": ''
                                 }
                             })
                         });
                         var layersArray = map.getLayers();
                         layersArray.insertAt(1,ImageVector);
+                        $("#layerId").val(value.layerId == null ? "" : value.layerId);
                     }
                 })
             })
@@ -183,7 +188,7 @@
                     var point = value.coordinate.split(",");
                     setPoint(point[0], point[1], value.id, value.name);
                 });
-                $("#layerId").val(e.data.publish.layerId == null ? "" : e.data.publish.layerId);
+
 
 
 
