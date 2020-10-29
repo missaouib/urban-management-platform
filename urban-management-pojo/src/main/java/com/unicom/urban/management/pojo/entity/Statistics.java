@@ -79,6 +79,18 @@ public class Statistics {
     @JoinColumn
     private List<EventFile> eventFileList;
 
+    /**
+     * 判断当前环节是否超时0绿灯 1黄灯 2红灯
+     * processTimeLimit时限的 0-80% 是绿灯
+     * processTimeLimit时限的 80-100% 是黄灯
+     * processTimeLimit时限的 100%+ 是红灯
+     */
+    private String sts;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn
+    private User user;
+
     /* --------------------------------------------------------- */
 
     /**
