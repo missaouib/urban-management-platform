@@ -14,7 +14,7 @@ public interface ActivitiService {
      * 上报事件
      *
      * @param eventId     事件ID
-     * @param userList    受理员的用户ID
+     * @param userList    用户ID
      * @param eventSource 事件来源
      * @return 流程实例ID
      */
@@ -28,8 +28,12 @@ public interface ActivitiService {
      */
     Task getTaskByProcessInstanceId(String processInstanceId);
 
-
-    void xxx(String userId, Pageable pageable);
+    /**
+     * 查询待办任务
+     *
+     * @return eventId
+     */
+    List<String> queryMyTask(String userId, Pageable pageable);
 
     /**
      * 查询当前任务 都有什么按钮

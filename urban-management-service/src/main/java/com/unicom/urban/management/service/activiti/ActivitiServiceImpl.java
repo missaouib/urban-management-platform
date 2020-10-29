@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.activiti;
 
+import com.unicom.urban.management.common.constant.EventSourceConstant;
 import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.dao.event.EventButtonRepository;
 import com.unicom.urban.management.pojo.entity.EventButton;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 封装activiti功能
@@ -53,14 +55,29 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     @Override
     public ProcessInstance reportEvent(String eventId, List<String> userList, String eventSource) {
-        Map<String, Object> variables = new HashMap<>(3);
-        variables.put("shouliyuanList", userList);
-        variables.put("eventSource", eventSource);
-        ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
-        log.debug("-------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
-        log.debug("-------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
-        log.debug("-------------事件来源 eventSource:{}-----------------------------------------------", eventSource);
-        return processInstance;
+
+        // 监督员上报
+        if (EventSourceConstant.SUPERVISE_REPORTING.equals(eventSource)) {
+
+
+            return null;
+        }
+
+        // 受理员上报
+        if ("".equals(eventSource)) {
+            Map<String, Object> variables = new HashMap<>(3);
+            variables.put("shouliyuanList", userList);
+            variables.put("eventSource", eventSource);
+            ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
+            log.debug("----------------------受理员上报事件开始--------------------------------------");
+            log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
+            log.debug("----------------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
+            log.debug("----------------------事件来源 eventSource:{}-----------------------------------------------", eventSource);
+            log.debug("----------------------受理员上报事件结束--------------------------------------");
+            return processInstance;
+        }
+
+        throw new BusinessException("非法事件来源: " + eventSource);
     }
 
     @Override
@@ -74,19 +91,18 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
-    public void xxx(String userId, Pageable pageable) {
-        List<Task> taskList = taskService.createTaskQuery()
-                .taskAssignee(userId)
-                .processDefinitionKey("hotline")
-                .orderByTaskCreateTime().desc()
-                .listPage(pageable.getPageNumber(), pageable.getPageSize());
+    public List<String> queryMyTask(String userId, Pageable pageable) {
 
-        for (Task task : taskList) {
-            String processInstanceId = task.getProcessInstanceId();
-//            String businessKey = runtimeService.createProcessInstanceQuery().processInstanceIds(processInstanceId).singleResult().getBusinessKey();
-        }
+        List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).listPage(pageable.getPageNumber(), pageable.getPageSize());
+
+        Set<String> taskIds = taskList.parallelStream().map(Task::getProcessDefinitionId).collect(Collectors.toSet());
+
+        List<ProcessInstance> processInstanceList = runtimeService.createProcessInstanceQuery().processInstanceIds(taskIds).list();
+
+        return processInstanceList.parallelStream().map(ProcessInstance::getBusinessKey).collect(Collectors.toList());
 
     }
+
 
     @Override
     public void complete(String taskId) {
@@ -94,29 +110,20 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
 
-    //    @Override
-    public void asdasd(String taskId) {
-//        taskService.complete();
-    }
-
     @Override
     public List<EventButton> queryButton(String taskId) {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-        List<EventButton> eventButtonList = eventButtonRepository.findByTaskName(task.getName());
-        return eventButtonList;
+        return queryButtonList(task.getName());
+
     }
 
-    public List<Map<String, String>> getButton(String taskId) {
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+    private List<EventButton> queryButtonList(String taskName) {
 
-        log.debug(task.getName());
-
-//        taskService.complete();
-
+//        List<EventButton> eventButtonList = eventButtonRepository.findByTaskName(task.getName());
 
         return null;
-
     }
+
 
     // 根据taskId查找当前任务出口
 //    @Override
