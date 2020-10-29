@@ -295,6 +295,9 @@
             sortName: "updateTime",
             sortOrder: "desc",
             modalName: "用户",
+            onClickRow: function (row) {
+                console.log(row);
+            },
             columns: [
                 {
                     field: 'index',
@@ -362,6 +365,7 @@
                 }else{//注册失败
                     alert(result.msg);
                     $("#checkImg").click();
+
                 }
             },"json");
         },

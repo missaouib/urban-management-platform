@@ -38,9 +38,9 @@ public class KvConstant {
      * epsg: {
      * id: 1f71e7de-28d0-432e-a2c5-524c9be673f7
      * }
-     * 默认 3857
+     * 默认 4326
      */
-    public static final String E_PSG = "9fe4cb5f-48df-4359-8fe4-a506cecde9f2";
+    public static final String E_PSG = "1f71e7de-28d0-432e-a2c5-524c9be673f7";
 
     /**
      * gis平台 图层保存时需要的比例尺
