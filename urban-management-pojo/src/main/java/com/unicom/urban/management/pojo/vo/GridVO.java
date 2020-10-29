@@ -15,6 +15,8 @@ public class GridVO {
 
     private String id;
 
+    private String parentId;
+
     private String coordinate;
 
     private String gridCode;
