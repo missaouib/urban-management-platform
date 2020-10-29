@@ -28,6 +28,15 @@ public interface ActivitiService {
      */
     Task getTaskByProcessInstanceId(String processInstanceId);
 
+
+    /**
+     * 根据taskId获取task
+     *
+     * @param taskId taskId
+     * @return Task
+     */
+    Task getTaskById(String taskId);
+
     /**
      * 查询待办任务
      *

@@ -91,6 +91,11 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
+    public Task getTaskById(String taskId) {
+        return taskService.createTaskQuery().taskId(taskId).singleResult();
+    }
+
+    @Override
     public List<String> queryMyTask(String userId, Pageable pageable) {
 
         List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).listPage(pageable.getPageNumber(), pageable.getPageSize());
