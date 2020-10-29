@@ -134,7 +134,6 @@ public class ComponentController {
         List<RecordVO> list = new ArrayList<>();
         publishVOS.forEach(p-> list.addAll(recordService.findAllByPublishId(p.getId())));
         map.put("record",list);
-        map.put("publish",publishVOS);
         return map;
     }
 

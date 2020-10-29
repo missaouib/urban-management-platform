@@ -134,6 +134,8 @@
     var publishId;
 
     function zTreeOnClick(event, treeId, treeNode) {
+        publish="";
+        publishId="";
         resetFrom();
         $("#coordinate").val(coordinate);
         if (treeNode.children === undefined) {
@@ -143,40 +145,41 @@
             eventTypeId = treeNode.id;
             $.ajaxUtil.get(publishUrl + "?typeId=" + treeNode.id, function (e) {
                 $(e.data).each(function (index, value) {
+                    console.log(e.data)
                     $("#publish").val(value.name);
                     $("#publishId").val(value.id);
-
                     publish = value.name;
                     publishId = value.id;
+                    if (value.layerId != null){
+                        let layer = value.workName+":"+value.layerGroup;
+                        var ImageVector = new ol.layer.Tile({
+                            source: new ol.source.TileWMS({
+                                url: value.url,
+                                params: {
+                                    'VERSION': '1.1.1',
+                                    tiled: true,
+                                    "LAYERS": layer,
+                                    "exceptions": '',
+                                    tilesOrigin: 114.844384 + "," + 41.232426
+                                }
+                            })
+                        });
+                        var layersArray = map.getLayers();
+                        layersArray.insertAt(1,ImageVector);
+                    }
                 })
             })
 
             $.ajaxUtil.get(recordUrl + "?typeId=" + treeNode.id, function (e) {
+
                 $(e.data.record).each(function (index, value) {
                     var point = value.coordinate.split(",");
                     setPoint(point[0], point[1], value.id, value.name);
                 });
                 $("#layerId").val(e.data.publish.layerId == null ? "" : e.data.publish.layerId);
-                console.log(e)
-                if (e.data.publish.layerId != null){
 
-                }
 
-                let layer = "cesi:e2965d91-0f42-43fc-8e72-67dcfe05308e";
-                var ImageVector = new ol.layer.Tile({
-                    source: new ol.source.TileWMS({
-                        url: 'http://192.168.24.203:7880/geoserver/cesi/wms',
-                        params: {
-                            'VERSION': '1.1.1',
-                            tiled: true,
-                            "LAYERS": layer,
-                            "exceptions": '',
-                            tilesOrigin: 114.844384 + "," + 41.232426
-                        }
-                    })
-                });
-                var layersArray = map.getLayers();
-                layersArray.insertAt(1,ImageVector);
+
 
             })
         }
