@@ -54,6 +54,11 @@ public class Statistics {
     private String taskId;
 
     /**
+     * 任务名称
+     */
+    private String taskName;
+
+    /**
      * 整体时限
      */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -80,10 +85,10 @@ public class Statistics {
     private List<EventFile> eventFileList;
 
     /**
-     * 判断当前环节是否超时0绿灯 1黄灯 2红灯
-     * processTimeLimit时限的 0-80% 是绿灯
-     * processTimeLimit时限的 80-100% 是黄灯
-     * processTimeLimit时限的 100%+ 是红灯
+     * 判断当前环节是否超时2绿灯 1黄灯 0红灯
+     * processTimeLimit时限的 0-80% 是2
+     * processTimeLimit时限的 80-100% 是1
+     * processTimeLimit时限的 100%+ 是0
      */
     private String sts;
 
