@@ -147,8 +147,16 @@ public class ActivitiServiceImpl implements ActivitiService {
     private List<EventButton> queryButtonList(String taskName) {
 
 //        List<EventButton> eventButtonList = eventButtonRepository.findByTaskName(task.getName());
-
-        return null;
+        List<EventButton> eventButtonList = new ArrayList<>();
+        if ("受理员-信息收集".equals(taskName)) {
+            EventButton button1 = new EventButton();
+            button1.setButtonValue("受理");
+            EventButton button2 = new EventButton();
+            button2.setButtonValue("不予受理");
+            eventButtonList.add(button1);
+            eventButtonList.add(button2);
+        }
+        return eventButtonList;
     }
 
 
