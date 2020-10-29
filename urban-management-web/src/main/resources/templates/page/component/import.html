@@ -18,7 +18,7 @@
             <ul id="treeDemo" class="ztree"></ul>
         </div>
     </div>
-    <div class="tabels">
+    <div class="tabels" style="overflow:inherit;">
         <div class="notice_check">
             <form id="component">
                 <p>
@@ -86,9 +86,16 @@
                 </p>
 
                 <p class="function_btn">
-                    <input type="button" class="check_btn1 button_ground" onclick="deleteComponent()" value="删除">
-                    <input type="button" class="check_btn1 button_ground" onclick="saveComponent()" value="修改">
-                    <input type="button" class="check_btn1 button_ground" onclick="saveComponent()" value="保存">
+<!--                    <input type="button" class="check_btn1 button_ground" onclick="deleteComponent()" value="删 除">-->
+<!--                    <input type="button" class="check_btn1 button_ground" onclick="saveComponent()" value="修 改">-->
+<!--                    <input type="button" class="check_btn1 button_ground" onclick="saveComponent()" value="保 存">-->
+                <div class="notice_bot">
+                    <div class="r_right but_p">
+                        <button class="but_save" type="submit" id="smtBtn" onclick="saveComponent()">保存</button>
+                        <button class="but_save" type="submit" onclick="saveComponent()" style="margin-left: 10px">修改</button>
+                        <button class="but_close" onclick="deleteComponent()">关闭</button>
+                    </div>
+                </div>
                 </p>
             </form>
         </div>
