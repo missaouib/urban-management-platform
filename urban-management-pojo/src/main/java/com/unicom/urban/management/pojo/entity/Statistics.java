@@ -8,6 +8,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 /**
@@ -74,9 +75,9 @@ public class Statistics {
     /**
      * 附件
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn
-    private EventFile eventFile;
+    private List<EventFile> eventFileList;
 
     /* --------------------------------------------------------- */
 
