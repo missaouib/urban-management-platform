@@ -56,7 +56,8 @@ public class BaseEntity implements Serializable {
     /**
      * 数据是否已被删除
      */
-    @Column(length = 1)
+    //    @Type(type = "org.hibernate.type.NumericBooleanType")
+    @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private String deleted = Delete.NORMAL;
 
 }
