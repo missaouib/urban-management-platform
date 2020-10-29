@@ -9,6 +9,8 @@
 }
 .rightContent{
     width: 33%;
+    border-radius: 10px;
+    overflow: hidden;
 }
 .leftContent,rightContent{
     height: 100%;
@@ -36,7 +38,7 @@
     font-size: 16px;
 }
 .active{
-    background-color: skyblue;
+    background-color: #354e85;
     color: white;
 }
 .tabInfo{

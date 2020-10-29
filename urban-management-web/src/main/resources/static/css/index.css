@@ -425,3 +425,6 @@ font-size: 20px;
 .mainContent{
     position: relative;
 }
+.leftMenuActive{
+    background-color: #354E85;
+}

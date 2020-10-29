@@ -9,11 +9,9 @@
     <th:block th:include="page/fragments/common :: map_css"/>
     <th:block th:include="page/fragments/common :: ztree_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
-
-
 </head>
 
-<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<body>
 <div class="innerBox">
     <div class="tree">
         <div class="treeDemo">
@@ -68,19 +66,19 @@
                 </p>
                 <p>
                     <label class="">初始日期</label>
-                    <input size="16" class="form_date" name="initialDate" type="text"  readonly>
+                    <input size="16" class="form_date find_input" name="initialDate" type="text"  readonly>
                     <label class="">变更日期</label>
-                    <input size="16" class="form_date" name="changeDate" type="text" value="" readonly>
+                    <input size="16" class="form_date find_input" name="changeDate" type="text" value="" readonly>
                 </p>
                 <p>
                     <label class="">所在网格</label>
-                    <select id="bgid" name="bgid"></select>
+                    <select id="bgid" class="find_input" name="bgid"></select>
                     <label class="">部件状态</label>
-                    <select id="objState" name="objState"></select>
+                    <select id="objState" class="find_input" name="objState"></select>
                 </p>
                 <p>
                     <label class="">数据来源</label>
-                    <select id="dataSource" name="dataSource"></select>
+                    <select id="dataSource" class="find_input" name="dataSource"></select>
                 </p>
                 <p>
                     <label class="">备注</label>
@@ -88,9 +86,9 @@
                 </p>
 
                 <p class="function_btn">
-                    <input type="button" class="check_btn1" onclick="deleteComponent()" value="删除">
-                    <input type="button" class="check_btn1" onclick="saveComponent()" value="修改">
-                    <input type="button" class="check_btn1" onclick="saveComponent()" value="保存">
+                    <input type="button" class="check_btn1 button_ground" onclick="deleteComponent()" value="删除">
+                    <input type="button" class="check_btn1 button_ground" onclick="saveComponent()" value="修改">
+                    <input type="button" class="check_btn1 button_ground" onclick="saveComponent()" value="保存">
                 </p>
             </form>
         </div>

@@ -453,3 +453,6 @@ ul,li{list-style: none}
     font-size: 14px;
     color: #354e85;
 }
+.btn-primary{
+    background-color: #354e85!important;
+}
