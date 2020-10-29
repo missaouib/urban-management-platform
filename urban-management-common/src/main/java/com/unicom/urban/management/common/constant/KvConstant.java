@@ -63,4 +63,14 @@ public class KvConstant {
     public static final String GIS_URL = "http://localhost:8099/api";
 
 
+    /**
+     * 工作时
+     */
+    public static final String HOUR = "6452b029-fd8d-41c2-a2cc-f286978a4cb7";
+
+    /**
+     * 工作天
+     */
+    public static final String DAY = "8dc4d702-c043-4c18-8f81-a4ad84767b98";
+
 }
