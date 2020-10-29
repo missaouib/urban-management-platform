@@ -38,9 +38,9 @@ public class KvConstant {
      * epsg: {
      * id: 1f71e7de-28d0-432e-a2c5-524c9be673f7
      * }
-     * 默认 3857
+     * 默认 4326
      */
-    public static final String E_PSG = "9fe4cb5f-48df-4359-8fe4-a506cecde9f2";
+    public static final String E_PSG = "1f71e7de-28d0-432e-a2c5-524c9be673f7";
 
     /**
      * gis平台 图层保存时需要的比例尺
@@ -62,5 +62,15 @@ public class KvConstant {
      */
     public static final String GIS_URL = "http://localhost:8099/api";
 
+
+    /**
+     * 工作时
+     */
+    public static final String HOUR = "6452b029-fd8d-41c2-a2cc-f286978a4cb7";
+
+    /**
+     * 工作天
+     */
+    public static final String DAY = "8dc4d702-c043-4c18-8f81-a4ad84767b98";
 
 }

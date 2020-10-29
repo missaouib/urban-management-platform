@@ -109,11 +109,12 @@ class Event<<案件实体类>>{
     -eventSource : Kv
     -x : double
     -y : double
-    -task : String
+    -processInstanceId : String  //流程实例id
     -recTypeId : Kv      //案件类型    日常  、转向普查、其他
-    -region : Grid       //区域    一类区域  二类区域  三类区域
+    -peopleName : String //诉求人  热线上报存储的上报人姓名
     -eventSate : Kv      // 案件状态
     -eptTimeLimit : DeptTimeLimit
+    -eventCondition : EventCondition
 }
 
 class EventType<<分类实体类>>{
@@ -129,7 +130,6 @@ class EventType<<分类实体类>>{
 class EventFile<<事件附件实体类>>{
     -id : String
     -fileName : String
-    -eventId : Event
     -fileType ：int
 }
 class EventCondition<<条件实体类>>{
@@ -161,11 +161,14 @@ class Statistics<<流转统计实体类>>{
     -event                : Event
     -starTime : date
     -endTime  : date
-    -task   : int
+    -taskId   : String    //环节id
+    -taskName : String   
     -deptTimeLimit  :  DeptTimeLimit
     -processTimeLimit  :  ProcessTimeLimit
+    -sts      : int        //当前环节是否超时
+    -user     : User
     -opinions             : String    //处理意见
-    -eventFile            : EventFile //附件    
+    -eventFile            : EventFile[*] //附件    
     -patrolReport	      : int       //监督员上报  
     -publicReport	      : int       //公众举报    = 漏报数
     -report			      : int       //上报

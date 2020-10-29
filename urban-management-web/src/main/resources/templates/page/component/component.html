@@ -16,7 +16,7 @@
 
     <div class="notice_check">
         <form id="search-form">
-            <p>
+            <p style="display: flex;align-items: center">
                 <label class="">分类</label>
                 <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
                 <input type="hidden" readonly="readonly" id="eventTypeId" class="find_input">
@@ -25,9 +25,9 @@
                 </button>
                 <!--                <label class="">名称</label>-->
                 <!--                <input type="text" class="find_input" name="name" >-->
-                <input type="button" class="check_btn" onclick="search()" value="查询">
-                <input type="button" class="check_btn1" onclick="" value="更多检索">
-                <input type="button" class="check_btn1" onclick="" value="重置">
+                <input type="button" class="check_btn button_ground" onclick="search()" value="查询">
+                <input type="button" class="check_btn1 button_ground" onclick="" value="更多检索">
+                <input type="button" class="check_btn1 button_ground" onclick="" value="重置">
             </p>
             <p>
                 <label class="">部件标识码</label>
@@ -72,9 +72,9 @@
                 <select class="find_input" id="dataSource" name="safeLevel" required>
 
                 </select>
-                <input type="button" class="check_btn" onclick="" value="查询">
-                <input type="button" class="check_btn1" onclick="" value="精简检索">
-                <input type="button" class="check_btn1" onclick="" value="重置">
+                <input type="button" class="check_btn button_ground" onclick="" value="查询">
+                <input type="button" class="check_btn1 button_ground" onclick="" value="精简检索">
+                <input type="button" class="check_btn1 button_ground" onclick="" value="重置">
             </p>
 
         </form>
@@ -102,7 +102,7 @@
     <table id="table" class="component"></table>
     <div class="notice_check">
         <p>
-            <input type="button" class="check_btn1" onclick="" value="更新">
+            <input type="button" class="check_btn1 button_ground" onclick="" value="更新">
         </p>
     </div>
 

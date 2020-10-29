@@ -7,6 +7,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * 案件实体类
@@ -30,6 +31,14 @@ public class Event extends BaseEntity {
     @JoinColumn
     private EventType eventType;
 
+
+    /**
+     * 立案条件
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private EventCondition condition;
+
     /**
      * 问题描述
      */
@@ -39,9 +48,13 @@ public class Event extends BaseEntity {
     @JoinColumn
     private DeptTimeLimit timeLimit;
 
+    /**
+     * 网格
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Grid grid;
+
     /**
      * 案件地址
      */
@@ -67,17 +80,8 @@ public class Event extends BaseEntity {
 
     private double y;
 
-    private String taskId;
-
     /**
-     * 区域
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private KV region;
-
-    /**
-     * 时间状态 未处理、处理中、关单
+     * 案件状态 比如挂账
      */
     private int sts;
 
@@ -89,7 +93,12 @@ public class Event extends BaseEntity {
     private KV recType;
 
     /**
-     * 案件状态
+     * 流程实例ID
+     */
+    private String processInstanceId;
+
+    /**
+     * 案件状态 未定
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
@@ -100,4 +109,9 @@ public class Event extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private EventCondition eventCondition;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
+    private List<Statistics> statisticsList;
+
+
 }

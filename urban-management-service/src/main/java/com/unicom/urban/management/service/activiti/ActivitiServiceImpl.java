@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.activiti;
 
+import com.unicom.urban.management.common.constant.EventSourceConstant;
 import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.dao.event.EventButtonRepository;
 import com.unicom.urban.management.pojo.entity.EventButton;
@@ -12,12 +13,14 @@ import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
+import org.activiti.engine.task.TaskQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 封装activiti功能
@@ -53,14 +56,29 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     @Override
     public ProcessInstance reportEvent(String eventId, List<String> userList, String eventSource) {
-        Map<String, Object> variables = new HashMap<>(3);
-        variables.put("shouliyuanList", userList);
-        variables.put("eventSource", eventSource);
-        ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
-        log.debug("-------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
-        log.debug("-------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
-        log.debug("-------------事件来源 eventSource:{}-----------------------------------------------", eventSource);
-        return processInstance;
+
+        // 监督员上报
+        if (EventSourceConstant.SUPERVISE_REPORTING.equals(eventSource)) {
+
+
+            return null;
+        }
+
+        // 受理员上报
+        if ("".equals(eventSource)) {
+            Map<String, Object> variables = new HashMap<>(3);
+            variables.put("shouliyuanList", userList);
+            variables.put("eventSource", eventSource);
+            ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
+            log.debug("----------------------受理员上报事件开始--------------------------------------");
+            log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
+            log.debug("----------------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
+            log.debug("----------------------事件来源 eventSource:{}-----------------------------------------------", eventSource);
+            log.debug("----------------------受理员上报事件结束--------------------------------------");
+            return processInstance;
+        }
+
+        throw new BusinessException("非法事件来源: " + eventSource);
     }
 
     @Override
@@ -74,18 +92,43 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
-    public void xxx(String userId, Pageable pageable) {
-        List<Task> taskList = taskService.createTaskQuery()
-                .taskAssignee(userId)
-                .processDefinitionKey("hotline")
-                .orderByTaskCreateTime().desc()
-                .listPage(pageable.getPageNumber(), pageable.getPageSize());
+    public List<String> queryGroupEvent(String userId, String taskId, Pageable pageable) {
 
-        for (Task task : taskList) {
-            String processInstanceId = task.getProcessInstanceId();
-//            String businessKey = runtimeService.createProcessInstanceQuery().processInstanceIds(processInstanceId).singleResult().getBusinessKey();
-        }
+        TaskQuery taskQuery = taskService.createTaskQuery();
 
+        Task task = taskQuery.taskId(taskId).singleResult();
+
+        List<Task> taskList = taskQuery.taskCandidateUser(userId).taskName(task.getName()).listPage(pageable.getPageNumber(), pageable.getPageSize());
+
+        Set<String> taskIds = taskList.parallelStream().map(Task::getProcessDefinitionId).collect(Collectors.toSet());
+
+        List<ProcessInstance> processInstanceList = runtimeService.createProcessInstanceQuery().processInstanceIds(taskIds).list();
+
+        return processInstanceList.parallelStream().map(ProcessInstance::getBusinessKey).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public Task getTaskById(String taskId) {
+        return taskService.createTaskQuery().taskId(taskId).singleResult();
+    }
+
+    @Override
+    public List<String> queryMyTask(String userId, Pageable pageable) {
+
+        List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).listPage(pageable.getPageNumber(), pageable.getPageSize());
+
+        Set<String> taskIds = taskList.parallelStream().map(Task::getProcessDefinitionId).collect(Collectors.toSet());
+
+        List<ProcessInstance> processInstanceList = runtimeService.createProcessInstanceQuery().processInstanceIds(taskIds).list();
+
+        return processInstanceList.parallelStream().map(ProcessInstance::getBusinessKey).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public void claim(String taskId, String userId) {
+        taskService.claim(taskId, userId);
     }
 
     @Override
@@ -94,29 +137,28 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
 
-    //    @Override
-    public void asdasd(String taskId) {
-//        taskService.complete();
-    }
-
     @Override
     public List<EventButton> queryButton(String taskId) {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-        List<EventButton> eventButtonList = eventButtonRepository.findByTaskName(task.getName());
+        return queryButtonList(task.getName());
+
+    }
+
+    private List<EventButton> queryButtonList(String taskName) {
+
+//        List<EventButton> eventButtonList = eventButtonRepository.findByTaskName(task.getName());
+        List<EventButton> eventButtonList = new ArrayList<>();
+        if ("受理员-信息收集".equals(taskName)) {
+            EventButton button1 = new EventButton();
+            button1.setButtonValue("受理");
+            EventButton button2 = new EventButton();
+            button2.setButtonValue("不予受理");
+            eventButtonList.add(button1);
+            eventButtonList.add(button2);
+        }
         return eventButtonList;
     }
 
-    public List<Map<String, String>> getButton(String taskId) {
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-
-        log.debug(task.getName());
-
-//        taskService.complete();
-
-
-        return null;
-
-    }
 
     // 根据taskId查找当前任务出口
 //    @Override

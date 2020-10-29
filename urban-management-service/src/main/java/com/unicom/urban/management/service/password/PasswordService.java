@@ -16,6 +16,7 @@ public interface PasswordService {
     /**
      * 对密码进行加密
      *
+     * @param password 需要加密的密码
      * @return 加密过的密码
      */
     String encode(String password);

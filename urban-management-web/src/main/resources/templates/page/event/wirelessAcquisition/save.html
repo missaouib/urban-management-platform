@@ -23,35 +23,16 @@
                             <tr>
                                 <td><span>*</span>案卷号</td>
                                 <td>
-                                    <input  th:name="eventCode" id="eventCode" class="" readonly required />
+                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input"  />
                                 </td>
-                                <td>问题类型<span>*</span>
-                                    <input type="text" readonly="readonly" id="typeStr" class="find_input" />
+                                <td><span>*</span>问题类型</td>
+                                <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                    <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
                                     <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventType" class="find_input" />
                                     <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">
                                         +
                                     </button>
                                 </td>
-                                <div class="modal fade" id="modal-default">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">默认窗口</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="tree">
-                                                    <div class="treeDemo">
-                                                        <ul id="treeDemo" class="ztree">zTree</ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer justify-content-between">
-                                                <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
-                                                <button type="button" class="btn btn-primary">确认</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </tr>
                             <tr>
                                 <td><span>*</span>立案区域</td>
@@ -202,6 +183,26 @@
                     <ul id="message">
 
                     </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">默认窗口</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="tree">
+                        <div class="treeDemo">
+                            <ul id="treeDemo" class="ztree">zTree</ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">确认</button>
                 </div>
             </div>
         </div>
@@ -427,7 +428,7 @@
             showUpload: false,                                  // 是否显示上传按钮
             showRemove: true,                                   // 显示移除按钮
             dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
+            browseClass: "btn btn-primary",                     // 按钮样式
 
         }).on('change', function (event) {
             console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
@@ -478,7 +479,7 @@
             showUpload: false,                                  // 是否显示上传按钮
             showRemove: true,                                   // 显示移除按钮
             dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
+            browseClass: "btn btn-primary",                     // 按钮样式
 
         })
         $("#musicInput").fileinput({
@@ -497,7 +498,7 @@
             showUpload: false,                                  // 是否显示上传按钮
             showRemove: true,                                   // 显示移除按钮
             dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
+            browseClass: "btn btn-primary",                     // 按钮样式
 
         })
     })

@@ -3,8 +3,6 @@ package com.unicom.urban.management.pojo.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import javax.persistence.MapKey;
-import javax.persistence.MapKeyColumn;
 import java.time.LocalDateTime;
 
 /**
@@ -15,11 +13,17 @@ import java.time.LocalDateTime;
 @Data
 public class EventVO {
 
+    private String id;
+
     private String userName;
 
     private String represent;
 
     private String eventTypeName;
+
+    private Double x;
+
+    private Double y;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;

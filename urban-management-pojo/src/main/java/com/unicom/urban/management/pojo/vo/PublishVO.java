@@ -20,4 +20,8 @@ public class PublishVO {
 
     private String type;
 
+    private String workName;
+
+    private String layerGroup;
+
 }

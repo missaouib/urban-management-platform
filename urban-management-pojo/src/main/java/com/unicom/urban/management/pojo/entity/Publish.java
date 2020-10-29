@@ -53,4 +53,8 @@ public class Publish extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private EventType eventType;
 
+    private String workName;
+
+    private String layerGroup;
+
 }

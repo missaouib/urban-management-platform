@@ -9,28 +9,32 @@
     width: 20% !important;
 }
 .titlenav{
-    width: 100%;
     height: 30px;
     position: absolute;
-    top: 10px;
-    left: 20px;
+    top: 18px;
+    left: 30px;
     display: flex;
     align-items: center;
     z-index: 99;
 }
 .topFun{
+    width: 65px;
+    height: 40px;
     padding: 2px;
-    margin: 0px 5px;
+    margin: 0px 10px;
+    border-radius: 4px;
+    border: none!important;
+    padding:5px 10px;
 }
-.ol-overlaycontainer-stopevent{
-    display: none;
-}
+
 .leftBox,.rightBox{width: 49%;padding:5px;border: 1px solid #F2F3F5;box-shadow: 1px 1px 6px 0px rgba(228, 228, 228, 0.5);border-radius: 5px;}
 .leftContent{
     width: 49%;
 }
 .rightContent{
     width: 49%;
+    border-radius: 10px;
+    overflow: hidden;
 }
 .leftContent,rightContent{
     height: 100%;
