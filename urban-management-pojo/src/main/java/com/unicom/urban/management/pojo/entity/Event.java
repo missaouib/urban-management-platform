@@ -105,8 +105,7 @@ public class Event extends BaseEntity {
     @JoinColumn
     private EventCondition eventCondition;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
     private List<Statistics> statisticsList;
 
 }
