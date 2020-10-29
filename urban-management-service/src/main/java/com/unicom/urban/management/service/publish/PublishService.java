@@ -61,7 +61,6 @@ public class PublishService {
     public List<PublishVO> search() {
         List<Publish> publishList = publishRepository.findAll((Specification<Publish>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
-            list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class), StsConstant.UNRELEASED));
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         });
