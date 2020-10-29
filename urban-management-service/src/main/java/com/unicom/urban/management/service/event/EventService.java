@@ -89,11 +89,11 @@ public class EventService {
         return null;
     }
 
-    public List<DeptTimeLimitVO> findDeptTimeLimitByCondition(String condition) {
-        return deptTimeLimitService.findDeptTimeLimitByCondition(condition);
+    public List<DeptTimeLimitVO> findDeptTimeLimitByCondition(String conditionId) {
+        return deptTimeLimitService.findDeptTimeLimitByCondition(conditionId);
     }
-    public DeptTimeLimitVO findDeptTimeLimit(String timeLimit) {
-        return deptTimeLimitService.findDeptTimeLimit(timeLimit);
+    public DeptTimeLimitVO findDeptTimeLimit(String deptTimeLimitId) {
+        return deptTimeLimitService.findDeptTimeLimit(deptTimeLimitId);
     }
 
     /**

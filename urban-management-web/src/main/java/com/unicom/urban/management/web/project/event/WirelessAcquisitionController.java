@@ -3,9 +3,11 @@ package com.unicom.urban.management.web.project.event;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
+import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
@@ -53,6 +55,8 @@ public class WirelessAcquisitionController {
     private UserService userService;
     @Autowired
     private EventTypeService eventTypeService;
+    @Autowired
+    private DeptTimeLimitService deptTimeLimitService;
     @GetMapping("/toWirelessAcquisitionList")
     public ModelAndView toWirelessAcquisitionList() {
         return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/list");
@@ -61,8 +65,6 @@ public class WirelessAcquisitionController {
     @GetMapping("/toWirelessAcquisitionSave")
     public ModelAndView toWirelessAcquisitionListSave() {
         ModelAndView model = new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/save");
-        //立案条件
-       // model.addObject("eventType",this.findEventConditionByEventType(id));
         //案件等级
         model.addObject("level", kvService.findByTableNameAndFieldName("deptTimeLimit","level"));
         //所属区域
@@ -71,6 +73,8 @@ public class WirelessAcquisitionController {
         model.addObject("eventSource", kvService.findByTableNameAndFieldName("event","eventSource"));
         //案件类型
         model.addObject("recType", kvService.findByTableNameAndFieldName("event","recType"));
+        //所在区域
+        model.addObject("gridList",gridService.findAllByParentIsNull());
         //获取当前登录人
 //        String userId = SecurityUtil.getUserId();
 //        User user = userService.findOne(userId);
@@ -80,7 +84,31 @@ public class WirelessAcquisitionController {
 
     @GetMapping("/toWirelessAcquisitionUpdate/{id}")
     public ModelAndView toWirelessAcquisitionListUpdate(@PathVariable String id, Model model) {
-        model.addAttribute("id", id);
+        Event event = eventService.findOne(id);
+        model.addAttribute("event", event);
+        String dtlId = event.getTimeLimit().getId();
+        DeptTimeLimitVO deptTimeLimitVO = deptTimeLimitService.findDeptTimeLimit(dtlId);
+        //问题类型回显
+        EventType eventType = eventTypeService.getEventType(event.getEventType().getId());
+        model.addAttribute("eventTypeId",eventType.getName());
+        //立案区域回显
+        model.addAttribute("region",event.getEventCondition().getId());
+        //案件时限分类回显
+        model.addAttribute("timeType",event.getTimeLimit().getId());
+        //案件等级回显
+        //level
+        //所在区域回显
+        model.addAttribute("grid1",event.getGrid().getParent().getParent().getParent().getId());
+        //所属街道回显
+        model.addAttribute("grid2",event.getGrid().getParent().getParent().getId());
+        //所属社区回显
+        model.addAttribute("grid3",event.getGrid().getParent().getId());
+        //所属网格回显
+        model.addAttribute("grid4",event.getGrid().getId());
+        //问题来源回显
+        model.addAttribute("eventSource",event.getEventSource().getId());
+        //案件类型回显
+        model.addAttribute("recTypeId",event.getRecType().getId());
         return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/update");
     }
 
@@ -94,69 +122,44 @@ public class WirelessAcquisitionController {
      * @param eventTypeId
      * @return
      */
-    @RequestMapping("/findEventConditionByEventType/{eventTypeId}")
-    private List<EventConditionVO> findEventConditionByEventType(@PathVariable String eventTypeId){
-        return eventService.findEventConditionByEventType(eventTypeId);
+    @GetMapping("/findEventConditionByEventType/{eventTypeId}")
+    public Result findEventConditionByEventType(@PathVariable String eventTypeId){
+        List<EventConditionVO> list =  eventService.findEventConditionByEventType(eventTypeId);
+        return Result.success(list);
     }
 
-    /**
-     * 获取立案条件
-     * @param region
-     * @return
-     */
-    @RequestMapping("/findConditionValueByRegion/{region}")
-    private List<EventConditionVO> findConditionValueByRegion(@PathVariable String region){
-        return eventService.findConditionValueByRegion(region);
-    }
 
     /**
      * 获取立案时限分类
-     * @param condition
+     * @param conditionId
      * @return
      */
-    @RequestMapping("/findDeptTimeLimitByCondition/{condition}")
-    private List<DeptTimeLimitVO> findDeptTimeLimitByCondition(@PathVariable String condition){
-        return eventService.findDeptTimeLimitByCondition(condition);
+    @GetMapping("/findDeptTimeLimitByCondition/{conditionId}")
+    public Result findDeptTimeLimitByCondition(@PathVariable String conditionId){
+        List<DeptTimeLimitVO> list = eventService.findDeptTimeLimitByCondition(conditionId);
+        return Result.success(list);
     }
 
     /**
      * 获取立案时限
-     * @param deptTimeLimit
+     * @param deptTimeLimitId
      * @return
      */
-    @RequestMapping("/findDeptTimeLimit/{deptTimeLimit}")
-    private DeptTimeLimitVO findDeptTimeLimit(@PathVariable String deptTimeLimit){
-        return eventService.findDeptTimeLimit(deptTimeLimit);
+    @GetMapping("/findDeptTimeLimit/{deptTimeLimitId}")
+    public Result findDeptTimeLimit(@PathVariable String deptTimeLimitId){
+        DeptTimeLimitVO vo = eventService.findDeptTimeLimit(deptTimeLimitId);
+        return Result.success(vo);
     }
 
     /**
-     * 案件等级与时限
-     * @param eventTypeId
-     * @param levelId 案件等级
-     * @return 处理时限
+     * 所属区域获取网格
+     * @param parentId 区域
      */
-    @RequestMapping("/getDeptTimeLimitByLevel/{eventTypeId}/{levelId}")
-    public Integer getDeptTimeLimitByLevel(@PathVariable String eventTypeId, @PathVariable String levelId){
-        return depTimeLimitService.findByEventType_IdAndLevel_Id(eventTypeId, levelId);
+    @GetMapping("/findAllByParentId/{parentId}")
+    public Result findAllByParentId(@PathVariable String parentId) {
+        List<GridVO> list = gridService.findAllByParentId(parentId);
+        return Result.success(list);
     }
-    /**
-     * 所属区域kvId获取网格
-     * @param kvId 区域kvId
-     */
-    @RequestMapping("/findAllByKvId/{kvId}")
-    public List<GridVO> findAllByKvId(@PathVariable String kvId) {
-        List<GridVO> gridVOList = new ArrayList<>();
-        GridVO gridVO1 = new GridVO();
-        gridVO1.setId("15d84eb0-83d7-46a4-a8aa-fcfdad5aefee");
-        gridVO1.setGridName("2");
-        GridVO gridVO2 = new GridVO();
-        gridVO2.setId("b279dad8-df58-4276-9fc9-91d9180981bd");
-        gridVO2.setGridName("1");
-        gridVOList.add(gridVO1);
-        gridVOList.add(gridVO2);
-        return gridVOList;
-    }
-
     /**
      * 保存
      * @param event

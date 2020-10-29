@@ -20,5 +20,7 @@ public interface GridRepository extends CustomizeRepository<Grid, String> {
      * @return 网格list
      */
     List<Grid> findAllByPublish_IdAndRecord_Sts(String publishId, int sts);
+    List<Grid> findAllByParentId(String parentId);
+    List<Grid> findAllByParentIsNull();
 
 }

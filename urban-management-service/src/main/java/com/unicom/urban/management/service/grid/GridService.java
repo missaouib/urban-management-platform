@@ -155,11 +155,20 @@ public class GridService {
 
     /**
      * 查询网格列表
-     * @param kvId
+     * @param parentId
      * @return
      */
-    /*public List<GridVO> findAllByKvId(String kvId) {
-        List<Grid> gridList = gridRepository.findAllByKv_Id(kvId);
+    public List<GridVO> findAllByParentId(String parentId) {
+        List<Grid> gridList = gridRepository.findAllByParentId(parentId);
         return GridMapper.INSTANCE.gridListToGridVOList(gridList);
-    }*/
+    }
+
+    /**
+     * 获取所在区域
+     * @return
+     */
+    public List<GridVO> findAllByParentIsNull(){
+        List<Grid> gridList = gridRepository.findAllByParentIsNull();
+        return GridMapper.INSTANCE.gridListToGridVOList(gridList);
+    }
 }
