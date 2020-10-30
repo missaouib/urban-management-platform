@@ -102,8 +102,7 @@ public class EventService {
      * @param event
      */
     public void save(Event event) {
-        User user = userService.findOne(SecurityUtil.getUserId());
-        event.setUser(user);
+        event.setUser(SecurityUtil.getUser().castToUser());
         Event save = eventRepository.save(event);
 
     }

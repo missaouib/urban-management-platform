@@ -35,4 +35,34 @@ public class SupervisionAcceptanceController {
         return new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/update");
     }
 
+    /**
+     * 自处理案件列表
+     *
+     * @return list
+     */
+    @GetMapping("/toSelfProcessingList")
+    public ModelAndView toSelfProcessingList() {
+        return new ModelAndView(SystemConstant.PAGE + "/event/selfProcessing/list");
+    }
+
+    /**
+     * 案件派核实列表
+     *
+     * @return list
+     */
+    @GetMapping("/toSendVerificationList")
+    public ModelAndView toSendVerificationList() {
+        return new ModelAndView(SystemConstant.PAGE + "/event/sendVerification/list");
+    }
+
+    /**
+     * 案件派核查列表
+     *
+     * @return list
+     */
+    @GetMapping("/toSendCheckList")
+    public ModelAndView toSendCheckList() {
+        return new ModelAndView(SystemConstant.PAGE + "/event/sendCheck/list");
+    }
+
 }

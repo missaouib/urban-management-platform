@@ -211,8 +211,7 @@ public class ImportController {
         grid.setGridName(layerName);
         grid.setPublish(publish);
 //        grid.setSts(0);
-        User user = userService.findOne(SecurityUtil.getUserId());
-        grid.setUser(user);
+        grid.setUser(SecurityUtil.getUser().castToUser());
     gridService.save4Import(grid);
 
     }
@@ -227,8 +226,7 @@ public class ImportController {
         publish.setLayerId(layerId);
         publish.setKv(kv);
         publish.setName(layerName);
-        User user = userService.findOne(SecurityUtil.getUserId());
-        publish.setUser(user);
+        publish.setUser(SecurityUtil.getUser().castToUser());
         releaseService.save(publish);
         return publish;
     }

@@ -15,7 +15,7 @@ public interface ActivitiService {
      *
      * @param eventId     事件ID
      * @param userList    用户ID
-     * @param eventSource 事件来源
+     * @param eventSource 事件来源 {@link com.unicom.urban.management.common.constant.EventSourceConstant}
      * @return 流程实例ID
      */
     ProcessInstance reportEvent(String eventId, List<String> userList, String eventSource);
