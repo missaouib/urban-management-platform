@@ -66,7 +66,7 @@
             </form>
         </div>
 
-        <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+        <table id="table" class="table_style" style="margin: 0 auto" > </table>
 
         <div class="btn-group-sm" id="toolbar" >
             <a class="btn btn-success" onclick="$.operate.addTab()">
@@ -230,45 +230,116 @@
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
 
     function queryUserList() {
-        var options = {
-            url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
-            // exportUrl: prefix + "/export",
-            // importUrl: prefix + "/importData",
-            // importTemplateUrl: prefix + "/importTemplate",
-            uniqueId: "id",
-            sortName: "updateTime",
-            sortOrder: "desc",
-            modalName: "用户",
-            columns: [
-                {
-                    field: 'index',
-                    title: '序号',
-                },
-                {
-                    title: '问题描述',
-                    field: 'represent'
-                },
-                {
-                    title: '上报人',
-                    field: 'userName'
-                },
-                {
-                    title: '案件类型',
-                    field: 'eventTypeName'
-                },
-                {
-                    title: '问题来源',
-                    field: 'createTime',
-                    sortable: true,
-                }
-
-            ]
-        };
-        $.table.init(options);
+        // var options = {
+        //     url: searchUrl,
+        //     createUrl: addUrl,
+        //     updateUrl: editUrl,
+        //     removeUrl: removeUrl,
+        //     // exportUrl: prefix + "/export",
+        //     // importUrl: prefix + "/importData",
+        //     // importTemplateUrl: prefix + "/importTemplate",
+        //     uniqueId: "id",
+        //     sortName: "updateTime",
+        //     sortOrder: "desc",
+        //     modalName: "用户",
+        //     columns: [
+        //         {
+        //             field: 'index',
+        //             title: '序号',
+        //         },
+        //         {
+        //             title: '时限',
+        //             field: 'time'
+        //         },
+        //         {
+        //             title: '问题描述',
+        //             field: 'represent'
+        //         },
+        //         {
+        //             title: '上报人',
+        //             field: 'userName'
+        //         },
+        //         {
+        //             title: '案件类型',
+        //             field: 'eventTypeName'
+        //         },
+        //         {
+        //             title: '问题来源',
+        //             field: 'createTime',
+        //             sortable: true,
+        //         }
+        //
+        //     ],
+        //     data:[
+        //         {
+        //             time:"<div style='background: red;width: 25px;height: 25px;border-radius: 50%'></div>"
+        //         }
+        //     ]
+        // };
+        // $.table.init(options);
     }
+
+
+    $('#table').bootstrapTable({
+        columns: [
+            {
+                field: 'index',
+                title: '序号',
+            },
+            {
+                title: '时限',
+                field: 'time'
+            },
+            {
+                title: '问题描述',
+                field: 'represent'
+            },
+            {
+                title: '上报人',
+                field: 'userName'
+            },
+            {
+                title: '案件类型',
+                field: 'eventTypeName'
+            },
+            {
+                title: '问题来源',
+                field: 'createTime',
+                sortable: true,
+            }
+
+        ],
+        data:[
+            {
+                index:'1',
+                time:"<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
+                    "<img src='../img/0.png' style='width: 100%;height: 100%'></div>",
+                represent:"1",
+                userName:"2",
+                eventTypeName:"3",
+                createTime:"4"
+            },
+            {
+                index:'1',
+                time:"<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
+                    "<img src='../img/1.png' style='width: 100%;height: 100%'></div>",
+                represent:"1",
+                userName:"2",
+                eventTypeName:"3",
+                createTime:"4"
+            },
+            {
+                index:'1',
+                time:"<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
+                    "<img src='../img/2.png' style='width: 100%;height: 100%'></div>",
+                represent:"1",
+                userName:"2",
+                eventTypeName:"3",
+                createTime:"4"
+            },
+        ]
+    });
+
 
     jQuery.extend(jQuery.validator.messages, {
         required: "必填",
