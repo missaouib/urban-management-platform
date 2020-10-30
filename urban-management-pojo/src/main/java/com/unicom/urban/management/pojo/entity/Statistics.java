@@ -92,7 +92,7 @@ public class Statistics {
      */
     private String sts;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User user;
 
