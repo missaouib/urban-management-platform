@@ -109,12 +109,12 @@ public class ComponentController {
 
     @GetMapping("/objState")
     public List<KV> objState(){
-        return kvService.getKv("componentInfo","objState");
+        return kvService.findByTableNameAndFieldName("componentInfo","objState");
     }
 
     @GetMapping("/dataSource")
     public List<KV> dataSource(){
-        return kvService.getKv("componentInfo","dataSource");
+        return kvService.findByTableNameAndFieldName("componentInfo","dataSource");
     }
 
     @GetMapping("/grid")

@@ -11,6 +11,7 @@
     width: 33%;
     border-radius: 10px;
     overflow: hidden;
+    /*overflow: auto;*/
 }
 .leftContent,rightContent{
     height: 100%;
@@ -53,6 +54,7 @@
     top: 0;
     left: 0;
     display: none;
+    overflow: auto;
 }
 .but_p{
     display: flex;
@@ -64,4 +66,21 @@
 .modelOpin{
     text-align: left!important;
     color: black!important;
+}
+.model_in{
+    width: 100%;
+    height: 130px;
+    display: flex;
+    justify-content: space-between;
+}
+.model_input{
+    width: 59%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.model_radio{
+    width: 35%;
+    height: 100%;
+    overflow: auto;
 }

@@ -1015,6 +1015,7 @@ ul,li{list-style: none}
     width: 59%;
     height: 100%;
     padding: 10px;
+    overflow: auto;
 }
 .leftInner,.rightInner{
     border: 1px solid #f0f6e4;

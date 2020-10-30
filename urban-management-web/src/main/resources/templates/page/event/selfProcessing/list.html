@@ -1,10 +1,519 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
-<body>
-selfProcessing selfProcessing selfProcessing
+<body style="border-radius: 8px;">
+<div class="content">
+    <div class="leftContent">
+        <form id="userForm">
+            <div class="top table2_top">
+                <!--        <div>-->
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td>问题描述<span></span></td>
+                            <td>
+                                <input type="text" class="datepicker" readonly="readonly">
+                            </td>
+                            <td>问题类型<span>*</span></td>
+                            <td>
+                                <div class="treeDemo">
+                                    <ul id="treeDemo" class="ztree">zTree</ul>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>所属网格<span></span></td>
+                            <td>
+                                <select id="gridKvId" name="kv" required>
+                                    <option value="">请选择</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                            </td>
+                            <td>问题来源<span></span></td>
+                            <td style="width: 35%">
+                                <select  name="kv" required>
+                                    <option value="">问题来源</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>当前状态<span></span></td>
+                            <td>
+                                <select  name="kv" required>
+                                    <option value="">请选择</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--    </div>-->
+        </form>
+        <div class="notice_check">
+            <form id="search-form">
+                <p style="display: flex;justify-content: flex-end">
+                    <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
+                    <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">
+                </p>
+            </form>
+        </div>
+        <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+
+    </div>
+    <div class="rightContent">
+        <div class="tabTitle">
+            <span class="active">地图</span>
+            <span>案件详情</span>
+            <span>流转记录</span>
+            <span>流程图</span>
+        </div>
+        <div class="tabInfo">
+            <div class="banner blockActive">
+                <div class="map" id="map" style="width: 100%;height: 90%"></div>
+                <div id="popup" class="ol-popup">
+                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                    <div id="popup-content">
+                        <ul id="message">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="banner">
+                <h3 class="bigTitle" style="margin-top: 10px">案件修改</h3>
+                <form class="details">
+                    <div class="top table2_top">
+                        <div class="top_out">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td><span>*</span>案卷号</td>
+                                    <td>
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                    </td>
+                                    <td><span>*</span>问题类型</td>
+                                    <td>
+                                        <div class="treeDemo">
+                                            <ul id="treeDemoCase" class="ztree">tree</ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>*</span>立案条件</td>
+                                    <td>
+                                        <input value="私乱搭建" type="text" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>*</span>问题描述</td>
+
+                                    <td colspan="8"><textarea id="problemescription" name="problemescription"
+                                                              required></textarea></td>
+
+
+                                </tr>
+                                <tr class="col-12">
+                                    <td><span></span>案件等级</td>
+                                    <td>
+                                        <select name="safeLevel" >
+                                            <option>一般</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </td>
+                                    <td><span></span>处理时限</td>
+                                    <td>
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                    </td>
+                                </tr>
+                                <tr class="col-12">
+                                    <td><span>*</span>所属区域</td>
+                                    <td>
+                                        <select name="safeLevel">
+                                            <option>A类</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </td>
+                                    <td><span>*</span>所属网格</td>
+                                    <td>
+                                        <select name="safeLevel">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>*</span>案件地址</td>
+                                    <td>
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>上报人</td>
+                                    <td style="text-align: left">张辉</td>
+                                    <td><span></span>联系方式</td>
+                                    <td><input id="handleTime" name="handleTime" type="text" value="15645068888" readonly="readonly"></td>
+                                </tr>
+
+                                <tr>
+                                    <td><span></span>创建时间</td>
+                                    <td>
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                    </td>
+                                    <td><span></span>问题来源</td>
+                                    <td>
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>位置坐标</td>
+                                    <td>
+                                        <input type="text"  class="find_input" readonly="readonly" disabled value="经度" >
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <input type="text" class="find_input" readonly="readonly" disabled value="纬度">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>案件类型</td>
+                                    <td>
+                                        <select name="safeLevel">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td><span></span>处置前</td>
+                                    <td>
+                                        <div style="width: 100px;height: 100px;">
+                                            <img style="width: 100%;height: 100%;" src="../img/0.png">
+                                        </div>
+                                    </td>
+
+                                </tr><tr>
+                                    <td><span></span>处置后</td>
+                                    <td>
+                                        <div style="width: 100px;height: 100px;">
+                                            <img style="width: 100%;height: 100%;" src="../img/2.png">
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <!--                            按钮-->
+                        <div class="notice_bot">
+                            <!--            <div class="l_left">-->
+                            <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                            <!--            </div>-->
+                            <div class="r_right but_p">
+                                <button class="but_save" style="margin-right: 10px">转结案</button>
+                                <button class="but_save" type="submit" onclick="submitHandler()">作废</button>
+                                <button class="but_close" onclick="Cancel()">返回</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="banner"></div>
+            <div class="banner">流程图</div>
+
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        queryUserList();
+        $(".tabTitle span").click(function() {
+            $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
+            $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
+        })
+    })
+
+
+    let searchUrl = /*[[@{/event/cooperativeWorkList}]]*/ "/event/cooperativeWorkList";
+
+    let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
+
+    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
+
+    let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
+    let num = 1;
+    function queryUserList() {
+        var options = {
+            num:num,
+            url: searchUrl,
+            createUrl: addUrl,
+            updateUrl: editUrl,
+            removeUrl: removeUrl,
+            // exportUrl: prefix + "/export",
+            // importUrl: prefix + "/importData",
+            // importTemplateUrl: prefix + "/importTemplate",
+            uniqueId: "id",
+            sortName: "updateTime",
+            sortOrder: "desc",
+            modalName: "用户",
+            onClickRow: function (row) {
+                console.log("row", row);
+            },
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                },
+                {
+                    title: '时限',
+                    field: '',
+                    formatter: function (value,row) {
+                        console.log(row)//表格数据 row. 什么什么 .png
+                        var e = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
+                            "<img src='../img/2.png' style='width: 100%;height: 100%'></div>"
+                        return e;
+                    }
+                },
+                {
+                    title: '案件编号',
+                    field: 'represent'
+                },
+                {
+                    title: '问题描述',
+                    field: 'userName'
+                },
+                {
+                    title: '当前状态',
+                    field: 'eventTypeName'
+                },
+                {
+                    title: '案件类型',
+                    field: 'eventTypeName'
+                },
+                {
+                    title: '达到时间',
+                    field: 'eventTypeName'
+                },
+
+            ]
+        };
+        $.table.init(options);
+    }
+
+    jQuery.extend(jQuery.validator.messages, {
+        required: "必填",
+        phone: "必填",
+        remote: "请修正该字段",
+        email: "请输入正确格式的电子邮件",
+        url: "请输入合法的网址",
+        date: "请输入合法的日期",
+        dateISO: "请输入合法的日期 (ISO).",
+        number: "请输入合法的数字",
+        digits: "只能输入整数",
+        creditcard: "请输入合法的信用卡号",
+        equalTo: "请再次输入相同的值",
+        accept: "请输入拥有合法后缀名的字符串",
+        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
+        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
+        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
+        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
+        min: jQuery.validator.format("请输入一个最小为{0} 的值")
+    });
+
+    $("#userForm").validate({
+        debug: true,
+        ignore:"",
+        submitHandler:function(form){
+            var params = $(form).serialize(); //串行化表单参数
+            $.post("user",params,function(result){
+                if (result.ok) {//注册成功
+                    location.href = "register_ok.html";
+                }else{//注册失败
+                    alert(result.msg);
+                    $("#checkImg").click();
+
+                }
+            },"json");
+        },
+        rules: {
+            userName: {
+                required: true
+            },
+            loginName: {
+                required: true,
+                // rangelength: [5, 8]
+            },
+            phonenumber: {
+                required: true,
+                // rangelength: [6, 12]
+            },
+            problemescription: {
+                required: true,
+                // rangelength: [6, 12],
+                /*重复密码需要与原密码相同的要求*/
+                // equalTo: "#pwd"
+            },
+            safeLevel: {
+                required: true
+            },
+            findTime: {
+                required: true,
+                // range: [26, 50]
+            },
+            enterprise: {
+                required: true
+            },
+            department: {
+                required: true
+            },
+            handleTime: {
+                required: true
+            },charge: {
+                required: true
+            },
+            question: {
+                required: true
+            },
+            closeTime: {
+                required: true,
+                // email: true
+            },
+            // idcard: {
+            //     card: true
+            // },
+            // phone: {
+            //     phone: true
+            // }
+        },
+        messages: {
+            // realname: {
+            //     required: "真实姓名不能为空"
+            // },
+            // username: {
+            //     required: "登录名不能为空",
+            //     rangelength: "登录名长度要在5-8位之间"
+            // },
+            // pwd: {
+            //     required: "密码不能为空",
+            //     rangelength: "密码长度在6-12位之间"
+            // },
+            // pwd2: {
+            //     required: "重复密码不能为空",
+            //     rangelength: "重复密码长度在6-12位之间",
+            //     equalTo: "重复密码与密码不一致"
+            // },
+            // sex: {
+            //     required: "请选择性别"
+            // },
+            // age: {
+            //     required: "年龄不能为空",
+            //     range: "年龄必须在26-50岁之间"
+            // },
+            // email: {
+            //     email: "请输入有效邮箱"
+            // },
+            // idcard: {
+            //     card: "请输入有效身份证号"
+            // },
+            // phone: {
+            //     phone: "必填"
+            // }
+        }
+    });
+    /*手机号格式验证*/
+    $.validator.addMethod("phone", function (value, element, params) {
+        var reg = /^1[34578]\d{9}$/;
+        return reg.test(value);
+    }, "phone error");
+
+    function Cancel() {
+        $.modal.closeLoading();
+    }
+
+    function submitHandler(){
+        //先校验
+        if (!$("form").valid()) {
+            return;
+
+        }
+        var data = $('#userForm').serialize();
+        $.operate.saveTab(url, data);
+    }
+
+
+    var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
+    // 沽源地图
+    var center = [115.68192, 41.66462];
+    var projection = new ol.proj.Projection({
+        code: 'EPSG:4326',
+        units: 'degrees',
+        axisOrientation: 'neu',
+        global: true
+    });
+    var untiled = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+            ratio: 1,
+            url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
+            params: {
+                'VERSION': '1.1.1',
+                "LAYERS": 'guyuan20201010:guyuan',
+                "exceptions": 'application/vnd.ogc.se_inimage',
+            }
+        })
+    });
+    var source = new ol.source.Vector({wrapX: false});
+
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            untiled
+        ],
+        view: new ol.View({
+            // projection: projection,
+            center:center,
+            zoom:13,
+            projection: projection
+        })
+    });
+</script>
 </body>
 </html>
