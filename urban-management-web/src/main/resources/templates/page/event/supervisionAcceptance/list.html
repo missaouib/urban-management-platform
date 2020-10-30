@@ -24,7 +24,7 @@
             </form>
         </div>
 
-        <table id="table" class="table_style" style="margin: 0 auto" > </table>
+        <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
 
         <div class="btn-group-sm" id="toolbar" >
             <a class="btn btn-success" onclick="$.operate.addTab()">
@@ -157,6 +157,23 @@
 
 
     </div>
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">默认窗口</h4>
+                </div>
+                <div class="modal-body">
+                    <p>内容</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
@@ -188,53 +205,61 @@
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
 
     function queryUserList() {
-        // var options = {
-        //     url: searchUrl,
-        //     createUrl: addUrl,
-        //     updateUrl: editUrl,
-        //     removeUrl: removeUrl,
-        //     // exportUrl: prefix + "/export",
-        //     // importUrl: prefix + "/importData",
-        //     // importTemplateUrl: prefix + "/importTemplate",
-        //     uniqueId: "id",
-        //     sortName: "updateTime",
-        //     sortOrder: "desc",
-        //     modalName: "用户",
-        //     columns: [
-        //         {
-        //             field: 'index',
-        //             title: '序号',
-        //         },
-        //         {
-        //             title: '时限',
-        //             field: 'time'
-        //         },
-        //         {
-        //             title: '问题描述',
-        //             field: 'represent'
-        //         },
-        //         {
-        //             title: '上报人',
-        //             field: 'userName'
-        //         },
-        //         {
-        //             title: '案件类型',
-        //             field: 'eventTypeName'
-        //         },
-        //         {
-        //             title: '问题来源',
-        //             field: 'createTime',
-        //             sortable: true,
-        //         }
-        //
-        //     ],
-        //     data:[
-        //         {
-        //             time:"<div style='background: red;width: 25px;height: 25px;border-radius: 50%'></div>"
-        //         }
-        //     ]
-        // };
-        // $.table.init(options);
+        var options = {
+            url: searchUrl,
+            createUrl: addUrl,
+            updateUrl: editUrl,
+            removeUrl: removeUrl,
+            // exportUrl: prefix + "/export",
+            // importUrl: prefix + "/importData",
+            // importTemplateUrl: prefix + "/importTemplate",
+            uniqueId: "id",
+            sortName: "updateTime",
+            sortOrder: "desc",
+            modalName: "用户",
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                },
+                {
+                    title: '时限',
+                    field: 'time'
+                },
+                {
+                    title: '问题描述',
+                    field: 'represent'
+                },
+                {
+                    title: '上报人',
+                    field: 'userName'
+                },
+                {
+                    title: '案件类型',
+                    field: 'eventTypeName'
+                },
+                {
+                    title: '问题来源',
+                    field: 'createTime',
+                    sortable: true,
+                },
+                {
+                    title: '操作',
+                    field: '',
+                    formatter: function (value, row) {
+                        var e = '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default">核实</a> ';
+                        return e;
+                    }
+                },
+
+            ],
+            data:[
+                {
+                    time:"<div style='background: red;width: 25px;height: 25px;border-radius: 50%'></div>"
+                }
+            ]
+        };
+        $.table.init(options);
     }
 
 
