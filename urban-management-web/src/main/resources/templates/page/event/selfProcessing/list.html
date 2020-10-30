@@ -25,9 +25,8 @@
                             </td>
                             <td>问题类型<span>*</span></td>
                             <td>
-                                <div class="treeDemo">
-                                    <ul id="treeDemo" class="ztree">zTree</ul>
-                                </div>
+                                <input id="eventType" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+
                             </td>
                         </tr>
                         <tr>
@@ -112,9 +111,8 @@
                                     </td>
                                     <td><span>*</span>问题类型</td>
                                     <td>
-                                        <div class="treeDemo">
-                                            <ul id="treeDemoCase" class="ztree">tree</ul>
-                                        </div>
+                                        <input id="eventType" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -358,6 +356,29 @@
         max: jQuery.validator.format("请输入一个最大为{0} 的值"),
         min: jQuery.validator.format("请输入一个最小为{0} 的值")
     });
+
+    //模态窗 selectEventTypeTree
+    function selectEventTypeTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择事件类型',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero){
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#typeStr").val(body.find('#treeId').val());
+        $("#typeStr").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
 
     $("#userForm").validate({
         debug: true,
