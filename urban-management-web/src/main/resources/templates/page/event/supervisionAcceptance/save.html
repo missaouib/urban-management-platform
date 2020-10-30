@@ -67,7 +67,7 @@
                             <tr>
                                 <td><span></span>诉求时间</td>
                                 <td>
-                                    <input th:name="createTime" th:value="${eventVO.createTime}" class="" />
+                                    <input th:name="createTime" th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}" class="" />
                                 </td>
                                 <td><span></span>问题来源</td>
                                 <td>
