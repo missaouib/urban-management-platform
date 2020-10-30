@@ -16,6 +16,8 @@
             <form id="search-form">
                 <p>
                     <label class="">问题类型：</label>
+
+
                     <input type="text" class="find_input" id="eventTypeName" onclick="selectEventTypeTree()" readonly="readonly">
                     <input type="hidden" name="eventTypeId" id="eventTypeId">
                     <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
@@ -164,7 +166,25 @@
                     <h4 class="modal-title">默认窗口</h4>
                 </div>
                 <div class="modal-body">
-                    <p>内容</p>
+                    <p>
+                        <div class="model_in">
+                            <div class="model_input">
+                                <p>处理详情</p>
+                                <textarea style="height: 90%"></textarea>
+                            </div>
+                            <div class="model_radio">
+                                <ul>
+                                    <li><input type="radio" name="humen"><i>张辉</i></li>
+                                    <li><input type="radio" name="humen"><i>关羽</i></li>
+                                    <li><input type="radio" name="humen"><i>刘备</i></li>
+                                    <li><input type="radio" name="humen"><i>张辉</i></li>
+                                    <li><input type="radio" name="humen"><i>关羽</i></li>
+                                    <li><input type="radio" name="humen"><i>刘备</i></li>
+                                    <li><input type="radio" name="humen"><i>张辉</i></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </p>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
@@ -252,11 +272,6 @@
                     }
                 },
 
-            ],
-            data:[
-                {
-                    time:"<div style='background: red;width: 25px;height: 25px;border-radius: 50%'></div>"
-                }
             ]
         };
         $.table.init(options);
