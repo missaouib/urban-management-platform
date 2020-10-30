@@ -1,10 +1,12 @@
 package com.unicom.urban.management.pojo.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.unicom.urban.management.pojo.entity.EventFile;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 事件VO
@@ -29,5 +31,7 @@ public class EventVO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
+
+    private List<EventFile> eventFileList;
 
 }

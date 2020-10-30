@@ -25,4 +25,6 @@ public class EventFile {
 
     private int fileType;
 
+    private String filePath;
+
 }

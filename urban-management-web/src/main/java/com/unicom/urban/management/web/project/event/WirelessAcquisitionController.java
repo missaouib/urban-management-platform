@@ -166,8 +166,7 @@ public class WirelessAcquisitionController {
      */
     @RequestMapping("/save")
     public void save(Event event){
-        event.setCreateTime(LocalDateTime.now());
-        event.setSts(EventConstant.SUPERVISE_SAVE);
+        event.setSts(0);
         eventService.save(event);
     }
     /**
@@ -176,8 +175,7 @@ public class WirelessAcquisitionController {
      */
     @RequestMapping("/preReport")
     public void preReport(Event event){
-        event.setCreateTime(LocalDateTime.now());
-        event.setSts(EventConstant.SUPERVISE_REPORTING);
+        event.setSts(1);
         eventService.save(event);
     }
 

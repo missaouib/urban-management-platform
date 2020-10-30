@@ -186,8 +186,8 @@
 
     })
 
-    let url = /*[[@{/user/save}]]*/ "/json/unit.json";
-    let uploadUrl = /*[[@{/common/upload}]]*/ "/json/unit.json";
+    let url = /*[[@{/event/register}]]*/ "/event/register";
+    let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
     let componentTypeUrl = /*[[@{/allEventType}]]*/ "/allEventType";
     let createEventCodeUrl = /*[[@{/event/createEventCode}]]*/ "/event/createEventCode";
 
@@ -214,7 +214,7 @@
         $("#typeStr").val(treeNode.name);
         $("#eventTypeId").val(treeNode.id);
         $(".closemodal").click();
-        createEventCode(eventTypeId);
+        createEventCode(treeNode.id);
     }
 
     /**
@@ -222,10 +222,12 @@
      * @param eventTypeId
      */
     function createEventCode(eventTypeId) {
+        console.log("eventTypeId==="+eventTypeId);
         var url = createEventCodeUrl+"?eventTypeId="+eventTypeId
         $.ajaxUtil.get(url, function (e) {
             if (e.code == 0) {
                 var eventCode = e.data
+                console.log("eventCode======"+eventCode)
                 $("#eventCode").val(eventCode);
             }
         })

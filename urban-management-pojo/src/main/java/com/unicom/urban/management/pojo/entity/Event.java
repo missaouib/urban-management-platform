@@ -116,5 +116,11 @@ public class Event extends BaseEntity {
      * 诉求人
      */
     private String peopleName;
+    /**
+     * 事件附件实体类
+     */
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn
+    private List<EventFile> eventFileList;
 
 }

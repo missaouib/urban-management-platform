@@ -3,7 +3,9 @@ package com.unicom.urban.management.web.project.event;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.Result;
+import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.vo.EventVO;
+import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.kv.KVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -27,6 +29,8 @@ public class SupervisionAcceptanceController {
 
     @Autowired
     private KVService kvService;
+    @Autowired
+    private EventService eventService;
 
     @GetMapping("/toSupervisionAcceptanceList")
     public ModelAndView toSupervisionAcceptanceList() {
@@ -37,10 +41,10 @@ public class SupervisionAcceptanceController {
     public ModelAndView toSupervisionAcceptanceSave() {
         ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/save");
         //问题来源
-        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event","eventSource"));
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         EventVO eventVO = new EventVO();
         eventVO.setCreateTime(LocalDateTime.now());
-        modelAndView.addObject("eventVO",eventVO);
+        modelAndView.addObject("eventVO", eventVO);
         return modelAndView;
     }
 
@@ -79,5 +83,15 @@ public class SupervisionAcceptanceController {
     public ModelAndView toSendCheckList() {
         return new ModelAndView(SystemConstant.PAGE + "/event/sendCheck/list");
     }
-
+    /**
+     * 登记
+     *
+     * @return Result
+     */
+    @RequestMapping("register")
+    public Result register(Event event) {
+        event.setSts(2);
+        eventService.save(event);
+        return Result.success();
+    }
 }
