@@ -112,6 +112,9 @@ public class Event extends BaseEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
     private List<Statistics> statisticsList;
-
+    /**
+     * 诉求人
+     */
+    private String peopleName;
 
 }

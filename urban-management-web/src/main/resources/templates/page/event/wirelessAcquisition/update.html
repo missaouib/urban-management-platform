@@ -234,7 +234,19 @@
 
     //问题类型回显
     var eventTypeId = [[${eventTypeId}]];
+function getEventTypeShow(){
+        var url = "/event/getEventTypeShow/"+eventTypeId
+        $.ajaxUtil.get(url, function (e) {
+            if (e.code == 0) {
+                console.log(e.data)
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
+                });
+                $("#region").html(option);
+            }
+        })
 
+}
     //立案区域回显
     var region = [[${region}]];
     //案件时限分类回显
@@ -283,19 +295,7 @@
         //获取立案区域
         findEventConditionByEventType(eventTypeId)
     }
-    /**
-     * 后台自动生成案卷号
-     * @param eventTypeId
-     */
-    // function createEventCode(eventTypeId) {
-    //     var url = createEventCodeUrl+"?eventTypeId="+eventTypeId
-    //     $.ajaxUtil.get(url, function (e) {
-    //         if (e.code == 0) {
-    //             var eventCode = e.data
-    //             $("#eventCode").val(eventCode);
-    //         }
-    //     })
-    // }
+
 
     /**
      * 获取立案区域

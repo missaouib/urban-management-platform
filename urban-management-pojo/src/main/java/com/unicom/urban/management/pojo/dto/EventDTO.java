@@ -20,4 +20,6 @@ public class EventDTO {
 
     private Integer sts;
 
+    private String eventTypeId;
+
 }

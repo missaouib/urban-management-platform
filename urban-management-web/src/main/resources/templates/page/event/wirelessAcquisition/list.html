@@ -18,7 +18,7 @@
                 <p>
                     <label class="">问题类型：</label>
                     <input type="text" class="find_input" id="eventTypeName" onclick="selectEventTypeTree()" readonly="readonly">
-                    <input type="hidden" name="eventTypeId" id="eventTypeId">
+                    <input type="hidden" th:name="eventTypeId" id="eventTypeId">
                     <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
                     <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置查询">
                 </p>

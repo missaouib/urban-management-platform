@@ -7,6 +7,7 @@
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
     <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;">
@@ -22,59 +23,57 @@
                             <tr>
                                 <td><span>*</span>案卷号</td>
                                 <td>
-                                    <input name="userName" value="A203834879" class="" required>
+                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input"  />
                                 </td>
                                 <td><span>*</span>问题类型</td>
-                                <td>
-                                    <div class="tree">
-                                        <div class="treeDemo">
-                                            <ul id="treeDemo" class="ztree">zTree</ul>
-                                        </div>
-                                    </div>
+                                <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                    <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
+                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventType" class="find_input" />
+                                    <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">
+                                        +
+                                    </button>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span></span>诉求人</td>
                                 <td>
-                                    <input name="userName" value="小白" class="">
+                                    <input name="peopleName"  class="">
                                 </td>
                                 <td><span></span>联系方式</td>
-                                <td><input  name="handleTime" type="text" value="15645068888"></td>
+                                <td><input  name="phone" type="text" /></td>
                             </tr>
                             <tr>
                                 <td><span>*</span>问题描述</td>
                                 <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
-                                <td colspan="8"><textarea id="problemescription" name="problemescription"
+                                <td colspan="8"><textarea id="represent" name="represent"
                                                           required></textarea></td>
                             </tr>
                             <tr class="col-12">
                                 <td><span></span>案件地址</td>
                                 <td>
-                                    <input name="userName" value="" class="">
+                                    <input name="location" value="" class="">
                                 </td>
                             </tr>
                             <tr>
                                 <td><span></span>位置坐标</td>
                                 <td>
-                                    <input type="text" class="" readonly="readonly" disabled value="经度">
+                                    <input type="text" class="" readonly="readonly" name="x" disabled value="经度">
                                 </td>
                                 <td></td>
                                 <td>
-                                    <input type="text" class="" readonly="readonly" disabled value="纬度">
+                                    <input type="text" class="" readonly="readonly" name="y" disabled value="纬度">
                                 </td>
                             </tr>
                             <tr>
                                 <td><span></span>诉求时间</td>
                                 <td>
-                                    <input name="userName" value="2020-10-10" class="">
+                                    <input th:name="createTime" th:value="${eventVO.createTime}" class="" />
                                 </td>
                                 <td><span></span>问题来源</td>
                                 <td>
-                                    <select  name="safeLevel" required>
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
+                                    <select class="form-control" id="eventSource" th:name="eventSource" required>
+                                        <option th:each="as:${eventSource}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
                                     </select>
                                 </td>
                             </tr>
@@ -110,8 +109,7 @@
                         <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                         <!--            </div>-->
                         <div class="r_right but_p">
-                            <button class="but_save" style="margin-right: 10px">上报</button>
-                            <button class="but_save" type="submit" onclick="submitHandler()">保存</button>
+                            <button class="but_save" type="submit" onclick="submitHandler()">登记</button>
                             <button class="but_close" onclick="Cancel()">返回</button>
                         </div>
                     </div>
@@ -132,6 +130,26 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">默认窗口</h4>
+            </div>
+            <div class="modal-body">
+                <div class="tree">
+                    <div class="treeDemo">
+                        <ul id="treeDemo" class="ztree">zTree</ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div id="pictureDiv" style="display: none">
 
 </div>
@@ -142,6 +160,7 @@
 <th:block th:include="page/fragments/common :: map_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
@@ -167,13 +186,56 @@
 
     })
 
-
     let url = /*[[@{/user/save}]]*/ "/json/unit.json";
-
     let uploadUrl = /*[[@{/common/upload}]]*/ "/json/unit.json";
+    let componentTypeUrl = /*[[@{/allEventType}]]*/ "/allEventType";
+    let createEventCodeUrl = /*[[@{/event/createEventCode}]]*/ "/event/createEventCode";
+
+    var setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parent'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+    function zTreeOnClick(event, treeId, treeNode) {
+        $("#typeStr").val(treeNode.name);
+        $("#eventTypeId").val(treeNode.id);
+        $(".closemodal").click();
+        createEventCode(eventTypeId);
+    }
+
+    /**
+     * 后台自动生成案卷号
+     * @param eventTypeId
+     */
+    function createEventCode(eventTypeId) {
+        var url = createEventCodeUrl+"?eventTypeId="+eventTypeId
+        $.ajaxUtil.get(url, function (e) {
+            if (e.code == 0) {
+                var eventCode = e.data
+                $("#eventCode").val(eventCode);
+            }
+        })
+    }
 
 
     $(function () {
+        $.ajaxUtil.get(componentTypeUrl, function (e) {
+            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        })
         $("#input-id").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',

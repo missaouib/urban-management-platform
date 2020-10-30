@@ -66,6 +66,9 @@ public class EventService {
             if (eventDTO.getSts() != null) {
                 list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class), eventDTO.getSts()));
             }
+            if (eventDTO.getEventTypeId() != null) {
+                list.add(criteriaBuilder.equal(root.get("eventType").get("id").as(String.class),eventDTO.getEventTypeId()));
+            }
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
