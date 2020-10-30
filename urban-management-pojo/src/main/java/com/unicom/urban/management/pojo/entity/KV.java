@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * Kv实体类
@@ -21,7 +22,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Builder
 @Entity
-public class KV {
+public class KV implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")

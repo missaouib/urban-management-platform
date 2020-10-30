@@ -59,9 +59,14 @@ public class ActivitiServiceImpl implements ActivitiService {
 
         // 监督员上报
         if (EventSourceConstant.SUPERVISE_REPORTING.equals(eventSource)) {
-
-
-            return null;
+            Map<String, Object> variables = new HashMap<>(3);
+            variables.put("eventSource", eventSource);
+            ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
+            log.debug("----------------------监督员上报事件开始--------------------------------------");
+            log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
+            log.debug("----------------------监督员 userId:{}---------------------", Arrays.toString(userList.toArray()));
+            log.debug("----------------------监督员上报事件结束--------------------------------------");
+            return processInstance;
         }
 
         // 受理员上报
@@ -73,7 +78,6 @@ public class ActivitiServiceImpl implements ActivitiService {
             log.debug("----------------------受理员上报事件开始--------------------------------------");
             log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
             log.debug("----------------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
-            log.debug("----------------------事件来源 eventSource:{}-----------------------------------------------", eventSource);
             log.debug("----------------------受理员上报事件结束--------------------------------------");
             return processInstance;
         }
