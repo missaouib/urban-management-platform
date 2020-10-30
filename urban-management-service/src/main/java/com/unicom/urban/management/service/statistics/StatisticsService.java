@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,35 +32,40 @@ public class StatisticsService {
 
 
     public List<StatisticsVO> findByEventId(String eventId) {
+        /*查询流程数据*/
         List<Statistics> statisticsList = statisticsRepository.findAllByEvent_Id(eventId);
         List<StatisticsVO> statisticsVOS = new ArrayList<>();
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-
+        /*重新封装*/
         statisticsList.forEach(s -> {
+            /*开始时间str*/
             String starTime = df.format(s.getStarTime());
+            /*结束时间str*/
             String endTime = "";
+            /*如果没有结束事件 就以当前时间判断超没超时*/
+            LocalDateTime end = LocalDateTime.now();
             /*sign 0 没超时  1超时*/
             String sign = "0";
             if(s.getEndTime() != null){
                 endTime = df.format(s.getEndTime());
-                long timeLimit = s.getProcessTimeLimit().getTimeLimit();
-                long timeNum = 0;
-                if(KvConstant.HOUR.equals(s.getProcessTimeLimit().getLevel().getId())){
-                    timeNum = timeLimit * 60 * 60 *1000;
-                }else{
-                    timeNum = timeLimit * 24 * 60 * 60 * 1000;
-                }
-                Duration between = Duration.between(s.getStarTime(), s.getEndTime());
-                long millis = between.toMillis();
-                if(millis>timeNum){
-                    sign = "1";
-                }
+                end = s.getEndTime();
+            }
+            long timeLimit = s.getProcessTimeLimit().getTimeLimit();
+            long timeNum;
+            /*工作时*/
+            if(KvConstant.HOUR.equals(s.getProcessTimeLimit().getLevel().getId())){
+                timeNum = timeLimit * 60 * 60 *1000;
+            }else{
+                /*工作日*/
+                timeNum = timeLimit * 24 * 60 * 60 * 1000;
+            }
+            Duration between = Duration.between(s.getStarTime(), end);
+            long millis = between.toMillis();
+            if(millis>timeNum){
+                sign = "1";
             }
             List<String> file = new ArrayList<>();
-            s.getEventFileList().forEach(f->{
-                file.add(f.getFileName());
-            });
+            s.getEventFileList().forEach(f-> file.add(f.getFileName()));
             StatisticsVO statisticsVO = StatisticsVO.builder()
                     .starTime(starTime)
                     .endTime(endTime)
@@ -67,6 +73,7 @@ public class StatisticsService {
                     .opinions(s.getOpinions())
                     .fileName(file)
                     .user(s.getUser().getName())
+                    .link(s.getTaskName())
                     .build();
             statisticsVOS.add(statisticsVO);
         });
