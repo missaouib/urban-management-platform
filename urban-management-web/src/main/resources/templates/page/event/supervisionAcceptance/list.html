@@ -12,56 +12,14 @@
 <body style="border-radius: 8px;">
 <div class="content">
     <div class="leftContent">
-        <form id="userForm">
-            <div class="top table2_top">
-                <!--        <div>-->
-                <div class="top_out">
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <td>问题描述<span></span></td>
-                            <td>
-                                <input type="text" class="datepicker" readonly="readonly">
-                            </td>
-                            <td>问题类型<span>*</span></td>
-                            <td>
-                                <div class="treeDemo">
-                                    <ul id="treeDemo" class="ztree">zTree</ul>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>所属网格<span></span></td>
-                            <td>
-                                <select id="gridKvId" name="kv" required>
-                                    <option value="">请选择</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </select>
-                            </td>
-                            <td>上报人<span></span></td>
-                            <td style="width: 35%">
-                                <select  name="kv" required>
-                                    <option value="">请选择</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </select>
-                            </td>
-                        </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!--    </div>-->
-        </form>
         <div class="notice_check">
             <form id="search-form">
-                <p style="display: flex;justify-content: flex-end">
-                    <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">
+                <p>
+                    <label class="">问题类型：</label>
+                    <input type="text" class="find_input" id="eventTypeName" onclick="selectEventTypeTree()" readonly="readonly">
+                    <input type="hidden" name="eventTypeId" id="eventTypeId">
+                    <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
+                    <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置查询">
                 </p>
             </form>
         </div>
@@ -279,6 +237,27 @@
         // $.table.init(options);
     }
 
+
+    function selectEventTypeTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择问题类型',
+            width: "350",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero){
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#eventTypeId").val(body.find('#treeId').val());
+        $("#eventTypeName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
 
     $('#table').bootstrapTable({
         columns: [
