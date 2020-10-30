@@ -65,7 +65,7 @@ public class ActivitiServiceImpl implements ActivitiService {
         }
 
         // 受理员上报
-        if ("".equals(eventSource)) {
+        if (EventSourceConstant.ACCEPTANCE_REPORTING.equals(eventSource)) {
             Map<String, Object> variables = new HashMap<>(3);
             variables.put("shouliyuanList", userList);
             variables.put("eventSource", eventSource);

@@ -1,5 +1,6 @@
 package com.unicom.urban.management.pojo;
 
+import com.unicom.urban.management.pojo.entity.User;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,6 +39,12 @@ public class SecurityUserBean implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("USER_ROLE"));
+    }
+
+    public User castToUser() {
+        User user = new User();
+        user.setId(this.id);
+        return user;
     }
 
     @Override
