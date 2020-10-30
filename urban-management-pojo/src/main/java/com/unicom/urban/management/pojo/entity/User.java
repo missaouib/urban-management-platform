@@ -31,6 +31,7 @@ public class User extends BaseEntity {
     /**
      * 姓名
      */
+    @Column(nullable = false, columnDefinition = "char(15)")
     private String name;
 
     /**
@@ -39,21 +40,20 @@ public class User extends BaseEntity {
     @Column(nullable = false, unique = false)
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "char(60)")
     private String password;
 
     /**
      * 手机号码
      */
+    @Column(nullable = false, columnDefinition = "char(11)")
     private String mobileNumber;
 
     /**
      * 邮箱
      */
+    @Column(columnDefinition = "varchar(50)")
     private String mail;
-
-//    @ManyToOne
-//    private DictData sex;
 
     /**
      * 头像图片URL

@@ -9,6 +9,7 @@ import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.vo.EventTypeVO;
 import com.unicom.urban.management.pojo.vo.TreeVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -78,6 +79,7 @@ public class EventTypeService {
         }
     }
 
+    @Cacheable(value = "eventTypeTree")
     public List<TreeVO> searchTree() {
         List<EventType> eventTypeList = eventTypeRepository.findAll();
         return TreeMapper.INSTANCE.eventTypeListToTreeVOList(eventTypeList);
