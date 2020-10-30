@@ -2,8 +2,10 @@ package com.unicom.urban.management.pojo.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class TreeVO {
+public class TreeVO implements Serializable {
 
     private String id;
 
