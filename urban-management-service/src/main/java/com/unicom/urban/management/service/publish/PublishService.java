@@ -181,7 +181,7 @@ public class PublishService {
         for (Component component : componentList) {
             int three = 3;
             Map<String, Object> mapElementAndAttribute = new HashMap<>(three);
-            mapElementAndAttribute.put("data", " objId=" + component.getComponentInfo().getObjId());
+            mapElementAndAttribute.put("data", "objId=" + component.getId());
             mapElementAndAttribute.put("coordinate", component.getRecord().getCoordinate());
             mapElementAndAttribute.put("name", component.getComponentInfo().getObjName());
             mapList.add(mapElementAndAttribute);

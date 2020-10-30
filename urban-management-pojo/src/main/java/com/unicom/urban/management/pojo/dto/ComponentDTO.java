@@ -115,5 +115,7 @@ public class ComponentDTO {
 
     private String layerId;
 
+    private String mongoId;
+
 
 }

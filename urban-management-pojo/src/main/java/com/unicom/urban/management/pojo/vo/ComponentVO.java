@@ -88,4 +88,7 @@ public class ComponentVO {
     private String  dataSourceId;
 
     private String note;
+
+
+    private String coordinate;
 }
