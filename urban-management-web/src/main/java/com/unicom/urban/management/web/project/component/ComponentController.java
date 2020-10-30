@@ -5,6 +5,7 @@ import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.util.RestTemplateUtil;
 import com.unicom.urban.management.mapper.ComponentMapper;
+import com.unicom.urban.management.pojo.RestReturn;
 import com.unicom.urban.management.pojo.dto.ComponentDTO;
 import com.unicom.urban.management.pojo.dto.ComponentInfoDTO;
 import com.unicom.urban.management.pojo.entity.KV;
@@ -145,10 +146,11 @@ public class ComponentController {
     }
 
     @GetMapping("/getGisComponent")
-    public String getGisComponent(String mongoId){
-        Map body = RestTemplateUtil.get(KvConstant.GIS_URL + "/queryMongoById?id="+mongoId, Map.class).getBody();
-        assert body != null;
-       return (String) body.get("objId");
+    public ComponentVO getGisComponent(String mongoId){
+        RestReturn body = RestTemplateUtil.get(KvConstant.GIS_URL + "/queryMongoById?id=" + mongoId, RestReturn.class).getBody();
+        Map<String,String> map = (Map<String, String>) body.getData();
+        String id = map.get("objId");
+        return componentService.getComponentById(id);
     }
 
 }

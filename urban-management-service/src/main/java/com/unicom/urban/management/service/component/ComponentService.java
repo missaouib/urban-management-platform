@@ -1,9 +1,12 @@
 package com.unicom.urban.management.service.component;
 
+import cn.hutool.json.JSONObject;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.StsConstant;
+import com.unicom.urban.management.common.util.RestTemplateUtil;
 import com.unicom.urban.management.dao.component.ComponentRepository;
 import com.unicom.urban.management.mapper.ComponentMapper;
+import com.unicom.urban.management.pojo.RestReturn;
 import com.unicom.urban.management.pojo.dto.ComponentDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.ComponentVO;
@@ -21,9 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * @author 顾志杰
@@ -36,14 +37,14 @@ public class ComponentService {
     private final ComponentRepository componentRepository;
 
     @Autowired
-    private  PublishService releaseService;
+    private PublishService releaseService;
 
     private final RecordService recordService;
 
     private final EventTypeService eventTypeService;
 
     @Autowired
-    public ComponentService(ComponentRepository componentRepository,  RecordService recordService, EventTypeService eventTypeService) {
+    public ComponentService(ComponentRepository componentRepository, RecordService recordService, EventTypeService eventTypeService) {
         this.componentRepository = componentRepository;
         this.recordService = recordService;
         this.eventTypeService = eventTypeService;
@@ -254,9 +255,30 @@ public class ComponentService {
         return ComponentMapper.INSTANCE.componentToComponentVO(byRecord_id);
     }
 
+    /**
+     * 通过编辑id（位置）查询部件
+     *
+     * @param id string
+     * @return T
+     */
+    public ComponentVO getComponentById(String id) {
+        Component component = componentRepository.findById(id).orElse(new Component());
+        return ComponentMapper.INSTANCE.componentToComponentVO(component);
+    }
+
+
     public void deleteComponent(ComponentDTO dto) {
 
         Optional<Component> ifnull = componentRepository.findById(dto.getComponentId());
+        if (StringUtils.isNotBlank(dto.getMongoId())) {
+            Map<String, Object> map = new HashMap<>(2);
+            map.put("mongodbId", dto.getMongoId());
+            Map<String, Object> layer = new HashMap<>(1);
+            layer.put("id", dto.getLayerId());
+            map.put("layer", layer);
+            RestTemplateUtil.post(KvConstant.GIS_URL + "/elementAndAttribute/deleteElementAndAttribute", new JSONObject(map), RestReturn.class);
+        }
+
         if (ifnull.isPresent()) {
             Component component = ifnull.get();
             recordService.delete(component.getRecord());
@@ -266,13 +288,16 @@ public class ComponentService {
 
     /**
      * 新增部件导入用
+     *
      * @param component
      */
     public Component saveComponent4Import(Component component) {
         return componentRepository.saveAndFlush(component);
     }
+
     /**
      * 查询部件
+     *
      * @param componentId 主键
      */
     public Component getOne(String componentId) {
@@ -280,7 +305,7 @@ public class ComponentService {
     }
 
 
-    public List<Component> findAllByPublishIdAndRecordSts(String publishId){
+    public List<Component> findAllByPublishIdAndRecordSts(String publishId) {
         return componentRepository.findAllByPublish_IdAndRecord_Sts(publishId, StsConstant.EDITING);
     }
 }

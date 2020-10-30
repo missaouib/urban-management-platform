@@ -28,6 +28,7 @@
                     <input type="hidden" readonly="readonly" name="eventTypeId" id="eventTypeId"
                            class="find_input">
                     <input type="hidden" readonly="readonly" name="layerId" id="layerId" class="find_input">
+                    <input type="hidden" readonly="readonly" name="mongoId" id="mongoId" class="find_input">
 
                 </p>
                 <p>
@@ -66,9 +67,9 @@
                 </p>
                 <p>
                     <label class="">初始日期</label>
-                    <input size="16" class="form_date find_input" name="initialDate" type="text"  readonly>
+                    <input size="16" class="form_date find_input" name="initialDate" id="initialDate" type="text" readonly>
                     <label class="">变更日期</label>
-                    <input size="16" class="form_date find_input" name="changeDate" type="text" value="" readonly>
+                    <input size="16" class="form_date find_input" name="changeDate" id="changeDate" type="text" value="" readonly>
                 </p>
                 <p>
                     <label class="">所在网格</label>
@@ -86,14 +87,14 @@
                 </p>
 
                 <p class="function_btn">
-<!--                    <input type="button" class="check_btn1 button_ground" onclick="deleteComponent()" value="删 除">-->
-<!--                    <input type="button" class="check_btn1 button_ground" onclick="saveComponent()" value="修 改">-->
-<!--                    <input type="button" class="check_btn1 button_ground" onclick="saveComponent()" value="保 存">-->
+
+                    <!--                    <input type="button" class="check_btn1 button_ground" onclick="saveComponent()" value="修 改">-->
+                    <!--                    <input type="button" class="check_btn1 button_ground" onclick="saveComponent()" value="保 存">-->
                 <div class="notice_bot">
                     <div class="r_right but_p">
                         <button class="but_save" type="submit" id="smtBtn" onclick="saveComponent()">保存</button>
                         <button class="but_save" type="submit" onclick="saveComponent()" style="margin-left: 10px">修改</button>
-                        <button class="but_close" onclick="deleteComponent()">关闭</button>
+                        <button class="but_close" onclick="deleteComponent()">删除</button>
                     </div>
                 </div>
                 </p>
@@ -141,9 +142,10 @@
     var publishId;
 
     function zTreeOnClick(event, treeId, treeNode) {
-        $("#layerId").val("");
-        publish="";
-        publishId="";
+        $("#componentId").val("");
+        $("#mongoId").val("");
+        publish = "";
+        publishId = "";
         resetFrom();
         $("#coordinate").val(coordinate);
         if (treeNode.children === undefined) {
@@ -158,7 +160,7 @@
                     $("#publishId").val(value.id);
                     publish = value.name;
                     publishId = value.id;
-                    if (value.url != null){
+                    if (value.url != null) {
                         var urlParam = value.url.split("?");
                         var url = urlParam[0];
                         var param = urlParam[1];
@@ -176,12 +178,12 @@
                             })
                         });
                         var layersArray = map.getLayers();
-                        layersArray.insertAt(1,ImageVector);
+                        layersArray.insertAt(1, ImageVector);
                         $("#layerId").val(value.layerId == null ? "" : value.layerId);
 
 
                         //获取地图数据s
-                        map.on('singleclick', function(evt) {
+                        map.on('singleclick', function (evt) {
                             var viewResolution = map.getView().getResolution();
                             var url = ImageVector.getSource().getGetFeatureInfoUrl(
                                 evt.coordinate, viewResolution, 'EPSG:4326', {
@@ -289,7 +291,6 @@
     let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
 
 
-
     // 沽源地图
     var center = [115.68192, 41.66462];
     var projection = new ol.proj.Projection({
@@ -318,12 +319,12 @@
     var map = new ol.Map({
         target: 'map',
         layers: [
-            untiled,vector
+            untiled, vector
         ],
         view: new ol.View({
             // projection: projection,
-            center:center,
-            zoom:13,
+            center: center,
+            zoom: 13,
             projection: projection
         })
     });
@@ -343,47 +344,46 @@
     });
 
 
-
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),
     });
     map.addLayer(layerMap);
 
-    // //获取地图数据
-    // map.on('singleclick', function(evt) {
-    //     var viewResolution = map.getView().getResolution();
-    //     var url = untiled.getSource().getGetFeatureInfoUrl(
-    //         evt.coordinate, viewResolution, 'EPSG:4326', {
-    //             'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
-    //             'FEATURE_COUNT': 50 //点击查询能返回的数量上限
-    //         });
-    //     $.ajax({
-    //         type: 'GET',
-    //         url: url,
-    //         dataType: 'jsonp',
-    //         jsonp: 'format_options',
-    //         jsonpCallback: "callback:success_jsonpCallback"
-    //     });
-    // });
-    // //回调函数接收查询结果
     var geojsonFormat = new ol.format.GeoJSON({
         defaultDataProjection: "EPSG:4326"
     });
 
     function success_jsonpCallback(res) {
         var features = geojsonFormat.readFeatures(res);
-        console.log('features：↓↓↓↓',features[0].H.mongodb_id);
-        // console.log(features);
-    }
+        if (undefined !== features[0]) {
+            $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function (e) {
+                $("#componentId").val(e.data.id);
+                $("#objId").val(e.data.objId);
+                $("#objName").val(e.data.objName);
+                $("#maintenanceDeptCode").val(e.data.maintenanceDeptCode);
+                $("#maintenanceDeptName").val(e.data.maintenanceDeptName);
+                $("#mainDeptCode").val(e.data.mainDeptCode);
+                $("#mainDeptName").val(e.data.mainDeptName);
+                $("#ownershipDeptCode").val(e.data.ownershipDeptCode);
+                $("#ownershipDeptName").val(e.data.ownershipDeptName);
+                $("#objState option[value='" + e.data.objStateId + "']").prop("selected", true);
+                $("#bgid option[value='" + e.data.bgid + "']").prop("selected", true);
+                $("#dataSource option[value='" + e.data.dataSourceId + "']").prop("selected", true);
+                $("#note").val(e.data.note);
+                $("#coordinate").val(e.data.coordinate);
+                $("#mongoId").val(features[0].H.mongodb_id);
+                $("changeDate").val(e.data.changeDate);
+                $("initialDate").val(e.data.initialDate);
+            });
+        }
 
+    }
 
 
     var t;
     $("#map").click(function (e) {
         t = map.getEventCoordinate(e);
-        if ($("#componentId").val() === "") {
-            coordinate = t;
-        }
+        coordinate = t;
     });
     var coordinate;
 
@@ -392,12 +392,8 @@
     map.addInteraction(selectClick);
     selectClick.on('select', function (e) {
         var features = e.target.getFeatures().getArray();
-        // console.log(features)
-        let data = features[0].H.data;
-        if (undefined !== data) {
-            $.ajaxUtil.get(getGisComponent,function (e) {
-                // console.log(e.data)
-            });
+        if (undefined !== features[0].H.data) {
+            let data = features[0].H.data;
             $.ajaxUtil.get(componentByRecordId + "?recordId=" + data.id, function (e) {
                 $("#componentId").val(e.data.id);
                 $("#objId").val(e.data.objId);
@@ -412,10 +408,15 @@
                 $("#bgid option[value='" + e.data.bgid + "']").prop("selected", true);
                 $("#dataSource option[value='" + e.data.dataSourceId + "']").prop("selected", true);
                 $("#note").val(e.data.note);
+                $("#coordinate").val(e.data.coordinate);
+                $("#mongoId").val("");
+                $("changeDate").val(e.data.changeDate);
+                $("initialDate").val(e.data.initialDate);
 
             })
         } else {
             resetFrom();
+            $("#componentId").val("")
             $("#publish").val(publish);
             $("#publishId").val(publishId);
             $("#typeStr").val(typeStr);
