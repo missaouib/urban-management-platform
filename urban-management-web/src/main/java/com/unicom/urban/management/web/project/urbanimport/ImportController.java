@@ -12,6 +12,7 @@ import com.unicom.urban.management.service.component.ComponentService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.user.UserService;
+import net.bytebuddy.utility.RandomString;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -35,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,6 +63,7 @@ public class ImportController {
 
     @Value("${gis.api.url}")
     private String url;
+    public static String TYPE_SHP = "SHP";
     @GetMapping("/gImport")
     public ModelAndView gImport() {
         return new ModelAndView(SystemConstant.PAGE + "/urbanImport/gImport");
@@ -82,6 +85,9 @@ public class ImportController {
         String layerId = "";
         shpType = "";
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+        if(!this.validImport(multiRequest)){
+            Result.fail("99","");
+        }
         // 创建集合接受文件
         HttpClient httpclient = new DefaultHttpClient();
         try {
@@ -91,7 +97,7 @@ public class ImportController {
             int statusCode = response.getStatusLine().getStatusCode();
 
             if (statusCode == HttpStatus.SC_OK) {
-                byte[] b = new byte[2];
+                byte[] b = new byte[40];
                 HttpEntity resEntity = response.getEntity();
                 InputStream inputStream = resEntity.getContent();
 
@@ -110,6 +116,10 @@ public class ImportController {
             } catch (Exception ignore) {
             }
         }
+        if (layerId.equals("00")) {
+            return Result.fail("00", "");
+        }
+
         /*新增发布*/
         Publish publish = savePublish(layerName, layerId, KV.builder().id(KvConstant.KV_RELEASE_COMPONENT).build());
         /*新增部件*/
@@ -133,6 +143,9 @@ public class ImportController {
         String layerId = "";
         shpType = "";
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+        if (!validImport(multiRequest)){
+            return Result.fail("99","格式错误，请选择正确文件格式！");
+        }
         // 创建集合接受文件
         HttpClient httpclient = new DefaultHttpClient();
         try {
@@ -141,7 +154,7 @@ public class ImportController {
             int statusCode = response.getStatusLine().getStatusCode();
 
             if (statusCode == HttpStatus.SC_OK) {
-                byte[] b = new byte[2];
+                byte[] b = new byte[40];
                 HttpEntity resEntity = response.getEntity();
                 InputStream inputStream = resEntity.getContent();
 
@@ -171,14 +184,12 @@ public class ImportController {
     private HttpResponse gisImport(String layerName, String layerSettingType, MultipartHttpServletRequest multiRequest,  HttpClient httpclient) throws IOException {
         // 创建集合接受文件
         List<MultipartFile> fileList = multiRequest.getFiles("file");
-
         HttpPost httpPost = new HttpPost(url);
         MultipartEntityBuilder reqEntity = MultipartEntityBuilder.create();
 
         for (MultipartFile multipartFile : fileList) {
             String filePath = fileUploadUtil.uploadFileToLocal(multipartFile);
             reqEntity.addPart(multipartFile.getName(), new FileBody(new File(filePath)));
-
         }
         //接口常规参数开始-----------------------------------------
         Map<String, String> paramMap = new HashMap<>();
@@ -210,6 +221,8 @@ public class ImportController {
         Grid grid = new Grid();
         grid.setGridName(layerName);
         grid.setPublish(publish);
+        grid.setInitialDate(LocalDateTime.now());
+        grid.setTerminationDate(LocalDateTime.now());
 //        grid.setSts(0);
         grid.setUser(SecurityUtil.getUser().castToUser());
     gridService.save4Import(grid);
@@ -238,5 +251,16 @@ public class ImportController {
     private boolean checkPublish() {
         boolean f = false;
         return f;
+    }
+    private boolean validImport( MultipartHttpServletRequest multiRequest){
+        List<MultipartFile> fileList = multiRequest.getFiles("file");
+        boolean flag = false;
+        for (MultipartFile multipartFile : fileList) {
+            String suffix = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".") + 1);
+            if (TYPE_SHP.equals(suffix)){
+                flag = true;
+            }
+        }
+        return flag;
     }
 }
