@@ -21,6 +21,24 @@ public interface ActivitiService {
     ProcessInstance reportEvent(String eventId, List<String> userList, String eventSource);
 
     /**
+     * 监督员上报流程开启
+     *
+     * @param eventId  事件ID
+     * @param userList 受理员用户ID
+     * @return 流程实例
+     */
+    ProcessInstance superviseReporting(String eventId, List<String> userList);
+
+    /**
+     * 受理员上报流程开启
+     *
+     * @param eventId  事件ID
+     * @param userList 监督员用户ID
+     * @return 流程实例
+     */
+    ProcessInstance acceptanceReporting(String eventId, List<String> userList);
+
+    /**
      * 根据流程实例ID获取任务Task
      *
      * @param processInstanceId 流程实例ID

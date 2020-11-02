@@ -56,33 +56,41 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     @Override
     public ProcessInstance reportEvent(String eventId, List<String> userList, String eventSource) {
-
         // 监督员上报
         if (EventSourceConstant.SUPERVISE_REPORTING.equals(eventSource)) {
-            Map<String, Object> variables = new HashMap<>(3);
-            variables.put("eventSource", eventSource);
-            ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
-            log.debug("----------------------监督员上报事件开始--------------------------------------");
-            log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
-            log.debug("----------------------监督员 userId:{}---------------------", Arrays.toString(userList.toArray()));
-            log.debug("----------------------监督员上报事件结束--------------------------------------");
-            return processInstance;
+            return superviseReporting(eventId, userList);
         }
-
         // 受理员上报
         if (EventSourceConstant.ACCEPTANCE_REPORTING.equals(eventSource)) {
-            Map<String, Object> variables = new HashMap<>(3);
-            variables.put("shouliyuanList", userList);
-            variables.put("eventSource", eventSource);
-            ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
-            log.debug("----------------------受理员上报事件开始--------------------------------------");
-            log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
-            log.debug("----------------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
-            log.debug("----------------------受理员上报事件结束--------------------------------------");
-            return processInstance;
+            return acceptanceReporting(eventId, userList);
         }
-
         throw new BusinessException("非法事件来源: " + eventSource);
+    }
+
+    @Override
+    public ProcessInstance superviseReporting(String eventId, List<String> userList) {
+        Map<String, Object> variables = new HashMap<>(3);
+        variables.put("userId", userList);
+        variables.put("eventSource", EventSourceConstant.SUPERVISE_REPORTING);
+        ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
+        log.debug("----------------------监督员上报事件开始--------------------------------------");
+        log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
+        log.debug("----------------------监督员 userId:{}---------------------", Arrays.toString(userList.toArray()));
+        log.debug("----------------------监督员上报事件结束--------------------------------------");
+        return processInstance;
+    }
+
+    @Override
+    public ProcessInstance acceptanceReporting(String eventId, List<String> userList) {
+        Map<String, Object> variables = new HashMap<>(3);
+        variables.put("userId", userList);
+        variables.put("eventSource", EventSourceConstant.ACCEPTANCE_REPORTING);
+        ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
+        log.debug("----------------------受理员上报事件开始--------------------------------------");
+        log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
+        log.debug("----------------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
+        log.debug("----------------------受理员上报事件结束--------------------------------------");
+        return processInstance;
     }
 
     @Override
