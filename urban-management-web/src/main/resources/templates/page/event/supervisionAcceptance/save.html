@@ -519,12 +519,36 @@
             projection: projection
         })
     });
-
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
     map.on('singleclick', function (evt) {
         let t = evt.coordinate;
         $("#longitude").val(t[0])
         $("#latitude").val(t[1])
     });
+    setPoint()
+    function setPoint() {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([115.62, 41.74]),
+            data: {
+                // id: data,
+                // name: name,
+                // coordinate: x + "," + y
+            }
+        });
+        let picture = "../img/1.png";
+        // let imgSize = [100,100]
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                src: picture,
+                // imgSize:imgSize
+            })
+        }));
+        layerMap.getSource().addFeature(point);
+    }
+
 </script>
 </body>
 </html>
