@@ -37,7 +37,7 @@
                             <tr>
                                 <td><span></span>诉求人</td>
                                 <td>
-                                    <input name="peopleName"  class="">
+                                    <input name="peopleName"  type="text" class="">
                                 </td>
                                 <td><span></span>联系方式</td>
                                 <td><input  name="phone" type="text" /></td>
@@ -51,23 +51,23 @@
                             <tr class="col-12">
                                 <td><span></span>案件地址</td>
                                 <td>
-                                    <input name="location" value="" class="">
+                                    <input name="location" value="" type="text" class="">
                                 </td>
                             </tr>
                             <tr>
                                 <td><span></span>位置坐标</td>
                                 <td>
-                                    <input type="text" class="" readonly="readonly" name="x" disabled value="经度">
+                                    <input type="text" class="" readonly="readonly" id="longitude" name="x" disabled value="经度">
                                 </td>
                                 <td></td>
                                 <td>
-                                    <input type="text" class="" readonly="readonly" name="y" disabled value="纬度">
+                                    <input type="text" class="" readonly="readonly" id="latitude" name="y" disabled value="纬度">
                                 </td>
                             </tr>
                             <tr>
                                 <td><span></span>诉求时间</td>
                                 <td>
-                                    <input th:name="createTime" th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}" class="" />
+                                    <input th:name="createTime" th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
                                 </td>
                                 <td><span></span>问题来源</td>
                                 <td>
@@ -518,6 +518,12 @@
             zoom:13,
             projection: projection
         })
+    });
+
+    map.on('singleclick', function (evt) {
+        let t = evt.coordinate;
+        $("#longitude").val(t[0])
+        $("#latitude").val(t[1])
     });
 </script>
 </body>
