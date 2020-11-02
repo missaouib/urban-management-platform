@@ -16,12 +16,10 @@
             <form id="search-form">
                 <p>
                     <label class="">问题类型：</label>
-
-
                     <input type="text" class="find_input" id="eventTypeName" onclick="selectEventTypeTree()" readonly="readonly">
                     <input type="hidden" name="eventTypeId" id="eventTypeId">
                     <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
-                    <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置查询">
+                    <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">
                     <input type="button" class="check_btn1 button_ground" onclick="testStatistics()" value="test受理员上报">
                 </p>
             </form>
@@ -64,7 +62,7 @@
                 </div>
             </div>
             <div class="banner">
-                <h3 class="bigTitle" style="margin-top: 10px">案件详情</h3>
+                <h3 class="bigTitle">案件详情</h3>
                 <form class="details">
                     <div class="top table2_top">
                         <div class="top_out">
@@ -73,11 +71,12 @@
                                 <tr>
                                     <td><span>*</span>案卷号</td>
                                     <td>
-                                        <input name="userName" placeholder="" value="EA0293719" class="" type="text" readonly="readonly">
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
                                     </td>
                                     <td><span>*</span>问题类型</td>
                                     <td>
-                                        <input name="userName" placeholder="" value="第一单元网格" class="" type="text" readonly="readonly">
+                                        <input id="eventType" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -89,10 +88,11 @@
 
                                 </tr>
 
+
                                 <tr>
                                     <td><span>*</span>案件地址</td>
                                     <td>
-                                        <input name="userName" placeholder="" value="南岗区国民街" class="" type="text" readonly="readonly">
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
@@ -105,11 +105,11 @@
                                 <tr>
                                     <td><span></span>创建时间</td>
                                     <td>
-                                        <input name="userName" placeholder=""value="2020-10-20" class="" type="text" readonly="readonly">
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
                                     </td>
                                     <td><span></span>问题来源</td>
                                     <td>
-                                        <input name="userName" placeholder="" value="监督员上报" class="" type="text" readonly="readonly">
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
@@ -123,35 +123,30 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span></span>案件类型</td>
+                                    <td><span></span>附件详情</td>
                                     <td>
-                                        <input type="file" class="" readonly="readonly">
-                                    </td>
+                                        <input type="text"  class="" readonly="readonly">
                                     </td>
 
                                 </tr>
-
-                                <!--                                    <tr>-->
-                                <!--                                        <td>处理结果<span></span></td>-->
-                                <!--                                        <td colspan = "8"><textarea></textarea></td>-->
-                                <!--                                    </tr>-->
                                 </tbody>
                             </table>
+                            <div class="notice_bot">
+                                <!--            <div class="l_left">-->
+                                <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                                <!--            </div>-->
+                                <div class="r_right but_p">
+                                    <button class="but_save" style="margin-right: 10px">核实</button>
+                                    <button class="but_save" style="margin-right: 10px">登记备案</button>
+                                    <button class="but_save" type="submit" onclick="submitHandler()">作废</button>
+                                    <button class="but_close" onclick="Cancel()">返回</button>
+                                </div>
+                            </div>
 
                         </div>
 
                         <!--                            按钮-->
-                        <div class="notice_bot">
-                            <!--            <div class="l_left">-->
-                            <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-                            <!--            </div>-->
-                            <div class="r_right but_p">
-                                <button class="but_save" style="margin-right: 10px">核实</button>
-                                <button class="but_save" style="margin-right: 10px">登记备案</button>
-                                <button class="but_save" type="submit" onclick="submitHandler()">作废</button>
-                                <button class="but_close" onclick="Cancel()">返回</button>
-                            </div>
-                        </div>
+
                     </div>
                 </form>
             </div>
