@@ -1,7 +1,6 @@
 package com.unicom.urban.management.pojo.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,19 +32,13 @@ public class Statistics {
      * 状态时间 计算的时候转化成分
      * 挂账或作废
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
-    private LocalDateTime stateCdae;
+    private LocalDateTime stateTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
-    private LocalDateTime starTime;
+    private LocalDateTime startTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
     private LocalDateTime endTime;
 
     /**
@@ -157,7 +150,7 @@ public class Statistics {
     /**
      * 按时核实 监督员 不超期的 核实数
      */
-    private Integer intimeVerify;
+    private Integer inTimeVerify;
 
     /**
      * 核实监督员标识 监督员
@@ -188,7 +181,7 @@ public class Statistics {
     /**
      * 按时受理
      */
-    private Integer intimeOperate;
+    private Integer inTimeOperate;
 
     /**
      * 受理 批转值班长 触发
@@ -231,7 +224,7 @@ public class Statistics {
     /**
      * 按时发核实 受理员 按时下发核实
      */
-    private Integer intimeSendVerify;
+    private Integer inTimeSendVerify;
 
     /**
      * 发核实人姓名
@@ -293,7 +286,7 @@ public class Statistics {
     /**
      * 按时立案 值班长 不超时立案
      */
-    private Integer intimeInst;
+    private Integer inTimeInst;
 
     /**
      * 待立案 值班长 未立案的数
@@ -379,7 +372,7 @@ public class Statistics {
     /**
      * 按时派遣 派遣员 = 未超时的派遣
      */
-    private Integer intimeDispatch;
+    private Integer inTimeDispatch;
 
     /**
      * 准确派遣数 未出现重新派的其他专业部门 结案触发
@@ -432,7 +425,7 @@ public class Statistics {
     /**
      * 按时处置
      */
-    private Integer intimeDispose;
+    private Integer inTimeDispose;
 
     /**
      * 超时未处置
@@ -464,12 +457,12 @@ public class Statistics {
     /**
      * 按时核查
      */
-    private Integer intimeCheck;
+    private Integer inTimeCheck;
 
     /**
      * 按时发核查
      */
-    private Integer intimeSendCheck;
+    private Integer inTimeSendCheck;
 
     /**
      * 核查批转
@@ -506,9 +499,7 @@ public class Statistics {
     /**
      * 核查批转时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
     private LocalDateTime checkTransTime;
 
     /* --------------------------------------------------------- */
@@ -521,9 +512,7 @@ public class Statistics {
     /**
      * 作废时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
     private LocalDateTime cancelDate;
 
     /**
@@ -534,9 +523,7 @@ public class Statistics {
     /**
      * 挂账时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
     private LocalDateTime hangDate;
 
     /**

@@ -39,7 +39,7 @@ public class StatisticsService {
         /*重新封装*/
         statisticsList.forEach(s -> {
             /*开始时间str*/
-            String starTime = df.format(s.getStarTime());
+            String starTime = df.format(s.getStartTime());
             /*结束时间str*/
             String endTime = "";
             /*如果没有结束事件 就以当前时间判断超没超时*/
@@ -59,7 +59,7 @@ public class StatisticsService {
                 /*工作日*/
                 timeNum = timeLimit * 24 * 60 * 60 * 1000;
             }
-            Duration between = Duration.between(s.getStarTime(), end);
+            Duration between = Duration.between(s.getStartTime(), end);
             long millis = between.toMillis();
             if(millis>timeNum){
                 sign = "1";

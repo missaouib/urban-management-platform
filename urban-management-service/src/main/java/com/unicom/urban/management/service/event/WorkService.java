@@ -50,7 +50,7 @@ public class WorkService {
         /* 获取当前环节 */
         Task task = activitiService.getTaskByProcessInstanceId(event.getProcessInstanceId());
         statistics.setTaskId(task.getId());
-        statistics.setStarTime(LocalDateTime.now());
+        statistics.setStartTime(LocalDateTime.now());
         statistics.setDeptTimeLimit(event.getTimeLimit());
         ProcessTimeLimit byTaskName = processTimeLimitService.findByTaskName(task.getName());
         statistics.setProcessTimeLimit(byTaskName);
