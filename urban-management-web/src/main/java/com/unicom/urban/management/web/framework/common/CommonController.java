@@ -58,7 +58,7 @@ public class CommonController {
      */
     @PostMapping("/common/upload")
     public Map<String, Object> uploadFile(MultipartFile file) throws Exception {
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(1);
         String uploadFile = fileUploadUtil.uploadFileToFastDFS(file);
         map.put("url", uploadFile);
         return map;
