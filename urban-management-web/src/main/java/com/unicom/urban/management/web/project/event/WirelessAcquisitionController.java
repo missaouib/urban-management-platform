@@ -1,9 +1,7 @@
 package com.unicom.urban.management.web.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
-import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
-import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
@@ -28,9 +26,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,10 +70,6 @@ public class WirelessAcquisitionController {
         model.addObject("recType", kvService.findByTableNameAndFieldName("event","recType"));
         //所在区域
         model.addObject("gridList",gridService.findAllByParentIsNull());
-        //获取当前登录人
-//        String userId = SecurityUtil.getUserId();
-//        User user = userService.findOne(userId);
-//        model.addObject("userName",user.getUsername());
         return model;
     }
 
