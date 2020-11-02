@@ -10,12 +10,13 @@ import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventCondition;
 import com.unicom.urban.management.pojo.entity.EventType;
-import com.unicom.urban.management.pojo.entity.User;
+import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
+import com.unicom.urban.management.service.statistics.StatisticsService;
 import com.unicom.urban.management.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,8 @@ public class EventService {
 
     @Autowired
     private EventTypeService eventTypeService;
+    @Autowired
+    private StatisticsService statisticsService;
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
@@ -117,6 +120,16 @@ public class EventService {
      */
     public void reportEvent(String eventId) {
         workService.reportEvent(eventId);
+    }
+
+    /**
+     * 测试Statistics 受理员上报
+     */
+    public void testStatistics() {
+        String eventId = "9a4652fd-45c7-440c-aa39-daba7157241f";
+        Event one = findOne(eventId);
+        Statistics statistics = workService.initStatistics(one);
+        statisticsService.save(statistics);
     }
 
     public String createCode(String eventTypeId) {

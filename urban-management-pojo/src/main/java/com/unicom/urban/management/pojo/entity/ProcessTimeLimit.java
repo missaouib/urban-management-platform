@@ -25,6 +25,9 @@ public class ProcessTimeLimit {
     @JoinColumn
     private KV level;
 
+    @ManyToOne
+    private KV timeType;
+
     /**
      * 时限
      */

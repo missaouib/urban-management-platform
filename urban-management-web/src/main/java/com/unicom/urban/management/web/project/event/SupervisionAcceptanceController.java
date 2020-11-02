@@ -9,10 +9,7 @@ import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.kv.KVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
@@ -28,9 +25,10 @@ import java.time.LocalDateTime;
 public class SupervisionAcceptanceController {
 
     @Autowired
-    private KVService kvService;
-    @Autowired
     private EventService eventService;
+
+    @Autowired
+    private KVService kvService;
 
     @GetMapping("/toSupervisionAcceptanceList")
     public ModelAndView toSupervisionAcceptanceList() {
@@ -83,6 +81,12 @@ public class SupervisionAcceptanceController {
     public ModelAndView toSendCheckList() {
         return new ModelAndView(SystemConstant.PAGE + "/event/sendCheck/list");
     }
+
+    @PostMapping("/supervisionAcceptance")
+    public void SupervisionAcceptance() {
+        eventService.testStatistics();
+    }
+
     /**
      * 登记
      *
