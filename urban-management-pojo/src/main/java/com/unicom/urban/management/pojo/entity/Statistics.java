@@ -121,6 +121,13 @@ public class Statistics {
     private User reportPatrolName;
 
     /**
+     * 上报监督员岗位标识
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Role reportPatrolRole;
+
+    /**
      * 监督员有效上报 立案+作废
      */
     private Integer validPatrolReport;
@@ -165,6 +172,13 @@ public class Statistics {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private User verifyPatrolName;
+
+    /**
+     * 核实监督员岗位标识
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Role verifyPatrolRole;
 
     /* --------------------------------------------------------- */
 
