@@ -101,17 +101,17 @@ public class Statistics {
     /**
      * 监督员上报
      */
-    private int patrolReport;
+    private Integer patrolReport;
 
     /**
      * 公众举报 = 漏报数
      */
-    private int publicReport;
+    private Integer publicReport;
 
     /**
      * 上报
      */
-    private int report;
+    private Integer report;
 
     /**
      * 上报监督员标识
@@ -130,34 +130,34 @@ public class Statistics {
     /**
      * 监督员有效上报 立案+作废
      */
-    private int validPatrolReport;
+    private Integer validPatrolReport;
 
     /**
      * 公众举报有效上报
      */
-    private int validPublicReport;
+    private Integer validPublicReport;
 
     /**
      * 有效上报
      */
-    private int validReport;
+    private Integer validReport;
 
     /* --------------------------------------------------------- */
 
     /**
      * 应核实 监督员 应核实 = 受理员发给该监督员的核实的案件
      */
-    private int needVerify;
+    private Integer needVerify;
 
     /**
      * 核实 监督员 有监督员回馈的核实结果的事
      */
-    private int verify;
+    private Integer verify;
 
     /**
      * 按时核实 监督员 不超期的 核实数
      */
-    private int intimeVerify;
+    private Integer intimeVerify;
 
     /**
      * 核实监督员标识 监督员
@@ -178,22 +178,22 @@ public class Statistics {
     /**
      * 不予受理 受理员
      */
-    private int notOperate;
+    private Integer notOperate;
 
     /**
      * 待受理 未批转值班长
      */
-    private int toOperate;
+    private Integer toOperate;
 
     /**
      * 按时受理
      */
-    private int intimeOperate;
+    private Integer intimeOperate;
 
     /**
      * 受理 批转值班长 触发
      */
-    private int operate;
+    private Integer operate;
 
     /**
      * 受理人标识
@@ -221,17 +221,17 @@ public class Statistics {
     /**
      * 应发核实 受理员 按时完成的核实 = 待发核实 + 已发核实
      */
-    private int needSendVerify;
+    private Integer needSendVerify;
 
     /**
      * 发核实 受理员 只要派出去就算
      */
-    private int sendVerify;
+    private Integer sendVerify;
 
     /**
      * 按时发核实 受理员 按时下发核实
      */
-    private int intimeSendVerify;
+    private Integer intimeSendVerify;
 
     /**
      * 发核实人姓名
@@ -259,22 +259,22 @@ public class Statistics {
     /**
      * 发核查 受理员
      */
-    private int sendCheck;
+    private Integer sendCheck;
 
     /**
      * 应发核查 受理员
      */
-    private int needSendCheck;
+    private Integer needSendCheck;
 
     /**
      * 发核查人标识 受理员
      */
-    private int sendCheckHuman;
+    private Integer sendCheckHuman;
 
     /**
      * 发核查人
      */
-    private int sendCheckHumanName;
+    private Integer sendCheckHumanName;
 
     /**
      * 发核查人岗位标识
@@ -288,17 +288,17 @@ public class Statistics {
     /**
      * 立案 值班长 立案
      */
-    private int inst;
+    private Integer inst;
 
     /**
      * 按时立案 值班长 不超时立案
      */
-    private int intimeInst;
+    private Integer intimeInst;
 
     /**
      * 待立案 值班长 未立案的数
      */
-    private int toInst;
+    private Integer toInst;
 
     /**
      * 立案人标识
@@ -326,17 +326,17 @@ public class Statistics {
     /**
      * 结案
      */
-    private int close;
+    private Integer close;
 
     /**
      * 按时结案
      */
-    private int inTimeClose;
+    private Integer inTimeClose;
 
     /**
      * 待结案
      */
-    private int toClose;
+    private Integer toClose;
 
     /**
      * 结案人标识
@@ -364,32 +364,32 @@ public class Statistics {
     /**
      * 派遣 派遣员 已派遣
      */
-    private int dispatch;
+    private Integer dispatch;
 
     /**
      * 待派遣 派遣员
      */
-    private int toDispatch;
+    private Integer toDispatch;
 
     /**
      * 应派遣 派遣员 应派遣 = 已派遣 + 未派遣
      */
-    private int needDispatch;
+    private Integer needDispatch;
 
     /**
      * 按时派遣 派遣员 = 未超时的派遣
      */
-    private int intimeDispatch;
+    private Integer intimeDispatch;
 
     /**
      * 准确派遣数 未出现重新派的其他专业部门 结案触发
      */
-    private int accuracyDispatch;
+    private Integer accuracyDispatch;
 
     /**
      * 错误派遣 出现派遣2个或者以上的专业部门 结案触发 例如 第一派遣A 第二次派遣 A B 两个部门
      */
-    private int errorDispatch;
+    private Integer errorDispatch;
 
     /**
      * 派遣员标识
@@ -417,37 +417,37 @@ public class Statistics {
     /**
      * 处置   专业部门
      */
-    private int dispose;
+    private Integer dispose;
 
     /**
      * 应处置
      */
-    private int needDispose;
+    private Integer needDispose;
 
     /**
      * 待处置
      */
-    private int toDispose;
+    private Integer toDispose;
 
     /**
      * 按时处置
      */
-    private int intimeDispose;
+    private Integer intimeDispose;
 
     /**
      * 超时未处置
      */
-    private int overtimeToDispose;
+    private Integer overtimeToDispose;
 
     /**
      * 超时处置
      */
-    private int overtimeDispose;
+    private Integer overtimeDispose;
 
     /**
      * 处置部门标识
      */
-    private int disposeUnit;
+    private Integer disposeUnit;
 
     /**
      * 处置部门
@@ -459,27 +459,27 @@ public class Statistics {
     /**
      * 应核查   监督员
      */
-    private int needCheck;
+    private Integer needCheck;
 
     /**
      * 按时核查
      */
-    private int intimeCheck;
+    private Integer intimeCheck;
 
     /**
      * 按时发核查
      */
-    private int intimeSendCheck;
+    private Integer intimeSendCheck;
 
     /**
      * 核查批转
      */
-    private int checkTrans;
+    private Integer checkTrans;
 
     /**
      * 核查监督员标识
      */
-    private int checkPatrolId;
+    private Integer checkPatrolId;
 
     /**
      * 核查监督员
@@ -489,7 +489,7 @@ public class Statistics {
     /**
      * 核查受理员标识
      */
-    private int checkTransHuman;
+    private Integer checkTransHuman;
 
     /**
      * 核查受理员
@@ -516,7 +516,7 @@ public class Statistics {
     /**
      * 作废
      */
-    private int cancel;
+    private Integer cancel;
 
     /**
      * 作废时间
@@ -529,7 +529,7 @@ public class Statistics {
     /**
      * 挂账
      */
-    private int hang;
+    private Integer hang;
 
     /**
      * 挂账时间
@@ -542,17 +542,17 @@ public class Statistics {
     /**
      * 返工 二次或者多次派遣同一个专业部门 经历核查阶段 结案触发
      */
-    private int rework;
+    private Integer rework;
 
     /**
      * 显示类型标识
      */
-    private int displayStyleId;
+    private Integer displayStyleId;
 
     /**
      * 推诿
      */
-    private int shuffle;
+    private Integer shuffle;
 
 
 }
