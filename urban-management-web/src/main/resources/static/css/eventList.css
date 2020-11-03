@@ -93,3 +93,11 @@
     border-radius: 5px;
     overflow: hidden;
 }
+.upload_files{
+    width: 130px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #354e85!important;
+    color: #ffffff;
+    background-image: url(../img/1_03.png);background-repeat: no-repeat;background-position: 20px 14px;
+}
