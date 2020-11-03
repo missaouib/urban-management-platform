@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -67,7 +68,7 @@ public class ActivitiServiceImpl implements ActivitiService {
     @Override
     public ProcessInstance superviseReporting(String eventId, List<String> userList) {
         Map<String, Object> variables = new HashMap<>(3);
-        variables.put("userId", userList);
+        variables.put("userId", StringUtils.collectionToCommaDelimitedString(userList));
         variables.put("eventSource", EventSourceConstant.SUPERVISE_REPORTING);
         ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
         log.debug("----------------------监督员上报事件开始--------------------------------------");
@@ -80,7 +81,7 @@ public class ActivitiServiceImpl implements ActivitiService {
     @Override
     public ProcessInstance acceptanceReporting(String eventId, List<String> userList) {
         Map<String, Object> variables = new HashMap<>(3);
-        variables.put("userId", userList);
+        variables.put("userId", StringUtils.collectionToCommaDelimitedString(userList));
         variables.put("eventSource", EventSourceConstant.ACCEPTANCE_REPORTING);
         ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
         log.debug("----------------------受理员上报事件开始--------------------------------------");
