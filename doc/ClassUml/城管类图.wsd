@@ -34,7 +34,7 @@ class Grid<<网格实体类>>{
     -terminationDate : date
     -sts : int
     -dept : Dept
-    -user : User
+    -user : User[*]
     -publish : Publish
     -record : Record
     -publish : Publish
@@ -131,6 +131,7 @@ class EventFile<<事件附件实体类>>{
     -id : String
     -fileName : String
     -fileType ：int
+    -management : Kv    //  记录 处置前  处置后  标识
 }
 class EventCondition<<条件实体类>>{
     -id : String
@@ -151,7 +152,7 @@ class DeptTimeLimit<<专业部门时限实体类>>{
 
 class ProcessTimeLimit<<流程时限实体类>>{
     -id : String
-    -taskName : String
+    -node : Kv     //环节
     -level : Kv
     -timeLimit : int     //时限
 }
@@ -161,8 +162,8 @@ class Statistics<<流转统计实体类>>{
     -event                : Event
     -starTime : date
     -endTime  : date
-    -taskId   : String    //环节id
-    -taskName : String   
+    -taskId   : String    //任务id   : 当前任务在工作流中节点ID
+    -node : Kv     //环节
     -deptTimeLimit  :  DeptTimeLimit
     -processTimeLimit  :  ProcessTimeLimit
     -sts      : int        //当前环节是否超时
