@@ -145,6 +145,11 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     @Override
     public void complete(String taskId) {
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        if ("核实反馈".equals(task.getName())) {
+
+        }
+
         taskService.complete(taskId);
     }
 
@@ -183,6 +188,13 @@ public class ActivitiServiceImpl implements ActivitiService {
 
             eventButtonList.add(button1);
             eventButtonList.add(button2);
+        }
+
+        if ("信息核实".equals(taskName)) {
+            EventButton button1 = new EventButton();
+            button1.setId("5");
+            button1.setButtonValue("完成任务");
+            eventButtonList.add(button1);
         }
 
         return eventButtonList;
