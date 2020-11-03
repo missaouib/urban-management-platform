@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -223,9 +224,10 @@ public class ImportController {
         grid.setPublish(publish);
         grid.setInitialDate(LocalDateTime.now());
         grid.setTerminationDate(LocalDateTime.now());
-//        grid.setSts(0);
-        grid.setUser(SecurityUtil.getUser().castToUser());
-    gridService.save4Import(grid);
+        List<User> userList = Arrays.asList();
+        userList.add(SecurityUtil.getUser().castToUser());
+        grid.setUserList(userList);
+        gridService.save4Import(grid);
 
     }
     /**
