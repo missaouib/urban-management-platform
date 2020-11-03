@@ -5,6 +5,7 @@ import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.processtimelimit.ProcessTimeLimitService;
+import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,25 +34,106 @@ public class WorkService {
     private EventService eventService;
     @Autowired
     private ProcessTimeLimitService processTimeLimitService;
+    @Autowired
+    private StatisticsService statisticsService;
 
-    public void reportEvent(String eventId) {
+    /**
+     * 受理员上报
+     *
+     * @param eventId 上报的事件
+     */
+    public void acceptanceReportingByReceptionist(String eventId) {
         /*TODO 查询所有有受理员角色的人*/
         List<String> userList = new ArrayList<>();
         userList.add("1");
-        /*TODO 查询所有有监督员角色的人*/
         Event event = eventService.findOne(eventId);
-        ProcessInstance processInstance = activitiService.reportEvent(eventId, userList, event.getEventSource().getId());
+        ProcessInstance processInstance = activitiService.acceptanceReporting(eventId, userList);
         event.setProcessInstanceId(processInstance.getId());
         eventService.update(event);
+        Statistics statistics = this.initStatistics(event.getId());
+        statisticsService.save(statistics);
+    }
+
+    /**
+     * 受理员领取任务
+     *
+     * @param eventId 事件id
+     */
+    public void claimByReceptionist(String eventId) {
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        this.checkStatisticsByReceptionistReport(statistics);
+        activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
+    }
+
+    /**
+     * 受理员完成任务 并且 激活监督员(领取任务)核实
+     *
+     * @param eventId
+     */
+    public void completeByReceptionist(String eventId, String userId) {
+        String s = testFinish(eventId);
+        activitiService.complete(s);
+        Statistics statistics = initStatistics(eventId);
+        activitiService.claim(statistics.getTaskId(), userId);
+    }
+
+    /**
+     * 监督员核实完成任务 并且 开启受理员受理与否
+     *
+     * @param eventId
+     */
+    public void completeBySupervisor(String eventId) {
+        String s = testFinish(eventId);
+        activitiService.complete(s);
+        this.initStatistics(eventId);
+    }
+
+    /**
+     * 受理员完成任务
+     * 受理开启值班长流程
+     * 不予受理直接结束
+     *
+     * @param eventId 事件id
+     */
+    public void completeByReceptionist(String eventId) {
+        String s = testFinish(eventId);
+        this.initStatistics(eventId);
+    }
+
+    /* -------------------------------------------------------------私有方法- */
+
+    /**
+     * 测试期间 直接完结statistics表
+     *
+     * @param eventId
+     * @return
+     */
+    private String testFinish(String eventId) {
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        statistics.setEndTime(LocalDateTime.now());
+        statisticsService.update(statistics);
+        return statistics.getTaskId();
+    }
+
+    /**
+     * 根据传入的角色id查询所有拥有该角色的人
+     *
+     * @param roleId 角色id
+     * @return userId的集合
+     */
+    private List<String> getUserByRoleId(String roleId) {
+        /*TODO 根据传入的角色id查询所有拥有该角色的人*/
+        return new ArrayList<>();
     }
 
     /**
      * 初始化实例
      *
-     * @param event 事件
+     * @param eventId 事件id
      * @return 流转统计
      */
-    public Statistics initStatistics(Event event) {
+    private Statistics initStatistics(String eventId) {
+        Event event = eventService.findOne(eventId);
         Statistics statistics = new Statistics();
         statistics.setEvent(event);
         /* 获取当前环节 */
@@ -60,7 +142,7 @@ public class WorkService {
         statistics.setTaskName(task.getName());
         statistics.setStartTime(LocalDateTime.now());
         statistics.setDeptTimeLimit(event.getTimeLimit());
-        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskName(task.getName());
+        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());
         statistics.setProcessTimeLimit(processTimeLimit);
         return statistics;
     }
@@ -122,7 +204,6 @@ public class WorkService {
         Role role = new Role();
         statistics.setOperateRole(role);
         statistics.setUser(user);
-        /*TODO 调用工作流领取任务*/
     }
 
     /**

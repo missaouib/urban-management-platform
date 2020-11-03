@@ -14,4 +14,13 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
 
     List<Statistics> findAllByEvent_Id(String eventId);
 
+    /**
+     * 根据事件id查询该事件最后环节的实体
+     * 事件id和结束时间为空
+     *
+     * @param eventId 事件id
+     * @return 环节
+     */
+    Statistics findByEvent_IdAndEndTimeIsNull(String eventId);
+
 }

@@ -23,4 +23,8 @@ public class ProcessTimeLimitService {
         return processTimeLimitRepository.findByTaskName(taskName);
     }
 
+    public ProcessTimeLimit findByTaskNameAndLevelId(String taskName, String kvId) {
+        return processTimeLimitRepository.findByTaskNameAndLevel_Id(taskName, kvId);
+    }
+
 }

@@ -4,14 +4,19 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
-import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
@@ -94,11 +99,6 @@ public class SupervisionAcceptanceController {
         return new ModelAndView(SystemConstant.PAGE + "/event/sendCheck/list");
     }
 
-    @PostMapping("/supervisionAcceptance")
-    public void SupervisionAcceptance() {
-        eventService.testStatistics();
-    }
-
     /**
      * 登记
      *
@@ -110,4 +110,10 @@ public class SupervisionAcceptanceController {
         eventService.save(event);
         return Result.success();
     }
+
+    @GetMapping("/supervisionAcceptanceList")
+    public Page<EventVO> supervisionAcceptanceList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        return eventService.search(eventDTO, pageable);
+    }
+
 }

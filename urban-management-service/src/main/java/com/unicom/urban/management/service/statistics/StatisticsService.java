@@ -30,6 +30,13 @@ public class StatisticsService {
         statisticsRepository.save(statistics);
     }
 
+    public void update(Statistics statistics) {
+        statisticsRepository.saveAndFlush(statistics);
+    }
+
+    public Statistics findByEventIdAndEndTimeIsNull(String eventId) {
+        return statisticsRepository.findByEvent_IdAndEndTimeIsNull(eventId);
+    }
 
     public List<StatisticsVO> findByEventId(String eventId) {
         /*查询流程数据*/

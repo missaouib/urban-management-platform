@@ -18,4 +18,13 @@ public interface ProcessTimeLimitRepository extends CustomizeRepository<ProcessT
      */
     ProcessTimeLimit findByTaskName(String taskName);
 
+    /**
+     * 根据任务环节名称 和 时限分类查询
+     *
+     * @param taskName 任务环节名称
+     * @param kvId     时限分类
+     * @return 流程时限
+     */
+    ProcessTimeLimit findByTaskNameAndLevel_Id(String taskName, String kvId);
+
 }

@@ -3,21 +3,18 @@ package com.unicom.urban.management.service.event;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventRepository;
 import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
-import com.unicom.urban.management.dao.eventtype.EventTypeRepository;
 import com.unicom.urban.management.mapper.EventConditionMapper;
 import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventCondition;
 import com.unicom.urban.management.pojo.entity.EventType;
-import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
-import com.unicom.urban.management.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,14 +44,9 @@ public class EventService {
     @Autowired
     private EventConditionRepository eventConditionRepository;
     @Autowired
-    private UserService userService;
-    @Autowired
-    private EventTypeRepository eventTypeRepository;
-    @Autowired
     private WorkService workService;
     @Autowired
     private DeptTimeLimitService deptTimeLimitService;
-
     @Autowired
     private EventTypeService eventTypeService;
     @Autowired
@@ -69,8 +61,8 @@ public class EventService {
             if (eventDTO.getSts() != null) {
                 list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class), eventDTO.getSts()));
             }
-            if (eventDTO.getEventTypeId() != null) {
-                list.add(criteriaBuilder.equal(root.get("eventType").get("id").as(String.class),eventDTO.getEventTypeId()));
+            if (StringUtils.isNotBlank(eventDTO.getEventTypeId())) {
+                list.add(criteriaBuilder.equal(root.get("eventType").get("id").as(String.class), eventDTO.getEventTypeId()));
             }
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
@@ -111,26 +103,10 @@ public class EventService {
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         Event save = eventRepository.save(event);
-
-    }
-
-    /**
-     * 上报至工作流
-     *
-     * @param eventId 事件id
-     */
-    public void reportEvent(String eventId) {
-        workService.reportEvent(eventId);
-    }
-
-    /**
-     * 测试Statistics 受理员上报
-     */
-    public void testStatistics() {
-        String eventId = "9a4652fd-45c7-440c-aa39-daba7157241f";
-        Event one = findOne(eventId);
-        Statistics statistics = workService.initStatistics(one);
-        statisticsService.save(statistics);
+        /* 受理员上报 */
+        if (save.getSts() == 2) {
+            workService.acceptanceReportingByReceptionist(save.getId());
+        }
     }
 
     public String createCode(String eventTypeId) {
