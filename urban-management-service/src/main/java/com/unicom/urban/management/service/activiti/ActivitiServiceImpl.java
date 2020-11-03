@@ -146,11 +146,26 @@ public class ActivitiServiceImpl implements ActivitiService {
     @Override
     public void complete(String taskId) {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-        if ("核实反馈".equals(task.getName())) {
+        Map<String, Object> variables = new HashMap<>(3);
 
+        if ("核实反馈".equals(task.getName())) {
+            variables.put("", "");
         }
 
+        if ("".equals(task.getName())) {
+            variables.put("", "");
+        }
+
+
+        taskService.complete(taskId, variables);
+
+    }
+
+    @Override
+    public String complete(String taskId, List<String> userList, String buttonId) {
         taskService.complete(taskId);
+        //TODO 应该返回taskId
+        return null;
     }
 
 

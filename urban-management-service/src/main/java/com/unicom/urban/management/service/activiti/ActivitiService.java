@@ -90,5 +90,15 @@ public interface ActivitiService {
      */
     void complete(String taskId);
 
+    /**
+     * 完成任务
+     *
+     * @param taskId   任务ID
+     * @param userList 下一步处理人
+     * @param buttonId 页面点击的哪个按钮ID
+     * @return taskId
+     */
+    String complete(String taskId, List<String> userList, String buttonId);
+
 
 }
