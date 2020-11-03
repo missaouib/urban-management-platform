@@ -3,6 +3,7 @@ package com.unicom.urban.management.web.project.event;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.Result;
+import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
@@ -104,7 +105,7 @@ public class SupervisionAcceptanceController {
      * @return Result
      */
     @RequestMapping("register")
-    public Result register(Event event) {
+    public Result register(EventDTO event) {
         event.setSts(2);
         eventService.save(event);
         return Result.success();

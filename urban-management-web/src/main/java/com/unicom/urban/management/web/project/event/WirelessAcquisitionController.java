@@ -2,6 +2,7 @@ package com.unicom.urban.management.web.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
@@ -156,18 +157,18 @@ public class WirelessAcquisitionController {
      * @param event
      */
     @RequestMapping("/save")
-    public void save(Event event){
-        event.setSts(0);
-        eventService.save(event);
+    public void save(EventDTO eventDTO){
+        eventDTO.setSts(0);
+        eventService.save(eventDTO);
     }
     /**
      * 准备上报
      * @param event
      */
     @RequestMapping("/preReport")
-    public void preReport(Event event){
-        event.setSts(1);
-        eventService.save(event);
+    public void preReport(EventDTO eventDTO){
+        eventDTO.setSts(1);
+        eventService.save(eventDTO);
     }
 
     /**

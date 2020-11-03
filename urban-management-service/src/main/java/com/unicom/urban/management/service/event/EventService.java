@@ -107,7 +107,8 @@ public class EventService {
      *
      * @param event
      */
-    public void save(Event event) {
+    public void save(EventDTO eventDTO) {
+        Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         Event save = eventRepository.save(event);
 

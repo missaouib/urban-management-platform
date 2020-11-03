@@ -28,7 +28,7 @@
                                 <td><span>*</span>问题类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
-                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventType" class="find_input" />
+                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId" class="find_input" />
                                     <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                         +
                                     </button>
@@ -40,7 +40,7 @@
                             <tr>
                                 <td><span>*</span>立案区域</td>
                                 <td>
-                                    <select id="eventCondition" onchange="getTimeTypeList()" required>
+                                    <select id="eventCondition" onchange="getTimeTypeList()" th:name="conditionId" required>
 
                                     </select>
                                 </td>
@@ -54,7 +54,8 @@
                             <tr>
                                 <td><span>*</span>立案时限</td>
                                 <td>
-                                    <input  th:name="timeLimit" type="text" id="deptTImeLimit" required readonly/>
+                                    <input  th:name="timeLimitId" type="hidden" id="deptTImeLimitId"/>
+                                    <input  type="text" id="deptTImeLimit" required readonly/>
 
                                 </td>
                             </tr>
@@ -96,7 +97,7 @@
                                 </td>
                                 <td><span>*</span>所属网格</td>
                                 <td>
-                                    <select  th:name="grid"  id="grid4" required>
+                                    <select  th:name="gridId"  id="grid4" required>
                                     </select>
                                 </td>
                             </tr>
@@ -120,7 +121,7 @@
                                 </td>
                                 <td><span>*</span>问题来源</td>
                                 <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSource" required>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required>
                                         <option th:each="as:${eventSource}" th:value="${as.id}"
                                                 th:text="${as.value}"></option>
                                     </select>
@@ -139,7 +140,7 @@
                             <tr>
                                 <td><span>*</span>案件类型</td>
                                 <td>
-                                    <select class="form-control" id="recTypeId" th:name="recType" required>
+                                    <select class="form-control" id="recTypeId" th:name="recTypeId" required>
                                         <option th:each="as:${recType}" th:value="${as.id}"
                                                 th:text="${as.value}"></option>
                                     </select>
@@ -349,8 +350,8 @@
         let url = "/event/findDeptTimeLimit/" + deptTimeLimitId;
         $.ajaxUtil.get(url, function (e) {
             if (e.code == 0) {
-                let deptTimeLimit = e.data.timeLimit;
-                $("#deptTImeLimit").val(deptTimeLimit);
+                $("#deptTImeLimitId").val(e.data.id);
+                $("#deptTImeLimit").val(e.data.timeLimit);
             }
         });
     }
