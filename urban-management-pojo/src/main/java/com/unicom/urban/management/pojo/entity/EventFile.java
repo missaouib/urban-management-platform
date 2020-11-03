@@ -3,9 +3,7 @@ package com.unicom.urban.management.pojo.entity;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * 事件附件实体类
@@ -26,5 +24,8 @@ public class EventFile {
     private int fileType;
 
     private String filePath;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private KV management;
 
 }

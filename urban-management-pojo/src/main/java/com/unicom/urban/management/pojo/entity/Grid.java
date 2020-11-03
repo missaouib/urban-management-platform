@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 网格实体类
@@ -66,8 +67,8 @@ public class Grid extends BaseEntity {
     @JoinColumn
     private Dept dept;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn
-    private User user;
+    private List<User> userList;
 
 }
