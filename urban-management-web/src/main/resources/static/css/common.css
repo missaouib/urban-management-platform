@@ -688,13 +688,17 @@
 .notice_check p label{text-align: right;font-size: 12px;display: inline-block;}
 .find_input{width: 198px;height: 30px;border:solid 1px #ccc;border-radius: 4px;}
 .notice_check .check_btn{border-radius: 4px!important;height: 30px;border: none;margin-left: 5px;width: 65px;border-radius: 4px;background-color: #337ab7;color: #fff;padding-left: 18px;
-    background-image: url(../img/1_03.png);background-repeat: no-repeat;background-position: 11px 8px}
+    background-image: url(../img/searchMirror.png);background-repeat: no-repeat;background-position: 10px 6px}
 .check_btn01{height: 30px;border: none;margin-left: 5px;width: 65px;border-radius: 4px;background-color: #27a111;color: #fff;text-align: center;
 }
 .notice_check .check_btn1{border-radius: 4px!important;height: 30px;border: none;margin-left: 5px;width: 65px;border-radius: 4px;background-color: #337ab7;color: #fff;padding-left: 18px;
-    background-image: url(../img/1_03.png);background-repeat: no-repeat;background-position: 11px 8px}
+    background-image: url(../img/repeat.png);background-repeat: no-repeat;background-position: 11px 6px}
+.notice_check .check_btn2{border-radius: 4px!important;height: 30px;border: none;margin-left: 5px;width: 65px;border-radius: 4px;background-color: #337ab7;color: #fff;}
 .notice_check .check_btn1{height: 30px;border: none;margin-left: 5px;width: 65px;border-radius: 4px;background-color: #337ab7;color: #fff;text-align: center;}
 .notice_nav ul li{float: left}
+.check_btn{border-radius: 4px!important;height: 30px;border: none;margin-left: 5px;width: 65px;border-radius: 4px;background-color: #354e85!important;color: #fff;padding-left: 18px;
+    background-image: url(../img/searchMirror.png);background-repeat: no-repeat;background-position: 10px 6px}
+.check_btn2{border-radius: 4px!important;height: 30px!important;border: none!important;margin-left: 5px!important;width: 65px!important;border-radius: 4px!important;background-color: #354e85!important;color: #fff!important;}
 .notice_nav ul{border: 1px #ccc solid;border-radius: 2px}
 .notice_nav ul li a{display:inline-block;height: 28px;text-align:center;line-height:28px;color:#101010;border: none;width: 65px;border-right:1px #ccc solid;background-color: #fff;cursor: pointer}
 .notice_nav ul li:nth-child(4) a{border-right:none}
@@ -739,8 +743,7 @@ input{border-radius: 0px!important;}
 select{border-radius: 0px!important;}
 .find_input{width: 198px;height: 30px;border:solid 1px #ccc;border-radius: 4px;}
 .find_input1{width: 64px;height: 30px;border:solid 1px #ccc;border-radius: 4px;}
-.notice_check .check_btn{height: 30px;border: none;margin-left: 5px;width: 65px;border-radius: 4px;background-color: #337ab7;color: #fff;padding-left: 18px;
-    background-image: url(../img/1_03.png);background-repeat: no-repeat;background-position: 11px 8px}
+
 .dropdown-menu {min-width: 120px !important;margin-top: 4px;font-size: 12px}
 .dropdown-menu li {padding:5px 15px;cursor: pointer}
 .dropdown-menu li:hover{background-color: #f5f5f6}
@@ -1048,6 +1051,9 @@ ul,li{list-style: none}
     justify-content: end;
     margin: 10px 0;
     position: relative;
+}
+.dates{
+    margin: 10px 0 0 0 !important;
 }
 .tan{
     width: 20px;
