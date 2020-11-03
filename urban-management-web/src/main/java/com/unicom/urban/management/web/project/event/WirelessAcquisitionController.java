@@ -154,7 +154,7 @@ public class WirelessAcquisitionController {
     }
     /**
      * 保存
-     * @param event
+     * @param eventDTO
      */
     @RequestMapping("/save")
     public void save(EventDTO eventDTO){
@@ -163,7 +163,7 @@ public class WirelessAcquisitionController {
     }
     /**
      * 准备上报
-     * @param event
+     * @param eventDTO
      */
     @RequestMapping("/preReport")
     public void preReport(EventDTO eventDTO){
