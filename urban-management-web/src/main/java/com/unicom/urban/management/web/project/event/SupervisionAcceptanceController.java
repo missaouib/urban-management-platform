@@ -6,6 +6,7 @@ import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
+import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -29,6 +30,8 @@ public class SupervisionAcceptanceController {
 
     @Autowired
     private KVService kvService;
+    @Autowired
+    private GridService gridService;
 
     @GetMapping("/toSupervisionAcceptanceList")
     public ModelAndView toSupervisionAcceptanceList() {
@@ -37,13 +40,21 @@ public class SupervisionAcceptanceController {
 
     @GetMapping("/toSupervisionAcceptanceSave")
     public ModelAndView toSupervisionAcceptanceSave() {
-        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/save");
+        ModelAndView model = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/save");
+        //案件等级
+        model.addObject("level", kvService.findByTableNameAndFieldName("deptTimeLimit","level"));
+        //所属区域
+        model.addObject("region", kvService.findByTableNameAndFieldName("event","region"));
         //问题来源
-        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        model.addObject("eventSource", kvService.findByTableNameAndFieldName("event","eventSource"));
+        //案件类型
+        model.addObject("recType", kvService.findByTableNameAndFieldName("event","recType"));
+        //所在区域
+        model.addObject("gridList",gridService.findAllByParentIsNull());
         EventVO eventVO = new EventVO();
         eventVO.setCreateTime(LocalDateTime.now());
-        modelAndView.addObject("eventVO", eventVO);
-        return modelAndView;
+        model.addObject("eventVO", eventVO);
+        return model;
     }
 
     @GetMapping("/toSupervisionAcceptanceUpdate/{id}")

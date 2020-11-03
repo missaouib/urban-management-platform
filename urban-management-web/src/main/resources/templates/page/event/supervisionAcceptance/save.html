@@ -29,47 +29,96 @@
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
                                     <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventType" class="find_input" />
-                                    <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">
+                                    <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                         +
                                     </button>
+                                    <!--                                    <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">-->
+                                    <!--                                        +-->
+                                    <!--                                    </button>-->
                                 </td>
                             </tr>
                             <tr>
-                                <td><span></span>诉求人</td>
+                                <td><span>*</span>立案区域</td>
                                 <td>
-                                    <input name="peopleName"  type="text" class="">
+                                    <select id="eventCondition" onchange="getTimeTypeList()" required>
+
+                                    </select>
                                 </td>
-                                <td><span></span>联系方式</td>
-                                <td><input  name="phone" type="text" /></td>
+                                <td><span>*</span>立案时限分类</td>
+                                <td>
+                                    <select id="timeType" onchange="getDeptTimeLimitList()" required>
+
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>立案时限</td>
+                                <td>
+                                    <input  th:name="timeLimit" type="text" id="deptTImeLimit" required readonly/>
+
+                                </td>
                             </tr>
                             <tr>
                                 <td><span>*</span>问题描述</td>
                                 <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
-                                <td colspan="8"><textarea id="represent" name="represent"
-                                                          required></textarea></td>
+                                <td colspan = "8"><textarea id="problemescription" th:name="represent" required></textarea></td>
                             </tr>
-                            <tr class="col-12">
-                                <td><span></span>案件地址</td>
+                            <!--                            <tr>-->
+                            <!--                                <td><span></span>案件等级</td>-->
+                            <!--                                <td>-->
+                            <!--                                    <select class="form-control" id="level" th:name="level" required>-->
+                            <!--                                        <option>&#45;&#45;请选择&#45;&#45;</option>-->
+                            <!--                                        <option th:each="as:${level}" th:value="${as.id}"-->
+                            <!--                                                th:text="${as.value}"></option>-->
+                            <!--                                    </select>-->
+                            <!--                                </td>-->
+                            <!--                            </tr>-->
+                            <tr>
+                                <td><span>*</span>所在区域</td>
                                 <td>
-                                    <input name="location" value="" type="text" class="">
+                                    <select class="form-control" id="grid1" onchange="getStreetList()" required>
+                                        <option>--请选择--</option>
+                                        <option th:each="as:${gridList}" th:value="${as.id}"
+                                                th:text="${as.gridName}"></option>
+                                    </select>
+                                </td>
+                                <td><span>*</span>所属街道</td>
+                                <td>
+                                    <select class="form-control" id="grid2" onchange="getCommunityList()" required>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td><span></span>位置坐标</td>
+                                <td><span>*</span>所属社区</td>
                                 <td>
-                                    <input type="text" class="" readonly="readonly" id="longitude" name="x" disabled value="经度">
+                                    <select class="form-control" id="grid3" onchange="getGridList()" required>
+                                    </select>
                                 </td>
-                                <td></td>
+                                <td><span>*</span>所属网格</td>
                                 <td>
-                                    <input type="text" class="" readonly="readonly" id="latitude" name="y" disabled value="纬度">
+                                    <select  th:name="grid"  id="grid4" required>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td><span></span>诉求时间</td>
-                                <td>
-                                    <input th:name="createTime" th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
+                                <td><span>*</span>案件地址</td>
+                                <td colspan="8">
+                                    <input id="location" th:name="location" type="text" required>
                                 </td>
-                                <td><span></span>问题来源</td>
+                            </tr>
+                            <tr>
+                                <td><span></span>上报人</td>
+
+                                <td style="text-align: left"><div class="username" th:sec:authentication="principal.username"></div></td>
+                                <td><span></span>联系方式</td>
+                                <td><input id="phone" name="phone" type="text" /></td>
+                            </tr>
+                            <tr>
+                                <td><span></span>是否处理</td>
+                                <td style="text-align: left">
+                                    <!--                                    <input  name="userName" placeholder="" class="" type="checkbox" required style="width: 30px">-->
+                                </td>
+                                <td><span>*</span>问题来源</td>
                                 <td>
                                     <select class="form-control" id="eventSource" th:name="eventSource" required>
                                         <option th:each="as:${eventSource}" th:value="${as.id}"
@@ -77,27 +126,51 @@
                                     </select>
                                 </td>
                             </tr>
-
-                            <!--                                    <tr>-->
-                            <!--                                        <td>处理结果<span></span></td>-->
-                            <!--                                        <td colspan = "8"><textarea></textarea></td>-->
-                            <!--                                    </tr>-->
+                            <tr>
+                                <td><span></span>位置坐标</td>
+                                <td>
+                                    <input type="text" class="" value="经度" name="x" id="longitude" disabled readonly/>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <input type="text" class="" value="纬度" name="y" id="latitude" disabled readonly/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>案件类型</td>
+                                <td>
+                                    <select class="form-control" id="recTypeId" th:name="recType" required>
+                                        <option th:each="as:${recType}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>诉求人</td>
+                                <td>
+                                    <input name="peopleName"  type="text" class="">
+                                </td>
+                                <td><span></span>诉求时间</td>
+                                <td>
+                                    <input th:name="createTime" th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                         <div class="send">
                             <div class="sendImg">
                                 <div class="sendText"><span>图片:</span></div>
-                                <div><input id="input-id" type="file" name="file" multiple="multiple"></div>
+                                <div><input id="input-id" type="file"  name="file" multiple="multiple"></div>
                             </div>
 
 
                             <div class="sendImg">
                                 <div class="sendText"><span>视频:</span></div>
-                                <div><input id="videoInput" type="file" name="file" multiple="multiple"></div>
+                                <div><input id="videoInput" type="file"  name="file" multiple="multiple"></div>
                             </div>
                             <div class="sendImg">
                                 <div class="sendText"><span>音频:</span></div>
-                                <div><input id="musicInput" type="file" name="file" multiple="multiple"></div>
+                                <div><input id="musicInput" type="file"  name="file" multiple="multiple"></div>
                             </div>
 
                         </div>
@@ -190,6 +263,10 @@
     let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
     let componentTypeUrl = /*[[@{/allEventType}]]*/ "/allEventType";
     let createEventCodeUrl = /*[[@{/event/createEventCode}]]*/ "/event/createEventCode";
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+    let getDeptTimeLimitByLevelUrl = /*[[@{/event/getDeptTimeLimitByLevel}]]*/ "/event/getDeptTimeLimitByLevel";
+    let findAllByKvIdUrl = /*[[@{/event/findAllByKvId}]]*/ "/event/findAllByKvId";
+    let saveUrl = /*[[@{/event/save}]]*/ "/event/save";
 
     var setting = {
         callback: {
@@ -214,7 +291,10 @@
         $("#typeStr").val(treeNode.name);
         $("#eventTypeId").val(treeNode.id);
         $(".closemodal").click();
-        createEventCode(treeNode.id);
+        let eventTypeId = $("#eventTypeId").val();
+        createEventCode(eventTypeId);
+        //获取立案区域
+        findEventConditionByEventType(eventTypeId)
     }
 
     /**
@@ -222,18 +302,130 @@
      * @param eventTypeId
      */
     function createEventCode(eventTypeId) {
-        console.log("eventTypeId==="+eventTypeId);
         var url = createEventCodeUrl+"?eventTypeId="+eventTypeId
         $.ajaxUtil.get(url, function (e) {
             if (e.code == 0) {
                 var eventCode = e.data
-                console.log("eventCode======"+eventCode)
                 $("#eventCode").val(eventCode);
             }
         })
     }
-
-
+    /**
+     * 获取立案区域
+     */
+    function findEventConditionByEventType(eventTypeId){
+        let url = findEventConditionByEventTypeUrl +"/"+ eventTypeId;
+        $.ajaxUtil.get(url, function (e) {
+            let option="<option>--请选择--</option>";
+            if (e.code == 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
+                });
+                $("#eventCondition").html(option);
+            }
+        });
+    }
+    /**
+     * 获取立案时限分类
+     */
+    function getTimeTypeList() {
+        let eventConditionId = $("#eventCondition").val();
+        let url = "/event/findDeptTimeLimitByCondition/" + eventConditionId;
+        $.ajaxUtil.get(url, function (e) {
+            let option="<option>--请选择--</option>";
+            if (e.code == 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.timeType + "</option>"
+                });
+                $("#timeType").html(option);
+            }
+        });
+    }
+    /**
+     * 获取立案时限
+     */
+    function getDeptTimeLimitList() {
+        let deptTimeLimitId = $("#timeType").val();
+        let url = "/event/findDeptTimeLimit/" + deptTimeLimitId;
+        $.ajaxUtil.get(url, function (e) {
+            if (e.code == 0) {
+                let deptTimeLimit = e.data.timeLimit;
+                $("#deptTImeLimit").val(deptTimeLimit);
+            }
+        });
+    }
+    /**
+     * 获取街道
+     */
+    function getStreetList(){
+        let parentId = $("#grid1 option:selected").val();
+        let url = "/event/findAllByParentId/"+parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option="<option>--请选择--</option>";
+            if (e.code == 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid2").html(option);
+            }
+        });
+    }
+    /**
+     * 获取社区
+     */
+    function getCommunityList(){
+        let parentId = $("#grid2 option:selected").val();
+        let url = "/event/findAllByParentId/"+parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option="<option>--请选择--</option>";
+            if (e.code == 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid3").html(option);
+            }
+        });
+    }
+    /**
+     * 获取网格
+     */
+    function getGridList(){
+        let parentId = $("#grid3 option:selected").val();
+        let url = "/event/findAllByParentId/"+parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option="<option>--请选择--</option>";
+            if (e.code == 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid4").html(option);
+            }
+        });
+    }
+    //模态窗 selectEventTypeTree
+    function selectEventTypeTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择事件类型',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+    function doSubmit(index, layero){
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#eventTypeId").val(body.find('#treeId').val());
+        $("#typeStr").val(body.find('#treeName').val());
+        let eventTypeId = $("#eventTypeId").val();
+        createEventCode(eventTypeId);
+        //获取立案区域
+        findEventConditionByEventType(eventTypeId)
+        layer.close(index);
+    }
     $(function () {
         $.ajaxUtil.get(componentTypeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
