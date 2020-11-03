@@ -9,4 +9,6 @@ public interface EventButtonRepository extends CustomizeRepository<EventButton, 
 
     List<EventButton> findByTaskName(String taskName);
 
+    List<EventButton> findByTaskNameOrderBySort(String taskName);
+
 }

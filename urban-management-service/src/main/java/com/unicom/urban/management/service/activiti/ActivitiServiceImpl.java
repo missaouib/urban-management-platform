@@ -8,9 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
-import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
-import org.activiti.engine.impl.pvm.PvmTransition;
-import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
@@ -143,9 +140,45 @@ public class ActivitiServiceImpl implements ActivitiService {
         taskService.claim(taskId, userId);
     }
 
+//    @Override
+//    public void complete(String taskId) {
+//        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+//        Map<String, Object> variables = new HashMap<>(3);
+//
+//        if ("核实反馈".equals(task.getName())) {
+//            variables.put("", "");
+//        }
+//
+//        if ("".equals(task.getName())) {
+//            variables.put("", "");
+//        }
+//
+//
+//        taskService.complete(taskId, variables);
+//
+//    }
+
     @Override
-    public void complete(String taskId) {
-        taskService.complete(taskId);
+    public String complete(String taskId, List<String> userList, String buttonId) {
+
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+
+        Map<String, Object> variables = new HashMap<>(3);
+
+        if ("核实反馈".equals(task.getName())) {
+            variables.put("", "");
+        }
+
+        if ("核实反馈".equals(task.getName())) {
+            variables.put("shouliyuanType", buttonId);
+            variables.put("userId", userList);
+        }
+
+
+        taskService.complete(taskId, variables);
+
+        //TODO 应该返回taskId
+        return null;
     }
 
 
@@ -153,70 +186,10 @@ public class ActivitiServiceImpl implements ActivitiService {
     public List<EventButton> queryButton(String taskId) {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         return queryButtonList(task.getName());
-
     }
 
     private List<EventButton> queryButtonList(String taskName) {
-
-//        List<EventButton> eventButtonList = eventButtonRepository.findByTaskName(task.getName());
-        List<EventButton> eventButtonList = new ArrayList<>();
-        if ("核实反馈".equals(taskName)) {
-            EventButton button1 = new EventButton();
-            button1.setId("1");
-            button1.setButtonValue("受理");
-
-            EventButton button2 = new EventButton();
-            button2.setId("2");
-            button2.setButtonValue("不予受理");
-
-            eventButtonList.add(button1);
-            eventButtonList.add(button2);
-        }
-        if ("值班长-立案".equals(taskName)) {
-            EventButton button1 = new EventButton();
-            button1.setId("3");
-            button1.setButtonValue("回退");
-
-            EventButton button2 = new EventButton();
-            button2.setId("4");
-            button2.setButtonValue("立案");
-
-            eventButtonList.add(button1);
-            eventButtonList.add(button2);
-        }
-
-        return eventButtonList;
-    }
-
-
-    // 根据taskId查找当前任务出口
-//    @Override
-    public List<String> getOutGoingTransNames(String taskId) {
-        // 获取流程定义
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-        ProcessDefinitionEntity pd = (ProcessDefinitionEntity) repositoryService.getProcessDefinition(task.getProcessDefinitionId());
-        // 获取流程实例
-        ProcessInstance pi = runtimeService.createProcessInstanceQuery().processInstanceId(task.getProcessInstanceId()).singleResult();
-        // 根据流程实例查找当前活动id
-        String activityId = pi.getActivityId();
-        // 根据活动id查找当前活动对象
-        ActivityImpl activity = pd.findActivity(activityId);
-        // 根据活动对象查找所有出口
-        List<PvmTransition> outgoingTransitions = activity.getOutgoingTransitions();
-        // 将所有出口封装成集合
-        List<String> transNames = new ArrayList<String>();
-        for (PvmTransition trans : outgoingTransitions) {
-            String transName = (String) trans.getProperty("name");
-            if (transName != null) {
-                // 将出口名字加入到集合
-                transNames.add(transName);
-            }
-        }
-        // 如果该节点没有出口，默认设置按钮为提交
-        if (transNames.size() == 0) {
-            transNames.add("提交");
-        }
-        return transNames;
+        return eventButtonRepository.findByTaskNameOrderBySort(taskName);
     }
 
 }

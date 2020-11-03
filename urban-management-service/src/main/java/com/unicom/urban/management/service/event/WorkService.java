@@ -72,7 +72,7 @@ public class WorkService {
      */
     public void completeByReceptionist(String eventId, String userId) {
         String s = testFinish(eventId);
-        activitiService.complete(s);
+//        activitiService.complete(s);
         Statistics statistics = initStatistics(eventId);
         activitiService.claim(statistics.getTaskId(), userId);
     }
@@ -84,7 +84,7 @@ public class WorkService {
      */
     public void completeBySupervisor(String eventId) {
         String s = testFinish(eventId);
-        activitiService.complete(s);
+//        activitiService.complete(s);
         this.initStatistics(eventId);
     }
 
