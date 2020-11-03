@@ -88,7 +88,7 @@ public interface ActivitiService {
     /**
      * 完成任务
      */
-    void complete(String taskId);
+//    void complete(String taskId);
 
     /**
      * 完成任务
