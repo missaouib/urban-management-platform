@@ -21,84 +21,119 @@
     <div class="tabels" style="overflow:inherit;">
         <div class="notice_check">
             <form id="component">
-                <p>
-                    <label class="">图层分类</label>
-                    <input type="text" readonly="readonly" id="typeStr" class="find_input">
-                    <input type="hidden" readonly="readonly" name="componentId" id="componentId" class="find_input">
-                    <input type="hidden" readonly="readonly" name="eventTypeId" id="eventTypeId"
-                           class="find_input">
-                    <input type="hidden" readonly="readonly" name="layerId" id="layerId" class="find_input">
-                    <input type="hidden" readonly="readonly" name="mongoId" id="mongoId" class="find_input">
+                <div class="top table2_top">
+                    <div class="top_out">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td><span></span>图层分类</td>
+                                <td>
+                                    <input type="text" readonly="readonly" id="typeStr" class="find_input">
+                                    <input type="hidden" readonly="readonly" name="componentId" id="componentId" class="find_input">
+                                    <input type="hidden" readonly="readonly" name="eventTypeId" id="eventTypeId"
+                                           class="find_input">
+                                    <input type="hidden" readonly="readonly" name="layerId" id="layerId" class="find_input">
+                                    <input type="hidden" readonly="readonly" name="mongoId" id="mongoId" class="find_input">
+                                </td>
+                                <td><span></span>图层名称</td>
+                                <td>
+                                    <input type="text" readonly="readonly" id="publish" class="find_input">
+                                    <input type="hidden" readonly="readonly" id="publishId" name="publish" class="find_input">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>位置信息</td>
+                                <td>
+                                    <input type="text" readonly="readonly" id="coordinate" name="coordinate" class="find_input coor">
+                                </td>
 
-                </p>
-                <p>
-                    <label class="">图层名称</label>
-                    <input type="text" readonly="readonly" id="publish" class="find_input">
-                    <input type="hidden" readonly="readonly" id="publishId" name="publish" class="find_input">
-                </p>
-                <p>
-                    <label class="">位置信息</label>
-                    <input type="text" readonly="readonly" id="coordinate" name="coordinate" class="find_input coor">
-                </p>
-                <p class="attribute">属性信息</p>
-                <p>
-                    <label class="">部件标识码</label>
-                    <input type="text" class="find_input" id="objId" name="objId">
-                    <label class="">部件名称</label>
-                    <input type="text" class="find_input" id="objName" name="objName">
-                </p>
-                <p>
-                    <label class="">主管部门代码</label>
-                    <input type="text" class="find_input" id="mainDeptCode" name="mainDeptCode">
-                    <label class="">主管部门名称</label>
-                    <input type="text" class="find_input" id="mainDeptName" name="mainDeptName">
-                </p>
-                <p>
-                    <label class="">权属单位代码</label>
-                    <input type="text" class="find_input" id="ownershipDeptCode" name="ownershipDeptCode">
-                    <label class="">权属单位名称</label>
-                    <input type="text" class="find_input" id="ownershipDeptName" name="ownershipDeptName">
-                </p>
-                <p>
-                    <label class="">养护部门代码</label>
-                    <input type="text" class="find_input" id="maintenanceDeptCode" name="maintenanceDeptCode">
-                    <label class="">养护部门名称</label>
-                    <input type="text" class="find_input" id="maintenanceDeptName" name="maintenanceDeptName">
-                </p>
-                <p>
-                    <label class="">初始日期</label>
-                    <input size="16" class="form_date find_input" name="initialDate" id="initialDate" type="text" readonly>
-                    <label class="">变更日期</label>
-                    <input size="16" class="form_date find_input" name="changeDate" id="changeDate" type="text" value="" readonly>
-                </p>
-                <p>
-                    <label class="">所在网格</label>
-                    <select id="bgid" class="find_input" name="bgid"></select>
-                    <label class="">部件状态</label>
-                    <select id="objState" class="find_input" name="objState"></select>
-                </p>
-                <p>
-                    <label class="">数据来源</label>
-                    <select id="dataSource" class="find_input" name="dataSource"></select>
-                </p>
-                <p>
-                    <label class="">备注</label>
-                    <input type="text" class="find_input" id="note" name="note">
-                </p>
+                            </tr>
+                            <tr class="attribute" >
+                                <td colspan="12" style="background-color:#354e85!important;text-align: left!important;font-size: 14px!important;padding-left: 10px;color: white">属性信息</td>
+                            </tr>
+                            <tr>
+                                <td><span></span>部件标识码</td>
+                                <td>
+                                    <input type="text" class="find_input" id="objId" name="objId">
+                                </td>
+                                <td><span></span>部件名称</td>
+                                <td>
+                                    <input type="text" class="find_input" id="objName" name="objName">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>主管部门代码</td>
+                                <td>
+                                    <input type="text" class="find_input" id="mainDeptCode" name="mainDeptCode">
+                                </td>
+                                <td><span></span>主管部门名称</td>
+                                <td>
+                                    <input type="text" class="find_input" id="mainDeptName" name="mainDeptName">
+                                </td>
+                            </tr>
 
-                <p class="function_btn">
-
-                    <!--                    <input type="button" class="check_btn1 button_ground" onclick="saveComponent()" value="修 改">-->
-                    <!--                    <input type="button" class="check_btn1 button_ground" onclick="saveComponent()" value="保 存">-->
-                <div class="notice_bot">
-                    <div class="r_right but_p">
-                        <button class="but_save" type="submit" id="smtBtn" onclick="saveComponent()">保存</button>
-                        <button class="but_save" type="submit" onclick="saveComponent()" style="margin-left: 10px">修改</button>
-                        <button class="but_close" onclick="deleteComponent()">删除</button>
+                            <tr>
+                                <td><span></span>权属单位代码</td>
+                                <td>
+                                    <input type="text" class="find_input" id="ownershipDeptCode" name="ownershipDeptCode">
+                                </td>
+                                <td><span></span>权属单位名称</td>
+                                <td>
+                                    <input type="text" class="find_input" id="ownershipDeptName" name="ownershipDeptName">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>养护部门代码</td>
+                                <td>
+                                    <input type="text" class="find_input" id="maintenanceDeptCode" name="maintenanceDeptCode">
+                                </td>
+                                <td><span></span>养护部门名称</td>
+                                <td>
+                                    <input type="text" class="find_input" id="maintenanceDeptName" name="maintenanceDeptName">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>初始日期</td>
+                                <td>
+                                    <input size="16" class="form_date find_input" name="initialDate" id="initialDate" type="text" readonly>
+                                </td>
+                                <td><span></span>变更日期</td>
+                                <td>
+                                    <input size="16" class="form_date find_input" name="changeDate" id="changeDate" type="text" value="" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>所在网格</td>
+                                <td>
+                                    <select id="bgid" class="find_input" name="bgid"></select>
+                                </td>
+                                <td><span></span>部件状态</td>
+                                <td>
+                                    <select id="objState" class="find_input" name="objState"></select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>数据来源</td>
+                                <td>
+                                    <select id="dataSource" class="find_input" name="dataSource"></select>
+                                </td>
+                                <td><span></span>备注</td>
+                                <td>
+                                    <input type="text" class="find_input" id="note" name="note">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        </div>
                     </div>
-                </div>
-                </p>
             </form>
+            <div class="notice_bot">
+                <div class="r_right but_p girdBtnGroup">
+                    <button class="but_save" type="submit" id="smtBtn" onclick="saveComponent()">保存</button>
+                    <button class="but_save" type="submit" onclick="saveComponent()" style="margin-left: 10px">修改</button>
+                    <button class="but_close" onclick="deleteComponent()">删除</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="maps">
