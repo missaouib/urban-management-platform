@@ -70,7 +70,7 @@ logging:
   level:
     com.unicom: debug
     org.springframework: warn
-    org.activiti.engine: debug
+    org.activiti.engine: info
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 gis:
   api:

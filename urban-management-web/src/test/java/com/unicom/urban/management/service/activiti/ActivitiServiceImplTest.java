@@ -2,6 +2,8 @@ package com.unicom.urban.management.service.activiti;
 
 import com.unicom.urban.management.web.WebApplication;
 import lombok.extern.slf4j.Slf4j;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.junit.Test;
@@ -26,6 +28,12 @@ public class ActivitiServiceImplTest {
     @Autowired
     private ActivitiService activitiService;
 
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private RuntimeService runtimeService;
+
     /**
      * 监督员上报测试
      */
@@ -43,6 +51,8 @@ public class ActivitiServiceImplTest {
 
 
         System.out.println(activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId()));
+        runtimeService.suspendProcessInstanceById(processInstance.getProcessInstanceId());
+
         activitiService.claim(heshifankui.getId(), "受理员1");
         System.out.println(activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId()));
 

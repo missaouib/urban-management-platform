@@ -175,6 +175,11 @@ public class ActivitiServiceImpl implements ActivitiService {
             variables.put("userId", userList);
         }
 
+        if ("值班长-立案".equals(task.getName())) {
+            variables.put("liantype", buttonId);
+            variables.put("userId", userList);
+        }
+
 
         taskService.complete(taskId, variables);
 
