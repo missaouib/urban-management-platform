@@ -174,7 +174,7 @@ public class WirelessAcquisitionController {
      */
     @RequestMapping("/save")
     public void save(EventDTO eventDTO){
-        eventDTO.setSts(0);
+//        eventDTO.setSts(0);
         eventService.save(eventDTO);
     }
     /**
@@ -183,7 +183,7 @@ public class WirelessAcquisitionController {
      */
     @RequestMapping("/preReport")
     public void preReport(EventDTO eventDTO){
-        eventDTO.setSts(1);
+//        eventDTO.setSts(1);
         eventService.save(eventDTO);
     }
 
