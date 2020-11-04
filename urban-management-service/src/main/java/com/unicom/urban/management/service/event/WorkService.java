@@ -72,8 +72,8 @@ public class WorkService {
      * @param eventId 事件id
      */
     public void caseAcceptanceByDispatch(String eventId) {
-        /*this.acceptanceReportingByReceptionist(eventId);
-        this.claimByReceptionist(eventId);*/
+        this.acceptanceReportingByReceptionist(eventId);
+        this.claimByReceptionist(eventId);
     }
 
     /**
@@ -86,17 +86,6 @@ public class WorkService {
         activitiService.complete(s, Arrays.asList(userId), "11");
         Statistics statistics = initStatistics(eventId);
         activitiService.claim(statistics.getTaskId(), userId);
-    }
-
-    /**
-     * 监督员核实完成任务 并且 开启受理员受理与否
-     *
-     * @param eventId
-     */
-    public void completeBySupervisor(String eventId) {
-        String s = testFinish(eventId);
-        activitiService.complete(s, Arrays.asList(SecurityUtil.getUserId()), "1");
-        this.initStatistics(eventId);
     }
 
     /**
