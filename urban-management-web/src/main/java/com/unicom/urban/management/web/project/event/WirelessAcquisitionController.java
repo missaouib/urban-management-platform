@@ -57,18 +57,23 @@ public class WirelessAcquisitionController {
     public ModelAndView toWirelessAcquisitionList() {
         return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/list");
     }
+    @GetMapping("/toCaseHistoryList")
     public ModelAndView toCaseHistoryList() {
         return new ModelAndView(SystemConstant.PAGE + "/event/caseHistory/list");
     }
+    @GetMapping("/toCaseInspectList")
     public ModelAndView toCaseInspectList() {
         return new ModelAndView(SystemConstant.PAGE + "/event/caseInspect/list");
     }
+    @GetMapping("/toCaseInvalidList")
     public ModelAndView toCaseInvalidList() {
         return new ModelAndView(SystemConstant.PAGE + "/event/caseInvalid/list");
     }
+    @GetMapping("/toCaseVerifyList")
     public ModelAndView toCaseVerifyList() {
         return new ModelAndView(SystemConstant.PAGE + "/event/caseVerify/list");
     }
+
     @GetMapping("/toWirelessAcquisitionSave")
     public ModelAndView toWirelessAcquisitionListSave() {
         ModelAndView model = new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/save");
