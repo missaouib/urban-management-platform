@@ -9,7 +9,717 @@
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
     <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
-<body>
-caseHistory
+<body style="border-radius: 8px;">
+<div class="content">
+    <div class="leftContent">
+        <form id="userForm">
+            <div class="top table2_top">
+                <!--        <div>-->
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td>问题描述<span></span></td>
+                            <td>
+                                <input type="text" class="datepicker" readonly="readonly">
+                            </td>
+                            <td>问题类型<span>*</span></td>
+                            <td>
+                                <input id="eventType" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--    </div>-->
+        </form>
+        <div class="notice_check">
+            <form id="search-form">
+                <p style="display: flex;justify-content: flex-end">
+                    <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
+                    <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">
+                </p>
+            </form>
+        </div>
+        <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+
+    </div>
+    <div class="rightContent">
+        <div class="tabTitle">
+            <span class="active">地图</span>
+            <span>案件详情</span>
+            <span>流转记录</span>
+            <span>流程图</span>
+        </div>
+        <div class="tabInfo">
+            <div class="banner blockActive">
+                <div class="map" id="map" style="width: 100%;height: 90%"></div>
+                <div id="popup" class="ol-popup">
+                    <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                    <div id="popup-content">
+                        <ul id="message">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="banner">
+                <h3 class="bigTitle">案件修改</h3>
+                <form class="details">
+                    <div class="top table2_top">
+                        <div class="top_out">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td><span>*</span>案卷号</td>
+                                    <td>
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                    </td>
+                                    <td><span>*</span>问题类型</td>
+                                    <td>
+                                        <input id="event" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>*</span>立案区域</td>
+                                    <td>
+                                        <select name="kv" required readonly disabled>
+                                            <option value="">请选择</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </td>
+                                    <td><span>*</span>立案条件</td>
+                                    <td>
+                                        <select name="kv" required readonly disabled>
+                                            <option value="">请选择</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>*</span>案件等级</td>
+                                    <td>
+                                        <select name="kv" required readonly disabled>
+                                            <option value="">请选择</option>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </td>
+                                    <td><span>*</span>处理时限</td>
+                                    <td>
+                                        <input type="text" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>*</span>问题描述</td>
+
+                                    <td colspan="8"><textarea id="problemescription" name="problemescription"
+                                                              required readonly></textarea></td>
+
+
+                                </tr>
+                                <tr class="col-12">
+                                    <td><span></span>案件地址</td>
+                                    <td>
+                                        <input name="userName" placeholder="" class="" readonly type="text">
+                                    </td>
+                                    <td><span></span>案件类型</td>
+                                    <td>
+                                        <select name="safeLevel" readonly="" disabled>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="col-12">
+                                    <td><span>*</span>所属区域</td>
+                                    <td>
+                                        <select name="safeLevel" disabled>
+                                            <option>一般</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </td>
+                                    <td><span>*</span>所属街道</td>
+                                    <td>
+                                        <select name="safeLevel" disabled>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr class="col-12">
+                                    <td><span>*</span>所属社区</td>
+                                    <td>
+                                        <select name="safeLevel" disabled>
+                                            <option>一般</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </td>
+                                    <td><span>*</span>单元网格</td>
+                                    <td>
+                                        <select name="safeLevel" disabled>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>*</span>案件类型</td>
+                                    <td>
+                                        <select name="safeLevel" disabled>
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                        </select>
+                                    </td>
+                                    <td><span>*</span>上报监督员</td>
+                                    <td>
+                                        <input readonly type="text">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>上报人</td>
+                                    <td>
+                                        <input type="text" readonly>
+                                    </td>
+                                    <td><span></span>联系方式</td>
+                                    <td><input id="handleTime" name="handleTime" type="text" value="15645068888" readonly="readonly"></td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>性别</td>
+                                    <td>
+                                        <select name="safeLevel" disabled>
+                                            <option>男</option>
+                                            <option>女</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>创建时间</td>
+                                    <td>
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                    </td>
+                                    <td><span></span>问题来源</td>
+                                    <td>
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>位置坐标</td>
+                                    <td>
+                                        <input type="text"  class="find_input" readonly="readonly"  value="经度" >
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <input type="text" class="find_input" readonly="readonly"  value="纬度">
+                                    </td>
+                                </tr>
+
+
+                                <!--                                    <tr>-->
+                                <!--                                        <td>处理结果<span></span></td>-->
+                                <!--                                        <td colspan = "8"><textarea></textarea></td>-->
+                                <!--                                    </tr>-->
+                                </tbody>
+                            </table>
+                            <div class="send">
+                                <div class="sendImg">
+                                    <div class="sendText"><span>照片:</span></div>
+                                    <div><input id="input-id" type="file"  name="file" multiple="multiple"></div>
+                                </div>
+
+
+                                <div class="sendImg">
+                                    <div class="sendText"><span>视频:</span></div>
+                                    <div><input id="videoInput" type="file"  name="file" multiple="multiple"></div>
+                                </div>
+                                <div class="sendImg">
+                                    <div class="sendText"><span>音频:</span></div>
+                                    <div><input id="musicInput" type="file"  name="file" multiple="multiple"></div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!--                            按钮-->
+                        <div class="notice_bot">
+                            <!--            <div class="l_left">-->
+                            <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                            <!--            </div>-->
+                            <div class="r_right but_p girdBtnGroup">
+                                <button class="but_close" onclick="Cancel()">返回</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="banner"></div>
+            <div class="banner" >
+                <img src='/common/img/7d4adfe6-1dbf-11eb-a1ce-00155dff8d69'>
+            </div>
+
+        </div>
+
+        <div class="modal fade" id="modal-default">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">不予受理详情</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="top table2_top">
+                                <!--        <div>-->
+                                <div class="top_out">
+                                    <table class="table">
+                                        <tbody>
+                                        <tr>
+                                            <td>当前处理部门<span></span></td>
+                                            <td>
+                                                <input type="text"  readonly="readonly">
+                                            </td>
+                                            <td>当前处理人<span></span></td>
+                                            <td>
+                                                <input type="text" required readonly="readonly">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><span></span>不予受理意见</td>
+                                            <td colspan="8"><textarea  name="problemescription" required readonly></textarea></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!--    </div>-->
+                        </form>
+                    </div>
+                    <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
+                        <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        queryUserList();
+        $(".tabTitle span").click(function() {
+            $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
+            $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
+        })
+        eventImg();
+        $("#alwaysSay").click(function () {
+            $("#wordSays").stop().fadeToggle(300)
+        })
+        $(".idioms").click(function () {
+            let idioms = $(this).html()
+            $("#textIdioms").html(idioms)
+            $("#wordSays").fadeOut(300)
+        })
+    })
+
+    //职位角色按钮组
+    var roleNum = 1;
+    if(roleNum =1){
+        $("#leader").addClass("blockActive")
+    }else if (roleNum =2){
+        $("#dispatcher").addClass("blockActive")
+    }else if (roleNum =3){
+        $("#departments").addClass("blockActive")
+    }else if (roleNum =4){
+        $("#case").addClass("blockActive")
+    }else if (roleNum =5){
+        $("#treatment").addClass("blockActive")
+    }
+
+    function eventImg(){
+        var str = "<img src='"+ img + "7d4adfe6-1dbf-11eb-a1ce-00155dff8d69"+"'>";
+        $("#evnetImg").empty();
+        $("#eventImg").append(str);
+    }
+
+    let img = /*[[@{/common/img/}]]*/ "/common/img/";
+
+    let searchUrl = /*[[@{/event/cooperativeWorkList}]]*/ "/event/cooperativeWorkList";
+
+    let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
+
+    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
+
+    let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
+
+    function queryUserList() {
+        var options = {
+            url: searchUrl,
+            createUrl: addUrl,
+            updateUrl: editUrl,
+            removeUrl: removeUrl,
+            // exportUrl: prefix + "/export",
+            // importUrl: prefix + "/importData",
+            // importTemplateUrl: prefix + "/importTemplate",
+            uniqueId: "id",
+            sortName: "updateTime",
+            sortOrder: "desc",
+            modalName: "用户",
+            onClickRow: function (row) {
+                console.log("row", row);
+            },
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                },
+                {
+                    title: '时限',
+                    field: '',
+                    formatter: function (value,row) {
+                        console.log(row)//表格数据 row. 什么什么 .png
+                        var e = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
+                            "<img src='../img/0.png' style='width: 100%;height: 100%'></div>"
+                        return e;
+                    }
+                },
+                {
+                    title: '问题描述',
+                    field: 'userName'
+                },
+                {
+                    title: '上报人',
+                    field: 'represent'
+                },
+                {
+                    title: '案件类型',
+                    field: 'eventTypeName'
+                },
+                {
+                    title: '创建时间',
+                    field: 'createTime',
+                },
+
+
+            ]
+        };
+        $.table.init(options);
+    }
+    //模态窗 selectEventTypeTree
+    function selectEventTypeTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择事件类型',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero){
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#typeStr").val(body.find('#treeId').val());
+        $("#typeStr").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+    jQuery.extend(jQuery.validator.messages, {
+        required: "必填",
+        phone: "必填",
+        remote: "请修正该字段",
+        email: "请输入正确格式的电子邮件",
+        url: "请输入合法的网址",
+        date: "请输入合法的日期",
+        dateISO: "请输入合法的日期 (ISO).",
+        number: "请输入合法的数字",
+        digits: "只能输入整数",
+        creditcard: "请输入合法的信用卡号",
+        equalTo: "请再次输入相同的值",
+        accept: "请输入拥有合法后缀名的字符串",
+        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
+        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
+        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
+        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
+        min: jQuery.validator.format("请输入一个最小为{0} 的值")
+    });
+
+    $("#userForm").validate({
+        debug: true,
+        ignore:"",
+        submitHandler:function(form){
+            var params = $(form).serialize(); //串行化表单参数
+            $.post("user",params,function(result){
+                if (result.ok) {//注册成功
+                    location.href = "register_ok.html";
+                }else{//注册失败
+                    alert(result.msg);
+                    $("#checkImg").click();
+
+                }
+            },"json");
+        },
+        rules: {
+            userName: {
+                required: true
+            },
+            loginName: {
+                required: true,
+                // rangelength: [5, 8]
+            },
+            phonenumber: {
+                required: true,
+                // rangelength: [6, 12]
+            },
+            problemescription: {
+                required: true,
+                // rangelength: [6, 12],
+                /*重复密码需要与原密码相同的要求*/
+                // equalTo: "#pwd"
+            },
+            safeLevel: {
+                required: true
+            },
+            findTime: {
+                required: true,
+                // range: [26, 50]
+            },
+            enterprise: {
+                required: true
+            },
+            department: {
+                required: true
+            },
+            handleTime: {
+                required: true
+            },charge: {
+                required: true
+            },
+            question: {
+                required: true
+            },
+            closeTime: {
+                required: true,
+                // email: true
+            },
+            // idcard: {
+            //     card: true
+            // },
+            // phone: {
+            //     phone: true
+            // }
+        },
+        messages: {
+            // realname: {
+            //     required: "真实姓名不能为空"
+            // },
+            // username: {
+            //     required: "登录名不能为空",
+            //     rangelength: "登录名长度要在5-8位之间"
+            // },
+            // pwd: {
+            //     required: "密码不能为空",
+            //     rangelength: "密码长度在6-12位之间"
+            // },
+            // pwd2: {
+            //     required: "重复密码不能为空",
+            //     rangelength: "重复密码长度在6-12位之间",
+            //     equalTo: "重复密码与密码不一致"
+            // },
+            // sex: {
+            //     required: "请选择性别"
+            // },
+            // age: {
+            //     required: "年龄不能为空",
+            //     range: "年龄必须在26-50岁之间"
+            // },
+            // email: {
+            //     email: "请输入有效邮箱"
+            // },
+            // idcard: {
+            //     card: "请输入有效身份证号"
+            // },
+            // phone: {
+            //     phone: "必填"
+            // }
+        }
+    });
+    /*手机号格式验证*/
+    $.validator.addMethod("phone", function (value, element, params) {
+        var reg = /^1[34578]\d{9}$/;
+        return reg.test(value);
+    }, "phone error");
+
+    function Cancel() {
+        $.modal.closeLoading();
+    }
+
+    function submitHandler(){
+        //先校验
+        if (!$("form").valid()) {
+            return;
+
+        }
+        var data = $('#userForm').serialize();
+        $.operate.saveTab(url, data);
+    }
+    //上传 照片视频音频
+    $(function () {
+
+        $("#input-id").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            // uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            maxFileCount: 2,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        }).on('change', function (event) {
+            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
+        }).on('fileselect', function (event, numFiles, label) {
+            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
+        }).on("filebatchselected", function (event, files) {
+            // $(this).fileinput("upload");
+        }).on("fileuploaded", function (event, data) {
+            console.log('fileuploaded()      ');
+
+            if (data.response.code === web_status.FAIL) {
+                console.log("上传文件失败");
+            }
+            console.log(data);
+        }).on('filedeleted', function (event, key) {
+            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
+            console.log('Key = ' + key);
+        }).on('filesuccessremove', function (event, id) {
+            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
+            console.log(id);
+        }).on('fileclear', function (event) {
+            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
+            console.log(event);
+        }).on('filecleared', function (event) {
+            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
+            console.log(event);
+        }).on('filepredelete', function (event, key) {
+            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
+            console.log('Key = ' + key);
+        }).on('filesuccessremove', function (event, id) {
+            console.log('filesuccessremove()   ')
+            console.log(id);
+        });
+
+        $("#videoInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            // uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            maxFileCount: 2,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        })
+        $("#musicInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            // uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            maxFileCount: 2,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        })
+    })
+
+    var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
+    // 沽源地图
+    var center = [115.68192, 41.66462];
+    var projection = new ol.proj.Projection({
+        code: 'EPSG:4326',
+        units: 'degrees',
+        axisOrientation: 'neu',
+        global: true
+    });
+    var untiled = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+            ratio: 1,
+            url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
+            params: {
+                'VERSION': '1.1.1',
+                "LAYERS": 'guyuan20201010:guyuan',
+                "exceptions": 'application/vnd.ogc.se_inimage',
+            }
+        })
+    });
+    var source = new ol.source.Vector({wrapX: false});
+
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            untiled
+        ],
+        view: new ol.View({
+            // projection: projection,
+            center:center,
+            zoom:13,
+            projection: projection
+        })
+    });
+</script>
 </body>
 </html>
