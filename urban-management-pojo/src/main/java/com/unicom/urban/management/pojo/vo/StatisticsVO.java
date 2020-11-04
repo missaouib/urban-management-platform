@@ -32,4 +32,8 @@ public class StatisticsVO implements Serializable {
 
     private String user;
 
+    private String taskId;
+
+    private String taskName;
+
 }

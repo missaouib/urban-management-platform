@@ -2,6 +2,7 @@ package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.processtimelimit.ProcessTimeLimitService;
@@ -14,10 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 调用工作流
@@ -65,6 +63,28 @@ public class WorkService {
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
     }
 
+
+    public void supervisor(String eventId, List<String> userId,String buttonId){
+        //todo eventId userList buttonId
+        activitiService.complete(eventId,userId,buttonId);
+        this.testFinish(eventId);
+        this.initStatistics(eventId);
+    }
+
+    /**
+     * 领取 -> 派遣
+     * @param eventId 事件id
+     * @param userid
+     */
+    public void eventHandle(String eventId, List<String> userid, String buttonId){
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        activitiService.claim(statistics.getTaskId(),SecurityUtil.getUserId());
+        activitiService.complete(statistics.getTaskId(), userid, buttonId);
+        this.testFinish(eventId);
+        statisticsService.save(this.initStatistics(eventId));
+    }
+
+
     /**
      * 受理员完成任务 并且 激活监督员(领取任务)核实
      *
@@ -101,7 +121,6 @@ public class WorkService {
     }
 
     /* -------------------------------------------------------------私有方法- */
-
     /**
      * 测试期间 直接完结statistics表
      *

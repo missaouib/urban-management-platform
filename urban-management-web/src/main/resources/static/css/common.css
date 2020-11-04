@@ -747,7 +747,7 @@ select{border-radius: 0px!important;}
 .dropdown-menu {min-width: 120px !important;margin-top: 4px;font-size: 12px}
 .dropdown-menu li {padding:5px 15px;cursor: pointer}
 .dropdown-menu li:hover{background-color: #f5f5f6}
-.fixed-table-pagination{position: fixed !important;bottom:15px !important;left: 0 !important;width: 100%!important;border-top:1px #ccc solid}
+.fixed-table-pagination{position: fixed !important;left: 0 !important;width: 100%!important;border-top:1px #ccc solid}
 .pagination-detail{margin-top:0 !important;margin-bottom:0 !important;}
 .pagination{margin-top:3px !important;margin-bottom:5px !important;}
 
@@ -898,7 +898,7 @@ ul{list-style: none}
 .validate_bot .ts li{font-size: 14px;line-height: 34px}
 
 .fixed-table-pagination{background: white;}
-.pagination-info{font-size: 12px;height: 30px;display: block;margin: 6px 0 10px 20px;color: #0D8BBD;line-height: 50px!important;float: left}
+.pagination-info{font-size: 12px;height: 30px;display: block;margin: 6px 0 10px 20px;color: #0D8BBD;float: left}
 .pagination{font-size: 12px;margin-right: 10px;padding: 3px 0 0 0;}
 .pagination .active .page-link{background-color: #0D8BBD!important;}
 .page-list{font-size: 12px;height: 30px;display: block;margin: 6px 0 10px 20px;color: #0D8BBD;line-height: 50px!important;}

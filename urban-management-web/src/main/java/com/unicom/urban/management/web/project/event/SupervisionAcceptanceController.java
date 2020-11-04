@@ -20,6 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 监督受理子系统
@@ -114,6 +117,16 @@ public class SupervisionAcceptanceController {
     @GetMapping("/supervisionAcceptanceList")
     public Page<EventVO> supervisionAcceptanceList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
         return eventService.search(eventDTO, pageable);
+    }
+
+
+    @GetMapping("/test")
+    public void test(){
+//        eventService.chuli("cb00e285-ef81-47f5-b708-c783b81506f8", Collections.singletonList("1"),"1");
+//        eventService.chuli("cb00e285-ef81-47f5-b708-c783b81506f8", Collections.singletonList("1"),"3");
+//        eventService.chuli("cb00e285-ef81-47f5-b708-c783b81506f8", Collections.singletonList("1"),"4");
+//        eventService.chuli("cb00e285-ef81-47f5-b708-c783b81506f8", Collections.singletonList("1"),"6");
+        eventService.chuli("cb00e285-ef81-47f5-b708-c783b81506f8", Collections.singletonList("1"),"7");
     }
 
 }

@@ -81,6 +81,8 @@ public class StatisticsService {
                     .fileName(file)
                     .user(s.getUser().getName())
                     .link(s.getTaskName())
+                    .taskId(s.getTaskId())
+                    .taskName(s.getTaskName())
                     .build();
             statisticsVOS.add(statisticsVO);
         });

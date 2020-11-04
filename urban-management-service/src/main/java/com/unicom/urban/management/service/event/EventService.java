@@ -7,6 +7,7 @@ import com.unicom.urban.management.mapper.EventConditionMapper;
 import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
+import com.unicom.urban.management.pojo.entity.EventButton;
 import com.unicom.urban.management.pojo.entity.EventCondition;
 import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
@@ -72,7 +73,7 @@ public class EventService {
     }
 
     public List<EventConditionVO> findEventConditionByEventType(String eventTypeId) {
-        List<EventCondition> list = eventConditionRepository.findAllByEventTypeId_IdAndTypeAndParentIsNull(eventTypeId,1);
+        List<EventCondition> list = eventConditionRepository.findAllByEventTypeId_IdAndTypeAndParentIsNull(eventTypeId, 1);
         if (list != null) {
             return EventConditionMapper.INSTANCE.eventConditionListToEventConditionVOList(list);
         }
@@ -90,9 +91,30 @@ public class EventService {
     public List<DeptTimeLimitVO> findDeptTimeLimitByCondition(String conditionId) {
         return deptTimeLimitService.findDeptTimeLimitByCondition(conditionId);
     }
+
     public DeptTimeLimitVO findDeptTimeLimit(String deptTimeLimitId) {
         return deptTimeLimitService.findDeptTimeLimit(deptTimeLimitId);
     }
+
+    /**
+     * 获取按钮
+     *
+     * @param eventId 事件id
+     * @return 按钮
+     */
+    public List<EventButton> getbutton(String eventId) {
+        //TODO 获取按钮
+        return new ArrayList<>();
+    }
+
+
+    /**
+     * 处理任务
+     */
+    public void chuli(String eventId, List<String> userId,String buttonId) {
+        workService.eventHandle(eventId,userId,buttonId);
+    }
+
 
     /**
      * 保存事件
@@ -108,6 +130,7 @@ public class EventService {
             workService.acceptanceReportingByReceptionist(save.getId());
         }
     }
+
 
     public String createCode(String eventTypeId) {
         String eventCode = "";
