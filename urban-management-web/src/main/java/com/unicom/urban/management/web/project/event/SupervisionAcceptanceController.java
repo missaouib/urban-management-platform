@@ -14,16 +14,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * 监督受理子系统
@@ -119,6 +114,30 @@ public class SupervisionAcceptanceController {
         return Result.success();
     }
 
+    /**
+     * 案件受理-核实
+     *
+     * @return Result
+     */
+    @PostMapping("/receive")
+    public Result Receive(EventDTO eventDTO) {
+        eventDTO.setInitSts(2);
+        eventService.save(eventDTO);
+        return Result.success();
+    }
+
+    /**
+     * 案件受理-保存
+     *
+     * @return Result
+     */
+    @PostMapping("/dispatch")
+    public Result dispatch(EventDTO eventDTO) {
+        eventDTO.setInitSts(3);
+        eventService.save(eventDTO);
+        return Result.success();
+    }
+
     @GetMapping("/supervisionAcceptanceList")
     public Page<EventVO> supervisionAcceptanceList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
         return eventService.search(eventDTO, pageable);
@@ -126,7 +145,7 @@ public class SupervisionAcceptanceController {
 
 
     @GetMapping("/test")
-    public void test(){
+    public void test() {
 //        eventService.chuli("cb00e285-ef81-47f5-b708-c783b81506f8", Collections.singletonList("1"),"1");
 //        eventService.chuli("cb00e285-ef81-47f5-b708-c783b81506f8", Collections.singletonList("1"),"3");
 //        eventService.chuli("cb00e285-ef81-47f5-b708-c783b81506f8", Collections.singletonList("1"),"4");

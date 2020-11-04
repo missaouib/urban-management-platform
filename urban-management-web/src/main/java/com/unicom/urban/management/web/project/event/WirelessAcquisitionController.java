@@ -2,7 +2,6 @@ package com.unicom.urban.management.web.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
-import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
@@ -27,6 +26,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 import java.util.List;
 
 /**
@@ -136,25 +136,38 @@ public class WirelessAcquisitionController {
         return Result.success(list);
     }
 
-
     /**
      * 获取立案时限分类
+     *
      * @param conditionId
      * @return
      */
     @GetMapping("/findDeptTimeLimitByCondition/{conditionId}")
-    public Result findDeptTimeLimitByCondition(@PathVariable String conditionId){
+    public Result findDeptTimeLimitByCondition(@PathVariable String conditionId) {
         List<DeptTimeLimitVO> list = eventService.findDeptTimeLimitByCondition(conditionId);
         return Result.success(list);
     }
 
     /**
+     * 获取立案条件
+     *
+     * @param conditionId
+     * @return
+     */
+    @GetMapping("/getEventCondition/{conditionId}")
+    public Result getEventCondition(@PathVariable String conditionId) {
+        List<EventConditionVO> conditionValueByRegion = eventService.findConditionValueByRegion(conditionId);
+        return Result.success(conditionValueByRegion);
+    }
+
+    /**
      * 获取立案时限
+     *
      * @param deptTimeLimitId
      * @return
      */
     @GetMapping("/findDeptTimeLimit/{deptTimeLimitId}")
-    public Result findDeptTimeLimit(@PathVariable String deptTimeLimitId){
+    public Result findDeptTimeLimit(@PathVariable String deptTimeLimitId) {
         DeptTimeLimitVO vo = eventService.findDeptTimeLimit(deptTimeLimitId);
         return Result.success(vo);
     }

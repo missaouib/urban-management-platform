@@ -8,14 +8,14 @@ package com.unicom.urban.management.common.constant;
 public class EventConstant {
 
     /**
+     * 监督员草稿
+     */
+    public static final int SUPERVISE_SAVE = 0;
+
+    /**
      * 监督员上报
      */
     public static final int SUPERVISE_REPORTING = 1;
-
-    /**
-     * 监督员草稿
-     */
-    public static final int SUPERVISE_SAVE = 2;
 
     /**
      * 受理员上报事件

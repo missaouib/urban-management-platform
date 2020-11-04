@@ -120,15 +120,19 @@ public class EventService {
     /**
      * 保存事件
      *
-     * @param event
+     * @param eventDTO 事件参数
      */
     public void save(EventDTO eventDTO) {
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         Event save = eventRepository.save(event);
-        /* 受理员上报 */
-        if (save.getSts() == 2) {
-            workService.acceptanceReportingByReceptionist(save.getId());
+        /* 受理员核实 */
+        if (eventDTO.getInitSts() == 2) {
+            workService.caseAcceptanceByDispatch(save.getId());
+        }
+        /* 受理员保存 */
+        if (eventDTO.getInitSts() == 3) {
+            workService.caseAcceptanceByReceive(save.getId(), eventDTO.getUserId());
         }
     }
 

@@ -40,13 +40,13 @@
                             <tr>
                                 <td><span>*</span>立案区域</td>
                                 <td>
-                                    <select id="eventCondition" onchange="getTimeTypeList()" th:name="conditionId" required>
+                                    <select id="eventCondition" onchange="getEventCondition()" required>
 
                                     </select>
                                 </td>
-                                <td><span>*</span>立案时限分类</td>
+                                <td><span>*</span>立案条件</td>
                                 <td>
-                                    <select id="timeType" onchange="getDeptTimeLimitList()" required>
+                                    <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
 
                                     </select>
                                 </td>
@@ -54,9 +54,15 @@
                             <tr>
                                 <td><span>*</span>立案时限</td>
                                 <td>
-                                    <input  th:name="timeLimitId" type="hidden" id="deptTImeLimitId"/>
-                                    <input  type="text" id="deptTImeLimit" required readonly/>
+                                    <input th:name="timeLimitId" type="hidden" id="deptTImeLimitId"/>
+                                    <input type="text" id="deptTImeLimit" required readonly/>
 
+                                </td>
+                                <td><span>*</span>立案时限分类</td>
+                                <td>
+                                    <select id="timeType" onchange="getDeptTimeLimitList()" required>
+
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
@@ -166,7 +172,14 @@
                                 </td>
                                 <td><span>*</span>联系方式</td>
                                 <td>
-                                    <input name="petitionerPhone" type="text" class=""  required/>
+                                    <input name="petitionerPhone" type="text" class="" required/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>上报监督员</td>
+                                <td>
+                                    <input value="超级管理员" type="text" readonly disabled>
+                                    <input value="1" type="text" name="userId">
                                 </td>
                             </tr>
                             </tbody>
@@ -196,7 +209,8 @@
                         <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                         <!--            </div>-->
                         <div class="r_right but_p girdBtnGroup">
-                            <button class="but_save" type="submit" onclick="submitHandler()">登记</button>
+                            <button class="but_save" type="submit" onclick="submitHandler1()">保存(登记</button>
+                            <button class="but_save" type="submit" onclick="submitHandler2()">核实(登记</button>
                             <button class="but_close" onclick="Cancel()">返回</button>
                         </div>
                     </div>
@@ -274,6 +288,8 @@
     })
 
     let url = /*[[@{/event/register}]]*/ "/event/register";
+    let receiveUrl = /*[[@{/event/receive}]]*/ "/event/receive";
+    let dispatchUrl = /*[[@{/event/dispatch}]]*/ "/event/dispatch";
     let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
     let componentTypeUrl = /*[[@{/allEventType}]]*/ "/allEventType";
     let createEventCodeUrl = /*[[@{/event/createEventCode}]]*/ "/event/createEventCode";
@@ -318,20 +334,21 @@
     function createEventCode(eventTypeId) {
         var url = createEventCodeUrl+"?eventTypeId="+eventTypeId
         $.ajaxUtil.get(url, function (e) {
-            if (e.code == 0) {
-                var eventCode = e.data
+            if (e.code === "0") {
+                let eventCode = e.data
                 $("#eventCode").val(eventCode);
             }
         })
     }
+
     /**
      * 获取立案区域
      */
     function findEventConditionByEventType(eventTypeId){
         let url = findEventConditionByEventTypeUrl +"/"+ eventTypeId;
         $.ajaxUtil.get(url, function (e) {
-            let option="<option>--请选择--</option>";
-            if (e.code == 0) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === "0") {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.region + "</option>"
                 });
@@ -339,22 +356,43 @@
             }
         });
     }
+
+    /**
+     * 立案条件
+     */
+    function getEventCondition() {
+        let eventConditionId = $("#eventCondition").val();
+        let url = "/event/getEventCondition/" + eventConditionId;
+        $.ajaxUtil.get(url, function (e) {
+            $("#eventTerm").empty();
+            let option = "<option>--请选择--</option>";
+            if (e.code === "0") {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
+                });
+            }
+            $("#eventTerm").html(option);
+        });
+    }
+
     /**
      * 获取立案时限分类
      */
     function getTimeTypeList() {
-        let eventConditionId = $("#eventCondition").val();
-        let url = "/event/findDeptTimeLimitByCondition/" + eventConditionId;
+        let eventTerm = $("#eventTerm").val();
+        let url = "/event/findDeptTimeLimitByCondition/" + eventTerm;
         $.ajaxUtil.get(url, function (e) {
-            let option="<option>--请选择--</option>";
-            if (e.code == 0) {
+            $("#timeType").empty();
+            let option = "<option>--请选择--</option>";
+            if (e.code === "0") {
                 $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.timeType + "</option>"
+                    option += "<option value='" + value.id + "'>" + value.level + "</option>"
                 });
-                $("#timeType").html(option);
             }
+            $("#timeType").html(option);
         });
     }
+
     /**
      * 获取立案时限
      */
@@ -362,12 +400,14 @@
         let deptTimeLimitId = $("#timeType").val();
         let url = "/event/findDeptTimeLimit/" + deptTimeLimitId;
         $.ajaxUtil.get(url, function (e) {
-            if (e.code == 0) {
-                $("#deptTImeLimitId").val(e.data.id);
-                $("#deptTImeLimit").val(e.data.timeLimit);
+            if (e.code === "0") {
+                let data = e.data;
+                $("#deptTImeLimitId").val(data.id);
+                $("#deptTImeLimit").val(data.timeLimit + data.timeType);
             }
         });
     }
+
     /**
      * 获取街道
      */
@@ -376,7 +416,7 @@
         let url = "/event/findAllByParentId/"+parentId;
         $.ajaxUtil.get(url, function (e) {
             let option="<option>--请选择--</option>";
-            if (e.code == 0) {
+            if (e.code === "0") {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
@@ -384,6 +424,7 @@
             }
         });
     }
+
     /**
      * 获取社区
      */
@@ -392,7 +433,7 @@
         let url = "/event/findAllByParentId/"+parentId;
         $.ajaxUtil.get(url, function (e) {
             let option="<option>--请选择--</option>";
-            if (e.code == 0) {
+            if (e.code === "0") {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
@@ -400,6 +441,7 @@
             }
         });
     }
+
     /**
      * 获取网格
      */
@@ -408,7 +450,7 @@
         let url = "/event/findAllByParentId/"+parentId;
         $.ajaxUtil.get(url, function (e) {
             let option="<option>--请选择--</option>";
-            if (e.code == 0) {
+            if (e.code === "0") {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
@@ -416,6 +458,7 @@
             }
         });
     }
+
     //模态窗 selectEventTypeTree
     function selectEventTypeTree() {
         var treeId = $("#treeId").val();
@@ -429,6 +472,7 @@
         };
         $.modal.openOptions(options);
     }
+
     function doSubmit(index, layero){
         var tree = layero.find("iframe")[0].contentWindow.$._tree;
         var body = layer.getChildFrame('body', index);
@@ -440,6 +484,7 @@
         findEventConditionByEventType(eventTypeId)
         layer.close(index);
     }
+
     $(function () {
         $.ajaxUtil.get(componentTypeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
@@ -685,14 +730,22 @@
         $.modal.closeLoading();
     }
 
-    function submitHandler() {
+    function submitHandler1() {
         //先校验
         if (!$("form").valid()) {
             return;
-
         }
-        var data = $('#userForm').serialize();
-        $.operate.saveTab(url, data);
+        let data = $('#userForm').serialize();
+        $.operate.saveAndReload(receiveUrl, data);
+    }
+
+    function submitHandler2() {
+        //先校验
+        if (!$("form").valid()) {
+            return;
+        }
+        let data = $('#userForm').serialize();
+        $.operate.saveAndReload(dispatchUrl, data);
     }
 
 

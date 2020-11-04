@@ -27,6 +27,8 @@ public class EventDTO {
 
     private Integer sts;
 
+    private Integer initSts;
+
     private String eventTypeId;
 
     private String timeLimitId;

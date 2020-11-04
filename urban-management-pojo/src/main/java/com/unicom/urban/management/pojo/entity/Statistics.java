@@ -3,6 +3,7 @@ package com.unicom.urban.management.pojo.entity;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -207,6 +208,7 @@ public class Statistics {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
+    @CreatedBy
     private User operateHuman;
 
     /**

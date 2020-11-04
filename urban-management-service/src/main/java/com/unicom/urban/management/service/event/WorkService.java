@@ -2,7 +2,6 @@ package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
-import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.processtimelimit.ProcessTimeLimitService;
@@ -35,35 +34,6 @@ public class WorkService {
     @Autowired
     private StatisticsService statisticsService;
 
-    /**
-     * 受理员上报
-     *
-     * @param eventId 上报的事件
-     */
-    public void acceptanceReportingByReceptionist(String eventId) {
-        /*TODO 查询所有有受理员角色的人*/
-        List<String> userList = new ArrayList<>();
-        userList.add("1");
-        Event event = eventService.findOne(eventId);
-        ProcessInstance processInstance = activitiService.acceptanceReporting(eventId, userList);
-        event.setProcessInstanceId(processInstance.getId());
-        eventService.update(event);
-        Statistics statistics = this.initStatistics(event.getId());
-        statisticsService.save(statistics);
-    }
-
-    /**
-     * 受理员领取任务
-     *
-     * @param eventId 事件id
-     */
-    public void claimByReceptionist(String eventId) {
-        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-        this.checkStatisticsByReceptionistReport(statistics);
-        activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
-    }
-
-
     public void supervisor(String eventId, List<String> userId,String buttonId){
         //todo eventId userList buttonId
         activitiService.complete(eventId,userId,buttonId);
@@ -84,15 +54,36 @@ public class WorkService {
         statisticsService.save(this.initStatistics(eventId));
     }
 
+    /**
+     * 案件受理-核实
+     *
+     * @param eventId 事件id
+     * @param userId  监督员
+     */
+    public void caseAcceptanceByReceive(String eventId, String userId) {
+        this.acceptanceReportingByReceptionist(eventId);
+        this.claimByReceptionist(eventId);
+        this.completeByReceptionist(eventId, userId);
+    }
+
+    /**
+     * 案件受理-保存
+     *
+     * @param eventId 事件id
+     */
+    public void caseAcceptanceByDispatch(String eventId) {
+        /*this.acceptanceReportingByReceptionist(eventId);
+        this.claimByReceptionist(eventId);*/
+    }
 
     /**
      * 受理员完成任务 并且 激活监督员(领取任务)核实
      *
-     * @param eventId
+     * @param eventId 事件id
      */
     public void completeByReceptionist(String eventId, String userId) {
         String s = testFinish(eventId);
-//        activitiService.complete(s);
+        activitiService.complete(s, Arrays.asList(userId), "11");
         Statistics statistics = initStatistics(eventId);
         activitiService.claim(statistics.getTaskId(), userId);
     }
@@ -104,23 +95,64 @@ public class WorkService {
      */
     public void completeBySupervisor(String eventId) {
         String s = testFinish(eventId);
-//        activitiService.complete(s);
+        activitiService.complete(s, Arrays.asList(SecurityUtil.getUserId()), "1");
         this.initStatistics(eventId);
     }
 
     /**
-     * 受理员完成任务
+     * 受理员领取任务
+     *
+     * @param eventId 事件id
+     */
+    public void claimByReceptionist(String eventId) {
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        this.checkStatisticsByReceptionistReport(statistics);
+        activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
+    }
+
+    /**
+     * 受理员 核实反馈
      * 受理开启值班长流程
+     *
+     * @param eventId 事件id
+     */
+    public void completeByReceptionistForDo(String eventId) {
+        String s = testFinish(eventId);
+        /*TODO 查询所有值班长角色的人*/
+        activitiService.complete(s, Arrays.asList("1"), "3");
+        this.initStatistics(eventId);
+    }
+
+    /**
+     * 受理员 核实反馈
      * 不予受理直接结束
      *
      * @param eventId 事件id
      */
-    public void completeByReceptionist(String eventId) {
+    public void completeByReceptionistForNotDo(String eventId) {
         String s = testFinish(eventId);
-        this.initStatistics(eventId);
+        activitiService.complete(s, null, "2");
     }
 
     /* -------------------------------------------------------------私有方法- */
+
+    /**
+     * 受理员上报
+     *
+     * @param eventId 上报的事件
+     */
+    private void acceptanceReportingByReceptionist(String eventId) {
+        /*TODO 查询所有有受理员角色的人*/
+        List<String> userList = new ArrayList<>();
+        userList.add("1");
+        Event event = eventService.findOne(eventId);
+        ProcessInstance processInstance = activitiService.acceptanceReporting(eventId, userList);
+        event.setProcessInstanceId(processInstance.getId());
+        eventService.update(event);
+        Statistics statistics = this.initStatistics(event.getId());
+        statisticsService.save(statistics);
+    }
+
     /**
      * 测试期间 直接完结statistics表
      *
@@ -215,14 +247,10 @@ public class WorkService {
      * @param statistics 待受理的实例
      */
     private void checkStatisticsByReceptionistReport(Statistics statistics) {
-        User user = new User();
-        user.setId(SecurityUtil.getUserId());
-        statistics.setOperateHuman(user);
-        statistics.setOperateHumanName(user);
+        statistics.setOperateHuman(SecurityUtil.getUser().castToUser());
+        statistics.setOperateHumanName(SecurityUtil.getUser().castToUser());
         /*TODO 获取当前登陆人的角色*/
-        Role role = new Role();
-        statistics.setOperateRole(role);
-        statistics.setUser(user);
+        statistics.setUser(SecurityUtil.getUser().castToUser());
     }
 
     /**
