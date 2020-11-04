@@ -1191,3 +1191,8 @@ label.error {
 .visActive{
     visibility: hidden;
 }
+.alwaysSay{
+    position: absolute;
+    bottom: 15px;
+    right: 5px;
+}
