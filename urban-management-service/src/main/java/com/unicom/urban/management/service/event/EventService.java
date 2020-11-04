@@ -2,14 +2,12 @@ package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventRepository;
+import com.unicom.urban.management.dao.event.PetitionerRepository;
 import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
 import com.unicom.urban.management.mapper.EventConditionMapper;
 import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.dto.EventDTO;
-import com.unicom.urban.management.pojo.entity.Event;
-import com.unicom.urban.management.pojo.entity.EventButton;
-import com.unicom.urban.management.pojo.entity.EventCondition;
-import com.unicom.urban.management.pojo.entity.EventType;
+import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
@@ -52,7 +50,8 @@ public class EventService {
     private EventTypeService eventTypeService;
     @Autowired
     private StatisticsService statisticsService;
-
+    @Autowired
+    private PetitionerService petitionerService;
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
 
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
@@ -125,6 +124,13 @@ public class EventService {
     public void save(EventDTO eventDTO) {
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
+
+        Petitioner petitioner = new Petitioner();
+        petitioner.setName(eventDTO.getPeopleName());
+        petitioner.setSex(eventDTO.getSex());
+        petitioner.setPhone(eventDTO.getPetitionerPhone());
+        Petitioner saveP = petitionerService.save(petitioner);
+        event.setPetitioner(saveP);
         Event save = eventRepository.save(event);
         /* 受理员核实 */
         if (eventDTO.getInitSts() == 2) {

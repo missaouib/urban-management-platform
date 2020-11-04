@@ -7,6 +7,7 @@ import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Petitioner;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
+import com.unicom.urban.management.service.event.PetitionerService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class SupervisionAcceptanceController {
     private KVService kvService;
     @Autowired
     private GridService gridService;
+
 
     @GetMapping("/toSupervisionAcceptanceList")
     public ModelAndView toSupervisionAcceptanceList() {
@@ -106,11 +108,8 @@ public class SupervisionAcceptanceController {
     @RequestMapping("register")
     public Result register(EventDTO event) {
         event.setSts(2);
-        Petitioner petitioner = new Petitioner();
-        petitioner.setName(event.getPeopleName());
-        petitioner.setSex(event.getSex());
-        petitioner.setPhone(event.getPetitionerPhone());
         eventService.save(event);
+
         return Result.success();
     }
 
