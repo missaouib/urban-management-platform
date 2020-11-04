@@ -54,6 +54,7 @@ public class EventService {
     private StatisticsService statisticsService;
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
+
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
             if (StringUtils.isNotBlank(eventDTO.getUserName())) {

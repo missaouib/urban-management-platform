@@ -236,7 +236,9 @@
                 </form>
             </div>
             <div class="banner"></div>
-            <div class="banner">流程图</div>
+            <div class="banner" >
+                <img src='/common/img/7d4adfe6-1dbf-11eb-a1ce-00155dff8d69'>
+            </div>
 
         </div>
 
@@ -261,8 +263,16 @@
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         })
+        eventImg();
     })
 
+     function eventImg(){
+        var str = "<img src='"+ img + "7d4adfe6-1dbf-11eb-a1ce-00155dff8d69"+"'>";
+        $("#evnetImg").empty();
+        $("#eventImg").append(str);
+    }
+
+    let img = /*[[@{/common/img/}]]*/ "/common/img/";
 
     let searchUrl = /*[[@{/event/cooperativeWorkList}]]*/ "/event/cooperativeWorkList";
 

@@ -127,7 +127,7 @@ public class WorkService {
      * @param eventId
      * @return
      */
-    private String testFinish(String eventId) {
+    public String testFinish(String eventId) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
         statistics.setEndTime(LocalDateTime.now());
         statisticsService.update(statistics);
@@ -151,7 +151,7 @@ public class WorkService {
      * @param eventId 事件id
      * @return 流转统计
      */
-    private Statistics initStatistics(String eventId) {
+    public Statistics initStatistics(String eventId) {
         Event event = eventService.findOne(eventId);
         Statistics statistics = new Statistics();
         statistics.setEvent(event);
