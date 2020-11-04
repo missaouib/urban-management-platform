@@ -1,6 +1,8 @@
 server:
   port: 8081
 spring:
+  application:
+    name: API
   datasource:
     url: jdbc:mysql://192.168.23.123:32722/urban_management_platform?useUnicode=true&autoReconnect=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
     username: root
@@ -57,6 +59,7 @@ fdfs:
 #    max_idle_per_key: 5
 logging:
   level:
-    com.unicom: info
-    org.activiti.engine: debug
+    com.unicom: debug
+    org.springframework: warn
+    org.activiti.engine: info
     org.hibernate.type.descriptor.sql.BasicBinder: trace

@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: 城市综合管理服务平台
   datasource:
     url: jdbc:mysql://192.168.23.123:32722/urban_management_platform?useUnicode=true&autoReconnect=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
     username: root

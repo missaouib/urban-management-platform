@@ -115,6 +115,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <!--        <dependency>-->
         <!--            <groupId>cn.unicom.hlj.snr.firebird</groupId>-->
         <!--            <artifactId>firebirds-eye-starter</artifactId>-->
