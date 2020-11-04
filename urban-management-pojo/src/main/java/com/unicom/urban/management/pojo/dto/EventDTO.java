@@ -47,11 +47,9 @@ public class EventDTO {
 
     private List<EventFile> eventFileList;
 
-    private String phone;
-
     private String userId;
 
-    private int petitionerPhone;
+    private String petitionerPhone;
 
     private String sex;
 

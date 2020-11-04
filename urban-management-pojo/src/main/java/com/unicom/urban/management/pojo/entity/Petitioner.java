@@ -19,11 +19,11 @@ public class Petitioner {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-    String id;
+    private String id;
 
-    String name;
+    private String name;
 
-    String sex;
+    private String sex;
 
-    int phone;
+    private String phone;
 }

@@ -121,7 +121,7 @@ public class Event extends BaseEntity {
     /**
      * 事件附件实体类
      */
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn
     private List<EventFile> eventFileList;
 
