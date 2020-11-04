@@ -50,6 +50,9 @@ public interface EventMapper {
     @Mapping(source = "eventSourceId", target = "eventSource.id")
     @Mapping(source = "recTypeId", target = "recType.id")
     @Mapping(source = "gridId", target = "grid.id")
+    @Mapping(source = "peopleName", target = "petitioner.name")
+    @Mapping(source = "sex", target = "petitioner.sex")
+    @Mapping(source = "petitionerPhone", target = "petitioner.phone")
     Event eventDTOToEvent(EventDTO eventDTO);
 
 }

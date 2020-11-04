@@ -130,11 +130,11 @@
                             <tr>
                                 <td><span></span>位置坐标</td>
                                 <td>
-                                    <input type="text" class="" value="经度" name="x" id="longitude" disabled readonly/>
+                                    <input type="text" class="" value="经度" name="x" id="longitude" readonly/>
                                 </td>
                                 <td></td>
                                 <td>
-                                    <input type="text" class="" value="纬度" name="y" id="latitude" disabled readonly/>
+                                    <input type="text" class="" value="纬度" name="y" id="latitude" readonly/>
                                 </td>
                             </tr>
                             <tr>
@@ -147,13 +147,26 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span></span>诉求人</td>
+                                <td><span>*</span>诉求人</td>
                                 <td>
-                                    <input name="peopleName"  type="text" class="">
+                                    <input name="peopleName"  type="text" class="" required>
                                 </td>
                                 <td><span></span>诉求时间</td>
                                 <td>
                                     <input th:name="createTime" th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>性别</td>
+                                <td>
+                                    <select name="sex" required>
+                                        <option value="男">男</option>
+                                        <option value="女">女</option>
+                                    </select>
+                                </td>
+                                <td><span>*</span>联系方式</td>
+                                <td>
+                                    <input name="petitionerPhone" type="text" class=""  required/>
                                 </td>
                             </tr>
                             </tbody>
@@ -540,6 +553,7 @@
     jQuery.extend(jQuery.validator.messages, {
         required: "必填",
         phone: "必填",
+        petitonerPhone: "必填",
         remote: "请修正该字段",
         email: "请输入正确格式的电子邮件",
         url: "请输入合法的网址",
@@ -662,6 +676,10 @@
         var reg = /^1[34578]\d{9}$/;
         return reg.test(value);
     }, "phone error");
+    $.validator.addMethod("petitonerPhone", function (value, element, params) {
+        var reg = /^1[34578]\d{9}$/;
+        return reg.test(value);
+    }, "petitonerPhone error");
 
     function Cancel() {
         $.modal.closeLoading();

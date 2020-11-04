@@ -49,4 +49,9 @@ public class EventDTO {
 
     private String userId;
 
+    private int petitionerPhone;
+
+    private String sex;
+
+
 }

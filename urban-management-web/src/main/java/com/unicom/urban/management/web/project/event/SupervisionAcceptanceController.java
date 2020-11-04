@@ -4,6 +4,7 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
+import com.unicom.urban.management.pojo.entity.Petitioner;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.grid.GridService;
@@ -110,6 +111,10 @@ public class SupervisionAcceptanceController {
     @RequestMapping("register")
     public Result register(EventDTO event) {
         event.setSts(2);
+        Petitioner petitioner = new Petitioner();
+        petitioner.setName(event.getPeopleName());
+        petitioner.setSex(event.getSex());
+        petitioner.setPhone(event.getPetitionerPhone());
         eventService.save(event);
         return Result.success();
     }

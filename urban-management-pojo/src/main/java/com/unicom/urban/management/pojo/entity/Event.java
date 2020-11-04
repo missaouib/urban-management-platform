@@ -116,7 +116,8 @@ public class Event extends BaseEntity {
     /**
      * 诉求人
      */
-    private String peopleName;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Petitioner petitioner;
     /**
      * 事件附件实体类
      */

@@ -23,7 +23,7 @@ public class Petitioner {
 
     String name;
 
-    int sex;
+    String sex;
 
     int phone;
 }
