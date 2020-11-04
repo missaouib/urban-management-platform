@@ -111,10 +111,18 @@ class Event<<案件实体类>>{
     -y : double
     -processInstanceId : String  //流程实例id
     -recTypeId : Kv      //案件类型    日常  、转向普查、其他
-    -peopleName : String //诉求人  热线上报存储的上报人姓名
     -eventSate : Kv      // 案件状态
     -eptTimeLimit : DeptTimeLimit
     -eventCondition : EventCondition
+    -petitioner : Petitioner
+
+}
+
+class Petitioner<<诉求人>>{
+    id : String
+    name : String 
+    sex : int
+    phone : int 
 }
 
 class EventType<<分类实体类>>{
