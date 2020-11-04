@@ -21,10 +21,7 @@
                         <table class="table">
                             <tbody>
                             <tr>
-                                <td><span>*</span>案卷号</td>
-                                <td>
-                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input"  />
-                                </td>
+
                                 <td><span>*</span>问题类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
@@ -36,50 +33,95 @@
                                     <!--                                        +-->
                                     <!--                                    </button>-->
                                 </td>
-                            </tr>
-                            <tr>
-                                <td><span>*</span>立案区域</td>
+                                <td><span>*</span>案卷号</td>
                                 <td>
-                                    <select id="eventCondition" onchange="getEventCondition()" required>
-
-                                    </select>
-                                </td>
-                                <td><span>*</span>立案条件</td>
-                                <td>
-                                    <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
-
-                                    </select>
+                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input"  />
                                 </td>
                             </tr>
                             <tr>
-                                <td><span>*</span>立案时限</td>
+                                <td><span>*</span>诉求人</td>
                                 <td>
-                                    <input th:name="timeLimitId" type="hidden" id="deptTImeLimitId"/>
-                                    <input type="text" id="deptTImeLimit" required readonly/>
-
+                                    <input name="peopleName"  type="text" class="" required>
                                 </td>
-                                <td><span>*</span>立案时限分类</td>
+                                <td><span>*</span>联系方式</td>
                                 <td>
-                                    <select id="timeType" onchange="getDeptTimeLimitList()" required>
+                                    <input name="petitionerPhone" type="text" class="" required/>
+                                </td>
 
+                            </tr>
+                            <tr>
+                                <td><span></span>诉求时间</td>
+                                <td>
+                                    <input th:name="createTime" th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
+                                </td>
+                                <td><span>*</span>问题来源</td>
+                                <td>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required>
+                                        <option th:each="as:${eventSource}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td><span>*</span>问题描述</td>
-                                <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
-                                <td colspan = "8"><textarea id="problemescription" th:name="represent" required></textarea></td>
+
+                                <td><span></span>立案区域</td>
+                                <td>
+                                    <select  name="safeLevel" >
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                    </select>
+                                </td>
+                                <td><span></span>立案条件</td>
+                                <td>
+                                    <select  name="safeLevel" >
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                    </select>
+                                </td>
                             </tr>
-                            <!--                            <tr>-->
-                            <!--                                <td><span></span>案件等级</td>-->
-                            <!--                                <td>-->
-                            <!--                                    <select class="form-control" id="level" th:name="level" required>-->
-                            <!--                                        <option>&#45;&#45;请选择&#45;&#45;</option>-->
-                            <!--                                        <option th:each="as:${level}" th:value="${as.id}"-->
-                            <!--                                                th:text="${as.value}"></option>-->
-                            <!--                                    </select>-->
-                            <!--                                </td>-->
-                            <!--                            </tr>-->
+                            <tr>
+
+                                <td><span></span>等级</td>
+                                <td>
+                                    <select  name="safeLevel" >
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                    </select>
+                                </td>
+                                <td><span></span>处理时限</td>
+                                <td>
+                                    <input disabled type="text">
+                                </td>
+                            </tr>
+
+                            <tr>
+
+                                <td><span></span>部件编码</td>
+                                <td>
+                                    <input type="text" disabled>
+                                </td>
+                                <td><span></span>案件类型</td>
+                                <td>
+                                    <select  name="safeLevel" >
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>位置坐标</td>
+                                <td>
+                                    <input type="text" class="" value="经度" name="x" id="longitude" readonly/>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <input type="text" class="" value="纬度" name="y" id="latitude" readonly/>
+                                </td>
+                            </tr>
                             <tr>
                                 <td><span>*</span>所在区域</td>
                                 <td>
@@ -114,52 +156,69 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span></span>上报人</td>
-
-                                <td style="text-align: left"><div class="username" th:sec:authentication="principal.username"></div></td>
-                                <td><span></span>联系方式</td>
-                                <td><input id="phone" name="phone" type="text" /></td>
+                                <td><span>*</span>问题描述</td>
+                                <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
+                                <td colspan = "8"><textarea id="problemescription" th:name="represent" required></textarea></td>
                             </tr>
                             <tr>
+                                <td><span></span>上报监督员</td>
+                                <td>
+                                    <input value="超级管理员" type="text" readonly disabled>
+                                </td>
+                                <td><span></span></td>
+                                <td>
+                                    <input value="1" type="text" name="userId">
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td><span>*</span>立案区域</td>
+                                <td>
+                                    <select id="eventCondition" onchange="getEventCondition()" required>
+
+                                    </select>
+                                </td>
+                                <td><span>*</span>立案条件</td>
+                                <td>
+                                    <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
+
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td><span>*</span>立案时限分类</td>
+                                <td>
+                                    <select id="timeType" onchange="getDeptTimeLimitList()" required>
+
+                                    </select>
+                                </td>
+                                <td><span>*</span>立案时限</td>
+                                <td>
+                                    <input th:name="timeLimitId" type="hidden" id="deptTImeLimitId"/>
+                                    <input type="text" id="deptTImeLimit" required readonly/>
+
+                                </td>
+                            </tr>
+
+                            <!--                            <tr>-->
+                            <!--                                <td><span></span>案件等级</td>-->
+                            <!--                                <td>-->
+                            <!--                                    <select class="form-control" id="level" th:name="level" required>-->
+                            <!--                                        <option>&#45;&#45;请选择&#45;&#45;</option>-->
+                            <!--                                        <option th:each="as:${level}" th:value="${as.id}"-->
+                            <!--                                                th:text="${as.value}"></option>-->
+                            <!--                                    </select>-->
+                            <!--                                </td>-->
+                            <!--                            </tr>-->
+
+
+                            <tr>
+                                <td><span></span>上报人</td>
+                                <td style="text-align: left"><div class="username" th:sec:authentication="principal.username"></div></td>
                                 <td><span></span>是否处理</td>
                                 <td style="text-align: left">
-                                    <!--                                    <input  name="userName" placeholder="" class="" type="checkbox" required style="width: 30px">-->
-                                </td>
-                                <td><span>*</span>问题来源</td>
-                                <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required>
-                                        <option th:each="as:${eventSource}" th:value="${as.id}"
-                                                th:text="${as.value}"></option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span></span>位置坐标</td>
-                                <td>
-                                    <input type="text" class="" value="经度" name="x" id="longitude" readonly/>
-                                </td>
-                                <td></td>
-                                <td>
-                                    <input type="text" class="" value="纬度" name="y" id="latitude" readonly/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span>*</span>案件类型</td>
-                                <td>
-                                    <select class="form-control" id="recTypeId" th:name="recTypeId" required>
-                                        <option th:each="as:${recType}" th:value="${as.id}"
-                                                th:text="${as.value}"></option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span>*</span>诉求人</td>
-                                <td>
-                                    <input name="peopleName"  type="text" class="" required>
-                                </td>
-                                <td><span></span>诉求时间</td>
-                                <td>
-                                    <input th:name="createTime" th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
+                                    <input  name="userName" placeholder="" class="" type="checkbox" required style="width: 30px">
                                 </td>
                             </tr>
                             <tr>
@@ -170,18 +229,17 @@
                                         <option value="女">女</option>
                                     </select>
                                 </td>
-                                <td><span>*</span>联系方式</td>
+                                <td><span>*</span>案件类型</td>
                                 <td>
-                                    <input name="petitionerPhone" type="text" class="" required/>
+                                    <select class="form-control" id="recTypeId" th:name="recTypeId" required>
+                                        <option th:each="as:${recType}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
+                                    </select>
                                 </td>
                             </tr>
-                            <tr>
-                                <td><span></span>上报监督员</td>
-                                <td>
-                                    <input value="超级管理员" type="text" readonly disabled>
-                                    <input value="1" type="text" name="userId">
-                                </td>
-                            </tr>
+
+
+
                             </tbody>
                         </table>
                         <div class="send">
@@ -209,8 +267,8 @@
                         <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                         <!--            </div>-->
                         <div class="r_right but_p girdBtnGroup">
-                            <button class="but_save" type="submit" onclick="submitHandler1()">保存(登记</button>
-                            <button class="but_save" type="submit" onclick="submitHandler2()">核实(登记</button>
+                            <button class="but_save" type="submit" onclick="submitHandler1()" style="margin-right: 10px">保存(登记)</button>
+                            <button class="but_save" type="submit" onclick="submitHandler2()">核实(登记)</button>
                             <button class="but_close" onclick="Cancel()">返回</button>
                         </div>
                     </div>
