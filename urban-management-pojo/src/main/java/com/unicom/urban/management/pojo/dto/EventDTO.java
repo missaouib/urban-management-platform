@@ -1,8 +1,6 @@
 package com.unicom.urban.management.pojo.dto;
 
-import com.unicom.urban.management.pojo.entity.DeptTimeLimit;
 import com.unicom.urban.management.pojo.entity.EventFile;
-import com.unicom.urban.management.pojo.entity.KV;
 import lombok.Data;
 
 import java.util.List;
@@ -48,5 +46,7 @@ public class EventDTO {
     private List<EventFile> eventFileList;
 
     private String phone;
+
+    private String userId;
 
 }
