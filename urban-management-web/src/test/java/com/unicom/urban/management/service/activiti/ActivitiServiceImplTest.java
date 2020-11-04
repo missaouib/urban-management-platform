@@ -102,9 +102,7 @@ public class ActivitiServiceImplTest {
      */
     @Test
     public void queryMyTask() {
-        List<Task> taskList = taskService.createTaskQuery().taskAssignee("值班长1").list();
-
-
+        List<String> taskList = activitiService.queryMyTask("值班长1");
     }
 
     /**

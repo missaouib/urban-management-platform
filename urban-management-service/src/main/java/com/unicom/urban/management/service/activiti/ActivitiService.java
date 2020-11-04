@@ -70,11 +70,21 @@ public interface ActivitiService {
     Task getTaskById(String taskId);
 
     /**
-     * 查询待办任务
+     * 查询待办任务 带分页
      *
+     * @param userId   用户ID
+     * @param pageable 分页信息
      * @return eventId
      */
     List<String> queryMyTask(String userId, Pageable pageable);
+
+    /**
+     * 查询待办任务
+     *
+     * @param userId 用户ID
+     * @return eventId
+     */
+    List<String> queryMyTask(String userId);
 
     /**
      * 查询当前任务 都有什么按钮

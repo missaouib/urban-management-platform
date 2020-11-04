@@ -138,6 +138,17 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
+    public List<String> queryMyTask(String userId) {
+        List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).list();
+
+        Set<String> taskIds = taskList.parallelStream().map(Task::getProcessDefinitionId).collect(Collectors.toSet());
+
+        List<ProcessInstance> processInstanceList = runtimeService.createProcessInstanceQuery().processInstanceIds(taskIds).list();
+
+        return processInstanceList.parallelStream().map(ProcessInstance::getBusinessKey).collect(Collectors.toList());
+    }
+
+    @Override
     public void claim(String taskId, String userId) {
         taskService.claim(taskId, userId);
     }
