@@ -166,11 +166,11 @@ class ProcessTimeLimit<<流程时限实体类>>{
 
 class nodeInfo<<环节信息实体类>>{
     id : String 
-    node : kv 
-    role : Role
-
-
-
+    node : kv               // 环节
+    role : Role             // 环节涉及角色
+    button : String         // 按钮id
+    buttonName : String     // 按钮名称
+    nodeVariable : String   // 流程变量
 }
 class Statistics<<流转统计实体类>>{
     -id                   : String
