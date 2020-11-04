@@ -98,6 +98,16 @@ public class ActivitiServiceImplTest {
     }
 
     /**
+     * 查询我的待办
+     */
+    @Test
+    public void queryMyTask() {
+        List<Task> taskList = taskService.createTaskQuery().taskAssignee("值班长1").list();
+
+
+    }
+
+    /**
      * 受理员上报
      */
     @Test

@@ -2,6 +2,7 @@ package com.unicom.urban.management.service.activiti;
 
 import com.unicom.urban.management.common.constant.EventSourceConstant;
 import com.unicom.urban.management.common.exception.BusinessException;
+import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventButtonRepository;
 import com.unicom.urban.management.pojo.entity.EventButton;
 import lombok.extern.slf4j.Slf4j;
@@ -160,44 +161,11 @@ public class ActivitiServiceImpl implements ActivitiService {
 //    }
 
     @Override
-    public String complete(String taskId, List<String> userList, String buttonId) {
-
-        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-
+    public void complete(String taskId, List<String> userList, String buttonId) {
         Map<String, Object> variables = new HashMap<>(3);
-
-        if ("核实反馈".equals(task.getName())) {
-            variables.put("", "");
-        }
-
-        if ("核实反馈".equals(task.getName())) {
-            variables.put("shouliyuanType", buttonId);
-//            variables.put("userId", userList);
-        }
-
-        if ("值班长-立案".equals(task.getName())) {
-            variables.put("liantype", buttonId);
-//            variables.put("userId", userList);
-        }
-
-        if ("派遣员-派遣".equals(task.getName())) {
-            variables.put("paiqianType", buttonId);
-//            variables.put("userId", userList);
-        }
-        if ("专业部门".equals(task.getName())) {
-            variables.put("zhuanyebumenType", buttonId);
-//            variables.put("userId", userList);
-        }
-
-        if ("受理员".equals(task.getName())) {
-            variables.put("shouliyuantype", buttonId);
-        }
-
+        variables.put("buttonId", buttonId);
         variables.put("userId", StringUtils.collectionToCommaDelimitedString(userList));
         taskService.complete(taskId, variables);
-
-        //TODO 应该返回taskId
-        return null;
     }
 
 
