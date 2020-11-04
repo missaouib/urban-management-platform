@@ -105,7 +105,6 @@ class Event<<案件实体类>>{
     -gridId : Grid
     -location : String
     -User : User
-    -phone : String
     -eventSource : Kv
     -x : double
     -y : double
@@ -121,7 +120,7 @@ class Event<<案件实体类>>{
 class Petitioner<<诉求人>>{
     id : String
     name : String 
-    sex : int
+    sex : String 
     phone : int 
 }
 
@@ -165,6 +164,14 @@ class ProcessTimeLimit<<流程时限实体类>>{
     -timeLimit : int     //时限
 }
 
+class nodeInfo<<环节信息实体类>>{
+    id : String 
+    node : kv 
+    role : Role
+
+
+
+}
 class Statistics<<流转统计实体类>>{
     -id                   : String
     -event                : Event
