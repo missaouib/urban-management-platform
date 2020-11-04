@@ -172,24 +172,28 @@ public class ActivitiServiceImpl implements ActivitiService {
 
         if ("核实反馈".equals(task.getName())) {
             variables.put("shouliyuanType", buttonId);
-            variables.put("userId", userList);
+//            variables.put("userId", userList);
         }
 
         if ("值班长-立案".equals(task.getName())) {
             variables.put("liantype", buttonId);
-            variables.put("userId", userList);
+//            variables.put("userId", userList);
         }
 
         if ("派遣员-派遣".equals(task.getName())) {
             variables.put("paiqianType", buttonId);
-            variables.put("userId", userList);
+//            variables.put("userId", userList);
         }
         if ("专业部门".equals(task.getName())) {
             variables.put("zhuanyebumenType", buttonId);
-            variables.put("userId", userList);
+//            variables.put("userId", userList);
         }
 
+        if ("受理员".equals(task.getName())) {
+            variables.put("shouliyuantype", buttonId);
+        }
 
+        variables.put("userId", StringUtils.collectionToCommaDelimitedString(userList));
         taskService.complete(taskId, variables);
 
         //TODO 应该返回taskId
