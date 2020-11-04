@@ -25,8 +25,7 @@
                             </td>
                             <td>问题类型<span>*</span></td>
                             <td>
-                                <input id="eventType" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
-
+                                <input id="event" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
                             </td>
                         </tr>
                         <tr>
@@ -40,9 +39,40 @@
                                 </select>
                             </td>
                             <td>问题来源<span></span></td>
-                            <td style="width: 35%">
+                            <td>
                                 <select  name="kv" required>
-                                    <option value="">问题来源</option>
+                                    <option value="">请选择</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>立案区域<span></span></td>
+                            <td>
+                                <select  name="kv" required>
+                                    <option value="">请选择</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                            </td>
+                            <td>等级<span></span></td>
+                            <td>
+                                <select  name="kv" required>
+                                    <option value="">请选择</option>
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>立案条件<span></span></td>
+                            <td>
+                                <select  name="kv" required>
+                                    <option value="">请选择</option>
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
@@ -105,9 +135,23 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td><span>*</span>立案区域</td>
+                                    <td>
+                                        <input value="" type="text" readonly>
+                                    </td>
                                     <td><span>*</span>立案条件</td>
                                     <td>
-                                        <input value="私乱搭建" type="text" readonly>
+                                        <input value="" type="text" readonly>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span>*</span>案件等级</td>
+                                    <td>
+                                        <input value="" type="text" readonly>
+                                    </td>
+                                    <td><span>*</span>处理时限</td>
+                                    <td>
+                                        <input value="" type="text" readonly>
                                     </td>
                                 </tr>
                                 <tr>
@@ -115,49 +159,46 @@
 
                                     <td colspan="8"><textarea id="problemescription" name="problemescription"
                                                               required></textarea></td>
-
-
                                 </tr>
                                 <tr class="col-12">
-                                    <td><span></span>案件等级</td>
+                                    <td><span></span>案件地址</td>
                                     <td>
-                                        <select name="safeLevel" >
-                                            <option>一般</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input value="" type="text" readonly>
                                     </td>
-                                    <td><span></span>处理时限</td>
-                                    <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
-                                    </td>
+
                                 </tr>
                                 <tr class="col-12">
                                     <td><span>*</span>所属区域</td>
                                     <td>
-                                        <select name="safeLevel">
-                                            <option>A类</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input value="" type="text" readonly>
                                     </td>
-                                    <td><span>*</span>所属网格</td>
+                                    <td><span>*</span>所属街道</td>
                                     <td>
-                                        <select name="safeLevel">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input value="" type="text" readonly>
+                                    </td>
+                                </tr>
+                                <tr class="col-12">
+                                    <td><span>*</span>所属社区</td>
+                                    <td>
+                                        <input value="" type="text" readonly>
+                                    </td>
+                                    <td><span>*</span>单元网格</td>
+                                    <td>
+                                        <input value="" type="text" readonly>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span>*</span>案件地址</td>
+                                    <td><span>*</span>案件类型</td>
                                     <td>
                                         <input name="userName" placeholder="" class="" type="text" readonly="readonly">
                                     </td>
+                                    <td><span>*</span>上报监督员</td>
+                                    <td>
+                                        <input name="" placeholder="" class="" type="text" readonly="readonly">
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td><span></span>上报人</td>
+                                    <td><span></span>诉求人</td>
                                     <td style="text-align: left">张辉</td>
                                     <td><span></span>联系方式</td>
                                     <td><input id="handleTime" name="handleTime" type="text" value="15645068888" readonly="readonly"></td>
@@ -186,43 +227,29 @@
                                 <tr>
                                     <td><span></span>案件类型</td>
                                     <td>
-                                        <select name="safeLevel">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input type="text"  class="find_input" readonly="readonly" disabled>
                                     </td>
-
-                                </tr>
-                                <tr>
-                                    <td><span></span>照片</td>
-                                    <td>
-                                        <div style="width: 70px;height: 70px;">
-                                            <img style="width: 100%;height: 100%;" src="../img/0.png">
-                                        </div>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td><span></span>视频</td>
-                                    <td>
-                                        <div class="upload_files">
-                                            添加视频
-                                        </div>
-                                    </td>
-
-                                </tr>
-                                <tr>
-                                    <td><span></span>音频</td>
-                                    <td>
-                                        <div class="upload_files">
-                                            添加音频
-                                        </div>
-                                    </td>
-
                                 </tr>
                                 </tbody>
+
                             </table>
+                            <div class="send">
+                                <div class="sendImg">
+                                    <div class="sendText"><span>照片:</span></div>
+                                    <div><input id="input-id" type="file"  name="file" multiple="multiple"></div>
+                                </div>
+
+
+                                <div class="sendImg">
+                                    <div class="sendText"><span>视频:</span></div>
+                                    <div><input id="videoInput" type="file"  name="file" multiple="multiple"></div>
+                                </div>
+                                <div class="sendImg">
+                                    <div class="sendText"><span>音频:</span></div>
+                                    <div><input id="musicInput" type="file"  name="file" multiple="multiple"></div>
+                                </div>
+
+                            </div>
 
                         </div>
 
@@ -232,7 +259,8 @@
                             <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                             <!--            </div>-->
                             <div class="r_right but_p girdBtnGroup">
-                                <button class="but_save" style="margin-right: 10px">转核查</button>
+                                <button class="but_save" style="margin-right: 10px">发核查</button>
+                                <button class="but_save" style="margin-right: 10px">撤销办理</button>
                                 <button class="but_close" onclick="Cancel()">返回</button>
                             </div>
                         </div>
@@ -299,7 +327,13 @@
                 },
                 {
                     title: '时限',
-                    field: ''
+                    field: '',
+                    formatter: function (value,row) {
+                        console.log(row)//表格数据 row. 什么什么 .png
+                        var e = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
+                            "<img src='../img/2.png' style='width: 100%;height: 100%'></div>"
+                        return e;
+                    }
                 },
                 {
                     title: '案件编号',
@@ -315,10 +349,6 @@
                 },
                 {
                     title: '案件类型',
-                    field: 'eventTypeName'
-                },
-                {
-                    title: '达到时间',
                     field: 'eventTypeName'
                 },
 
@@ -489,7 +519,99 @@
         $.operate.saveTab(url, data);
     }
 
+    //上传 照片视频音频
+    $(function () {
 
+        $("#input-id").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            // uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            maxFileCount: 2,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        }).on('change', function (event) {
+            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
+        }).on('fileselect', function (event, numFiles, label) {
+            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
+        }).on("filebatchselected", function (event, files) {
+            // $(this).fileinput("upload");
+        }).on("fileuploaded", function (event, data) {
+            console.log('fileuploaded()      ');
+
+            if (data.response.code === web_status.FAIL) {
+                console.log("上传文件失败");
+            }
+            console.log(data);
+        }).on('filedeleted', function (event, key) {
+            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
+            console.log('Key = ' + key);
+        }).on('filesuccessremove', function (event, id) {
+            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
+            console.log(id);
+        }).on('fileclear', function (event) {
+            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
+            console.log(event);
+        }).on('filecleared', function (event) {
+            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
+            console.log(event);
+        }).on('filepredelete', function (event, key) {
+            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
+            console.log('Key = ' + key);
+        }).on('filesuccessremove', function (event, id) {
+            console.log('filesuccessremove()   ')
+            console.log(id);
+        });
+
+        $("#videoInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            // uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            maxFileCount: 2,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        })
+        $("#musicInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            // uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            maxFileCount: 2,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        })
+    })
     var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
     // 沽源地图
     var center = [115.68192, 41.66462];
