@@ -226,7 +226,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row warpsOther" style="height: 43%">
+                    <div class="row warpsOther" style="height: 39%">
                         <div class="col-md-8 bottomInner">
                             <div class="innerTop">
                                 <div class="buck">办事列表</div>
@@ -530,6 +530,7 @@
             // $(".tiao").eq($(this).index(".star")).addClass("tiaoActive").siblings(".tiao").removeClass("tiaoActive");
             $(this).children(".tiao").addClass("tiaoActive").parent(".star").siblings('.star').children(".tiao").removeClass("tiaoActive");
         })
+        $(".innerBottom").height($(".bottomInner").height() - $(".innerTop").height()-20)
     })
 
     // $('#table').bootstrapTable({
