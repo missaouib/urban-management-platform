@@ -74,7 +74,7 @@ public interface ActivitiService {
      *
      * @param userId   用户ID
      * @param pageable 分页信息
-     * @return eventId
+     * @return eventId 集合
      */
     List<String> queryTaskByAssignee(String userId, Pageable pageable);
 
@@ -85,6 +85,26 @@ public interface ActivitiService {
      * @return eventId
      */
     List<String> queryTaskByAssignee(String userId);
+
+    /**
+     * 查询指定环节的待办任务 带分页
+     *
+     * @param userId   用户ID
+     * @param taskName 环节名称 可查询多个环节
+     * @param pageable 分页信息
+     * @return eventId 集合
+     */
+    List<String> queryTaskByAssigneeAndTaskName(String userId, List<String> taskName, Pageable pageable);
+
+
+    /**
+     * 查询指定环节的待办任务 不带分页
+     *
+     * @param userId   用户ID
+     * @param taskName 环节名称 可查询多个环节
+     * @return eventId 集合
+     */
+    List<String> queryTaskByAssigneeAndTaskName(String userId, List<String> taskName);
 
     /**
      * 查询当前任务 都有什么按钮

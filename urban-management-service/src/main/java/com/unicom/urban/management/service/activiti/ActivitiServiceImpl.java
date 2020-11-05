@@ -139,6 +139,19 @@ public class ActivitiServiceImpl implements ActivitiService {
         return queryTask(taskList);
     }
 
+    @Override
+    public List<String> queryTaskByAssigneeAndTaskName(String userId, List<String> taskName, Pageable pageable) {
+        List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).taskNameIn(taskName).listPage(pageable.getPageNumber(), pageable.getPageSize());
+        return queryTask(taskList);
+    }
+
+    @Override
+    public List<String> queryTaskByAssigneeAndTaskName(String userId, List<String> taskName) {
+        List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).taskNameIn(taskName).list();
+        return queryTask(taskList);
+
+    }
+
     private List<String> queryTask(List<Task> taskList) {
         if (CollectionUtils.isEmpty(taskList)) {
             return new ArrayList<>();
@@ -150,7 +163,6 @@ public class ActivitiServiceImpl implements ActivitiService {
 
         return processInstanceList.parallelStream().map(ProcessInstance::getBusinessKey).collect(Collectors.toList());
     }
-
 
 
     @Override
