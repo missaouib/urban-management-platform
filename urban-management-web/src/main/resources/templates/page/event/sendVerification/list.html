@@ -437,7 +437,8 @@
 
     /* 完成任务 派核实 监督员 */
     function completeEvent(data) {
-        $.operate.saveAndReload(completeByReceptionistUrl, {id: data.value, userId: "1", button: data.id});
+        /*$.operate.saveAndReload(completeByReceptionistUrl, {id: data.value, userId: "1", button: data.id});*/
+        console.log("data", data);
     }
 
     //模态窗 selectEventTypeTree

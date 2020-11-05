@@ -318,11 +318,31 @@
 
                             </div>
                             <div class="notice_bot">
-                                <div class="r_right but_p girdBtnGroup" id="eventButton">
-                                    <input name="eventType" class="modelDo" value="核实" type="text" data-toggle="modal" data-target="#modal-default">
-                                    <input name="eventType" class="modelDo" value="不受理" type="text" data-toggle="modal" data-target="#modal-default1" style="margin-right: 0px!important;">
-                                    <button class="but_close" onclick="Cancel()">返回</button>
+                                <div class="checkUser">
+                                    <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>核实监督员</span>
+                                    <div style="width: 100%;display: flex;justify-content: space-between">
+                                        <div id="monitor_man" type="text"
+                                             style="width:48%;resize: none;border-radius: 4px;border: 1px #ccc solid;line-height: 38px"></div>
+                                        <input type="hidden" id="userId" value="">
+                                        <input type="hidden" id="eventId" value="">
+                                        <input type="hidden" id="button" value="">
+                                        <div class="btn btn-primary" id="changeMan"
+                                             style="width: 48%;margin-left: 10px">选择监督员
+                                        </div>
+                                    </div>
+
                                 </div>
+                                <div class="checkUser" id="selectUser" style="display: none">
+                                    <span class="sendText" style="width: 120px"><i
+                                            style="color: red!important;"></i></span>
+                                    <div id="doUser"
+                                         style="width:100%;resize: none;border-radius: 4px;border: 1px #ccc solid;max-height: 100px;overflow:auto;">
+                                        <ul>
+                                            <li class="monitor" value="1">超级管理员</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="r_right but_p girdBtnGroup" id="eventButton"></div>
                             </div>
                         </div>
                     </div>
@@ -332,7 +352,7 @@
             <div class="banner">流程图</div>
         </div>
     </div>
-<!--    核实-->
+    <!--    核实-->
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -340,24 +360,6 @@
                     <h4 class="modal-title">核实</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="checkUser">
-                        <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>核实监督员</span>
-                        <div style="width: 100%;display: flex;justify-content: space-between">
-                            <div id="monitor_man" type="text" style="width:48%;resize: none;border-radius: 4px;border: 1px #ccc solid;line-height: 38px"></div>
-                            <div class="btn btn-primary" id="changeMan" style="width: 48%;margin-left: 10px">选择监督员</div>
-                        </div>
-
-                    </div>
-                    <div class="checkUser" id="selectUser" style="display: none">
-                        <span class="sendText" style="width: 120px"><i style="color: red!important;"></i></span>
-                        <div id="doUser" style="width:100%;resize: none;border-radius: 4px;border: 1px #ccc solid;max-height: 100px;overflow:auto;">
-                            <ul>
-                                <li class="monitor">监督员张某</li>
-                                <li class="monitor">监督员刘某</li>
-                                <li class="monitor">监督员关某</li>
-                            </ul>
-                        </div>
-                    </div>
                     <div class="checkMain" style="position: relative">
                         <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>核实意见</span>
                         <textarea type="text" id="textIdioms"></textarea>
@@ -370,39 +372,10 @@
                             </ul>
                         </div>
                     </div>
-
                 </div>
-                <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
-                    <button type="button" class="btn btn-primary">批转</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
-                </div>
-            </div>
-        </div>
-    </div>
-<!--    不受理-->
-    <div class="modal fade" id="modal-default1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">不受理</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="checkMain" style="position: relative">
-                        <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>不受理意见</span>
-                        <textarea type="text" id="textIdioms_tag"></textarea>
-                        <div class="alwaysSay btn btn-primary" id="alwaysSay_tag">惯用语</div>
-                        <div id="wordSays_tag" class="wordSays" style="background-color:#fff;">
-                            <ul>
-                                <li class="idioms_noCheck">11</li>
-                                <li class="idioms_noCheck">33</li>
-                                <li class="idioms_noCheck">22</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
-                    <button type="button" class="btn btn-primary">批转</button>
+                <div class="modal-footer justify-content-between"
+                     style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary" onclick="completeEvent()">完成</button>
                     <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
                 </div>
             </div>
@@ -430,8 +403,9 @@
         $("#changeMan").click(function () {
             $("#selectUser").stop().slideToggle(300)
         })
-        $("#selectUser").on("click",".monitor",function () {
+        $("#selectUser").on("click", ".monitor", function () {
             let monitor = $(this).html()
+            $("#userId").val($(this).val())
             $("#monitor_man").html(monitor);
             $("#selectUser").slideUp(300)
         })
@@ -439,7 +413,7 @@
         $("#alwaysSay").click(function () {
             $("#wordSays").stop().fadeToggle(300)
         })
-        $("#wordSays").on("click",".idioms",function () {
+        $("#wordSays").on("click", ".idioms", function () {
             let idioms = $(this).html()
             $("#textIdioms").html(idioms);
             $("#wordSays").fadeOut(300)
@@ -448,7 +422,7 @@
         $("#alwaysSay_tag").click(function () {
             $("#wordSays_tag").stop().fadeToggle(300)
         })
-        $("#wordSays_tag").on("click",".idioms_noCheck",function () {
+        $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
             let idioms = $(this).html()
             $("#textIdioms_tag").html(idioms);
             $("#wordSays_tag").fadeOut(300)
@@ -552,7 +526,7 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='completeEvent(this)'>" + button[i].taskName + "</button>";
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].taskName + "</button>";
                 }
             }
             $("#eventButton").html(buttonHtml);
@@ -560,8 +534,21 @@
     }
 
     /* 完成任务 派核实 监督员 */
-    function completeEvent(data) {
-        $.operate.saveAndReload(completeByReceptionistUrl, {id: data.value, userId: "1", button: data.id});
+    function setValueForCompleteEvent(data) {
+        $("#eventId").val(data.value)
+        $("#button").val(data.id)
+    }
+
+    function completeEvent() {
+        if ($("#userId").val() == null || $("#userId").val() == "") {
+            alert("请选择监督员");
+            return false;
+        }
+        $.operate.saveAndReload(completeByReceptionistUrl, {
+            id: $("#eventId").val(),
+            userId: $("#userId").val(),
+            button: $("#button").val()
+        });
     }
 
     //模态窗 selectEventTypeTree
