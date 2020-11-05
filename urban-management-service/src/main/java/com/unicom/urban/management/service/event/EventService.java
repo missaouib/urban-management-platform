@@ -9,6 +9,7 @@ import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
+import com.unicom.urban.management.pojo.vo.EventOneVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
@@ -188,6 +189,27 @@ public class EventService {
      */
     public Event findOne(String eventId) {
         return eventRepository.findById(eventId).orElse(new Event());
+    }
+
+    /**
+     * findOne
+     *
+     * @param eventId 事件id
+     * @return 事件
+     */
+    public EventOneVO findOneToVo(String eventId) {
+        Event one = eventRepository.findById(eventId).orElse(new Event());
+        EventOneVO eventOneVO = EventMapper.INSTANCE.eventToEventOneVO(one);
+        eventOneVO.setEventTypeStr(one.getEventType().getParent().getParent().getName() + "-" + one.getEventType().getParent().getName() + "-" + one.getEventType().getName());
+        eventOneVO.setTimeLimitStr(one.getTimeLimit().getTimeLimit()+one.getTimeLimit().getTimeType().getValue());
+        eventOneVO.setCommunity(one.getGrid().getParent().getGridName());
+        eventOneVO.setStreet(one.getGrid().getParent().getGridName());
+        eventOneVO.setEventRegion(one.getGrid().getParent().getParent().getParent().getGridName());
+        eventOneVO.setRegionStr(one.getCondition().getParent().getRegion());
+        eventOneVO.setConditionValue(one.getCondition().getConditionValue());
+        eventOneVO.setGirdStr(one.getGrid().getGridName());
+        eventOneVO.setLevel(one.getTimeLimit().getLevel().getValue());
+        return eventOneVO;
     }
 
     /**

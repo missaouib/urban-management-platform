@@ -64,7 +64,8 @@ public interface EventMapper {
             @Mapping(source = "processInstanceId",target = "processInstanceId"),
             @Mapping(source = "eventCode",target = "eventCode"),
             @Mapping(source = "represent",target = "represent"),
-            @Mapping(source = "location",target = "location")
+            @Mapping(source = "location",target = "location"),
+
     })
     EventOneVO eventToEventOneVO(Event event);
 

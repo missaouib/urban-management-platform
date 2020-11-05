@@ -2,15 +2,18 @@ package com.unicom.urban.management.web.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.Petitioner;
+import com.unicom.urban.management.pojo.vo.EventOneVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.event.PetitionerService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
+import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,15 +53,15 @@ public class SupervisionAcceptanceController {
     public ModelAndView toSupervisionAcceptanceSave() {
         ModelAndView model = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/save");
         //案件等级
-        model.addObject("level", kvService.findByTableNameAndFieldName("deptTimeLimit","level"));
+        model.addObject("level", kvService.findByTableNameAndFieldName("deptTimeLimit", "level"));
         //所属区域
-        model.addObject("region", kvService.findByTableNameAndFieldName("event","region"));
+        model.addObject("region", kvService.findByTableNameAndFieldName("event", "region"));
         //问题来源
-        model.addObject("eventSource", kvService.findByTableNameAndFieldName("event","eventSource"));
+        model.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //案件类型
-        model.addObject("recType", kvService.findByTableNameAndFieldName("event","recType"));
+        model.addObject("recType", kvService.findByTableNameAndFieldName("event", "recType"));
         //所在区域
-        model.addObject("gridList",gridService.findAllByParentIsNull());
+        model.addObject("gridList", gridService.findAllByParentIsNull());
         EventVO eventVO = new EventVO();
         eventVO.setCreateTime(LocalDateTime.now());
         model.addObject("eventVO", eventVO);
@@ -144,10 +147,9 @@ public class SupervisionAcceptanceController {
     }
 
 
-    @GetMapping("/test")
-    public void test(){
-        Event one = eventService.findOne("3038fb44-bc37-4030-aec3-479385d39905");
-        int i = 0;
+    @GetMapping("/findOne")
+    public EventOneVO findOne(String eventId) {
+        return eventService.findOneToVo(eventId);
     }
 
 }
