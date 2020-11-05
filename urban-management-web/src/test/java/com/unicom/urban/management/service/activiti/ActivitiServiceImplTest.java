@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @SpringBootTest(classes = WebApplication.class)
@@ -130,6 +131,12 @@ public class ActivitiServiceImplTest {
 
         System.out.println(xinxiheshi.getProcessInstanceId());
 
+    }
+
+
+    @Test
+    public void queryTaskByAssigneeAndTaskNameTest() {
+        List<String> eventIdList = activitiService.queryTaskByAssigneeAndTaskName("1", Collections.singletonList("值班长-立案"));
     }
 
 

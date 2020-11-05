@@ -25,7 +25,7 @@ spring:
     history-level: full
     check-process-definitions: false
     db-history-used: true
-    db-identity-used: false
+    db-identity-used: true
     job-executor-activate: false
     async-executor-enabled: false
 

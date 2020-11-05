@@ -5,6 +5,7 @@ import com.unicom.urban.management.mapper.MenuMapper;
 import com.unicom.urban.management.pojo.dto.MenuDTO;
 import com.unicom.urban.management.pojo.entity.Menu;
 import com.unicom.urban.management.pojo.vo.MenuVO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -48,6 +49,12 @@ public class MenuService {
         Menu menu = new Menu();
         menu.setName(menuDTO.getName());
         menu.setPath(menuDTO.getPath());
+
+        if (StringUtils.isNotEmpty(menuDTO.getParentId())) {
+            Menu parentMenu = new Menu();
+            parentMenu.setId(menuDTO.getParentId());
+            menu.setParent(parentMenu);
+        }
         menuRepository.save(menu);
     }
 

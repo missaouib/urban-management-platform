@@ -26,8 +26,9 @@ public class MenuServiceTest {
     @Test
     public void save() {
         MenuDTO menuDTO = new MenuDTO();
-        menuDTO.setName("无线采集子系统");
+        menuDTO.setName("案件核实");
         menuDTO.setPath("");
+        menuDTO.setParentId("9702df68-4fb4-4ccc-9433-f22631c71620");
         menuService.save(menuDTO);
     }
 

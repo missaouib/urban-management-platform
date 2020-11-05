@@ -147,7 +147,7 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     @Override
     public List<String> queryTaskByAssigneeAndTaskName(String userId, List<String> taskName) {
-        List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).taskNameIn(taskName).list();
+        List<Task> taskList = taskService.createTaskQuery().taskCandidateOrAssigned(userId).taskNameIn(taskName).list();
         return queryTask(taskList);
 
     }
