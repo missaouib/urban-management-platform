@@ -76,7 +76,7 @@ public interface ActivitiService {
      * @param pageable 分页信息
      * @return eventId
      */
-    List<String> queryMyTask(String userId, Pageable pageable);
+    List<String> queryTaskByAssignee(String userId, Pageable pageable);
 
     /**
      * 查询待办任务
@@ -84,7 +84,7 @@ public interface ActivitiService {
      * @param userId 用户ID
      * @return eventId
      */
-    List<String> queryMyTask(String userId);
+    List<String> queryTaskByAssignee(String userId);
 
     /**
      * 查询当前任务 都有什么按钮

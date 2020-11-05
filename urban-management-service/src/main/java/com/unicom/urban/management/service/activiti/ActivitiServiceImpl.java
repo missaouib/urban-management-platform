@@ -2,7 +2,6 @@ package com.unicom.urban.management.service.activiti;
 
 import com.unicom.urban.management.common.constant.EventSourceConstant;
 import com.unicom.urban.management.common.exception.BusinessException;
-import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventButtonRepository;
 import com.unicom.urban.management.pojo.entity.EventButton;
 import lombok.extern.slf4j.Slf4j;
@@ -125,28 +124,34 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
-    public List<String> queryMyTask(String userId, Pageable pageable) {
+    public List<String> queryTaskByAssignee(String userId, Pageable pageable) {
 
         List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).listPage(pageable.getPageNumber(), pageable.getPageSize());
 
-        Set<String> taskIds = taskList.parallelStream().map(Task::getProcessDefinitionId).collect(Collectors.toSet());
-
-        List<ProcessInstance> processInstanceList = runtimeService.createProcessInstanceQuery().processInstanceIds(taskIds).list();
-
-        return processInstanceList.parallelStream().map(ProcessInstance::getBusinessKey).collect(Collectors.toList());
+        return queryTask(taskList);
 
     }
 
     @Override
-    public List<String> queryMyTask(String userId) {
+    public List<String> queryTaskByAssignee(String userId) {
         List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).list();
 
-        Set<String> taskIds = taskList.parallelStream().map(Task::getProcessDefinitionId).collect(Collectors.toSet());
+        return queryTask(taskList);
+    }
+
+    private List<String> queryTask(List<Task> taskList) {
+        if (CollectionUtils.isEmpty(taskList)) {
+            return new ArrayList<>();
+        }
+
+        Set<String> taskIds = taskList.parallelStream().map(Task::getProcessInstanceId).collect(Collectors.toSet());
 
         List<ProcessInstance> processInstanceList = runtimeService.createProcessInstanceQuery().processInstanceIds(taskIds).list();
 
         return processInstanceList.parallelStream().map(ProcessInstance::getBusinessKey).collect(Collectors.toList());
     }
+
+
 
     @Override
     public void claim(String taskId, String userId) {
