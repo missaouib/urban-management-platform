@@ -38,6 +38,10 @@ public class WorkService {
         return activitiService.queryTaskByAssignee(SecurityUtil.getUserId());
     }
 
+    public List<String> queryTaskByAssigneeAndTaskName(List<String> taskName) {
+        return activitiService.queryTaskByAssigneeAndTaskName(SecurityUtil.getUserId(), taskName);
+    }
+
     /* ---------------------------------------------------------------------- */
 
     public void supervisor(String eventId, List<String> userId, String buttonId) {
@@ -57,7 +61,7 @@ public class WorkService {
         activitiService.claim(statistics.getTaskId(),SecurityUtil.getUserId());
         activitiService.complete(statistics.getTaskId(), userid, buttonId);
         this.testFinish(eventId);
-        statisticsService.save(this.initStatistics(eventId));
+        this.initStatistics(eventId);
     }
 
     /**
@@ -144,8 +148,7 @@ public class WorkService {
         ProcessInstance processInstance = activitiService.acceptanceReporting(eventId, userList);
         event.setProcessInstanceId(processInstance.getId());
         eventService.update(event);
-        Statistics statistics = this.initStatistics(event.getId());
-        statisticsService.save(statistics);
+        this.initStatistics(event.getId());
     }
 
     /**
@@ -190,7 +193,7 @@ public class WorkService {
         statistics.setDeptTimeLimit(event.getTimeLimit());
         ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());
         statistics.setProcessTimeLimit(processTimeLimit);
-        return statistics;
+        return statisticsService.save(statistics);
     }
 
     /**

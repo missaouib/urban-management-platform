@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>热线上报</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
@@ -25,7 +25,8 @@
                             </td>
                             <td>问题类型<span>*</span></td>
                             <td>
-                                <input id="event" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                                <input id="event" name="eventType" placeholder="请选择问题类型" class="" type="text"
+                                       maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
                             </td>
                         </tr>
                         <tr>
@@ -40,7 +41,7 @@
                             </td>
                             <td>问题来源<span></span></td>
                             <td style="width: 35%">
-                                <select  name="kv" required>
+                                <select name="kv" required>
                                     <option value="">问题来源</option>
                                     <option>1</option>
                                     <option>2</option>
@@ -51,7 +52,7 @@
                         <tr>
                             <td>当前状态<span></span></td>
                             <td>
-                                <select  name="kv" required>
+                                <select name="kv" required>
                                     <option value="">请选择</option>
                                     <option>1</option>
                                     <option>2</option>
@@ -60,7 +61,7 @@
                             </td>
                             <td>立案区域<span></span></td>
                             <td>
-                                <select  name="kv" required>
+                                <select name="kv" required>
                                     <option value="">请选择</option>
                                     <option>1</option>
                                     <option>2</option>
@@ -71,7 +72,7 @@
                         <tr>
                             <td>等级<span></span></td>
                             <td>
-                                <select  name="kv" required>
+                                <select name="kv" required>
                                     <option value="">请选择</option>
                                     <option>1</option>
                                     <option>2</option>
@@ -80,7 +81,7 @@
                             </td>
                             <td>立案条件<span></span></td>
                             <td>
-                                <select  name="kv" required>
+                                <select name="kv" required>
                                     <option value="">请选择</option>
                                     <option>1</option>
                                     <option>2</option>
@@ -103,7 +104,7 @@
                 </p>
             </form>
         </div>
-        <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+        <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
 
     </div>
     <div class="rightContent">
@@ -135,11 +136,14 @@
                                 <tr>
                                     <td><span>*</span>案卷号</td>
                                     <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly" required>
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly"
+                                               required>
                                     </td>
                                     <td><span>*</span>问题类型</td>
                                     <td>
-                                        <input id="eventType" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                                        <input id="eventType" name="eventType" placeholder="请选择问题类型" class=""
+                                               type="text" maxlength="30" required readonly="readonly"
+                                               onclick="selectEventTypeTree()">
 
                                     </td>
                                 </tr>
@@ -181,7 +185,8 @@
                                 <tr>
                                     <td><span>*</span>问题描述</td>
 
-                                    <td colspan="8"><textarea id="problemescription" name="problemescription" required readonly></textarea></td>
+                                    <td colspan="8"><textarea id="problemescription" name="problemescription" required
+                                                              readonly></textarea></td>
 
 
                                 </tr>
@@ -255,7 +260,8 @@
                                         <input type="text" readonly>
                                     </td>
                                     <td><span></span>联系方式</td>
-                                    <td><input id="handleTime" name="handleTime" type="text" value="15645068888" readonly="readonly"></td>
+                                    <td><input id="handleTime" name="handleTime" type="text" value="15645068888"
+                                               readonly="readonly"></td>
                                 </tr>
                                 <tr>
                                     <td><span></span>性别</td>
@@ -297,17 +303,17 @@
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
-                                    <div><input id="input-id" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input id="input-id" type="file" name="file" multiple="multiple"></div>
                                 </div>
 
 
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
-                                    <div><input id="videoInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input id="videoInput" type="file" name="file" multiple="multiple"></div>
                                 </div>
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
-                                    <div><input id="musicInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input id="musicInput" type="file" name="file" multiple="multiple"></div>
                                 </div>
 
                             </div>
@@ -339,8 +345,6 @@
 </div>
 
 
-
-
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
 <th:block th:include="page/fragments/common :: fileUpload_js"/>
@@ -351,24 +355,26 @@
 
     $(function () {
         queryUserList();
-        $(".tabTitle span").click(function() {
+        $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         })
     })
 
 
-    let searchUrl = /*[[@{/event/cooperativeWorkList}]]*/ "/event/cooperativeWorkList";
+    let searchUrl = /*[[@{/event/selfProcessingList}]]*/ "/event/selfProcessingList";
 
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
 
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
 
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
+
     let num = 1;
+
     function queryUserList() {
         var options = {
-            num:num,
+            num: num,
             url: searchUrl,
             createUrl: addUrl,
             updateUrl: editUrl,
@@ -381,7 +387,8 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row) {
-                console.log("row", row);
+                console.log("row", row.id);
+                getButton(row.id);
             },
             columns: [
                 {
@@ -391,7 +398,7 @@
                 {
                     title: '时限',
                     field: '',
-                    formatter: function (value,row) {
+                    formatter: function (value, row) {
                         console.log(row)//表格数据 row. 什么什么 .png
                         var e = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
                             "<img src='../img/2.png' style='width: 100%;height: 100%'></div>"
@@ -440,6 +447,14 @@
         min: jQuery.validator.format("请输入一个最小为{0} 的值")
     });
 
+    /* 获取下一步按钮 */
+    function getButton(eventId) {
+        let getButtonUrl = /*[[@{/event/getButton/}]]+eventId*/ "/event/getButton/" + eventId;
+        $.ajaxUtil.get(getButtonUrl, function (e) {
+            console.log("e", e);
+        });
+    }
+
     //模态窗 selectEventTypeTree
     function selectEventTypeTree() {
         var treeId = $("#treeId").val();
@@ -454,7 +469,7 @@
         $.modal.openOptions(options);
     }
 
-    function doSubmit(index, layero){
+    function doSubmit(index, layero) {
         var tree = layero.find("iframe")[0].contentWindow.$._tree;
         var body = layer.getChildFrame('body', index);
         $("#typeStr").val(body.find('#treeId').val());
@@ -557,18 +572,18 @@
     })
     $("#userForm").validate({
         debug: true,
-        ignore:"",
-        submitHandler:function(form){
+        ignore: "",
+        submitHandler: function (form) {
             var params = $(form).serialize(); //串行化表单参数
-            $.post("user",params,function(result){
+            $.post("user", params, function (result) {
                 if (result.ok) {//注册成功
                     location.href = "register_ok.html";
-                }else{//注册失败
+                } else {//注册失败
                     alert(result.msg);
                     $("#checkImg").click();
 
                 }
-            },"json");
+            }, "json");
         },
         rules: {
             userName: {
@@ -603,7 +618,7 @@
             },
             handleTime: {
                 required: true
-            },charge: {
+            }, charge: {
                 required: true
             },
             question: {
@@ -665,7 +680,7 @@
         $.modal.closeLoading();
     }
 
-    function submitHandler(){
+    function submitHandler() {
         //先校验
         if (!$("form").valid()) {
             return;
@@ -705,8 +720,8 @@
         ],
         view: new ol.View({
             // projection: projection,
-            center:center,
-            zoom:13,
+            center: center,
+            zoom: 13,
             projection: projection
         })
     });

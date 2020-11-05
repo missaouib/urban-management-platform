@@ -53,5 +53,6 @@ public class EventDTO {
 
     private String sex;
 
+    private List<String> taskName;
 
 }

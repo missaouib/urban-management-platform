@@ -3,14 +3,13 @@ package com.unicom.urban.management.service.event;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventRepository;
 import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
+import com.unicom.urban.management.mapper.EventButtonMapper;
 import com.unicom.urban.management.mapper.EventConditionMapper;
 import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.*;
-import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
-import com.unicom.urban.management.pojo.vo.EventConditionVO;
-import com.unicom.urban.management.pojo.vo.EventOneVO;
-import com.unicom.urban.management.pojo.vo.EventVO;
+import com.unicom.urban.management.pojo.vo.*;
+import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
@@ -46,11 +45,13 @@ public class EventService {
     @Autowired
     private WorkService workService;
     @Autowired
+    private ActivitiService activitiService;
+    @Autowired
+    private StatisticsService statisticsService;
+    @Autowired
     private DeptTimeLimitService deptTimeLimitService;
     @Autowired
     private EventTypeService eventTypeService;
-    @Autowired
-    private StatisticsService statisticsService;
     @Autowired
     private PetitionerService petitionerService;
 
@@ -69,7 +70,7 @@ public class EventService {
 
             /* 查询当前登陆人所拥有的任务 */
             CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
-            List<String> type = workService.queryTaskByAssignee();
+            List<String> type = workService.queryTaskByAssigneeAndTaskName(eventDTO.getTaskName());
             type.forEach(in::value);
             list.add(in);
             Predicate[] p = new Predicate[list.size()];
@@ -109,11 +110,11 @@ public class EventService {
      * @param eventId 事件id
      * @return 按钮
      */
-    public List<EventButton> getbutton(String eventId) {
-        //TODO 获取按钮
-        return new ArrayList<>();
+    public List<EventButtonVO> getButton(String eventId) {
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        List<EventButton> eventButtons = activitiService.queryButton(statistics.getTaskId());
+        return EventButtonMapper.INSTANCE.eventButtonListToEventButtonVOList(eventButtons);
     }
-
 
 
     /**

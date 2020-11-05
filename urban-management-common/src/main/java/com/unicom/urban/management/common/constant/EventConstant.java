@@ -50,4 +50,6 @@ public class EventConstant {
      */
     public static final int PROFESSIONAL_DEPARTMENTS_ACCOUNT_SUCCESS = 8;
 
+    public static final String ACCEPTANCE_CASE_REGISTRATION = "受理员-案件登记";
+
 }

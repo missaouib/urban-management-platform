@@ -26,8 +26,8 @@ public class StatisticsService {
     @Autowired
     private StatisticsRepository statisticsRepository;
 
-    public void save(Statistics statistics) {
-        statisticsRepository.save(statistics);
+    public Statistics save(Statistics statistics) {
+        return statisticsRepository.save(statistics);
     }
 
     public void update(Statistics statistics) {

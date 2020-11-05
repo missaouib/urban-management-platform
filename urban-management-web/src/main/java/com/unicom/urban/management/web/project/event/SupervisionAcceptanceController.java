@@ -1,19 +1,16 @@
 package com.unicom.urban.management.web.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
-import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
-import com.unicom.urban.management.pojo.entity.Petitioner;
 import com.unicom.urban.management.pojo.vo.EventOneVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
-import com.unicom.urban.management.service.event.PetitionerService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
-import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
+import java.util.Arrays;
 
 /**
  * 监督受理子系统
@@ -104,6 +101,8 @@ public class SupervisionAcceptanceController {
         return new ModelAndView(SystemConstant.PAGE + "/event/sendCheck/list");
     }
 
+    /* ----------------------------------------------------------------- */
+
     /**
      * 登记
      *
@@ -147,9 +146,26 @@ public class SupervisionAcceptanceController {
     }
 
 
+    @GetMapping("/test")
+    public void test() {
+        Event one = eventService.findOne("3038fb44-bc37-4030-aec3-479385d39905");
+        int i = 0;
+    }
+
     @GetMapping("/findOne")
     public EventOneVO findOne(String eventId) {
         return eventService.findOneToVo(eventId);
+    }
+
+    /**
+     * 自处理案件列表
+     *
+     * @return list
+     */
+    @GetMapping("/selfProcessingList")
+    public Page<EventVO> selfProcessingList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setTaskName(Arrays.asList(EventConstant.ACCEPTANCE_CASE_REGISTRATION));
+        return eventService.search(eventDTO, pageable);
     }
 
 }
