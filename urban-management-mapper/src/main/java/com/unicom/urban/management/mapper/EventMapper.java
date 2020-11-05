@@ -2,9 +2,11 @@ package com.unicom.urban.management.mapper;
 
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
+import com.unicom.urban.management.pojo.vo.EventOneVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -54,5 +56,16 @@ public interface EventMapper {
     @Mapping(source = "sex", target = "petitioner.sex")
     @Mapping(source = "petitionerPhone", target = "petitioner.phone")
     Event eventDTOToEvent(EventDTO eventDTO);
+
+
+
+    @Mappings({
+            @Mapping(source = "id",target = "id"),
+            @Mapping(source = "processInstanceId",target = "processInstanceId"),
+            @Mapping(source = "eventCode",target = "eventCode"),
+            @Mapping(source = "represent",target = "represent"),
+            @Mapping(source = "location",target = "location")
+    })
+    EventOneVO eventToEventOneVO(Event event);
 
 }

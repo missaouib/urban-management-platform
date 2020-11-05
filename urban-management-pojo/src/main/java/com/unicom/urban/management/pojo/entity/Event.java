@@ -27,7 +27,7 @@ public class Event extends BaseEntity {
 
     private String eventCode;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private EventType eventType;
 
@@ -35,7 +35,7 @@ public class Event extends BaseEntity {
     /**
      * 立案条件
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private EventCondition condition;
 
@@ -44,14 +44,14 @@ public class Event extends BaseEntity {
      */
     private String represent;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private DeptTimeLimit timeLimit;
 
     /**
      * 网格
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private Grid grid;
 
@@ -63,7 +63,7 @@ public class Event extends BaseEntity {
     /**
      * 上报人
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private User user;
 
@@ -72,7 +72,7 @@ public class Event extends BaseEntity {
     /**
      * 问题来源
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private KV eventSource;
 
@@ -88,7 +88,7 @@ public class Event extends BaseEntity {
     /**
      * 案件类型 日常管理、专项普查、其他
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private KV recType;
 
@@ -100,17 +100,17 @@ public class Event extends BaseEntity {
     /**
      * 案件状态 未定
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private KV eventSate;
     /**
      * 条件实体类
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
     private EventCondition eventCondition;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "event")
     private List<Statistics> statisticsList;
 
     /**

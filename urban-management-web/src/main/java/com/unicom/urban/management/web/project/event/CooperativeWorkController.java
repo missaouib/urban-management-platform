@@ -63,6 +63,36 @@ public class CooperativeWorkController {
     }
 
     /**
+     * 挂账列表
+     *
+     * @return 页面
+     */
+    @GetMapping("/toOnAccount")
+    public ModelAndView toOnAccount() {
+        return new ModelAndView(SystemConstant.PAGE + "/event/onAccount/list");
+    }
+
+    /**
+     * 作废列表
+     *
+     * @return 页面
+     */
+    @GetMapping("/toCancel")
+    public ModelAndView toCancel() {
+        return new ModelAndView(SystemConstant.PAGE + "/event/cancel/list");
+    }
+
+    /**
+     * 授权批示
+     *
+     * @return 页面
+     */
+    @GetMapping("/toAuthorization")
+    public ModelAndView toAuthorization() {
+        return new ModelAndView(SystemConstant.PAGE + "/event/authorization/list");
+    }
+
+    /**
      * 案件查询
      *
      * @return 页面

@@ -1,15 +1,16 @@
 package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
-import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -31,12 +32,28 @@ public class TaskProcessingService {
 
 
     /**
-     *值班长 立案 回退
+     * 任务处理
      */
-    public void shiftLeader(String eventId, List<String> userId, String buttonId){
+    public void handle(String eventId, String roleId, String buttonId, StatisticsDTO statisticsDTO) {
+        //todo 根据角色获取人员id
+
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-        activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
-        activitiService.complete(statistics.getTaskId(), userId, buttonId);
+        if ("值班长-立案".equals(statistics.getTaskName())) {
+            this.shiftLeader(eventId, Collections.singletonList("1"), buttonId);
+        } else if ("派遣员-派遣".equals(statistics.getTaskName())) {
+            this.dispatcher(eventId, Collections.singletonList("1"), buttonId);
+        } else if ("专业部门".equals(statistics.getTaskName())) {
+            this.professionalAgenc(eventId, Collections.singletonList("1"), buttonId);
+        }
+
+
+    }
+
+    /**
+     * 值班长 立案 回退
+     */
+    private void shiftLeader(String eventId, List<String> userId, String buttonId) {
+        this.avtivitiHandle(eventId, userId, buttonId);
         workService.testFinish(eventId);
         statisticsService.save(workService.initStatistics(eventId));
     }
@@ -44,10 +61,8 @@ public class TaskProcessingService {
     /**
      * 派遣员-派遣 给专业部门
      */
-    public void dispatcher(String eventId, List<String> userId, String buttonId){
-        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-        activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
-        activitiService.complete(statistics.getTaskId(), userId, buttonId);
+    private void dispatcher(String eventId, List<String> userId, String buttonId) {
+        this.avtivitiHandle(eventId, userId, buttonId);
         workService.testFinish(eventId);
         statisticsService.save(workService.initStatistics(eventId));
     }
@@ -55,12 +70,19 @@ public class TaskProcessingService {
     /**
      * 专业部门 转核查 申请回退
      */
-    public void professionalAgenc(String eventId, List<String> userId, String buttonId){
+    private void professionalAgenc(String eventId, List<String> userId, String buttonId) {
+        this.avtivitiHandle(eventId, userId, buttonId);
+        workService.testFinish(eventId);
+        statisticsService.save(workService.initStatistics(eventId));
+    }
+
+    /**
+     * 工作流处理 领取 -> 派发
+     */
+    private void avtivitiHandle(String eventId, List<String> userId, String buttonId) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         activitiService.complete(statistics.getTaskId(), userId, buttonId);
-        workService.testFinish(eventId);
-        statisticsService.save(workService.initStatistics(eventId));
     }
 
 }

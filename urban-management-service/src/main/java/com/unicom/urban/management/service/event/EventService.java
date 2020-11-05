@@ -108,13 +108,6 @@ public class EventService {
     }
 
 
-    /**
-     * 处理任务
-     */
-    public void chuli(String eventId, List<String> userId,String buttonId) {
-        workService.eventHandle(eventId,userId,buttonId);
-    }
-
 
     /**
      * 保存事件
@@ -188,7 +181,7 @@ public class EventService {
      * @return 事件
      */
     public Event findOne(String eventId) {
-        return eventRepository.getOne(eventId);
+        return eventRepository.findById(eventId).orElse(new Event());
     }
 
     /**

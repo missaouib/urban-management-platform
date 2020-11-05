@@ -4,6 +4,7 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
+import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.Petitioner;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
@@ -144,12 +145,9 @@ public class SupervisionAcceptanceController {
 
 
     @GetMapping("/test")
-    public void test() {
-//        eventService.chuli("cb00e285-ef81-47f5-b708-c783b81506f8", Collections.singletonList("1"),"1");
-//        eventService.chuli("cb00e285-ef81-47f5-b708-c783b81506f8", Collections.singletonList("1"),"3");
-//        eventService.chuli("cb00e285-ef81-47f5-b708-c783b81506f8", Collections.singletonList("1"),"4");
-//        eventService.chuli("cb00e285-ef81-47f5-b708-c783b81506f8", Collections.singletonList("1"),"6");
-        eventService.chuli("cb00e285-ef81-47f5-b708-c783b81506f8", Collections.singletonList("1"),"7");
+    public void test(){
+        Event one = eventService.findOne("3038fb44-bc37-4030-aec3-479385d39905");
+        int i = 0;
     }
 
 }
