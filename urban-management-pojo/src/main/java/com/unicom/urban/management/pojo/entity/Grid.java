@@ -43,7 +43,8 @@ public class Grid extends BaseEntity {
     /**
      * 等级 1区域 - 2街道 - 3社区 - 4网格
      */
-    private int level;
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer level;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
