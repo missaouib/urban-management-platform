@@ -39,30 +39,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span>*</span>诉求人</td>
-                                <td>
-                                    <input name="peopleName"  type="text" class="" required>
-                                </td>
-                                <td><span>*</span>性别</td>
-                                <td>
-                                    <select name="sex" required>
-                                        <option value="男">男</option>
-                                        <option value="女">女</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span>*</span>联系方式</td>
-                                <td>
-                                    <input name="petitionerPhone" type="text" class="" required/>
-                                </td>
-                                <td><span></span>诉求时间</td>
-                                <td>
-                                    <input th:name="createTime" th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
-                                </td>
-                            </tr>
-
-                            <tr>
 
                                 <td><span>*</span>立案区域</td>
                                 <td>
@@ -92,6 +68,31 @@
 
                                 </td>
                             </tr>
+                            <tr>
+                                <td><span>*</span>诉求人</td>
+                                <td>
+                                    <input name="peopleName"  type="text" class="" required>
+                                </td>
+                                <td><span>*</span>性别</td>
+                                <td>
+                                    <select name="sex" required>
+                                        <option value="男">男</option>
+                                        <option value="女">女</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>联系方式</td>
+                                <td>
+                                    <input name="petitionerPhone" type="text" class="" required/>
+                                </td>
+                                <td><span></span>诉求时间</td>
+                                <td>
+                                    <input th:name="createTime" th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
+                                </td>
+                            </tr>
+
+
 
                             <tr>
 
