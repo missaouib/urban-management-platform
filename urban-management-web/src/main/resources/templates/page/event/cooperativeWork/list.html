@@ -136,11 +136,11 @@
                                 <tr>
                                     <td><span>*</span>案卷号</td>
                                     <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly" required>
                                     </td>
                                     <td><span>*</span>问题类型</td>
                                     <td>
-                                        <input id="event" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                                        <input id="eventTag" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
 
                                     </td>
                                 </tr>
@@ -176,14 +176,13 @@
                                     </td>
                                     <td><span>*</span>处理时限</td>
                                     <td>
-                                       <input type="text" readonly>
+                                        <input type="text" readonly required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span>*</span>问题描述</td>
 
-                                    <td colspan="8"><textarea id="problemescription" name="problemescription"
-                                                              required readonly></textarea></td>
+                                    <td colspan="8"><textarea id="problemescription" name="problemescription" required readonly></textarea></td>
 
 
                                 </tr>
@@ -248,7 +247,7 @@
                                     </td>
                                     <td><span>*</span>上报监督员</td>
                                     <td>
-                                        <input readonly type="text">
+                                        <input readonly type="text" required>
                                     </td>
                                 </tr>
                                 <tr>
@@ -267,13 +266,7 @@
                                             <option>女</option>
                                         </select>
                                     </td>
-                                </tr>
-                                <tr>
                                     <td><span></span>创建时间</td>
-                                    <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
-                                    </td>
-                                    <td><span></span>问题来源</td>
                                     <td>
                                         <input name="userName" placeholder="" class="" type="text" readonly="readonly">
                                     </td>
@@ -281,14 +274,19 @@
                                 <tr>
                                     <td><span></span>位置坐标</td>
                                     <td>
-                                        <input type="text"  class="find_input" readonly="readonly"  value="经度" >
+                                        <input type="text" class="find_input" readonly="readonly" value="经度">
                                     </td>
                                     <td></td>
                                     <td>
-                                        <input type="text" class="find_input" readonly="readonly"  value="纬度">
+                                        <input type="text" class="find_input" readonly="readonly" value="纬度">
                                     </td>
                                 </tr>
-
+                                <tr>
+                                    <td><span></span>问题来源</td>
+                                    <td>
+                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                    </td>
+                                </tr>
 
                                 <!--                                    <tr>-->
                                 <!--                                        <td>处理结果<span></span></td>-->
