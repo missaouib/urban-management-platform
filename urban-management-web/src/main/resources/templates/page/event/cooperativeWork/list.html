@@ -284,10 +284,13 @@
                         </div>
 
                         <!--                            按钮-->
+                        <div class="cttad">jhgjhgjh</div>
+
                         <div class="notice_bot">
-                            <div class="roleBox" id="leader">
-                                <div class="r_right but_p girdBtnGroup" id="eventButton">
-                                </div>
+                            <div class="r_right but_p girdBtnGroup" id="btnGroupGround">
+                                <!--                                <button class="but_save" type="submit" onclick="submitHandler()" >处理</button>-->
+                                <input name="eventType" class="modelDo" value="处理" type="text" data-toggle="modal" data-target="#modal-default">
+                                <button class="but_close" onclick="Cancel()">返回</button>
                             </div>
                         </div>
                     </div>
@@ -411,12 +414,12 @@
                     $("#y").val(e.data.y);
 
                     /*按钮*/
-                    var buttonStr = "";
+                    var buttonStr;
                     $(e.data.eventButtonVOS).each(function (index,value) {
                         buttonStr+="<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" class=\"but_save\">"+value.buttonText+"</button>";
                     })
                     // $("#eventButton").empty();
-                    $("#eventButton").append(buttonStr);
+                    $("#btnGroupGround").append(buttonStr);
                 });
             },
             columns: [
