@@ -265,7 +265,7 @@
                             <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                             <!--            </div>-->
                             <div class="r_right but_p girdBtnGroup">
-                                <button class="but_save" style="margin-right: 10px">核实</button>
+                                <input name="eventType" class="modelDo" value="核实" type="text" data-toggle="modal" data-target="#modal-default4">
                                 <button class="but_save" style="margin-right: 10px">登记备案</button>
                                 <button class="but_save" type="submit" onclick="submitHandler()">作废</button>
                                 <button class="but_close" onclick="Cancel()">返回</button>
@@ -278,7 +278,50 @@
             <div class="banner">流程图</div>
 
         </div>
+        <div class="modal fade" id="modal-default4">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">处理</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="checkMain" style="position: relative">
+                            <span class="sendText"><i>*</i>意见</span>
+                            <textarea type="text" id="textIdioms"></textarea>
+                            <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
+                            <div id="wordSays" class="wordSays">
+                                <ul>
+                                    <li class="idioms">11</li>
+                                    <li class="idioms">33</li>
+                                    <li class="idioms">22</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="send">
+                            <div class="sendImg">
+                                <div class="sendText" style="width: 72px"><span>照片:</span></div>
+                                <div><input id="picture" class="input-id" type="file"  name="file" multiple="multiple"></div>
+                            </div>
 
+
+                            <div class="sendImg">
+                                <div class="sendText" style="width: 72px"><span>视频:</span></div>
+                                <div><input id="video" type="file" class="videoInput" name="file" multiple="multiple"></div>
+                            </div>
+                            <div class="sendImg">
+                                <div class="sendText" style="width: 72px"><span>音频:</span></div>
+                                <div><input id="music" type="file" class="musicInput" name="file" multiple="multiple"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-primary">核实反馈</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>
@@ -299,6 +342,15 @@
         $(".tabTitle span").click(function() {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
+        })
+
+        $("#alwaysSay").click(function () {
+            $("#wordSays").stop().fadeToggle(300)
+        })
+        $(".idioms").click(function () {
+            let idioms = $(this).html()
+            $("#textIdioms").html(idioms)
+            $("#wordSays").stop().fadeOut(300)
         })
     })
 
@@ -395,7 +447,100 @@
         max: jQuery.validator.format("请输入一个最大为{0} 的值"),
         min: jQuery.validator.format("请输入一个最小为{0} 的值")
     });
+    //上传 照片视频音频
+    let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
 
+    $(function () {
+        $(".input-id").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            maxFileCount: 2,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        }).on('change', function (event) {
+            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
+        }).on('fileselect', function (event, numFiles, label) {
+            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
+        }).on("filebatchselected", function (event, files) {
+            // $(this).fileinput("upload");
+        }).on("fileuploaded", function (event, data) {
+            console.log('fileuploaded()      ');
+
+            if (data.response.code === web_status.FAIL) {
+                console.log("上传文件失败");
+            }
+            console.log(data);
+        }).on('filedeleted', function (event, key) {
+            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
+            console.log('Key = ' + key);
+        }).on('filesuccessremove', function (event, id) {
+            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
+            console.log(id);
+        }).on('fileclear', function (event) {
+            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
+            console.log(event);
+        }).on('filecleared', function (event) {
+            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
+            console.log(event);
+        }).on('filepredelete', function (event, key) {
+            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
+            console.log('Key = ' + key);
+        }).on('filesuccessremove', function (event, id) {
+            console.log('filesuccessremove()   ')
+            console.log(id);
+        });
+
+        $(".videoInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            maxFileCount: 2,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        })
+        $(".musicInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            maxFileCount: 2,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        })
+    })
     $("#userForm").validate({
         debug: true,
         ignore:"",
