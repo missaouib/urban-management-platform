@@ -37,5 +37,7 @@ public class EventButton extends BaseEntity {
 
     private Integer sort;
 
+    private String buttonText;
+
 
 }

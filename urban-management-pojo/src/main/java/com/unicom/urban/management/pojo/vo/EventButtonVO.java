@@ -23,4 +23,6 @@ public class EventButtonVO {
 
     private Integer sort;
 
+    private String buttonText;
+
 }

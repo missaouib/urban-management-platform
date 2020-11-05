@@ -190,8 +190,8 @@ public class SupervisionAcceptanceController {
     }
 
     @GetMapping("/test")
-    public void test() {
-        taskProcessingService.handle("4af46a6c-9c2c-4594-96c7-a5e266d3eac9", null, "3", null);
+    public void test(String eventId,String buttonId){
+        taskProcessingService.handle(eventId,null,buttonId,null);
     }
 
     /**

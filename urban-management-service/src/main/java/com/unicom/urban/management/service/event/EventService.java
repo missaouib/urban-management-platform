@@ -225,6 +225,7 @@ public class EventService {
         eventOneVO.setConditionValue(one.getCondition().getConditionValue());
         eventOneVO.setGirdStr(one.getGrid().getGridName());
         eventOneVO.setLevel(one.getTimeLimit().getLevel().getValue());
+        eventOneVO.setEventButtonVOS(this.getButton(eventId));
         return eventOneVO;
     }
 

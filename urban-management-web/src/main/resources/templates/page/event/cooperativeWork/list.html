@@ -285,45 +285,9 @@
 
                         <!--                            按钮-->
                         <div class="notice_bot">
-                            <!--            <div class="l_left">-->
-                            <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-                            <!--            </div>-->
                             <div class="roleBox" id="leader">
-                                <div class="r_right but_p girdBtnGroup">
-                                    <button class="but_save" type="submit" onclick="submitHandler()">立案转派</button>
-                                    <button class="but_save" style="margin-right: 10px">登记备案</button>
-                                    <button class="but_close" onclick="Cancel()">返回</button>
-                                </div>
-                            </div>
-                            <div class="roleBox" id="dispatcher">
-                                <div class="r_right but_p girdBtnGroup">
-                                    <button class="but_save" type="submit" onclick="submitHandler()">派专业部门</button>
-                                    <button class="but_close" onclick="Cancel()">返回</button>
-                                </div>
-                            </div>
-                            <div class="roleBox" id="departments">
-                                <div class="r_right but_p girdBtnGroup">
-                                    <button class="but_save" style="margin-right: 10px">回退</button>
-                                    <button class="but_save" style="margin-right: 10px">申请核查</button>
-                                    <button class="but_save" type="submit" onclick="submitHandler()">申请挂账</button>
-                                    <button class="but_save" style="margin-right: 10px">申请延时</button>
-                                    <button class="but_close" onclick="Cancel()">返回</button>
-                                </div>
-                            </div>
-<!--                            值班长结案-->
-                            <div class="roleBox" id="case">
-                                <div class="r_right but_p girdBtnGroup">
-                                    <button class="but_save" type="submit" onclick="submitHandler()">结案</button>
-                                    <button class="but_save" style="margin-right: 10px">二次派遣</button>
-                                    <button class="but_close" onclick="Cancel()">返回</button>
-                                </div>
-                            </div>
-<!--                            二次处理派遣员-->
-                            <div class="roleBox" id="treatment">
-                                <div class="r_right but_p girdBtnGroup">
-                                    <button class="but_save" type="submit" onclick="submitHandler()">派专业部门</button>
-                                    <button class="but_save" style="margin-right: 10px">挂账</button>
-                                    <button class="but_close" onclick="Cancel()">返回</button>
+                                <div class="r_right but_p girdBtnGroup" id="eventButton">
+
                                 </div>
                             </div>
                         </div>
@@ -358,7 +322,6 @@
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         })
-        eventImg();
     })
 
      //职位角色按钮组
@@ -375,15 +338,10 @@
         $("#treatment").addClass("blockActive")
     }
 
-     function eventImg(){
-        var str = "<img src='"+ img + "7d4adfe6-1dbf-11eb-a1ce-00155dff8d69"+"'>";
-        $("#evnetImg").empty();
-        $("#eventImg").append(str);
-    }
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
 
-    let searchUrl = /*[[@{/event/cooperativeWorkList}]]*/ "/event/cooperativeWorkList";
+    let searchUrl = /*[[@{/event/taskProcessingList}]]*/ "/event/cooperativeWorkList";
 
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
 
@@ -413,8 +371,9 @@
             onClickRow: function (row, tr, flied) {
                 //详情  流程图  流转记录
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
+                    console.log(e.data)
                     /*流程图*/
-                    $("#eventImg").attr('src',"/common/img/"+e.data.processInstanceId);
+                    $("#eventImg").attr('src',img+e.data.processInstanceId);
                     /*详情*/
                     $("#eventCode").val(e.data.eventCode);
                     $("#eventTypeStr").val(e.data.eventTypeStr);
@@ -431,6 +390,13 @@
                     $("#x").val(e.data.x);
                     $("#y").val(e.data.y);
 
+                    /*按钮*/
+                    var buttonStr = "";
+                    $(e.data.eventButtonVOS).each(function (index,value) {
+                        buttonStr+="<button class=\"but_save\" type=\"submit\" onclick=\"submitHandler()\">"+value.buttonText+"</button>";
+                    })
+                    $("#eventButton").empty();
+                    $("#eventButton").append(buttonStr);
                 });
             },
             columns: [

@@ -79,4 +79,6 @@ public class EventOneVO {
     private double x;
 
     private double y;
+
+    private List<EventButtonVO> eventButtonVOS;
 }
