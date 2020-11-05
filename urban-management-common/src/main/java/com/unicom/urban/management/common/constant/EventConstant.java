@@ -52,6 +52,8 @@ public class EventConstant {
 
     public static final String ACCEPTANCE_CASE_REGISTRATION = "受理员-案件登记";
 
+    public static final String ACCEPTANCE_CASE_VERIFICATION = "监督员-信息核实";
+
     public static final String ACCEPTANCE_SEND_VERIFICATION = "受理员-信息收集";
 
     public static final String SHIFTLEADER = "值班长-立案";
