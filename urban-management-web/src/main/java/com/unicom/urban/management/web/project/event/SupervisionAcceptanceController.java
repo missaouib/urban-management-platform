@@ -177,6 +177,17 @@ public class SupervisionAcceptanceController {
     }
 
     /**
+     * 待核查列列表
+     *
+     * @return list
+     */
+    @GetMapping("/sendCheckList")
+    public Page<EventVO> sendCheckList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_SEND_CHECK));
+        return eventService.search(eventDTO, pageable);
+    }
+
+    /**
      * 任务处理待办列表
      *
      * @return list
@@ -202,6 +213,17 @@ public class SupervisionAcceptanceController {
     @PostMapping("/completeByReceptionistWithSendVerification")
     public Result completeByReceptionistWithSendVerification(EventDTO eventDTO) {
         eventService.completeByReceptionist(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
+        return Result.success();
+    }
+
+    /**
+     * 受理员完成任务 并且 激活监督员(领取任务)核查
+     *
+     * @param eventDTO 事件id 指派的人的id 按钮
+     */
+    @PostMapping("/completeByReceptionistWithSendCheck")
+    public Result completeByReceptionistWithSendCheck(EventDTO eventDTO) {
+        eventService.completeByReceptionistWithClaim(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
         return Result.success();
     }
 

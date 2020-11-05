@@ -120,7 +120,7 @@ public class WorkService {
     public void completeByReceptionistForDo(String eventId) {
         String s = testFinish(eventId);
         /*TODO 查询所有值班长角色的人*/
-        activitiService.complete(s, Arrays.asList("1"), "3");
+        activitiService.complete(s, Collections.singletonList("1"), "3");
         this.initStatistics(eventId);
     }
 

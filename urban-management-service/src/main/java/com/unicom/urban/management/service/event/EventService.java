@@ -159,6 +159,19 @@ public class EventService {
         workService.completeByReceptionist(eventId, userId, button);
     }
 
+    /**
+     * 受理员完成任务 并且 激活监督员(领取任务)核查
+     * 需要先领取任务
+     *
+     * @param eventId 事件id
+     * @param userId  指派的人的id
+     * @param button  按钮
+     */
+    public void completeByReceptionistWithClaim(String eventId, String userId, String button) {
+        workService.claimByReceptionist(eventId);
+        workService.completeByReceptionist(eventId, userId, button);
+    }
+
     public String createCode(String eventTypeId) {
         String eventCode = "";
         //查询当天最大序号
