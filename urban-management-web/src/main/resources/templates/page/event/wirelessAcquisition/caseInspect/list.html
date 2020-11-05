@@ -259,17 +259,17 @@
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
-                                    <div><input id="input-id" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input class="input-id" type="file"  name="file" multiple="multiple"></div>
                                 </div>
 
 
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
-                                    <div><input id="videoInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input class="videoInput" type="file"  name="file" multiple="multiple"></div>
                                 </div>
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
-                                    <div><input id="musicInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input class="musicInput" type="file"  name="file" multiple="multiple"></div>
                                 </div>
 
                             </div>
@@ -323,17 +323,17 @@
                         <div class="send">
                             <div class="sendImg">
                                 <div class="sendText" style="width: 72px"><span>照片:</span></div>
-                                <div><input id="picture" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="picture" type="file" class="input-id" name="file" multiple="multiple"></div>
                             </div>
 
 
                             <div class="sendImg">
                                 <div class="sendText" style="width: 72px"><span>视频:</span></div>
-                                <div><input id="video" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="video" type="file" class="videoInput" name="file" multiple="multiple"></div>
                             </div>
                             <div class="sendImg">
                                 <div class="sendText" style="width: 72px"><span>音频:</span></div>
-                                <div><input id="music" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="music" type="file" class="musicInput" name="file" multiple="multiple"></div>
                             </div>
 
                         </div>
@@ -625,12 +625,13 @@
         $.operate.saveTab(url, data);
     }
     //上传 照片视频音频
-    $(function () {
+    let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
 
-        $("#input-id").fileinput({
+    $(function () {
+        $(".input-id").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
-            // uploadUrl: uploadUrl,
+            uploadUrl: uploadUrl,
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
@@ -678,10 +679,10 @@
             console.log(id);
         });
 
-        $("#videoInput").fileinput({
+        $(".videoInput").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
-            // uploadUrl: uploadUrl,
+            uploadUrl: uploadUrl,
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
@@ -697,103 +698,10 @@
             // browseClass: "btn btn-primary",                     // 按钮样式
 
         })
-        $("#musicInput").fileinput({
+        $(".musicInput").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
-            // uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        })
-    })
-    //上传 照片视频音频
-    $(function () {
-
-        $("#picture").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            // uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        }).on('change', function (event) {
-            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        }).on('fileselect', function (event, numFiles, label) {
-            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        }).on("filebatchselected", function (event, files) {
-            // $(this).fileinput("upload");
-        }).on("fileuploaded", function (event, data) {
-            console.log('fileuploaded()      ');
-
-            if (data.response.code === web_status.FAIL) {
-                console.log("上传文件失败");
-            }
-            console.log(data);
-        }).on('filedeleted', function (event, key) {
-            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            console.log(id);
-        }).on('fileclear', function (event) {
-            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-            console.log(event);
-        }).on('filecleared', function (event) {
-            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-            console.log(event);
-        }).on('filepredelete', function (event, key) {
-            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log('filesuccessremove()   ')
-            console.log(id);
-        });
-
-        $("#video").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            // uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        })
-        $("#music").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            // uploadUrl: uploadUrl,
+            uploadUrl: uploadUrl,
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
@@ -810,6 +718,7 @@
 
         })
     })
+
     var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
     // 沽源地图
     var center = [115.68192, 41.66462];

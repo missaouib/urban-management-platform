@@ -259,17 +259,17 @@
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>图片:</span></div>
-                                    <div><input id="input-id" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input class="input-id" type="file"  name="file" multiple="multiple"></div>
                                 </div>
 
 
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
-                                    <div><input id="videoInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input class="videoInput" type="file"  name="file" multiple="multiple"></div>
                                 </div>
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
-                                    <div><input id="musicInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input class="musicInput" type="file"  name="file" multiple="multiple"></div>
                                 </div>
 
                             </div>
@@ -323,17 +323,17 @@
                         <div class="send">
                             <div class="sendImg">
                                 <div class="sendText" style="width: 72px"><span>照片:</span></div>
-                                <div><input id="picture" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="picture" class="input-id" type="file"  name="file" multiple="multiple"></div>
                             </div>
 
 
                             <div class="sendImg">
                                 <div class="sendText" style="width: 72px"><span>视频:</span></div>
-                                <div><input id="video" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="video" type="file" class="videoInput" name="file" multiple="multiple"></div>
                             </div>
                             <div class="sendImg">
                                 <div class="sendText" style="width: 72px"><span>音频:</span></div>
-                                <div><input id="music" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="music" type="file" class="musicInput" name="file" multiple="multiple"></div>
                             </div>
 
                         </div>
@@ -632,8 +632,7 @@
     let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
 
     $(function () {
-
-        $("#input-id").fileinput({
+        $(".input-id").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
@@ -684,7 +683,7 @@
             console.log(id);
         });
 
-        $("#videoInput").fileinput({
+        $(".videoInput").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
@@ -703,7 +702,7 @@
             // browseClass: "btn btn-primary",                     // 按钮样式
 
         })
-        $("#musicInput").fileinput({
+        $(".musicInput").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
