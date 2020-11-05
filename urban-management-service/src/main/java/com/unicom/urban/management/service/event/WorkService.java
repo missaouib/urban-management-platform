@@ -34,9 +34,15 @@ public class WorkService {
     @Autowired
     private StatisticsService statisticsService;
 
-    public void supervisor(String eventId, List<String> userId,String buttonId){
+    public List<String> queryTaskByAssignee() {
+        return activitiService.queryTaskByAssignee(SecurityUtil.getUserId());
+    }
+
+    /* ---------------------------------------------------------------------- */
+
+    public void supervisor(String eventId, List<String> userId, String buttonId) {
         //todo eventId userList buttonId
-        activitiService.complete(eventId,userId,buttonId);
+        activitiService.complete(eventId, userId, buttonId);
         this.testFinish(eventId);
         this.initStatistics(eventId);
     }

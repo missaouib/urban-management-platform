@@ -2,7 +2,6 @@ package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventRepository;
-import com.unicom.urban.management.dao.event.PetitionerRepository;
 import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
 import com.unicom.urban.management.mapper.EventConditionMapper;
 import com.unicom.urban.management.mapper.EventMapper;
@@ -22,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -52,8 +52,8 @@ public class EventService {
     private StatisticsService statisticsService;
     @Autowired
     private PetitionerService petitionerService;
-    public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
 
+    public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
             if (StringUtils.isNotBlank(eventDTO.getUserName())) {
@@ -65,6 +65,12 @@ public class EventService {
             if (StringUtils.isNotBlank(eventDTO.getEventTypeId())) {
                 list.add(criteriaBuilder.equal(root.get("eventType").get("id").as(String.class), eventDTO.getEventTypeId()));
             }
+
+            /* 查询当前登陆人所拥有的任务 */
+            CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
+            List<String> type = workService.queryTaskByAssignee();
+            type.forEach(in::value);
+            list.add(in);
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
