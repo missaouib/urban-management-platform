@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -146,7 +147,6 @@ public class SupervisionAcceptanceController {
     }
 
 
-
     @GetMapping("/findOne")
     public EventOneVO findOne(String eventId) {
         return eventService.findOneToVo(eventId);
@@ -160,6 +160,19 @@ public class SupervisionAcceptanceController {
     @GetMapping("/selfProcessingList")
     public Page<EventVO> selfProcessingList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
         eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_CASE_REGISTRATION));
+        return eventService.search(eventDTO, pageable);
+    }
+
+    /**
+     * 任务处理待办列表
+     *
+     * @return list
+     */
+    @GetMapping("/taskProcessingList")
+    public Page<EventVO> taskProcessingList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setTaskName(Arrays.asList(EventConstant.SHIFTLEADER,
+                EventConstant.DISPATCHER,
+                EventConstant.PROFESSIONALAGENC));
         return eventService.search(eventDTO, pageable);
     }
 
