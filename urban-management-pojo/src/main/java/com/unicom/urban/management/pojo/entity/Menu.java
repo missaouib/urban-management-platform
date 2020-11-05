@@ -1,8 +1,11 @@
 package com.unicom.urban.management.pojo.entity;
 
+import com.unicom.urban.management.pojo.Delete;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,6 +18,8 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
+@SQLDelete(sql = "update sys_menu set deleted = " + Delete.DELETE + " where id = ?")
+@Where(clause = "deleted = " + Delete.NORMAL)
 @Table(name = "sys_menu")
 public class Menu extends BaseEntity {
 
@@ -29,10 +34,10 @@ public class Menu extends BaseEntity {
 
     private String icon;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
     private List<Menu> child;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Menu parent;
 

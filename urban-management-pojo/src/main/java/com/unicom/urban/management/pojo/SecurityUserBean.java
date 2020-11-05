@@ -36,6 +36,15 @@ public class SecurityUserBean implements UserDetails {
     private String deptName;
 
 
+    public SecurityUserBean() {
+
+    }
+
+    public SecurityUserBean(String id, String username) {
+        this.id = id;
+        this.username = username;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("USER_ROLE"));

@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
@@ -40,6 +41,14 @@ public class MenuService {
         List<MenuVO> menuList = MenuMapper.INSTANCE.menuListToMenuVOList(page.getContent());
 
         return new PageImpl<>(menuList, page.getPageable(), page.getTotalElements());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void save(MenuDTO menuDTO) {
+        Menu menu = new Menu();
+        menu.setName(menuDTO.getName());
+        menu.setPath(menuDTO.getPath());
+        menuRepository.save(menu);
     }
 
 }
