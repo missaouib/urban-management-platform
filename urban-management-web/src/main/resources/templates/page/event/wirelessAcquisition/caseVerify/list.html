@@ -70,7 +70,7 @@
     <div class="rightContent">
         <div class="tabTitle">
             <span class="active">地图</span>
-            <span>案件详情</span>
+            <span class="tab_update">案件详情</span>
             <span>流转记录</span>
             <span>流程图</span>
         </div>
@@ -86,7 +86,7 @@
                     </div>
                 </div>
             </div>
-            <div class="banner">
+            <div class="banner banner_update">
                 <h3 class="bigTitle">案件修改</h3>
                 <form class="details">
                     <div class="top table2_top">
@@ -421,6 +421,11 @@
             modalName: "用户",
             onClickRow: function (row) {
                 console.log("row", row);
+            },
+            // 点击每行进行函数的触发
+            onClickRow: function (row, tr, flied) {
+                $(".tab_update").addClass("active").siblings(".tabTitle span").removeClass("active");
+                $(".banner_update").addClass("blockActive").siblings(".banner").removeClass("blockActive");
             },
             columns: [
                 {
