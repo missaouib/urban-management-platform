@@ -85,7 +85,7 @@ public class SupervisionAcceptanceController {
     }
 
     /**
-     * 案件派核实列表
+     * 待办案件列表
      *
      * @return list
      */
@@ -162,6 +162,17 @@ public class SupervisionAcceptanceController {
     @GetMapping("/selfProcessingList")
     public Page<EventVO> selfProcessingList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
         eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_CASE_REGISTRATION));
+        return eventService.search(eventDTO, pageable);
+    }
+
+    /**
+     * 待办案件列表
+     *
+     * @return list
+     */
+    @GetMapping("/sendVerificationList")
+    public Page<EventVO> sendVerificationList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_SEND_VERIFICATION));
         return eventService.search(eventDTO, pageable);
     }
 

@@ -321,11 +321,11 @@
                             <!--            <div class="l_left">-->
                             <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                             <!--            </div>-->
-                            <div class="r_right but_p girdBtnGroup">
-                                <button class="but_save" style="margin-right: 10px">转立案</button>
-                                <button class="but_save" style="margin-right: 10px">不受理</button>
-                                <button class="but_save" style="margin-right: 10px">撤销办理</button>
-                                <button class="but_close" onclick="Cancel()">返回</button>
+                            <div class="r_right but_p girdBtnGroup" id="eventButton">
+                                <!--                                <button class="but_save" style="margin-right: 10px">转立案</button>-->
+                                <!--                                <button class="but_save" style="margin-right: 10px">不受理</button>-->
+                                <!--                                <button class="but_save" style="margin-right: 10px">撤销办理</button>-->
+                                <!--                                <button class="but_close" onclick="Cancel()">返回</button>-->
                             </div>
                         </div>
                     </div>
@@ -353,14 +353,13 @@
 
     $(function () {
         queryUserList();
-        $(".tabTitle span").click(function() {
+        $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         })
-    })
+    });
 
-
-    let searchUrl = /*[[@{/event/cooperativeWorkList}]]*/ "/event/cooperativeWorkList";
+    let searchUrl = /*[[@{/event/sendVerificationList}]]*/ "/event/sendVerificationList";
 
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
 
@@ -382,7 +381,7 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row) {
-                console.log("row", row);
+                getButton(row.id);
             },
             columns: [
                 {
@@ -418,6 +417,27 @@
             ]
         };
         $.table.init(options);
+    }
+
+    /* 获取下一步按钮 */
+    function getButton(eventId) {
+        let getButtonUrl = /*[[@{/event/getButton/}]]+eventId*/ "/event/getButton/" + eventId;
+        $.ajaxUtil.get(getButtonUrl, function (e) {
+            $("#eventButton").empty();
+            let button = e.data;
+            let buttonHtml = "";
+            if (button.length > 0) {
+                for (let i = 0; i < button.length; i++) {
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='completeEvent(this)'>" + button[i].taskName + "</button>";
+                }
+            }
+            $("#eventButton").html(buttonHtml);
+        });
+    }
+
+    /* 完成任务 派核实 监督员 */
+    function completeEvent(data) {
+        $.operate.saveAndReload(completeByReceptionistUrl, {id: data.value, userId: "1", button: data.id});
     }
 
     //模态窗 selectEventTypeTree

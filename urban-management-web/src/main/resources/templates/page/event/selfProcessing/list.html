@@ -319,9 +319,9 @@
                             </div>
                             <div class="notice_bot">
                                 <div class="r_right but_p girdBtnGroup" id="eventButton">
-                                    <button class="but_save" style="margin-right: 10px">核实</button>
-                                    <button class="but_save" type="submit" onclick="submitHandler()">不受理</button>
-                                    <button class="but_close" onclick="Cancel()">返回</button>
+                                    <!--                                    <button class="but_save" style="margin-right: 10px">核实</button>-->
+                                    <!--                                    <button class="but_save" type="submit" onclick="submitHandler()">不受理</button>-->
+                                    <!--                                    <button class="but_close" onclick="Cancel()">返回</button>-->
                                 </div>
                             </div>
                         </div>
@@ -379,7 +379,6 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row) {
-                console.log("row", row.id);
                 getButton(row.id);
             },
             columns: [

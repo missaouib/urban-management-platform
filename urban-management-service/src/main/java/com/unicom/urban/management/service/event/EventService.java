@@ -27,6 +27,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -71,6 +72,9 @@ public class EventService {
                 /* 查询当前登陆人所拥有的任务 */
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
                 List<String> type = workService.queryTaskByAssigneeAndTaskName(eventDTO.getTaskName());
+                if (type.size() == 0) {
+                    type = Collections.singletonList("");
+                }
                 type.forEach(in::value);
                 list.add(in);
             }
