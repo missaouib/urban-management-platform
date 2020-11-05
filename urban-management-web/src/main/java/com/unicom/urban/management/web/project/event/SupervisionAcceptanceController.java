@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * 监督受理子系统
@@ -158,13 +158,13 @@ public class SupervisionAcceptanceController {
     }
 
     /**
-     * 自处理案件列表
+     * 公众信息待办列表
      *
      * @return list
      */
     @GetMapping("/selfProcessingList")
     public Page<EventVO> selfProcessingList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
-        eventDTO.setTaskName(Arrays.asList(EventConstant.ACCEPTANCE_CASE_REGISTRATION));
+        eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_CASE_REGISTRATION));
         return eventService.search(eventDTO, pageable);
     }
 
