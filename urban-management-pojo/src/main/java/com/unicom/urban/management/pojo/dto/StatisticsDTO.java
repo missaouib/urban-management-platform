@@ -12,6 +12,9 @@ import java.util.List;
 @Data
 public class StatisticsDTO {
 
+    private String eventId;
+    private String buttonId;
+
     /**
      * 处理意见
      */

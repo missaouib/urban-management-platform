@@ -284,13 +284,9 @@
                         </div>
 
                         <!--                            按钮-->
-                        <div class="cttad">jhgjhgjh</div>
 
                         <div class="notice_bot">
                             <div class="r_right but_p girdBtnGroup" id="btnGroupGround">
-                                <!--                                <button class="but_save" type="submit" onclick="submitHandler()" >处理</button>-->
-                                <input name="eventType" class="modelDo" value="处理" type="text" data-toggle="modal" data-target="#modal-default">
-                                <button class="but_close" onclick="Cancel()">返回</button>
                             </div>
                         </div>
                     </div>
@@ -345,8 +341,8 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-primary">核实反馈</button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                        <button type="button" class="btn btn-primary" onclick="processing()">受理</button>
+                        <button type="button" class="btn btn-success" onclick="reductionButton()" data-dismiss="modal">返回</button>
                     </div>
                 </div>
             </div>
@@ -380,6 +376,49 @@
 
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
 
+    let processingUrl = /*[[@{/task/processing}]]*/ "/task/processing";
+
+
+    var buttonId = "";
+    var eventId = "";
+    function eventButton(obj) {
+        buttonId = obj;
+    }
+    function reductionButton() {
+        buttonId = "";
+    }
+
+    function processing() {
+        var data = {
+            "eventId":eventId,
+            "buttonId":buttonId
+        };
+
+        $.ajax({
+            type:"post",
+            url:processingUrl,
+            data:JSON.stringify(data),
+            contentType: "application/json",
+            success: function(result){
+                if (result.code === web_status.SUCCESS) {
+                    $.modal.msgSuccess(result.message);
+                    setTimeout("window.location.reload()", 2000);
+                    return;
+                } else if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTreeTable) {
+                    $.modal.msgSuccess(result.message);
+                } else if (result.code === web_status.SUCCESS && $.common.isEmpty(table.options.type)) {
+                    $.modal.msgSuccess(result.message)
+                } else if (result.code === web_status.WARNING) {
+                    $.modal.alertWarning(result.message)
+                } else {
+                    $.modal.alertError(result.message);
+                    return;
+                }
+                $.modal.closeLoading();
+            }
+        });
+    }
+
     function queryUserList() {
         var options = {
             url: searchUrl,
@@ -395,6 +434,7 @@
                 //详情  流程图  流转记录
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
                     console.log(e.data)
+                    eventId = e.data.id;
                     /*流程图*/
                     $("#eventImg").attr('src',img+e.data.processInstanceId);
                     /*详情*/
@@ -414,11 +454,11 @@
                     $("#y").val(e.data.y);
 
                     /*按钮*/
-                    var buttonStr;
+                    var buttonStr = "";
                     $(e.data.eventButtonVOS).each(function (index,value) {
-                        buttonStr+="<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" class=\"but_save\">"+value.buttonText+"</button>";
+                        buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" onclick='eventButton("+value.id+")'  class=\"but_save\">"+value.buttonText+"</button>";
                     })
-                    // $("#eventButton").empty();
+                    $("#btnGroupGround").empty();
                     $("#btnGroupGround").append(buttonStr);
                 });
             },
