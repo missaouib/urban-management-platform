@@ -67,12 +67,13 @@ public class EventService {
             if (StringUtils.isNotBlank(eventDTO.getEventTypeId())) {
                 list.add(criteriaBuilder.equal(root.get("eventType").get("id").as(String.class), eventDTO.getEventTypeId()));
             }
-
-            /* 查询当前登陆人所拥有的任务 */
-            CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
-            List<String> type = workService.queryTaskByAssigneeAndTaskName(eventDTO.getTaskName());
-            type.forEach(in::value);
-            list.add(in);
+            if (eventDTO.getTaskName() != null) {
+                /* 查询当前登陆人所拥有的任务 */
+                CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
+                List<String> type = workService.queryTaskByAssigneeAndTaskName(eventDTO.getTaskName());
+                type.forEach(in::value);
+                list.add(in);
+            }
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
@@ -202,7 +203,7 @@ public class EventService {
         Event one = eventRepository.findById(eventId).orElse(new Event());
         EventOneVO eventOneVO = EventMapper.INSTANCE.eventToEventOneVO(one);
         eventOneVO.setEventTypeStr(one.getEventType().getParent().getParent().getName() + "-" + one.getEventType().getParent().getName() + "-" + one.getEventType().getName());
-        eventOneVO.setTimeLimitStr(one.getTimeLimit().getTimeLimit()+one.getTimeLimit().getTimeType().getValue());
+        eventOneVO.setTimeLimitStr(one.getTimeLimit().getTimeLimit() + one.getTimeLimit().getTimeType().getValue());
         eventOneVO.setCommunity(one.getGrid().getParent().getGridName());
         eventOneVO.setStreet(one.getGrid().getParent().getGridName());
         eventOneVO.setEventRegion(one.getGrid().getParent().getParent().getParent().getGridName());

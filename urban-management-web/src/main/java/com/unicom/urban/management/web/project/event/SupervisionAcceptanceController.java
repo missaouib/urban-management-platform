@@ -9,6 +9,7 @@ import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.vo.EventOneVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
+import com.unicom.urban.management.service.event.TaskProcessingService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,8 @@ public class SupervisionAcceptanceController {
     private KVService kvService;
     @Autowired
     private GridService gridService;
+    @Autowired
+    private TaskProcessingService taskProcessingService;
 
 
     @GetMapping("/toSupervisionAcceptanceList")
@@ -174,6 +177,11 @@ public class SupervisionAcceptanceController {
                 EventConstant.DISPATCHER,
                 EventConstant.PROFESSIONALAGENC));
         return eventService.search(eventDTO, pageable);
+    }
+
+    @GetMapping("/test")
+    public void test(){
+        taskProcessingService.handle("4af46a6c-9c2c-4594-96c7-a5e266d3eac9",null,"3",null);
     }
 
 }

@@ -44,6 +44,8 @@ public class TaskProcessingService {
             this.dispatcher(eventId, Collections.singletonList("1"), buttonId);
         } else if ("专业部门".equals(statistics.getTaskName())) {
             this.professionalAgenc(eventId, Collections.singletonList("1"), buttonId);
+        }else{
+            this.shiftLeader(eventId, Collections.singletonList("1"), buttonId);
         }
 
 
