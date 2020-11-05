@@ -319,9 +319,9 @@
                             </div>
                             <div class="notice_bot">
                                 <div class="r_right but_p girdBtnGroup" id="eventButton">
-                                    <!--                                    <button class="but_save" style="margin-right: 10px">核实</button>-->
-                                    <!--                                    <button class="but_save" type="submit" onclick="submitHandler()">不受理</button>-->
-                                    <!--                                    <button class="but_close" onclick="Cancel()">返回</button>-->
+                                    <input name="eventType" class="modelDo" value="核实" type="text" data-toggle="modal" data-target="#modal-default">
+                                    <input name="eventType" class="modelDo" value="不受理" type="text" data-toggle="modal" data-target="#modal-default1" style="margin-right: 0px!important;">
+                                    <button class="but_close" onclick="Cancel()">返回</button>
                                 </div>
                             </div>
                         </div>
@@ -330,6 +330,82 @@
             </div>
             <div class="banner"></div>
             <div class="banner">流程图</div>
+        </div>
+    </div>
+<!--    核实-->
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">核实</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="checkUser">
+                        <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>核实监督员</span>
+                        <div style="width: 100%;display: flex;justify-content: space-between">
+                            <div id="monitor_man" type="text" style="width:48%;resize: none;border-radius: 4px;border: 1px #ccc solid;line-height: 38px"></div>
+                            <div class="btn btn-primary" id="changeMan" style="width: 48%;margin-left: 10px">选择监督员</div>
+                        </div>
+
+                    </div>
+                    <div class="checkUser" id="selectUser" style="display: none">
+                        <span class="sendText" style="width: 120px"><i style="color: red!important;"></i></span>
+                        <div id="doUser" style="width:100%;resize: none;border-radius: 4px;border: 1px #ccc solid;max-height: 100px;overflow:auto;">
+                            <ul>
+                                <li class="monitor">监督员张某</li>
+                                <li class="monitor">监督员刘某</li>
+                                <li class="monitor">监督员关某</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="checkMain" style="position: relative">
+                        <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>核实意见</span>
+                        <textarea type="text" id="textIdioms"></textarea>
+                        <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
+                        <div id="wordSays" class="wordSays" style="background-color:#fff;">
+                            <ul>
+                                <li class="idioms">11</li>
+                                <li class="idioms">33</li>
+                                <li class="idioms">22</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary">批转</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--    不受理-->
+    <div class="modal fade" id="modal-default1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">不受理</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="checkMain" style="position: relative">
+                        <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>不受理意见</span>
+                        <textarea type="text" id="textIdioms_tag"></textarea>
+                        <div class="alwaysSay btn btn-primary" id="alwaysSay_tag">惯用语</div>
+                        <div id="wordSays_tag" class="wordSays" style="background-color:#fff;">
+                            <ul>
+                                <li class="idioms_noCheck">11</li>
+                                <li class="idioms_noCheck">33</li>
+                                <li class="idioms_noCheck">22</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary">批转</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -348,6 +424,34 @@
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
+        })
+
+        //选择监督员
+        $("#changeMan").click(function () {
+            $("#selectUser").stop().slideToggle(300)
+        })
+        $("#selectUser").on("click",".monitor",function () {
+            let monitor = $(this).html()
+            $("#monitor_man").html(monitor);
+            $("#selectUser").slideUp(300)
+        })
+        //惯用语
+        $("#alwaysSay").click(function () {
+            $("#wordSays").stop().fadeToggle(300)
+        })
+        $("#wordSays").on("click",".idioms",function () {
+            let idioms = $(this).html()
+            $("#textIdioms").html(idioms);
+            $("#wordSays").fadeOut(300)
+        })
+
+        $("#alwaysSay_tag").click(function () {
+            $("#wordSays_tag").stop().fadeToggle(300)
+        })
+        $("#wordSays_tag").on("click",".idioms_noCheck",function () {
+            let idioms = $(this).html()
+            $("#textIdioms_tag").html(idioms);
+            $("#wordSays_tag").fadeOut(300)
         })
     })
 
@@ -379,6 +483,7 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row) {
+                console.log("row", row.id);
                 getButton(row.id);
             },
             columns: [
