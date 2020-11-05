@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -34,5 +35,6 @@ public class KV implements Serializable {
 
     private String value;
 
+    @Column(columnDefinition = "TINYINT(1)")
     private Integer sts;
 }

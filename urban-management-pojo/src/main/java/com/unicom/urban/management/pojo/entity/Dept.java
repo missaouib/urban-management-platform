@@ -26,7 +26,8 @@ public class Dept extends BaseEntity {
 
     private String deptName;
 
-    private int sts;
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer sts;
 
     private String level;
 

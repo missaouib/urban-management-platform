@@ -34,6 +34,7 @@ public class Component extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     private ComponentInfo componentInfo;
 
+    @Column(columnDefinition = "TINYINT(1)")
     private Integer sts;
 
     @ManyToOne

@@ -76,14 +76,15 @@ public class Event extends BaseEntity {
     @JoinColumn
     private KV eventSource;
 
-    private double x;
+    private Double x;
 
-    private double y;
+    private Double y;
 
     /**
      * 案件状态 比如挂账
      */
-    private int sts;
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer sts;
 
     /**
      * 案件类型 日常管理、专项普查、其他
