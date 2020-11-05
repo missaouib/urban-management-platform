@@ -147,3 +147,6 @@
     display: none;
     z-index: 10;
 }
+.bootstrap-table{
+    margin-bottom: 50px!important;
+}
