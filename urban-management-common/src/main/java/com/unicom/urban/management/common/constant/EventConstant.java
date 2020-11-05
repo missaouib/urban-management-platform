@@ -52,4 +52,10 @@ public class EventConstant {
 
     public static final String ACCEPTANCE_CASE_REGISTRATION = "受理员-案件登记";
 
+    public static final String SHIFTLEADER = "值班长-立案";
+
+    public static final String DISPATCHER = "派遣员-派遣";
+
+    public static final String PROFESSIONALAGENC = "专业部门";
+
 }

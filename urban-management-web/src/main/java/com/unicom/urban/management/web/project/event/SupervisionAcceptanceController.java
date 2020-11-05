@@ -146,11 +146,6 @@ public class SupervisionAcceptanceController {
     }
 
 
-    @GetMapping("/test")
-    public void test() {
-        Event one = eventService.findOne("3038fb44-bc37-4030-aec3-479385d39905");
-        int i = 0;
-    }
 
     @GetMapping("/findOne")
     public EventOneVO findOne(String eventId) {
