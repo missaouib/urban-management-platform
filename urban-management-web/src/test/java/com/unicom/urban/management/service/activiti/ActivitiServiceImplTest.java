@@ -42,14 +42,14 @@ public class ActivitiServiceImplTest {
      * 监督员上报测试
      */
     @Test
-//    @Transactional
+    @Transactional
     public void superviseReportingTest() {
         List<String> userIdList = Arrays.asList("受理员1", "受理员2", "受理员3", "受理员4");
         ProcessInstance processInstance = activitiService.superviseReporting("1", userIdList);
 
         Task task = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
 
-        // 核实反馈 领取完成任务
+        // 信息收集 领取完成任务
         activitiService.claim(task.getId(), "受理员1");
         activitiService.complete(task.getId(), Arrays.asList("值班长1", "值班长2", "值班长3", "值班长4"), "3");
 
@@ -112,7 +112,24 @@ public class ActivitiServiceImplTest {
     @Transactional
     public void acceptanceReporting() {
         List<String> userIdList = Arrays.asList("受理员1", "受理员2", "受理员3", "受理员4");
-        activitiService.acceptanceReporting("1", userIdList);
+        ProcessInstance processInstance = activitiService.acceptanceReporting("1", userIdList);
+
+        Task anjiandengji = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
+        // 受理员-案件登记 领取完成任务
+        activitiService.claim(anjiandengji.getId(), "受理员1");
+        activitiService.complete(anjiandengji.getId(), Arrays.asList("监督员1", "监督员2", "监督员3", "监督员4"), "100");
+
+        // 监督员-信息核实 完成任务
+        Task xinxiheshi = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
+        activitiService.complete(xinxiheshi.getId(), Arrays.asList("受理员1", "受理员2", "受理员3", "受理员4"), "101");
+
+        // 信息收集 领取完成任务
+        Task xinxishouji = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
+        activitiService.claim(xinxishouji.getId(), "受理员1");
+        activitiService.complete(xinxishouji.getId(), Arrays.asList("值班长1", "值班长2", "值班长3", "值班长4"), "3");
+
+        System.out.println(xinxiheshi.getProcessInstanceId());
+
     }
 
 
