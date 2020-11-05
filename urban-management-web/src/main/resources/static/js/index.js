@@ -1174,7 +1174,7 @@
                     "F_ModuleId": "100655551235031238",
                     "F_ParentId": "1006555550125",
                     "F_EnCode": "SysManage",
-                    "F_FullName": "代办案件列表",
+                    "F_FullName": "待办案件列表",
                     "F_Icon": "fa fa-newspaper-o",
                     "F_UrlAddress": "/event/toSendVerificationList",
                     "F_Target": "expand",

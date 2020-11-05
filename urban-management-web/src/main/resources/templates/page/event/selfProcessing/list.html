@@ -318,29 +318,19 @@
 
                             </div>
                             <div class="notice_bot">
-                                <!--            <div class="l_left">-->
-                                <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-                                <!--            </div>-->
-                                <div class="r_right but_p girdBtnGroup">
+                                <div class="r_right but_p girdBtnGroup" id="eventButton">
                                     <button class="but_save" style="margin-right: 10px">核实</button>
                                     <button class="but_save" type="submit" onclick="submitHandler()">不受理</button>
                                     <button class="but_close" onclick="Cancel()">返回</button>
                                 </div>
                             </div>
-
                         </div>
-
-                        <!--                            按钮-->
-
                     </div>
                 </form>
             </div>
             <div class="banner"></div>
             <div class="banner">流程图</div>
-
         </div>
-
-
     </div>
 </div>
 
@@ -367,6 +357,8 @@
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
 
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
+
+    let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
 
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
 
@@ -451,8 +443,21 @@
     function getButton(eventId) {
         let getButtonUrl = /*[[@{/event/getButton/}]]+eventId*/ "/event/getButton/" + eventId;
         $.ajaxUtil.get(getButtonUrl, function (e) {
-            console.log("e", e);
+            $("#eventButton").empty();
+            let button = e.data;
+            let buttonHtml = "";
+            if (button.length > 0) {
+                for (let i = 0; i < button.length; i++) {
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='completeEvent(this)'>" + button[i].taskName + "</button>";
+                }
+            }
+            $("#eventButton").html(buttonHtml);
         });
+    }
+
+    /* 完成任务 派核实 监督员 */
+    function completeEvent(data) {
+        $.operate.saveAndReload(completeByReceptionistUrl, {id: data.value, userId: "1", button: data.id});
     }
 
     //模态窗 selectEventTypeTree

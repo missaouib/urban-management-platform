@@ -73,7 +73,7 @@ public class WorkService {
     public void caseAcceptanceByReceive(String eventId, String userId) {
         this.acceptanceReportingByReceptionist(eventId);
         this.claimByReceptionist(eventId);
-        this.completeByReceptionist(eventId, userId);
+        this.completeByReceptionist(eventId, userId, "11");
     }
 
     /**
@@ -90,10 +90,12 @@ public class WorkService {
      * 受理员完成任务 并且 激活监督员(领取任务)核实
      *
      * @param eventId 事件id
+     * @param userId  指派的人的id
+     * @param button  按钮
      */
-    public void completeByReceptionist(String eventId, String userId) {
+    public void completeByReceptionist(String eventId, String userId, String button) {
         String s = testFinish(eventId);
-        activitiService.complete(s, Arrays.asList(userId), "11");
+        activitiService.complete(s, Collections.singletonList(userId), button);
         Statistics statistics = initStatistics(eventId);
         activitiService.claim(statistics.getTaskId(), userId);
     }

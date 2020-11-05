@@ -5,7 +5,6 @@ import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
-import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.vo.EventOneVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
@@ -180,8 +179,19 @@ public class SupervisionAcceptanceController {
     }
 
     @GetMapping("/test")
-    public void test(){
-        taskProcessingService.handle("4af46a6c-9c2c-4594-96c7-a5e266d3eac9",null,"3",null);
+    public void test() {
+        taskProcessingService.handle("4af46a6c-9c2c-4594-96c7-a5e266d3eac9", null, "3", null);
+    }
+
+    /**
+     * 受理员完成任务 并且 激活监督员(领取任务)核实
+     *
+     * @param eventDTO 事件id 指派的人的id 按钮
+     */
+    @PostMapping("/completeByReceptionistWithSendVerification")
+    public Result completeByReceptionistWithSendVerification(EventDTO eventDTO) {
+        eventService.completeByReceptionist(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
+        return Result.success();
     }
 
 }

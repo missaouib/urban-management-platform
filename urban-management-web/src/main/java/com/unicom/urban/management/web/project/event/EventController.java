@@ -26,9 +26,10 @@ public class EventController {
     private EventService eventService;
 
     /**
-     * 督办案件
+     * 获取下一环节完成按钮
      *
-     * @return 专业部门督办意见回复页面
+     * @param eventId 事件id
+     * @return button
      */
     @GetMapping("/getButton/{eventId}")
     public Result getButton(@PathVariable String eventId) {

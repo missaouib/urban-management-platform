@@ -55,4 +55,6 @@ public class EventDTO {
 
     private List<String> taskName;
 
+    private String button;
+
 }
