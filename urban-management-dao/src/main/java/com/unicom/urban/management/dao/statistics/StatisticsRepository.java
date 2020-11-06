@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface StatisticsRepository extends CustomizeRepository<Statistics, String> {
 
-    List<Statistics> findAllByEvent_Id(String eventId);
+    List<Statistics> findAllByEvent_IdOrderByStartTimeDesc(String eventId);
 
     /**
      * 根据事件id查询该事件最后环节的实体

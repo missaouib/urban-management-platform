@@ -2,6 +2,7 @@ package com.unicom.urban.management.service.statistics;
 
 import com.unicom.urban.management.dao.statistics.StatisticsRepository;
 import com.unicom.urban.management.pojo.entity.Statistics;
+import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.StatisticsVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 流转统计实体类
@@ -40,7 +42,7 @@ public class StatisticsService {
 
     public List<StatisticsVO> findByEventId(String eventId) {
         /*查询流程数据*/
-        List<Statistics> statisticsList = statisticsRepository.findAllByEvent_Id(eventId);
+        List<Statistics> statisticsList = statisticsRepository.findAllByEvent_IdOrderByStartTimeDesc(eventId);
         List<StatisticsVO> statisticsVOS = new ArrayList<>();
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         /*重新封装*/
@@ -79,7 +81,7 @@ public class StatisticsService {
                     .sign(sign)
                     .opinions(s.getOpinions())
                     .fileName(file)
-                    .user(s.getUser().getName())
+                    .user(Optional.ofNullable(s.getUser()).map(User::getUsername).orElse(""))
                     .link(s.getTaskName())
                     .taskId(s.getTaskId())
                     .taskName(s.getTaskName())

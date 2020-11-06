@@ -126,185 +126,165 @@
                                 <tr>
                                     <td><span>*</span>案卷号</td>
                                     <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly" required>
+                                        <input id="eventCode" placeholder="" class="" type="text" readonly="readonly"
+                                               required>
                                     </td>
                                     <td><span>*</span>问题类型</td>
                                     <td>
-                                        <input id="eventType" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                                        <input id="eventTypeStr" name="eventType" placeholder="请选择问题类型" class=""
+                                               type="text" maxlength="30" required readonly="readonly"
+                                               onclick="selectEventTypeTree()">
 
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span>*</span>立案区域</td>
                                     <td>
-                                        <select name="kv" required readonly disabled>
-                                            <option value="">请选择</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="regionStr" name="eventType" placeholder="请选择问题类型" class=""
+                                               type="text" maxlength="30" required readonly="readonly"
+                                               onclick="selectEventTypeTree()">
                                     </td>
                                     <td><span>*</span>立案条件</td>
                                     <td>
-                                        <select name="kv" required readonly disabled>
-                                            <option value="">请选择</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="conditionValue" name="eventType" placeholder="请选择问题类型" class=""
+                                               type="text" maxlength="30" required readonly="readonly"
+                                               onclick="selectEventTypeTree()">
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span>*</span>案件等级</td>
                                     <td>
-                                        <select name="kv" required readonly disabled>
-                                            <option value="">请选择</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="level" name="eventType" placeholder="请选择问题类型" class="" type="text"
+                                               maxlength="30" required readonly="readonly"
+                                               onclick="selectEventTypeTree()">
+
                                     </td>
                                     <td><span>*</span>处理时限</td>
                                     <td>
-                                        <input type="text" readonly required>
+                                        <input id="timeLimitStr" type="text" readonly required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span>*</span>问题描述</td>
 
-                                    <td colspan="8"><textarea id="problemescription" name="problemescription" required readonly></textarea></td>
+                                    <td colspan="8"><textarea id="represent" name="problemescription" required
+                                                              readonly></textarea></td>
 
 
                                 </tr>
                                 <tr class="col-12">
                                     <td><span></span>案件地址</td>
                                     <td>
-                                        <input name="userName" placeholder="" class="" readonly type="text">
+                                        <input id="location" name="location" placeholder="" class="" readonly
+                                               type="text">
                                     </td>
                                     <td><span></span>案件类型</td>
                                     <td>
-                                        <select name="safeLevel" readonly="" disabled>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="recTypeStr" name="location" placeholder="" class="" readonly
+                                               type="text">
                                     </td>
                                 </tr>
                                 <tr class="col-12">
                                     <td><span>*</span>所属区域</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>一般</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="eventRegion" name="location" placeholder="" class="" readonly
+                                               type="text">
+
                                     </td>
                                     <td><span>*</span>所属街道</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="street" name="location" placeholder="" class="" readonly type="text">
+
                                     </td>
                                 </tr>
                                 <tr class="col-12">
                                     <td><span>*</span>所属社区</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>一般</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="community" name="location" placeholder="" class="" readonly
+                                               type="text">
                                     </td>
                                     <td><span>*</span>单元网格</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="girdStr" name="location" placeholder="" class="" readonly
+                                               type="text">
+
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span>*</span>案件类型</td>
+                                    <td><span></span>问题来源</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input name="eventSourceStr" id="eventSourceStr" placeholder="" class=""
+                                               type="text" readonly="readonly">
                                     </td>
                                     <td><span>*</span>上报人</td>
                                     <td>
-                                        <input readonly type="text" required>
+                                        <input id="userName" name="userName" placeholder="" class="" readonly
+                                               type="text">
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>诉求人</td>
                                     <td>
-                                        <input type="text" readonly>
+                                        <input id="petitionerName" name="petitionerName" placeholder="" class=""
+                                               readonly type="text">
+
                                     </td>
                                     <td><span></span>联系方式</td>
-                                    <td><input id="handleTime" name="handleTime" type="text" value="15645068888" readonly="readonly"></td>
+                                    <td><input id="petitionerPhone" name="petitionerPhone" type="text" value=""
+                                               readonly="readonly"></td>
                                 </tr>
                                 <tr>
                                     <td><span></span>性别</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>男</option>
-                                            <option>女</option>
-                                        </select>
+                                        <input id="petitionerSex" name="petitionerSex" placeholder="" class="" readonly
+                                               type="text">
+
                                     </td>
                                     <td><span></span>创建时间</td>
                                     <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                        <input id="cdate" name="cdate" placeholder="" class="" readonly type="text">
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>位置坐标</td>
                                     <td>
-                                        <input type="text" class="find_input" readonly="readonly" value="经度">
+                                        <input id="x" type="text" class="find_input" readonly="readonly" value="经度">
                                     </td>
                                     <td></td>
                                     <td>
-                                        <input type="text" class="find_input" readonly="readonly" value="纬度">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span></span>事件来源</td>
-                                    <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                        <input id="y" type="text" class="find_input" readonly="readonly" value="纬度">
                                     </td>
                                 </tr>
 
-                                <!--                                    <tr>-->
-                                <!--                                        <td>处理结果<span></span></td>-->
-                                <!--                                        <td colspan = "8"><textarea></textarea></td>-->
-                                <!--                                    </tr>-->
                                 </tbody>
                             </table>
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
-                                    <div><input id="input-id" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input id="input-id" class="input-id" type="file" name="file"
+                                                multiple="multiple"></div>
                                 </div>
 
 
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
-                                    <div><input id="videoInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input id="videoInput" class="videoInput" type="file" name="file"
+                                                multiple="multiple"></div>
                                 </div>
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
-                                    <div><input id="musicInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input id="musicInput" class="musicInput" type="file" name="file"
+                                                multiple="multiple"></div>
                                 </div>
 
                             </div>
-
                         </div>
 
                         <!--                            按钮-->
+
                         <div class="notice_bot">
                             <div class="checkUser">
                                 <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>核实监督员</span>
@@ -335,8 +315,17 @@
                     </div>
                 </form>
             </div>
-            <div class="banner"></div>
-            <div class="banner">流程图</div>
+            <div class="banner">
+                <div class='g_con'>
+                    <!-- 物流时间轴 -->
+                    <div class='expressRecord' id="timeAxis">
+                        <div>暂时没有数据，请进入流程处理案件</div>
+                    </div>
+                </div>
+            </div>
+            <div class="banner">
+                <img id="eventImg">
+            </div>
         </div>
     </div>
     <!--    核实-->
@@ -417,14 +406,19 @@
         })
     })
 
+    let img = /*[[@{/common/img/}]]*/ "/common/img/";
 
     let searchUrl = /*[[@{/event/sendCheckList}]]*/ "/event/sendCheckList";
 
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
 
+    let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
+
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
 
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
+
+    let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
 
     let completeByReceptionistWithSendCheckUrl = /*[[@{/event/completeByReceptionistWithSendCheck}]]*/ "/event/completeByReceptionistWithSendCheck";
 
@@ -442,7 +436,7 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row) {
-                getButton(row.id);
+                checkRow(row.id);
             },
             columns: [
                 {
@@ -523,6 +517,12 @@
         min: jQuery.validator.format("请输入一个最小为{0} 的值")
     });
 
+    function checkRow(eventId) {
+        getButton(eventId);
+        getTimeAxis(eventId);
+        getEventDetail(eventId);
+    }
+
     /* 获取下一步按钮 */
     function getButton(eventId) {
         let getButtonUrl = /*[[@{/event/getButton/}]]+eventId*/ "/event/getButton/" + eventId;
@@ -532,10 +532,97 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px;width: 200px' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].taskName + "</button>";
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px;width: 200px' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
                 }
             }
             $("#eventButton").html(buttonHtml);
+        });
+    }
+
+    function getTimeAxis(eventId) {
+        $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
+            let data = e.data;
+            $("#timeAxis").empty();
+            let html = "";
+            if (data.length === 0) {
+                html += "<div>暂时没有数据，请进入流程处理案件</div>";
+            } else {
+                for (let i = 0; i < data.length; i++) {
+                    html += "<div class='expressRecord-single-close'>";
+                    html += "<div class='expressRecord-single-noReach-online-top-close'>";
+                    if (i === 0) {
+                        html += "<div class='online-top-closing'></div>";
+                    } else {
+                        html += "<div class='online-top-close'></div>";
+                    }
+                    html += "<div class='dot-close'>";
+                    if (i === 0) {
+                        html += "<div class='yes blockActive'></div>";
+                    } else {
+                        html += "<div class='yes'></div>";
+                    }
+                    html += "</div>";
+                    if (i === (data.length - 1)) {
+                        html += "<div class='online-bottom-start'></div>";
+                    } else {
+                        html += "<div class='online-bottom'></div>";
+                    }
+                    html += "</div>";
+                    html += "<div class='expressRecord-text'>";
+                    html += "<div class='gameTitle'>门头沟区域指挥中心</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>回复内容:</em> " + data[i].opinions
+                    html += "</div>";
+                    if (data[i].fileName.length > 0) {
+                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                    }
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>by:</em> " + data[i].user + "，角色";
+                    html += "</div>";
+                    html += "<div class='endBox endright'>" + data[i].starTime + "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='expressRecord-date'>";
+                    html += "<div class='expressRecord-date-text'>" + data[i].link + "</div>";
+                    html += "</div>";
+                    html += "</div>"
+                }
+            }
+            $("#timeAxis").append(html);
+        });
+    }
+
+    function getEventDetail(eventId) {
+        $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
+            eventId = e.data.id;
+            /*流程图*/
+            $("#eventImg").attr('src', img + e.data.processInstanceId);
+            /*详情*/
+            $("#eventCode").val(e.data.eventCode);
+            $("#eventTypeStr").val(e.data.eventTypeStr);
+            $("#represent").text(e.data.represent);
+            $("#location").val(e.data.location);
+            $("#regionStr").val(e.data.regionStr);
+            $("#conditionValue").val(e.data.conditionValue);
+            $("#level").val(e.data.level);
+            $("#timeLimitStr").val(e.data.timeLimitStr);
+            $("#girdStr").val(e.data.girdStr);
+            $("#community").val(e.data.community);
+            $("#street").val(e.data.street);
+            $("#eventRegion").val(e.data.eventRegion);
+            $("#x").val(e.data.x);
+            $("#y").val(e.data.y);
+            setPoint(e.data.x, e.data.y)
+            $("#eventSourceStr").val(e.data.eventSourceStr);
+            $("#cdate").val(e.data.cdate);
+            $("#petitionerSex").val(e.data.petitionerSex);
+            $("#petitionerPhone").val(e.data.petitionerPhone);
+            $("#petitionerName").val(e.data.petitionerName);
+            $("#userName").val(e.data.userName);
+            $("#recTypeStr").val(e.data.recTypeStr);
         });
     }
 
@@ -799,11 +886,28 @@
         ],
         view: new ol.View({
             // projection: projection,
-            center:center,
-            zoom:13,
+            center: center,
+            zoom: 13,
             projection: projection
         })
     });
+
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
+
+    function setPoint(x, y) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                // id: data,
+                // name: name,
+                coordinate: x + "," + y
+            }
+        });
+        layerMap.getSource().addFeature(point);
+    }
 </script>
 </body>
 </html>
