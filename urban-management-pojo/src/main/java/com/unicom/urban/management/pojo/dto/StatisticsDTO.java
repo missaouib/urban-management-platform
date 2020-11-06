@@ -13,7 +13,8 @@ import java.util.List;
 @Data
 public class StatisticsDTO {
 
-    private String id;
+    private String eventId;
+    private String buttonId;
     /**
      * 处理意见
      */
@@ -27,8 +28,6 @@ public class StatisticsDTO {
      * 处理人
      */
     private String userId;
-
-    private String eventId;
 
     private String buttonText;
 

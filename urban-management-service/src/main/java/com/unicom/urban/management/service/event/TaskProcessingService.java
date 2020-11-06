@@ -36,17 +36,16 @@ public class TaskProcessingService {
      */
     public void handle(String eventId, String roleId, String buttonId, StatisticsDTO statisticsDTO) {
         //todo 根据角色获取人员id
-        this.shiftLeader(eventId, Collections.singletonList("1"), buttonId);
-//        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-//        if ("值班长-立案".equals(statistics.getTaskName())) {
-//            this.shiftLeader(eventId, Collections.singletonList("1"), buttonId);
-//        } else if ("派遣员-派遣".equals(statistics.getTaskName())) {
-//            this.dispatcher(eventId, Collections.singletonList("1"), buttonId);
-//        } else if ("专业部门".equals(statistics.getTaskName())) {
-//            this.professionalAgenc(eventId, Collections.singletonList("1"), buttonId);
-//        }else{
-//            this.shiftLeader(eventId, Collections.singletonList("1"), buttonId);
-//        }
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        if ("值班长-立案".equals(statistics.getTaskName())) {
+            this.shiftLeader(eventId, Collections.singletonList("1"), buttonId);
+        } else if ("派遣员-派遣".equals(statistics.getTaskName())) {
+            this.dispatcher(eventId, Collections.singletonList("1"), buttonId);
+        } else if ("专业部门".equals(statistics.getTaskName())) {
+            this.professionalAgenc(eventId, Collections.singletonList("1"), buttonId);
+        }else{
+            this.shiftLeader(eventId, Collections.singletonList("1"), buttonId);
+        }
 
 
     }

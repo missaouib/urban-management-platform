@@ -56,6 +56,8 @@ public class EventConstant {
 
     public static final String ACCEPTANCE_SEND_VERIFICATION = "受理员-信息收集";
 
+    public static final String ACCEPTANCE_SEND_CHECK = "受理员-核查";
+
     public static final String SHIFTLEADER = "值班长-立案";
 
     public static final String DISPATCHER = "派遣员-派遣";

@@ -39,45 +39,6 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span>*</span>诉求人</td>
-                                <td>
-                                    <input name="peopleName"  type="text" class="" required>
-                                </td>
-                                <td><span>*</span>性别</td>
-                                <td>
-                                    <select name="sex" required>
-                                        <option value="男">男</option>
-                                        <option value="女">女</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><span>*</span>联系方式</td>
-                                <td>
-                                    <input name="petitionerPhone" type="text" class="" required/>
-                                </td>
-                                <td><span></span>诉求时间</td>
-                                <td>
-                                    <input th:name="createTime" th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><span></span>上报监督员</td>
-                                <td>
-                                    <input value="超级管理员" type="text" readonly disabled>
-                                                                    <input value="1" type="hidden" name="userId">
-
-                                </td>
-                                <td><span>*</span>问题来源</td>
-                                <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required>
-                                        <option th:each="as:${eventSource}" th:value="${as.id}"
-                                                th:text="${as.value}"></option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
 
                                 <td><span>*</span>立案区域</td>
                                 <td>
@@ -107,6 +68,31 @@
 
                                 </td>
                             </tr>
+                            <tr>
+                                <td><span>*</span>诉求人</td>
+                                <td>
+                                    <input name="peopleName"  type="text" class="" required>
+                                </td>
+                                <td><span>*</span>性别</td>
+                                <td>
+                                    <select name="sex" required>
+                                        <option value="男">男</option>
+                                        <option value="女">女</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>联系方式</td>
+                                <td>
+                                    <input name="petitionerPhone" type="text" class="" required/>
+                                </td>
+                                <td><span></span>诉求时间</td>
+                                <td>
+                                    <input th:name="createTime" th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
+                                </td>
+                            </tr>
+
+
 
                             <tr>
 
@@ -157,6 +143,24 @@
                                 <td>
                                     <select  th:name="gridId"  id="grid4" >
                                     </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>问题来源</td>
+                                <td>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required>
+                                        <option th:each="as:${eventSource}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
+                                    </select>
+                                </td>
+                                <td><span></span>上报监督员</td>
+                                <td>
+                                    <select id="selectTail" name="kv" onchange="tailChange()">
+                                        <option value="" selected>请选择</option>
+                                        <option value="1">1</option>
+                                    </select>
+                                    <input type="hidden" value="" id="selectDown">
+                                    <input value="1" type="hidden" name="userId">
                                 </td>
                             </tr>
                             <tr>
@@ -299,7 +303,15 @@
             format: "yyyy-mm-dd hh:ii:ss"
         });
 
+
+
     })
+
+    function tailChange(){
+        var optionsVal = $("#selectTail option:selected");
+        console.log(optionsVal.val());
+        $("#selectDown").val(optionsVal.val())
+    }
 
     let url = /*[[@{/event/register}]]*/ "/event/register";
     let receiveUrl = /*[[@{/event/receive}]]*/ "/event/receive";
