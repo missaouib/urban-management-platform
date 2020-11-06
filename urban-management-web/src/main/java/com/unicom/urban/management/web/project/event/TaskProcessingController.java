@@ -1,5 +1,6 @@
 package com.unicom.urban.management.web.project.event;
 
+import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.service.event.TaskProcessingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/task")
+@ResponseResultBody
 public class TaskProcessingController {
     @Autowired
     private TaskProcessingService taskProcessingService;

@@ -81,4 +81,41 @@ public class EventOneVO {
     private double y;
 
     private List<EventButtonVO> eventButtonVOS;
+
+    /**
+     * 案件类型
+     */
+    private String recTypeStr;
+
+
+    /**
+     * 上报人
+     */
+    private String userName;
+
+    /**
+     * 诉求人
+     */
+    private String petitionerName;
+
+    /**
+     * 联系方式
+     */
+    private String petitionerPhone;
+
+    /**
+     * 性别
+     */
+    private String petitionerSex;
+
+    /**
+     * 创建时间
+     */
+    private String cDate;
+
+    /**
+     * 问题来源
+     */
+    private String eventSourceStr;
+
 }

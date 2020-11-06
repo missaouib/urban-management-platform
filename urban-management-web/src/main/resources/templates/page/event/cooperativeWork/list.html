@@ -209,36 +209,34 @@
                                 <tr>
                                     <td><span>*</span>案件类型</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="recTypeStr" name="recTypeStr" placeholder="" class="" readonly type="text">
+
                                     </td>
                                     <td><span>*</span>上报人</td>
                                     <td>
-                                        <input readonly type="text" required>
+                                        <input id="userName" name="userName" placeholder="" class="" readonly type="text">
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>诉求人</td>
                                     <td>
-                                        <input type="text" readonly>
+                                        <input id="petitionerName" name="petitionerName" placeholder="" class="" readonly type="text">
+
                                     </td>
                                     <td><span></span>联系方式</td>
-                                    <td><input id="handleTime" name="handleTime" type="text" value="15645068888" readonly="readonly"></td>
+                                    <td><input id="petitionerPhone" name="petitionerPhone" type="text" value="15645068888" readonly="readonly"></td>
                                 </tr>
                                 <tr>
                                     <td><span></span>性别</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>男</option>
-                                            <option>女</option>
-                                        </select>
+                                        <input id="petitionerSex" name="petitionerSex" placeholder="" class="" readonly type="text">
+
                                     </td>
                                     <td><span></span>创建时间</td>
                                     <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                        <input id="cdate" name="cdate" placeholder="" class="" readonly type="text">
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -254,14 +252,10 @@
                                 <tr>
                                     <td><span></span>问题来源</td>
                                     <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                        <input name="eventSourceStr" id="eventSourceStr" placeholder="" class="" type="text" readonly="readonly">
                                     </td>
                                 </tr>
-
-                                <!--                                    <tr>-->
-                                <!--                                        <td>处理结果<span></span></td>-->
-                                <!--                                        <td colspan = "8"><textarea></textarea></td>-->
-                                <!--                                    </tr>-->
+                                
                                 </tbody>
                             </table>
                             <div class="send">
@@ -493,7 +487,7 @@
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
                             <span class="sendText"><i>*</i>意见</span>
-                            <textarea type="text" id="textIdioms"></textarea>
+                            <textarea type="text" id="opinions"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays">
                                 <ul>
@@ -580,6 +574,9 @@
             url:processingUrl,
             data:JSON.stringify(data),
             contentType: "application/json",
+            beforeSend: function () {
+                $.modal.loading("正在处理中，请稍后...");
+            },
             success: function(result){
                 if (result.code === web_status.SUCCESS) {
                     $.modal.msgSuccess(result.message);
@@ -607,18 +604,13 @@
             sortName: "updateTime",
             sortOrder: "desc",
             modalName: "用户",
-            onClickRow: function (row) {
-                console.log("row", row);
-            },
              // 点击每行进行函数的触发
             onClickRow: function (row, tr, flied) {
                 //详情  流程图  流转记录
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
-                    console.log(e.data)
                     eventId = e.data.id;
                     /*流程图*/
-                    // $("#eventImg").attr('src',img+e.data.processInstanceId);
-                    $("#eventImg").attr('src',img+"451b95a3-1f37-11eb-86c9-00155dff8d69");
+                    $("#eventImg").attr('src',img+e.data.processInstanceId);
                     /*详情*/
                     $("#eventCode").val(e.data.eventCode);
                     $("#eventTypeStr").val(e.data.eventTypeStr);
@@ -635,6 +627,16 @@
                     $("#x").val(e.data.x);
                     $("#y").val(e.data.y);
                     setPoint(e.data.x,e.data.y)
+                    $("#eventSourceStr").val(e.data.eventSourceStr);
+                    $("#cdate").val(e.data.cdate);
+                    $("#petitionerSex").val(e.data.petitionerSex);
+                    $("#petitionerPhone").val(e.data.petitionerPhone);
+                    $("#petitionerName").val(e.data.petitionerName);
+                    $("#userName").val(e.data.userName);
+                    $("#recTypeStr").val(e.data.recTypeStr);
+
+
+
                     /*按钮*/
                     var buttonStr = "";
                     $(e.data.eventButtonVOS).each(function (index,value) {
@@ -653,7 +655,6 @@
                     title: '时限',
                     field: '',
                     formatter: function (value,row) {
-                        console.log(row)//表格数据 row. 什么什么 .png
                         var e = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
                             "<img src='../img/2.png' style='width: 100%;height: 100%'></div>"
                         return e;

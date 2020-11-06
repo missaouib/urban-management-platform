@@ -30,6 +30,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 事件
@@ -284,6 +285,15 @@ public class EventService {
         eventOneVO.setGirdStr(one.getGrid().getGridName());
         eventOneVO.setLevel(one.getTimeLimit().getLevel().getValue());
         eventOneVO.setEventButtonVOS(this.getButton(eventId));
+        eventOneVO.setRecTypeStr(one.getRecType().getValue());
+        eventOneVO.setUserName(Optional.ofNullable(one.getUser()).map(User::getName).orElse(""));
+        Optional<Petitioner> petitioner = Optional.ofNullable(one.getPetitioner());
+        eventOneVO.setPetitionerName(petitioner.map(Petitioner::getName).orElse(""));
+        eventOneVO.setPetitionerPhone(petitioner.map(Petitioner::getPhone).orElse(""));
+        eventOneVO.setPetitionerSex(petitioner.map(Petitioner::getSex).orElse(""));
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        eventOneVO.setCDate(df.format(one.getCreateTime()));
+        eventOneVO.setEventSourceStr(one.getEventSource().getValue());
         return eventOneVO;
     }
 
