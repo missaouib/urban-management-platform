@@ -73,4 +73,8 @@ public class KvConstant {
      */
     public static final String DAY = "8dc4d702-c043-4c18-8f81-a4ad84767b98";
 
+    /**
+     * 案件完结
+     */
+    public static final String CLOS_ETESK = "69132147-bc3c-451d-9336-5117e9adc0d6";
 }

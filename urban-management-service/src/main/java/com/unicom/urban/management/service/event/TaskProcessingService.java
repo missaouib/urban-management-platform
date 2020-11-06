@@ -1,7 +1,10 @@
 package com.unicom.urban.management.service.event;
 
+import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
+import com.unicom.urban.management.pojo.entity.Event;
+import com.unicom.urban.management.pojo.entity.KV;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
@@ -29,6 +32,8 @@ public class TaskProcessingService {
     private StatisticsService statisticsService;
     @Autowired
     private WorkService workService;
+    @Autowired
+    private EventService eventService;
 
 
     /**
@@ -43,7 +48,9 @@ public class TaskProcessingService {
             this.dispatcher(eventId, Collections.singletonList("1"), buttonId);
         } else if ("专业部门".equals(statistics.getTaskName())) {
             this.professionalAgenc(eventId, Collections.singletonList("1"), buttonId);
-        }else{
+        }else if("值班长-结案".equals(statistics.getTaskName())){
+            this.closeTask(eventId);
+        }else {
             this.shiftLeader(eventId, Collections.singletonList("1"), buttonId);
         }
 
@@ -57,6 +64,21 @@ public class TaskProcessingService {
         this.avtivitiHandle(eventId, userId, buttonId);
         workService.testFinish(eventId);
         statisticsService.save(workService.initStatistics(eventId));
+    }
+    /**
+     * 值班长 结案
+     */
+    private void closeTask(String eventId) {
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
+        activitiService.complete(statistics.getTaskId(), null, null);
+        workService.testFinish(eventId);
+        statisticsService.save(workService.initStatistics(eventId));
+        Event one = eventService.findOne(eventId);
+        KV kv = new KV();
+        kv.setId(KvConstant.CLOS_ETESK);
+        one.setEventSate(kv);
+        eventService.update(one);
     }
 
     /**
@@ -85,5 +107,6 @@ public class TaskProcessingService {
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         activitiService.complete(statistics.getTaskId(), userId, buttonId);
     }
+
 
 }

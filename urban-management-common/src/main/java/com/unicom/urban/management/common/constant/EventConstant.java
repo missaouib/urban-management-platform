@@ -64,4 +64,6 @@ public class EventConstant {
 
     public static final String PROFESSIONALAGENC = "专业部门";
 
+    public static final String CLOSETASK = "值班长-结案";
+
 }

@@ -196,7 +196,8 @@ public class SupervisionAcceptanceController {
     public Page<EventVO> taskProcessingList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
         eventDTO.setTaskName(Arrays.asList(EventConstant.SHIFTLEADER,
                 EventConstant.DISPATCHER,
-                EventConstant.PROFESSIONALAGENC));
+                EventConstant.PROFESSIONALAGENC,
+                EventConstant.CLOSETASK));
         return eventService.search(eventDTO, pageable);
     }
 
