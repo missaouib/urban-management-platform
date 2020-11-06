@@ -292,61 +292,61 @@
             </div>
             <div class="banner"></div>
             <div class="banner" >
-                <img src='/common/img/7d4adfe6-1dbf-11eb-a1ce-00155dff8d69'>
+<!--                <img src='/common/img/7d4adfe6-1dbf-11eb-a1ce-00155dff8d69'>-->
             </div>
 
         </div>
-
-        <div class="modal fade" id="modal-default">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">处理</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="checkUser">
-                            <span class="sendText"><i>*</i>处理人</span>
-                            <input type="text" style="width:100%;resize: none;border-radius: 4px;border: 1px #ccc solid;">
+        <form id="verifyForm">
+            <div class="modal fade" id="modal-default">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">处理</h4>
                         </div>
-                        <div class="checkMain" style="position: relative">
-                            <span class="sendText"><i>*</i>意见</span>
-                            <textarea type="text" id="textIdioms"></textarea>
-                            <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
-                            <div id="wordSays" class="wordSays">
-                                <ul>
-                                    <li class="idioms">11</li>
-                                    <li class="idioms">33</li>
-                                    <li class="idioms">22</li>
-                                </ul>
+                        <div class="modal-body">
+                            <div class="checkMain" style="position: relative">
+                                <span class="sendText"><i>*</i>意见</span>
+                                <textarea type="text" id="options"></textarea>
+                                <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
+                                <div id="wordSays" class="wordSays">
+                                    <ul>
+                                        <li class="idioms">11</li>
+                                        <li class="idioms">33</li>
+                                        <li class="idioms">22</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="send">
+                                <div class="sendImg">
+                                    <div class="sendText" style="width: 72px"><span>照片:</span></div>
+                                    <div><input id="picture" type="file" class="input-id" name="file"
+                                                multiple="multiple"></div>
+                                </div>
+
+
+                                <div class="sendImg">
+                                    <div class="sendText" style="width: 72px"><span>视频:</span></div>
+                                    <div><input id="video" type="file" class="videoInput" name="file"
+                                                multiple="multiple"></div>
+                                </div>
+                                <div class="sendImg">
+                                    <div class="sendText" style="width: 72px"><span>音频:</span></div>
+                                    <div><input id="music" type="file" class="musicInput" name="file"
+                                                multiple="multiple"></div>
+                                </div>
+
                             </div>
                         </div>
-                        <div class="send">
-                            <div class="sendImg">
-                                <div class="sendText" style="width: 72px"><span>照片:</span></div>
-                                <div><input id="picture" type="file" class="input-id" name="file" multiple="multiple"></div>
+                        <div class="modal-footer justify-content-between">
+                            <input type="hidden" id="eventId" name="eventId"/>
+                            <input type="hidden" id="buttonText" name="buttonText"/>
+                            <div class="modal-footer justify-content-between" id="eventButton">
                             </div>
-
-
-                            <div class="sendImg">
-                                <div class="sendText" style="width: 72px"><span>视频:</span></div>
-                                <div><input id="video" type="file" class="videoInput" name="file" multiple="multiple"></div>
-                            </div>
-                            <div class="sendImg">
-                                <div class="sendText" style="width: 72px"><span>音频:</span></div>
-                                <div><input id="music" type="file" class="musicInput" name="file" multiple="multiple"></div>
-                            </div>
-
                         </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-primary">核实反馈</button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
+        </form>
 </div>
 
 
@@ -366,7 +366,7 @@
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         })
-        eventImg();
+        //eventImg();
         $("#alwaysSay").click(function () {
             $("#wordSays").stop().fadeToggle(300)
         })
@@ -391,11 +391,11 @@
         $("#treatment").addClass("blockActive")
     }
 
-    function eventImg(){
-        var str = "<img src='"+ img + "7d4adfe6-1dbf-11eb-a1ce-00155dff8d69"+"'>";
-        $("#evnetImg").empty();
-        $("#eventImg").append(str);
-    }
+    // function eventImg(){
+    //     var str = "<img src='"+ img + "7d4adfe6-1dbf-11eb-a1ce-00155dff8d69"+"'>";
+    //     $("#evnetImg").empty();
+    //     $("#eventImg").append(str);
+    // }
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
 
@@ -407,6 +407,24 @@
 
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
 
+    let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
+    /* 获取下一步按钮 */
+    function getButton(eventId) {
+        let getButtonUrl = /*[[@{/event/getButton/}]]+eventId*/ "/event/getButton/" + eventId;
+        $.ajaxUtil.get(getButtonUrl, function (e) {
+            $("#eventButton").empty();
+            let button = e.data;
+            let buttonHtml = "";
+            if (button.length > 0) {
+                for (let i = 0; i < button.length; i++) {
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px' value='" + eventId + "' id='" + button[i].id + "' type='submit' onclick='save()'>" + button[i].buttonText + "</button>";
+                }
+            }
+            $("#eventId").val(eventId);
+            $("#buttonText").val(button[0].buttonText);
+            $("#eventButton").html(buttonHtml);
+        });
+    }
     function queryUserList() {
         var options = {
             url: searchUrl,
@@ -422,6 +440,27 @@
             modalName: "用户",
             onClickRow: function (row) {
                 console.log("row", row);
+                // $(".tab_update").addClass("active").siblings(".tabTitle span").removeClass("active");
+                // $(".banner_update").addClass("blockActive").siblings(".banner").removeClass("blockActive");
+                getButton(row.id);
+                //详情
+                $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
+                    /*详情*/
+                    $("#eventCode").val(e.data.eventCode);
+                    $("#eventTypeStr").val(e.data.eventTypeStr);
+                    $("#represent").text(e.data.represent);
+                    $("#location").val(e.data.location);
+                    $("#regionStr").val(e.data.regionStr);
+                    $("#conditionValue").val(e.data.conditionValue);
+                    $("#level").val(e.data.level);
+                    $("#timeLimitStr").val(e.data.timeLimitStr);
+                    $("#girdStr").val(e.data.girdStr);
+                    $("#community").val(e.data.community);
+                    $("#street").val(e.data.street);
+                    $("#eventRegion").val(e.data.eventRegion);
+                    $("#x").val(e.data.x);
+                    $("#y").val(e.data.y);
+                });
             },
             columns: [
                 {
@@ -563,46 +602,8 @@
                 required: true,
                 // email: true
             },
-            // idcard: {
-            //     card: true
-            // },
-            // phone: {
-            //     phone: true
-            // }
         },
         messages: {
-            // realname: {
-            //     required: "真实姓名不能为空"
-            // },
-            // username: {
-            //     required: "登录名不能为空",
-            //     rangelength: "登录名长度要在5-8位之间"
-            // },
-            // pwd: {
-            //     required: "密码不能为空",
-            //     rangelength: "密码长度在6-12位之间"
-            // },
-            // pwd2: {
-            //     required: "重复密码不能为空",
-            //     rangelength: "重复密码长度在6-12位之间",
-            //     equalTo: "重复密码与密码不一致"
-            // },
-            // sex: {
-            //     required: "请选择性别"
-            // },
-            // age: {
-            //     required: "年龄不能为空",
-            //     range: "年龄必须在26-50岁之间"
-            // },
-            // email: {
-            //     email: "请输入有效邮箱"
-            // },
-            // idcard: {
-            //     card: "请输入有效身份证号"
-            // },
-            // phone: {
-            //     phone: "必填"
-            // }
         }
     });
     /*手机号格式验证*/
@@ -753,6 +754,13 @@
             projection: projection
         })
     });
+    let completeByVerificationUrl = /*[[@{/event/completeByInspect}]]*/ "/event/completeByInspect";
+    function save() {
+        var data = $('#verifyForm').serialize();
+        console.log("data==")
+        console.log(data)
+        $.operate.saveAndReload(completeByVerificationUrl, data);
+    }
 </script>
 </body>
 </html>

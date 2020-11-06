@@ -140,7 +140,7 @@ public class WirelessAcquisitionController {
      */
     @GetMapping("/caseInspectList")
     public Page<EventVO> caseInspectList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
-        eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_SEND_CHECK));
+        eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_CASE_INSPECT));
         return eventService.search(eventDTO, pageable);
     }
 

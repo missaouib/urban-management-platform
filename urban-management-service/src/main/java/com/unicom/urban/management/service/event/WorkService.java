@@ -109,8 +109,8 @@ public class WorkService {
      */
     public void completeByVerificationist(String eventId, String userId, String button) {
         String s = testFinish(eventId);
-//        activitiService.complete(s, Collections.singletonList("1"), button);
-//        initStatistics(eventId);
+        activitiService.complete(s, Collections.singletonList("1"), button);
+        initStatistics(eventId);
     }
 
     /**
@@ -122,8 +122,8 @@ public class WorkService {
      */
     public void completeByInspect(String eventId, String userId, String button) {
         String s = testFinish(eventId);
-//        activitiService.complete(s, Collections.singletonList("1"), button);
-//        initStatistics(eventId);
+        activitiService.complete(s, Collections.singletonList("1"), button);
+        initStatistics(eventId);
     }
     /**
      * 受理员领取任务

@@ -395,11 +395,11 @@
         $("#treatment").addClass("blockActive")
     }
 
-    function eventImg(processInstanceId){
-        var str = "<img src='"+ img + processInstanceId+"'>";
-        $("#evnetImg").empty();
-        $("#eventImg").append(str);
-    }
+    // function eventImg(processInstanceId){
+    //     var str = "<img src='"+ img + processInstanceId+"'>";
+    //     $("#evnetImg").empty();
+    //     $("#eventImg").append(str);
+    // }
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
 
@@ -505,7 +505,7 @@
                 },
                 {
                     title: '创建时间',
-                    field: 'creatTime'
+                    field: 'createTime'
                 },
 
             ]
@@ -802,7 +802,6 @@
             projection: projection
         })
     });
-    let url = /*[[@{/event/verify}]]*/ "/event/verify";
     function save() {
         var data = $('#verifyForm').serialize();
         console.log("data==")
