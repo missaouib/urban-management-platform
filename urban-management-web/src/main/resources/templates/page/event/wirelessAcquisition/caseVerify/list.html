@@ -445,21 +445,17 @@
             sortName: "updateTime",
             sortOrder: "desc",
             modalName: "用户",
-            onClickRow: function (row) {
-                console.log("row", row.id);
-            },
              // 点击每行进行函数的触发
             onClickRow: function (row, tr, flied) {
+                console.log("row", row);
                 $.ajaxUtil.get("/event/getUserName", function (e) {
                     $("#userName").val(e.data);
                 });
                 $(".tab_update").addClass("active").siblings(".tabTitle span").removeClass("active");
                 $(".banner_update").addClass("blockActive").siblings(".banner").removeClass("blockActive");
                 getButton(row.id)
-                //详情  流程图  流转记录
+                //详情
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
-                    /*流程图*/
-                    $("#eventImg").attr('src',img+e.data.processInstanceId);
                     /*详情*/
                     $("#eventCode").val(e.data.eventCode);
                     $("#eventTypeStr").val(e.data.eventTypeStr);
@@ -475,7 +471,6 @@
                     $("#eventRegion").val(e.data.eventRegion);
                     $("#x").val(e.data.x);
                     $("#y").val(e.data.y);
-
                 });
             },
             columns: [
@@ -494,23 +489,23 @@
                 },
                 {
                     title: '案件编号',
-                    field: 'represent'
+                    field: 'eventCode'
                 },
                 {
                     title: '问题描述',
-                    field: 'userName'
+                    field: 'represent'
                 },
                 {
                     title: '问题来源',
-                    field: 'eventTypeName'
+                    field: 'eventSourceName'
                 },
                 {
                     title: '案件类型',
-                    field: 'createTime',
+                    field: 'eventTypeName',
                 },
                 {
                     title: '创建时间',
-                    field: 'eventTypeName'
+                    field: 'creatTime'
                 },
 
             ]

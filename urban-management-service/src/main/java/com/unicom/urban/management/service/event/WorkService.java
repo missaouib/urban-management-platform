@@ -101,7 +101,7 @@ public class WorkService {
     }
 
     /**
-     * 监督员完成任务 并且 激活受理员(领取任务)核实
+     * 监督员-信息核实
      *
      * @param eventId 事件id
      * @param userId  指派的人的id
@@ -109,8 +109,21 @@ public class WorkService {
      */
     public void completeByVerificationist(String eventId, String userId, String button) {
         String s = testFinish(eventId);
-        activitiService.complete(s, Collections.singletonList("1"), button);
-        initStatistics(eventId);
+//        activitiService.complete(s, Collections.singletonList("1"), button);
+//        initStatistics(eventId);
+    }
+
+    /**
+     * 监督员-案件核查
+     *
+     * @param eventId 事件id
+     * @param userId  指派的人的id
+     * @param button  按钮
+     */
+    public void completeByInspect(String eventId, String userId, String button) {
+        String s = testFinish(eventId);
+//        activitiService.complete(s, Collections.singletonList("1"), button);
+//        initStatistics(eventId);
     }
     /**
      * 受理员领取任务

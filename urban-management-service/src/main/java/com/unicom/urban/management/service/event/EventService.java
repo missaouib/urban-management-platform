@@ -12,6 +12,7 @@ import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
+import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,8 @@ public class EventService {
     private EventTypeService eventTypeService;
     @Autowired
     private PetitionerService petitionerService;
+    @Autowired
+    private KVService kvService;
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
@@ -159,7 +162,7 @@ public class EventService {
         workService.completeByReceptionist(eventId, userId, button);
     }
     /**
-     * 监督员完成任务 并且 激活受理员(领取任务)核实
+     * 监督员信息核实
      *
      * @param eventId 事件id
      * @param userId  指派的人的id
@@ -167,6 +170,16 @@ public class EventService {
      */
     public void completeByVerification(String eventId, String userId, String button) {
         workService.completeByVerificationist(eventId, userId, button);
+    }
+    /**
+     * 监督员案件核查
+     *
+     * @param eventId 事件id
+     * @param userId  指派的人的id
+     * @param button  按钮
+     */
+    public void completeByInspect(String eventId, String userId, String button) {
+        workService.completeByInspect(eventId, userId, button);
     }
 
     /**

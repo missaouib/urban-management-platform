@@ -52,8 +52,6 @@ public class EventConstant {
 
     public static final String ACCEPTANCE_CASE_REGISTRATION = "受理员-案件登记";
 
-    public static final String ACCEPTANCE_CASE_VERIFICATION = "监督员-信息核实";
-
     public static final String ACCEPTANCE_SEND_VERIFICATION = "受理员-信息收集";
 
     public static final String ACCEPTANCE_SEND_CHECK = "受理员-核查";
@@ -65,5 +63,10 @@ public class EventConstant {
     public static final String PROFESSIONALAGENC = "专业部门";
 
     public static final String CLOSETASK = "值班长-结案";
+
+    public static final String ACCEPTANCE_CASE_VERIFICATION = "监督员-信息核实";
+
+    public static final String ACCEPTANCE_CASE_INSPECT = "监督员-案件核查";
+
 
 }

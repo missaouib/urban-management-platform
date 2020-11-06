@@ -133,6 +133,19 @@ public class WirelessAcquisitionController {
     }
 
     /**
+     * 案件核查
+     * @param eventDTO
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/caseInspectList")
+    public Page<EventVO> caseInspectList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_SEND_CHECK));
+        return eventService.search(eventDTO, pageable);
+    }
+
+
+    /**
      * 获取立案区域
      * @param eventTypeId
      * @return
@@ -230,17 +243,28 @@ public class WirelessAcquisitionController {
     }
 
     /**
-     * 监督员完成任务 并且 激活受理员(领取任务)核实
+     * 监督员信息核实
      *
      * @param statisticsDTO
      */
     @PostMapping("/completeByVerification")
     public Result completeByVerification(StatisticsDTO statisticsDTO) {
         Statistics statistics = StatisticsMapper.INSTANCE.StatisticsDTOToStatistics(statisticsDTO);
-//        statisticsService.update(statistics);
         eventService.completeByVerification(statisticsDTO.getEventId(), null, statisticsDTO.getButtonText());
         return Result.success();
     }
+    /**
+     * 监督员案件核查
+     *
+     * @param statisticsDTO
+     */
+    @PostMapping("/completeByInspect")
+    public Result completeByInspect(StatisticsDTO statisticsDTO) {
+        Statistics statistics = StatisticsMapper.INSTANCE.StatisticsDTOToStatistics(statisticsDTO);
+        eventService.completeByInspect(statisticsDTO.getEventId(), null, statisticsDTO.getButtonText());
+        return Result.success();
+    }
+
     @GetMapping("getUserName")
     public Result getUserName(){
         return Result.success(SecurityUtil.getUsername());

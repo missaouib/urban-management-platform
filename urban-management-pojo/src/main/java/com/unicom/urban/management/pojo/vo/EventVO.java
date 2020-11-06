@@ -34,7 +34,11 @@ public class EventVO {
 
     private List<EventFile> eventFileList;
     /**
-     * 事件来源
+     * 事件来源id
+     */
+    private String eventSourceId;
+    /**
+     * 事件来源回显
      */
     private String eventSourceName;
     /**
