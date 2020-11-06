@@ -42,7 +42,7 @@ public class StatisticsService {
 
     public List<StatisticsVO> findByEventId(String eventId) {
         /*查询流程数据*/
-        List<Statistics> statisticsList = statisticsRepository.findAllByEvent_Id(eventId);
+        List<Statistics> statisticsList = statisticsRepository.findAllByEvent_IdOrderByStartTimeDesc(eventId);
         List<StatisticsVO> statisticsVOS = new ArrayList<>();
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         /*重新封装*/
