@@ -621,7 +621,8 @@
                     console.log(e.data)
                     eventId = e.data.id;
                     /*流程图*/
-                    $("#eventImg").attr('src',img+e.data.processInstanceId);
+                    // $("#eventImg").attr('src',img+e.data.processInstanceId);
+                    $("#eventImg").attr('src',img+"451b95a3-1f37-11eb-86c9-00155dff8d69");
                     /*详情*/
                     $("#eventCode").val(e.data.eventCode);
                     $("#eventTypeStr").val(e.data.eventTypeStr);
@@ -637,7 +638,7 @@
                     $("#eventRegion").val(e.data.eventRegion);
                     $("#x").val(e.data.x);
                     $("#y").val(e.data.y);
-
+                    setPoint(e.data.x,e.data.y)
                     /*按钮*/
                     var buttonStr = "";
                     $(e.data.eventButtonVOS).each(function (index,value) {
@@ -821,6 +822,23 @@
             projection: projection
         })
     });
+
+
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
+    function setPoint(x, y) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                // id: data,
+                // name: name,
+                coordinate: x + "," + y
+            }
+        });
+        layerMap.getSource().addFeature(point);
+    }
 </script>
 </body>
 </html>

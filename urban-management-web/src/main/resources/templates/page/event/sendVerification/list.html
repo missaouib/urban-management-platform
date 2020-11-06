@@ -316,27 +316,68 @@
 
                         </div>
 
-                        <!--                            按钮-->
                         <div class="notice_bot">
-                            <!--            <div class="l_left">-->
-                            <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-                            <!--            </div>-->
-                            <div class="r_right but_p girdBtnGroup" id="eventButton">
-                                <!--                                <button class="but_save" style="margin-right: 10px">转立案</button>-->
-                                <!--                                <button class="but_save" style="margin-right: 10px">不受理</button>-->
-                                <!--                                <button class="but_save" style="margin-right: 10px">撤销办理</button>-->
-                                <!--                                <button class="but_close" onclick="Cancel()">返回</button>-->
+                            <div class="checkUser">
+                                <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>核实监督员</span>
+                                <div style="width: 100%;display: flex;justify-content: space-between">
+                                    <div id="monitor_man" type="text"
+                                         style="width:48%;resize: none;border-radius: 4px;border: 1px #ccc solid;line-height: 38px"></div>
+                                    <input type="hidden" id="userId" value="">
+                                    <input type="hidden" id="eventId" value="">
+                                    <input type="hidden" id="button" value="">
+                                    <div class="btn btn-primary" id="changeMan"
+                                         style="width: 48%;margin-left: 10px">选择监督员
+                                    </div>
+                                </div>
+
                             </div>
+                            <div class="checkUser" id="selectUser" style="display: none">
+                                    <span class="sendText" style="width: 120px"><i
+                                            style="color: red!important;"></i></span>
+                                <div id="doUser"
+                                     style="width:100%;resize: none;border-radius: 4px;border: 1px #ccc solid;max-height: 100px;overflow:auto;">
+                                    <ul>
+                                        <li class="monitor" value="1">超级管理员</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="r_right but_p girdBtnGroup" id="eventButton"></div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="banner"></div>
             <div class="banner">流程图</div>
-
         </div>
-
-
+    </div>
+    <!--    核实-->
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">核实</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="checkMain" style="position: relative">
+                        <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>核实意见</span>
+                        <textarea type="text" id="textIdioms"></textarea>
+                        <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
+                        <div id="wordSays" class="wordSays" style="background-color:#fff;">
+                            <ul>
+                                <li class="idioms">11</li>
+                                <li class="idioms">33</li>
+                                <li class="idioms">22</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between"
+                     style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary" onclick="completeEvent()">完成</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -357,6 +398,35 @@
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         })
+
+        //选择监督员
+        $("#changeMan").click(function () {
+            $("#selectUser").stop().slideToggle(300)
+        })
+        $("#selectUser").on("click", ".monitor", function () {
+            let monitor = $(this).html()
+            $("#userId").val($(this).val())
+            $("#monitor_man").html(monitor);
+            $("#selectUser").slideUp(300)
+        })
+        //惯用语
+        $("#alwaysSay").click(function () {
+            $("#wordSays").stop().fadeToggle(300)
+        })
+        $("#wordSays").on("click", ".idioms", function () {
+            let idioms = $(this).html()
+            $("#textIdioms").html(idioms);
+            $("#wordSays").fadeOut(300)
+        })
+
+        $("#alwaysSay_tag").click(function () {
+            $("#wordSays_tag").stop().fadeToggle(300)
+        })
+        $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
+            let idioms = $(this).html()
+            $("#textIdioms_tag").html(idioms);
+            $("#wordSays_tag").fadeOut(300)
+        })
     });
 
     let searchUrl = /*[[@{/event/sendVerificationList}]]*/ "/event/sendVerificationList";
@@ -366,6 +436,8 @@
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
 
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
+
+    let claimAndCompleteByReceptionistUrl = /*[[@{/event/claimAndCompleteByReceptionistWithShiftLeader}]]*/ "/event/claimAndCompleteByReceptionistWithShiftLeader";
 
     function queryUserList() {
         var options = {
@@ -392,7 +464,6 @@
                     title: '时限',
                     field: '',
                     formatter: function (value,row) {
-                        console.log(row)//表格数据 row. 什么什么 .png
                         var e = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
                             "<img src='../img/1.png' style='width: 100%;height: 100%'></div>"
                         return e;
@@ -428,7 +499,7 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='completeEvent(this)'>" + button[i].taskName + "</button>";
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px;width: 150px' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].taskName + button[i].id + "</button>";
                 }
             }
             $("#eventButton").html(buttonHtml);
@@ -436,9 +507,21 @@
     }
 
     /* 完成任务 派核实 监督员 */
-    function completeEvent(data) {
-        /*$.operate.saveAndReload(completeByReceptionistUrl, {id: data.value, userId: "1", button: data.id});*/
-        console.log("data", data);
+    function setValueForCompleteEvent(data) {
+        $("#eventId").val(data.value)
+        $("#button").val(data.id)
+    }
+
+    function completeEvent() {
+        if ($("#userId").val() == null || $("#userId").val() == "") {
+            alert("请选择监督员");
+            return false;
+        }
+        $.operate.saveAndReload(claimAndCompleteByReceptionistUrl, {
+            id: $("#eventId").val(),
+            userId: $("#userId").val(),
+            button: $("#button").val()
+        });
     }
 
     //模态窗 selectEventTypeTree

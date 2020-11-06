@@ -196,13 +196,14 @@ public class SupervisionAcceptanceController {
     public Page<EventVO> taskProcessingList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
         eventDTO.setTaskName(Arrays.asList(EventConstant.SHIFTLEADER,
                 EventConstant.DISPATCHER,
-                EventConstant.PROFESSIONALAGENC));
+                EventConstant.PROFESSIONALAGENC,
+                EventConstant.CLOSETASK));
         return eventService.search(eventDTO, pageable);
     }
 
     @GetMapping("/test")
-    public void test(String eventId,String buttonId){
-        taskProcessingService.handle(eventId,null,buttonId,null);
+    public void test(String eventId, String buttonId) {
+        taskProcessingService.handle(eventId, null, buttonId, null);
     }
 
     /**
@@ -214,6 +215,35 @@ public class SupervisionAcceptanceController {
     public Result completeByReceptionistWithSendVerification(EventDTO eventDTO) {
         eventService.completeByReceptionist(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
         return Result.success();
+    }
+
+    /**
+     * 1首先受理员领取任务
+     * 2然后完成任务
+     * 3最后
+     * 3.1激活监督员(领取任务)重新核实
+     * 3.2值班长受理
+     * 3.3不予受理(流程结束)
+     *
+     * @param eventDTO 事件id 指派的人的id 按钮
+     */
+    @PostMapping("/claimAndCompleteByReceptionistWithShiftLeader")
+    public Result claimAndCompleteByReceptionistWithShiftLeader(EventDTO eventDTO) {
+        switch (eventDTO.getButton()) {
+            case "2":
+                eventService.completeByReceptionistForNotDo(eventDTO.getId(), eventDTO.getButton());
+                break;
+            case "3":
+                eventService.completeByReceptionistForDo(eventDTO.getId(), eventDTO.getButton());
+                break;
+            case "13":
+                eventService.completeByReceptionist(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
+                break;
+            default:
+                return Result.fail("500", "未检测到应有的步骤");
+        }
+        return Result.success();
+
     }
 
     /**

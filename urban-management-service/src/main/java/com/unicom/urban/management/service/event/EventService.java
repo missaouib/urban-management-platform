@@ -170,6 +170,28 @@ public class EventService {
     }
 
     /**
+     * 受理员 核实反馈
+     * 受理开启值班长流程
+     *
+     * @param eventId 事件id
+     * @param button  按钮
+     */
+    public void completeByReceptionistForDo(String eventId, String button) {
+        workService.completeByReceptionistForDo(eventId, button);
+    }
+
+    /**
+     * 受理员 核实反馈
+     * 不予受理直接结束
+     *
+     * @param eventId 事件id
+     * @param button  按钮
+     */
+    public void completeByReceptionistForNotDo(String eventId, String button) {
+        workService.completeByReceptionistForNotDo(eventId, button);
+    }
+
+    /**
      * 受理员完成任务 并且 激活监督员(领取任务)核查
      * 需要先领取任务
      *

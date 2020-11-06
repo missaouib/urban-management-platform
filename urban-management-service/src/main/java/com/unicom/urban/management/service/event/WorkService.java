@@ -128,11 +128,12 @@ public class WorkService {
      * 受理开启值班长流程
      *
      * @param eventId 事件id
+     * @param button  按钮
      */
-    public void completeByReceptionistForDo(String eventId) {
+    public void completeByReceptionistForDo(String eventId, String button) {
         String s = testFinish(eventId);
         /*TODO 查询所有值班长角色的人*/
-        activitiService.complete(s, Collections.singletonList("1"), "3");
+        activitiService.complete(s, Collections.singletonList("1"), button);
         this.initStatistics(eventId);
     }
 
@@ -141,10 +142,11 @@ public class WorkService {
      * 不予受理直接结束
      *
      * @param eventId 事件id
+     * @param button  按钮
      */
-    public void completeByReceptionistForNotDo(String eventId) {
+    public void completeByReceptionistForNotDo(String eventId, String button) {
         String s = testFinish(eventId);
-        activitiService.complete(s, null, "2");
+        activitiService.complete(s, null, button);
     }
 
     /* -------------------------------------------------------------私有方法- */

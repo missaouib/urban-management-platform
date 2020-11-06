@@ -3,10 +3,7 @@ package com.unicom.urban.management.web.project.event;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.service.event.TaskProcessingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 顾志杰
@@ -21,5 +18,10 @@ public class TaskProcessingController {
     @PostMapping("/processing")
     public void processing(@RequestBody StatisticsDTO statisticsDTO){
         taskProcessingService.handle(statisticsDTO.getEventId(),null,statisticsDTO.getButtonId(),statisticsDTO);
+    }
+
+    @GetMapping("test")
+    public void test(String eventId,String buttonId){
+        taskProcessingService.handle(eventId,null,buttonId,null);
     }
 }
