@@ -75,7 +75,7 @@ public class SupervisionAcceptanceController {
     }
 
     /**
-     * 自处理案件列表
+     * 公众信息待办列表
      *
      * @return list
      */
@@ -161,7 +161,7 @@ public class SupervisionAcceptanceController {
      */
     @GetMapping("/selfProcessingList")
     public Page<EventVO> selfProcessingList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
-        eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_CASE_REGISTRATION));
+        eventDTO.setTaskName(Arrays.asList(EventConstant.ACCEPTANCE_CASE_REGISTRATION, EventConstant.ACCEPTANCE_SEND_VERIFICATION, EventConstant.ACCEPTANCE_SEND_CHECK, EventConstant.ACCEPTANCE));
         return eventService.search(eventDTO, pageable);
     }
 

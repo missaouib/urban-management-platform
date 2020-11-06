@@ -502,7 +502,7 @@
                     "F_ModuleId": "1000",
                     "F_ParentId": "0",
                     "F_EnCode": "SysManage",
-                    "F_FullName": "系统管理",
+                    "F_FullName": "应用维护子系统",
                     "F_Icon": "fa fa-wrench",
                     "F_UrlAddress": "/default",
                     "F_Target": "expand",
@@ -738,7 +738,7 @@
                     "F_ModifyUserId": "System",
                     "F_ModifyUserName": "超级管理员"
                 },
-                {
+                /*{
                     "F_ModuleId": "1006555550123",
                     "F_ParentId": "1006555550",
                     "F_EnCode": "SysManage",
@@ -761,10 +761,10 @@
                     "F_ModifyDate": "2015-11-17 11:22:46",
                     "F_ModifyUserId": "System",
                     "F_ModifyUserName": "超级管理员"
-                },
+                },*/
                 {
                     "F_ModuleId": "1006555512350123",
-                    "F_ParentId": "1006555550123",
+                    "F_ParentId": "1006555550",
                     "F_EnCode": "SysManage",
                     "F_FullName": "网格管理",
                     "F_Icon": "fa fa-table",
@@ -788,7 +788,7 @@
                 },
                 {
                     "F_ModuleId": "100655551235031232",
-                    "F_ParentId": "1006555550123",
+                    "F_ParentId": "1006555550",
                     "F_EnCode": "SysManage",
                     "F_FullName": "部件导入",
                     "F_Icon": "fa fa-upload",
@@ -812,7 +812,7 @@
                 },
                 {
                     "F_ModuleId": "100655551235031232",
-                    "F_ParentId": "1006555550123",
+                    "F_ParentId": "1006555550",
                     "F_EnCode": "SysManage",
                     "F_FullName": "网格导入",
                     "F_Icon": "fa fa-upload",
@@ -836,7 +836,7 @@
                 },
                 {
                     "F_ModuleId": "100655551235031232",
-                    "F_ParentId": "1006555550123",
+                    "F_ParentId": "1006555550",
                     "F_EnCode": "SysManage",
                     "F_FullName": "部件管理",
                     "F_Icon": "fa fa-gears",
@@ -860,7 +860,7 @@
                 },
                 {
                     "F_ModuleId": "100655551235031232",
-                    "F_ParentId": "1006555550123",
+                    "F_ParentId": "1006555550",
                     "F_EnCode": "SysManage",
                     "F_FullName": "部件编辑",
                     "F_Icon": "fa fa-pencil",
@@ -884,7 +884,7 @@
                 },
                 {
                     "F_ModuleId": "100655551235031233",
-                    "F_ParentId": "1006555550123",
+                    "F_ParentId": "1006555550",
                     "F_EnCode": "SysManage",
                     "F_FullName": "单元网格编辑",
                     "F_Icon": "fa fa-pencil",
@@ -908,7 +908,7 @@
                 },
                 {
                     "F_ModuleId": "100655551235031234",
-                    "F_ParentId": "1006555550123",
+                    "F_ParentId": "1006555550",
                     "F_EnCode": "SysManage",
                     "F_FullName": "地图发布",
                     "F_Icon": "fa fa-map",
@@ -932,7 +932,7 @@
                 },
                 {
                     "F_ModuleId": "1006555550124",
-                    "F_ParentId": "1006555550",
+                    "F_ParentId": "0",
                     "F_EnCode": "SysManage",
                     "F_FullName": "无线采集子系统",
                     "F_Icon": "fa fa-signal",
@@ -1076,7 +1076,7 @@
                 },
                 {
                     "F_ModuleId": "1006555550125",
-                    "F_ParentId": "1006555550",
+                    "F_ParentId": "0",
                     "F_EnCode": "SysManage",
                     "F_FullName": "监督受理子系统",
                     "F_Icon": "fa fa-video-camera",
@@ -1102,7 +1102,7 @@
                     "F_ModuleId": "100655551235031236",
                     "F_ParentId": "1006555550125",
                     "F_EnCode": "SysManage",
-                    "F_FullName": "案件受理(姜文)",
+                    "F_FullName": "案件受理",
                     "F_Icon": "fa fa-play",
                     "F_UrlAddress": "/event/toSupervisionAcceptanceSave",
                     "F_Target": "expand",
@@ -1126,7 +1126,7 @@
                     "F_ModuleId": "100655551235031240",
                     "F_ParentId": "1006555550125",
                     "F_EnCode": "SysManage",
-                    "F_FullName": "自处理案件列表(姜文)",
+                    "F_FullName": "自处理案件列表",
                     "F_Icon": "fa fa-wrench",
                     "F_UrlAddress": "/event/toSupervisionAcceptanceList",
                     "F_Target": "expand",
@@ -1170,7 +1170,7 @@
                     "F_ModifyUserId": "System",
                     "F_ModifyUserName": "超级管理员"
                 },
-                {
+                /*{
                     "F_ModuleId": "100655551235031238",
                     "F_ParentId": "1006555550125",
                     "F_EnCode": "SysManage",
@@ -1217,10 +1217,10 @@
                     "F_ModifyDate": "2015-11-17 11:22:46",
                     "F_ModifyUserId": "System",
                     "F_ModifyUserName": "超级管理员"
-                },
+                },*/
                 {
                     "F_ModuleId": "1006555550126",
-                    "F_ParentId": "1006555550",
+                    "F_ParentId": "0",
                     "F_EnCode": "SysManage",
                     "F_FullName": "协同工作子系统",
                     "F_Icon": "fa fa-users",
@@ -1436,9 +1436,9 @@
                 },
                 {
                     "F_ModuleId": "1006555550127",
-                    "F_ParentId": "1006555550",
+                    "F_ParentId": "0",
                     "F_EnCode": "SysManage",
-                    "F_FullName": "综合评价",
+                    "F_FullName": "综合评价子系统",
                     "F_Icon": "fa fa-magic",
                     "F_UrlAddress": "/default",
                     "F_Target": "expand",
