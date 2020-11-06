@@ -73,7 +73,6 @@ public class TaskProcessingService {
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         activitiService.complete(statistics.getTaskId(), null, null);
         workService.testFinish(eventId);
-        statisticsService.save(workService.initStatistics(eventId));
         Event one = eventService.findOne(eventId);
         KV kv = new KV();
         kv.setId(KvConstant.CLOS_ETESK);
