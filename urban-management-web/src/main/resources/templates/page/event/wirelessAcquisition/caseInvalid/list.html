@@ -274,7 +274,6 @@
             </div>
 
         </div>
-
         <div class="modal fade" id="modal-default">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -282,47 +281,41 @@
                         <h4 class="modal-title">不予受理详情</h4>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="top table2_top">
-                                <!--        <div>-->
-                                <div class="top_out">
-                                    <table class="table">
-                                        <tbody>
-                                        <tr>
-                                            <td>当前处理部门<span></span></td>
-                                            <td>
-                                                <input type="text"  readonly="readonly">
-                                            </td>
-                                            <td>当前处理人<span></span></td>
-                                            <td>
-                                                <input type="text" required readonly="readonly">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>不予受理意见</td>
-                                            <td colspan="8"><textarea  name="problemescription" required readonly></textarea></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                        <div class="top table2_top">
+                            <!--        <div>-->
+                            <div class="top_out">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td>当前处理部门<span></span></td>
+                                        <td>
+                                            <input type="text"  readonly="readonly">
+                                        </td>
+                                        <td>当前处理人<span></span></td>
+                                        <td>
+                                            <input type="text" required readonly="readonly">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span></span>不予受理意见</td>
+                                        <td colspan="8"><textarea  name="problemescription" required readonly></textarea></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
-
-                            <!--    </div>-->
-                        </form>
+                        </div>
                     </div>
                     <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
-                        <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                        <input type="hidden" id="eventId" name="eventId" />
+                        <input type="hidden" id="buttonText" name="buttonText" />
+                        <div class="modal-footer justify-content-between" id="eventButton">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
-
-
-
-
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
 <th:block th:include="page/fragments/common :: fileUpload_js"/>

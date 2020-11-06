@@ -88,7 +88,7 @@
                 </div>
             </div>
             <div class="banner banner_update">
-                <h3 class="bigTitle">案件修改</h3>
+                <h3 class="bigTitle">案件详情</h3>
                 <form class="details">
                     <div class="top table2_top">
                         <div class="top_out">
@@ -97,164 +97,126 @@
                                 <tr>
                                     <td><span>*</span>案卷号</td>
                                     <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                        <input id="eventCode" placeholder="" class="" type="text" readonly="readonly" required>
                                     </td>
                                     <td><span>*</span>问题类型</td>
                                     <td>
-                                        <input id="event" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                                        <input id="eventTypeStr" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
 
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span>*</span>立案区域</td>
                                     <td>
-                                        <select name="kv" required readonly disabled>
-                                            <option value="">请选择</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="regionStr" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
                                     </td>
                                     <td><span>*</span>立案条件</td>
                                     <td>
-                                        <select name="kv" required readonly disabled>
-                                            <option value="">请选择</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="conditionValue" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span>*</span>案件等级</td>
                                     <td>
-                                        <select name="kv" required readonly disabled>
-                                            <option value="">请选择</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="level" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+
                                     </td>
                                     <td><span>*</span>处理时限</td>
                                     <td>
-                                        <input type="text" readonly>
+                                        <input id="timeLimitStr" type="text" readonly required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span>*</span>问题描述</td>
 
-                                    <td colspan="8"><textarea id="problemescription" name="problemescription"
-                                                              required readonly></textarea></td>
+                                    <td colspan="8"><textarea id="represent" name="problemescription" required readonly></textarea></td>
 
 
                                 </tr>
                                 <tr class="col-12">
                                     <td><span></span>案件地址</td>
                                     <td>
-                                        <input name="userName" placeholder="" class="" readonly type="text">
+                                        <input id="location" name="location" placeholder="" class="" readonly type="text">
                                     </td>
-                                    <td><span></span>案件类型</td>
-                                    <td>
-                                        <select name="safeLevel" readonly="" disabled>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
-                                    </td>
+<!--                                    <td><span></span>案件类型</td>-->
+<!--                                    <td>-->
+<!--                                        <input id="recTypeStr" name="location" placeholder="" class="" readonly type="text">-->
+<!--                                    </td>-->
                                 </tr>
                                 <tr class="col-12">
                                     <td><span>*</span>所属区域</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>一般</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="eventRegion" name="location" placeholder="" class="" readonly type="text">
+
                                     </td>
                                     <td><span>*</span>所属街道</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="street" name="location" placeholder="" class="" readonly type="text">
+
                                     </td>
                                 </tr>
                                 <tr class="col-12">
                                     <td><span>*</span>所属社区</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>一般</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="community" name="location" placeholder="" class="" readonly type="text">
                                     </td>
                                     <td><span>*</span>单元网格</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="girdStr" name="location" placeholder="" class="" readonly type="text">
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span>*</span>案件类型</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="recTypeStr" name="recTypeStr" placeholder="" class="" readonly type="text">
+
                                     </td>
                                     <td><span>*</span>上报人</td>
                                     <td>
-                                        <input readonly type="text">
+                                        <input id="userName" name="userName" placeholder="" class="" readonly type="text">
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>诉求人</td>
                                     <td>
-                                        <input type="text" readonly>
+                                        <input id="petitionerName" name="petitionerName" placeholder="" class="" readonly type="text">
+
                                     </td>
                                     <td><span></span>联系方式</td>
-                                    <td><input id="handleTime" name="handleTime" type="text" value="15645068888" readonly="readonly"></td>
+                                    <td><input id="petitionerPhone" name="petitionerPhone" type="text" value="15645068888" readonly="readonly"></td>
                                 </tr>
                                 <tr>
                                     <td><span></span>性别</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>男</option>
-                                            <option>女</option>
-                                        </select>
+                                        <input id="petitionerSex" name="petitionerSex" placeholder="" class="" readonly type="text">
+
                                     </td>
-                                </tr>
-                                <tr>
                                     <td><span></span>创建时间</td>
                                     <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
-                                    </td>
-                                    <td><span></span>事件来源</td>
-                                    <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                        <input id="cdate" name="cdate" placeholder="" class="" readonly type="text">
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>位置坐标</td>
                                     <td>
-                                        <input type="text"  class="find_input" readonly="readonly"  value="经度" >
+                                        <input id="x" type="text" class="find_input" readonly="readonly" value="经度">
                                     </td>
                                     <td></td>
                                     <td>
-                                        <input type="text" class="find_input" readonly="readonly"  value="纬度">
+                                        <input id="y" type="text" class="find_input" readonly="readonly" value="纬度">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>问题来源</td>
+                                    <td>
+                                        <input name="eventSourceStr" id="eventSourceStr" placeholder="" class="" type="text" readonly="readonly">
                                     </td>
                                 </tr>
 
-
-                                <!--                                    <tr>-->
-                                <!--                                        <td>处理结果<span></span></td>-->
-                                <!--                                        <td colspan = "8"><textarea></textarea></td>-->
-                                <!--                                    </tr>-->
                                 </tbody>
                             </table>
                             <div class="send">
@@ -291,10 +253,9 @@
 
                 </form>
             </div>
-            <div class="banner"></div>
-<!--            <div class="banner" >-->
-<!--                <img src='/common/img/7d4adfe6-1dbf-11eb-a1ce-00155dff8d69'>-->
-<!--            </div>-->
+            <div class="banner">
+                <img id="eventImg">
+            </div>
 
         </div>
 
@@ -390,11 +351,6 @@
         $("#treatment").addClass("blockActive")
     }
 
-    // function eventImg(processInstanceId){
-    //     var str = "<img src='"+ img + processInstanceId+"'>";
-    //     $("#evnetImg").empty();
-    //     $("#eventImg").append(str);
-    // }
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
 
@@ -443,14 +399,13 @@
              // 点击每行进行函数的触发
             onClickRow: function (row, tr, flied) {
                 console.log("row", row);
-                $.ajaxUtil.get("/event/getUserName", function (e) {
-                    $("#userName").val(e.data);
-                });
-                $(".tab_update").addClass("active").siblings(".tabTitle span").removeClass("active");
-                $(".banner_update").addClass("blockActive").siblings(".banner").removeClass("blockActive");
+                // $(".tab_update").addClass("active").siblings(".tabTitle span").removeClass("active");
+                // $(".banner_update").addClass("blockActive").siblings(".banner").removeClass("blockActive");
                 getButton(row.id)
                 //详情
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
+                    /*流程图*/
+                    $("#eventImg").attr('src',img+e.data.processInstanceId);
                     /*详情*/
                     $("#eventCode").val(e.data.eventCode);
                     $("#eventTypeStr").val(e.data.eventTypeStr);
@@ -466,6 +421,14 @@
                     $("#eventRegion").val(e.data.eventRegion);
                     $("#x").val(e.data.x);
                     $("#y").val(e.data.y);
+                    setPoint(e.data.x,e.data.y)
+                    $("#eventSourceStr").val(e.data.eventSourceStr);
+                    $("#cdate").val(e.data.cdate);
+                    $("#petitionerSex").val(e.data.petitionerSex);
+                    $("#petitionerPhone").val(e.data.petitionerPhone);
+                    $("#petitionerName").val(e.data.petitionerName);
+                    $("#userName").val(e.data.userName);
+                    $("#recTypeStr").val(e.data.recTypeStr);
                 });
             },
             columns: [
@@ -797,11 +760,26 @@
             projection: projection
         })
     });
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
+    function setPoint(x, y) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                // id: data,
+                // name: name,
+                coordinate: x + "," + y
+            }
+        });
+        layerMap.getSource().addFeature(point);
+    }
     function save() {
         var data = $('#verifyForm').serialize();
         console.log("data==")
         console.log(data)
-        $.operate.saveAndReload(completeByVerificationUrl, data);
+        $.operate.saveTab(completeByVerificationUrl, data);
     }
 </script>
 </body>
