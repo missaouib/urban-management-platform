@@ -1,5 +1,6 @@
 package com.unicom.urban.management.web.project.event;
 
+import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.pojo.vo.StatisticsVO;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/statistics")
+@ResponseResultBody
 public class StatisticsController {
 
     @Autowired

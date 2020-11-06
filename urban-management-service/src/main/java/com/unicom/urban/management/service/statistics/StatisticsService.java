@@ -1,6 +1,5 @@
 package com.unicom.urban.management.service.statistics;
 
-import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.dao.statistics.StatisticsRepository;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.vo.StatisticsVO;
@@ -54,26 +53,26 @@ public class StatisticsService {
             LocalDateTime end = LocalDateTime.now();
             /*sign 0 没超时  1超时*/
             String sign = "0";
-            if(s.getEndTime() != null){
+            if (s.getEndTime() != null) {
                 endTime = df.format(s.getEndTime());
                 end = s.getEndTime();
             }
-            long timeLimit = s.getProcessTimeLimit().getTimeLimit();
+//            long timeLimit = s.getProcessTimeLimit().getTimeLimit();
             long timeNum;
             /*工作时*/
-            if(KvConstant.HOUR.equals(s.getProcessTimeLimit().getLevel().getId())){
-                timeNum = timeLimit * 60 * 60 *1000;
-            }else{
-                /*工作日*/
-                timeNum = timeLimit * 24 * 60 * 60 * 1000;
-            }
+//            if(KvConstant.HOUR.equals(s.getProcessTimeLimit().getLevel().getId())){
+//                timeNum = timeLimit * 60 * 60 *1000;
+//            }else{
+//                /*工作日*/
+//                timeNum = timeLimit * 24 * 60 * 60 * 1000;
+//            }
             Duration between = Duration.between(s.getStartTime(), end);
             long millis = between.toMillis();
-            if(millis>timeNum){
-                sign = "1";
-            }
+//            if(millis>timeNum){
+//                sign = "1";
+//            }
             List<String> file = new ArrayList<>();
-            s.getEventFileList().forEach(f-> file.add(f.getFileName()));
+            s.getEventFileList().forEach(f -> file.add(f.getFileName()));
             StatisticsVO statisticsVO = StatisticsVO.builder()
                     .starTime(starTime)
                     .endTime(endTime)

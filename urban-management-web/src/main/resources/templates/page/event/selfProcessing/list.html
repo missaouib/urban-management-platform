@@ -351,159 +351,8 @@
             <div class="banner">
                 <div class='g_con'>
                     <!-- 物流时间轴 -->
-                    <div class='expressRecord'>
-                        <div class='expressRecord-single-close'>
-                            <div class='expressRecord-single-noReach-online-top-close'>
-<!--                          online-top-closing》》白线     online-top-close》》懒线      -->
-                                <div class='online-top-closing'></div>
-                                <div class='dot-close'>
-                                    <div class="yes blockActive"></div>
-                                </div>
-<!--                          online-bottom》》蓝线    online-bottom-start》》白线  -->
-                                <div class='online-bottom'></div>
-                            </div>
-
-                            <div class='expressRecord-text'>
-                                <div class="gameTitle">门头沟区域指挥中心</div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em>回复内容:</em> 派遣
-                                    </div>
-                                    <div class="endBox enclosure"><i></i>附件详情</div>
-                                </div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em>by:</em> 管理员，调度员
-                                    </div>
-                                    <div class="endBox endright">
-                                        2020/10/10 10:10:10
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class='expressRecord-date'>
-                                <div class='expressRecord-date-text'>
-                                    办理回复
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class='expressRecord-single-close'>
-                            <!-- 左边子容器 -->
-                            <div class='expressRecord-single-noReach-online-top-close'>
-                                <!-- 正在进行的时间轴上半个时间线 -->
-                                <div class='online-top-close'></div>
-                                <!-- 正在进行的时间轴点 -->
-                                <div class='dot-closing'>
-                                    <div class="yes"></div>
-                                </div>
-                                <!-- 正在进行的时间轴下半个时间线 -->
-                                <div class='online-bottom'></div>
-                            </div>
-
-                            <div class='expressRecord-text'>
-                                <div class="gameTitle">门头沟区域指挥中心</div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em>回复内容:</em> 派遣
-                                    </div>
-                                    <div class="endBox enclosure"><i></i>附件详情</div>
-                                </div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em>by:</em> 管理员，调度员
-                                    </div>
-                                    <div class="endBox endright">
-                                        2020/10/10 10:10:10
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 相对父级容器绝对定位的日期 -->
-                            <div class='expressRecord-date'>
-                                <div class='expressRecord-date-text'>
-                                    立案
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class='expressRecord-single-close'>
-                            <!-- 左边子容器 -->
-                            <div class='expressRecord-single-noReach-online-top-close'>
-                                <!-- 正在进行的时间轴上半个时间线 -->
-                                <div class='online-top-close'></div>
-                                <!-- 正在进行的时间轴点 -->
-                                <div class='dot-closing'>
-                                    <div class="yes"></div>
-                                </div>
-                                <!-- 正在进行的时间轴下半个时间线 -->
-                                <div class='online-bottom-start'></div>
-                            </div>
-
-                            <!-- 右边子容器 -->
-                            <div class='expressRecord-text'>
-                                <div class="gameTitle">门头沟区域指挥中心</div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em>回复内容:</em> 派遣
-                                    </div>
-                                    <div class="endBox enclosure"><i></i>附件详情</div>
-                                </div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em>by:</em> 管理员，调度员
-                                    </div>
-                                    <div class="endBox endright">
-                                        2020/10/10 10:10:10
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 相对父级容器绝对定位的日期 -->
-                            <div class='expressRecord-date'>
-                                <div class='expressRecord-date-text'>
-                                    立案
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class='expressRecord-single-close'>
-                            <div class='expressRecord-single-noReach-online-top-close'>
-                                <div class='online-top-closing'></div>
-                                <div class='dot-close'>
-                                    <div class="yes blockActive"></div>
-                                </div>
-                                <div class='online-bottom-start'></div>
-                            </div>
-
-                            <div class='expressRecord-text'>
-                                <div class="gameTitle">门头沟区域指挥中心</div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em>回复内容:</em> 派遣
-                                    </div>
-                                    <div class="endBox enclosure"><i></i>附件详情</div>
-                                </div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em>by:</em> 管理员，调度员
-                                    </div>
-                                    <div class="endBox endright">
-                                        2020/10/10 10:10:10
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class='expressRecord-date'>
-                                <div class='expressRecord-date-text'>
-                                    办理回复
-                                </div>
-
-                            </div>
-                        </div>
+                    <div class='expressRecord' id="timeAxis">
+                        <div>暂时没有数据，请进入流程处理案件</div>
                     </div>
                 </div>
             </div>
@@ -596,6 +445,8 @@
 
     let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
 
+    let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
+
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
 
     let num = 1;
@@ -615,7 +466,7 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row) {
-                getButton(row.id);
+                checkRow(row.id);
             },
             columns: [
                 {
@@ -672,6 +523,11 @@
         min: jQuery.validator.format("请输入一个最小为{0} 的值")
     });
 
+    function checkRow(eventId) {
+        getButton(eventId);
+        getTimeAxis(eventId);
+    }
+
     /* 获取下一步按钮 */
     function getButton(eventId) {
         let getButtonUrl = /*[[@{/event/getButton/}]]+eventId*/ "/event/getButton/" + eventId;
@@ -681,10 +537,66 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px;width: 150px' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].taskName + "</button>";
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px;width: 150px' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
                 }
             }
             $("#eventButton").html(buttonHtml);
+        });
+    }
+
+    function getTimeAxis(eventId) {
+        $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
+            let data = e.data;
+            $("#timeAxis").empty();
+            let html = "";
+            if (data.length === 0) {
+                html += "<div>暂时没有数据，请进入流程处理案件</div>";
+            } else {
+                for (let i = 0; i < data.length; i++) {
+                    html += "<div class='expressRecord-single-close'>";
+                    html += "<div class='expressRecord-single-noReach-online-top-close'>";
+                    if (i === 0) {
+                        html += "<div class='online-top-closing'></div>";
+                    } else {
+                        html += "<div class='online-top-close'></div>";
+                    }
+                    html += "<div class='dot-close'>";
+                    if (i === 0) {
+                        html += "<div class='yes blockActive'></div>";
+                    } else {
+                        html += "<div class='yes'></div>";
+                    }
+                    html += "</div>";
+                    if (i === (data.length - 1)) {
+                        html += "<div class='online-bottom-start'></div>";
+                    } else {
+                        html += "<div class='online-bottom'></div>";
+                    }
+                    html += "</div>";
+                    html += "<div class='expressRecord-text'>";
+                    html += "<div class='gameTitle'>门头沟区域指挥中心</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>回复内容:</em> " + data[i].opinions
+                    html += "</div>";
+                    if (data[i].fileName.length > 0) {
+                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                    }
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>by:</em> " + data[i].user + "，角色";
+                    html += "</div>";
+                    html += "<div class='endBox endright'>" + data[i].starTime + "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='expressRecord-date'>";
+                    html += "<div class='expressRecord-date-text'>" + data[i].link + "</div>";
+                    html += "</div>";
+                    html += "</div>"
+                }
+            }
+            $("#timeAxis").append(html);
         });
     }
 

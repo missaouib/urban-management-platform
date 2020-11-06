@@ -346,7 +346,14 @@
                     </div>
                 </form>
             </div>
-            <div class="banner"></div>
+            <div class="banner">
+                <div class='g_con'>
+                    <!-- 物流时间轴 -->
+                    <div class='expressRecord' id="timeAxis">
+                        <div>暂时没有数据，请进入流程处理案件</div>
+                    </div>
+                </div>
+            </div>
             <div class="banner">流程图</div>
         </div>
     </div>
@@ -453,7 +460,7 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row) {
-                getButton(row.id);
+                checkRow(row.id);
             },
             columns: [
                 {
@@ -490,6 +497,11 @@
         $.table.init(options);
     }
 
+    function checkRow(eventId) {
+        getButton(eventId);
+        getTimeAxis(eventId);
+    }
+
     /* 获取下一步按钮 */
     function getButton(eventId) {
         let getButtonUrl = /*[[@{/event/getButton/}]]+eventId*/ "/event/getButton/" + eventId;
@@ -499,10 +511,66 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px;width: 150px' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].taskName + button[i].id + "</button>";
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px;width: 150px' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
                 }
             }
             $("#eventButton").html(buttonHtml);
+        });
+    }
+
+    function getTimeAxis(eventId) {
+        $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
+            let data = e.data;
+            $("#timeAxis").empty();
+            let html = "";
+            if (data.length === 0) {
+                html += "<div>暂时没有数据，请进入流程处理案件</div>";
+            } else {
+                for (let i = 0; i < data.length; i++) {
+                    html += "<div class='expressRecord-single-close'>";
+                    html += "<div class='expressRecord-single-noReach-online-top-close'>";
+                    if (i === 0) {
+                        html += "<div class='online-top-closing'></div>";
+                    } else {
+                        html += "<div class='online-top-close'></div>";
+                    }
+                    html += "<div class='dot-close'>";
+                    if (i === 0) {
+                        html += "<div class='yes blockActive'></div>";
+                    } else {
+                        html += "<div class='yes'></div>";
+                    }
+                    html += "</div>";
+                    if (i === (data.length - 1)) {
+                        html += "<div class='online-bottom-start'></div>";
+                    } else {
+                        html += "<div class='online-bottom'></div>";
+                    }
+                    html += "</div>";
+                    html += "<div class='expressRecord-text'>";
+                    html += "<div class='gameTitle'>门头沟区域指挥中心</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>回复内容:</em> " + data[i].opinions
+                    html += "</div>";
+                    if (data[i].fileName.length > 0) {
+                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                    }
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>by:</em> " + data[i].user + "，角色";
+                    html += "</div>";
+                    html += "<div class='endBox endright'>" + data[i].starTime + "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='expressRecord-date'>";
+                    html += "<div class='expressRecord-date-text'>" + data[i].link + "</div>";
+                    html += "</div>";
+                    html += "</div>"
+                }
+            }
+            $("#timeAxis").append(html);
         });
     }
 
