@@ -146,14 +146,14 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span>*</span>问题来源</td>
+                                <td><span>*</span>事件来源</td>
                                 <td>
                                     <select class="form-control" id="eventSource" th:name="eventSourceId" required>
                                         <option th:each="as:${eventSource}" th:value="${as.id}"
                                                 th:text="${as.value}"></option>
                                     </select>
                                 </td>
-                                <td><span></span>上报监督员</td>
+                                <td><span></span>上报人</td>
                                 <td>
                                     <select id="selectTail" name="kv" onchange="tailChange()">
                                         <option value="" selected>请选择</option>
@@ -190,7 +190,7 @@
 
 
                             <tr>
-                                <td><span></span>上报人</td>
+                                <td><span></span>诉求人</td>
                                 <td style="text-align: left"><div class="username" th:sec:authentication="principal.username"></div></td>
                                 <td><span></span>是否处理</td>
                                 <td style="text-align: left">

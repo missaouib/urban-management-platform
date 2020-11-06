@@ -207,13 +207,13 @@
                                             <option>3</option>
                                         </select>
                                     </td>
-                                    <td><span>*</span>上报监督员</td>
+                                    <td><span>*</span>上报人</td>
                                     <td>
                                         <input readonly type="text">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span></span>上报人</td>
+                                    <td><span></span>诉求人</td>
                                     <td>
                                         <input type="text" readonly>
                                     </td>
@@ -234,7 +234,7 @@
                                     <td>
                                         <input name="userName" placeholder="" class="" type="text" readonly="readonly">
                                     </td>
-                                    <td><span></span>问题来源</td>
+                                    <td><span></span>事件来源</td>
                                     <td>
                                         <input name="userName" placeholder="" class="" type="text" readonly="readonly">
                                     </td>
@@ -306,11 +306,6 @@
                     </div>
                     <form id="verifyForm">
                     <div class="modal-body">
-                        <div class="checkUser">
-                            <span class="sendText"><i>*</i>处理人</span>
-                            <input type="text" name="userName" id="userName"
-                                   style="width:100%;resize: none;border-radius: 4px;border: 1px #ccc solid;">
-                        </div>
                         <div class="checkMain" style="position: relative">
                             <span class="sendText"><i>*</i>意见</span>
                             <textarea type="text" id="textIdioms" name="opinions"></textarea>
@@ -343,7 +338,7 @@
                         </div>
                         <input type="hidden" id="eventId" name="eventId" />
                         <input type="hidden" id="buttonText" name="buttonText" />
-                        <div class="modal-footer justify-content-between" id="eventButton">
+                        <div class="modal-footer justify-content-between" id="eventButton" style="display: flex;justify-content: flex-end!important;">
 
                         </div>
                     </form>

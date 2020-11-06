@@ -108,7 +108,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span></span>上报人</td>
+                                <td><span></span>诉求人</td>
 
                                 <td style="text-align: left"><div class="username" th:sec:authentication="principal.username"></div></td>
                                 <td><span></span>联系方式</td>
@@ -119,7 +119,7 @@
                                 <td style="text-align: left">
                                     <!--                                    <input  name="userName" placeholder="" class="" type="checkbox" required style="width: 30px">-->
                                 </td>
-                                <td><span>*</span>问题来源</td>
+                                <td><span>*</span>事件来源</td>
                                 <td>
                                     <select class="form-control" id="eventSource" th:name="eventSourceId" required>
                                         <option th:each="as:${eventSource}" th:value="${as.id}"
