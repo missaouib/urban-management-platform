@@ -638,7 +638,7 @@
                     $("#eventRegion").val(e.data.eventRegion);
                     $("#x").val(e.data.x);
                     $("#y").val(e.data.y);
-
+                    setPoint(e.data.x,e.data.y)
                     /*按钮*/
                     var buttonStr = "";
                     $(e.data.eventButtonVOS).each(function (index,value) {
@@ -822,6 +822,23 @@
             projection: projection
         })
     });
+
+
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
+    function setPoint(x, y) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                // id: data,
+                // name: name,
+                coordinate: x + "," + y
+            }
+        });
+        layerMap.getSource().addFeature(point);
+    }
 </script>
 </body>
 </html>
