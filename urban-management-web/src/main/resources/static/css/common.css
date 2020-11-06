@@ -1300,14 +1300,14 @@ label.error {
     box-shadow: 0 0 0 0 !important;
 }
 .online-top-closing {
-    width: 1px;
+    width: 4px;
     height: 50px;
     background: none;
     margin-left: 95px;
 }
 
 .online-top-close {
-    width: 1px;
+    width: 4px;
     height: 50px;
     background: #364E86;
     margin-left: 95px;
@@ -1329,14 +1329,14 @@ label.error {
 }
 
 .online-bottom {
-    width: 1px;
+    width: 4px;
     height: 50px;
     background: #364E86;
     margin-left: 95px;
 }
 
 .online-bottom-start {
-    width: 1px;
+    width: 4px;
     height: 50px;
     /* background: #999; */
     margin-left: 95px;
@@ -1454,7 +1454,7 @@ label.error {
 }
 
 .endBox {
-    width: 40%;
+    width: 50%;
     height: 100%;
     display: flex;
     align-items: center;
