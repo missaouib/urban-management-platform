@@ -31,6 +31,7 @@ public class StatisticsService {
     }
 
     public void update(Statistics statistics) {
+
         statisticsRepository.saveAndFlush(statistics);
     }
 

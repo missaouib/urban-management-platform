@@ -158,6 +158,16 @@ public class EventService {
     public void completeByReceptionist(String eventId, String userId, String button) {
         workService.completeByReceptionist(eventId, userId, button);
     }
+    /**
+     * 监督员完成任务 并且 激活受理员(领取任务)核实
+     *
+     * @param eventId 事件id
+     * @param userId  指派的人的id
+     * @param button  按钮
+     */
+    public void completeByVerification(String eventId, String userId, String button) {
+        workService.completeByVerificationist(eventId, userId, button);
+    }
 
     public String createCode(String eventTypeId) {
         String eventCode = "";

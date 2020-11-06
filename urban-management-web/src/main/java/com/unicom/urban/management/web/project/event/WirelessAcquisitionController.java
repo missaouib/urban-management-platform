@@ -1,11 +1,16 @@
 package com.unicom.urban.management.web.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.mapper.StatisticsMapper;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
+import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventType;
+import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
@@ -15,18 +20,17 @@ import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
+import com.unicom.urban.management.service.statistics.StatisticsService;
 import com.unicom.urban.management.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,6 +57,8 @@ public class WirelessAcquisitionController {
     private EventTypeService eventTypeService;
     @Autowired
     private DeptTimeLimitService deptTimeLimitService;
+    @Autowired
+    private StatisticsService statisticsService;
     @GetMapping("/toWirelessAcquisitionList")
     public ModelAndView toWirelessAcquisitionList() {
         return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/list");
@@ -122,6 +128,7 @@ public class WirelessAcquisitionController {
 
     @GetMapping("/wirelessAcquisitionList")
     public Page<EventVO> wirelessAcquisitionList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_CASE_VERIFICATION));
         return eventService.search(eventDTO, pageable);
     }
 
@@ -209,5 +216,33 @@ public class WirelessAcquisitionController {
     public Result createEventCode(String eventTypeId) {
         return Result.success(eventService.createCode(eventTypeId));
 
+    }
+
+    /**
+     * 核实反馈保存
+     * @param statistics
+     * @return
+     */
+    @PostMapping("/verify")
+    public Result verify(Statistics statistics){
+        statisticsService.update(statistics);
+        return Result.success();
+    }
+
+    /**
+     * 监督员完成任务 并且 激活受理员(领取任务)核实
+     *
+     * @param statisticsDTO
+     */
+    @PostMapping("/completeByVerification")
+    public Result completeByVerification(StatisticsDTO statisticsDTO) {
+        Statistics statistics = StatisticsMapper.INSTANCE.StatisticsDTOToStatistics(statisticsDTO);
+//        statisticsService.update(statistics);
+        eventService.completeByVerification(statisticsDTO.getEventId(), null, statisticsDTO.getButtonText());
+        return Result.success();
+    }
+    @GetMapping("getUserName")
+    public Result getUserName(){
+        return Result.success(SecurityUtil.getUsername());
     }
 }

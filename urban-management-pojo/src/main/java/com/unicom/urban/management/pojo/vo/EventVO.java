@@ -33,5 +33,20 @@ public class EventVO {
     private LocalDateTime createTime;
 
     private List<EventFile> eventFileList;
+    /**
+     * 事件来源
+     */
+    private String eventSourceName;
+    /**
+     * 案件类型
+     */
+    private String recTypeName;
+    /**
+     * 案件编号
+     */
+    private String eventCode;
+
+    private String taskId;
+
 
 }
