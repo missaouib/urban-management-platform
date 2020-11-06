@@ -183,7 +183,7 @@ public class SupervisionAcceptanceController {
      */
     @GetMapping("/sendCheckList")
     public Page<EventVO> sendCheckList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
-        eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_SEND_CHECK));
+        eventDTO.setTaskName(Arrays.asList(EventConstant.ACCEPTANCE_SEND_CHECK, EventConstant.ACCEPTANCE));
         return eventService.search(eventDTO, pageable);
     }
 
@@ -253,7 +253,22 @@ public class SupervisionAcceptanceController {
      */
     @PostMapping("/completeByReceptionistWithSendCheck")
     public Result completeByReceptionistWithSendCheck(EventDTO eventDTO) {
-        eventService.completeByReceptionistWithClaim(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
+        switch (eventDTO.getButton()) {
+            case "14":
+                eventService.completeByReceptionistWithClaim(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
+                break;
+            case "10":
+                eventService.completeByReceptionistForDo(eventDTO.getId(), eventDTO.getButton());
+                break;
+            case "16":
+                eventService.completeByReceptionist(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
+                break;
+            case "17":
+                eventService.completeByReceptionistForDo(eventDTO.getId(), eventDTO.getButton());
+                break;
+            default:
+                return Result.fail("500", "未检测到应有的步骤");
+        }
         return Result.success();
     }
 

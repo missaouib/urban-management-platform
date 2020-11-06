@@ -207,10 +207,10 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span>*</span>案件类型</td>
+                                    <td><span></span>问题来源</td>
                                     <td>
-                                        <input id="recTypeStr" name="recTypeStr" placeholder="" class="" readonly type="text">
-
+                                        <input name="eventSourceStr" id="eventSourceStr" placeholder="" class=""
+                                               type="text" readonly="readonly">
                                     </td>
                                     <td><span>*</span>上报人</td>
                                     <td>
@@ -225,7 +225,8 @@
 
                                     </td>
                                     <td><span></span>联系方式</td>
-                                    <td><input id="petitionerPhone" name="petitionerPhone" type="text" value="15645068888" readonly="readonly"></td>
+                                    <td><input id="petitionerPhone" name="petitionerPhone" type="text" value=""
+                                               readonly="readonly"></td>
                                 </tr>
                                 <tr>
                                     <td><span></span>性别</td>
@@ -247,12 +248,6 @@
                                     <td></td>
                                     <td>
                                         <input id="y" type="text" class="find_input" readonly="readonly" value="纬度">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span></span>问题来源</td>
-                                    <td>
-                                        <input name="eventSourceStr" id="eventSourceStr" placeholder="" class="" type="text" readonly="readonly">
                                     </td>
                                 </tr>
                                 
@@ -289,191 +284,13 @@
             <div class="banner">
                 <div class='g_con'>
                     <!-- 物流时间轴 -->
-                    <div class='expressRecord'>
-                        <!-- 单个物流记录点时间轴：当前正在进行的物流状态 -->
-                        <div class='expressRecord-single-close'>
-                            <!-- 左边子容器 -->
-                            <div class='expressRecord-single-noReach-online-top-close'>
-                                <!-- 正在进行的时间轴上半个时间线 -->
-                                <div class='online-top-closing'></div>
-                                <!-- 正在进行的时间轴点 -->
-                                <div class='dot-closing'>
-                                    <div class="yes blockActive"></div>
-                                </div>
-                                <!-- 正在进行的时间轴下半个时间线 -->
-                                <div class='online-bottom'></div>
-                            </div>
-
-                            <!-- 右边子容器 -->
-                            <div class='expressRecord-text'>
-                                <div class="gameTitle titone">门头沟区域指挥中心</div>
-                                <div class="gameEnd endone">
-                                    <div class="endBox">
-                                        <em>by:</em> 管理员，调度员
-                                    </div>
-                                    <div class="endBox endright">
-                                        2020/10/10 10:10:10
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 相对父级容器绝对定位的日期 -->
-                            <div class='expressRecord-date'>
-                                <div class='expressRecord-date-text'>
-                                    立案
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <!-- 单个物流记录点时间轴：已经过去的物流状态 -->
-                        <div class='expressRecord-single-close'>
-                            <div class='expressRecord-single-noReach-online-top-close'>
-                                <div class='online-top-close'></div>
-                                <div class='dot-close'>
-                                    <div class="yes blockActive"></div>
-                                </div>
-                                <div class='online-bottom'></div>
-                            </div>
-
-                            <div class='expressRecord-text'>
-                                <div class="gameTitle">门头沟区域指挥中心</div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em>回复内容:</em> 派遣
-                                    </div>
-                                    <div class="endBox"></div>
-                                </div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em>by:</em> 管理员，调度员
-                                    </div>
-                                    <div class="endBox endright">
-                                        2020/10/10 10:10:10
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class='expressRecord-date'>
-                                <div class='expressRecord-date-text'>
-                                    派遣
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class='expressRecord-single-close'>
-                            <div class='expressRecord-single-noReach-online-top-close'>
-                                <div class='online-top-close'></div>
-                                <div class='dot-close'>
-                                    <div class="yes blockActive"></div>
-                                </div>
-                                <div class='online-bottom' style="background-color:#F2F3F5;"></div>
-                            </div>
-
-                            <div class='expressRecord-text'>
-                                <div class="gameTitle">门头沟区域指挥中心</div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em>回复内容:</em> 派遣
-                                    </div>
-                                    <div class="endBox enclosure"><i></i>附件详情</div>
-                                </div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em>by:</em> 管理员，调度员
-                                    </div>
-                                    <div class="endBox endright">
-                                        2020/10/10 10:10:10
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class='expressRecord-date'>
-                                <div class='expressRecord-date-text'>
-                                    办理回复
-                                </div>
-
-                            </div>
-                        </div>
-
-
-                        <div class='expressRecord-single-close'>
-                            <div class='expressRecord-single-noReach-online-top-close'>
-                                <div class='online-top-close' style="background-color:#F2F3F5;"></div>
-                                <div class='dot-close'>
-                                    <div class="yes"></div>
-                                </div>
-                                <div class='online-bottom' style="background-color:#F2F3F5;"></div>
-                            </div>
-
-                            <div class='expressRecord-text boxShown'>
-                                <div class="gameTitle"></div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em></em>
-                                    </div>
-                                    <div class="endBox"></div>
-                                </div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em></em>
-                                    </div>
-                                    <div class="endBox endright">
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class='expressRecord-date'>
-                                <div class='expressRecord-date-text'>
-                                    核查
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class='expressRecord-single-close'>
-                            <div class='expressRecord-single-noReach-online-top-close'>
-                                <div class='online-top-close' style="background-color:#F2F3F5;"></div>
-                                <div class='dot-close'>
-                                    <div class="yes"></div>
-                                </div>
-                                <!-- 起始位置，下半个时间轴线不用 -->
-                                <div class='online-bottom-start'></div>
-                            </div>
-
-                            <div class='expressRecord-text boxShown'>
-                                <div class="gameTitle"></div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em></em>
-                                    </div>
-                                    <div class="endBox"></div>
-                                </div>
-                                <div class="gameEnd">
-                                    <div class="endBox">
-                                        <em></em>
-                                    </div>
-                                    <div class="endBox endright">
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class='expressRecord-date'>
-                                <div class='expressRecord-date-text'>
-                                    核查反馈
-                                </div>
-
-                            </div>
-                        </div>
-
+                    <div class='expressRecord' id="timeAxis">
+                        <div>暂时没有数据，请进入流程处理案件</div>
                     </div>
                 </div>
             </div>
-            <div class="banner" >
-                <img id="eventImg" >
+            <div class="banner">
+                <img id="eventImg">
             </div>
 
         </div>
@@ -553,6 +370,7 @@
 
     let processingUrl = /*[[@{/task/processing}]]*/ "/task/processing";
 
+    let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
 
     var buttonId = "";
     var eventId = "";
@@ -636,14 +454,15 @@
                     $("#recTypeStr").val(e.data.recTypeStr);
 
 
-
                     /*按钮*/
                     var buttonStr = "";
-                    $(e.data.eventButtonVOS).each(function (index,value) {
-                        buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" onclick='eventButton("+value.id+")'  class=\"but_save\">"+value.buttonText+"</button>";
+                    $(e.data.eventButtonVOS).each(function (index, value) {
+                        buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" onclick='eventButton(" + value.id + ")'  class=\"but_save\">" + value.buttonText + "</button>";
                     })
                     $("#btnGroupGround").empty();
                     $("#btnGroupGround").append(buttonStr);
+
+                    getTimeAxis(row.id);
                 });
             },
             columns: [
@@ -655,9 +474,8 @@
                     title: '时限',
                     field: '',
                     formatter: function (value,row) {
-                        var e = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
-                            "<img src='../img/2.png' style='width: 100%;height: 100%'></div>"
-                        return e;
+                        return "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
+                            "<img src='../img/2.png' style='width: 100%;height: 100%'></div>";
                     }
                 },
                 {
@@ -686,6 +504,61 @@
         $.table.init(options);
     }
 
+    function getTimeAxis(eventId) {
+        $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
+            let data = e.data;
+            $("#timeAxis").empty();
+            let html = "";
+            if (data.length === 0) {
+                html += "<div>暂时没有数据，请进入流程处理案件</div>";
+            } else {
+                for (let i = 0; i < data.length; i++) {
+                    html += "<div class='expressRecord-single-close'>";
+                    html += "<div class='expressRecord-single-noReach-online-top-close'>";
+                    if (i === 0) {
+                        html += "<div class='online-top-closing'></div>";
+                    } else {
+                        html += "<div class='online-top-close'></div>";
+                    }
+                    html += "<div class='dot-close'>";
+                    if (i === 0) {
+                        html += "<div class='yes blockActive'></div>";
+                    } else {
+                        html += "<div class='yes'></div>";
+                    }
+                    html += "</div>";
+                    if (i === (data.length - 1)) {
+                        html += "<div class='online-bottom-start'></div>";
+                    } else {
+                        html += "<div class='online-bottom'></div>";
+                    }
+                    html += "</div>";
+                    html += "<div class='expressRecord-text'>";
+                    html += "<div class='gameTitle'>门头沟区域指挥中心</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>回复内容:</em> " + data[i].opinions
+                    html += "</div>";
+                    if (data[i].fileName.length > 0) {
+                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                    }
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>by:</em> " + data[i].user + "，角色";
+                    html += "</div>";
+                    html += "<div class='endBox endright'>" + data[i].starTime + "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='expressRecord-date'>";
+                    html += "<div class='expressRecord-date-text'>" + data[i].link + "</div>";
+                    html += "</div>";
+                    html += "</div>"
+                }
+            }
+            $("#timeAxis").append(html);
+        });
+    }
 
     function Cancel() {
         $.modal.closeLoading();
