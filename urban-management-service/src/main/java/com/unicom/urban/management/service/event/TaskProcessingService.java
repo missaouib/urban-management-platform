@@ -76,6 +76,12 @@ public class TaskProcessingService {
         statistics.setInstHuman(SecurityUtil.getUser().castToUser());
         statistics.setInstHumanName(SecurityUtil.getUser().castToUser());
         statistics.setInstRole(null);
+        if (KvConstant.SUPERVISOR.equals(statistics.getEvent().getEventSource().getId())) {
+            statistics.setValidPatrolReport(1);
+        } else {
+            statistics.setValidPublicReport(1);
+        }
+        statistics.setValidReport(1);
         statisticsService.update(statistics);
 
         Event event = eventService.findOne(eventId);

@@ -93,4 +93,10 @@ public class KvConstant {
      */
     public static final String TASK_MINUTE = "a163cd47-553e-42eb-aacb-dcb9004482d3";
 
+
+    /**
+     * 监督员上报
+     */
+    public static final String SUPERVISOR = "d2c15cc9-91bd-4435-86f8-f9c8d351610b";
+
 }
