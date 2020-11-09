@@ -1487,3 +1487,6 @@ label.error {
     top: 0px;
     left: 9px;
 }
+.form-control{
+    padding: 0!important;
+}
