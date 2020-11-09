@@ -222,17 +222,17 @@
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>图片:</span></div>
-                                    <div><input class="input-id" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input class="input-id" type="file_img"  name="file" multiple="multiple" /></div>
                                 </div>
 
 
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
-                                    <div><input class="videoInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input class="videoInput" type="file_video"  name="file" multiple="multiple"></div>
                                 </div>
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
-                                    <div><input class="musicInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input class="musicInput" type="file_audio"  name="file" multiple="multiple"></div>
                                 </div>
 
                             </div>
@@ -265,7 +265,6 @@
                     <div class="modal-header">
                         <h4 class="modal-title">处理</h4>
                     </div>
-                    <form id="verifyForm">
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
                             <span class="sendText"><i>*</i>意见</span>
@@ -302,7 +301,6 @@
                         <div class="modal-footer justify-content-between" id="eventButton" style="display: flex;justify-content: flex-end!important;">
 
                         </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -374,7 +372,7 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px' value='" + eventId + "' id='" + button[i].id + "' type='submit' onclick='save()'>" + button[i].buttonText + "</button>";
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='save()'>" + button[i].buttonText + "</button>";
                 }
             }
             $("#eventId").val(eventId);
@@ -776,10 +774,10 @@
         layerMap.getSource().addFeature(point);
     }
     function save() {
-        var data = $('#verifyForm').serialize();
-        console.log("data==")
-        console.log(data)
-        $.operate.saveTab(completeByVerificationUrl, data);
+        $.operate.saveAndReload(completeByVerificationUrl,{
+            eventId:$("#eventId").val(),
+            buttonText: $("#buttonText").val()
+        });
     }
 </script>
 </body>

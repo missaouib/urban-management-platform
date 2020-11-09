@@ -249,7 +249,6 @@ public class WirelessAcquisitionController {
      */
     @PostMapping("/completeByVerification")
     public Result completeByVerification(StatisticsDTO statisticsDTO) {
-        Statistics statistics = StatisticsMapper.INSTANCE.StatisticsDTOToStatistics(statisticsDTO);
         eventService.completeByVerification(statisticsDTO.getEventId(), null, statisticsDTO.getButtonText());
         return Result.success();
     }
@@ -260,7 +259,6 @@ public class WirelessAcquisitionController {
      */
     @PostMapping("/completeByInspect")
     public Result completeByInspect(StatisticsDTO statisticsDTO) {
-        Statistics statistics = StatisticsMapper.INSTANCE.StatisticsDTOToStatistics(statisticsDTO);
         eventService.completeByInspect(statisticsDTO.getEventId(), null, statisticsDTO.getButtonText());
         return Result.success();
     }
