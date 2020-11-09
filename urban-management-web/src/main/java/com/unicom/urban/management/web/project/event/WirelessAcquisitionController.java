@@ -249,6 +249,10 @@ public class WirelessAcquisitionController {
      */
     @PostMapping("/completeByVerification")
     public Result completeByVerification(StatisticsDTO statisticsDTO) {
+        String eventId = statisticsDTO.getEventId();
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        statistics.setOpinions(statisticsDTO.getOpinions());
+        statisticsService.update(statistics);
         eventService.completeByVerification(statisticsDTO.getEventId(), null, statisticsDTO.getButtonText());
         return Result.success();
     }

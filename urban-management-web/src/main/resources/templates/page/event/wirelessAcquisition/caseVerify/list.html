@@ -268,7 +268,7 @@
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
                             <span class="sendText"><i>*</i>意见</span>
-                            <textarea type="text" id="textIdioms" name="opinions"></textarea>
+                            <textarea type="text" id="opinions" name="opinions"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays">
                                 <ul>
@@ -776,7 +776,8 @@
     function save() {
         $.operate.saveAndReload(completeByVerificationUrl,{
             eventId:$("#eventId").val(),
-            buttonText: $("#buttonText").val()
+            buttonText: $("#buttonText").val(),
+            opinions: $("#opinions").val()
         });
     }
 </script>
