@@ -302,8 +302,8 @@ public class EventService {
      *
      * @param event 需要操作的实体
      */
-    public void update(Event event) {
-        eventRepository.saveAndFlush(event);
+    public Event update(Event event) {
+       return eventRepository.saveAndFlush(event);
     }
 
 }
