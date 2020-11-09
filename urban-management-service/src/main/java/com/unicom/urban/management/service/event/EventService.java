@@ -13,6 +13,7 @@ import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
+import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -169,15 +170,24 @@ public class EventService {
         event.setPetitioner(saveP);
         Event save = eventRepository.save(event);
         /* 受理员核实 */
-        if (eventDTO.getInitSts() == 2) {
+        if (eventDTO.getInitSts() != null && eventDTO.getInitSts() == 2) {
             workService.caseAcceptanceByDispatch(save.getId());
         }
         /* 受理员保存 */
-        if (eventDTO.getInitSts() == 3) {
+        if (eventDTO.getInitSts() != null && eventDTO.getInitSts() == 3) {
             workService.caseAcceptanceByReceive(save.getId(), eventDTO.getUserId());
         }
     }
-
+    /**
+     * 上报自处理事件
+     *
+     * @param eventId  事件ID
+     * @param userList TODO
+     * @return 流程实例
+     */
+    public ProcessInstance reportAutoEvent(String eventId, List<String> userList){
+        return activitiService.reportAutoEvent(eventId,userList);
+    }
     /**
      * 受理员完成任务 并且 激活监督员(领取任务)核实
      *

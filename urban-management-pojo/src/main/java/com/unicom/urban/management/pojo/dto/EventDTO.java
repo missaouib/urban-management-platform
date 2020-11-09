@@ -86,4 +86,12 @@ public class EventDTO {
      */
     private String timeType;
 
+    private Boolean doBySelf;
+
+
+
+
+
+            ;
+
 }

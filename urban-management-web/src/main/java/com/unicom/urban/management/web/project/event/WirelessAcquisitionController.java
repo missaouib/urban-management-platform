@@ -11,6 +11,7 @@ import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.entity.Statistics;
+import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
@@ -30,6 +31,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -207,7 +209,6 @@ public class WirelessAcquisitionController {
      */
     @RequestMapping("/save")
     public void save(EventDTO eventDTO){
-//        eventDTO.setSts(0);
         eventService.save(eventDTO);
     }
     /**
@@ -216,7 +217,12 @@ public class WirelessAcquisitionController {
      */
     @RequestMapping("/preReport")
     public void preReport(EventDTO eventDTO){
-//        eventDTO.setSts(1);
+        Boolean doBySelf = eventDTO.getDoBySelf();
+        if (doBySelf) {
+            List<String> userList = new ArrayList<String>();
+            userList.add(SecurityUtil.getUser().getId());
+            eventService.reportAutoEvent(eventDTO.getId(),userList);
+        }
         eventService.save(eventDTO);
     }
 
@@ -263,6 +269,10 @@ public class WirelessAcquisitionController {
      */
     @PostMapping("/completeByInspect")
     public Result completeByInspect(StatisticsDTO statisticsDTO) {
+        String eventId = statisticsDTO.getEventId();
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        statistics.setOpinions(statisticsDTO.getOpinions());
+        statisticsService.update(statistics);
         eventService.completeByInspect(statisticsDTO.getEventId(), null, statisticsDTO.getButtonText());
         return Result.success();
     }

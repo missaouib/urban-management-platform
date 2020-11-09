@@ -296,7 +296,6 @@
             </div>
 
         </div>
-        <form id="verifyForm">
             <div class="modal fade" id="modal-default">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -346,7 +345,6 @@
                     </div>
                 </div>
             </div>
-        </form>
 </div>
 
 
@@ -417,7 +415,7 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px' value='" + eventId + "' id='" + button[i].id + "' type='submit' onclick='save()'>" + button[i].buttonText + "</button>";
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='save()'>" + button[i].buttonText + "</button>";
                 }
             }
             $("#eventId").val(eventId);
@@ -756,10 +754,11 @@
     });
     let completeByVerificationUrl = /*[[@{/event/completeByInspect}]]*/ "/event/completeByInspect";
     function save() {
-        var data = $('#verifyForm').serialize();
-        console.log("data==")
-        console.log(data)
-        $.operate.saveAndReload(completeByVerificationUrl, data);
+        $.operate.saveAndReload(completeByVerificationUrl, {
+            eventId:$("#eventId").val(),
+            buttonText: $("#buttonText").val(),
+            opinions: $("#opinions").val()
+        });
     }
 </script>
 </body>
