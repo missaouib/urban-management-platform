@@ -35,7 +35,6 @@ public class SupervisionAcceptanceController {
 
     @Autowired
     private EventService eventService;
-
     @Autowired
     private KVService kvService;
     @Autowired
@@ -81,7 +80,12 @@ public class SupervisionAcceptanceController {
      */
     @GetMapping("/toSelfProcessingList")
     public ModelAndView toSelfProcessingList() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/selfProcessing/list");
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/selfProcessing/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
     }
 
     /**
@@ -212,12 +216,55 @@ public class SupervisionAcceptanceController {
 
     /**
      * 受理员完成任务 并且 激活监督员(领取任务)核实
+     * button 11
      *
      * @param eventDTO 事件id 指派的人的id 按钮
      */
     @PostMapping("/completeByReceptionistWithSendVerification")
     public Result completeByReceptionistWithSendVerification(EventDTO eventDTO) {
-        eventService.completeByReceptionist(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
+        switch (eventDTO.getButton()) {
+            /*
+             * 受理员完成任务 并且 激活监督员(领取任务)核实
+             * button 11
+             */
+            case "11":
+                eventService.completeByReceptionist(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
+                break;
+            /*
+             * 1首先受理员领取任务
+             * 2然后完成任务
+             * 3最后
+             * 3.1激活监督员(领取任务)重新核实
+             * 3.2值班长受理
+             * 3.3不予受理(流程结束)
+             */
+            case "2":
+                eventService.completeByReceptionistForNotDo(eventDTO.getId(), eventDTO.getButton());
+                break;
+            case "3":
+                eventService.completeByReceptionistForDo(eventDTO.getId(), eventDTO.getButton());
+                break;
+            case "13":
+                eventService.completeByReceptionist(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
+                break;
+            /*
+             * 受理员完成任务 并且 激活监督员(领取任务)核查
+             */
+            case "14":
+                eventService.completeByReceptionistWithClaim(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
+                break;
+            case "10":
+                eventService.completeByReceptionistForDo(eventDTO.getId(), eventDTO.getButton());
+                break;
+            case "16":
+                eventService.completeByReceptionist(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
+                break;
+            case "17":
+                eventService.completeByReceptionistForDo(eventDTO.getId(), eventDTO.getButton());
+                break;
+            default:
+                return Result.fail("500", "未检测到应有的步骤");
+        }
         return Result.success();
     }
 
@@ -231,7 +278,7 @@ public class SupervisionAcceptanceController {
      *
      * @param eventDTO 事件id 指派的人的id 按钮
      */
-    @PostMapping("/claimAndCompleteByReceptionistWithShiftLeader")
+    /*@PostMapping("/claimAndCompleteByReceptionistWithShiftLeader")
     public Result claimAndCompleteByReceptionistWithShiftLeader(EventDTO eventDTO) {
         switch (eventDTO.getButton()) {
             case "2":
@@ -247,15 +294,14 @@ public class SupervisionAcceptanceController {
                 return Result.fail("500", "未检测到应有的步骤");
         }
         return Result.success();
-
-    }
+    }*/
 
     /**
      * 受理员完成任务 并且 激活监督员(领取任务)核查
      *
      * @param eventDTO 事件id 指派的人的id 按钮
      */
-    @PostMapping("/completeByReceptionistWithSendCheck")
+    /*@PostMapping("/completeByReceptionistWithSendCheck")
     public Result completeByReceptionistWithSendCheck(EventDTO eventDTO) {
         switch (eventDTO.getButton()) {
             case "14":
@@ -274,6 +320,6 @@ public class SupervisionAcceptanceController {
                 return Result.fail("500", "未检测到应有的步骤");
         }
         return Result.success();
-    }
+    }*/
 
 }

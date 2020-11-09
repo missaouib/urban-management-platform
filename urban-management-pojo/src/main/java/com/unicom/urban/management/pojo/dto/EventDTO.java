@@ -17,7 +17,15 @@ public class EventDTO {
 
     private String eventCode;
 
+    /**
+     * search 问题描述
+     */
     private String represent;
+
+    /**
+     * search 所在网格
+     */
+    private String grid;
 
     private String location;
 
@@ -29,12 +37,21 @@ public class EventDTO {
 
     private Integer initSts;
 
+    /**
+     * search 问题类型
+     */
     private String eventTypeId;
 
     private String timeLimitId;
 
+    /**
+     * search 立案条件
+     */
     private String conditionId;
 
+    /**
+     * search 事件来源
+     */
     private String eventSourceId;
 
     private double x;
@@ -58,5 +75,15 @@ public class EventDTO {
     private List<String> taskId;
 
     private String button;
+
+    /**
+     * search 立案区域
+     */
+    private String eventCondition;
+
+    /**
+     * search 计时等级
+     */
+    private String timeType;
 
 }

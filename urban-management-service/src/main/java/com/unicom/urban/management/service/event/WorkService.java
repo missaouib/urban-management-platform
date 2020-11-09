@@ -98,6 +98,9 @@ public class WorkService {
      */
     public void completeByReceptionist(String eventId, String userId, String button) {
         Statistics s = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        if ("13".equals(button) || "16".equals(button)) {
+            activitiService.claim(s.getTaskId(), SecurityUtil.getUserId());
+        }
         s.setEndTime(LocalDateTime.now());
         s.setSendVerify(1);
         Map<String, Object> map = judgeOverTimeIsOrNot(s.getStartTime(), s.getEndTime(), s.getProcessTimeLimit().getTimeLimit());
@@ -109,7 +112,10 @@ public class WorkService {
         statisticsService.update(s);
         activitiService.complete(s.getTaskId(), Collections.singletonList(userId), button);
         Statistics statistics = initStatistics(eventId);
+        statistics.setNeedVerify(1);
+        statisticsService.update(statistics);
         activitiService.claim(statistics.getTaskId(), userId);
+
     }
 
     /**
@@ -163,6 +169,7 @@ public class WorkService {
      */
     public void completeByReceptionistForDo(String eventId, String button) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         statistics.setEndTime(LocalDateTime.now());
         statistics.setOperate(1);
         statistics.setReport(1);
@@ -188,6 +195,7 @@ public class WorkService {
      */
     public void completeByReceptionistForNotDo(String eventId, String button) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         statistics.setEndTime(LocalDateTime.now());
         statistics.setOperate(1);
         statistics.setReport(1);
@@ -249,7 +257,8 @@ public class WorkService {
         statistics.setTaskName(task.getName());
         statistics.setStartTime(LocalDateTime.now());
         statistics.setDeptTimeLimit(event.getTimeLimit());
-        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());
+        /*ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());*/
+        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId("值班长-立案", "28526efe-3db5-415b-8c7a-d0e3a49cab8f");
         statistics.setProcessTimeLimit(processTimeLimit);
         return statisticsService.save(statistics);
     }

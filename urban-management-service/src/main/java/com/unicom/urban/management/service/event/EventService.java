@@ -12,7 +12,6 @@ import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
-import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,8 +56,6 @@ public class EventService {
     private EventTypeService eventTypeService;
     @Autowired
     private PetitionerService petitionerService;
-    @Autowired
-    private KVService kvService;
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
@@ -72,6 +69,35 @@ public class EventService {
             if (StringUtils.isNotBlank(eventDTO.getEventTypeId())) {
                 list.add(criteriaBuilder.equal(root.get("eventType").get("id").as(String.class), eventDTO.getEventTypeId()));
             }
+
+            if (StringUtils.isNotBlank(eventDTO.getRepresent())) {
+                list.add(criteriaBuilder.like(root.get("represent").as(String.class), "%" + eventDTO.getRepresent() + "%"));
+            }
+
+            if (StringUtils.isNotBlank(eventDTO.getGrid())) {
+                list.add(criteriaBuilder.equal(root.get("grid").get("id").as(String.class), eventDTO.getGrid()));
+            }
+
+            if (StringUtils.isNotBlank(eventDTO.getEventTypeId())) {
+                list.add(criteriaBuilder.equal(root.get("eventType").get("id").as(String.class), eventDTO.getEventTypeId()));
+            }
+
+            if (StringUtils.isNotBlank(eventDTO.getConditionId())) {
+                list.add(criteriaBuilder.equal(root.get("condition").get("id").as(String.class), eventDTO.getConditionId()));
+            }
+
+            if (StringUtils.isNotBlank(eventDTO.getEventSourceId())) {
+                list.add(criteriaBuilder.equal(root.get("eventSource").get("id").as(String.class), eventDTO.getEventSourceId()));
+            }
+
+            if (StringUtils.isNotBlank(eventDTO.getEventCondition())) {
+                list.add(criteriaBuilder.equal(root.get("eventCondition").get("id").as(String.class), eventDTO.getEventCondition()));
+            }
+
+            if (StringUtils.isNotBlank(eventDTO.getTimeType())) {
+                list.add(criteriaBuilder.equal(root.get("timeLimit").get("level").get("id").as(String.class), eventDTO.getTimeType()));
+            }
+
             if (eventDTO.getTaskName() != null) {
                 /* 查询当前登陆人所拥有的任务 */
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
