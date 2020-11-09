@@ -39,6 +39,15 @@ public interface ActivitiService {
     ProcessInstance acceptanceReporting(String eventId, List<String> userList);
 
     /**
+     * 上报自处理事件
+     *
+     * @param eventId  事件ID
+     * @param userList TODO
+     * @return 流程实例
+     */
+    ProcessInstance reportAutoEvent(String eventId, List<String> userList);
+
+    /**
      * 根据流程实例ID获取任务Task
      *
      * @param processInstanceId 流程实例ID

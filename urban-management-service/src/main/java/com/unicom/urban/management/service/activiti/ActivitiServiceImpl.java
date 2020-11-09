@@ -83,11 +83,23 @@ public class ActivitiServiceImpl implements ActivitiService {
         Map<String, Object> variables = new HashMap<>(3);
         variables.put("userId", StringUtils.collectionToCommaDelimitedString(userList));
         variables.put("eventSource", EventSourceConstant.ACCEPTANCE_REPORTING);
-        ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
+        ProcessInstance processInstance = startProcessInstanceByKey("", eventId, variables);
         log.debug("----------------------受理员上报事件开始--------------------------------------");
         log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
         log.debug("----------------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
         log.debug("----------------------受理员上报事件结束--------------------------------------");
+        return processInstance;
+    }
+
+    @Override
+    public ProcessInstance reportAutoEvent(String eventId, List<String> userList) {
+        Map<String, Object> variables = new HashMap<>(3);
+        variables.put("userId", StringUtils.collectionToCommaDelimitedString(userList));
+        ProcessInstance processInstance = startProcessInstanceByKey("auto_event", eventId, variables);
+        log.debug("----------------------自处理事件上报开始--------------------------------------");
+        log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
+//        log.debug("----------------------监督员 userId:{}---------------------", Arrays.toString(userList.toArray()));
+        log.debug("----------------------自处理事件上报结束--------------------------------------");
         return processInstance;
     }
 
