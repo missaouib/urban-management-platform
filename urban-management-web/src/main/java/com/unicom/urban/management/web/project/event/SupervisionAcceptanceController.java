@@ -125,7 +125,7 @@ public class SupervisionAcceptanceController {
      * @return Result
      */
     @PostMapping("/receive")
-    public Result Receive(EventDTO eventDTO) {
+    public Result receive(EventDTO eventDTO) {
         eventDTO.setInitSts(2);
         eventService.save(eventDTO);
         return Result.success();
@@ -161,7 +161,11 @@ public class SupervisionAcceptanceController {
      */
     @GetMapping("/selfProcessingList")
     public Page<EventVO> selfProcessingList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
-        eventDTO.setTaskName(Arrays.asList(EventConstant.ACCEPTANCE_CASE_REGISTRATION, EventConstant.ACCEPTANCE_SEND_VERIFICATION, EventConstant.ACCEPTANCE_SEND_CHECK, EventConstant.ACCEPTANCE));
+        eventDTO.setTaskName(Arrays.asList(
+                EventConstant.ACCEPTANCE_CASE_REGISTRATION,
+                EventConstant.ACCEPTANCE_SEND_VERIFICATION,
+                EventConstant.ACCEPTANCE_SEND_CHECK,
+                EventConstant.ACCEPTANCE));
         return eventService.search(eventDTO, pageable);
     }
 

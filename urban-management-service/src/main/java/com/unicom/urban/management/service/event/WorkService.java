@@ -1,8 +1,10 @@
 package com.unicom.urban.management.service.event;
 
-import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
-import com.unicom.urban.management.pojo.entity.*;
+import com.unicom.urban.management.pojo.entity.Event;
+import com.unicom.urban.management.pojo.entity.EventFile;
+import com.unicom.urban.management.pojo.entity.ProcessTimeLimit;
+import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.processtimelimit.ProcessTimeLimitService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
@@ -53,12 +55,13 @@ public class WorkService {
 
     /**
      * 领取 -> 派遣
+     *
      * @param eventId 事件id
      * @param userid
      */
-    public void eventHandle(String eventId, List<String> userid, String buttonId){
+    public void eventHandle(String eventId, List<String> userid, String buttonId) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-        activitiService.claim(statistics.getTaskId(),SecurityUtil.getUserId());
+        activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         activitiService.complete(statistics.getTaskId(), userid, buttonId);
         this.testFinish(eventId);
         this.initStatistics(eventId);
@@ -94,8 +97,17 @@ public class WorkService {
      * @param button  按钮
      */
     public void completeByReceptionist(String eventId, String userId, String button) {
-        String s = testFinish(eventId);
-        activitiService.complete(s, Collections.singletonList(userId), button);
+        Statistics s = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        s.setEndTime(LocalDateTime.now());
+        s.setSendVerify(1);
+        Map<String, Object> map = judgeOverTimeIsOrNot(s.getStartTime(), s.getEndTime(), s.getProcessTimeLimit().getTimeLimit());
+        s.setInTimeSendVerify((Integer) map.get("time"));
+        s.setSts(map.get("sts").toString());
+        s.setSendVerifyHumanName(SecurityUtil.getUser().castToUser());
+        s.setSendVerifyHuman(SecurityUtil.getUser().castToUser());
+        /*TODO 获取当前登陆人角色*/
+        statisticsService.update(s);
+        activitiService.complete(s.getTaskId(), Collections.singletonList(userId), button);
         Statistics statistics = initStatistics(eventId);
         activitiService.claim(statistics.getTaskId(), userId);
     }
@@ -125,6 +137,7 @@ public class WorkService {
         activitiService.complete(s, Collections.singletonList("1"), button);
         initStatistics(eventId);
     }
+
     /**
      * 受理员领取任务
      *
@@ -132,7 +145,12 @@ public class WorkService {
      */
     public void claimByReceptionist(String eventId) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-        this.checkStatisticsByReceptionistReport(statistics);
+        statistics.setOperateHuman(SecurityUtil.getUser().castToUser());
+        statistics.setOperateHumanName(SecurityUtil.getUser().castToUser());
+        /*TODO 获取当前登陆人的角色*/
+        statistics.setUser(SecurityUtil.getUser().castToUser());
+        statistics.setToOperate(1);
+        statisticsService.update(statistics);
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
     }
 
@@ -144,10 +162,21 @@ public class WorkService {
      * @param button  按钮
      */
     public void completeByReceptionistForDo(String eventId, String button) {
-        String s = testFinish(eventId);
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        statistics.setEndTime(LocalDateTime.now());
+        statistics.setOperate(1);
+        statistics.setReport(1);
+        statistics.setEndTime(LocalDateTime.now());
+        Map<String, Object> map = judgeOverTimeIsOrNot(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeLimit());
+        statistics.setInTimeOperate((Integer) map.get("time"));
+        statistics.setSts(map.get("sts").toString());
+        statistics.setToOperate(0);
+        statisticsService.update(statistics);
         /*TODO 查询所有值班长角色的人*/
-        activitiService.complete(s, Collections.singletonList("1"), button);
-        this.initStatistics(eventId);
+        activitiService.complete(statistics.getTaskId(), Collections.singletonList("1"), button);
+        Statistics statistics1 = this.initStatistics(eventId);
+        statistics1.setToInst(1);
+        statisticsService.update(statistics1);
     }
 
     /**
@@ -158,8 +187,17 @@ public class WorkService {
      * @param button  按钮
      */
     public void completeByReceptionistForNotDo(String eventId, String button) {
-        String s = testFinish(eventId);
-        activitiService.complete(s, null, button);
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        statistics.setEndTime(LocalDateTime.now());
+        statistics.setOperate(1);
+        statistics.setReport(1);
+        statistics.setEndTime(LocalDateTime.now());
+        Map<String, Object> map = judgeOverTimeIsOrNot(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeLimit());
+        statistics.setInTimeOperate((Integer) map.get("time"));
+        statistics.setSts(map.get("sts").toString());
+        statistics.setNotOperate(1);
+        statisticsService.update(statistics);
+        activitiService.complete(statistics.getTaskId(), null, button);
     }
 
     /* -------------------------------------------------------------私有方法- */
@@ -177,7 +215,9 @@ public class WorkService {
         ProcessInstance processInstance = activitiService.acceptanceReporting(eventId, userList);
         event.setProcessInstanceId(processInstance.getId());
         eventService.update(event);
-        this.initStatistics(event.getId());
+        Statistics statistics = this.initStatistics(event.getId());
+        statistics.setNeedSendVerify(1);
+        statisticsService.update(statistics);
     }
 
     /**
@@ -191,17 +231,6 @@ public class WorkService {
         statistics.setEndTime(LocalDateTime.now());
         statisticsService.update(statistics);
         return statistics.getTaskId();
-    }
-
-    /**
-     * 根据传入的角色id查询所有拥有该角色的人
-     *
-     * @param roleId 角色id
-     * @return userId的集合
-     */
-    private List<String> getUserByRoleId(String roleId) {
-        /*TODO 根据传入的角色id查询所有拥有该角色的人*/
-        return new ArrayList<>();
     }
 
     /**
@@ -237,99 +266,6 @@ public class WorkService {
         statistics.setEventFileList(eventFileList);
     }
 
-    /**
-     * 监督员上报
-     *
-     * @param statistics 初始化出来的实例
-     */
-    private void supervisorReportForStatistics(Statistics statistics) {
-        statistics.setPatrolReport(1);
-        statistics.setReport(1);
-        statistics.setEndTime(statistics.getStartTime());
-        User user = new User();
-        user.setId(SecurityUtil.getUserId());
-        statistics.setReportPatrol(user);
-        statistics.setReportPatrolName(user);
-        /*TODO 获取当前登陆人的角色*/
-        Role role = new Role();
-        statistics.setReportPatrolRole(role);
-        statistics.setUser(user);
-    }
-
-    /**
-     * 受理员转批值班长 待受理
-     *
-     * @param statistics 初始化出来的实例
-     */
-    private void initStatisticsByReceptionistReport(Statistics statistics) {
-        statistics.setStartTime(LocalDateTime.now());
-        /* 待受理 */
-        statistics.setToOperate(1);
-        /*TODO 调用定时器 判断是否超时*/
-    }
-
-    /**
-     * 受理员转批值班长/受理员上报 领取任务
-     *
-     * @param statistics 待受理的实例
-     */
-    private void checkStatisticsByReceptionistReport(Statistics statistics) {
-        statistics.setOperateHuman(SecurityUtil.getUser().castToUser());
-        statistics.setOperateHumanName(SecurityUtil.getUser().castToUser());
-        /*TODO 获取当前登陆人的角色*/
-        statistics.setUser(SecurityUtil.getUser().castToUser());
-    }
-
-    /**
-     * 受理/不予受理
-     *
-     * @param statistics 指定受理员接受的实例
-     * @param buttonName 点击的按钮名称
-     */
-    private void judgeStatisticsByReceptionistReport(Statistics statistics, String buttonName, String opinions, List<EventFile> eventFileList) {
-        setOpinionsAndEventFileList(statistics, opinions, eventFileList);
-        statistics.setToOperate(0);
-        statistics.setReport(1);
-        statistics.setEndTime(LocalDateTime.now());
-        if ("受理Id".equals(buttonName)) {
-            statistics.setOperate(1);
-        } else if ("不予受理Id".equals(buttonName)) {
-            statistics.setNotOperate(1);
-        } else {
-            throw new DataValidException("请检查工作流流程");
-        }
-        Map<String, Object> map = judgeOverTimeIsOrNot(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeLimit());
-        statistics.setInTimeOperate((Integer) map.get("time"));
-        statistics.setSts(map.get("sts").toString());
-    }
-
-    /**
-     * 受理员上报
-     *
-     * @param statistics 初始化的实例
-     */
-    private void receptionistReportForStatistics(Statistics statistics) {
-        statistics.setPublicReport(1);
-        statistics.setReport(1);
-        statistics.setNeedSendVerify(1);
-    }
-
-    /**
-     * 受理员上报 派核实
-     *
-     * @param statistics 待核实实例
-     */
-    private User receptionistSendVerify(Statistics statistics, User user, String opinions, List<EventFile> eventFileList) {
-        setOpinionsAndEventFileList(statistics, opinions, eventFileList);
-        statistics.setSendVerify(1);
-        statistics.setNeedSendVerify(1);
-        statistics.setEndTime(LocalDateTime.now());
-        Map<String, Object> map = judgeOverTimeIsOrNot(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeLimit());
-        statistics.setInTimeSendVerify((Integer) map.get("time"));
-        statistics.setSts(map.get("sts").toString());
-        return user;
-    }
-
     private Map<String, Object> judgeOverTimeIsOrNot(LocalDateTime starTime, LocalDateTime endTime, int processTimeLimit) {
         /* 计算出的实际完成任务时长 */
         Duration duration = Duration.between(starTime, endTime);
@@ -354,37 +290,6 @@ public class WorkService {
             }
         }
         return map;
-    }
-
-    /**
-     * 监督员核实反馈 初始化
-     *
-     * @param statistics 初始化的实例
-     * @param user       被受理员派核实选中的监督员
-     */
-    private void initSupervisorVerification(Statistics statistics, User user) {
-        statistics.setStartTime(LocalDateTime.now());
-        statistics.setUser(user);
-        statistics.setVerifyPatrol(user);
-        statistics.setVerifyPatrolName(user);
-        /*TODO 获取传入参数user的角色*/
-        Role role = new Role();
-        statistics.setVerifyPatrolRole(role);
-        statistics.setNeedVerify(1);
-    }
-
-    /**
-     * 监督员核实反馈 核实按钮
-     *
-     * @param statistics 初始化过，增加了受理员指定监督的实例
-     */
-    private void supervisorVerification(Statistics statistics, String opinions, List<EventFile> eventFileList) {
-        setOpinionsAndEventFileList(statistics, opinions, eventFileList);
-        statistics.setVerify(1);
-        statistics.setNeedVerify(0);
-        Map<String, Object> map = judgeOverTimeIsOrNot(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeLimit());
-        statistics.setInTimeVerify((Integer) map.get("time"));
-        statistics.setSts(map.get("sts").toString());
     }
 
 }
