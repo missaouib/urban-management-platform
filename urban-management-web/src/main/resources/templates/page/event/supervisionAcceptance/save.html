@@ -155,10 +155,7 @@
                                 </td>
                                 <td><span></span>上报人</td>
                                 <td>
-                                    <select id="selectTail" name="kv" onchange="tailChange()">
-                                        <option value="" selected>请选择</option>
-                                        <option value="1">1</option>
-                                    </select>
+                                    <input type="text" readonly value="超级管理员">
                                     <input type="hidden" value="" id="selectDown">
                                     <input value="1" type="hidden" name="userId">
                                 </td>
@@ -174,32 +171,6 @@
                                 <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
                                 <td colspan = "8"><textarea id="problemescription" th:name="represent" required></textarea></td>
                             </tr>
-
-
-
-                            <!--                            <tr>-->
-                            <!--                                <td><span></span>案件等级</td>-->
-                            <!--                                <td>-->
-                            <!--                                    <select class="form-control" id="level" th:name="level" required>-->
-                            <!--                                        <option>&#45;&#45;请选择&#45;&#45;</option>-->
-                            <!--                                        <option th:each="as:${level}" th:value="${as.id}"-->
-                            <!--                                                th:text="${as.value}"></option>-->
-                            <!--                                    </select>-->
-                            <!--                                </td>-->
-                            <!--                            </tr>-->
-
-
-                            <tr>
-                                <td><span></span>诉求人</td>
-                                <td style="text-align: left"><div class="username" th:sec:authentication="principal.username"></div></td>
-                                <td><span></span>是否处理</td>
-                                <td style="text-align: left">
-                                    <input type="checkbox" style="width: 30px">
-                                </td>
-                            </tr>
-
-
-
                             </tbody>
                         </table>
                         <div class="send">
@@ -307,11 +278,6 @@
 
     })
 
-    function tailChange(){
-        var optionsVal = $("#selectTail option:selected");
-        console.log(optionsVal.val());
-        $("#selectDown").val(optionsVal.val())
-    }
 
     let url = /*[[@{/event/register}]]*/ "/event/register";
     let receiveUrl = /*[[@{/event/receive}]]*/ "/event/receive";
