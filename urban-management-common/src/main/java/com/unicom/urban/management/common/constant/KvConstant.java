@@ -77,4 +77,20 @@ public class KvConstant {
      * 案件完结
      */
     public static final String CLOS_ETESK = "69132147-bc3c-451d-9336-5117e9adc0d6";
+
+    /**
+     * 环节时限-天
+     */
+    public static final String TASK_DAY = "515f8b4f-e1c1-4829-9133-8e0739661b2a";
+
+    /**
+     * 环节时限-小时
+     */
+    public static final String TASK_HOUR = "3863243c-d7bb-4cd3-a259-7c7fcc107227";
+
+    /**
+     * 环节时限-分钟
+     */
+    public static final String TASK_MINUTE = "a163cd47-553e-42eb-aacb-dcb9004482d3";
+
 }
