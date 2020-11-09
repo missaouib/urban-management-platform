@@ -456,12 +456,14 @@ public class Statistics {
     /**
      * 处置部门标识
      */
-    private Integer disposeUnit;
+    @ManyToOne
+    private Dept disposeUnit;
 
     /**
      * 处置部门
      */
-    private String disposeUnitName;
+    @ManyToOne
+    private Dept disposeUnitName;
 
     /* --------------------------------------------------------- */
 
@@ -552,10 +554,16 @@ public class Statistics {
      */
     private Integer displayStyleId;
 
-    /**
+    /**\
      * 推诿
      */
     private Integer shuffle;
+
+    /**
+     * 发核查
+     */
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer sendCheckNum;
 
 
 }
