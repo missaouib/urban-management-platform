@@ -86,11 +86,11 @@ public class KvConstant {
     /**
      * 环节时限-小时
      */
-    public static final String TASK_HOUR = "515f8b4f-e1c1-4829-9133-8e0739661b2a";
+    public static final String TASK_HOUR = "3863243c-d7bb-4cd3-a259-7c7fcc107227";
 
     /**
      * 环节时限-分钟
      */
-    public static final String TASK_MINUTE = "515f8b4f-e1c1-4829-9133-8e0739661b2a";
+    public static final String TASK_MINUTE = "a163cd47-553e-42eb-aacb-dcb9004482d3";
 
 }
