@@ -101,18 +101,34 @@ public class WorkService {
         if ("13".equals(button) || "16".equals(button)) {
             activitiService.claim(s.getTaskId(), SecurityUtil.getUserId());
         }
-        s.setEndTime(LocalDateTime.now());
-        s.setSendVerify(1);
         Map<String, Object> map = judgeOverTimeIsOrNot(s.getStartTime(), s.getEndTime(), s.getProcessTimeLimit().getTimeLimit());
-        s.setInTimeSendVerify((Integer) map.get("time"));
-        s.setSts(map.get("sts").toString());
-        s.setSendVerifyHumanName(SecurityUtil.getUser().castToUser());
-        s.setSendVerifyHuman(SecurityUtil.getUser().castToUser());
-        /*TODO 获取当前登陆人角色*/
+        if ("14".equals(button)) {
+            s.setSendCheckHuman(1);
+            s.setInTimeCheck((Integer) map.get("time"));
+            s.setSts(map.get("sts").toString());
+        }
+        if ("11".equals(button)) {
+            /* 发核实 */
+            s.setSendVerify(1);
+            /* 按时发核实 */
+            s.setInTimeSendVerify((Integer) map.get("time"));
+            s.setSts(map.get("sts").toString());
+            s.setSendVerifyHumanName(SecurityUtil.getUser().castToUser());
+            s.setSendVerifyHuman(SecurityUtil.getUser().castToUser());
+            /*TODO 获取当前登陆人角色*/
+            s.setUser(SecurityUtil.getUser().castToUser());
+        }
+        s.setEndTime(LocalDateTime.now());
         statisticsService.update(s);
         activitiService.complete(s.getTaskId(), Collections.singletonList(userId), button);
         Statistics statistics = initStatistics(eventId);
-        statistics.setNeedVerify(1);
+        if ("14".equals(button)) {
+            statistics.setNeedCheck(1);
+        }
+        if ("11".equals(button)) {
+            /* 应核实 */
+            statistics.setNeedVerify(1);
+        }
         statisticsService.update(statistics);
         activitiService.claim(statistics.getTaskId(), userId);
 
@@ -155,7 +171,6 @@ public class WorkService {
         statistics.setOperateHumanName(SecurityUtil.getUser().castToUser());
         /*TODO 获取当前登陆人的角色*/
         statistics.setUser(SecurityUtil.getUser().castToUser());
-        statistics.setToOperate(1);
         statisticsService.update(statistics);
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
     }
@@ -171,18 +186,32 @@ public class WorkService {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         statistics.setEndTime(LocalDateTime.now());
+        /* 受理数 */
         statistics.setOperate(1);
-        statistics.setReport(1);
-        statistics.setEndTime(LocalDateTime.now());
         Map<String, Object> map = judgeOverTimeIsOrNot(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeLimit());
+        /* 按时受理 */
         statistics.setInTimeOperate((Integer) map.get("time"));
         statistics.setSts(map.get("sts").toString());
+        /* 待受理 */
         statistics.setToOperate(0);
         statisticsService.update(statistics);
         /*TODO 查询所有值班长角色的人*/
         activitiService.complete(statistics.getTaskId(), Collections.singletonList("1"), button);
         Statistics statistics1 = this.initStatistics(eventId);
-        statistics1.setToInst(1);
+        if ("10".equals(button)) {
+            /* 待结案 */
+            statistics1.setToClose(1);
+        }
+        if ("3".equals(button)) {
+            /* 待立案数 */
+            statistics1.setToInst(1);
+        }
+        if ("17".equals(button)) {
+            /* 带派遣 */
+            statistics1.setToDispatch(1);
+            /* 应派遣 */
+            statistics1.setNeedDispatch(1);
+        }
         statisticsService.update(statistics1);
     }
 
@@ -197,13 +226,14 @@ public class WorkService {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         statistics.setEndTime(LocalDateTime.now());
-        statistics.setOperate(1);
-        statistics.setReport(1);
-        statistics.setEndTime(LocalDateTime.now());
+        /* 待受理 */
+        statistics.setToOperate(0);
+        /* 不予受理 */
+        statistics.setNotOperate(1);
         Map<String, Object> map = judgeOverTimeIsOrNot(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeLimit());
+        /* 按时受理 */
         statistics.setInTimeOperate((Integer) map.get("time"));
         statistics.setSts(map.get("sts").toString());
-        statistics.setNotOperate(1);
         statisticsService.update(statistics);
         activitiService.complete(statistics.getTaskId(), null, button);
     }
@@ -224,6 +254,11 @@ public class WorkService {
         event.setProcessInstanceId(processInstance.getId());
         eventService.update(event);
         Statistics statistics = this.initStatistics(event.getId());
+        /* 公众举报 */
+        statistics.setPublicReport(1);
+        /* 上报数 */
+        statistics.setReport(1);
+        /* 应发核实 */
         statistics.setNeedSendVerify(1);
         statisticsService.update(statistics);
     }
