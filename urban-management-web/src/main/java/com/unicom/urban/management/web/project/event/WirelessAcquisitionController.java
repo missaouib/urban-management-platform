@@ -16,6 +16,7 @@ import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.event.EventService;
+import com.unicom.urban.management.service.event.PetitionerService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
@@ -53,6 +54,8 @@ public class WirelessAcquisitionController {
     private DeptTimeLimitService deptTimeLimitService;
     @Autowired
     private StatisticsService statisticsService;
+    @Autowired
+    private PetitionerService petitionerService;
     @GetMapping("/toWirelessAcquisitionList")
     public ModelAndView toWirelessAcquisitionList() {
         return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/list");
@@ -92,37 +95,37 @@ public class WirelessAcquisitionController {
 
     @GetMapping("/toWirelessAcquisitionUpdate/{id}")
     public ModelAndView toWirelessAcquisitionListUpdate(@PathVariable String id, Model model) {
-        Event event = eventService.findOne(id);
-        model.addAttribute("event", event);
-        String dtlId = event.getTimeLimit().getId();
-        DeptTimeLimitVO deptTimeLimitVO = deptTimeLimitService.findDeptTimeLimit(dtlId);
-        //问题类型回显
-        EventType eventType = eventTypeService.getEventType(event.getEventType().getId());
-        model.addAttribute("eventTypeId",eventType.getName());
-        //立案区域回显
-        model.addAttribute("region",event.getEventCondition().getId());
-        //案件时限分类回显
-        model.addAttribute("timeType",event.getTimeLimit().getId());
-        //案件等级回显
-        //level
-        //所在区域回显
-        model.addAttribute("grid1",event.getGrid().getParent().getParent().getParent().getId());
-        //所属街道回显
-        model.addAttribute("grid2",event.getGrid().getParent().getParent().getId());
-        //所属社区回显
-        model.addAttribute("grid3",event.getGrid().getParent().getId());
-        //所属网格回显
-        model.addAttribute("grid4",event.getGrid().getId());
-        //问题来源回显
-        model.addAttribute("eventSource",event.getEventSource().getId());
-        //案件类型回显
-        model.addAttribute("recTypeId",event.getRecType().getId());
+//        Event event = eventService.findOne(id);
+//        model.addAttribute("event", event);
+//        String dtlId = event.getTimeLimit().getId();
+//        DeptTimeLimitVO deptTimeLimitVO = deptTimeLimitService.findDeptTimeLimit(dtlId);
+//        //问题类型回显
+//        EventType eventType = eventTypeService.getEventType(event.getEventType().getId());
+//        model.addAttribute("eventTypeId",eventType.getName());
+//        //立案区域回显
+//        model.addAttribute("region",event.getEventCondition().getId());
+//        //案件时限分类回显
+//        model.addAttribute("timeType",event.getTimeLimit().getId());
+//        //案件等级回显
+//        //level
+//        //所在区域回显
+//        model.addAttribute("grid1",event.getGrid().getParent().getParent().getParent().getId());
+//        //所属街道回显
+//        model.addAttribute("grid2",event.getGrid().getParent().getParent().getId());
+//        //所属社区回显
+//        model.addAttribute("grid3",event.getGrid().getParent().getId());
+//        //所属网格回显
+//        model.addAttribute("grid4",event.getGrid().getId());
+//        //问题来源回显
+//        model.addAttribute("eventSource",event.getEventSource().getId());
+//        //案件类型回显
+//        model.addAttribute("recTypeId",event.getRecType().getId());
         return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/update");
     }
 
     @GetMapping("/wirelessAcquisitionList")
     public Page<EventVO> wirelessAcquisitionList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
-        eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_CASE_VERIFICATION));
+        eventDTO.setSts(EventConstant.SUPERVISE_SAVE);
         return eventService.search(eventDTO, pageable);
     }
 
@@ -205,12 +208,45 @@ public class WirelessAcquisitionController {
         eventService.save(eventDTO);
     }
     /**
-     * 上报
+     * 案件采集保存
+     * @param eventDTO
+     */
+    @RequestMapping("/saveTemp")
+    public void saveTemp(EventDTO eventDTO){
+        eventDTO.setSts(EventConstant.SUPERVISE_SAVE);
+        eventService.saveTemp(eventDTO);
+    }
+
+    /**
+     * 案件采集修改
+     * @param eventDTO
+     */
+    @RequestMapping("/updateTemp")
+    public void updateTemp(EventDTO eventDTO){
+        eventService.updateTemp(eventDTO);
+    }
+    /**
+     * 案件采集删除
+     * @param id
+     */
+    @RequestMapping("/remove/{id}")
+    public void remove(@PathVariable String id){
+        Event event = eventService.findOne(id);
+        //petitionerService.fevent.getPetitioner().getId();
+        //petitionerService.remove();
+        eventService.remove(id);
+    }
+    /**
+     * 案件采集上报
      * @param eventDTO
      */
     @RequestMapping("/preReport")
     public void preReport(EventDTO eventDTO){
-        eventService.saveAutoReport(eventDTO);
+        if (eventDTO.getDoBySelf()!=null) {
+            eventService.saveAutoReport(eventDTO);
+        }else {
+            eventService.saveReport(eventDTO);
+        }
     }
 
     /**

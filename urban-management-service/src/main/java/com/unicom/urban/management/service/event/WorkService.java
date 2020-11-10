@@ -356,5 +356,24 @@ public class WorkService {
         statistics.setToOperate(1);
         statisticsService.update(statistics);
     }
+    /**
+     * 上报事件
+     * @param eventId
+     */
+    public void superviseReporting(String eventId) {
+        /*TODO 查询所有有受理员角色的人*/
+        List<String> userList = new ArrayList<>();
+        userList.add("1");
+        Event event = eventService.findOne(eventId);
+        ProcessInstance processInstance = activitiService.superviseReporting(eventId, userList);
+        event.setProcessInstanceId(processInstance.getId());
+        eventService.update(event);
+        Statistics statistics = this.initStatistics(event.getId());
+        statistics.setNeedSendVerify(1);
+        statistics.setReport(1);
+        statistics.setPatrolReport(1);
+        statistics.setToOperate(1);
+        statisticsService.update(statistics);
+    }
 
 }

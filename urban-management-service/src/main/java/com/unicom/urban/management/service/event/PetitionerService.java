@@ -20,5 +20,8 @@ public class PetitionerService {
     public Petitioner save(Petitioner petitioner){
         return petitionerRepository.save(petitioner);
     }
+    public void remove(String id){
+        petitionerRepository.deleteById(id);
+    }
 
 }

@@ -149,7 +149,11 @@ public class EventService {
         return EventButtonMapper.INSTANCE.eventButtonListToEventButtonVOList(eventButtons);
     }
 
-
+public void saveTemp(EventDTO eventDTO){
+    Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
+    event.setUser(SecurityUtil.getUser().castToUser());
+    Event save = eventRepository.save(event);
+}
     /**
      * 保存事件
      *
@@ -175,15 +179,7 @@ public class EventService {
             workService.caseAcceptanceByReceive(save.getId(), eventDTO.getUserId());
         }
     }
-    /**
-     * 上报自处理事件
-     *
-     * @param eventId  事件ID
-     * @return 流程实例
-     */
-    public void reportAutoEvent(String eventId){
-        workService.saveAutoReport(eventId);
-    }
+
     /**
      * 受理员完成任务 并且 激活监督员(领取任务)核实
      *
@@ -330,24 +326,48 @@ public class EventService {
     }
 
     /**
-     * update
+     * 受理员上报
      *
      * @param event 需要操作的实体
      */
     public Event update(Event event) {
        return eventRepository.saveAndFlush(event);
     }
+    /**
+     * 案件采集修改
+     *
+     * @param eventDTO 需要操作的实体
+     */
+    public Event updateTemp(EventDTO eventDTO) {
+        Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
+        return eventRepository.saveAndFlush(event);
+    }
+    /**
+     * 案件采集删除
+     * @param eventId
+     */
+    public void remove(String eventId){
+        eventRepository.deleteById(eventId);
+    }
 
+    /**
+     * 案件采集自处理
+     * @param eventDTO
+     */
     public void saveAutoReport(EventDTO eventDTO) {
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         Event saved = eventRepository.save(event);
-        Boolean doBySelf = eventDTO.getDoBySelf();
-//        if (doBySelf != null) {
-//            //自处理上报
-//            if (doBySelf) {
-//                this.reportAutoEvent(saved.getId());
-//            }
-//        }
+        workService.saveAutoReport(saved.getId());
+    }
+
+    /**
+     * 案件采集监督员上报
+     */
+    public void saveReport(EventDTO eventDTO) {
+        Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
+        event.setUser(SecurityUtil.getUser().castToUser());
+        Event saved = eventRepository.save(event);
+        workService.superviseReporting(saved.getId());
     }
 }
