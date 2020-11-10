@@ -554,7 +554,7 @@ public class Statistics {
      */
     private Integer displayStyleId;
 
-    /**\
+    /**
      * 推诿
      */
     private Integer shuffle;
@@ -564,6 +564,18 @@ public class Statistics {
      */
     @Column(columnDefinition = "TINYINT(1)")
     private Integer sendCheckNum;
+
+    /**
+     * 结案存档（自处理被判定有效案件）
+     */
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer closingFiling;
+
+    /**
+     * 无效案件（自处理被判定无效案件）
+     */
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer invalidEvent;
 
 
 }
