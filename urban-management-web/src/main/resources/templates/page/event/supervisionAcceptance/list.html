@@ -677,6 +677,8 @@
             $("#eventImg").attr('src', img + e.data.processInstanceId);
             /* 坐标 */
             setPoint(e.data.x, e.data.y);
+
+            setPolygon()
         });
     }
 
@@ -943,7 +945,7 @@
         view: new ol.View({
             // projection: projection,
             center: center,
-            zoom: 13,
+            zoom: 17,
             projection: projection
         })
     });
@@ -953,6 +955,41 @@
     });
     map.addLayer(layerMap);
 
+    var selectClick = new ol.interaction.Select();
+    map.addInteraction(selectClick);
+    selectClick.on('select', function (e) {
+        var features = e.target.getFeatures().getArray();
+        if (undefined !== features[0].H.data) {
+            let data = features[0].H.data;
+            $.ajaxUtil.get(componentByRecordId + "?recordId=" + data.id, function (e) {
+                // $("#componentId").val(e.data.id);
+                // $("#objId").val(e.data.objId);
+                // $("#objName").val(e.data.objName);
+                // $("#maintenanceDeptCode").val(e.data.maintenanceDeptCode);
+                // $("#maintenanceDeptName").val(e.data.maintenanceDeptName);
+                // $("#mainDeptCode").val(e.data.mainDeptCode);
+                // $("#mainDeptName").val(e.data.mainDeptName);
+                // $("#ownershipDeptCode").val(e.data.ownershipDeptCode);
+                // $("#ownershipDeptName").val(e.data.ownershipDeptName);
+                // $("#objState option[value='" + e.data.objStateId + "']").prop("selected", true);
+                // $("#bgid option[value='" + e.data.bgid + "']").prop("selected", true);
+                // $("#dataSource option[value='" + e.data.dataSourceId + "']").prop("selected", true);
+                // $("#note").val(e.data.note);
+                // $("#coordinate").val(e.data.coordinate);
+                // $("#mongoId").val("");
+                // $("#changeDate").val(e.data.changeDate);
+                // $("#initialDate").val(e.data.initialDate);
+            })
+        } else {
+            // $("#componentId").val("")
+            // $("#publish").val(publish);
+            // $("#publishId").val(publishId);
+            // $("#typeStr").val(typeStr);
+            // $("#eventTypeId").val(eventTypeId);
+            // $("#coordinate").val(coordinate);
+        }
+
+    })
     function setPoint(x, y) {
         let point = new ol.Feature({
             geometry: new ol.geom.Point([x, y]),
@@ -963,6 +1000,18 @@
             }
         });
         layerMap.getSource().addFeature(point);
+    }
+
+    function setPolygon(coordinates) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(coordinates),
+            data: {
+                // id: id,
+                // name: name,
+                coordinate: coordinates
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
     }
 </script>
 </body>
