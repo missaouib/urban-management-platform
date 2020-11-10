@@ -88,9 +88,9 @@ public class EventService {
                 list.add(criteriaBuilder.equal(root.get("eventSource").get("id").as(String.class), eventDTO.getEventSourceId()));
             }
 
-            if (StringUtils.isNotBlank(eventDTO.getEventCondition())) {
-                list.add(criteriaBuilder.equal(root.get("condition").get("parent").get("id").as(String.class), eventDTO.getEventCondition()));
-            }
+//            if (StringUtils.isNotBlank(eventDTO.getEventCondition())) {
+//                list.add(criteriaBuilder.equal(root.get("condition").get("parent").get("id").as(String.class), eventDTO.getEventCondition()));
+//            }
 
             if (StringUtils.isNotBlank(eventDTO.getTimeType())) {
                 list.add(criteriaBuilder.equal(root.get("timeLimit").get("id").as(String.class), eventDTO.getTimeType()));
