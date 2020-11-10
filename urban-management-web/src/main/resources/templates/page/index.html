@@ -33,7 +33,7 @@
                 </div>
                 <div class="quitBtn">
                     <span>退出</span>
-                    <i><img th:src="@{/img/quit.png}" ></i>
+                    <i><img th:src="@{/img/quit.png}"></i>
                 </div>
             </div>
 
@@ -134,6 +134,23 @@
             $(".quitBtn").click(function () {
                 window.location.href = logoutUrl;
             })
+
+            // $(".treeview").click(function () {
+            //     $(this).addClass("menuActive").siblings(".treeview").removeClass("menuActive");
+            // })
+            // var itemList = document.querySelectorAll('.menuItem')
+            // for (var i =0;i<itemList.length;i++){
+            //     itemList[i].index = i;
+            //     itemList[i].onclick = function (){
+            //         for(var j=0; j<itemList.length; j++) {
+            //             itemList[j].className = '';
+            //         }
+            //         this.className = 'liActive';
+            //     }
+            // }
+            // $(".page-tabs-content").on("click",".menuTab",function () {
+            //
+            // })
         })
 
 

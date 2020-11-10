@@ -158,20 +158,20 @@ public class WirelessAcquisitionController {
      * @return
      */
     @GetMapping("/findDeptTimeLimitByCondition")
-    public Result findDeptTimeLimitByCondition(String eventTerm) {
-        List<DeptTimeLimitVO> list = eventService.findDeptTimeLimitByCondition(eventTerm);
+    public Result findDeptTimeLimitByCondition(String conditionId) {
+        List<DeptTimeLimitVO> list = eventService.findDeptTimeLimitByCondition(conditionId);
         return Result.success(list);
     }
 
     /**
      * 获取立案条件
      *
-     * @param conditionId
+     * @param conditionId id
      * @return
      */
     @GetMapping("/getEventCondition")
-    public Result getEventCondition(String eventConditionId) {
-        List<EventConditionVO> conditionValueByRegion = eventService.findConditionValueByRegion(eventConditionId);
+    public Result getEventCondition(String conditionId) {
+        List<EventConditionVO> conditionValueByRegion = eventService.findConditionValueByRegion(conditionId);
         return Result.success(conditionValueByRegion);
     }
 
