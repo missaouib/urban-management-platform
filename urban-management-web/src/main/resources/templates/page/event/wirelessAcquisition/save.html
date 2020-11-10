@@ -370,7 +370,7 @@
      */
     function getTimeTypeList() {
         let eventTerm = $("#eventTerm").val();
-        let url = "/event/findDeptTimeLimitByCondition?eventTerm=" + eventTerm;
+        let url = "/event/findDeptTimeLimitByCondition?conditionId=" + eventTerm;
         $.ajaxUtil.get(url, function (e) {
             $("#timeType").empty();
             let option = "<option>--请选择--</option>";
