@@ -368,7 +368,6 @@
 <script type="text/javascript" th:inline="javascript">
 
     function selectEventTypeTree() {
-        console.log(1)
         var treeId = $("#treeId").val();
         var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
         var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
@@ -382,7 +381,6 @@
     }
 
     function doSubmit(index, layero) {
-        console.log(2)
         var body = layer.getChildFrame('body', index);
         $("#eventTypeId").val(body.find('#treeId').val());
         $("#typeStr").val(body.find('#treeName').val());
@@ -400,7 +398,7 @@
     function findEventConditionByEventType(eventTypeId) {
         let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
         $.ajaxUtil.get(url, function (e) {
-            let option = "<option>--请选择--</option>";
+            let option = "<option value=''>--请选择--</option>";
             if (e.code === "0") {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.region + "</option>"
@@ -418,7 +416,7 @@
         let url = "/event/getEventCondition/?conditionId=" + eventConditionId;
         $.ajaxUtil.get(url, function (e) {
             $("#eventTerm").empty();
-            let option = "<option>--请选择--</option>";
+            let option = "<option value=''>--请选择--</option>";
             if (e.code === "0") {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
@@ -436,7 +434,7 @@
         let url = "/event/findDeptTimeLimitByCondition/?conditionId=" + eventTerm;
         $.ajaxUtil.get(url, function (e) {
             $("#timeType").empty();
-            let option = "<option>--请选择--</option>";
+            let option = "<option value=''>--请选择--</option>";
             if (e.code === "0") {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.level + "</option>"
@@ -489,7 +487,7 @@
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
-    let searchUrl = /*[[@{/event/selfProcessingList}]]*/ "/event/selfProcessingList";
+    let searchUrl = /*[[@{/event/supervisionAcceptanceList}]]*/ "/event/supervisionAcceptanceList";
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
     let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
