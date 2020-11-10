@@ -39,6 +39,7 @@ public interface EventMapper {
     @Mapping(source = "eventType.name", target = "eventTypeName")
     @Mapping(source = "eventSource.value", target = "eventSourceName")
     @Mapping(source = "recType.value", target = "recTypeName")
+    @Mapping(source = "timeLimit.id", target = "timeLimit")
     EventVO eventToEventVO(Event event);
 
     /**
@@ -57,6 +58,7 @@ public interface EventMapper {
     @Mapping(source = "peopleName", target = "petitioner.name")
     @Mapping(source = "sex", target = "petitioner.sex")
     @Mapping(source = "petitionerPhone", target = "petitioner.phone")
+    @Mapping(source = "eventCondition", target = "eventCondition.id")
     Event eventDTOToEvent(EventDTO eventDTO);
 
 

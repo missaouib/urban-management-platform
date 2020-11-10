@@ -79,7 +79,7 @@ public class EventDTO {
     /**
      * search 立案区域
      */
-//    private String eventCondition;
+    private String eventCondition;
 
     /**
      * search 计时等级
