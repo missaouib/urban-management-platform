@@ -815,10 +815,15 @@
         source: new ol.source.Vector(),
     });
     map.addLayer(layerMap);
+    let localReverseGeocoding = /*[[@{/event/localReverseGeocoding}]]*/ "/event/localReverseGeocoding";
+
     map.on('singleclick', function (evt) {
         let t = evt.coordinate;
         $("#longitude").val(t[0])
         $("#latitude").val(t[1])
+        $.ajaxUtil.get(localReverseGeocoding + "?x=" + t[0] + "&y=" + t[1], function (e) {
+            $("#location").val(e.data.name);
+        })
     });
     setPoint()
     function setPoint() {
