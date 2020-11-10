@@ -45,7 +45,12 @@ public class SupervisionAcceptanceController {
 
     @GetMapping("/toSupervisionAcceptanceList")
     public ModelAndView toSupervisionAcceptanceList() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/list");
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
     }
 
     @GetMapping("/toSupervisionAcceptanceSave")

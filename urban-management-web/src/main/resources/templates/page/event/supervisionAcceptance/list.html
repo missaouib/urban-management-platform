@@ -14,78 +14,69 @@
     <div class="leftContent">
         <form id="userForm">
             <div class="top table2_top">
-                <!--        <div>-->
                 <div class="top_out">
                     <table class="table">
                         <tbody>
                         <tr>
-                            <td>问题描述<span></span></td>
-                            <td>
-                                <input type="text" class="datepicker" readonly="readonly">
-                            </td>
-                            <td>问题类型<span>*</span></td>
-                            <td>
-                                <input id="event" name="eventType" placeholder="请选择问题类型" class="" type="text"
-                                       maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>所属网格<span></span></td>
-                            <td>
-                                <select id="gridKvId" name="kv" required>
-                                    <option value="">请选择</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </select>
-                            </td>
-                            <td>事件来源<span></span></td>
-                            <td style="width: 35%">
-                                <select name="kv" required>
-                                    <option value="">问题来源</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
+
                             <td>当前状态<span></span></td>
                             <td>
                                 <select name="kv" required>
                                     <option value="">请选择</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
                                 </select>
                             </td>
-                            <td>立案区域<span></span></td>
+                            <td>问题描述<span></span></td>
                             <td>
-                                <select name="kv" required>
-                                    <option value="">请选择</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
+                                <input type="text" class="datepicker" name="represent">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>所在网格<span></span></td>
+                            <td>
+                                <select class="form-control" id="grid1" name="grid" onchange="getStreetList()" required>
+                                    <option value="">--请选择--</option>
+                                    <option th:each="as:${gridList}" th:value="${as.id}"
+                                            th:text="${as.gridName}"></option>
+                                </select>
+                            </td>
+                            <td>事件来源<span></span></td>
+                            <td>
+                                <select class="form-control" id="eventSource" name="eventSourceId" required>
+                                    <option value="">--请选择--</option>
+                                    <option th:each="as:${eventSource}" th:value="${as.id}"
+                                            th:text="${as.value}"></option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td>等级<span></span></td>
+                            <td>问题类型<span></span></td>
+                            <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
+                                <input type="hidden" readonly="readonly" id="eventTypeId" name="eventTypeId"
+                                       class="find_input"/>
+                                <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                    +
+                                </button>
+                            </td>
+                            <td>立案区域<span></span></td>
                             <td>
-                                <select name="kv" required>
-                                    <option value="">请选择</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
+                                <select id="eventCondition" name="eventCondition" onchange="getEventCondition()"
+                                        required>
+                                    <option value="">--请选择--</option>
                                 </select>
                             </td>
+                        </tr>
+                        <tr>
                             <td>立案条件<span></span></td>
                             <td>
-                                <select name="kv" required>
-                                    <option value="">请选择</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
+                                <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
+                                    <option value="">--请选择--</option>
+                                </select>
+                            </td>
+                            <td>计时等级<span></span></td>
+                            <td>
+                                <select id="timeType" name="timeType" required>
+                                    <option value="">--请选择--</option>
                                 </select>
                             </td>
                         </tr>
@@ -93,8 +84,6 @@
                     </table>
                 </div>
             </div>
-
-            <!--    </div>-->
         </form>
         <div class="notice_check">
             <form id="search-form">
@@ -120,9 +109,7 @@
                 <div id="popup" class="ol-popup">
                     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                     <div id="popup-content">
-                        <ul id="message">
-
-                        </ul>
+                        <ul id="message"></ul>
                     </div>
                 </div>
             </div>
@@ -136,269 +123,205 @@
                                 <tr>
                                     <td><span>*</span>案卷号</td>
                                     <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly"
+                                        <input id="eventCode" placeholder="" class="" type="text" readonly="readonly"
                                                required>
                                     </td>
                                     <td><span>*</span>问题类型</td>
                                     <td>
-                                        <input id="eventType" name="eventType" placeholder="请选择问题类型" class=""
-                                               type="text" maxlength="30" required readonly="readonly"
-                                               onclick="selectEventTypeTree()">
-
+                                        <input id="eventTypeStr" type="text" maxlength="30" required
+                                               readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span>*</span>立案区域</td>
                                     <td>
-                                        <select name="kv" required readonly disabled>
-                                            <option value="">请选择</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="regionStr" type="text" maxlength="30" required readonly="readonly">
                                     </td>
                                     <td><span>*</span>立案条件</td>
                                     <td>
-                                        <select name="kv" required readonly disabled>
-                                            <option value="">请选择</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="conditionValue" type="text" maxlength="30" required
+                                               readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span>*</span>案件等级</td>
                                     <td>
-                                        <select name="kv" required readonly disabled>
-                                            <option value="">请选择</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="level" type="text" maxlength="30" required readonly="readonly">
+
                                     </td>
                                     <td><span>*</span>处理时限</td>
                                     <td>
-                                        <input type="text" readonly required>
+                                        <input id="timeLimitStr" type="text" readonly required>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span>*</span>问题描述</td>
-
-                                    <td colspan="8"><textarea id="problemescription" name="problemescription" required
-                                                              readonly></textarea></td>
-
-
+                                    <td colspan="8"><textarea id="represent" required readonly></textarea></td>
                                 </tr>
                                 <tr class="col-12">
                                     <td><span></span>案件地址</td>
                                     <td>
-                                        <input name="userName" placeholder="" class="" readonly type="text">
+                                        <input id="location" name="location" placeholder="" class="" readonly
+                                               type="text">
                                     </td>
                                     <td><span></span>案件类型</td>
                                     <td>
-                                        <select name="safeLevel" readonly="" disabled>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="recTypeStr" name="location" placeholder="" class="" readonly
+                                               type="text">
                                     </td>
                                 </tr>
                                 <tr class="col-12">
                                     <td><span>*</span>所属区域</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>一般</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="eventRegion" name="location" placeholder="" class="" readonly
+                                               type="text">
                                     </td>
                                     <td><span>*</span>所属街道</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="street" name="location" placeholder="" class="" readonly type="text">
                                     </td>
                                 </tr>
                                 <tr class="col-12">
                                     <td><span>*</span>所属社区</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>一般</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
+                                        <input id="community" name="location" placeholder="" class="" readonly
+                                               type="text">
                                     </td>
                                     <td><span>*</span>单元网格</td>
                                     <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span>*</span>案件类型</td>
-                                    <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                        </select>
-                                    </td>
-                                    <td><span>*</span>上报人</td>
-                                    <td>
-                                        <input readonly type="text" required>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span></span>诉求人</td>
-                                    <td>
-                                        <input type="text" readonly>
-                                    </td>
-                                    <td><span></span>联系方式</td>
-                                    <td><input id="handleTime" name="handleTime" type="text" value="15645068888"
-                                               readonly="readonly"></td>
-                                </tr>
-                                <tr>
-                                    <td><span></span>性别</td>
-                                    <td>
-                                        <select name="safeLevel" disabled>
-                                            <option>男</option>
-                                            <option>女</option>
-                                        </select>
-                                    </td>
-                                    <td><span></span>创建时间</td>
-                                    <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span></span>位置坐标</td>
-                                    <td>
-                                        <input type="text" class="find_input" readonly="readonly" value="经度">
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <input type="text" class="find_input" readonly="readonly" value="纬度">
+                                        <input id="girdStr" name="location" placeholder="" class="" readonly
+                                               type="text">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>问题来源</td>
                                     <td>
-                                        <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                        <input name="eventSourceStr" id="eventSourceStr" placeholder="" class=""
+                                               type="text" readonly="readonly">
+                                    </td>
+                                    <td><span>*</span>上报人</td>
+                                    <td>
+                                        <input id="userName" name="userName" placeholder="" class="" readonly
+                                               type="text">
                                     </td>
                                 </tr>
-
-                                <!--                                    <tr>-->
-                                <!--                                        <td>处理结果<span></span></td>-->
-                                <!--                                        <td colspan = "8"><textarea></textarea></td>-->
-                                <!--                                    </tr>-->
+                                <tr>
+                                    <td><span></span>诉求人</td>
+                                    <td>
+                                        <input id="petitionerName" name="petitionerName" placeholder="" class=""
+                                               readonly type="text">
+                                    </td>
+                                    <td><span></span>联系方式</td>
+                                    <td><input id="petitionerPhone" name="petitionerPhone" type="text" value=""
+                                               readonly="readonly"></td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>性别</td>
+                                    <td>
+                                        <input id="petitionerSex" name="petitionerSex" placeholder="" class="" readonly
+                                               type="text">
+                                    </td>
+                                    <td><span></span>创建时间</td>
+                                    <td>
+                                        <input id="cdate" name="cdate" placeholder="" class="" readonly type="text">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>位置坐标</td>
+                                    <td>
+                                        <input id="x" type="text" class="find_input" readonly="readonly" value="经度">
+                                    </td>
+                                    <td></td>
+                                    <td>
+                                        <input id="y" type="text" class="find_input" readonly="readonly" value="纬度">
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
-
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
-                                    <div><input id="input-id" type="file" name="file" multiple="multiple"></div>
+                                    <div><input id="input-id" class="input-id" type="file" name="file"
+                                                multiple="multiple"></div>
                                 </div>
-
-
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
-                                    <div><input id="videoInput" type="file" name="file" multiple="multiple"></div>
+                                    <div><input id="videoInput" class="videoInput" type="file" name="file"
+                                                multiple="multiple"></div>
                                 </div>
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
-                                    <div><input id="musicInput" type="file" name="file" multiple="multiple"></div>
-                                </div>
-
-                            </div>
-                            <div class="notice_bot">
-                                <!--            <div class="l_left">-->
-                                <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-                                <!--            </div>-->
-                                <div class="r_right but_p girdBtnGroup">
-                                    <input name="eventType" class="modelDo" value="转结案" type="text" data-toggle="modal" data-target="#modal-default">
-                                    <input name="eventType" class="modelDo" value="不受理" type="text" data-toggle="modal" data-target="#modal-default1">
-                                    <input name="eventType" class="modelDo" value="撤销办理" type="text" style="margin-right: 0px!important;">
-                                    <button class="but_close" onclick="Cancel()">返回</button>
+                                    <div><input id="musicInput" class="musicInput" type="file" name="file"
+                                                multiple="multiple"></div>
                                 </div>
                             </div>
-
                         </div>
+                        <div class="notice_bot">
+                            <div class="checkUser">
+                                <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>核实监督员</span>
+                                <div style="width: 100%;display: flex;justify-content: space-between">
+                                    <div id="monitor_man" type="text"
+                                         style="width:48%;resize: none;border-radius: 4px;border: 1px #ccc solid;line-height: 38px"></div>
+                                    <input type="hidden" id="userId" value="">
+                                    <input type="hidden" id="eventId" value="">
+                                    <input type="hidden" id="button" value="">
+                                    <div class="btn btn-primary" id="changeMan"
+                                         style="width: 48%;margin-left: 10px">选择监督员
+                                    </div>
+                                </div>
 
-                        <!--                            按钮-->
-
+                            </div>
+                            <div class="checkUser" id="selectUser" style="display: none">
+                                    <span class="sendText" style="width: 120px"><i
+                                            style="color: red!important;"></i></span>
+                                <div id="doUser"
+                                     style="width:100%;resize: none;border-radius: 4px;border: 1px #ccc solid;max-height: 100px;overflow:auto;">
+                                    <ul>
+                                        <li class="monitor" value="1">超级管理员</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="r_right but_p girdBtnGroup" id="eventButton"></div>
+                        </div>
                     </div>
                 </form>
             </div>
-            <div class="banner"></div>
-            <div class="banner">流程图</div>
-
-        </div>
-<!--        转结案-->
-        <div class="modal fade" id="modal-default">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">转结案</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="checkUser">
-                            <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>结案值班长</span>
-                            <input type="text" style="width:100%;resize: none;border-radius: 4px;border: 1px #ccc solid;">
-                        </div>
-                        <div class="checkMain" style="position: relative">
-                            <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>转结案意见</span>
-                            <textarea type="text" id="textIdioms"></textarea>
-                            <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
-                            <div id="wordSays" class="wordSays" style="background-color:#fff;">
-                                <ul>
-                                    <li class="idioms">11</li>
-                                    <li class="idioms">33</li>
-                                    <li class="idioms">22</li>
-                                </ul>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
-                        <button type="button" class="btn btn-primary">批转</button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+            <div class="banner">
+                <div class='g_con'>
+                    <!-- 物流时间轴 -->
+                    <div class='expressRecord' id="timeAxis">
+                        <div>暂时没有数据，请进入流程处理案件</div>
                     </div>
                 </div>
             </div>
+            <div class="banner"><img id="eventImg"></div>
         </div>
-
-<!--       不受理 -->
-        <div class="modal fade" id="modal-default1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">不受理</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div class="checkMain" style="position: relative">
-                            <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>不受理意见</span>
-                            <textarea type="text" id="textIdioms_yad"></textarea>
-                            <div class="alwaysSay btn btn-primary" id="alwaysSay_yad">惯用语</div>
-                            <div id="wordSays_yad" class="wordSays" style="background-color:#fff;">
-                                <ul>
-                                    <li class="idioms_yad">11</li>
-                                    <li class="idioms_yad">33</li>
-                                    <li class="idioms_yad">22</li>
-                                </ul>
-                            </div>
+    </div>
+    <!--    核实-->
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">核实</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="checkMain" style="position: relative">
+                        <span class="sendText" style="width: 120px"><i style="color: red!important;">*</i>核实意见</span>
+                        <textarea type="text" id="textIdioms"></textarea>
+                        <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
+                        <div id="wordSays" class="wordSays" style="background-color:#fff;">
+                            <ul>
+                                <li class="idioms">11</li>
+                                <li class="idioms">33</li>
+                                <li class="idioms">22</li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
-                        <button type="button" class="btn btn-primary">确定</button>
-                        <button type="button" class="btn btn-success" data-dismiss="modal">取消</button>
-                    </div>
+                </div>
+                <div class="modal-footer justify-content-between"
+                     style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary" onclick="completeEvent()">完成</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
                 </div>
             </div>
         </div>
@@ -414,38 +337,135 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <script type="text/javascript" th:inline="javascript">
 
+    function selectEventTypeTree() {
+        console.log(1)
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择事件类型',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        console.log(2)
+        var body = layer.getChildFrame('body', index);
+        $("#eventTypeId").val(body.find('#treeId').val());
+        $("#typeStr").val(body.find('#treeName').val());
+        let eventTypeId = $("#eventTypeId").val();
+        //获取立案区域
+        findEventConditionByEventType(eventTypeId)
+        layer.close(index);
+    }
+
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+
+    /**
+     * 获取立案区域
+     */
+    function findEventConditionByEventType(eventTypeId) {
+        let url = findEventConditionByEventTypeUrl + "/" + eventTypeId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === "0") {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
+                });
+                $("#eventCondition").html(option);
+            }
+        });
+    }
+
+    /**
+     * 立案条件
+     */
+    function getEventCondition() {
+        let eventConditionId = $("#eventCondition").val();
+        let url = "/event/getEventCondition/" + eventConditionId;
+        $.ajaxUtil.get(url, function (e) {
+            $("#eventTerm").empty();
+            let option = "<option>--请选择--</option>";
+            if (e.code === "0") {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
+                });
+            }
+            $("#eventTerm").html(option);
+        });
+    }
+
+    /**
+     * 获取立案时限分类
+     */
+    function getTimeTypeList() {
+        let eventTerm = $("#eventTerm").val();
+        let url = "/event/findDeptTimeLimitByCondition/" + eventTerm;
+        $.ajaxUtil.get(url, function (e) {
+            $("#timeType").empty();
+            let option = "<option>--请选择--</option>";
+            if (e.code === "0") {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.level + "</option>"
+                });
+            }
+            $("#timeType").html(option);
+        });
+    }
+
     $(function () {
         queryUserList();
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         })
+
+        //选择监督员
+        $("#changeMan").click(function () {
+            $("#selectUser").stop().slideToggle(300)
+        });
+
+        $("#selectUser").on("click", ".monitor", function () {
+            let monitor = $(this).html()
+            $("#userId").val($(this).val())
+            $("#monitor_man").html(monitor);
+            $("#selectUser").slideUp(300)
+        });
+
         //惯用语
         $("#alwaysSay").click(function () {
             $("#wordSays").stop().fadeToggle(300)
-        })
-        $(".idioms").click(function () {
+        });
+
+        $("#wordSays").on("click", ".idioms", function () {
             let idioms = $(this).html()
-            $("#textIdioms").html(idioms)
+            $("#textIdioms").html(idioms);
             $("#wordSays").fadeOut(300)
-        })
-        $("#alwaysSay_yad").click(function () {
-            $("#wordSays_yad").stop().fadeToggle(300)
-        })
-        $(".idioms_yad").click(function () {
+        });
+
+        $("#alwaysSay_tag").click(function () {
+            $("#wordSays_tag").stop().fadeToggle(300)
+        });
+
+        $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
             let idioms = $(this).html()
-            $("#textIdioms_yad").html(idioms)
-            $("#wordSays_yad").fadeOut(300)
-        })
-    })
+            $("#textIdioms_tag").html(idioms);
+            $("#wordSays_tag").fadeOut(300)
+        });
+    });
 
-
+    let img = /*[[@{/common/img/}]]*/ "/common/img/";
+    let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
     let searchUrl = /*[[@{/event/selfProcessingList}]]*/ "/event/selfProcessingList";
-
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
-
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
-
+    let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
+    let claimAndCompleteByReceptionistUrl = /*[[@{/event/claimAndCompleteByReceptionistWithShiftLeader}]]*/ "/event/claimAndCompleteByReceptionistWithShiftLeader";
+    let completeByReceptionistWithSendCheckUrl = /*[[@{/event/completeByReceptionistWithSendCheck}]]*/ "/event/completeByReceptionistWithSendCheck";
+    let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
 
     let num = 1;
@@ -465,8 +485,7 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row) {
-                console.log("row", row.id);
-                getButton(row.id);
+                checkRow(row.id);
             },
             columns: [
                 {
@@ -477,10 +496,8 @@
                     title: '时限',
                     field: '',
                     formatter: function (value, row) {
-                        console.log(row)//表格数据 row. 什么什么 .png
-                        var e = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
-                            "<img src='../img/2.png' style='width: 100%;height: 100%'></div>"
-                        return e;
+                        return "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
+                            "<img src='../img/2.png' style='width: 100%;height: 100%'></div>";
                     }
                 },
                 {
@@ -498,15 +515,6 @@
                 {
                     title: '案件类型',
                     field: 'eventTypeName'
-                },
-                {
-                    title: '操作',
-                    field: '',
-                    formatter: function (value, row) {
-                        var e = "<a class=''>办理</a>" +
-                            "<a class=''>撤销办理</a>"
-                        return e;
-                    }
                 },
             ]
         };
@@ -534,34 +542,133 @@
         min: jQuery.validator.format("请输入一个最小为{0} 的值")
     });
 
+    function checkRow(eventId) {
+        getButton(eventId);
+        getTimeAxis(eventId);
+        getEventDetail(eventId);
+    }
+
     /* 获取下一步按钮 */
     function getButton(eventId) {
         let getButtonUrl = /*[[@{/event/getButton/}]]+eventId*/ "/event/getButton/" + eventId;
         $.ajaxUtil.get(getButtonUrl, function (e) {
-            console.log("e", e);
+            $("#eventButton").empty();
+            let button = e.data;
+            let buttonHtml = "";
+            if (button.length > 0) {
+                for (let i = 0; i < button.length; i++) {
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px;width: 150px' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
+                }
+            }
+            $("#eventButton").html(buttonHtml);
         });
     }
 
-    //模态窗 selectEventTypeTree
-    function selectEventTypeTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
-        var options = {
-            title: '选择事件类型',
-            width: "380",
-            url: url,
-            callBack: doSubmit
-        };
-        $.modal.openOptions(options);
+    function getTimeAxis(eventId) {
+        $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
+            let data = e.data;
+            $("#timeAxis").empty();
+            let html = "";
+            if (data.length === 0) {
+                html += "<div>暂时没有数据，请进入流程处理案件</div>";
+            } else {
+                for (let i = 0; i < data.length; i++) {
+                    html += "<div class='expressRecord-single-close'>";
+                    html += "<div class='expressRecord-single-noReach-online-top-close'>";
+                    if (i === 0) {
+                        html += "<div class='online-top-closing'></div>";
+                    } else {
+                        html += "<div class='online-top-close'></div>";
+                    }
+                    html += "<div class='dot-close'>";
+                    if (i === 0) {
+                        html += "<div class='yes blockActive'></div>";
+                    } else {
+                        html += "<div class='yes'></div>";
+                    }
+                    html += "</div>";
+                    if (i === (data.length - 1)) {
+                        html += "<div class='online-bottom-start'></div>";
+                    } else {
+                        html += "<div class='online-bottom'></div>";
+                    }
+                    html += "</div>";
+                    html += "<div class='expressRecord-text'>";
+                    html += "<div class='gameTitle'>门头沟区域指挥中心</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>回复内容:</em> " + data[i].opinions
+                    html += "</div>";
+                    if (data[i].fileName.length > 0) {
+                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                    }
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>by:</em> " + data[i].user + "，角色";
+                    html += "</div>";
+                    html += "<div class='endBox endright'>" + data[i].starTime + "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='expressRecord-date'>";
+                    html += "<div class='expressRecord-date-text'>" + data[i].link + "</div>";
+                    html += "</div>";
+                    html += "</div>"
+                }
+            }
+            $("#timeAxis").append(html);
+        });
     }
 
-    function doSubmit(index, layero) {
-        var tree = layero.find("iframe")[0].contentWindow.$._tree;
-        var body = layer.getChildFrame('body', index);
-        $("#typeStr").val(body.find('#treeId').val());
-        $("#typeStr").val(body.find('#treeName').val());
-        layer.close(index);
+    function getEventDetail(eventId) {
+        $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
+            eventId = e.data.id;
+            /*详情*/
+            $("#eventCode").val(e.data.eventCode);
+            $("#eventTypeStr").val(e.data.eventTypeStr);
+            $("#represent").text(e.data.represent);
+            $("#location").val(e.data.location);
+            $("#regionStr").val(e.data.regionStr);
+            $("#conditionValue").val(e.data.conditionValue);
+            $("#level").val(e.data.level);
+            $("#timeLimitStr").val(e.data.timeLimitStr);
+            $("#girdStr").val(e.data.girdStr);
+            $("#community").val(e.data.community);
+            $("#street").val(e.data.street);
+            $("#eventRegion").val(e.data.eventRegion);
+            $("#x").val(e.data.x);
+            $("#y").val(e.data.y);
+            $("#eventSourceStr").val(e.data.eventSourceStr);
+            $("#cdate").val(e.data.cdate);
+            $("#petitionerSex").val(e.data.petitionerSex);
+            $("#petitionerPhone").val(e.data.petitionerPhone);
+            $("#petitionerName").val(e.data.petitionerName);
+            $("#userName").val(e.data.userName);
+            $("#recTypeStr").val(e.data.recTypeStr);
+            /*流程图*/
+            $("#eventImg").attr('src', img + e.data.processInstanceId);
+            /* 坐标 */
+            setPoint(e.data.x, e.data.y);
+        });
+    }
+
+    /* 完成任务 派核实 监督员 */
+    function setValueForCompleteEvent(data) {
+        $("#eventId").val(data.value)
+        $("#button").val(data.id)
+    }
+
+    function completeEvent() {
+        if ($("#userId").val() == null || $("#userId").val() == "") {
+            alert("请选择监督员");
+            return false;
+        }
+        $.operate.saveAndReload(completeByReceptionistUrl, {
+            id: $("#eventId").val(),
+            userId: $("#userId").val(),
+            button: $("#button").val()
+        });
+
     }
 
     //上传 照片视频音频
@@ -593,7 +700,6 @@
             // $(this).fileinput("upload");
         }).on("fileuploaded", function (event, data) {
             console.log('fileuploaded()      ');
-
             if (data.response.code === web_status.FAIL) {
                 console.log("上传文件失败");
             }
@@ -644,7 +750,7 @@
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            allowedFileExtensions: ['mov', 'mp4', 'mp3'],       // 接收的文件后缀
             maxFileCount: 2,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
@@ -657,7 +763,8 @@
 
         })
     })
-    $("#userForm").validate({
+
+    /*$("#userForm").validate({
         debug: true,
         ignore: "",
         submitHandler: function (form) {
@@ -687,7 +794,7 @@
             problemescription: {
                 required: true,
                 // rangelength: [6, 12],
-                /*重复密码需要与原密码相同的要求*/
+                /!*重复密码需要与原密码相同的要求*!/
                 // equalTo: "#pwd"
             },
             safeLevel: {
@@ -757,7 +864,7 @@
             // }
         }
     });
-    /*手机号格式验证*/
+    /!*手机号格式验证*!/
     $.validator.addMethod("phone", function (value, element, params) {
         var reg = /^1[34578]\d{9}$/;
         return reg.test(value);
@@ -775,7 +882,7 @@
         }
         var data = $('#userForm').serialize();
         $.operate.saveTab(url, data);
-    }
+    }*/
 
 
     var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
@@ -812,6 +919,23 @@
             projection: projection
         })
     });
+
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
+
+    function setPoint(x, y) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                // id: data,
+                // name: name,
+                coordinate: x + "," + y
+            }
+        });
+        layerMap.getSource().addFeature(point);
+    }
 </script>
 </body>
 </html>

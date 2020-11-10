@@ -31,7 +31,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><span>*</span>所在网格</td>
+                            <td>所在网格<span></span></td>
                             <td>
                                 <select class="form-control" id="grid1" name="grid" onchange="getStreetList()" required>
                                     <option value="">--请选择--</option>
@@ -39,7 +39,7 @@
                                             th:text="${as.gridName}"></option>
                                 </select>
                             </td>
-                            <td><span>*</span>事件来源</td>
+                            <td>事件来源<span></span></td>
                             <td>
                                 <select class="form-control" id="eventSource" name="eventSourceId" required>
                                     <option value="">--请选择--</option>
@@ -58,7 +58,7 @@
                                     +
                                 </button>
                             </td>
-                            <td><span>*</span>立案区域</td>
+                            <td>立案区域<span></span></td>
                             <td>
                                 <select id="eventCondition" name="eventCondition" onchange="getEventCondition()"
                                         required>
@@ -67,13 +67,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><span>*</span>立案条件</td>
+                            <td>立案条件<span></span></td>
                             <td>
                                 <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
                                     <option value="">--请选择--</option>
                                 </select>
                             </td>
-                            <td><span>*</span>计时等级</td>
+                            <td>计时等级<span></span></td>
                             <td>
                                 <select id="timeType" name="timeType" required>
                                     <option value="">--请选择--</option>
