@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -35,6 +36,7 @@ public class EventButton extends BaseEntity {
 
     private String buttonValue;
 
+    @Column(columnDefinition = "TINYINT(1)")
     private Integer sort;
 
     private String buttonText;

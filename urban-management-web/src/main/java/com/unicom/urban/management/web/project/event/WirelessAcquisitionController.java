@@ -158,8 +158,8 @@ public class WirelessAcquisitionController {
      * @return
      */
     @GetMapping("/findDeptTimeLimitByCondition")
-    public Result findDeptTimeLimitByCondition(String eventTerm) {
-        List<DeptTimeLimitVO> list = eventService.findDeptTimeLimitByCondition(eventTerm);
+    public Result findDeptTimeLimitByCondition(String conditionId) {
+        List<DeptTimeLimitVO> list = eventService.findDeptTimeLimitByCondition(conditionId);
         return Result.success(list);
     }
 

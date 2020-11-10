@@ -434,7 +434,7 @@
      */
     function getStreetList(){
         let parentId = $("#grid1 option:selected").val();
-        let url = "/event/findAllByParentId/"+parentId;
+        let url = "/event/findAllByParentId/?parentId=" + parentId;
         $.ajaxUtil.get(url, function (e) {
             let option="<option>--请选择--</option>";
             if (e.code === "0") {
@@ -451,7 +451,7 @@
      */
     function getCommunityList(){
         let parentId = $("#grid2 option:selected").val();
-        let url = "/event/findAllByParentId/"+parentId;
+        let url = "/event/findAllByParentId/?parentId=" + parentId;
         $.ajaxUtil.get(url, function (e) {
             let option="<option>--请选择--</option>";
             if (e.code === "0") {
@@ -468,7 +468,7 @@
      */
     function getGridList(){
         let parentId = $("#grid3 option:selected").val();
-        let url = "/event/findAllByParentId/"+parentId;
+        let url = "/event/findAllByParentId/?parentId=" + parentId;
         $.ajaxUtil.get(url, function (e) {
             let option="<option>--请选择--</option>";
             if (e.code === "0") {

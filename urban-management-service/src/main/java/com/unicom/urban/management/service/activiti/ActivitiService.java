@@ -71,6 +71,13 @@ public interface ActivitiService {
     void claim(String taskId, String userId);
 
     /**
+     * 反签收任务(比如误签收任务之后，调用此方法，把任务还原到未签收状态)
+     *
+     * @param taskId taskId
+     */
+    void unClaim(String taskId);
+
+    /**
      * 根据taskId获取task
      *
      * @param taskId taskId
