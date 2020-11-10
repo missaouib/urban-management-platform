@@ -2,6 +2,7 @@ package com.unicom.urban.management.web.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
+import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
@@ -221,6 +222,17 @@ public class SupervisionAcceptanceController {
      */
     @GetMapping("/eventList")
     public Page<EventVO> eventList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        return eventService.search(eventDTO, pageable);
+    }
+
+    /**
+     * 案件查询列表
+     *
+     * @return list
+     */
+    @GetMapping("/closeEventList")
+    public Page<EventVO> closeEventList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setClose(KvConstant.CLOS_ETESK);
         return eventService.search(eventDTO, pageable);
     }
 

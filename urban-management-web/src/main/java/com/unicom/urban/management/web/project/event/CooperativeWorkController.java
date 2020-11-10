@@ -70,7 +70,12 @@ public class CooperativeWorkController {
      */
     @GetMapping("/toClosedCasesList")
     public ModelAndView toClosedCasesList() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/closedCases/list");
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/closedCases/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
     }
 
     /**

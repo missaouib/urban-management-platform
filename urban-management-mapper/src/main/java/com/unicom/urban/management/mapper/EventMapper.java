@@ -36,7 +36,6 @@ public interface EventMapper {
      * @return vo
      */
     @Mapping(source = "user.name", target = "userName")
-    @Mapping(source = "eventType.name", target = "eventTypeName")
     @Mapping(source = "eventSource.value", target = "eventSourceName")
     @Mapping(source = "recType.value", target = "recTypeName")
     @Mapping(source = "timeLimit.timeLimit", target = "timeLimit")
