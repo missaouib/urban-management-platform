@@ -873,7 +873,7 @@
             }
         });
         let picture = "../img/1.png";
-        // let imgSize = [100,100]
+        let imgSize = [100,100]
         point.setStyle(new ol.style.Style({
             image: new ol.style.Icon({
                 src: picture,
@@ -881,6 +881,19 @@
             })
         }));
         layerMap.getSource().addFeature(point);
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 10,
+                fill: new ol.style.Fill({
+                    color: '#ff0000'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#ff0000',
+                    width: 3
+                })
+            })
+        }));
+
     }
 
     //回调函数接收查询结果
