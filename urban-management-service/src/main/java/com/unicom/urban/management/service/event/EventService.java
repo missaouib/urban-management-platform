@@ -13,7 +13,6 @@ import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -110,7 +110,19 @@ public class EventService {
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
         List<EventVO> eventVOList = EventMapper.INSTANCE.eventListToEventVOList(page.getContent());
+//        setListDataByStatistics(eventVOList);
         return new PageImpl<>(eventVOList, page.getPageable(), page.getTotalElements());
+    }
+
+    private void setListDataByStatistics(List<EventVO> eventVOList) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        for (EventVO eventVO : eventVOList) {
+            Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventVO.getId());
+            eventVO.setTaskName(statistics.getTaskName());
+            eventVO.setStartTime(simpleDateFormat.format(statistics.getStartTime()));
+            eventVO.setTimeLimit(statistics.getProcessTimeLimit().getTimeLimit());
+        }
+
     }
 
     public List<EventConditionVO> findEventConditionByEventType(String eventTypeId) {
@@ -145,8 +157,12 @@ public class EventService {
      */
     public List<EventButtonVO> getButton(String eventId) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-        List<EventButton> eventButtons = activitiService.queryButton(statistics.getTaskId());
-        return EventButtonMapper.INSTANCE.eventButtonListToEventButtonVOList(eventButtons);
+        if (statistics != null) {
+            List<EventButton> eventButtons = activitiService.queryButton(statistics.getTaskId());
+            return EventButtonMapper.INSTANCE.eventButtonListToEventButtonVOList(eventButtons);
+        } else {
+            return null;
+        }
     }
 
 

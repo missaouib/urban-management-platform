@@ -33,18 +33,22 @@ public class EventVO {
     private LocalDateTime createTime;
 
     private List<EventFile> eventFileList;
+
     /**
      * 事件来源id
      */
     private String eventSourceId;
+
     /**
      * 事件来源回显
      */
     private String eventSourceName;
+
     /**
      * 案件类型
      */
     private String recTypeName;
+
     /**
      * 案件编号
      */
@@ -52,5 +56,19 @@ public class EventVO {
 
     private String taskId;
 
+    /**
+     * 开始时间
+     */
+    private String startTime;
+
+    /**
+     * 当前状态
+     */
+    private String taskName;
+
+    /**
+     * 时限
+     */
+    private Integer timeLimit;
 
 }
