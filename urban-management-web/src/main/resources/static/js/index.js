@@ -133,11 +133,24 @@
                             }
                         });
                     }
+
                     flag = false;
+
+                    // 点击菜单 如果菜单中有table 也要跟着刷新
+                    var $contentWindow = $('.LRADMS_iframe[data-id="' + dataUrl + '"]')[0].contentWindow;
+                    if ($contentWindow.table.options.type === table_type.bootstrapTable) {
+                        $contentWindow.$.table.refresh();
+                    } else if ($contentWindow.table.options.type === table_type.bootstrapTreeTable) {
+                        // $contentWindow.$.treeTable.refresh();
+                    }
+
+
+
+
                     return false;
                 }
             });
-            if (flag) {
+            if (flag) { // 如果选项卡不存在
                 var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '">' + menuName + ' <i class="fa fa-remove"></i></a>';
                 $('.menuTab').removeClass('active');
                 var str1 = '<iframe class="LRADMS_iframe" id="iframe' + dataId + '" name="iframe' + dataId + '"  width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';

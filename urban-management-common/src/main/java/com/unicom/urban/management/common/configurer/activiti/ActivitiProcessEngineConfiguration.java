@@ -40,12 +40,15 @@ public class ActivitiProcessEngineConfiguration {
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
+        assert font != null;
+
 
         GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
-        processEngineConfiguration.setLabelFontName(FONT_NAME);
-        processEngineConfiguration.setActivityFontName(FONT_NAME);
-        processEngineConfiguration.setAnnotationFontName(FONT_NAME);
 
+        String fontName = font.getFontName();
+        processEngineConfiguration.setLabelFontName(fontName);
+        processEngineConfiguration.setActivityFontName(fontName);
+        processEngineConfiguration.setAnnotationFontName(fontName);
         return processEngineConfiguration;
     }
 
