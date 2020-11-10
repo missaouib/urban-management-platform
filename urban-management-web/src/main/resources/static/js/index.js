@@ -1604,6 +1604,8 @@
             });
             $("#sidebar-menu").append(_html);
             $("#sidebar-menu li a").click(function () {
+
+
                 var d = $(this), e = d.next();
                 if (e.is(".treeview-menu") && e.is(":visible")) {
                     e.slideUp(500, function () {
@@ -1611,17 +1613,17 @@
                     });
                     e.parent("li").removeClass("active")
                 } else if (e.is(".treeview-menu") && !e.is(":visible")) {
-                    var f = d.parents("ul").first(),
-                        g = f.find("ul:visible").slideUp(500);
+                    var f = d.parents("ul").first();
+                    g = f.find("ul:visible").slideUp(500);
                     g.removeClass("menu-open");
                     var h = d.parent("li");
                     e.slideDown(500, function () {
-                        e.addClass("menu-open"),
-                            f.find("li.active").removeClass("active")
+                        e.addClass("menu-open");
+                        f.find("li.active").removeClass("active");
                         h.addClass("active");
 
                         var _height1 = $(window).height() - $("#sidebar-menu >li.active").position().top - 41;
-                        var _height2 = $("#sidebar-menu li > ul.menu-open").height() + 10
+                        var _height2 = $("#sidebar-menu li > ul.menu-open").height() + 10;
                         if (_height2 > _height1) {
                             $("#sidebar-menu >li > ul.menu-open").css({
                                 overflow: "auto",
@@ -1631,6 +1633,13 @@
                     })
                 }
                 e.is(".treeview-menu");
+
+
+
+
+
+
+
             });
         }
     };
