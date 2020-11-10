@@ -67,9 +67,6 @@ public class EventService {
             if (eventDTO.getSts() != null) {
                 list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class), eventDTO.getSts()));
             }
-            if (StringUtils.isNotBlank(eventDTO.getEventTypeId())) {
-                list.add(criteriaBuilder.equal(root.get("eventType").get("id").as(String.class), eventDTO.getEventTypeId()));
-            }
 
             if (StringUtils.isNotBlank(eventDTO.getRepresent())) {
                 list.add(criteriaBuilder.like(root.get("represent").as(String.class), "%" + eventDTO.getRepresent() + "%"));
