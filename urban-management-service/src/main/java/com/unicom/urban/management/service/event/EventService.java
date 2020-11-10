@@ -26,10 +26,7 @@ import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 事件
@@ -345,6 +342,14 @@ public class EventService {
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         eventOneVO.setCDate(df.format(one.getCreateTime()));
         eventOneVO.setEventSourceStr(one.getEventSource().getValue());
+        List<Map<String,Object>> fileList = new ArrayList<>();
+        one.getEventFileList().forEach(f->{
+            Map<String,Object> map = new HashMap<>();
+            map.put("url",f.getFilePath());
+            map.put("type",f.getFileType());
+            fileList.add(map);
+        });
+        eventOneVO.setFile(fileList);
         return eventOneVO;
     }
 
