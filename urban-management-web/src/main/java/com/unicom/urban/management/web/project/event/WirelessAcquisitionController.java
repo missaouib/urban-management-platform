@@ -166,12 +166,12 @@ public class WirelessAcquisitionController {
     /**
      * 获取立案条件
      *
-     * @param conditionId
+     * @param conditionId id
      * @return
      */
     @GetMapping("/getEventCondition")
-    public Result getEventCondition(String eventConditionId) {
-        List<EventConditionVO> conditionValueByRegion = eventService.findConditionValueByRegion(eventConditionId);
+    public Result getEventCondition(String conditionId) {
+        List<EventConditionVO> conditionValueByRegion = eventService.findConditionValueByRegion(conditionId);
         return Result.success(conditionValueByRegion);
     }
 
