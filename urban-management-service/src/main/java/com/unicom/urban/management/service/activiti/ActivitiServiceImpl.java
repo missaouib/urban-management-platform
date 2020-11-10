@@ -73,7 +73,7 @@ public class ActivitiServiceImpl implements ActivitiService {
         ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
         log.debug("----------------------监督员上报事件开始--------------------------------------");
         log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
-        log.debug("----------------------监督员 userId:{}---------------------", Arrays.toString(userList.toArray()));
+        log.debug("----------------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
         log.debug("----------------------监督员上报事件结束--------------------------------------");
         return processInstance;
     }
@@ -98,7 +98,7 @@ public class ActivitiServiceImpl implements ActivitiService {
         ProcessInstance processInstance = startProcessInstanceByKey("auto_event", eventId, variables);
         log.debug("----------------------自处理事件上报开始--------------------------------------");
         log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
-//        log.debug("----------------------监督员 userId:{}---------------------", Arrays.toString(userList.toArray()));
+        log.debug("----------------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
         log.debug("----------------------自处理事件上报结束--------------------------------------");
         return processInstance;
     }

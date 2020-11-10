@@ -42,7 +42,7 @@ public interface ActivitiService {
      * 上报自处理事件
      *
      * @param eventId  事件ID
-     * @param userList TODO
+     * @param userList 受理员用户ID
      * @return 流程实例
      */
     ProcessInstance reportAutoEvent(String eventId, List<String> userList);

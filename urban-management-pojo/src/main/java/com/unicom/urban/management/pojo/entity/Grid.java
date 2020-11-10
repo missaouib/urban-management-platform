@@ -69,7 +69,7 @@ public class Grid extends BaseEntity {
     private Dept dept;
 
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "grid_id")
     private List<User> userList;
 
 }
