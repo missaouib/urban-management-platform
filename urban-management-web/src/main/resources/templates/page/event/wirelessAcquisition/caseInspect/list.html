@@ -282,7 +282,7 @@
                             <!--            </div>-->
                             <div class="r_right but_p girdBtnGroup">
                                 <!--                                <button class="but_save" type="submit" onclick="submitHandler()" >处理</button>-->
-                                <input name="eventType" class="modelDo" value="处理" type="text" data-toggle="modal" data-target="#modal-default">
+                                <input name="eventType" class="modelDo" value="处理" type="text" data-toggle="modal" data-target="#modal-default" style="padding-left: 0px!important;">
                                 <button class="but_close" onclick="Cancel()">返回</button>
                             </div>
                         </div>
@@ -415,7 +415,7 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='save()'>" + button[i].buttonText + "</button>";
+                    buttonHtml += "<button class='btn btn-primary' style='margin-right: 10px' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='save()'>" + button[i].buttonText + "</button>";
                 }
             }
             $("#eventId").val(eventId);
