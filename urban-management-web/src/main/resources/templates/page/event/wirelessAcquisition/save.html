@@ -334,7 +334,7 @@
      * 获取立案区域
      */
     function findEventConditionByEventType(eventTypeId){
-        let url = findEventConditionByEventTypeUrl +"/"+ eventTypeId;
+        let url = findEventConditionByEventTypeUrl +"?eventTypeId="+ eventTypeId;
         $.ajaxUtil.get(url, function (e) {
             let option = "<option>--请选择--</option>";
             if (e.code === "0") {
@@ -351,7 +351,7 @@
      */
     function getEventCondition() {
         let eventConditionId = $("#eventCondition").val();
-        let url = "/event/getEventCondition/" + eventConditionId;
+        let url = "/event/getEventCondition?eventConditionId=" + eventConditionId;
         $.ajaxUtil.get(url, function (e) {
             $("#eventTerm").empty();
             let option = "<option>--请选择--</option>";
@@ -369,7 +369,7 @@
      */
     function getTimeTypeList() {
         let eventTerm = $("#eventTerm").val();
-        let url = "/event/findDeptTimeLimitByCondition/" + eventTerm;
+        let url = "/event/findDeptTimeLimitByCondition?eventTerm=" + eventTerm;
         $.ajaxUtil.get(url, function (e) {
             $("#timeType").empty();
             let option = "<option>--请选择--</option>";
@@ -387,7 +387,7 @@
      */
     function getDeptTimeLimitList() {
         let deptTimeLimitId = $("#timeType").val();
-        let url = "/event/findDeptTimeLimit/" + deptTimeLimitId;
+        let url = "/event/findDeptTimeLimit?deptTimeLimitId=" + deptTimeLimitId;
         $.ajaxUtil.get(url, function (e) {
             if (e.code === "0") {
                 let data = e.data;
@@ -402,7 +402,7 @@
      */
     function getStreetList(){
         let parentId = $("#grid1 option:selected").val();
-        let url = "/event/findAllByParentId/"+parentId;
+        let url = "/event/findAllByParentId?parentId="+parentId;
         $.ajaxUtil.get(url, function (e) {
             let option="<option>--请选择--</option>";
             if (e.code === "0") {
@@ -419,7 +419,7 @@
      */
     function getCommunityList(){
         let parentId = $("#grid2 option:selected").val();
-        let url = "/event/findAllByParentId/"+parentId;
+        let url = "/event/findAllByParentId?parentId="+parentId;
         $.ajaxUtil.get(url, function (e) {
             let option="<option>--请选择--</option>";
             if (e.code === "0") {
@@ -436,7 +436,7 @@
      */
     function getGridList(){
         let parentId = $("#grid3 option:selected").val();
-        let url = "/event/findAllByParentId/"+parentId;
+        let url = "/event/findAllByParentId?parentId="+parentId;
         $.ajaxUtil.get(url, function (e) {
             let option="<option>--请选择--</option>";
             if (e.code === "0") {

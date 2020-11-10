@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventFile;
 import com.unicom.urban.management.pojo.entity.ProcessTimeLimit;
@@ -334,6 +335,27 @@ public class WorkService {
             }
         }
         return map;
+    }
+
+    /**
+     * 上报自处理事件
+     * @param eventId
+     */
+    public void saveAutoReport(String eventId){
+        /*TODO 查询所有有受理员角色的人*/
+        List<String> userList = new ArrayList<>();
+        userList.add("1");
+        Event event = eventService.findOne(eventId);
+        ProcessInstance processInstance = activitiService.reportAutoEvent(eventId, userList);
+        event.setProcessInstanceId(processInstance.getId());
+        eventService.update(event);
+
+        Statistics statistics = this.initStatistics(event.getId());
+        statistics.setNeedSendVerify(1);
+        statistics.setReport(1);
+        statistics.setPatrolReport(1);
+        statistics.setToOperate(1);
+        statisticsService.update(statistics);
     }
 
 }

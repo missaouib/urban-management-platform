@@ -179,11 +179,10 @@ public class EventService {
      * 上报自处理事件
      *
      * @param eventId  事件ID
-     * @param userList TODO
      * @return 流程实例
      */
-    public ProcessInstance reportAutoEvent(String eventId, List<String> userList){
-        return activitiService.reportAutoEvent(eventId,userList);
+    public void reportAutoEvent(String eventId){
+        workService.saveAutoReport(eventId);
     }
     /**
      * 受理员完成任务 并且 激活监督员(领取任务)核实
@@ -339,4 +338,14 @@ public class EventService {
        return eventRepository.saveAndFlush(event);
     }
 
+    public void saveAutoReport(EventDTO eventDTO) {
+        Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
+        event.setUser(SecurityUtil.getUser().castToUser());
+        Event saved = eventRepository.save(event);
+        Boolean doBySelf = eventDTO.getDoBySelf();
+        //自处理上报
+        if (doBySelf) {
+            this.reportAutoEvent(saved.getId());
+        }
+    }
 }

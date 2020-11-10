@@ -20,7 +20,6 @@ import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
-import com.unicom.urban.management.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +28,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -46,13 +44,9 @@ public class WirelessAcquisitionController {
     @Autowired
     private EventService eventService;
     @Autowired
-    private DeptTimeLimitService depTimeLimitService;
-    @Autowired
     private GridService gridService;
     @Autowired
     private KVService kvService;
-    @Autowired
-    private UserService userService;
     @Autowired
     private EventTypeService eventTypeService;
     @Autowired
@@ -187,8 +181,8 @@ public class WirelessAcquisitionController {
      * @param deptTimeLimitId
      * @return
      */
-    @GetMapping("/findDeptTimeLimit/{deptTimeLimitId}")
-    public Result findDeptTimeLimit(@PathVariable String deptTimeLimitId) {
+    @GetMapping("/findDeptTimeLimit")
+    public Result findDeptTimeLimit(String deptTimeLimitId) {
         DeptTimeLimitVO vo = eventService.findDeptTimeLimit(deptTimeLimitId);
         return Result.success(vo);
     }
@@ -197,8 +191,8 @@ public class WirelessAcquisitionController {
      * 所属区域获取网格
      * @param parentId 区域
      */
-    @GetMapping("/findAllByParentId/{parentId}")
-    public Result findAllByParentId(@PathVariable String parentId) {
+    @GetMapping("/findAllByParentId")
+    public Result findAllByParentId(String parentId) {
         List<GridVO> list = gridService.findAllByParentId(parentId);
         return Result.success(list);
     }
@@ -211,18 +205,12 @@ public class WirelessAcquisitionController {
         eventService.save(eventDTO);
     }
     /**
-     * 准备上报
+     * 上报
      * @param eventDTO
      */
     @RequestMapping("/preReport")
     public void preReport(EventDTO eventDTO){
-        Boolean doBySelf = eventDTO.getDoBySelf();
-        if (doBySelf) {
-            List<String> userList = new ArrayList<String>();
-            userList.add(SecurityUtil.getUser().getId());
-            eventService.reportAutoEvent(eventDTO.getId(),userList);
-        }
-        eventService.save(eventDTO);
+        eventService.saveAutoReport(eventDTO);
     }
 
     /**
