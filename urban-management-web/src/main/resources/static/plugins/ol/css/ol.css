@@ -82,8 +82,8 @@
 }
 
 .ol-full-screen {
-    right: .5em;
-    top: .5em
+    left: .5em;
+    bottom: .5em;
 }
 
 @media print {

@@ -281,7 +281,9 @@
                                     </ul>
                                 </div>
                             </div>
-                            <div class="r_right but_p girdBtnGroup" id="eventButton"></div>
+                            <div class="r_right but_p girdBtnGroup" id="eventButton">
+                                <button class="but_save" type="submit" style="margin-right: 10px" data-toggle="modal" data-target="#modal-sm">相似案件</button>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -326,6 +328,34 @@
             </div>
         </div>
     </div>
+
+<!--    相似案件-->
+    <div class="modal fade" id="modal-sm">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">相似案件</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="such">案件：<a>E0300476522</a></div>
+                    <div class="same">该事件与以下案件相似：</div>
+                    <div class="sameArray">
+                        <ul>
+                            <li>案件：<a>E0300476522</a></li>
+                            <li>案件：<a>E0300476522</a></li>
+                            <li>案件：<a>E0300476522</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
 </div>
 
 
