@@ -213,6 +213,15 @@ public class SupervisionAcceptanceController {
                 EventConstant.CLOSETASK));
         return eventService.search(eventDTO, pageable);
     }
+    /**
+     * 案件查询列表
+     *
+     * @return list
+     */
+    @GetMapping("/eventList")
+    public Page<EventVO> eventList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        return eventService.search(eventDTO, pageable);
+    }
 
     @GetMapping("/test")
     public void test(String eventId, String buttonId) {

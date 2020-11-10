@@ -110,7 +110,12 @@ public class CooperativeWorkController {
      */
     @GetMapping("/toCaseInquiryList")
     public ModelAndView toCaseInquiryList() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/caseInquiry/list");
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/caseInquiry/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
     }
 
     /**
