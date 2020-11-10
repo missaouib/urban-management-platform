@@ -119,6 +119,7 @@ public class WorkService {
             /*TODO 获取当前登陆人角色*/
             s.setUser(SecurityUtil.getUser().castToUser());
         }
+        setOpinionsAndEventFileList(s, s.getOpinions(), s.getEventFileList());
         statisticsService.update(s);
         activitiService.complete(s.getTaskId(), Collections.singletonList(userId), button);
         Statistics statistics = initStatistics(eventId);
@@ -194,6 +195,7 @@ public class WorkService {
         statistics.setSts(map.get("sts").toString());
         /* 待受理 */
         statistics.setToOperate(0);
+        setOpinionsAndEventFileList(statistics, statistics.getOpinions(), statistics.getEventFileList());
         statisticsService.update(statistics);
         /*TODO 查询所有值班长角色的人*/
         activitiService.complete(statistics.getTaskId(), Collections.singletonList("1"), button);
@@ -234,6 +236,7 @@ public class WorkService {
         /* 按时受理 */
         statistics.setInTimeOperate((Integer) map.get("time"));
         statistics.setSts(map.get("sts").toString());
+        setOpinionsAndEventFileList(statistics, statistics.getOpinions(), statistics.getEventFileList());
         statisticsService.update(statistics);
         activitiService.complete(statistics.getTaskId(), null, button);
     }
