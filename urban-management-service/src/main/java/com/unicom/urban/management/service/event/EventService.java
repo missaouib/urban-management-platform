@@ -343,9 +343,11 @@ public class EventService {
         event.setUser(SecurityUtil.getUser().castToUser());
         Event saved = eventRepository.save(event);
         Boolean doBySelf = eventDTO.getDoBySelf();
-        //自处理上报
-        if (doBySelf) {
-            this.reportAutoEvent(saved.getId());
-        }
+//        if (doBySelf != null) {
+//            //自处理上报
+//            if (doBySelf) {
+//                this.reportAutoEvent(saved.getId());
+//            }
+//        }
     }
 }
