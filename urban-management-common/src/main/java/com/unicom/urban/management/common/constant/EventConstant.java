@@ -70,5 +70,7 @@ public class EventConstant {
 
     public static final String ACCEPTANCE_CASE_INSPECT = "监督员-案件核查";
 
+    public static final String SELF_PROCESSING_AUDIT = "自处理审核";
+
 
 }

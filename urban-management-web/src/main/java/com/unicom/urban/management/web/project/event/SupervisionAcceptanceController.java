@@ -154,6 +154,7 @@ public class SupervisionAcceptanceController {
 
     @GetMapping("/supervisionAcceptanceList")
     public Page<EventVO> supervisionAcceptanceList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setTaskName(Collections.singletonList(EventConstant.SELF_PROCESSING_AUDIT));
         return eventService.search(eventDTO, pageable);
     }
 

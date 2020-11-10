@@ -352,7 +352,7 @@
      */
     function getEventCondition() {
         let eventConditionId = $("#eventCondition").val();
-        let url = "/event/getEventCondition?eventConditionId=" + eventConditionId;
+        let url = "/event/getEventCondition?conditionId=" + eventConditionId;
         $.ajaxUtil.get(url, function (e) {
             $("#eventTerm").empty();
             let option = "<option>--请选择--</option>";

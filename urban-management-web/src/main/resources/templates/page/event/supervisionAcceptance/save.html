@@ -419,7 +419,7 @@
      */
     function getDeptTimeLimitList() {
         let deptTimeLimitId = $("#timeType").val();
-        let url = "/event/findDeptTimeLimit/" + deptTimeLimitId;
+        let url = "/event/findDeptTimeLimit/?deptTimeLimitId=" + deptTimeLimitId;
         $.ajaxUtil.get(url, function (e) {
             if (e.code === "0") {
                 let data = e.data;
