@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>热线上报</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
@@ -96,7 +96,7 @@
                 </p>
             </form>
         </div>
-        <table id="bootstrap-table" class="table_style" style="margin: 0 auto;"> </table>
+        <table id="bootstrap-table" class="table_style" style="margin: 0 auto;"></table>
 
     </div>
     <div class="rightContent">
@@ -128,29 +128,38 @@
                                 <tr>
                                     <td><span>*</span>案卷号</td>
                                     <td>
-                                        <input id="eventCode" placeholder="" class="" type="text" readonly="readonly" required>
+                                        <input id="eventCode" placeholder="" class="" type="text" readonly="readonly"
+                                               required>
                                     </td>
                                     <td><span>*</span>问题类型</td>
                                     <td>
-                                        <input id="eventTypeStr" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                                        <input id="eventTypeStr" name="eventType" placeholder="请选择问题类型" class=""
+                                               type="text" maxlength="30" required readonly="readonly"
+                                               onclick="selectEventTypeTree()">
 
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span>*</span>立案区域</td>
                                     <td>
-                                        <input id="regionStr" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                                        <input id="regionStr" name="eventType" placeholder="请选择问题类型" class=""
+                                               type="text" maxlength="30" required readonly="readonly"
+                                               onclick="selectEventTypeTree()">
                                     </td>
                                     <td><span>*</span>立案条件</td>
                                     <td>
-                                        <input id="conditionValue" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                                        <input id="conditionValue" name="eventType" placeholder="请选择问题类型" class=""
+                                               type="text" maxlength="30" required readonly="readonly"
+                                               onclick="selectEventTypeTree()">
 
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span>*</span>案件等级</td>
                                     <td>
-                                        <input id="level" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                                        <input id="level" name="eventType" placeholder="请选择问题类型" class="" type="text"
+                                               maxlength="30" required readonly="readonly"
+                                               onclick="selectEventTypeTree()">
 
                                     </td>
                                     <td><span>*</span>处理时限</td>
@@ -161,24 +170,28 @@
                                 <tr>
                                     <td><span>*</span>问题描述</td>
 
-                                    <td colspan="8"><textarea id="represent" name="problemescription" required readonly></textarea></td>
+                                    <td colspan="8"><textarea id="represent" name="problemescription" required
+                                                              readonly></textarea></td>
 
 
                                 </tr>
                                 <tr class="col-12">
                                     <td><span></span>案件地址</td>
                                     <td>
-                                        <input id="location" name="location" placeholder="" class="" readonly type="text">
+                                        <input id="location" name="location" placeholder="" class="" readonly
+                                               type="text">
                                     </td>
                                     <td><span></span>案件类型</td>
                                     <td>
-                                        <input id="recTypeStr" name="location" placeholder="" class="" readonly type="text">
+                                        <input id="recTypeStr" name="location" placeholder="" class="" readonly
+                                               type="text">
                                     </td>
                                 </tr>
                                 <tr class="col-12">
                                     <td><span>*</span>所属区域</td>
                                     <td>
-                                        <input id="eventRegion" name="location" placeholder="" class="" readonly type="text">
+                                        <input id="eventRegion" name="location" placeholder="" class="" readonly
+                                               type="text">
 
                                     </td>
                                     <td><span>*</span>所属街道</td>
@@ -190,11 +203,13 @@
                                 <tr class="col-12">
                                     <td><span>*</span>所属社区</td>
                                     <td>
-                                        <input id="community" name="location" placeholder="" class="" readonly type="text">
+                                        <input id="community" name="location" placeholder="" class="" readonly
+                                               type="text">
                                     </td>
                                     <td><span>*</span>单元网格</td>
                                     <td>
-                                        <input id="girdStr" name="location" placeholder="" class="" readonly type="text">
+                                        <input id="girdStr" name="location" placeholder="" class="" readonly
+                                               type="text">
 
                                     </td>
                                 </tr>
@@ -206,14 +221,16 @@
                                     </td>
                                     <td><span>*</span>上报人</td>
                                     <td>
-                                        <input id="userName" name="userName" placeholder="" class="" readonly type="text">
+                                        <input id="userName" name="userName" placeholder="" class="" readonly
+                                               type="text">
 
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>诉求人</td>
                                     <td>
-                                        <input id="petitionerName" name="petitionerName" placeholder="" class="" readonly type="text">
+                                        <input id="petitionerName" name="petitionerName" placeholder="" class=""
+                                               readonly type="text">
 
                                     </td>
                                     <td><span></span>联系方式</td>
@@ -223,7 +240,8 @@
                                 <tr>
                                     <td><span></span>性别</td>
                                     <td>
-                                        <input id="petitionerSex" name="petitionerSex" placeholder="" class="" readonly type="text">
+                                        <input id="petitionerSex" name="petitionerSex" placeholder="" class="" readonly
+                                               type="text">
 
                                     </td>
                                     <td><span></span>创建时间</td>
@@ -242,23 +260,26 @@
                                         <input id="y" type="text" class="find_input" readonly="readonly" value="纬度">
                                     </td>
                                 </tr>
-                                
+
                                 </tbody>
                             </table>
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
-                                    <div><input id="input-id" class="input-id" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input id="input-id" class="input-id" type="file" name="file"
+                                                multiple="multiple"></div>
                                 </div>
 
 
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
-                                    <div><input id="videoInput" class="videoInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input id="videoInput" class="videoInput" type="file" name="file"
+                                                multiple="multiple"></div>
                                 </div>
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
-                                    <div><input id="musicInput" class="musicInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div><input id="musicInput" class="musicInput" type="file" name="file"
+                                                multiple="multiple"></div>
                                 </div>
 
                             </div>
@@ -305,36 +326,45 @@
                                     <li class="idioms">22</li>
                                 </ul>
                             </div>
+
+                        </div>
+                        <div id="deptDiv" class="send" >
+
                         </div>
                         <div class="send">
                             <div class="sendImg">
                                 <div class="sendText" style="width: 72px"><span>照片:</span></div>
-                                <div><input id="picture" class="input-id" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="picture" class="input-id" type="file" name="file" multiple="multiple">
+                                </div>
                             </div>
 
 
                             <div class="sendImg">
                                 <div class="sendText" style="width: 72px"><span>视频:</span></div>
-                                <div><input id="video" type="file" class="videoInput" name="file" multiple="multiple"></div>
+                                <div><input id="video" type="file" class="videoInput" name="file" multiple="multiple">
+                                </div>
                             </div>
                             <div class="sendImg">
                                 <div class="sendText" style="width: 72px"><span>音频:</span></div>
-                                <div><input id="music" type="file" class="musicInput" name="file" multiple="multiple"></div>
+                                <div><input id="music" type="file" class="musicInput" name="file" multiple="multiple">
+                                </div>
                             </div>
 
                         </div>
                     </div>
-                    <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
+                    <div class="modal-footer justify-content-between"
+                         style="display: flex;justify-content: flex-end!important;">
                         <button type="button" class="btn btn-primary" onclick="processing()">处理</button>
-                        <button type="button" class="btn btn-success" onclick="reductionButton()" data-dismiss="modal">返回</button>
+                        <button type="button" class="btn btn-success" onclick="reductionButton()" data-dismiss="modal">
+                            返回
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
-
-
 
 
 <th:block th:include="page/fragments/common :: common_js"/>
@@ -347,7 +377,7 @@
 
     $(function () {
         queryUserList();
-        $(".tabTitle span").click(function() {
+        $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         })
@@ -361,34 +391,38 @@
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
 
     let processingUrl = /*[[@{/task/processing}]]*/ "/task/processing";
+    let deptUrl = /*[[@{/task/dept}]]*/ "/task/dept";
 
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
 
     var buttonId = "";
     var eventId = "";
+
     function eventButton(obj) {
         buttonId = obj;
     }
+
     function reductionButton() {
         buttonId = "";
     }
 
     function processing() {
         var data = {
-            "eventId":eventId,
-            "buttonId":buttonId,
-            "opinions":$("#opinions").val()
+            "eventId": eventId,
+            "buttonId": buttonId,
+            "opinions": $("#opinions").val(),
+            "deptId":$("#dept").val()
         };
 
         $.ajax({
-            type:"post",
-            url:processingUrl,
-            data:JSON.stringify(data),
+            type: "post",
+            url: processingUrl,
+            data: JSON.stringify(data),
             contentType: "application/json",
             beforeSend: function () {
                 $.modal.loading("正在处理中，请稍后...");
             },
-            success: function(result){
+            success: function (result) {
                 if (result.code === web_status.SUCCESS) {
                     $.modal.msgSuccess(result.message);
                     setTimeout("window.location.reload()", 2000);
@@ -415,14 +449,14 @@
             sortName: "updateTime",
             sortOrder: "desc",
             modalName: "用户",
-             // 点击每行进行函数的触发
+            // 点击每行进行函数的触发
             onClickRow: function (row, tr, flied) {
                 layerMap.getSource().clear()
                 //详情  流程图  流转记录
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
                     eventId = e.data.id;
                     /*流程图*/
-                    $("#eventImg").attr('src',img+e.data.processInstanceId);
+                    $("#eventImg").attr('src', img + e.data.processInstanceId);
                     /*详情*/
                     $("#eventCode").val(e.data.eventCode);
                     $("#eventTypeStr").val(e.data.eventTypeStr);
@@ -438,7 +472,7 @@
                     $("#eventRegion").val(e.data.eventRegion);
                     $("#x").val(e.data.x);
                     $("#y").val(e.data.y);
-                    setPoint(e.data.x,e.data.y)
+                    setPoint(e.data.x, e.data.y)
                     $("#eventSourceStr").val(e.data.eventSourceStr);
                     $("#cdate").val(e.data.cdate);
                     $("#petitionerSex").val(e.data.petitionerSex);
@@ -452,6 +486,22 @@
                     var buttonStr = "";
                     $(e.data.eventButtonVOS).each(function (index, value) {
                         buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" onclick='eventButton(" + value.id + ")'  class=\"but_save\">" + value.buttonText + "</button>";
+                        if ("派遣" === value.buttonText) {
+                            $.ajaxUtil.get(deptUrl, function (o) {
+                                $("#deptDiv").empty();
+                                var deptStr = " <span class=\"sendText\"><i>*</i>专业部门</span>\n" +
+                                    "                                <select id=\"dept\">\n"+
+                                    "<option value='"+e.data.deptId+"'>"+e.data.deptName+"</option>";
+                                $(o.data).each(function (index,value) {
+                                    if(e.data.deptId !== value.id){
+                                        deptStr += "<option value='"+value.id+"'>"+value.deptName+"</option>"
+                                    }
+                                })
+                                deptStr +="</select>"
+                                $("#deptDiv").append(deptStr);
+                            })
+
+                        }
                     })
                     $("#btnGroupGround").empty();
                     $("#btnGroupGround").append(buttonStr);
@@ -467,7 +517,7 @@
                 {
                     title: '时限',
                     field: '',
-                    formatter: function (value,row) {
+                    formatter: function (value, row) {
                         return "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
                             "<img src='../img/2.png' style='width: 100%;height: 100%'></div>";
                     }
@@ -681,8 +731,8 @@
         ],
         view: new ol.View({
             // projection: projection,
-            center:center,
-            zoom:17,
+            center: center,
+            zoom: 17,
             projection: projection
         })
     });
@@ -692,6 +742,7 @@
         source: new ol.source.Vector(),
     });
     map.addLayer(layerMap);
+
     function setPoint(x, y) {
         let point = new ol.Feature({
             geometry: new ol.geom.Point([x, y]),
@@ -729,6 +780,7 @@
         };
         $.modal.openOptions(options);
     }
+
     function doSubmit(index, layero) {
         console.log(2)
         var body = layer.getChildFrame('body', index);
@@ -739,7 +791,9 @@
         findEventConditionByEventType(eventTypeId)
         layer.close(index);
     }
+
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+
     /**
      * 获取立案区域
      */

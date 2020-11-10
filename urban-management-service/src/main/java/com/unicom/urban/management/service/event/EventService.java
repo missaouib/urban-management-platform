@@ -351,6 +351,9 @@ public void saveTemp(EventDTO eventDTO){
             fileList.add(map);
         });
         eventOneVO.setFile(fileList);
+        Optional<Dept> dept = Optional.ofNullable(one.getEventType().getDept());
+        eventOneVO.setDeptId(dept.map(Dept::getId).orElse(""));
+        eventOneVO.setDeptName(dept.map(Dept::getDeptName).orElse(""));
         return eventOneVO;
     }
 
