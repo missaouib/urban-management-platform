@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -110,17 +109,21 @@ public class EventService {
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
         List<EventVO> eventVOList = EventMapper.INSTANCE.eventListToEventVOList(page.getContent());
-//        setListDataByStatistics(eventVOList);
+        setListDataByStatistics(eventVOList);
         return new PageImpl<>(eventVOList, page.getPageable(), page.getTotalElements());
     }
 
     private void setListDataByStatistics(List<EventVO> eventVOList) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
         for (EventVO eventVO : eventVOList) {
             Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventVO.getId());
-            eventVO.setTaskName(statistics.getTaskName());
-            eventVO.setStartTime(simpleDateFormat.format(statistics.getStartTime()));
-            eventVO.setTimeLimit(statistics.getProcessTimeLimit().getTimeLimit());
+            if (Optional.ofNullable(statistics).isPresent()) {
+                eventVO.setTaskName(statistics.getTaskName());
+                String format = simpleDateFormat.format(statistics.getStartTime());
+                eventVO.setStartTime(format);
+                int timeLimit = statistics.getProcessTimeLimit().getTimeLimit();
+                eventVO.setTimeLimit(timeLimit);
+            }
         }
 
     }
