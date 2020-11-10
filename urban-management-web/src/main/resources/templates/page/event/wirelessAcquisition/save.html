@@ -83,13 +83,13 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span></span>位置坐标</td>
+                                <td><span>*</span>位置坐标</td>
                                 <td>
-                                    <input type="text" class="" value="经度" name="x" id="longitude" readonly/>
+                                    <input type="text" class="" value="经度" name="x" id="longitude"  required readonly/>
                                 </td>
                                 <td></td>
                                 <td>
-                                    <input type="text" class="" value="纬度" name="y" id="latitude" readonly/>
+                                    <input type="text" class="" value="纬度" name="y" id="latitude" required readonly/>
                                 </td>
                             </tr>
                             <tr>
@@ -129,16 +129,17 @@
                                 </td>
                                 <td><span></span>上报人</td>
                                 <td style="text-align: left"><div class="username" th:sec:authentication="principal.username"></div></td>
+                                <td><span></span>是否处理</td>
+                                <td style="text-align: left">
+                                    <input  id="_doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
+                                </td>
                             </tr>
                             <tr>
                                 <td><span>*</span>案件地址</td>
-                                <td colspan="4">
+                                <td colspan="8">
                                     <input id="location" th:name="location" type="text" required>
                                 </td>
-                                <td><span></span>是否处理</td>
-                                <td style="text-align: left">
-                                    <input  id="_doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" required style="width: 30px">
-                                </td>
+
                             </tr>
                             <tr>
                                 <td><span>*</span>问题描述</td>
