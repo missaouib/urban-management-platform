@@ -5,6 +5,8 @@ import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
+import com.unicom.urban.management.service.grid.GridService;
+import com.unicom.urban.management.service.kv.KVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,10 @@ public class CooperativeWorkController {
 
     @Autowired
     private EventService eventService;
+    @Autowired
+    private KVService kvService;
+    @Autowired
+    private GridService gridService;
 
     /**
      * 案件处理
@@ -34,7 +40,12 @@ public class CooperativeWorkController {
      */
     @GetMapping("/toCooperativeWorkList")
     public ModelAndView toCooperativeWorkList() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/cooperativeWork/list");
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/cooperativeWork/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
     }
 
     @GetMapping("/cooperativeWorkList")
