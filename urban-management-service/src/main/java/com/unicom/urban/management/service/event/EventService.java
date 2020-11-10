@@ -93,7 +93,7 @@ public class EventService {
             }
 
             if (StringUtils.isNotBlank(eventDTO.getTimeType())) {
-                list.add(criteriaBuilder.equal(root.get("timeLimit").get("level").get("id").as(String.class), eventDTO.getTimeType()));
+                list.add(criteriaBuilder.equal(root.get("timeLimit").get("id").as(String.class), eventDTO.getTimeType()));
             }
 
             if (eventDTO.getTaskName() != null) {
