@@ -83,7 +83,7 @@ public class ActivitiServiceImpl implements ActivitiService {
         Map<String, Object> variables = new HashMap<>(3);
         variables.put("userId", StringUtils.collectionToCommaDelimitedString(userList));
         variables.put("eventSource", EventSourceConstant.ACCEPTANCE_REPORTING);
-        ProcessInstance processInstance = startProcessInstanceByKey("", eventId, variables);
+        ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
         log.debug("----------------------受理员上报事件开始--------------------------------------");
         log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
         log.debug("----------------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
@@ -180,6 +180,15 @@ public class ActivitiServiceImpl implements ActivitiService {
     @Override
     public void claim(String taskId, String userId) {
         taskService.claim(taskId, userId);
+    }
+
+    @Override
+    public void unClaim(String taskId) {
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+//        if (StringUtils) {
+//
+//        }
+        taskService.unclaim(taskId);
     }
 
 //    @Override
