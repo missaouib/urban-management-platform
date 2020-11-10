@@ -32,7 +32,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><span>*</span>所在网格</td>
+                            <td><span></span>所在网格</td>
                             <td>
                                 <select class="form-control" id="grid1" name="grid" required>
                                     <option value="">--请选择--</option>
@@ -40,7 +40,7 @@
                                             th:text="${as.gridName}"></option>
                                 </select>
                             </td>
-                            <td><span>*</span>事件来源</td>
+                            <td><span></span>事件来源</td>
                             <td>
                                 <select class="form-control" id="eventSource" name="eventSourceId" required>
                                     <option value="">--请选择--</option>
@@ -59,7 +59,7 @@
                                     +
                                 </button>
                             </td>
-                            <td><span>*</span>立案区域</td>
+                            <td><span></span>立案区域</td>
                             <td>
                                 <select id="eventCondition" name="eventCondition" onchange="getEventCondition()"
                                         required>
@@ -68,13 +68,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><span>*</span>立案条件</td>
+                            <td><span></span>立案条件</td>
                             <td>
                                 <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
                                     <option value="">--请选择--</option>
                                 </select>
                             </td>
-                            <td><span>*</span>计时等级</td>
+                            <td><span></span>计时等级</td>
                             <td>
                                 <select id="timeType" name="timeType" required>
                                     <option value="">--请选择--</option>
@@ -126,12 +126,12 @@
                             <table class="table">
                                 <tbody>
                                 <tr>
-                                    <td><span>*</span>案卷号</td>
+                                    <td><span></span>案卷号</td>
                                     <td>
                                         <input id="eventCode" placeholder="" class="" type="text" readonly="readonly"
                                                required>
                                     </td>
-                                    <td><span>*</span>问题类型</td>
+                                    <td><span></span>问题类型</td>
                                     <td>
                                         <input id="eventTypeStr" name="eventType" placeholder="请选择问题类型" class=""
                                                type="text" maxlength="30" required readonly="readonly"
@@ -140,13 +140,13 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span>*</span>立案区域</td>
+                                    <td><span></span>立案区域</td>
                                     <td>
                                         <input id="regionStr" name="eventType" placeholder="请选择问题类型" class=""
                                                type="text" maxlength="30" required readonly="readonly"
                                                onclick="selectEventTypeTree()">
                                     </td>
-                                    <td><span>*</span>立案条件</td>
+                                    <td><span></span>立案条件</td>
                                     <td>
                                         <input id="conditionValue" name="eventType" placeholder="请选择问题类型" class=""
                                                type="text" maxlength="30" required readonly="readonly"
@@ -155,20 +155,20 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span>*</span>案件等级</td>
+                                    <td><span></span>案件等级</td>
                                     <td>
                                         <input id="level" name="eventType" placeholder="请选择问题类型" class="" type="text"
                                                maxlength="30" required readonly="readonly"
                                                onclick="selectEventTypeTree()">
 
                                     </td>
-                                    <td><span>*</span>处理时限</td>
+                                    <td><span></span>处理时限</td>
                                     <td>
                                         <input id="timeLimitStr" type="text" readonly required>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span>*</span>问题描述</td>
+                                    <td><span></span>问题描述</td>
 
                                     <td colspan="8"><textarea id="represent" name="problemescription" required
                                                               readonly></textarea></td>
@@ -188,25 +188,25 @@
                                     </td>
                                 </tr>
                                 <tr class="col-12">
-                                    <td><span>*</span>所属区域</td>
+                                    <td><span></span>所属区域</td>
                                     <td>
                                         <input id="eventRegion" name="location" placeholder="" class="" readonly
                                                type="text">
 
                                     </td>
-                                    <td><span>*</span>所属街道</td>
+                                    <td><span></span>所属街道</td>
                                     <td>
                                         <input id="street" name="location" placeholder="" class="" readonly type="text">
 
                                     </td>
                                 </tr>
                                 <tr class="col-12">
-                                    <td><span>*</span>所属社区</td>
+                                    <td><span></span>所属社区</td>
                                     <td>
                                         <input id="community" name="location" placeholder="" class="" readonly
                                                type="text">
                                     </td>
-                                    <td><span>*</span>单元网格</td>
+                                    <td><span></span>单元网格</td>
                                     <td>
                                         <input id="girdStr" name="location" placeholder="" class="" readonly
                                                type="text">
@@ -219,7 +219,7 @@
                                         <input name="eventSourceStr" id="eventSourceStr" placeholder="" class=""
                                                type="text" readonly="readonly">
                                     </td>
-                                    <td><span>*</span>上报人</td>
+                                    <td><span></span>上报人</td>
                                     <td>
                                         <input id="userName" name="userName" placeholder="" class="" readonly
                                                type="text">
@@ -316,7 +316,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
-                            <span class="sendText"><i>*</i>意见</span>
+                            <span class="sendText"><i></i>意见</span>
                             <textarea type="text" id="opinions"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays">

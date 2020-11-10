@@ -376,7 +376,7 @@ font-size: 20px;
 }
 
 .headerRight{
-    width: 300px;
+    width: 380px;
     height: 100%;
     position: absolute;
     top: 0;
@@ -431,4 +431,31 @@ font-size: 20px;
 .liActive{
     background: #FFFFFF!important;
     color: #354E85!important;
+}
+.bell{
+    width: 100px;
+    height: 100%;
+    display: flex;
+    justify-content: center;align-items: center;
+    float: left;
+}
+.bellImg{
+    width: 30px;
+    height: 30px;
+    position: relative;
+    background-image: url("../img/smallBell.png");
+    background-size: 100% 100%;
+}
+.messageNum{
+    width: 10px;
+    height: 10px;
+    font-size: 8px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+    text-align: center;
+    line-height: 10px;
+    position: absolute;
+    top: -3px;
+    right: -3px;
 }
