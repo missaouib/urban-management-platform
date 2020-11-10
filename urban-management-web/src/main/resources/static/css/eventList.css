@@ -40,7 +40,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 16px;
+    font-size: 12px;
 }
 .active{
     background-color: #354e85;
@@ -147,7 +147,4 @@
     border-radius: 4px!important;
     display: none;
     z-index: 10;
-}
-.bootstrap-table{
-    margin-bottom: 50px!important;
 }
