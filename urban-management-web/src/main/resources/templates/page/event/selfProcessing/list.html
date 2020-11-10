@@ -490,28 +490,29 @@
                     title: '序号',
                 },
                 {
-                    title: '时限',
+                    title: '处理时限',
                     field: '',
                     formatter: function (value, row) {
+                        console.log("row", row);
                         return "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
                             "<img src='../img/2.png' style='width: 100%;height: 100%'></div>";
                     }
                 },
                 {
                     title: '案件编号',
-                    field: 'represent'
+                    field: 'eventCode'
                 },
                 {
                     title: '问题描述',
-                    field: 'userName'
+                    field: 'represent'
                 },
                 {
                     title: '当前状态',
-                    field: 'eventTypeName'
+                    field: 'taskName'
                 },
                 {
                     title: '案件类型',
-                    field: 'eventTypeName'
+                    field: 'recTypeName'
                 },
             ]
         };
@@ -554,7 +555,7 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px;width: 150px' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
                 }
             }
             $("#eventButton").html(buttonHtml);
@@ -591,7 +592,6 @@
                     }
                     html += "</div>";
                     html += "<div class='expressRecord-text'>";
-                    html += "<div class='gameTitle'>门头沟区域指挥中心</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
                     html += "<em>回复内容:</em> " + data[i].opinions
@@ -932,6 +932,18 @@
             }
         });
         layerMap.getSource().addFeature(point);
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 10,
+                fill: new ol.style.Fill({
+                    color: '#ff0000'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#ff0000',
+                    width: 3
+                })
+            })
+        }));
     }
 </script>
 </body>

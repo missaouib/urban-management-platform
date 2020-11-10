@@ -74,7 +74,7 @@ public class EventOneVO {
     /**
      * 附件
      */
-    private List<Map<String,String>> file;
+    private List<Map<String,Object>> file;
 
     private double x;
 

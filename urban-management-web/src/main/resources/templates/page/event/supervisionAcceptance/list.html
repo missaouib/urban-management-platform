@@ -605,7 +605,7 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px;width: 150px' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
                 }
             }
             $("#eventButton").html(buttonHtml);
@@ -642,7 +642,6 @@
                     }
                     html += "</div>";
                     html += "<div class='expressRecord-text'>";
-                    html += "<div class='gameTitle'>门头沟区域指挥中心</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
                     html += "<em>回复内容:</em> " + data[i].opinions
@@ -986,6 +985,18 @@
             }
         });
         layerMap.getSource().addFeature(point);
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 10,
+                fill: new ol.style.Fill({
+                    color: '#ff0000'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#ff0000',
+                    width: 3
+                })
+            })
+        }));
     }
 
     function setPolygon(coordinates) {

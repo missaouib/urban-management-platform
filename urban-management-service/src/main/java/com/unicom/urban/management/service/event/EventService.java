@@ -13,7 +13,6 @@ import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
-import org.activiti.engine.runtime.ProcessInstance;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,10 +26,7 @@ import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * 事件
@@ -110,7 +106,23 @@ public class EventService {
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
         List<EventVO> eventVOList = EventMapper.INSTANCE.eventListToEventVOList(page.getContent());
+        setListDataByStatistics(eventVOList);
         return new PageImpl<>(eventVOList, page.getPageable(), page.getTotalElements());
+    }
+
+    private void setListDataByStatistics(List<EventVO> eventVOList) {
+        DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        for (EventVO eventVO : eventVOList) {
+            Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventVO.getId());
+            if (Optional.ofNullable(statistics).isPresent()) {
+                eventVO.setTaskName(statistics.getTaskName());
+                String format = simpleDateFormat.format(statistics.getStartTime());
+                eventVO.setStartTime(format);
+                int timeLimit = statistics.getProcessTimeLimit().getTimeLimit();
+                eventVO.setTimeLimit(timeLimit);
+            }
+        }
+
     }
 
     public List<EventConditionVO> findEventConditionByEventType(String eventTypeId) {
@@ -145,8 +157,12 @@ public class EventService {
      */
     public List<EventButtonVO> getButton(String eventId) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-        List<EventButton> eventButtons = activitiService.queryButton(statistics.getTaskId());
-        return EventButtonMapper.INSTANCE.eventButtonListToEventButtonVOList(eventButtons);
+        if (statistics != null) {
+            List<EventButton> eventButtons = activitiService.queryButton(statistics.getTaskId());
+            return EventButtonMapper.INSTANCE.eventButtonListToEventButtonVOList(eventButtons);
+        } else {
+            return null;
+        }
     }
 
 public void saveTemp(EventDTO eventDTO){
@@ -322,6 +338,14 @@ public void saveTemp(EventDTO eventDTO){
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         eventOneVO.setCDate(df.format(one.getCreateTime()));
         eventOneVO.setEventSourceStr(one.getEventSource().getValue());
+        List<Map<String,Object>> fileList = new ArrayList<>();
+        one.getEventFileList().forEach(f->{
+            Map<String,Object> map = new HashMap<>();
+            map.put("url",f.getFilePath());
+            map.put("type",f.getFileType());
+            fileList.add(map);
+        });
+        eventOneVO.setFile(fileList);
         return eventOneVO;
     }
 

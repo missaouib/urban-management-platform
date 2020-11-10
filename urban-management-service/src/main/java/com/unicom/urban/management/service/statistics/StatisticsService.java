@@ -79,7 +79,7 @@ public class StatisticsService {
                     .starTime(starTime)
                     .endTime(endTime)
                     .sign(sign)
-                    .opinions(s.getOpinions())
+                    .opinions(Optional.ofNullable(s.getOpinions()).orElse("无"))
                     .fileName(file)
                     .user(Optional.ofNullable(s.getUser()).map(User::getUsername).orElse(""))
                     .link(s.getTaskName())

@@ -473,15 +473,15 @@
                 },
                 {
                     title: '案件编号',
-                    field: 'represent'
+                    field: 'eventCode'
                 },
                 {
                     title: '问题描述',
-                    field: 'userName'
+                    field: 'represent'
                 },
                 {
                     title: '当前状态',
-                    field: 'eventTypeName'
+                    field: 'taskName'
                 },
                 {
                     title: '当前处理人',
@@ -489,7 +489,7 @@
                 },
                 {
                     title: '达到时间',
-                    field: 'eventTypeName'
+                    field: 'startTime'
                 },
 
             ]
@@ -527,7 +527,6 @@
                     }
                     html += "</div>";
                     html += "<div class='expressRecord-text'>";
-                    html += "<div class='gameTitle'>门头沟区域指挥中心</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
                     html += "<em>回复内容:</em> " + data[i].opinions
@@ -682,7 +681,7 @@
         view: new ol.View({
             // projection: projection,
             center:center,
-            zoom:13,
+            zoom:17,
             projection: projection
         })
     });
@@ -702,6 +701,18 @@
             }
         });
         layerMap.getSource().addFeature(point);
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 10,
+                fill: new ol.style.Fill({
+                    color: '#ff0000'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#ff0000',
+                    width: 3
+                })
+            })
+        }));
     }
 
     function selectEventTypeTree() {
