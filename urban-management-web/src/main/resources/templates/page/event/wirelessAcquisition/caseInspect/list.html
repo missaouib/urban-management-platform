@@ -437,6 +437,7 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row) {
+                layerMap.getSource().clear()
                 console.log("row", row);
                 // $(".tab_update").addClass("active").siblings(".tabTitle span").removeClass("active");
                 // $(".banner_update").addClass("blockActive").siblings(".banner").removeClass("blockActive");

@@ -385,6 +385,7 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row) {
+                layerMap.getSource().clear()
                 console.log("row", row);
             },
             columns: [

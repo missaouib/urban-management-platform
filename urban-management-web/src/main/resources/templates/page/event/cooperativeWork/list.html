@@ -417,6 +417,7 @@
             modalName: "用户",
              // 点击每行进行函数的触发
             onClickRow: function (row, tr, flied) {
+                layerMap.getSource().clear()
                 //详情  流程图  流转记录
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
                     eventId = e.data.id;
