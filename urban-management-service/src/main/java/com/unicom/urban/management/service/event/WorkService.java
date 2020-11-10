@@ -1,7 +1,6 @@
 package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.util.SecurityUtil;
-import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventFile;
 import com.unicom.urban.management.pojo.entity.ProcessTimeLimit;
@@ -99,6 +98,7 @@ public class WorkService {
      */
     public void completeByReceptionist(String eventId, String userId, String button) {
         Statistics s = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        s.setEndTime(LocalDateTime.now());
         if ("13".equals(button) || "16".equals(button)) {
             activitiService.claim(s.getTaskId(), SecurityUtil.getUserId());
         }
@@ -119,7 +119,6 @@ public class WorkService {
             /*TODO 获取当前登陆人角色*/
             s.setUser(SecurityUtil.getUser().castToUser());
         }
-        s.setEndTime(LocalDateTime.now());
         statisticsService.update(s);
         activitiService.complete(s.getTaskId(), Collections.singletonList(userId), button);
         Statistics statistics = initStatistics(eventId);

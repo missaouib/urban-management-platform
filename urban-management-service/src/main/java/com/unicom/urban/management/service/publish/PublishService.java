@@ -17,7 +17,6 @@ import com.unicom.urban.management.service.component.ComponentService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.record.RecordService;
 import org.apache.commons.lang3.StringUtils;
-import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
@@ -85,16 +84,16 @@ public class PublishService {
             List<Grid> gridList = gridService.findAllByPublishIdAndRecordSts(publishId);
             Publish publish = findOne(publishId);
             ResponseEntity<RestReturn> post = RestTemplateUtil.post(KvConstant.GIS_URL + URL, getGridJson(publish, gridList), RestReturn.class);
-            Map<String,String> map = (Map<String, String>) post.getBody().getData();
+            Map<String, String> map = (Map<String, String>) post.getBody().getData();
             publish.setSts(StsConstant.RELEASE);
             String layerId = map.get("layerId");
-            publish.setLayerId(StringUtils.isNotBlank(publish.getLayerId())?publish.getLayerId(): layerId);
+            publish.setLayerId(StringUtils.isNotBlank(publish.getLayerId()) ? publish.getLayerId() : layerId);
             String url = map.get("url");
-            publish.setUrl(StringUtils.isNotBlank(publish.getUrl())?publish.getUrl(): url);
+            publish.setUrl(StringUtils.isNotBlank(publish.getUrl()) ? publish.getUrl() : url);
             String workName = map.get("workName");
-            publish.setUrl(StringUtils.isNotBlank(publish.getWorkName())?publish.getWorkName(): workName);
+            publish.setUrl(StringUtils.isNotBlank(publish.getWorkName()) ? publish.getWorkName() : workName);
             String layerGroup = map.get("layerGroup");
-            publish.setUrl(StringUtils.isNotBlank(publish.getLayerGroup())?publish.getLayerGroup(): layerGroup);
+            publish.setUrl(StringUtils.isNotBlank(publish.getLayerGroup()) ? publish.getLayerGroup() : layerGroup);
             publishRepository.saveAndFlush(publish);
             List<Record> recordList = new ArrayList<>();
             for (Grid grid : gridList) {
@@ -106,18 +105,18 @@ public class PublishService {
             List<Component> components = componentService.findAllByPublishIdAndRecordSts(publishId);
             Publish publish = findOne(publishId);
             ResponseEntity<RestReturn> post = RestTemplateUtil.post(KvConstant.GIS_URL + URL, getComponentJson(publish, components), RestReturn.class);
-            Map<String,String> map = (Map<String, String>) post.getBody().getData();
+            Map<String, String> map = (Map<String, String>) post.getBody().getData();
             publish.setSts(StsConstant.RELEASE);
             String layerId = map.get("layerId");
-            publish.setLayerId(StringUtils.isNotBlank(publish.getLayerId())?publish.getLayerId(): layerId);
+            publish.setLayerId(StringUtils.isNotBlank(publish.getLayerId()) ? publish.getLayerId() : layerId);
             String url = map.get("url");
-            publish.setUrl(StringUtils.isNotBlank(publish.getUrl())?publish.getUrl(): url);
+            publish.setUrl(StringUtils.isNotBlank(publish.getUrl()) ? publish.getUrl() : url);
             String workName = map.get("workName");
-            publish.setWorkName(StringUtils.isNotBlank(publish.getWorkName())?publish.getWorkName(): workName);
+            publish.setWorkName(StringUtils.isNotBlank(publish.getWorkName()) ? publish.getWorkName() : workName);
             String layerGroup = map.get("layerGroup");
-            publish.setLayerGroup(StringUtils.isNotBlank(publish.getLayerGroup())?publish.getLayerGroup(): layerGroup);
+            publish.setLayerGroup(StringUtils.isNotBlank(publish.getLayerGroup()) ? publish.getLayerGroup() : layerGroup);
             publishRepository.saveAndFlush(publish);
-            components.forEach(c->{
+            components.forEach(c -> {
                 Record record = c.getRecord();
                 record.setSts(StsConstant.RELEASE);
                 recordService.update(record);
@@ -138,7 +137,7 @@ public class PublishService {
         scaleMap.put("id", KvConstant.SCALE);
         int five = 5;
         Map<String, Object> layerMap = new HashMap<>(five);
-        layerMap.put("id",StringUtils.isNotBlank(publish.getLayerId())?publish.getLayerId():"");
+        layerMap.put("id", StringUtils.isNotBlank(publish.getLayerId()) ? publish.getLayerId() : "");
         layerMap.put("epsg", epsgMap);
         layerMap.put("layerSetting", layerSettingMap);
         layerMap.put("scale", scaleMap);
@@ -161,6 +160,7 @@ public class PublishService {
 
         return new JSONObject(map);
     }
+
     private JSONObject getComponentJson(Publish publish, List<Component> componentList) {
         int one = 1;
         Map<String, Object> layerSettingMap = new HashMap<>(one);
@@ -171,7 +171,7 @@ public class PublishService {
         scaleMap.put("id", KvConstant.SCALE);
         int five = 5;
         Map<String, Object> layerMap = new HashMap<>(five);
-        layerMap.put("id", StringUtils.isNotBlank(publish.getLayerId())?publish.getLayerId():"");
+        layerMap.put("id", StringUtils.isNotBlank(publish.getLayerId()) ? publish.getLayerId() : "");
         layerMap.put("epsg", epsgMap);
         layerMap.put("layerSetting", layerSettingMap);
         layerMap.put("scale", scaleMap);
@@ -193,6 +193,15 @@ public class PublishService {
         map.put("elementAndAttributeList", mapList);
 
         return new JSONObject(map);
+    }
+
+    public String getGridUrl() {
+        Publish byKvId = publishRepository.findByKv_Id("28526efe-3db5-415b-8c7a-d0e3a49cab8f");
+        if (StringUtils.isNotBlank(byKvId.getUrl())) {
+            return byKvId.getUrl();
+        } else {
+            throw new DataValidException("未查询到发布网格数据地址，请先发布网格");
+        }
     }
 
 

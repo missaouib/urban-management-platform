@@ -1150,7 +1150,7 @@
                     "F_ModuleId": "100655551235031237",
                     "F_ParentId": "1006555550125",
                     "F_EnCode": "SysManage",
-                    "F_FullName": "公众信息待办列表",
+                    "F_FullName": "待办案件",
                     "F_Icon": "fa fa-spinner",
                     "F_UrlAddress": "/event/toSelfProcessingList",
                     "F_Target": "expand",

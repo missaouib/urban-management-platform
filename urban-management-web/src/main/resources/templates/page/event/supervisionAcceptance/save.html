@@ -303,9 +303,9 @@
             format: "yyyy-mm-dd hh:ii:ss"
         });
 
+        getGridPublishUrl();
 
-
-    })
+    });
 
 
     let url = /*[[@{/event/register}]]*/ "/event/register";
@@ -318,6 +318,13 @@
     let getDeptTimeLimitByLevelUrl = /*[[@{/event/getDeptTimeLimitByLevel}]]*/ "/event/getDeptTimeLimitByLevel";
     let findAllByKvIdUrl = /*[[@{/event/findAllByKvId}]]*/ "/event/findAllByKvId";
     let saveUrl = /*[[@{/event/save}]]*/ "/event/save";
+    let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
+
+    function getGridPublishUrl() {
+        $.ajaxUtil.get(getGridUrl, function (e) {
+            console.log("e", e);
+        })
+    }
 
     var setting = {
         callback: {
