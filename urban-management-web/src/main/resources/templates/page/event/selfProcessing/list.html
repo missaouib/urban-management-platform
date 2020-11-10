@@ -368,7 +368,7 @@
      * 获取立案区域
      */
     function findEventConditionByEventType(eventTypeId) {
-        let url = findEventConditionByEventTypeUrl + "/" + eventTypeId;
+        let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
         $.ajaxUtil.get(url, function (e) {
             let option = "<option value=''>--请选择--</option>";
             if (e.code === "0") {
@@ -385,7 +385,7 @@
      */
     function getEventCondition() {
         let eventConditionId = $("#eventCondition").val();
-        let url = "/event/getEventCondition/" + eventConditionId;
+        let url = "/event/getEventCondition/?conditionId=" + eventConditionId;
         $.ajaxUtil.get(url, function (e) {
             $("#eventTerm").empty();
             let option = "<option value=''>--请选择--</option>";
@@ -403,7 +403,7 @@
      */
     function getTimeTypeList() {
         let eventTerm = $("#eventTerm").val();
-        let url = "/event/findDeptTimeLimitByCondition/" + eventTerm;
+        let url = "/event/findDeptTimeLimitByCondition/?conditionId=" + eventTerm;
         $.ajaxUtil.get(url, function (e) {
             $("#timeType").empty();
             let option = "<option value=''>--请选择--</option>";

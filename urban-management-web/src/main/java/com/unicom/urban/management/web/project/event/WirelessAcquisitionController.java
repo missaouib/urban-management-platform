@@ -4,14 +4,12 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.util.SecurityUtil;
-import com.unicom.urban.management.mapper.StatisticsMapper;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.entity.Statistics;
-import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
@@ -149,12 +147,13 @@ public class WirelessAcquisitionController {
 
     /**
      * 获取立案区域
+     *
      * @param eventTypeId
      * @return
      */
-    @GetMapping("/findEventConditionByEventType/{eventTypeId}")
-    public Result findEventConditionByEventType(@PathVariable String eventTypeId){
-        List<EventConditionVO> list =  eventService.findEventConditionByEventType(eventTypeId);
+    @GetMapping("/findEventConditionByEventType")
+    public Result findEventConditionByEventType(String eventTypeId) {
+        List<EventConditionVO> list = eventService.findEventConditionByEventType(eventTypeId);
         return Result.success(list);
     }
 
@@ -164,8 +163,8 @@ public class WirelessAcquisitionController {
      * @param conditionId
      * @return
      */
-    @GetMapping("/findDeptTimeLimitByCondition/{conditionId}")
-    public Result findDeptTimeLimitByCondition(@PathVariable String conditionId) {
+    @GetMapping("/findDeptTimeLimitByCondition")
+    public Result findDeptTimeLimitByCondition(String conditionId) {
         List<DeptTimeLimitVO> list = eventService.findDeptTimeLimitByCondition(conditionId);
         return Result.success(list);
     }
@@ -176,8 +175,8 @@ public class WirelessAcquisitionController {
      * @param conditionId
      * @return
      */
-    @GetMapping("/getEventCondition/{conditionId}")
-    public Result getEventCondition(@PathVariable String conditionId) {
+    @GetMapping("/getEventCondition")
+    public Result getEventCondition(String conditionId) {
         List<EventConditionVO> conditionValueByRegion = eventService.findConditionValueByRegion(conditionId);
         return Result.success(conditionValueByRegion);
     }
