@@ -581,7 +581,7 @@ public class Statistics {
      * 延时
      */
     @Column(columnDefinition = "TINYINT(1)")
-    private Integer delayed;
+    private Integer delayedState;
 
     /**
      * 延时       申请延时的时间
