@@ -1438,7 +1438,7 @@ label.error {
 
 .gameEnd {
     display: flex;
-    height: 33%;
+    height: 20%;
     justify-content: space-between;
     align-items: center;
     padding: 0 5px;
@@ -1455,7 +1455,7 @@ label.error {
 }
 
 .endBox {
-    width: 50%;
+    /*width: 50%;*/
     height: 100%;
     display: flex;
     align-items: center;

@@ -480,9 +480,42 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row) {
+                console.log(row)
                 layerMap.getSource().clear()
                 checkRow(row.id);
+                console.log(row.startTime)
+                var date=new Date();
+                var year=date.getFullYear();
+                var month=date.getMonth()+1;
+                var day=date.getDate();
+                var hh=date.getHours();
+                var mm=date.getMinutes();
+                var ss=date.getSeconds();
+                if (mm < 10){
+                    var MM = "0"+mm;
+                }else {
+                    MM = mm
+                }
+                if (hh < 10){
+                    var HH = "0"+hh;
+                }else {
+                    HH = hh
+                }
+                if (ss < 10){
+                    var SS = "0"+ss;
+                }else {
+                    SS = ss
+                }
 
+                var nowTime=year+"-"+month+"-"+day+" "+HH+":"+MM+":"+SS;
+                console.log(nowTime)
+                var nowTimes= new Date(nowTime);
+                var staTime = new Date(row.startTime)
+                var lessNum = nowTimes - staTime;
+                console.log(lessNum)
+                // if (nowTime > row.startTime){
+                //     alert(nowTime+"：当前时间大于 该行数据的startTime"+row.startTime)
+                // }
             },
             columns: [
                 {
@@ -493,7 +526,7 @@
                     title: '处理时限',
                     field: '',
                     formatter: function (value, row) {
-                        return "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;' class='timeSet'>" +
+                        return "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
                             "<img src='../img/2.png' style='width: 100%;height: 100%'></div>";
                     }
                 },
@@ -607,16 +640,32 @@
                     html += "<em>回复内容:</em> " + data[i].opinions
                     html += "</div>";
                     if (data[i].fileName.length > 0) {
-
+                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
                     }
-                    html += "<div class='endBox enclosure'><i></i>附件详情</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
                     html += "<em>by:</em> " + data[i].user + "，角色";
                     html += "</div>";
-                    html += "<div class='endBox endright'>开始时间: " + data[i].starTime + "</div>";
-                    html += "<div class='endBox endright'>结束时间: " + data[i].endTime + "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>开始时间:</em> " + data[i].starTime
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>结束时间:</em> " + data[i].endTime
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em></em>"
+                    html += "</div>";
+                    if (data[i].fileName.length > 0) {
+                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                    }
+                    html += "<div class='endBox enclosure'><i></i>附件详情</div>";
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='expressRecord-date'>";
