@@ -95,7 +95,7 @@ body {
 }
 
 .active {
-    width: 180px!important;
+    width: 210px!important;
     height: 120px!important;
     font-size: 20px;
     font-weight: 500;
@@ -125,10 +125,11 @@ body {
 }
 
 .circle {
+    /* 这里一定要绝对定位，这样位置才能铺开来 */
     position: absolute;
     top: 35px;
     left: -10px;
-    width: 165px;
+    width: 200px;
     height: 100px;
     line-height: 100px;
     text-align: center;
@@ -139,71 +140,66 @@ body {
 }
 
 .circle1 {
-    transform:rotateZ(204deg) translateY(191px) translateX(-15px);
+    /* rotateZ控制方向，每个元素旋转30度，12个元素刚好360度。translateY控制每个元素距中心点的距离 */
+    transform: rotateZ(203deg) translateY(190px);
     z-index: 9;
 }
 
 .circle2 {
-    transform: rotateZ(165deg) translateY(180px) translateX(-21px);
+    transform: rotateZ(159deg) translateY(190px) translateX(-2px);
     z-index: 8;
 }
 
 .circle3 {
-    transform: rotateZ(128deg) translateY(171px) translateX(-14px);
+    transform: rotateZ(115deg) translateY(190px) translateX(-3px);
     z-index: 7;
 }
 
 .circle4 {
-    transform: rotateZ(89deg) translateY(166px) translateX(-7px);
+    transform: rotateZ(72deg) translateY(190px) translateX(-2px);
     z-index: 6;
 }
 
 .circle5 {
     z-index: 5;
-    transform: rotateZ(51deg) translateY(170px) translateX(5px);
+    transform: rotateZ(29deg) translateY(191px) translateX(-1px);
 }
 
 .circle6 {
-    transform: rotateZ(12deg) translateY(177px) translateX(10px);
+    transform: rotateZ(-15deg) translateY(191px) translateX(-3px);
     z-index: 4;
 }
-.circle7 {
-    transform: rotateZ(-27deg) translateY(185px) translateX(6px);
-    z-index: 4;
-}
+
 .active.circle1 {
-    transform: rotateZ(202deg) translateY(203px) translateX(-11px);
+    transform: rotateZ(202deg) translateY(203px) translateX(0px);
     z-index: 9;
 }
 
 .active.circle2 {
-    transform: rotateZ(164deg) translateY(196px) translateX(-15px);
+    transform: rotateZ(159deg) translateY(207px) translateX(-2px);
     z-index: 9;
 }
 
 .active.circle3 {
-    transform: rotateZ(128deg) translateY(188px) translateX(-15px);
+    transform: rotateZ(116deg) translateY(203px) translateX(-5px);
     z-index: 9;
 }
 
 .active.circle4 {
-    transform: rotateZ(90deg) translateY(182px) translateX(-11px);
+    transform: rotateZ(74deg) translateY(199px) translateX(-3px);
     z-index: 9;
 }
 
 .active.circle5 {
-    transform: rotateZ(51deg) translateY(176px) translateX(-5px);
+    transform: rotateZ(31deg) translateY(188px) translateX(-1px);
     z-index: 9;
 }
 
 .active.circle6 {
-    transform: rotateZ(14deg) translateY(177px) translateX(4px);
+    transform: rotateZ(-14deg) translateY(189px) translateX(-1px);
     z-index: 9;
 }
-.active.circle7 {
-    transform: rotateZ(-27deg) translateY(181px) translateX(7px);
-    z-index: 9;
-}
+
 .top {
     width: 100%;
     height: 40px;
