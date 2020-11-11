@@ -440,6 +440,17 @@ public void saveTemp(EventDTO eventDTO){
     public void saveReport(EventDTO eventDTO) {
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
+        event.setSts(null);
+        Event saved = eventRepository.save(event);
+        workService.superviseReporting(saved.getId());
+    }
+    /**
+     * 案件采集页表页上报
+     */
+    public void reportOnList(String id) {
+        Event event = this.findOne(id);
+        event.setUser(SecurityUtil.getUser().castToUser());
+        event.setSts(null);
         Event saved = eventRepository.save(event);
         workService.superviseReporting(saved.getId());
     }

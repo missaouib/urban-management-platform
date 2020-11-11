@@ -101,13 +101,31 @@
     let removeUrl = /*[[@{/event/remove/{id}}]]*/ "/event/remove/{id}";
 
     let editUrl = /*[[@{/event/toWirelessAcquisitionUpdate/{id}}]]*/ "/event/toWirelessAcquisitionUpdate/{id}";
+    let reportOnListUrl = /*[[@{/event/reportOnList}]]*/ "/event/reportOnList";
 
+    // function reportOnList(id){
+    //     $.ajax({
+    //         url: reportOnListUrl,
+    //         type: 'POST',
+    //         data: {id:id},
+    //         async: false,
+    //         dataType: 'json',
+    //         success: function (data) {
+    //             console.log("data.code", data.code)
+    //             if (data.code === 0) {
+    //                 $.modal.msgSuccess("上报成功");
+    //                 window.location.reload();
+    //             }
+    //         }
+    //     });
+    // }
     function queryUserList() {
         var options = {
             url: searchUrl,
             createUrl: addUrl,
             updateUrl: editUrl,
             removeUrl: removeUrl,
+            reportUrl: reportOnListUrl,
             // exportUrl: prefix + "/export",
             // importUrl: prefix + "/importData",
             // importTemplateUrl: prefix + "/importTemplate",
@@ -144,6 +162,7 @@
                         var actions = [];
                         actions.push('<a  href="#" title="" onclick="$.operate.editTab(\'' + row.id + '\')">修改</a> ');
                         actions.push('<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ');
+                        actions.push('<a  href="#" title="" onclick="$.operate.report(\'' + row.id + '\')">上报</a> ');
                         return actions.join('');
                     }
                 }

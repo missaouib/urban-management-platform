@@ -171,4 +171,9 @@ public class GridService {
         List<Grid> gridList = gridRepository.findAllByParentIsNull();
         return GridMapper.INSTANCE.gridListToGridVOList(gridList);
     }
+
+    public List<GridVO> findGridAll(){
+        List<Grid> gridList = gridRepository.findAll();
+        return GridMapper.INSTANCE.gridListToGridVOList(gridList);
+    }
 }
