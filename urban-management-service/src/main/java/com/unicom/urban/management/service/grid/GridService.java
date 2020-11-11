@@ -107,7 +107,7 @@ public class GridService {
         grid.setPublish(savePublish);
         String userId = SecurityUtil.getUserId();
         User user = userService.findOne(userId);
-        grid.setDept(user.getDept());
+//        grid.setDept(user.getDept());
         grid.setRecord(saveRecord);
         gridRepository.save(grid);
     }

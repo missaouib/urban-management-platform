@@ -39,7 +39,8 @@ public class Dept extends BaseEntity {
     @JoinColumn
     private Dept parent;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dept")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_dept", joinColumns = @JoinColumn(name = "dept_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> userList;
 
 }

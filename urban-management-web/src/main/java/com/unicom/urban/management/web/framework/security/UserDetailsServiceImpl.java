@@ -33,9 +33,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         userBean.setPassword(user.getPassword());
 
-        userBean.setDeptId(user.getDept().getId());
+//        userBean.setDeptId(user.getDept().getId());
 
-        userBean.setDeptName(user.getDept().getDeptName());
+//        userBean.setDeptName(user.getDept().getDeptName());
 
         return userBean;
 
