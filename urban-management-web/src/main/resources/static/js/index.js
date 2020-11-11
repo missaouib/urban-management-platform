@@ -1403,7 +1403,7 @@
                     "F_ModuleId": "100655551235031240",
                     "F_ParentId": "1006555550126",
                     "F_EnCode": "SysManage",
-                    "F_FullName": "授权批示列表",
+                    "F_FullName": "授权列表",
                     "F_Icon": "fa fa-wrench",
                     "F_UrlAddress": "/event/toClosedCasesList",
                     "F_Target": "expand",
