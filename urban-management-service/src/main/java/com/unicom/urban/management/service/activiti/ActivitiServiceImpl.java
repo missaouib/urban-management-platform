@@ -80,14 +80,16 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     @Override
     public ProcessInstance acceptanceReporting(String eventId, List<String> userList) {
+        long startTime = System.currentTimeMillis();
         Map<String, Object> variables = new HashMap<>(3);
         variables.put("userId", StringUtils.collectionToCommaDelimitedString(userList));
         variables.put("eventSource", EventSourceConstant.ACCEPTANCE_REPORTING);
         ProcessInstance processInstance = startProcessInstanceByKey(EVENT_KEY, eventId, variables);
+        long endTime = System.currentTimeMillis();
         log.debug("----------------------受理员上报事件开始--------------------------------------");
         log.debug("----------------------上报事件 开启流程实例 eventId:{}---------------------", eventId);
         log.debug("----------------------受理员 userId:{}---------------------", Arrays.toString(userList.toArray()));
-        log.debug("----------------------受理员上报事件结束--------------------------------------");
+        log.debug("----------------------受理员上报事件结束 activiti花费时间 {}:--------------------------------------", endTime - startTime);
         return processInstance;
     }
 
@@ -137,30 +139,40 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     @Override
     public List<String> queryTaskByAssignee(String userId, Pageable pageable) {
-
+        long startTime = System.currentTimeMillis();
         List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).listPage(pageable.getPageNumber(), pageable.getPageSize());
 
-        return queryTask(taskList);
+        List<String> eventIdList = queryTask(taskList);
+        log.debug("----------------------activiti查询花费时间 {}:--------------------------------------", System.currentTimeMillis() - startTime);
+        return eventIdList;
 
     }
 
     @Override
     public List<String> queryTaskByAssignee(String userId) {
+        long startTime = System.currentTimeMillis();
         List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).list();
-
-        return queryTask(taskList);
+        List<String> eventIdList = queryTask(taskList);
+        log.debug("----------------------activiti查询花费时间 {}:--------------------------------------", System.currentTimeMillis() - startTime);
+        return eventIdList;
     }
 
     @Override
     public List<String> queryTaskByAssigneeAndTaskName(String userId, List<String> taskName, Pageable pageable) {
+        long startTime = System.currentTimeMillis();
         List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).taskNameIn(taskName).listPage(pageable.getPageNumber(), pageable.getPageSize());
-        return queryTask(taskList);
+        List<String> eventIdList = queryTask(taskList);
+        log.debug("----------------------activiti查询花费时间 {}:--------------------------------------", System.currentTimeMillis() - startTime);
+        return eventIdList;
     }
 
     @Override
     public List<String> queryTaskByAssigneeAndTaskName(String userId, List<String> taskName) {
+        long startTime = System.currentTimeMillis();
         List<Task> taskList = taskService.createTaskQuery().taskCandidateOrAssigned(userId).taskNameIn(taskName).list();
-        return queryTask(taskList);
+        List<String> eventIdList = queryTask(taskList);
+        log.debug("----------------------activiti查询花费时间 {}:--------------------------------------", System.currentTimeMillis() - startTime);
+        return eventIdList;
 
     }
 
