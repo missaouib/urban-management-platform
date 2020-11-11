@@ -20,7 +20,7 @@ import java.io.InputStream;
 @Configuration
 public class ActivitiProcessEngineConfiguration {
 
-    private static final String FONT_PATH_WQY = "fonts/Arial.ttf";
+    private static final String FONT_PATH_WQY = "fonts/Arial Unicode.ttf";
     private static final String FONT_NAME = "宋体";
 
 
