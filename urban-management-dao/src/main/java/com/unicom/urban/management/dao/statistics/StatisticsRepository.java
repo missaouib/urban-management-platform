@@ -23,4 +23,7 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      */
     Statistics findByEvent_IdAndEndTimeIsNull(String eventId);
 
+
+    List<Statistics> findAllByUser_IdAndEndTimeIsNotNull(String userId);
+
 }

@@ -226,13 +226,24 @@ public class SupervisionAcceptanceController {
     }
 
     /**
-     * 案件查询列表
+     * 已结案件查询列表
      *
      * @return list
      */
     @GetMapping("/closeEventList")
     public Page<EventVO> closeEventList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
         eventDTO.setClose(KvConstant.CLOS_ETESK);
+        return eventService.search(eventDTO, pageable);
+    }
+
+    /**
+     * 已办案件查询列表
+     *
+     * @return list
+     */
+    @GetMapping("/meEventList")
+    public Page<EventVO> meEventList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setMe("1");
         return eventService.search(eventDTO, pageable);
     }
 

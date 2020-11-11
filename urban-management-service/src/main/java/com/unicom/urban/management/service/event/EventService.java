@@ -107,6 +107,17 @@ public class EventService {
                 type.forEach(in::value);
                 list.add(in);
             }
+
+            if(StringUtils.isNotBlank(eventDTO.getMe())){
+                List<String> eventIdByMe = statisticsService.getEventIdByMe();
+                CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
+                if (eventIdByMe.size() == 0) {
+                    eventIdByMe = Collections.singletonList("");
+                }
+                eventIdByMe.forEach(in::value);
+                list.add(in);
+            }
+
             root.fetch("eventType", JoinType.LEFT);
             root.fetch("eventSource", JoinType.LEFT);
             root.fetch("user", JoinType.LEFT);
@@ -143,6 +154,15 @@ public class EventService {
                 eventVO.setStartTime(format);
                 int timeLimit = statistics.getProcessTimeLimit().getTimeLimit();
                 eventVO.setTimeLimit(timeLimit);
+            }else{
+                List<Statistics> byEventId = statisticsService.findByEventIdToList(eventVO.getId());
+                List<Statistics> collect = byEventId.stream().filter(a -> "值班长-结案".equals(a.getTaskName())).collect(Collectors.toList());
+                if(collect.size()>0){
+                    eventVO.setTaskName(collect.get(0).getTaskName());
+                    String format = simpleDateFormat.format(collect.get(0).getStartTime());
+                    eventVO.setStartTime(format);
+                }
+
             }
         }
 
