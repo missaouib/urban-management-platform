@@ -75,7 +75,7 @@ public class Statistics {
      * 附件
      */
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "statistics_id")
     private List<EventFile> eventFileList;
 
     /**

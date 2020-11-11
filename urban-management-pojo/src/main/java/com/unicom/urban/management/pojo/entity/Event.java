@@ -113,11 +113,12 @@ public class Event extends BaseEntity {
      */
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Petitioner petitioner;
+
     /**
      * 事件附件实体类
      */
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "event_id")
     private List<EventFile> eventFileList;
 
 }
