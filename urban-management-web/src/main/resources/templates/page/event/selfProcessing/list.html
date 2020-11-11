@@ -482,7 +482,6 @@
             onClickRow: function (row) {
                 layerMap.getSource().clear()
                 checkRow(row.id);
-                console.log(row.startTime)
                 var date=new Date();
                 var year=date.getFullYear();
                 var month=date.getMonth()+1;
@@ -507,11 +506,9 @@
                 }
 
                 var nowTime=year+"-"+month+"-"+day+" "+HH+":"+MM+":"+SS;
-                console.log(nowTime)
                 var nowTimes= new Date(nowTime);
                 var staTime = new Date(row.startTime)
                 var lessNum = nowTimes - staTime;
-                console.log(lessNum)
                 // if (nowTime > row.startTime){
                 //     alert(nowTime+"：当前时间大于 该行数据的startTime"+row.startTime)
                 // }
@@ -551,9 +548,7 @@
     }
     /*
      * 判断时限  一分钟变红
-     *  /*
-     * 判断时限  一分钟变红
-      */
+     */
     setTimeout(function () {
         $(".timeSet").html("")
         var cryFace = "<img src='../img/0.png' style='width: 100%;height: 100%'></div>";
@@ -582,7 +577,6 @@
     });
 
     function checkRow(eventId) {
-        getButton(eventId);
         getTimeAxis(eventId);
         getEventDetail(eventId);
     }
@@ -600,6 +594,9 @@
                 }
             }
             $("#eventButton").html(buttonHtml);
+            if ($("#eventSourceStr").val() === "监督员上报") {
+                $("#13").remove();
+            }
         });
     }
 
@@ -678,7 +675,6 @@
 
     function getEventDetail(eventId) {
         $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
-            eventId = e.data.id;
             /*详情*/
             $("#eventCode").val(e.data.eventCode);
             $("#eventTypeStr").val(e.data.eventTypeStr);
@@ -705,6 +701,8 @@
             $("#eventImg").attr('src', img + e.data.processInstanceId);
             /* 坐标 */
             setPoint(e.data.x, e.data.y);
+            /* 获取按钮 因为在监督员上报的时候不显示重新核实按钮 所以需要在赋值之后调用方法 */
+            getButton(eventId);
         });
     }
 
