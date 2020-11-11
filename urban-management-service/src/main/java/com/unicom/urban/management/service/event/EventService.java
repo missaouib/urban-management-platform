@@ -129,6 +129,7 @@ public class EventService {
                 if(collect.size()>0){
                     DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                     eventVO.setCloseTime(df.format(collect.get(0).getEndTime()));
+                    eventVO.setSts(collect.get(0).getSts());
                 }
             }
 

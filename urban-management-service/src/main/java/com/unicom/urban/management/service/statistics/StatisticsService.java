@@ -57,39 +57,21 @@ public class StatisticsService {
             /*结束时间str*/
             String endTime = "";
             /*如果没有结束事件 就以当前时间判断超没超时*/
-            LocalDateTime end = LocalDateTime.now();
-            /*sign 0 没超时  1超时*/
-            String sign = "0";
             if (s.getEndTime() != null) {
                 endTime = df.format(s.getEndTime());
-                end = s.getEndTime();
             }
-//            long timeLimit = s.getProcessTimeLimit().getTimeLimit();
-            long timeNum;
-            /*工作时*/
-//            if(KvConstant.HOUR.equals(s.getProcessTimeLimit().getLevel().getId())){
-//                timeNum = timeLimit * 60 * 60 *1000;
-//            }else{
-//                /*工作日*/
-//                timeNum = timeLimit * 24 * 60 * 60 * 1000;
-//            }
-            Duration between = Duration.between(s.getStartTime(), end);
-            long millis = between.toMillis();
-//            if(millis>timeNum){
-//                sign = "1";
-//            }
             List<String> file = new ArrayList<>();
             s.getEventFileList().forEach(f -> file.add(f.getFileName()));
             StatisticsVO statisticsVO = StatisticsVO.builder()
                     .starTime(starTime)
                     .endTime(endTime)
-                    .sign(sign)
                     .opinions(Optional.ofNullable(s.getOpinions()).orElse("无"))
                     .fileName(file)
                     .user(Optional.ofNullable(s.getUser()).map(User::getUsername).orElse(""))
                     .link(s.getTaskName())
                     .taskId(s.getTaskId())
                     .taskName(s.getTaskName())
+                    .sts(s.getSts())
                     .build();
             statisticsVOS.add(statisticsVO);
         });
