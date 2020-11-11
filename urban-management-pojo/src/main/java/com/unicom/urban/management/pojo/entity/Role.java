@@ -31,8 +31,8 @@ public class Role extends BaseEntity {
      */
     private String name;
 
-    @OneToMany
-    @JoinColumn(name = "role_id")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> userList;
 
     @Column(columnDefinition = "TINYINT(1)")
