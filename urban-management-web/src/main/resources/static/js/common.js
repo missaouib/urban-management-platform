@@ -368,7 +368,7 @@ var table = {
 			refresh: function (tableId) {
 				var currentId = $.common.isEmpty(tableId) ? table.options.id : tableId;
 				$("#" + currentId).bootstrapTable('refresh', {
-					silent: true
+					silent: false
 				});
 			},
 			// 查询表格指定列值

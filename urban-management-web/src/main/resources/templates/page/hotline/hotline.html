@@ -20,17 +20,17 @@
                                 <table class="table">
                                     <tbody>
                                     <tr>
-                                        <td><span>*</span>立卷号</td>
+                                        <td><span></span>立卷号</td>
                                         <td>
                                             <input id="userName" name="userName" placeholder="" class="" type="text" maxlength="30" required>
                                         </td>
-                                        <td><span>*</span>问题类型</td>
+                                        <td><span></span>问题类型</td>
                                         <td>
                                             <input id="eventType" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><span>*</span>立案条件</td>
+                                        <td><span></span>立案条件</td>
                                         <td>
                                             <select  name="safeLevel" required>
                                                 <option>1</option>
@@ -45,7 +45,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><span>*</span>问题描述</td>
+                                        <td><span></span>问题描述</td>
 <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
                                         <td colspan = "8"><textarea id="problemescription" name="problemescription" required></textarea></td>
                                     </tr>
@@ -64,7 +64,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><span>*</span>所在区域</td>
+                                        <td><span></span>所在区域</td>
                                         <td>
                                             <select  name="safeLevel" required>
                                                 <option>1</option>
@@ -73,7 +73,7 @@
                                                 <option>4</option>
                                             </select>
                                         </td>
-                                        <td><span>*</span>所在网格</td>
+                                        <td><span></span>所在网格</td>
                                         <td>
                                             <select  name="safeLevel" required>
                                                 <option>1</option>
@@ -84,7 +84,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><span>*</span>案件地址</td>
+                                        <td><span></span>案件地址</td>
                                         <td colspan="8">
                                             <input id="enterprise" name="enterprise" type="text" required>
                                         </td>
@@ -100,7 +100,7 @@
                                         <td style="text-align: left">
                                             <input  name="userName" placeholder="" class="" type="checkbox" required style="width: 30px">
                                         </td>
-                                        <td><span>*</span>问题来源</td>
+                                        <td><span></span>问题来源</td>
                                         <td>
                                             <select  name="safeLevel" required>
                                                 <option>1</option>
@@ -128,7 +128,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><span>*</span>案件类型</td>
+                                        <td><span></span>案件类型</td>
                                         <td>
                                             <select  required>
                                                 <option>日常管理</option>
@@ -149,7 +149,7 @@
                                 <div class="send">
                                     <div class="sendImg">
                                         <div class="sendText"><span>图片:</span></div>
-                                        <div><input id="input-id" type="file"  name="file" multiple="multiple"></div>
+                                        <div><input id="input-id" type="file"  name="files" multiple="multiple"></div>
                                     </div>
 
 
@@ -231,7 +231,7 @@
 
     let url = /*[[@{/user/save}]]*/ "/json/unit.json";
 
-    let uploadUrl = /*[[@{/common/upload}]]*/ "/json/unit.json";
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
 
     function selectEventTypeTree() {
         var treeId = $("#treeId").val();
@@ -260,11 +260,12 @@
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
             allowedFileExtensions: ['jpg', 'png', 'gif','jpeg'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
+            maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
             showCaption: false,                                 // 是否显示标题
@@ -279,7 +280,7 @@
         }).on('fileselect', function (event, numFiles, label) {
             console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
         }).on("filebatchselected", function (event, files) {
-            // $(this).fileinput("upload");
+            $(this).fileinput("upload");
         }).on("fileuploaded", function (event, data) {
             console.log('fileuploaded()      ');
 

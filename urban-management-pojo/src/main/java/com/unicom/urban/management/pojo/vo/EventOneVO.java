@@ -118,4 +118,14 @@ public class EventOneVO {
      */
     private String eventSourceStr;
 
+    /**
+     * 部门
+     */
+    private String deptId;
+
+    /**
+     * 部门名称
+     */
+    private String deptName;
+
 }

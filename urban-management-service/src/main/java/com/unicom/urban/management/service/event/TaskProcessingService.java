@@ -3,10 +3,7 @@ package com.unicom.urban.management.service.event;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
-import com.unicom.urban.management.pojo.entity.Event;
-import com.unicom.urban.management.pojo.entity.KV;
-import com.unicom.urban.management.pojo.entity.ProcessTimeLimit;
-import com.unicom.urban.management.pojo.entity.Statistics;
+import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.processtimelimit.ProcessTimeLimitService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
@@ -140,7 +137,10 @@ public class TaskProcessingService {
         Statistics newStatistics = this.initStatistics(event);
         newStatistics.setNeedDispose(1);
         newStatistics.setToDispose(1);
-        //todo 部门标识
+        Dept dept = new Dept();
+        dept.setId(statisticsDTO.getDeptId());
+        newStatistics.setDisposeUnit(dept);
+        newStatistics.setDisposeUnitName(dept);
         statisticsService.save(newStatistics);
     }
 

@@ -23,7 +23,7 @@
                             <td>
                                 <input type="text" name="represent" class="datepicker" >
                             </td>
-                            <td>问题类型<span>*</span></td>
+                            <td>问题类型<span></span></td>
                             <td>
                                 <input id="treeId" name="eventTypeId" type="hidden" />
                                 <input id="treeName" placeholder="请选择问题类型" class="" type="text" maxlength="30" readonly onclick="selectEventTypeTree()" />
@@ -95,39 +95,39 @@
                             <table class="table">
                                 <tbody>
                                 <tr>
-                                    <td><span>*</span>案卷号</td>
+                                    <td><span></span>案卷号</td>
                                     <td>
                                         <input id="eventCode" placeholder="" class="" type="text" readonly="readonly" required>
                                     </td>
-                                    <td><span>*</span>问题类型</td>
+                                    <td><span></span>问题类型</td>
                                     <td>
                                         <input id="eventTypeStr" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
 
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span>*</span>立案区域</td>
+                                    <td><span></span>立案区域</td>
                                     <td>
                                         <input id="regionStr" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
                                     </td>
-                                    <td><span>*</span>立案条件</td>
+                                    <td><span></span>立案条件</td>
                                     <td>
                                         <input id="conditionValue" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span>*</span>案件等级</td>
+                                    <td><span></span>案件等级</td>
                                     <td>
                                         <input id="level" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
 
                                     </td>
-                                    <td><span>*</span>处理时限</td>
+                                    <td><span></span>处理时限</td>
                                     <td>
                                         <input id="timeLimitStr" type="text" readonly required>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span>*</span>问题描述</td>
+                                    <td><span></span>问题描述</td>
 
                                     <td colspan="8"><textarea id="represent" name="problemescription" required readonly></textarea></td>
 
@@ -144,35 +144,35 @@
 <!--                                    </td>-->
                                 </tr>
                                 <tr class="col-12">
-                                    <td><span>*</span>所属区域</td>
+                                    <td><span></span>所属区域</td>
                                     <td>
                                         <input id="eventRegion" name="location" placeholder="" class="" readonly type="text">
 
                                     </td>
-                                    <td><span>*</span>所属街道</td>
+                                    <td><span></span>所属街道</td>
                                     <td>
                                         <input id="street" name="location" placeholder="" class="" readonly type="text">
 
                                     </td>
                                 </tr>
                                 <tr class="col-12">
-                                    <td><span>*</span>所属社区</td>
+                                    <td><span></span>所属社区</td>
                                     <td>
                                         <input id="community" name="location" placeholder="" class="" readonly type="text">
                                     </td>
-                                    <td><span>*</span>单元网格</td>
+                                    <td><span></span>单元网格</td>
                                     <td>
                                         <input id="girdStr" name="location" placeholder="" class="" readonly type="text">
 
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><span>*</span>案件类型</td>
+                                    <td><span></span>案件类型</td>
                                     <td>
                                         <input id="recTypeStr" name="recTypeStr" placeholder="" class="" readonly type="text">
 
                                     </td>
-                                    <td><span>*</span>上报人</td>
+                                    <td><span></span>上报人</td>
                                     <td>
                                         <input id="userName" name="userName" placeholder="" class="" readonly type="text">
 
@@ -218,22 +218,47 @@
 
                                 </tbody>
                             </table>
-                            <div class="send">
+                            <div id="before" class="send" style="display: none">
                                 <div class="sendImg">
                                     <div class="sendText"><span>图片:</span></div>
-                                    <div><input class="input-id" type="file_img"  name="file" multiple="multiple" /></div>
+                                    <div id="showImgBefore"></div>
                                 </div>
-
-
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
-                                    <div><input class="videoInput" type="file_video"  name="file" multiple="multiple"></div>
+                                    <div id="showVideoBefore"></div>
                                 </div>
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
-                                    <div><input class="musicInput" type="file_audio"  name="file" multiple="multiple"></div>
+                                    <div id="showAudioBefore"></div>
                                 </div>
-
+                            </div>
+                            <div id="after" class="send" style="display: none">
+                                <div class="sendImg">
+                                    <div class="sendText"><span>图片:</span></div>
+                                    <div id="showImgAfter"></div>
+                                </div>
+                                <div class="sendImg">
+                                    <div class="sendText"><span>视频:</span></div>
+                                    <div id="showVideoAfter"></div>
+                                </div>
+                                <div class="sendImg">
+                                    <div class="sendText"><span>音频:</span></div>
+                                    <div id="showAudioAfter"></div>
+                                </div>
+                            </div>
+                            <div id="nothing" class="send" style="display: none">
+                                <div class="sendImg">
+                                    <div class="sendText"><span>图片:</span></div>
+                                    <div id="showImgNothing"></div>
+                                </div>
+                                <div class="sendImg">
+                                    <div class="sendText"><span>视频:</span></div>
+                                    <div id="showVideoNothing"></div>
+                                </div>
+                                <div class="sendImg">
+                                    <div class="sendText"><span>音频:</span></div>
+                                    <div id="showAudioNothing"></div>
+                                </div>
                             </div>
                         </div>
 
@@ -493,7 +518,7 @@
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
 
-    let searchUrl = /*[[@{/event/wirelessAcquisitionList}]]*/ "/event/wirelessAcquisitionList";
+    let searchUrl = /*[[@{/event/caseVerifyList}]]*/ "/event/caseVerifyList";
 
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
 
@@ -538,8 +563,8 @@
              // 点击每行进行函数的触发
             onClickRow: function (row, tr, flied) {
                 console.log("row", row);
-                // $(".tab_update").addClass("active").siblings(".tabTitle span").removeClass("active");
-                // $(".banner_update").addClass("blockActive").siblings(".banner").removeClass("blockActive");
+                $(".tab_update").addClass("active").siblings(".tabTitle span").removeClass("active");
+                $(".banner_update").addClass("blockActive").siblings(".banner").removeClass("blockActive");
                 getButton(row.id)
                 //详情
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
@@ -548,7 +573,7 @@
                     /*详情*/
                     $("#eventCode").val(e.data.eventCode);
                     $("#eventTypeStr").val(e.data.eventTypeStr);
-                    $("#represent").text(e.data.represent);
+                    $("#represent").val(e.data.represent);
                     $("#location").val(e.data.location);
                     $("#regionStr").val(e.data.regionStr);
                     $("#conditionValue").val(e.data.conditionValue);
@@ -568,6 +593,71 @@
                     $("#petitionerName").val(e.data.petitionerName);
                     $("#userName").val(e.data.userName);
                     $("#recTypeStr").val(e.data.recTypeStr);
+                    //附件
+                    let fileArr  = e.data.file;
+                    console.log("data",  e.data);
+                    console.log("fileArr",  fileArr);
+                    let showImgBefore="";
+                    let showVideoBefore="";
+                    let showAudioBefore="";
+                    let showImgAfter="";
+                    let showVideoAfter="";
+                    let showAudioAfter="";
+                    let showImgNothing="";
+                    let showVideoNothing="";
+                    let showAudioNothing="";
+                //     for (let i = 0; i < fileArr.length; i++) {
+                //         let fileType = fileArr[i].eventFile.fileType;
+                //         let filePath = fileArr[i].eventFile.filePath;
+                //         let management = fileArr[i].eventFile.management;//处置前 处置后
+                //         if (management != undefined && management != "" ){
+                //             let managementName = getManagement();
+                //             //处置前
+                //             if (managementName === "处置前"){
+                //                 if (fileType ===1){
+                //                     showImgBefore+="<div><img src=\"eventFile.filePath\"/></div>"
+                //                 }else if (fileType === 2){//视频
+                //                     showVideoBefore+="<div><video src=\"eventFile.filePath\" controls=\"controls\">your browser does not support the video tag</video></div>"
+                //                 }else if (fileType === 3){//音频
+                //                     showAudioBefore+="<div><audio src='eventFile.filePath' /></div>";
+                //                 }
+                //             }else {//处置后
+                //                 if (fileType ===1){
+                //                     showImgAfter+="<div><img src=\"eventFile.filePath\"/></div>"
+                //                 }else if (fileType === 2){//视频
+                //                     showVideoAfter+="<div><video src=\"eventFile.filePath\" controls=\"controls\">your browser does not support the video tag</video></div>"
+                //                 }else if (fileType === 3){//音频
+                //                     showAudioAfter+="<div><audio src='eventFile.filePath' /></div>";
+                //                 }
+                //             }
+                //         }else{//非处置前处置后
+                //             if (fileType ===1){
+                //                 showImgNothing+="<div><img src=\"eventFile.filePath\"/></div>"
+                //             }else if (fileType === 2){//视频
+                //                 showVideoNothing+="<div><video src=\"eventFile.filePath\" controls=\"controls\">your browser does not support the video tag</video></div>"
+                //             }else if (fileType === 3){//音频
+                //                 showAudioNothing+="<div><audio src='eventFile.filePath' /></div>";
+                //             }
+                //         }
+                //
+                //     }
+                //     if (showImgBefore !="" || showVideoBefore !="" || showAudioBefore !=""){
+                //         $("#before").css("display","block");
+                //         $("#showImgBefore").html(showImgBefore);
+                //         $("#showVideoBefore").html(showVideoBefore);
+                //         $("#showAudioBefore").html(showAudioBefore);
+                //     }if (showImgAfter !="" || showVideoAfter !="" || showAudioAfter !=""){
+                //         $("#after").css("display","block");
+                //         $("#showImgAfter").html(showImgAfter);
+                //         $("#showVideoAfter").html(showVideoAfter);
+                //         $("#showAudioAfter").html(showAudioAfter);
+                //     }
+                //     if (showImgNothing !="" || showVideoNothing !="" || showAudioNothing !=""){
+                //         $("#nothing").css("display","block");
+                //         $("#showImgNothing").html(showImgNothing);
+                //         $("#showVideoNothing").html(showVideoNothing);
+                //         $("#showAudioNothing").html(showAudioNothing);
+                //     }
                 });
             },
             columns: [

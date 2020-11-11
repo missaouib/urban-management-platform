@@ -133,11 +133,24 @@
                             }
                         });
                     }
+
                     flag = false;
+
+                    // 点击菜单 如果菜单中有table 也要跟着刷新
+                    var $contentWindow = $('.LRADMS_iframe[data-id="' + dataUrl + '"]')[0].contentWindow;
+                    if ($contentWindow.table.options.type === table_type.bootstrapTable) {
+                        $contentWindow.$.table.refresh();
+                    } else if ($contentWindow.table.options.type === table_type.bootstrapTreeTable) {
+                        // $contentWindow.$.treeTable.refresh();
+                    }
+
+
+
+
                     return false;
                 }
             });
-            if (flag) {
+            if (flag) { // 如果选项卡不存在
                 var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '">' + menuName + ' <i class="fa fa-remove"></i></a>';
                 $('.menuTab').removeClass('active');
                 var str1 = '<iframe class="LRADMS_iframe" id="iframe' + dataId + '" name="iframe' + dataId + '"  width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
@@ -594,30 +607,30 @@
                 //     "F_ModifyUserId": "System",
                 //     "F_ModifyUserName": "超级管理员"
                 // },
-                // {
-                //     "F_ModuleId": "1100065",
-                //     "F_ParentId": "1000",
-                //     "F_EnCode": "SysManage",
-                //     "F_FullName": "热线上报",
-                //     "F_Icon": "fa fa-file-text-o",
-                //     "F_UrlAddress": "/hotline",
-                //     "F_Target": "expand",
-                //     "F_IsMenu": 0,
-                //     "F_AllowExpand": 1,
-                //     "F_IsPublic": 0,
-                //     "F_AllowEdit": null,
-                //     "F_AllowDelete": null,
-                //     "F_SortCode": 3,
-                //     "F_DeleteMark": 0,
-                //     "F_EnabledMark": 1,
-                //     "F_Description": null,
-                //     "F_CreateDate": null,
-                //     "F_CreateUserId": null,
-                //     "F_CreateUserName": null,
-                //     "F_ModifyDate": "2015-11-17 11:22:46",
-                //     "F_ModifyUserId": "System",
-                //     "F_ModifyUserName": "超级管理员"
-                // },
+                {
+                    "F_ModuleId": "1100065",
+                    "F_ParentId": "1000",
+                    "F_EnCode": "SysManage",
+                    "F_FullName": "热线上报",
+                    "F_Icon": "fa fa-file-text-o",
+                    "F_UrlAddress": "/hotline",
+                    "F_Target": "expand",
+                    "F_IsMenu": 0,
+                    "F_AllowExpand": 1,
+                    "F_IsPublic": 0,
+                    "F_AllowEdit": null,
+                    "F_AllowDelete": null,
+                    "F_SortCode": 3,
+                    "F_DeleteMark": 0,
+                    "F_EnabledMark": 1,
+                    "F_Description": null,
+                    "F_CreateDate": null,
+                    "F_CreateUserId": null,
+                    "F_CreateUserName": null,
+                    "F_ModifyDate": "2015-11-17 11:22:46",
+                    "F_ModifyUserId": "System",
+                    "F_ModifyUserName": "超级管理员"
+                },
                 // {
                 //     "F_ModuleId": "11000654",
                 //     "F_ParentId": "1000",
@@ -1604,6 +1617,8 @@
             });
             $("#sidebar-menu").append(_html);
             $("#sidebar-menu li a").click(function () {
+
+
                 var d = $(this), e = d.next();
                 if (e.is(".treeview-menu") && e.is(":visible")) {
                     e.slideUp(500, function () {
@@ -1611,17 +1626,17 @@
                     });
                     e.parent("li").removeClass("active")
                 } else if (e.is(".treeview-menu") && !e.is(":visible")) {
-                    var f = d.parents("ul").first(),
-                        g = f.find("ul:visible").slideUp(500);
+                    var f = d.parents("ul").first();
+                    g = f.find("ul:visible").slideUp(500);
                     g.removeClass("menu-open");
                     var h = d.parent("li");
                     e.slideDown(500, function () {
-                        e.addClass("menu-open"),
-                            f.find("li.active").removeClass("active")
+                        e.addClass("menu-open");
+                        f.find("li.active").removeClass("active");
                         h.addClass("active");
 
                         var _height1 = $(window).height() - $("#sidebar-menu >li.active").position().top - 41;
-                        var _height2 = $("#sidebar-menu li > ul.menu-open").height() + 10
+                        var _height2 = $("#sidebar-menu li > ul.menu-open").height() + 10;
                         if (_height2 > _height1) {
                             $("#sidebar-menu >li > ul.menu-open").css({
                                 overflow: "auto",
@@ -1631,6 +1646,13 @@
                     })
                 }
                 e.is(".treeview-menu");
+
+
+
+
+
+
+
             });
         }
     };

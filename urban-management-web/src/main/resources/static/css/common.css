@@ -1513,3 +1513,6 @@ label.error {
 .banner img{
     width: 100%;height: 100%;
 }
+.leftContent .bootstrap-table .table td,.leftContent .bootstrap-table .table th,.leftBox .bootstrap-table .table td,.leftBox .bootstrap-table .table th{
+    text-align: left!important;
+}

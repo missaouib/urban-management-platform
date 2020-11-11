@@ -20,6 +20,8 @@ public class StatisticsDTO {
      */
     private String opinions;
 
+    private String deptId;
+
     /**
      * 附件列表
      */

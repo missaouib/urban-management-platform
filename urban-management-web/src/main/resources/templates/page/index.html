@@ -31,6 +31,9 @@
                     <div class="Day" id="Day" th:text="${#dates.dayOfWeekName(new java.util.Date().getTime())}"></div>
                     <div class="daily" id="daily" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy年MM月dd日')}"></div>
                 </div>
+                <div class="bell">
+                    <div class="bellImg"><i class="messageNum">2</i></div>
+                </div>
                 <div class="quitBtn">
                     <span>退出</span>
                     <i><img th:src="@{/img/quit.png}"></i>

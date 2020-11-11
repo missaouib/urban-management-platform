@@ -4,16 +4,14 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.entity.Statistics;
-import com.unicom.urban.management.pojo.vo.DeptTimeLimitVO;
-import com.unicom.urban.management.pojo.vo.EventConditionVO;
-import com.unicom.urban.management.pojo.vo.EventVO;
-import com.unicom.urban.management.pojo.vo.GridVO;
+import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.event.PetitionerService;
@@ -29,6 +27,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -95,31 +94,8 @@ public class WirelessAcquisitionController {
 
     @GetMapping("/toWirelessAcquisitionUpdate/{id}")
     public ModelAndView toWirelessAcquisitionListUpdate(@PathVariable String id, Model model) {
-//        Event event = eventService.findOne(id);
-//        model.addAttribute("event", event);
-//        String dtlId = event.getTimeLimit().getId();
-//        DeptTimeLimitVO deptTimeLimitVO = deptTimeLimitService.findDeptTimeLimit(dtlId);
-//        //问题类型回显
-//        EventType eventType = eventTypeService.getEventType(event.getEventType().getId());
-//        model.addAttribute("eventTypeId",eventType.getName());
-//        //立案区域回显
-//        model.addAttribute("region",event.getEventCondition().getId());
-//        //案件时限分类回显
-//        model.addAttribute("timeType",event.getTimeLimit().getId());
-//        //案件等级回显
-//        //level
-//        //所在区域回显
-//        model.addAttribute("grid1",event.getGrid().getParent().getParent().getParent().getId());
-//        //所属街道回显
-//        model.addAttribute("grid2",event.getGrid().getParent().getParent().getId());
-//        //所属社区回显
-//        model.addAttribute("grid3",event.getGrid().getParent().getId());
-//        //所属网格回显
-//        model.addAttribute("grid4",event.getGrid().getId());
-//        //问题来源回显
-//        model.addAttribute("eventSource",event.getEventSource().getId());
-//        //案件类型回显
-//        model.addAttribute("recTypeId",event.getRecType().getId());
+        EventOneVO vo= eventService.findOneToVo(id);
+        model.addAttribute("eventOneVO",vo);
         return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/update");
     }
 
@@ -128,7 +104,17 @@ public class WirelessAcquisitionController {
         eventDTO.setSts(EventConstant.SUPERVISE_SAVE);
         return eventService.search(eventDTO, pageable);
     }
-
+    /**
+     * 案件核实
+     * @param eventDTO
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/caseVerifyList")
+    public Page<EventVO> caseVerifyList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_CASE_VERIFICATION));
+        return eventService.search(eventDTO, pageable);
+    }
     /**
      * 案件核查
      * @param eventDTO
@@ -232,8 +218,8 @@ public class WirelessAcquisitionController {
     @RequestMapping("/remove/{id}")
     public void remove(@PathVariable String id){
         Event event = eventService.findOne(id);
-        //petitionerService.fevent.getPetitioner().getId();
-        //petitionerService.remove();
+        event.setPetitioner(null);
+        eventService.update(event);
         eventService.remove(id);
     }
     /**

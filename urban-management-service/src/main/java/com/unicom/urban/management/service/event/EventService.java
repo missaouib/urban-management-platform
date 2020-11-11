@@ -169,7 +169,11 @@ public class EventService {
             return null;
         }
     }
-
+    /**
+     * 案件采集保存
+     *
+     * @param eventDTO 事件参数
+     */
 public void saveTemp(EventDTO eventDTO){
     Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
     event.setUser(SecurityUtil.getUser().castToUser());
@@ -348,9 +352,13 @@ public void saveTemp(EventDTO eventDTO){
             Map<String,Object> map = new HashMap<>();
             map.put("url",f.getFilePath());
             map.put("type",f.getFileType());
+            map.put("management",f.getManagement());
             fileList.add(map);
         });
         eventOneVO.setFile(fileList);
+        Optional<Dept> dept = Optional.ofNullable(one.getEventType().getDept());
+        eventOneVO.setDeptId(dept.map(Dept::getId).orElse(""));
+        eventOneVO.setDeptName(dept.map(Dept::getDeptName).orElse(""));
         return eventOneVO;
     }
 
