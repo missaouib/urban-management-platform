@@ -21,7 +21,10 @@
                         <table class="table">
                             <tbody>
                             <tr>
-
+                                <td><span></span>案卷号</td>
+                                <td>
+                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input" disabled/>
+                                </td>
                                 <td><span></span>问题类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
@@ -33,10 +36,7 @@
                                     <!--                                        +-->
                                     <!--                                    </button>-->
                                 </td>
-                                <td><span></span>案卷号</td>
-                                <td>
-                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input"  />
-                                </td>
+
                             </tr>
                             <tr>
 
@@ -121,7 +121,7 @@
                             <tr>
                                 <td><span></span>事件来源</td>
                                 <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required disabled>
                                         <option th:each="as:${eventSource}" th:value="${as.id}"
                                                 th:text="${as.value}"></option>
                                     </select>
