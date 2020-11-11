@@ -73,5 +73,7 @@ public class EventVO {
 
     private String closeTime;
 
+    private String sts;
+
 
 }
