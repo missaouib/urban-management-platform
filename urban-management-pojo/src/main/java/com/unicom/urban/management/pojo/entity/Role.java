@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -32,5 +30,13 @@ public class Role extends BaseEntity {
      * 角色名称
      */
     private String name;
+
+    @OneToMany
+    @JoinColumn(name = "role_id")
+    private List<User> userList;
+
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer sts;
+
 
 }
