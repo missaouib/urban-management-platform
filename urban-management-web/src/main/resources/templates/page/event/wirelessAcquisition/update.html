@@ -21,7 +21,10 @@
                         <table class="table">
                             <tbody>
                             <tr>
-
+                                <td><span>*</span>案卷号</td>
+                                <td>
+                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input" disabled />
+                                </td>
                                 <td><span>*</span>问题类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                     <input type="text" readonly="readonly" id="typeStr" name="typeStr" class="find_input"/>
@@ -33,10 +36,7 @@
                                     <!--                                        +-->
                                     <!--                                    </button>-->
                                 </td>
-                                <td><span>*</span>案卷号</td>
-                                <td>
-                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input"  />
-                                </td>
+
                             </tr>
                             <tr>
 
@@ -119,7 +119,7 @@
                                 </td>
                                 <td><span></span>上报人</td>
                                 <td style="text-align: left"><div class="username" id="userName"></div></td>
-                                <td><span></span>是否处理</td>
+                                <td><span></span>是否自处理</td>
                                 <td style="text-align: left">
                                     <input  id="_doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
                                 </td>
@@ -217,7 +217,6 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
-
 
 
     let updateTempUrl = /*[[@{/event/updateTemp}]]*/ "/event/updateTemp";
@@ -471,7 +470,63 @@
             })
         }));
     }
+
+    let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
+
+    function getGridPublishUrl() {
+        $.ajaxUtil.get(getGridUrl, function (e) {
+            // console.log("e", e);
+            /*
+            * 初始渲染底图g
+            * */
+            var urlParam = e.data.split("?");
+            var url = urlParam[0];
+            var param = urlParam[1];
+            // console.log(url+","+param)
+            var ImageVector = new ol.layer.Tile({
+                source: new ol.source.TileWMS({
+                    url: url,
+                    params: {
+                        'VERSION': '1.1.1',
+                        tiled: true,
+                        "LAYERS": param,
+                        "exceptions": ''
+                    }
+                })
+            });
+            var layersArray = map.getLayers();
+            layersArray.insertAt(1, ImageVector);
+            //获取地图数据s
+            map.on('singleclick', function (evt) {
+                var viewResolution = map.getView().getResolution();
+                var url = ImageVector.getSource().getGetFeatureInfoUrl(
+                    evt.coordinate, viewResolution, 'EPSG:4326', {
+                        'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
+                        'FEATURE_COUNT': 50 //点击查询能返回的数量上限
+                    });
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    dataType: 'jsonp',
+                    jsonp: 'format_options',
+                    jsonpCallback: "callback:success_jsonpCallback"
+                });
+            });
+        })
+    }
+
+    function success_jsonpCallback(res) {
+        var features = geojsonFormat.readFeatures(res);
+        console.log('点击查询返回的结果如下：');
+        console.log("features", features);
+        let mongodbId = features[0].H.mongodb_id;
+        console.log("features", mongodbId);
+        /*$.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
+            console.log("e", e);
+        })*/
+    }
     $(function () {
+        getGridPublishUrl()
 
         var eventOneVO = [[${eventOneVO}]]
         console.log("eventOneVO",eventOneVO)
@@ -794,7 +849,7 @@
         view: new ol.View({
             // projection: projection,
             center:center,
-            zoom:13,
+            zoom:17,
             projection: projection
         })
     });
