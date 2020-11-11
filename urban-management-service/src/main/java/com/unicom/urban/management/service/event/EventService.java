@@ -22,7 +22,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -103,10 +102,6 @@ public class EventService {
                 type.forEach(in::value);
                 list.add(in);
             }
-            root.fetch("eventType", JoinType.LEFT);
-            root.fetch("eventSource", JoinType.LEFT);
-            root.fetch("user", JoinType.LEFT);
-            root.fetch("recType", JoinType.LEFT);
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
