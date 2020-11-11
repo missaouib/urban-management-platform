@@ -28,4 +28,8 @@ public class KVService {
         return kvRepository.findByTableNameAndFieldName(tableName, filedName);
     }
 
+    public List<KV> findByTableNameAndFieldNameAndValue(String tableName, String filedName, String value) {
+        return kvRepository.findByTableNameAndFieldNameAndValue(tableName, filedName, value);
+    }
+
 }

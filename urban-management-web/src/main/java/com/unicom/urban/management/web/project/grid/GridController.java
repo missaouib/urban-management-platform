@@ -2,6 +2,7 @@ package com.unicom.urban.management.web.project.grid;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.GridDTO;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.service.grid.GridService;
@@ -58,6 +59,11 @@ public class GridController {
     @PostMapping("/gridDelete")
     public void gridDelete(String gridId) {
         gridService.delete(gridId);
+    }
+
+    @GetMapping("/getGridCenter")
+    public Result getGridCenter(String gridId) {
+        return Result.success(gridService.getGridCenter(gridId));
     }
 
 }

@@ -144,7 +144,7 @@
                                 </td>
                                 <td><span></span>所属网格</td>
                                 <td>
-                                    <select th:name="gridId" id="grid4">
+                                    <select th:name="gridId" id="grid4" onchange="getGridCenter(this)">
                                     </select>
                                 </td>
                             </tr>
@@ -317,8 +317,8 @@
 
     });
 
-    function setCenter(x,y) {
-        map.getView().setCenter(x,y)
+    function setCenterForGrid(data) {
+        map.getView().setCenter(data);
     }
 
 
@@ -535,6 +535,21 @@
                 });
                 $("#grid4").html(option);
             }
+        });
+    }
+
+    /**
+     * 获取网格的中心点
+     */
+    function getGridCenter() {
+        let pointOfCenter = $("#grid4 option:selected").val();
+        let url = "/grid/getGridCenter?gridId=" + pointOfCenter;
+        $.ajaxUtil.get(url, function (e) {
+            let data = e.data;
+            let pointArray = [];
+            pointArray.push(data.split("-")[0] * 1);
+            pointArray.push(data.split("-")[1] * 1);
+            setCenterForGrid(pointArray);
         });
     }
 

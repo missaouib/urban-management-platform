@@ -13,6 +13,10 @@ import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.record.RecordService;
 import com.unicom.urban.management.service.user.UserService;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -147,6 +151,7 @@ public class GridService {
 
     /**
      * 新增网格导入用
+     *
      * @param grid 网格实体类
      */
     public void save4Import(Grid grid) {
@@ -155,6 +160,7 @@ public class GridService {
 
     /**
      * 查询网格列表
+     *
      * @param parentId
      * @return
      */
@@ -165,12 +171,60 @@ public class GridService {
 
     /**
      * 获取所在区域
+     *
      * @return
      */
     public List<GridVO> findAllByParentIsNull(){
         List<Grid> gridList = gridRepository.findAllByParentIsNull();
         return GridMapper.INSTANCE.gridListToGridVOList(gridList);
     }
+
+    /**
+     * 获取网格的中心点
+     *
+     * @param gridId 网格id
+     * @return 点
+     */
+    public String getGridCenter(String gridId) {
+        Grid grid = this.findOne(gridId);
+        String coordinate = grid.getRecord().getCoordinate();
+        List<Coordinate> coordinateList = new ArrayList<>();
+        /* CoordinateList.add(new Coordinate("经度","纬度")); */
+        String regex = "-";
+        String regex1 = ",";
+        for (String s : coordinate.split(regex)) {
+            coordinateList.add(new Coordinate(Double.parseDouble(s.split(regex1)[0]), Double.parseDouble(s.split(regex1)[1])));
+        }
+        return getCenterOfGravityPoint4(coordinateList);
+    }
+
+    /**
+     * 获取质心 or 内心
+     * <p>
+     * 创建多点
+     * MultiPoint morePoint = geometryFactory.createMultiPointFromCoords(coordinates);
+     * 得到多点的质心
+     * Point pt = morePoint.getCentroid();
+     * 得到多点内心
+     * Point pt = morePoint.getInteriorPoint();
+     *
+     * @param coordinateList
+     * @return
+     */
+    private String getCenterOfGravityPoint4(List<Coordinate> coordinateList) {
+        Coordinate[] coordinates = new Coordinate[coordinateList.size()];
+        coordinateList.toArray(coordinates);
+        GeometryFactory geometryFactory = new GeometryFactory();
+        /* 创建多边形 */
+        Polygon polygon = geometryFactory.createPolygon(coordinates);
+        /* 得到多边形质心 */
+        Point pt = polygon.getCentroid();
+        /* 得到多边形内心 */
+        double x = polygon.getInteriorPoint().getCoordinates()[0].getX();
+        double y = polygon.getInteriorPoint().getCoordinates()[0].getY();
+        return x + "-" + y;
+    }
+
 
     public List<GridVO> findGridAll(){
         List<Grid> gridList = gridRepository.findAll();

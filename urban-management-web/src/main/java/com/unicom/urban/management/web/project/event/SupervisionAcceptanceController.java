@@ -62,7 +62,7 @@ public class SupervisionAcceptanceController {
         //所属区域
         model.addObject("region", kvService.findByTableNameAndFieldName("event", "region"));
         //问题来源
-        model.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        model.addObject("eventSource", kvService.findByTableNameAndFieldNameAndValue("event", "eventSource", "热线上报"));
         //案件类型
         model.addObject("recType", kvService.findByTableNameAndFieldName("event", "recType"));
         //所在区域
