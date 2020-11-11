@@ -65,10 +65,12 @@ public class TaskProcessingService {
         Statistics statistics = this.updateStatistics(statisticsDTO);
         statistics.setEventFileList(statisticsDTO.getEventFileList());
         statistics.setInst(1);
-        statistics.setInTimeInst(this.betWeenTime(statistics.getStartTime(),
+        int[] ints = this.betWeenTime(statistics.getStartTime(),
                 statistics.getEndTime(),
                 statistics.getProcessTimeLimit().getTimeType().getId(),
-                statistics.getProcessTimeLimit().getTimeLimit()));
+                statistics.getProcessTimeLimit().getTimeLimit());
+        statistics.setInTimeInst(ints[0]);
+        statistics.setSts(String.valueOf(ints[1]));
         statistics.setToInst(0);
         statistics.setInstHuman(SecurityUtil.getUser().castToUser());
         statistics.setInstHumanName(SecurityUtil.getUser().castToUser());
@@ -103,10 +105,12 @@ public class TaskProcessingService {
 
         Statistics statistics = this.updateStatistics(statisticsDTO);
         statistics.setClose(1);
-        statistics.setInTimeClose(this.betWeenTime(statistics.getStartTime(),
+        int[] ints = this.betWeenTime(statistics.getStartTime(),
                 statistics.getEndTime(),
                 statistics.getProcessTimeLimit().getTimeType().getId(),
-                statistics.getProcessTimeLimit().getTimeLimit()));
+                statistics.getProcessTimeLimit().getTimeLimit());
+        statistics.setInTimeClose(ints[0]);
+        statistics.setSts(String.valueOf(ints[1]));
         statistics.setToClose(0);
         statistics.setCloseHuman(SecurityUtil.getUser().castToUser());
         statistics.setCloseHumanName(SecurityUtil.getUser().castToUser());
@@ -123,10 +127,12 @@ public class TaskProcessingService {
         Statistics statistics = this.updateStatistics(statisticsDTO);
         statistics.setDispatch(1);
         statistics.setToDispatch(0);
-        statistics.setInTimeDispatch(this.betWeenTime(statistics.getStartTime(),
+        int[] ints = this.betWeenTime(statistics.getStartTime(),
                 statistics.getEndTime(),
                 statistics.getProcessTimeLimit().getTimeType().getId(),
-                statistics.getProcessTimeLimit().getTimeLimit()));
+                statistics.getProcessTimeLimit().getTimeLimit());
+        statistics.setInTimeDispatch(ints[0]);
+        statistics.setSts(String.valueOf(ints[1]));
         statistics.setDispatchHuman(SecurityUtil.getUser().castToUser());
         statistics.setDispatchHumanName(SecurityUtil.getUser().castToUser());
         statistics.setCloseRole(null);
@@ -152,12 +158,13 @@ public class TaskProcessingService {
         Statistics statistics = this.updateStatistics(statisticsDTO);
         statistics.setDispose(1);
         statistics.setToDispose(0);
-        int num = this.betWeenTime(statistics.getStartTime(),
+        int[] num = this.betWeenTime(statistics.getStartTime(),
                 statistics.getEndTime(),
                 statistics.getProcessTimeLimit().getTimeType().getId(),
                 statistics.getProcessTimeLimit().getTimeLimit());
-        statistics.setInTimeDispose(num == 1 ? 1 : 0);
-        statistics.setOvertimeDispose(num == 1 ? 0 : 1);
+        statistics.setInTimeDispose(num[0] == 1 ? 1 : 0);
+        statistics.setOvertimeDispose(num[0] == 1 ? 0 : 1);
+        statistics.setSts(String.valueOf(num[1]));
         statisticsService.update(statistics);
 
 
@@ -200,7 +207,7 @@ public class TaskProcessingService {
         return statistics;
     }
 
-    private int betWeenTime(LocalDateTime startTime, LocalDateTime endTime, String timeType, int timeLimit) {
+    public int[] betWeenTime(LocalDateTime startTime, LocalDateTime endTime, String timeType, int timeLimit) {
         Duration between = Duration.between(startTime, endTime);
         long millis = between.toMillis();
         switch (timeType) {
@@ -214,7 +221,10 @@ public class TaskProcessingService {
                 timeLimit = timeLimit * 60 * 1000;
                 break;
         }
-        return millis <= timeLimit ? 1 : 0;
+        int[] i = new int[2];
+        i[0] = millis <= timeLimit ? 1 : 0;
+        i[1] = millis <= timeLimit ? millis <= (timeLimit * 0.8) ? 2 : 1 : 0;
+        return i;
     }
 
 

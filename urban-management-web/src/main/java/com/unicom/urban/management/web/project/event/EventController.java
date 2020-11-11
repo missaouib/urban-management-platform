@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,9 +61,17 @@ public class EventController {
      */
     @GetMapping("localReverseGeocoding")
     public Map<String, String> localReverseGeocoding(double x, double y) {
-        RestReturn body = RestTemplateUtil.get(KvConstant.GIS_URL + "/restApi/LocalReverseGeocoding?x=" + x + "&y=" + y, RestReturn.class).getBody();
-        assert body != null;
-        return (Map<String, String>) body.getData();
+
+        try {
+            RestReturn body = RestTemplateUtil.get(KvConstant.GIS_URL + "/restApi/LocalReverseGeocoding?x=" + x + "&y=" + y, RestReturn.class).getBody();
+            assert body != null;
+            return (Map<String, String>) body.getData();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String,String> map= new HashMap<>();
+            map.put("mongo","");
+            return map;
+        }
     }
 
     /**
