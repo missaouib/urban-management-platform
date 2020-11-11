@@ -27,6 +27,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 事件
@@ -57,6 +58,9 @@ public class EventService {
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
+            if(StringUtils.isNotBlank(eventDTO.getClose())){
+                list.add(criteriaBuilder.equal(root.get("eventSate").get("id").as(String.class), eventDTO.getClose()));
+            }
             if (StringUtils.isNotBlank(eventDTO.getUserName())) {
                 list.add(criteriaBuilder.equal(root.get("user").get("username").as(String.class), eventDTO.getUserName()));
             }
@@ -102,10 +106,39 @@ public class EventService {
                 type.forEach(in::value);
                 list.add(in);
             }
+
+            if(StringUtils.isNotBlank(eventDTO.getMe())){
+                List<String> eventIdByMe = statisticsService.getEventIdByMe();
+                CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
+                if (eventIdByMe.size() == 0) {
+                    eventIdByMe = Collections.singletonList("");
+                }
+                eventIdByMe.forEach(in::value);
+                list.add(in);
+            }
+
+            root.fetch("eventType", JoinType.LEFT);
+            root.fetch("eventSource", JoinType.LEFT);
+            root.fetch("user", JoinType.LEFT);
+            root.fetch("recType", JoinType.LEFT);
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
-        List<EventVO> eventVOList = EventMapper.INSTANCE.eventListToEventVOList(page.getContent());
+        List<EventVO> eventVOList = new ArrayList<>();
+        page.getContent().forEach(e->{
+            EventVO eventVO = EventMapper.INSTANCE.eventToEventVO(e);
+            eventVO.setEventTypeName(e.getEventType().getParent().getParent().getName()+"-"+e.getEventType().getParent().getName()+"-"+e.getEventType().getName());
+            if(StringUtils.isNotBlank(eventDTO.getClose())){
+                List<Statistics> collect = e.getStatisticsList().stream().filter(a -> "值班长-结案".equals(a.getTaskName())).collect(Collectors.toList());
+                if(collect.size()>0){
+                    DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    eventVO.setCloseTime(df.format(collect.get(0).getEndTime()));
+                }
+            }
+
+            eventVOList.add(eventVO);
+        });
+
         setListDataByStatistics(eventVOList);
         return new PageImpl<>(eventVOList, page.getPageable(), page.getTotalElements());
     }
@@ -120,6 +153,15 @@ public class EventService {
                 eventVO.setStartTime(format);
                 int timeLimit = statistics.getProcessTimeLimit().getTimeLimit();
                 eventVO.setTimeLimit(timeLimit);
+            }else{
+                List<Statistics> byEventId = statisticsService.findByEventIdToList(eventVO.getId());
+                List<Statistics> collect = byEventId.stream().filter(a -> "值班长-结案".equals(a.getTaskName())).collect(Collectors.toList());
+                if(collect.size()>0){
+                    eventVO.setTaskName(collect.get(0).getTaskName());
+                    String format = simpleDateFormat.format(collect.get(0).getStartTime());
+                    eventVO.setStartTime(format);
+                }
+
             }
         }
 

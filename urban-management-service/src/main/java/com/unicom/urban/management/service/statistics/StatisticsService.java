@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.statistics;
 
+import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.statistics.StatisticsRepository;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.entity.User;
@@ -14,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * 流转统计实体类
@@ -38,6 +40,9 @@ public class StatisticsService {
 
     public Statistics findByEventIdAndEndTimeIsNull(String eventId) {
         return statisticsRepository.findByEvent_IdAndEndTimeIsNull(eventId);
+    }
+    public List<Statistics> findByEventIdToList(String eventId) {
+        return statisticsRepository.findAllByEvent_IdOrderByStartTimeDesc(eventId);
     }
 
     public List<StatisticsVO> findByEventId(String eventId) {
@@ -89,6 +94,14 @@ public class StatisticsService {
             statisticsVOS.add(statisticsVO);
         });
         return statisticsVOS;
+    }
+
+
+    public List<String> getEventIdByMe(){
+        List<Statistics> allByUser_id = statisticsRepository.findAllByUser_IdAndEndTimeIsNotNull(SecurityUtil.getUserId());
+        List<String> list = new ArrayList<>();
+        allByUser_id.forEach(a->list.add(a.getEvent().getId()));
+      return list.stream().distinct().collect(Collectors.toList());
     }
 
 }

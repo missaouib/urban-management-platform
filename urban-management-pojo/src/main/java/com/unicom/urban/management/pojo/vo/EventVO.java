@@ -71,4 +71,7 @@ public class EventVO {
      */
     private Integer timeLimit;
 
+    private String closeTime;
+
+
 }

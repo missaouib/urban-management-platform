@@ -90,8 +90,9 @@ public class EventDTO {
 
 
 
+    private String close;
 
+    private String me;
 
-            ;
 
 }
