@@ -247,10 +247,6 @@ public class SupervisionAcceptanceController {
         return eventService.search(eventDTO, pageable);
     }
 
-    @GetMapping("/test")
-    public void test(String eventId, String buttonId) {
-        taskProcessingService.handle(eventId, null, buttonId, null);
-    }
 
     /**
      * 受理员完成任务 并且 激活监督员(领取任务)核实

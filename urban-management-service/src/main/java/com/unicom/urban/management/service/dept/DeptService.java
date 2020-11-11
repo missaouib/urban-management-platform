@@ -6,6 +6,7 @@ import com.unicom.urban.management.pojo.vo.DeptVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.print.DocFlavor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,10 @@ public class DeptService {
             deptVOS.add(deptVO);
         });
         return deptVOS;
+    }
+
+    public Dept findOne(String deptId){
+        return deptRepository.findById(deptId).orElse(new Dept());
     }
 
 
