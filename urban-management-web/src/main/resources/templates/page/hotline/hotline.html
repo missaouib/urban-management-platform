@@ -282,12 +282,14 @@
         }).on("filebatchselected", function (event, files) {
             $(this).fileinput("upload");
         }).on("fileuploaded", function (event, data) {
-            console.log('fileuploaded()      ');
 
-            if (data.response.code === web_status.FAIL) {
-                console.log("上传文件失败");
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                $.modal.alertSuccess('上传成功');
+            }else{
+                $.modal.alertError(data.response.message);
             }
-            console.log(data);
         }).on('filedeleted', function(event, key) {
             console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
             console.log('Key = ' + key);
