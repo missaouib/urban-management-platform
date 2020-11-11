@@ -143,7 +143,7 @@ public class ActivitiServiceImpl implements ActivitiService {
         List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).listPage(pageable.getPageNumber(), pageable.getPageSize());
 
         List<String> eventIdList = queryTask(taskList);
-        log.debug("----------------------activiti查询花费时间 {}:--------------------------------------", System.currentTimeMillis() - startTime);
+        log.debug("----------------------activiti查询花费时间: {}ms--------------------------------------", System.currentTimeMillis() - startTime);
         return eventIdList;
 
     }
@@ -153,7 +153,7 @@ public class ActivitiServiceImpl implements ActivitiService {
         long startTime = System.currentTimeMillis();
         List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).list();
         List<String> eventIdList = queryTask(taskList);
-        log.debug("----------------------activiti查询花费时间 {}:--------------------------------------", System.currentTimeMillis() - startTime);
+        log.debug("----------------------activiti查询花费时间: {}ms--------------------------------------", System.currentTimeMillis() - startTime);
         return eventIdList;
     }
 
@@ -162,7 +162,7 @@ public class ActivitiServiceImpl implements ActivitiService {
         long startTime = System.currentTimeMillis();
         List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).taskNameIn(taskName).listPage(pageable.getPageNumber(), pageable.getPageSize());
         List<String> eventIdList = queryTask(taskList);
-        log.debug("----------------------activiti查询花费时间 {}:--------------------------------------", System.currentTimeMillis() - startTime);
+        log.debug("----------------------activiti查询花费时间: {}ms--------------------------------------", System.currentTimeMillis() - startTime);
         return eventIdList;
     }
 
@@ -171,7 +171,7 @@ public class ActivitiServiceImpl implements ActivitiService {
         long startTime = System.currentTimeMillis();
         List<Task> taskList = taskService.createTaskQuery().taskCandidateOrAssigned(userId).taskNameIn(taskName).list();
         List<String> eventIdList = queryTask(taskList);
-        log.debug("----------------------activiti查询花费时间 {}:--------------------------------------", System.currentTimeMillis() - startTime);
+        log.debug("----------------------activiti查询花费时间: {}ms--------------------------------------", System.currentTimeMillis() - startTime);
         return eventIdList;
 
     }
