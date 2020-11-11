@@ -842,6 +842,20 @@ var table = {
 				});
 
 			},
+			//上报案件
+			report: function(id) {
+				table.set();
+				$.modal.confirm("确定上报该条信息吗？", function() {
+					var url = $.common.isEmpty(id) ? table.options.removeUrl : table.options.removeUrl.replace("{id}", id);
+					if(table.options.type == table_type.bootstrapTreeTable) {
+						$.operate.get(url);
+					} else {
+						var data = { "id": id };
+						$.operate.submit(url, "post", "json", data);
+					}
+				});
+
+			},
 			// 批量删除信息
 			removeBatch: function() {
 				table.set();
