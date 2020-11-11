@@ -599,14 +599,19 @@ public class Statistics {
     private LocalDateTime backOffDate;
 
     /**
-     * 特殊环节开始时间   例如同意挂账的时间  同意延时的开始时间   同意作废时间   同意回退的时间
+     * 特殊环节开始时间   例如同意挂账的时间     同意作废时间   同意回退的时间
      */
     private LocalDateTime specialStartTime;
 
     /**
-     * 特殊环节结束时间   例如挂账的恢复时间  延时的结束时间       同意作废时间   同意回退的时间
+     * 特殊环节结束时间   例如挂账的恢复时间     同意作废时间   同意回退的时间
      */
     private LocalDateTime specialEndTime;
+
+    /**
+     * 延时多久
+     */
+    private Integer delayedHours;
 
 
 }
