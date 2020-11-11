@@ -62,7 +62,7 @@ public class User extends BaseEntity {
     private String profilePhotoUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "dept_id")
     private Dept dept;
 
 

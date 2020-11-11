@@ -104,12 +104,6 @@ public class Event extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private KV eventSate;
-    /**
-     * 条件实体类
-     */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
-    private EventCondition eventCondition;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
     private List<Statistics> statisticsList;

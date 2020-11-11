@@ -25,7 +25,8 @@
                                 <td><span></span>问题类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
-                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId" class="find_input" />
+                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId"
+                                           class="find_input"/>
                                     <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                         +
                                     </button>
@@ -35,7 +36,8 @@
                                 </td>
                                 <td><span></span>案卷号</td>
                                 <td>
-                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input"  />
+                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode"
+                                           class="find_input"/>
                                 </td>
                             </tr>
                             <tr>
@@ -71,7 +73,7 @@
                             <tr>
                                 <td><span></span>诉求人</td>
                                 <td>
-                                    <input name="peopleName"  type="text" class="" required>
+                                    <input name="peopleName" type="text" class="" required>
                                 </td>
                                 <td><span></span>性别</td>
                                 <td>
@@ -88,10 +90,11 @@
                                 </td>
                                 <td><span></span>诉求时间</td>
                                 <td>
-                                    <input th:name="createTime" th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
+                                    <input th:name="createTime"
+                                           th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}"
+                                           type="text" class=""/>
                                 </td>
                             </tr>
-
 
 
                             <tr>
@@ -141,7 +144,7 @@
                                 </td>
                                 <td><span></span>所属网格</td>
                                 <td>
-                                    <select  th:name="gridId"  id="grid4" >
+                                    <select th:name="gridId" id="grid4">
                                     </select>
                                 </td>
                             </tr>
@@ -169,24 +172,25 @@
                             <tr>
                                 <td><span></span>问题描述</td>
                                 <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
-                                <td colspan = "8"><textarea id="problemescription" th:name="represent" required></textarea></td>
+                                <td colspan="8"><textarea id="problemescription" th:name="represent"
+                                                          required></textarea></td>
                             </tr>
                             </tbody>
                         </table>
                         <div class="send">
                             <div class="sendImg">
                                 <div class="sendText"><span>图片:</span></div>
-                                <div><input id="input-id" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="input-id" type="file" name="file" multiple="multiple"></div>
                             </div>
 
 
                             <div class="sendImg">
                                 <div class="sendText"><span>视频:</span></div>
-                                <div><input id="videoInput" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="videoInput" type="file" name="file" multiple="multiple"></div>
                             </div>
                             <div class="sendImg">
                                 <div class="sendText"><span>音频:</span></div>
-                                <div><input id="musicInput" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="musicInput" type="file" name="file" multiple="multiple"></div>
                             </div>
 
                         </div>
@@ -201,7 +205,9 @@
                             <button class="but_save" type="button" style="margin-right: 10px" data-toggle="modal"
                                     data-target="#modal-sm">相似案件
                             </button>
-                            <button class="but_save" type="submit" onclick="submitHandler1()" style="margin-right: 10px">保存(登记)</button>
+                            <button class="but_save" type="submit" onclick="submitHandler1()"
+                                    style="margin-right: 10px">保存(登记)
+                            </button>
                             <button class="but_save" type="submit" onclick="submitHandler2()">核实(登记)</button>
                             <button class="but_close" onclick="Cancel()">返回</button>
                         </div>
@@ -260,7 +266,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
+            <div class="modal-footer justify-content-between"
+                 style="display: flex;justify-content: flex-end!important;">
                 <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
             </div>
         </div>
@@ -382,6 +389,7 @@
             }
         }
     };
+
     function zTreeOnClick(event, treeId, treeNode) {
         $("#typeStr").val(treeNode.name);
         $("#eventTypeId").val(treeNode.id);
@@ -397,7 +405,7 @@
      * @param eventTypeId
      */
     function createEventCode(eventTypeId) {
-        var url = createEventCodeUrl+"?eventTypeId="+eventTypeId
+        var url = createEventCodeUrl + "?eventTypeId=" + eventTypeId
         $.ajaxUtil.get(url, function (e) {
             if (e.code === "0") {
                 let eventCode = e.data
@@ -409,7 +417,7 @@
     /**
      * 获取立案区域
      */
-    function findEventConditionByEventType(eventTypeId){
+    function findEventConditionByEventType(eventTypeId) {
         let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
         $.ajaxUtil.get(url, function (e) {
             let option = "<option>--请选择--</option>";
@@ -476,11 +484,11 @@
     /**
      * 获取街道
      */
-    function getStreetList(){
+    function getStreetList() {
         let parentId = $("#grid1 option:selected").val();
         let url = "/event/findAllByParentId/?parentId=" + parentId;
         $.ajaxUtil.get(url, function (e) {
-            let option="<option>--请选择--</option>";
+            let option = "<option>--请选择--</option>";
             if (e.code === "0") {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
@@ -493,11 +501,11 @@
     /**
      * 获取社区
      */
-    function getCommunityList(){
+    function getCommunityList() {
         let parentId = $("#grid2 option:selected").val();
         let url = "/event/findAllByParentId/?parentId=" + parentId;
         $.ajaxUtil.get(url, function (e) {
-            let option="<option>--请选择--</option>";
+            let option = "<option>--请选择--</option>";
             if (e.code === "0") {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
@@ -510,11 +518,11 @@
     /**
      * 获取网格
      */
-    function getGridList(){
+    function getGridList() {
         let parentId = $("#grid3 option:selected").val();
         let url = "/event/findAllByParentId/?parentId=" + parentId;
         $.ajaxUtil.get(url, function (e) {
-            let option="<option>--请选择--</option>";
+            let option = "<option>--请选择--</option>";
             if (e.code === "0") {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
@@ -538,7 +546,7 @@
         $.modal.openOptions(options);
     }
 
-    function doSubmit(index, layero){
+    function doSubmit(index, layero) {
         var tree = layero.find("iframe")[0].contentWindow.$._tree;
         var body = layer.getChildFrame('body', index);
         $("#eventTypeId").val(body.find('#treeId').val());
@@ -843,8 +851,8 @@
         ],
         view: new ol.View({
             // projection: projection,
-            center:center,
-            zoom:17,
+            center: center,
+            zoom: 17,
             projection: projection
         })
     });
@@ -863,6 +871,7 @@
         })
     });
     setPoint()
+
     function setPoint() {
         let point = new ol.Feature({
             geometry: new ol.geom.Point([115.62, 41.74]),
@@ -873,7 +882,7 @@
             }
         });
         let picture = "../img/1.png";
-        let imgSize = [100,100]
+        let imgSize = [100, 100]
         point.setStyle(new ol.style.Style({
             image: new ol.style.Icon({
                 src: picture,
@@ -897,12 +906,19 @@
     }
 
     //回调函数接收查询结果
-    var geojsonFormat=new ol.format.GeoJSON({defaultDataProjection:"EPSG:3857"});
-    function success_jsonpCallback(res)
-    {
-        var features=geojsonFormat.readFeatures(res);
+    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
+
+    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
+
+    function success_jsonpCallback(res) {
+        var features = geojsonFormat.readFeatures(res);
         console.log('点击查询返回的结果如下：');
-        console.log(features);
+        console.log("features", features);
+        let mongodbId = features[0].H.mongodb_id;
+        console.log("features", mongodbId);
+        /*$.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
+            console.log("e", e);
+        })*/
     }
 
 </script>

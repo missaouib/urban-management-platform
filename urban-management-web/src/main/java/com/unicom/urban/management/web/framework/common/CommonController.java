@@ -64,6 +64,18 @@ public class CommonController {
         return map;
     }
 
+    @PostMapping("/common/uploads")
+    public Map<String, Object> uploadFiles(MultipartFile[] files) throws Exception {
+        Map<String, Object> map = new HashMap<>(1);
+        List<String> urlList = new ArrayList<>(10);
+        for (MultipartFile file : files) {
+            String url = fileUploadUtil.uploadFileToFastDFS(file);
+            urlList.add(url);
+        }
+        map.put("url", urlList);
+        return map;
+    }
+
 
     /**
      * 通用下载请求
