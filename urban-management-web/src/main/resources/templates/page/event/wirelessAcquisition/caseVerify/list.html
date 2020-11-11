@@ -264,17 +264,11 @@
 
                         <!--                            按钮-->
                         <div class="notice_bot">
-                            <!--            <div class="l_left">-->
-                            <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-                            <!--            </div>-->
                             <div class="r_right but_p girdBtnGroup">
-<!--                                <button class="but_save" type="submit" onclick="submitHandler()" >处理</button>-->
                                 <input name="eventType" class="modelDo" value="处理" type="text" data-toggle="modal" data-target="#modal-default" style="padding-left: 0px!important;">
-                                <button class="but_close" onclick="Cancel()">返回</button>
                             </div>
                         </div>
                     </div>
-
                 </form>
             </div>
             <div class="banner">
@@ -430,10 +424,6 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
-            <div class="banner">
-                <img id="eventImg">
             </div>
 
         </div>
@@ -504,28 +494,12 @@
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         })
-
-        $("#alwaysSay").click(function () {
-            $("#wordSays").stop().fadeToggle(300)
-        })
-        $(".idioms").click(function () {
-            let idioms = $(this).html()
-            $("#textIdioms").html(idioms)
-        })
     })
 
 
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
-
     let searchUrl = /*[[@{/event/caseVerifyList}]]*/ "/event/caseVerifyList";
-
-    let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
-
-    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
-
-    let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
-
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
 
     let completeByVerificationUrl = /*[[@{/event/completeByVerification}]]*/ "/event/completeByVerification";
@@ -550,115 +524,15 @@
     function queryUserList() {
         var options = {
             url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
-            // exportUrl: prefix + "/export",
-            // importUrl: prefix + "/importData",
-            // importTemplateUrl: prefix + "/importTemplate",
             uniqueId: "id",
             sortName: "updateTime",
             sortOrder: "desc",
             modalName: "用户",
              // 点击每行进行函数的触发
             onClickRow: function (row, tr, flied) {
-                console.log("row", row);
-                $(".tab_update").addClass("active").siblings(".tabTitle span").removeClass("active");
-                $(".banner_update").addClass("blockActive").siblings(".banner").removeClass("blockActive");
                 getButton(row.id)
-                //详情
-                $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
-                    /*流程图*/
-                    $("#eventImg").attr('src',img+e.data.processInstanceId);
-                    /*详情*/
-                    $("#eventCode").val(e.data.eventCode);
-                    $("#eventTypeStr").val(e.data.eventTypeStr);
-                    $("#represent").val(e.data.represent);
-                    $("#location").val(e.data.location);
-                    $("#regionStr").val(e.data.regionStr);
-                    $("#conditionValue").val(e.data.conditionValue);
-                    $("#level").val(e.data.level);
-                    $("#timeLimitStr").val(e.data.timeLimitStr);
-                    $("#girdStr").val(e.data.girdStr);
-                    $("#community").val(e.data.community);
-                    $("#street").val(e.data.street);
-                    $("#eventRegion").val(e.data.eventRegion);
-                    $("#x").val(e.data.x);
-                    $("#y").val(e.data.y);
-                    setPoint(e.data.x,e.data.y)
-                    $("#eventSourceStr").val(e.data.eventSourceStr);
-                    $("#cdate").val(e.data.cdate);
-                    $("#petitionerSex").val(e.data.petitionerSex);
-                    $("#petitionerPhone").val(e.data.petitionerPhone);
-                    $("#petitionerName").val(e.data.petitionerName);
-                    $("#userName").val(e.data.userName);
-                    $("#recTypeStr").val(e.data.recTypeStr);
-                    //附件
-                    let fileArr  = e.data.file;
-                    console.log("data",  e.data);
-                    console.log("fileArr",  fileArr);
-                    let showImgBefore="";
-                    let showVideoBefore="";
-                    let showAudioBefore="";
-                    let showImgAfter="";
-                    let showVideoAfter="";
-                    let showAudioAfter="";
-                    let showImgNothing="";
-                    let showVideoNothing="";
-                    let showAudioNothing="";
-                //     for (let i = 0; i < fileArr.length; i++) {
-                //         let fileType = fileArr[i].eventFile.fileType;
-                //         let filePath = fileArr[i].eventFile.filePath;
-                //         let management = fileArr[i].eventFile.management;//处置前 处置后
-                //         if (management != undefined && management != "" ){
-                //             let managementName = getManagement();
-                //             //处置前
-                //             if (managementName === "处置前"){
-                //                 if (fileType ===1){
-                //                     showImgBefore+="<div><img src=\"eventFile.filePath\"/></div>"
-                //                 }else if (fileType === 2){//视频
-                //                     showVideoBefore+="<div><video src=\"eventFile.filePath\" controls=\"controls\">your browser does not support the video tag</video></div>"
-                //                 }else if (fileType === 3){//音频
-                //                     showAudioBefore+="<div><audio src='eventFile.filePath' /></div>";
-                //                 }
-                //             }else {//处置后
-                //                 if (fileType ===1){
-                //                     showImgAfter+="<div><img src=\"eventFile.filePath\"/></div>"
-                //                 }else if (fileType === 2){//视频
-                //                     showVideoAfter+="<div><video src=\"eventFile.filePath\" controls=\"controls\">your browser does not support the video tag</video></div>"
-                //                 }else if (fileType === 3){//音频
-                //                     showAudioAfter+="<div><audio src='eventFile.filePath' /></div>";
-                //                 }
-                //             }
-                //         }else{//非处置前处置后
-                //             if (fileType ===1){
-                //                 showImgNothing+="<div><img src=\"eventFile.filePath\"/></div>"
-                //             }else if (fileType === 2){//视频
-                //                 showVideoNothing+="<div><video src=\"eventFile.filePath\" controls=\"controls\">your browser does not support the video tag</video></div>"
-                //             }else if (fileType === 3){//音频
-                //                 showAudioNothing+="<div><audio src='eventFile.filePath' /></div>";
-                //             }
-                //         }
-                //
-                //     }
-                //     if (showImgBefore !="" || showVideoBefore !="" || showAudioBefore !=""){
-                //         $("#before").css("display","block");
-                //         $("#showImgBefore").html(showImgBefore);
-                //         $("#showVideoBefore").html(showVideoBefore);
-                //         $("#showAudioBefore").html(showAudioBefore);
-                //     }if (showImgAfter !="" || showVideoAfter !="" || showAudioAfter !=""){
-                //         $("#after").css("display","block");
-                //         $("#showImgAfter").html(showImgAfter);
-                //         $("#showVideoAfter").html(showVideoAfter);
-                //         $("#showAudioAfter").html(showAudioAfter);
-                //     }
-                //     if (showImgNothing !="" || showVideoNothing !="" || showAudioNothing !=""){
-                //         $("#nothing").css("display","block");
-                //         $("#showImgNothing").html(showImgNothing);
-                //         $("#showVideoNothing").html(showVideoNothing);
-                //         $("#showAudioNothing").html(showAudioNothing);
-                //     }
-                });
+                layerMap.getSource().clear()
+                getEventDetail(row.id);
             },
             columns: [
                 {
@@ -692,7 +566,8 @@
                 },
                 {
                     title: '创建时间',
-                    field: 'createTime'
+                    field: 'createTime',
+                    sortable: true,
                 },
 
             ]
@@ -720,240 +595,37 @@
         $("#typeStr").val(body.find('#treeName').val());
         layer.close(index);
     }
-    jQuery.extend(jQuery.validator.messages, {
-        required: "必填",
-        phone: "必填",
-        remote: "请修正该字段",
-        email: "请输入正确格式的电子邮件",
-        url: "请输入合法的网址",
-        date: "请输入合法的日期",
-        dateISO: "请输入合法的日期 (ISO).",
-        number: "请输入合法的数字",
-        digits: "只能输入整数",
-        creditcard: "请输入合法的信用卡号",
-        equalTo: "请再次输入相同的值",
-        accept: "请输入拥有合法后缀名的字符串",
-        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
-        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
-        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
-        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
-        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
-        min: jQuery.validator.format("请输入一个最小为{0} 的值")
-    });
-
-    $("#userForm").validate({
-        debug: true,
-        ignore:"",
-        submitHandler:function(form){
-            var params = $(form).serialize(); //串行化表单参数
-            $.post("user",params,function(result){
-                if (result.ok) {//注册成功
-                    location.href = "register_ok.html";
-                }else{//注册失败
-                    alert(result.msg);
-                    $("#checkImg").click();
-
-                }
-            },"json");
-        },
-        rules: {
-            userName: {
-                required: true
-            },
-            loginName: {
-                required: true,
-                // rangelength: [5, 8]
-            },
-            phonenumber: {
-                required: true,
-                // rangelength: [6, 12]
-            },
-            problemescription: {
-                required: true,
-                // rangelength: [6, 12],
-                /*重复密码需要与原密码相同的要求*/
-                // equalTo: "#pwd"
-            },
-            safeLevel: {
-                required: true
-            },
-            findTime: {
-                required: true,
-                // range: [26, 50]
-            },
-            enterprise: {
-                required: true
-            },
-            department: {
-                required: true
-            },
-            handleTime: {
-                required: true
-            },charge: {
-                required: true
-            },
-            question: {
-                required: true
-            },
-            closeTime: {
-                required: true,
-                // email: true
-            },
-            // idcard: {
-            //     card: true
-            // },
-            // phone: {
-            //     phone: true
-            // }
-        },
-        messages: {
-            // realname: {
-            //     required: "真实姓名不能为空"
-            // },
-            // username: {
-            //     required: "登录名不能为空",
-            //     rangelength: "登录名长度要在5-8位之间"
-            // },
-            // pwd: {
-            //     required: "密码不能为空",
-            //     rangelength: "密码长度在6-12位之间"
-            // },
-            // pwd2: {
-            //     required: "重复密码不能为空",
-            //     rangelength: "重复密码长度在6-12位之间",
-            //     equalTo: "重复密码与密码不一致"
-            // },
-            // sex: {
-            //     required: "请选择性别"
-            // },
-            // age: {
-            //     required: "年龄不能为空",
-            //     range: "年龄必须在26-50岁之间"
-            // },
-            // email: {
-            //     email: "请输入有效邮箱"
-            // },
-            // idcard: {
-            //     card: "请输入有效身份证号"
-            // },
-            // phone: {
-            //     phone: "必填"
-            // }
-        }
-    });
-    /*手机号格式验证*/
-    $.validator.addMethod("phone", function (value, element, params) {
-        var reg = /^1[34578]\d{9}$/;
-        return reg.test(value);
-    }, "phone error");
-
-    function Cancel() {
-        $.modal.closeLoading();
-    }
-
-    function submitHandler(){
-        //先校验
-        if (!$("form").valid()) {
-            return;
-
-        }
-        var data = $('#userForm').serialize();
-        $.operate.saveTab(completeByVerificationUrl, data);
-    }
-    //上传 照片视频音频
-    let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
-
-    $(function () {
-        $(".input-id").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        }).on('change', function (event) {
-            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        }).on('fileselect', function (event, numFiles, label) {
-            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        }).on("filebatchselected", function (event, files) {
-            // $(this).fileinput("upload");
-        }).on("fileuploaded", function (event, data) {
-            console.log('fileuploaded()      ');
-
-            if (data.response.code === web_status.FAIL) {
-                console.log("上传文件失败");
-            }
-            console.log(data);
-        }).on('filedeleted', function (event, key) {
-            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            console.log(id);
-        }).on('fileclear', function (event) {
-            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-            console.log(event);
-        }).on('filecleared', function (event) {
-            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-            console.log(event);
-        }).on('filepredelete', function (event, key) {
-            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log('filesuccessremove()   ')
-            console.log(id);
+    function getEventDetail(eventId) {
+        $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
+            eventId = e.data.id;
+            /*详情*/
+            $("#eventCode").val(e.data.eventCode);
+            $("#eventTypeStr").val(e.data.eventTypeStr);
+            $("#represent").text(e.data.represent);
+            $("#location").val(e.data.location);
+            $("#regionStr").val(e.data.regionStr);
+            $("#conditionValue").val(e.data.conditionValue);
+            $("#level").val(e.data.level);
+            $("#timeLimitStr").val(e.data.timeLimitStr);
+            $("#girdStr").val(e.data.girdStr);
+            $("#community").val(e.data.community);
+            $("#street").val(e.data.street);
+            $("#eventRegion").val(e.data.eventRegion);
+            $("#x").val(e.data.x);
+            $("#y").val(e.data.y);
+            $("#eventSourceStr").val(e.data.eventSourceStr);
+            $("#cdate").val(e.data.cdate);
+            $("#petitionerSex").val(e.data.petitionerSex);
+            $("#petitionerPhone").val(e.data.petitionerPhone);
+            $("#petitionerName").val(e.data.petitionerName);
+            $("#userName").val(e.data.userName);
+            $("#recTypeStr").val(e.data.recTypeStr);
+            /*流程图*/
+            $("#eventImg").attr('src', img + e.data.processInstanceId);
+            /* 坐标 */
+            setPoint(e.data.x, e.data.y);
         });
-
-        $(".videoInput").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        })
-        $(".musicInput").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        })
-    })
+    }
 
     var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
     // 沽源地图
