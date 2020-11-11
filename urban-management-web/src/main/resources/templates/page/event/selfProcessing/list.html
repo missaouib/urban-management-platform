@@ -493,7 +493,6 @@
                     title: '处理时限',
                     field: '',
                     formatter: function (value, row) {
-                        // console.log("row", row);
                         return "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;' class='timeSet'>" +
                             "<img src='../img/2.png' style='width: 100%;height: 100%'></div>";
                     }
@@ -575,6 +574,7 @@
     function getTimeAxis(eventId) {
         $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
             let data = e.data;
+            console.log("data", data);
             $("#timeAxis").empty();
             let html = "";
             if (data.length === 0) {
@@ -607,14 +607,16 @@
                     html += "<em>回复内容:</em> " + data[i].opinions
                     html += "</div>";
                     if (data[i].fileName.length > 0) {
-                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+
                     }
+                    html += "<div class='endBox enclosure'><i></i>附件详情</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
                     html += "<em>by:</em> " + data[i].user + "，角色";
                     html += "</div>";
-                    html += "<div class='endBox endright'>" + data[i].starTime + "</div>";
+                    html += "<div class='endBox endright'>开始时间: " + data[i].starTime + "</div>";
+                    html += "<div class='endBox endright'>结束时间: " + data[i].endTime + "</div>";
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='expressRecord-date'>";
