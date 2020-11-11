@@ -119,7 +119,7 @@ public class CommonController {
         }
 
         //使用宋体
-        String fontName = "宋体";
+        String fontName = "Arial Unicode MS";
         //获取BPMN模型对象
         BpmnModel model = repositoryService.getBpmnModel(processDefinitionId);
         //获取流程实例当前的节点，需要高亮显示

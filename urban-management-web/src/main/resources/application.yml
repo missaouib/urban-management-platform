@@ -20,6 +20,8 @@ spring:
     properties:
       hibernate:
         format_sql: true                 # 格式化SQL
+        use_sql_comments: false           # 显示JPQL语句
+        generate_statistics: false        # 显示SQL性能分析日志
 
   activiti:
     history-level: full
