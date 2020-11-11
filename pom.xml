@@ -25,6 +25,7 @@
         <firebirds.version>1.0.0-SNAPSHOT</firebirds.version>
         <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <java-uuid-generator.version>3.1.4</java-uuid-generator.version>
+        <jts.version>1.16.0</jts.version>
     </properties>
 
     <modules>
@@ -115,6 +116,11 @@
                 <version>${hutool-all.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.locationtech.jts</groupId>
+                <artifactId>jts-core</artifactId>
+                <version>${jts.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>cn.unicom.hlj.snr.firebird</groupId>
