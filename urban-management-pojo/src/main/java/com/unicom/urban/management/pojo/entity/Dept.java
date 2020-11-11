@@ -7,6 +7,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * 责任部门实体类
@@ -37,5 +38,8 @@ public class Dept extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Dept parent;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dept")
+    private List<User> userList;
 
 }
