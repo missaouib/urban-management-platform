@@ -71,6 +71,11 @@ public class EventVO {
      */
     private Integer timeLimit;
 
+    /**
+     * 时限单位
+     */
+    private String timeType;
+
     private String closeTime;
 
     private String sts;

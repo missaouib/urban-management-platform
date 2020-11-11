@@ -480,7 +480,6 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row) {
-                console.log(row)
                 layerMap.getSource().clear()
                 checkRow(row.id);
                 console.log(row.startTime)
@@ -607,7 +606,6 @@
     function getTimeAxis(eventId) {
         $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
             let data = e.data;
-            console.log("data", data);
             $("#timeAxis").empty();
             let html = "";
             if (data.length === 0) {

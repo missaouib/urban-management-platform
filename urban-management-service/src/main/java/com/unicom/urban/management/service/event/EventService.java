@@ -150,6 +150,8 @@ public class EventService {
                 eventVO.setStartTime(format);
                 int timeLimit = statistics.getProcessTimeLimit().getTimeLimit();
                 eventVO.setTimeLimit(timeLimit);
+                String timeType = statistics.getProcessTimeLimit().getTimeType().getValue();
+                eventVO.setTimeType(timeType);
             }else{
                 List<Statistics> byEventId = statisticsService.findByEventIdToList(eventVO.getId());
                 List<Statistics> collect = byEventId.stream().filter(a -> "值班长-结案".equals(a.getTaskName())).collect(Collectors.toList());
