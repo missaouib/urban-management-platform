@@ -59,10 +59,35 @@ public class EventController {
      * 逆地理编码
      */
     @GetMapping("localReverseGeocoding")
-    public Map<String, String> localReverseGeocoding(double x, double y){
-        RestReturn body = RestTemplateUtil.get(KvConstant.GIS_URL + "/restApi/LocalReverseGeocoding?x=" + x +"&y="+y, RestReturn.class).getBody();
+    public Map<String, String> localReverseGeocoding(double x, double y) {
+        RestReturn body = RestTemplateUtil.get(KvConstant.GIS_URL + "/restApi/LocalReverseGeocoding?x=" + x + "&y=" + y, RestReturn.class).getBody();
         assert body != null;
         return (Map<String, String>) body.getData();
+    }
+
+    /**
+     * 点击网格反差信息
+     *
+     * @param mongodbId mongoId
+     */
+    @GetMapping("/getGridByCheckLayer")
+    public void getGridByCheckLayer(String mongodbId) {
+        /*List<Map<String, Object>> valueMapList = new ArrayList<>(1);
+        Map<String, Object> valueMap = new HashMap<>(2);
+        valueMap.put("value", mongodbId);
+        valueMap.put("queryCriteria", "regex");
+        valueMapList.add(valueMap);
+        List<Map<String, Object>> columnNameMapList = new ArrayList<>(1);
+        Map<String, Object> columnNameMap = new HashMap<>(2);
+        columnNameMap.put("columnName", "objId");
+        columnNameMap.put("value", valueMapList);
+        columnNameMapList.add(columnNameMap);
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("layerId", KvConstant.KV_LAYER_GRID);
+        map.put("columnName", columnNameMapList);*/
+        RestReturn body = RestTemplateUtil.get(KvConstant.GIS_URL + "/queryMongoById?id=" + mongodbId, RestReturn.class).getBody();
+        Map<String, String> dataMap = (Map<String, String>) body.getData();
+        System.out.println(dataMap);
     }
 
 }

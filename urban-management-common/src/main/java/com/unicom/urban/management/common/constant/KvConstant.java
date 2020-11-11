@@ -99,4 +99,9 @@ public class KvConstant {
      */
     public static final String SUPERVISOR = "d2c15cc9-91bd-4435-86f8-f9c8d351610b";
 
+    /**
+     * 发布的网格图层id
+     */
+    public static final String KV_LAYER_GRID = "09122643-501a-4fb7-82b0-d271dbd3d326";
+
 }
