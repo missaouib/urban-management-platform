@@ -69,7 +69,7 @@ public class User extends BaseEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_dept", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "dept_id"))
-    private List<Dept> dept;
+    private List<Dept> deptList;
 
 
 }
