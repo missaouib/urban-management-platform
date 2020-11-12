@@ -1333,7 +1333,7 @@
                     "F_EnCode": "SysManage",
                     "F_FullName": "已结案件",
                     "F_Icon": "fa fa-thumbs-up",
-                    "F_UrlAddress": "/event/toAuthorization",
+                    "F_UrlAddress": "/event/toClosedCasesList",
                     "F_Target": "expand",
                     "F_IsMenu": 0,
                     "F_AllowExpand": 1,
