@@ -58,7 +58,7 @@ public class EventService {
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
-            if(StringUtils.isNotBlank(eventDTO.getClose())){
+            if (StringUtils.isNotBlank(eventDTO.getClose())) {
                 list.add(criteriaBuilder.equal(root.get("eventSate").get("id").as(String.class), eventDTO.getClose()));
             }
             if (StringUtils.isNotBlank(eventDTO.getUserName())) {
@@ -141,12 +141,12 @@ public class EventService {
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
         List<EventVO> eventVOList = new ArrayList<>();
-        page.getContent().forEach(e->{
+        page.getContent().forEach(e -> {
             EventVO eventVO = EventMapper.INSTANCE.eventToEventVO(e);
-            eventVO.setEventTypeName(e.getEventType().getParent().getParent().getName()+"-"+e.getEventType().getParent().getName()+"-"+e.getEventType().getName());
-            if(StringUtils.isNotBlank(eventDTO.getClose())){
+            eventVO.setEventTypeName(e.getEventType().getParent().getParent().getName() + "-" + e.getEventType().getParent().getName() + "-" + e.getEventType().getName());
+            if (StringUtils.isNotBlank(eventDTO.getClose())) {
                 List<Statistics> collect = e.getStatisticsList().stream().filter(a -> "值班长-结案".equals(a.getTaskName())).collect(Collectors.toList());
-                if(collect.size()>0){
+                if (collect.size() > 0) {
                     DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                     eventVO.setCloseTime(df.format(collect.get(0).getEndTime()));
                     eventVO.setSts(collect.get(0).getSts());
@@ -172,10 +172,10 @@ public class EventService {
                 eventVO.setTimeLimit(timeLimit);
                 String timeType = statistics.getProcessTimeLimit().getTimeType().getValue();
                 eventVO.setTimeType(timeType);
-            }else{
+            } else {
                 List<Statistics> byEventId = statisticsService.findByEventIdToList(eventVO.getId());
                 List<Statistics> collect = byEventId.stream().filter(a -> "值班长-结案".equals(a.getTaskName())).collect(Collectors.toList());
-                if(collect.size()>0){
+                if (collect.size() > 0) {
                     eventVO.setTaskName(collect.get(0).getTaskName());
                     String format = simpleDateFormat.format(collect.get(0).getStartTime());
                     eventVO.setStartTime(format);
@@ -225,17 +225,19 @@ public class EventService {
             return null;
         }
     }
+
     /**
      * 案件采集保存
      *
      * @param eventDTO 事件参数
      */
-public void saveTemp(EventDTO eventDTO){
+    public void saveTemp(EventDTO eventDTO) {
 
-    Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
-    event.setUser(SecurityUtil.getUser().castToUser());
-    eventRepository.save(event);
-}
+        Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
+        event.setUser(SecurityUtil.getUser().castToUser());
+        eventRepository.save(event);
+    }
+
     /**
      * 保存事件
      *
@@ -252,11 +254,11 @@ public void saveTemp(EventDTO eventDTO){
         Petitioner saveP = petitionerService.save(petitioner);
         event.setPetitioner(saveP);
         Event save = eventRepository.save(event);
-        /* 受理员核实 */
+        /* 受理员保存 */
         if (eventDTO.getInitSts() != null && eventDTO.getInitSts() == 2) {
             workService.caseAcceptanceByDispatch(save.getId());
         }
-        /* 受理员保存 */
+        /* 受理员核实 */
         if (eventDTO.getInitSts() != null && eventDTO.getInitSts() == 3) {
             workService.caseAcceptanceByReceive(save.getId(), eventDTO.getUserId());
         }
@@ -272,6 +274,7 @@ public void saveTemp(EventDTO eventDTO){
     public void completeByReceptionist(String eventId, String userId, String button) {
         workService.completeByReceptionist(eventId, userId, button);
     }
+
     /**
      * 监督员信息核实
      *
@@ -282,6 +285,7 @@ public void saveTemp(EventDTO eventDTO){
     public void completeByVerification(String eventId, String userId, String button) {
         workService.completeByVerificationist(eventId, userId, button);
     }
+
     /**
      * 监督员案件核查
      *
@@ -413,12 +417,12 @@ public void saveTemp(EventDTO eventDTO){
         eventOneVO.setEventSourceId(one.getEventSource().getId());
         eventOneVO.setEventSourceStr(one.getEventSource().getValue());
 //        eventOneVO.setDoBySelf(one.getDoBySelf());
-        List<Map<String,Object>> fileList = new ArrayList<>();
-        one.getEventFileList().forEach(f->{
-            Map<String,Object> map = new HashMap<>();
-            map.put("url",f.getFilePath());
-            map.put("type",f.getFileType());
-            map.put("management",f.getManagement());
+        List<Map<String, Object>> fileList = new ArrayList<>();
+        one.getEventFileList().forEach(f -> {
+            Map<String, Object> map = new HashMap<>();
+            map.put("url", f.getFilePath());
+            map.put("type", f.getFileType());
+            map.put("management", f.getManagement());
             fileList.add(map);
         });
         eventOneVO.setFile(fileList);
@@ -435,8 +439,9 @@ public void saveTemp(EventDTO eventDTO){
      * @param event 需要操作的实体
      */
     public Event update(Event event) {
-       return eventRepository.saveAndFlush(event);
+        return eventRepository.saveAndFlush(event);
     }
+
     /**
      * 案件采集修改
      *
@@ -448,7 +453,7 @@ public void saveTemp(EventDTO eventDTO){
         return eventRepository.saveAndFlush(event);
     }
 
-    public Event EventDTOtoEvent(EventDTO eventDTO){
+    public Event EventDTOtoEvent(EventDTO eventDTO) {
         Event event = eventRepository.getOne(eventDTO.getId());
         if (eventDTO.getEventCode() != null) {
             event.setEventCode(eventDTO.getEventCode());
@@ -491,16 +496,19 @@ public void saveTemp(EventDTO eventDTO){
         }
         return event;
     }
+
     /**
      * 案件采集删除
+     *
      * @param eventId
      */
-    public void remove(String eventId){
+    public void remove(String eventId) {
         eventRepository.deleteById(eventId);
     }
 
     /**
      * 案件采集自处理
+     *
      * @param eventDTO
      */
     public void saveAutoReport(EventDTO eventDTO) {
@@ -522,6 +530,7 @@ public void saveTemp(EventDTO eventDTO){
         Event saved = eventRepository.save(event);
         workService.superviseReporting(saved.getId());
     }
+
     /**
      * 案件采集页表页上报
      */
@@ -535,9 +544,10 @@ public void saveTemp(EventDTO eventDTO){
 
     /**
      * 获取全部立案区域和立案条件
+     *
      * @return
      */
-    public List<EventCondition> findEventConditionAll(){
+    public List<EventCondition> findEventConditionAll() {
         return eventConditionRepository.findAll();
     }
 
