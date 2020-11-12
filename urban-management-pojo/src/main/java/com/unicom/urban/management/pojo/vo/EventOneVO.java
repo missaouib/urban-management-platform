@@ -18,6 +18,7 @@ public class EventOneVO {
 
     private String eventCode;
 
+    private String eventTypeId;
     private String eventTypeStr;
 
     /**
@@ -38,6 +39,7 @@ public class EventOneVO {
     /**
      * 立案条件
      */
+    public String ConditionId;
     private String conditionValue;
 
     /**
@@ -48,11 +50,13 @@ public class EventOneVO {
     /**
      * 处理时限
      */
+    private String timeLimitId;
     private String timeLimitStr;
 
     /**
      * 所属网格
      */
+    private String gridId;
     private String girdStr;
 
     /**
@@ -85,12 +89,14 @@ public class EventOneVO {
     /**
      * 案件类型
      */
+    private String recTypeId;
     private String recTypeStr;
 
 
     /**
      * 上报人
      */
+    private String userId;
     private String userName;
 
     /**
@@ -116,6 +122,7 @@ public class EventOneVO {
     /**
      * 问题来源
      */
+    private String eventSourceId;
     private String eventSourceStr;
 
     /**
@@ -127,5 +134,7 @@ public class EventOneVO {
      * 部门名称
      */
     private String deptName;
+
+//    private Boolean doBySelf;
 
 }

@@ -59,13 +59,12 @@
                                 <td>
                                     <select id="timeType" onchange="getDeptTimeLimitList()" required>
                                         <option th:text="${eventOneVO.level}"></option>
-                                        <option th:each="as:${level}" th:value="${as.id}" th:text="${as.value}"></option>
                                     </select>
                                 </td>
                                 <td><span>*</span>处理时限</td>
                                 <td>
-                                    <input th:name="timeLimitId" type="hidden" id="deptTImeLimitId"/>
-                                    <input type="text" id="deptTImeLimit" th:value="${eventOneVO.timeLimitStr}" name="timeLimitStr" required readonly/>
+                                    <input th:name="timeLimitId" th:value="${eventOneVO.timeLimitId}" type="hidden" id="deptTImeLimitId"/>
+                                    <input type="text" id="deptTImeLimit" th:value="${eventOneVO.timeLimitStr}" name="timeLimitStr"  readonly/>
 
                                 </td>
                             </tr>
@@ -78,8 +77,7 @@
                                 <td><span>*</span>案件类型</td>
                                 <td>
                                     <select class="form-control" id="recTypeId" th:name="recTypeId" required>
-                                        <option th:text="${eventOneVO.recTypeStr}"></option>
-                                        <option th:each="as:${recType}" th:value="${as.id}" th:text="${as.value}"></option>
+                                        <option th:value="${eventOneVO.recTypeId}" th:text="${eventOneVO.recTypeStr}"></option>
                                     </select>
                                 </td>
                             </tr>
@@ -98,14 +96,12 @@
                                 <td>
                                     <select class="form-control" id="grid1" onchange="getStreetList()" required>
                                         <option th:text="${eventOneVO.eventRegion}"></option>
-                                        <option th:each="as:${region}" th:value="${as.id}" th:text="${as.value}" ></option>
                                     </select>
                                 </td>
                                 <td><span>*</span>所属街道</td>
                                 <td>
                                     <select class="form-control" id="grid2" onchange="getCommunityList()" required>
                                         <option th:text="${eventOneVO.street}"></option>
-                                        <option th:each="as:${region}" th:value="${as.id}" th:text="${as.value}" ></option>
                                     </select>
                                 </td>
                             </tr>
@@ -114,37 +110,34 @@
                                 <td>
                                     <select class="form-control" id="grid3" onchange="getGridList()" required>
                                         <option th:text="${eventOneVO.community}"></option>
-                                        <option th:each="as:${region}" th:value="${as.id}" th:text="${as.value}" ></option>
                                     </select>
                                 </td>
                                 <td><span>*</span>单元网格</td>
                                 <td>
                                     <select  th:name="gridId"  id="grid4" >
-                                        <option th:text="${eventOneVO.girdStr}"></option>
-                                        <option th:each="as:${region}" th:value="${as.id}" th:text="${as.value}" ></option>
+                                        <option th:value="${eventOneVO.gridId}" th:text="${eventOneVO.girdStr}"></option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span>*</span>事件来源</td>
                                 <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId"
-                                            th:field="*{eventOneVO.eventSourceStr}" required>
-                                        <option th:each="as:${eventSource}" th:value="${as.id}"
-                                                th:text="${as.value}"></option>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required>
+                                        <option th:value="${eventOneVO.eventSourceId}" th:text="${eventOneVO.eventSourceStr}"></option>
                                     </select>
                                 </td>
                                 <td><span></span>上报人</td>
-                                <td style="text-align: left"><div class="username" th:value="${eventOneVO.userName}" id="userName"></div></td>
+                                <input type="hidden" name="userId" th:value="${eventOneVO.userId}"/>
+                                <td style="text-align: left"><div class="username"  th:value="${eventOneVO.userName}" id="userName"></div></td>
                                 <td><span></span>是否自处理</td>
                                 <td style="text-align: left">
-                                    <input  id="_doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
+                                    <input  id="_doBySelf" name="doBySelf"  placeholder="" class="" type="checkbox" style="width: 30px">
                                 </td>
                             </tr>
                             <tr>
                                 <td><span>*</span>案件地址</td>
                                 <td colspan="8">
-                                    <input id="location" th:name="location" th:value="${eventOneVO.location}" type="text" required />
+                                    <input id="location" th:name="location" th:value="${eventOneVO.location}" type="text"  required/>
                                 </td>
 
                             </tr>
@@ -181,7 +174,7 @@
                         <div class="r_right but_p girdBtnGroup">
                             <button class="but_save" type="submit" onclick="reportHandler()" style="margin-right: 10px">上报</button>
                             <button class="but_save" type="submit" onclick="submitHandler()">保存</button>
-                            <button class="but_close" onclick="Cancel()">返回</button>
+<!--                            <button class="but_close" onclick="Cancel()">返回</button>-->
                         </div>
                     </div>
                 </div>
@@ -278,11 +271,6 @@
      * 保存
      */
     function submitHandler() {
-        //先校验
-        if (!$("form").valid()) {
-            return;
-
-        }
         var data = $('#userForm').serialize();
         $.operate.saveTab(updateTempUrl, data);
     }
@@ -542,8 +530,8 @@
         })*/
     }
     $(function () {
-        var represent = [[${eventOneVO.represent}]];
-        $("#represent").text(represent);
+        // var represent = [[${eventOneVO.represent}]];
+        // $("#problemescription").text(represent);
         getGridPublishUrl()
 
         let eventOneVO = [[${eventOneVO}]];

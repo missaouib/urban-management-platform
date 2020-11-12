@@ -120,5 +120,10 @@ public class Event extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private List<EventFile> eventFileList;
+    /**
+     * 是否自处理
+     */
+//    @JoinColumn
+//    private Boolean doBySelf;
 
 }
