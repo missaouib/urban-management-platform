@@ -76,7 +76,10 @@ public class KvConstant {
     /**
      * 案件完结
      */
-    public static final String CLOS_ETESK = "69132147-bc3c-451d-9336-5117e9adc0d6";
+    public static final String CLOS_ETESK = "69132147-bc3c-451d-9336-5117e9adc0d6";/**
+     * 案件作废
+     */
+    public static final String TO_VOID = "c960242b-3760-405b-9cc2-8bc1e2b36a1f";
 
     /**
      * 环节时限-天

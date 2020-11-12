@@ -391,17 +391,43 @@ public class TaskProcessingService {
                 statisticsService.save(newStatistics);
             }
         }
-
-
-
-
-
     }
 
-
     /**
-     * 专业部门获取人员id列表
+     * 值班长-作废审批
      */
+    private void toVoid(String eventId, EventButton buttonId, StatisticsDTO statisticsDTO) {
+        Event one = eventService.findOne(eventId);
+        if("通过".equals(buttonId.getButtonText())){
+            this.avtivitiHandle(eventId, null, null);
+
+
+            KV kv = new KV();
+            kv.setId(KvConstant.TO_VOID);
+            one.setEventSate(kv);
+            eventService.update(one);
+
+            Statistics statistics = this.updateStatistics(statisticsDTO);
+            statistics.setCancel(1);
+            statistics.setCancelDate(LocalDateTime.now());
+            statisticsService.update(statistics);
+        }else{
+            List<String> users = this.getUsers(KvConstant.DISPATCHER_ROLE);
+            this.avtivitiHandle(eventId, users, buttonId.getId());
+            Statistics statistics = this.updateStatistics(statisticsDTO);
+            statisticsService.update(statistics);
+
+            Statistics newStatistics = this.initStatistics(one);
+            newStatistics.setBackOff(1);
+            newStatistics.setBackOffDate(LocalDateTime.now());
+            newStatistics.setSort(statistics.getSort()+1);
+            statisticsService.save(newStatistics);
+        }
+    }
+
+        /**
+         * 专业部门获取人员id列表
+         */
     private List<String> getUsers(Dept dept) {
         List<String> users = new ArrayList<>();
         for (User user : dept.getUserList()) {
