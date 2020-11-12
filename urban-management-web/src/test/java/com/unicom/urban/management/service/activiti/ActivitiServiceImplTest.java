@@ -56,19 +56,28 @@ public class ActivitiServiceImplTest {
 
         activitiService.claim(task.getId(), "受理员1");
         activitiService.complete(task.getId(), Arrays.asList("值班长1", "值班长2", "值班长3", "值班长4"), "3");
-//
-//
-//        // 值班长-立案 领取完成任务
-//        Task zhibanzhang = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
-//        activitiService.claim(zhibanzhang.getId(), "值班长1");
-//        activitiService.complete(zhibanzhang.getId(), Arrays.asList("派遣员1", "派遣员2", "派遣员3", "派遣员4"), "4");
-//
-//
-//        // 派遣员-派遣 派给专业部门
-//        Task paiqianyuan = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
-//        activitiService.claim(paiqianyuan.getId(), "派遣员1");
-//        activitiService.complete(paiqianyuan.getId(), Arrays.asList("专业部门1", "专业部门2", "专业部门3", "专业部门4"), "6");
-//
+
+
+        // 值班长-立案 领取完成任务
+        Task zhibanzhang = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
+        activitiService.claim(zhibanzhang.getId(), "值班长1");
+        activitiService.complete(zhibanzhang.getId(), Arrays.asList("派遣员1", "派遣员2", "派遣员3", "派遣员4"), "4");
+
+
+        // 派遣员-派遣 派给专业部门
+        Task paiqianyuan = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
+        activitiService.claim(paiqianyuan.getId(), "派遣员1");
+        activitiService.complete(paiqianyuan.getId(), Arrays.asList("专业部门1", "专业部门2", "专业部门3", "专业部门4"), "6");
+
+        // 专业部门 申请延时
+        Task shenqingyanshi = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
+        activitiService.claim(shenqingyanshi.getId(), "专业部门1");
+        activitiService.complete(shenqingyanshi.getId(), Arrays.asList("派遣员1", "派遣员2", "派遣员3", "派遣员4"), "22");
+
+        Task ta1111 = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
+
+        List<String> strings = activitiService.queryTaskByAssigneeAndTaskName("派遣员1", Arrays.asList("派遣员-延时审批"));
+
 //        // 专业部门 领取完成任务
 //        Task zhuangyebumen = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
 //        activitiService.claim(zhuangyebumen.getId(), "专业部门1");
@@ -136,10 +145,9 @@ public class ActivitiServiceImplTest {
 
     }
 
-
     @Test
     public void queryTaskByAssigneeAndTaskNameTest() {
-        List<String> eventIdList = activitiService.queryTaskByAssigneeAndTaskName("1", Collections.singletonList("值班长-立案"));
+        List<String> eventIdList = activitiService.queryTaskByAssigneeAndTaskName("1", Collections.singletonList("派遣员-延时审批"));
     }
 
 
