@@ -120,9 +120,11 @@ public class WorkService {
             s.setUser(SecurityUtil.getUser().castToUser());
         }
         setOpinionsAndEventFileList(s, s.getOpinions(), s.getEventFileList());
+        s.setSort(s.getSort() + 1);
         statisticsService.update(s);
         activitiService.complete(s.getTaskId(), Collections.singletonList(userId), button);
         Statistics statistics = initStatistics(eventId);
+        statistics.setStartTime(s.getEndTime());
         if ("14".equals(button)) {
             statistics.setNeedCheck(1);
         }
@@ -196,6 +198,7 @@ public class WorkService {
         /* 待受理 */
         statistics.setToOperate(0);
         setOpinionsAndEventFileList(statistics, statistics.getOpinions(), statistics.getEventFileList());
+        statistics.setSort(statistics.getSort() + 1);
         statisticsService.update(statistics);
         /*TODO 查询所有值班长角色的人*/
         activitiService.complete(statistics.getTaskId(), Collections.singletonList("1"), button);
@@ -237,6 +240,7 @@ public class WorkService {
         statistics.setInTimeOperate((Integer) map.get("time"));
         statistics.setSts(map.get("sts").toString());
         setOpinionsAndEventFileList(statistics, statistics.getOpinions(), statistics.getEventFileList());
+        statistics.setSort(statistics.getSort() + 1);
         statisticsService.update(statistics);
         activitiService.complete(statistics.getTaskId(), null, button);
     }
@@ -295,9 +299,16 @@ public class WorkService {
         statistics.setTaskName(task.getName());
         statistics.setStartTime(LocalDateTime.now());
         statistics.setDeptTimeLimit(event.getTimeLimit());
+        /* todo 此处是目前数据库数据尚未完善 所以用一条假数据暂替 ——姜文 ——2020/11/10 */
         /*ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());*/
         ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId("值班长-立案", "28526efe-3db5-415b-8c7a-d0e3a49cab8f");
         statistics.setProcessTimeLimit(processTimeLimit);
+        Statistics byEventIdAndEndTimeIsNull = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        if (byEventIdAndEndTimeIsNull != null) {
+            statistics.setSort(byEventIdAndEndTimeIsNull.getSort() + 1);
+        } else {
+            statistics.setSort(1);
+        }
         return statisticsService.save(statistics);
     }
 
@@ -341,9 +352,10 @@ public class WorkService {
 
     /**
      * 上报自处理事件
+     *
      * @param eventId
      */
-    public void saveAutoReport(String eventId){
+    public void saveAutoReport(String eventId) {
         /*TODO 查询所有有受理员角色的人*/
         List<String> userList = new ArrayList<>();
         userList.add("1");
@@ -359,8 +371,10 @@ public class WorkService {
         statistics.setToOperate(1);
         statisticsService.update(statistics);
     }
+
     /**
      * 上报事件
+     *
      * @param eventId
      */
     public void superviseReporting(String eventId) {

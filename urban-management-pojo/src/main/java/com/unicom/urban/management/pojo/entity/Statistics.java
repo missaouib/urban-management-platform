@@ -613,5 +613,10 @@ public class Statistics {
      */
     private Integer delayedHours;
 
+    /**
+     * 排序
+     */
+    @Column(columnDefinition = "TINYINT(50)")
+    private Integer sort;
 
 }

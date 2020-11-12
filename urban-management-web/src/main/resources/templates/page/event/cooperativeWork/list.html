@@ -411,7 +411,8 @@
             "eventId": eventId,
             "buttonId": buttonId,
             "opinions": $("#opinions").val(),
-            "deptId":$("#dept").val()
+            "deptId":$("#dept").val(),
+            "delayedTime":$("#delayedTime").val()
         };
 
         $.ajax({
@@ -499,6 +500,15 @@
                                     }
                                 })
                                 deptStr +="</select>"
+                                $("#deptDiv").append(deptStr);
+                            })
+
+                        }
+                        if ("申请延时" === value.buttonText) {
+                            $.ajaxUtil.get(deptUrl, function (o) {
+                                $("#deptDiv").empty();
+                                var deptStr = " <span class=\"sendText\"><i>*</i>申请时限</span>\n" +
+                                    "<input type='number' id='delayedTime'/>";
                                 $("#deptDiv").append(deptStr);
                             })
 
