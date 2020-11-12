@@ -15,6 +15,14 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
     List<Statistics> findAllByEvent_IdOrderByStartTimeDesc(String eventId);
 
     /**
+     * 根据sort字段排序
+     *
+     * @param eventId 事件id
+     * @return list
+     */
+    List<Statistics> findAllByEvent_IdOrderBySortDesc(String eventId);
+
+    /**
      * 根据事件id查询该事件最后环节的实体
      * 事件id和结束时间为空
      *

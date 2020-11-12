@@ -46,35 +46,35 @@ public class StatisticsService {
 
     public List<StatisticsVO> findByEventId(String eventId) {
         /*查询流程数据*/
-        List<Statistics> statisticsList = statisticsRepository.findAllByEvent_IdOrderByStartTimeDesc(eventId);
-        List<StatisticsVO> statisticsVOS = new ArrayList<>();
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        List<Statistics> statisticsList = statisticsRepository.findAllByEvent_IdOrderBySortDesc(eventId);
+        List<StatisticsVO> statisticsVOList = new ArrayList<>();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         /*重新封装*/
-        statisticsList.forEach(s -> {
+        statisticsList.forEach(statistics -> {
             /*开始时间str*/
-            String starTime = df.format(s.getStartTime());
+            String starTime = dateTimeFormatter.format(statistics.getStartTime());
             /*结束时间str*/
             String endTime = "";
             /*如果没有结束事件 就以当前时间判断超没超时*/
-            if (s.getEndTime() != null) {
-                endTime = df.format(s.getEndTime());
+            if (statistics.getEndTime() != null) {
+                endTime = dateTimeFormatter.format(statistics.getEndTime());
             }
-            List<String> file = new ArrayList<>();
-            s.getEventFileList().forEach(f -> file.add(f.getFileName()));
+            List<String> stringList = new ArrayList<>();
+            statistics.getEventFileList().forEach(eventFile -> stringList.add(eventFile.getFileName()));
             StatisticsVO statisticsVO = StatisticsVO.builder()
                     .starTime(starTime)
                     .endTime(endTime)
-                    .opinions(Optional.ofNullable(s.getOpinions()).orElse("无"))
-                    .fileName(file)
-                    .user(Optional.ofNullable(s.getUser()).map(User::getUsername).orElse(""))
-                    .link(s.getTaskName())
-                    .taskId(s.getTaskId())
-                    .taskName(s.getTaskName())
-                    .sts(s.getSts())
+                    .opinions(Optional.ofNullable(statistics.getOpinions()).orElse("无"))
+                    .fileName(stringList)
+                    .user(Optional.ofNullable(statistics.getUser()).map(User::getUsername).orElse(""))
+                    .link(statistics.getTaskName())
+                    .taskId(statistics.getTaskId())
+                    .taskName(statistics.getTaskName())
+                    .sts(statistics.getSts())
                     .build();
-            statisticsVOS.add(statisticsVO);
+            statisticsVOList.add(statisticsVO);
         });
-        return statisticsVOS;
+        return statisticsVOList;
     }
 
 
