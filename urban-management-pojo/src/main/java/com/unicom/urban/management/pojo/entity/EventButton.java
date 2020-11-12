@@ -32,10 +32,6 @@ public class EventButton extends BaseEntity {
      */
     private String taskName;
 
-    private String buttonName;
-
-    private String buttonValue;
-
     @Column(columnDefinition = "TINYINT(1)")
     private Integer sort;
 
