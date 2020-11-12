@@ -128,6 +128,8 @@ public class TaskProcessingService {
             newStatistics.setToOperate(1);
             newStatistics.setBackOff(1);
             newStatistics.setBackOffDate(LocalDateTime.now());
+            newStatistics.setSort(statistics.getSort() + 1);
+
         }
         statisticsService.save(newStatistics);
     }
