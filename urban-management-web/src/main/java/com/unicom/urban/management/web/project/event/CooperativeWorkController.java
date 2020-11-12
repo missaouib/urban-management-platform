@@ -83,9 +83,14 @@ public class CooperativeWorkController {
      *
      * @return 页面
      */
-    @GetMapping("/toOnAccount")
+    @GetMapping("/toOnAccountList")
     public ModelAndView toOnAccount() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/onAccount/list");
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/onAccount/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
     }
 
     /**
@@ -93,19 +98,29 @@ public class CooperativeWorkController {
      *
      * @return 页面
      */
-    @GetMapping("/toCancel")
+    @GetMapping("/toCancelList")
     public ModelAndView toCancel() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/cancel/list");
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/cancel/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
     }
 
     /**
-     * 授权批示
+     * 授权列表
      *
      * @return 页面
      */
-    @GetMapping("/toAuthorization")
+    @GetMapping("/toAuthorizationList")
     public ModelAndView toAuthorization() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/authorization/list");
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/authorization/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
     }
 
     /**

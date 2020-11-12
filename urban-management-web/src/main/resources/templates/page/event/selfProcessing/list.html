@@ -673,6 +673,8 @@
             $("#eventImg").attr('src', img + e.data.processInstanceId);
             /* 坐标 */
             setPoint(e.data.x, e.data.y);
+            /* 获取按钮 因为在监督员上报的时候不显示重新核实按钮 所以需要在赋值之后调用方法 */
+            getButton(eventId);
         });
     }
 
