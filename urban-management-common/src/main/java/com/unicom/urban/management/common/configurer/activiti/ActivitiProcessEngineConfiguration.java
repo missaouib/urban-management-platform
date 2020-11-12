@@ -47,8 +47,6 @@ public class ActivitiProcessEngineConfiguration {
 
         String fontName = font.getFontName();
 
-        System.out.println("fontName = " + fontName);
-
         processEngineConfiguration.setLabelFontName(fontName);
         processEngineConfiguration.setActivityFontName(fontName);
         processEngineConfiguration.setAnnotationFontName(fontName);
