@@ -408,15 +408,20 @@
             sortName: "updateTime",
             sortOrder: "desc",
             modalName: "用户",
-            onClickRow: function (row) {
+            onClickRow: function (row,index) {
                 layerMap.getSource().clear()
                 console.log("row", row);
                 getEventDetail(row.id);
+                setTimeLimit(row,index)
             },
             columns: [
                 {
                     field: 'index',
                     title: '序号',
+                    formatter : function (value, row, index){
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
                 },
                 {
                     title: '时限',
