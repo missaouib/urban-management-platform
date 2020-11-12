@@ -124,7 +124,6 @@ public class Event extends BaseEntity {
     /**
      * 是否自处理
      */
-    @JoinColumn
     private Boolean doBySelf;
 
 }
