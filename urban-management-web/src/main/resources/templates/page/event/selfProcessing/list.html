@@ -488,6 +488,10 @@
                 {
                     field: 'index',
                     title: '序号',
+                    formatter : function (value, row, index){
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
                 },
                 {
                     title: '处理时限',
@@ -517,14 +521,7 @@
         };
         $.table.init(options);
     }
-    /*
-     * 判断时限  一分钟变红
-      */
-    setTimeout(function () {
-        $(".timeSet").html("")
-        var cryFace = "<img src='../img/0.png' style='width: 100%;height: 100%'></div>";
-        $(".timeSet").append(cryFace)
-    },600000)
+
 
     jQuery.extend(jQuery.validator.messages, {
         required: "必填",

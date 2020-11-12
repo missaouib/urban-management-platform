@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +39,7 @@ public class StatisticsService {
     public Statistics findByEventIdAndEndTimeIsNull(String eventId) {
         return statisticsRepository.findByEvent_IdAndEndTimeIsNull(eventId);
     }
+
     public List<Statistics> findByEventIdToList(String eventId) {
         return statisticsRepository.findAllByEvent_IdOrderByStartTimeDesc(eventId);
     }
@@ -79,11 +78,25 @@ public class StatisticsService {
     }
 
 
-    public List<String> getEventIdByMe(){
+    public List<String> getEventIdByMe() {
         List<Statistics> allByUser_id = statisticsRepository.findAllByUser_IdAndEndTimeIsNotNull(SecurityUtil.getUserId());
         List<String> list = new ArrayList<>();
-        allByUser_id.forEach(a->list.add(a.getEvent().getId()));
-      return list.stream().distinct().collect(Collectors.toList());
+        allByUser_id.forEach(a -> list.add(a.getEvent().getId()));
+        return list.stream().distinct().collect(Collectors.toList());
+    }
+
+    public List<String> getEventIdByHang() {
+        List<Statistics> allByHangIsNot = statisticsRepository.findAllByHang(1);
+        List<String> list = new ArrayList<>();
+        allByHangIsNot.forEach(a -> list.add(a.getEvent().getId()));
+        return list.stream().distinct().collect(Collectors.toList());
+    }
+
+    public List<String> getEventIdByCancel() {
+        List<Statistics> allByHangIsNot = statisticsRepository.findAllByCancel(1);
+        List<String> list = new ArrayList<>();
+        allByHangIsNot.forEach(a -> list.add(a.getEvent().getId()));
+        return list.stream().distinct().collect(Collectors.toList());
     }
 
 }

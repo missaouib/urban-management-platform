@@ -209,10 +209,10 @@ public class SupervisionAcceptanceController {
      */
     @GetMapping("/taskProcessingList")
     public Page<EventVO> taskProcessingList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
-        eventDTO.setTaskName(Arrays.asList(EventConstant.SHIFTLEADER,
+        eventDTO.setTaskName(Arrays.asList(EventConstant.SHIFT_LEADER,
                 EventConstant.DISPATCHER,
-                EventConstant.PROFESSIONALAGENC,
-                EventConstant.CLOSETASK));
+                EventConstant.PROFESSIONAL_AGENCY,
+                EventConstant.CLOSE_TASK));
         return eventService.search(eventDTO, pageable);
     }
     /**

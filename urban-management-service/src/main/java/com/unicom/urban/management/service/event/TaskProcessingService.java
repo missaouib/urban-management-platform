@@ -270,6 +270,45 @@ public class TaskProcessingService {
         }
 
     }
+    /**
+     * 派遣员-挂账审批
+     */
+    private void onAccount(String eventId, String buttonId, StatisticsDTO statisticsDTO) {
+        List<Statistics> statisticsList = statisticsService.findByEventIdToList(eventId);
+        List<Statistics> collect = statisticsList.stream().filter(s -> "专业部门".equals(s.getTaskName())).collect(Collectors.toList());
+        if (collect.size() > 0) {
+            Dept dept = collect.get(0).getDisposeUnit();
+            List<String> users = this.getUsers(dept);
+            this.avtivitiHandle(eventId, users, buttonId);
+            Statistics statistics = this.updateStatistics(statisticsDTO);
+            Event event = eventService.findOne(eventId);
+            Statistics newStatistics = this.initStatistics(event);
+            EventButton eventButton = eventButtonRepository.findById(buttonId).orElse(new EventButton());
+            statistics.setDispatchHuman(SecurityUtil.getUser().castToUser());
+            statistics.setDispatchHumanName(SecurityUtil.getUser().castToUser());
+            RoleDTO roleDTO = new RoleDTO();
+            roleDTO.setId(KvConstant.DISPATCHER_ROLE);
+            statistics.setDispatchHumanRole(roleService.findOne(roleDTO));
+
+            newStatistics.setNeedDispose(1);
+            newStatistics.setToDispose(1);
+            newStatistics.setDisposeUnit(dept);
+            newStatistics.setDisposeUnitName(dept);
+            newStatistics.setStartTime(collect.get(0).getStartTime());
+            if ("通过".equals(eventButton.getButtonText())) {
+                LocalDateTime now = LocalDateTime.now();
+                statistics.setDelayedState(1);
+                statistics.setDelayedDate(now);
+                newStatistics.setDelayedHours(collect.get(0).getDelayedHours());
+            }
+            statisticsService.update(statistics);
+            statisticsService.save(newStatistics);
+        }
+
+    }
+
+
+
 
     /**
      * 专业部门获取人员id列表

@@ -21,8 +21,6 @@ import java.io.InputStream;
 public class ActivitiProcessEngineConfiguration {
 
     private static final String FONT_PATH_WQY = "fonts/Arial Unicode.ttf";
-    private static final String FONT_NAME = "宋体";
-
 
     @Bean
     public ProcessEngineConfiguration processEngineConfiguration(ProcessEngineConfigurationImpl processEngineConfiguration) {

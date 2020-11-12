@@ -471,17 +471,6 @@
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         })
 
-        // //选择监督员
-        // $("#changeMan").click(function () {
-        //     $("#selectUser").stop().slideToggle(300)
-        // });
-        //
-        // $("#selectUser").on("click", ".monitor", function () {
-        //     let monitor = $(this).html()
-        //     $("#userId").val($(this).val())
-        //     $("#monitor_man").html(monitor);
-        //     $("#selectUser").slideUp(300)
-        // });
 
         //惯用语
         $("#alwaysSay").click(function () {
@@ -541,6 +530,10 @@
                 {
                     field: 'index',
                     title: '序号',
+                    formatter : function (value, row, index){
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
                 },
                 {
                     title: '时限',
