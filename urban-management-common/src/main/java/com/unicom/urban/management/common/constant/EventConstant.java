@@ -66,6 +66,8 @@ public class EventConstant {
 
     public static final String CLOSE_TASK = "值班长-结案";
 
+    public static final String RECOVERY = "挂账恢复";
+
     public static final String ACCEPTANCE_CASE_VERIFICATION = "监督员-信息核实";
 
     public static final String ACCEPTANCE_CASE_INSPECT = "监督员-案件核查";
@@ -75,7 +77,7 @@ public class EventConstant {
     public static final String DISPATCHER_DELAYED_APPROVAL = "派遣员-延时审批";
     public static final String DISPATCHER_BACK_OFF_APPROVAL = "派遣员-回退审批";
     public static final String SHIFT_LEADER_TO_VOID_APPROVAL = "值班长-作废审批";
-    public static final String DISPATCHER_ON_ACCOUNT_APPROVAL = "派遣员-挂帐审批";
+    public static final String DISPATCHER_ON_ACCOUNT_APPROVAL = "派遣员-挂账审批";
 
 
 }

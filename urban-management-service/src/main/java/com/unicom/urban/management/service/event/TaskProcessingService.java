@@ -76,12 +76,14 @@ public class TaskProcessingService {
             this.closeTask(eventId, statisticsDTO);
         } else if ("派遣员-延时审批".equals(statistics.getTaskName())) {
             this.delayedApproval(eventId, buttonId, statisticsDTO);
-        }else if("派遣员-回退审批".equals(statistics.getTaskName())){
-            this.backOff(eventId,eventButton,statisticsDTO);
-        }else if("值班长-作废审批".equals(statistics.getTaskName())){
-            this.toVoid(eventId,eventButton,statisticsDTO);
-        }else if("派遣员-挂账审批".equals(statistics.getTaskName())){
-            this.backOff(eventId,eventButton,statisticsDTO);
+        } else if ("派遣员-回退审批".equals(statistics.getTaskName())) {
+            this.backOff(eventId, eventButton, statisticsDTO);
+        } else if ("值班长-作废审批".equals(statistics.getTaskName())) {
+            this.toVoid(eventId, eventButton, statisticsDTO);
+        } else if ("派遣员-挂账审批".equals(statistics.getTaskName())) {
+            this.onAccount(eventId, eventButton, statisticsDTO);
+        } else if ("挂账恢复".equals(statistics.getTaskName())) {
+            this.recovery(eventId, eventButton, statisticsDTO);
         }
 
     }
@@ -117,12 +119,12 @@ public class TaskProcessingService {
         Event event = eventService.findOne(eventId);
         Statistics newStatistics = this.initStatistics(event);
         if ("立案".equals(buttonId.getButtonText())) {
-            newStatistics.setSort(statistics.getSort()+1);
+            newStatistics.setSort(statistics.getSort() + 1);
             newStatistics.setToDispatch(1);
             newStatistics.setNeedDispatch(1);
         } else {
             //回退 受理员
-            newStatistics.setSort(statistics.getSort()+1);
+            newStatistics.setSort(statistics.getSort() + 1);
             newStatistics.setToOperate(1);
             newStatistics.setBackOff(1);
             newStatistics.setBackOffDate(LocalDateTime.now());
@@ -191,7 +193,7 @@ public class TaskProcessingService {
         dept.setId(statisticsDTO.getDeptId());
         newStatistics.setDisposeUnit(dept);
         newStatistics.setDisposeUnitName(dept);
-        newStatistics.setSort(statistics.getSort()+1);
+        newStatistics.setSort(statistics.getSort() + 1);
         statisticsService.save(newStatistics);
     }
 
@@ -214,7 +216,7 @@ public class TaskProcessingService {
                 statistics.setNeedDispose(0);
                 statistics.setToDispose(0);
                 statistics.setDelayedHours(statisticsDTO.getDelayedTime());
-                newStatistics.setSort(statistics.getSort()+1);
+                newStatistics.setSort(statistics.getSort() + 1);
                 statisticsService.update(statistics);
                 statisticsService.save(newStatistics);
                 break;
@@ -225,10 +227,9 @@ public class TaskProcessingService {
                 newStatistics = this.initStatistics(event);
                 newStatistics.setBackOff(1);
                 newStatistics.setBackOffDate(LocalDateTime.now());
-                newStatistics.setSort(statistics.getSort()+1);
+                newStatistics.setSort(statistics.getSort() + 1);
                 statisticsService.update(statistics);
                 statisticsService.save(newStatistics);
-
                 break;
             case "申请挂账":
                 userId.addAll(this.getUsers(KvConstant.DISPATCHER_ROLE));
@@ -237,7 +238,7 @@ public class TaskProcessingService {
                 newStatistics = this.initStatistics(event);
                 newStatistics.setHang(1);
                 newStatistics.setHangDate(LocalDateTime.now());
-                newStatistics.setSort(statistics.getSort()+1);
+                newStatistics.setSort(statistics.getSort() + 1);
                 statisticsService.update(statistics);
                 statisticsService.save(newStatistics);
                 break;
@@ -255,13 +256,39 @@ public class TaskProcessingService {
                 statistics.setInTimeDispose(num[0] == 1 ? 1 : 0);
                 statistics.setOvertimeDispose(num[0] == 1 ? 0 : 1);
                 statistics.setSts(String.valueOf(num[1]));
-                newStatistics.setSort(statistics.getSort()+1);
+                newStatistics.setSort(statistics.getSort() + 1);
                 statisticsService.update(statistics);
                 statisticsService.save(newStatistics);
                 break;
         }
 
 
+    }
+
+    /**
+     * 挂账恢复
+     */
+    private void recovery(String eventId, EventButton buttonId, StatisticsDTO statisticsDTO) {
+        Event one = eventService.findOne(eventId);
+        List<Statistics> statisticsList = statisticsService.findByEventIdToList(eventId);
+        List<Statistics> collect = statisticsList.stream().filter(s -> "专业部门".equals(s.getTaskName())).collect(Collectors.toList());
+        if (collect.size() > 0) {
+            Dept dept = collect.get(0).getDisposeUnit();
+            List<String> users = this.getUsers(dept);
+            this.avtivitiHandle(eventId, users, buttonId.getId());
+
+            Statistics statistics = this.updateStatistics(statisticsDTO);
+            statistics.setSpecialEndTime(LocalDateTime.now());
+            statisticsService.update(statistics);
+
+            Statistics newStatistics = this.copy(collect.get(0));
+            Task task = activitiService.getTaskByProcessInstanceId(one.getProcessInstanceId());
+            newStatistics.setTaskId(task.getId());
+            newStatistics.setSpecialStartTime(statistics.getSpecialStartTime());
+            newStatistics.setSpecialEndTime(statistics.getSpecialEndTime());
+            newStatistics.setSort(statistics.getSort() + 1);
+            statisticsService.save(newStatistics);
+        }
     }
 
     /**
@@ -295,7 +322,7 @@ public class TaskProcessingService {
                 statistics.setDelayedDate(now);
                 newStatistics.setDelayedHours(collect.get(0).getDelayedHours());
             }
-            newStatistics.setSort(statistics.getSort()+1);
+            newStatistics.setSort(statistics.getSort() + 1);
             statisticsService.update(statistics);
             statisticsService.save(newStatistics);
         }
@@ -318,16 +345,18 @@ public class TaskProcessingService {
             statisticsService.update(statistics);
 
             Statistics newStatistics;
-
+            Event event = eventService.findOne(eventId);
             if ("通过".equals(buttonId.getButtonText())) {
-                Event event = eventService.findOne(eventId);
-                 newStatistics = this.initStatistics(event);
+                newStatistics = this.initStatistics(event);
                 newStatistics.setHang(1);
                 newStatistics.setHangDate(LocalDateTime.now());
                 newStatistics.setSpecialStartTime(LocalDateTime.now());
-            }else{
+                newStatistics.setSort(statistics.getSort() + 1);
+            } else {
                 newStatistics = this.copy(oldStatistics);
-                newStatistics.setSort(statistics.getSort()+1);
+                Task task = activitiService.getTaskByProcessInstanceId(event.getProcessInstanceId());
+                newStatistics.setTaskId(task.getId());
+                newStatistics.setSort(statistics.getSort() + 1);
 
             }
 
@@ -335,14 +364,14 @@ public class TaskProcessingService {
         }
 
     }
-    private Statistics copy(Statistics oldStatistics){
-        Statistics newStatistics= new Statistics();
+
+    private Statistics copy(Statistics oldStatistics) {
+        Statistics newStatistics = new Statistics();
         newStatistics.setNeedDispose(oldStatistics.getNeedDispose());
         newStatistics.setToDispose(oldStatistics.getToDispose());
         newStatistics.setDisposeUnit(oldStatistics.getDisposeUnit());
         newStatistics.setDisposeUnitName(oldStatistics.getDisposeUnitName());
         newStatistics.setEvent(oldStatistics.getEvent());
-        newStatistics.setTaskId(oldStatistics.getTaskId());
         newStatistics.setTaskName(oldStatistics.getTaskName());
         newStatistics.setStartTime(oldStatistics.getStartTime());
         newStatistics.setDeptTimeLimit(oldStatistics.getDeptTimeLimit());
@@ -365,13 +394,13 @@ public class TaskProcessingService {
             Statistics newStatistics = this.initStatistics(event);
             newStatistics.setToDispatch(1);
             newStatistics.setNeedDispatch(1);
-            newStatistics.setSort(statistics.getSort()+1);
+            newStatistics.setSort(statistics.getSort() + 1);
             statisticsService.save(newStatistics);
-        }else if("不通过".equals(buttonId.getButtonText())){
+        } else if ("不通过".equals(buttonId.getButtonText())) {
 
             List<Statistics> statisticsList = statisticsService.findByEventIdToList(eventId);
             List<Statistics> collect = statisticsList.stream().filter(s -> "专业部门".equals(s.getTaskName())).collect(Collectors.toList());
-            if(collect.size()>0){
+            if (collect.size() > 0) {
 
                 Statistics oldStatistics = collect.get(0);
                 List<String> users = this.getUsers(oldStatistics.getDisposeUnit());
@@ -381,28 +410,20 @@ public class TaskProcessingService {
                 Statistics statistics = this.updateStatistics(statisticsDTO);
                 statisticsService.update(statistics);
 
-                Statistics newStatistics = new Statistics();
-                newStatistics.setNeedDispose(oldStatistics.getNeedDispose());
-                newStatistics.setToDispose(oldStatistics.getToDispose());
-                newStatistics.setDisposeUnit(oldStatistics.getDisposeUnit());
-                newStatistics.setDisposeUnitName(oldStatistics.getDisposeUnitName());
-                newStatistics.setEvent(oldStatistics.getEvent());
-                newStatistics.setTaskId(oldStatistics.getTaskId());
-                newStatistics.setTaskName(oldStatistics.getTaskName());
-                newStatistics.setStartTime(oldStatistics.getStartTime());
-                newStatistics.setDeptTimeLimit(oldStatistics.getDeptTimeLimit());
-                newStatistics.setProcessTimeLimit(oldStatistics.getProcessTimeLimit());
-                newStatistics.setSort(statistics.getSort()+1);
-                statisticsService.save(newStatistics);
-            }else{
-                List<String> users = this.getUsers(KvConstant.SHIFT_LEADER_ROLE);
-                this.avtivitiHandle(eventId, users, buttonId.getId());
-                Statistics statistics = this.updateStatistics(statisticsDTO);
-                statisticsService.update(statistics);
-                Statistics newStatistics = this.initStatistics(event);
-                newStatistics.setSort(statistics.getSort()+1);
+                Statistics newStatistics = this.copy(oldStatistics);
+                Task task = activitiService.getTaskByProcessInstanceId(event.getProcessInstanceId());
+                newStatistics.setTaskId(task.getId());
+                newStatistics.setSort(statistics.getSort() + 1);
                 statisticsService.save(newStatistics);
             }
+        } else {
+            List<String> users = this.getUsers(KvConstant.SHIFT_LEADER_ROLE);
+            this.avtivitiHandle(eventId, users, buttonId.getId());
+            Statistics statistics = this.updateStatistics(statisticsDTO);
+            statisticsService.update(statistics);
+            Statistics newStatistics = this.initStatistics(event);
+            newStatistics.setSort(statistics.getSort() + 1);
+            statisticsService.save(newStatistics);
         }
     }
 
@@ -411,10 +432,8 @@ public class TaskProcessingService {
      */
     private void toVoid(String eventId, EventButton buttonId, StatisticsDTO statisticsDTO) {
         Event one = eventService.findOne(eventId);
-        if("通过".equals(buttonId.getButtonText())){
-            this.avtivitiHandle(eventId, null, null);
-
-
+        if ("通过".equals(buttonId.getButtonText())) {
+            this.avtivitiHandle(eventId, null, buttonId.getId());
             KV kv = new KV();
             kv.setId(KvConstant.TO_VOID);
             one.setEventSate(kv);
@@ -424,7 +443,7 @@ public class TaskProcessingService {
             statistics.setCancel(1);
             statistics.setCancelDate(LocalDateTime.now());
             statisticsService.update(statistics);
-        }else{
+        } else {
             List<String> users = this.getUsers(KvConstant.DISPATCHER_ROLE);
             this.avtivitiHandle(eventId, users, buttonId.getId());
             Statistics statistics = this.updateStatistics(statisticsDTO);
@@ -433,14 +452,14 @@ public class TaskProcessingService {
             Statistics newStatistics = this.initStatistics(one);
             newStatistics.setBackOff(1);
             newStatistics.setBackOffDate(LocalDateTime.now());
-            newStatistics.setSort(statistics.getSort()+1);
+            newStatistics.setSort(statistics.getSort() + 1);
             statisticsService.save(newStatistics);
         }
     }
 
-        /**
-         * 专业部门获取人员id列表
-         */
+    /**
+     * 专业部门获取人员id列表
+     */
     private List<String> getUsers(Dept dept) {
         List<String> users = new ArrayList<>();
         for (User user : dept.getUserList()) {
