@@ -124,6 +124,7 @@ public class WorkService {
         activitiService.complete(statistics1.getTaskId(), Collections.singletonList(userId), button);
         Statistics statistics = initStatistics(eventId);
         statistics.setStartTime(statistics1.getEndTime());
+        statistics.setSort(statistics1.getSort() + 1);
         if ("14".equals(button)) {
             statistics.setNeedCheck(1);
         }
