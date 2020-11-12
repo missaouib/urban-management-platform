@@ -79,7 +79,9 @@ public class TaskProcessingService {
         }else if("派遣员-回退审批".equals(statistics.getTaskName())){
             this.backOff(eventId,eventButton,statisticsDTO);
         }else if("值班长-作废审批".equals(statistics.getTaskName())){
-
+            this.toVoid(eventId,eventButton,statisticsDTO);
+        }else if("派遣员-挂账审批".equals(statistics.getTaskName())){
+            this.backOff(eventId,eventButton,statisticsDTO);
         }
 
     }
@@ -303,38 +305,49 @@ public class TaskProcessingService {
     /**
      * 派遣员-挂账审批
      */
-    private void onAccount(String eventId, String buttonId, StatisticsDTO statisticsDTO) {
+    private void onAccount(String eventId, EventButton buttonId, StatisticsDTO statisticsDTO) {
         List<Statistics> statisticsList = statisticsService.findByEventIdToList(eventId);
         List<Statistics> collect = statisticsList.stream().filter(s -> "专业部门".equals(s.getTaskName())).collect(Collectors.toList());
         if (collect.size() > 0) {
+            Statistics oldStatistics = collect.get(0);
             Dept dept = collect.get(0).getDisposeUnit();
             List<String> users = this.getUsers(dept);
-            this.avtivitiHandle(eventId, users, buttonId);
-            Statistics statistics = this.updateStatistics(statisticsDTO);
-            Event event = eventService.findOne(eventId);
-            Statistics newStatistics = this.initStatistics(event);
-            EventButton eventButton = eventButtonRepository.findById(buttonId).orElse(new EventButton());
-            statistics.setDispatchHuman(SecurityUtil.getUser().castToUser());
-            statistics.setDispatchHumanName(SecurityUtil.getUser().castToUser());
-            RoleDTO roleDTO = new RoleDTO();
-            roleDTO.setId(KvConstant.DISPATCHER_ROLE);
-            statistics.setDispatchHumanRole(roleService.findOne(roleDTO));
+            this.avtivitiHandle(eventId, users, buttonId.getId());
 
-            newStatistics.setNeedDispose(1);
-            newStatistics.setToDispose(1);
-            newStatistics.setDisposeUnit(dept);
-            newStatistics.setDisposeUnitName(dept);
-            newStatistics.setStartTime(collect.get(0).getStartTime());
-            if ("通过".equals(eventButton.getButtonText())) {
-                LocalDateTime now = LocalDateTime.now();
-                statistics.setDelayedState(1);
-                statistics.setDelayedDate(now);
-                newStatistics.setDelayedHours(collect.get(0).getDelayedHours());
-            }
+            Statistics statistics = this.updateStatistics(statisticsDTO);
             statisticsService.update(statistics);
+
+            Statistics newStatistics;
+
+            if ("通过".equals(buttonId.getButtonText())) {
+                Event event = eventService.findOne(eventId);
+                 newStatistics = this.initStatistics(event);
+                newStatistics.setHang(1);
+                newStatistics.setHangDate(LocalDateTime.now());
+                newStatistics.setSpecialStartTime(LocalDateTime.now());
+            }else{
+                newStatistics = this.copy(oldStatistics);
+                newStatistics.setSort(statistics.getSort()+1);
+
+            }
+
             statisticsService.save(newStatistics);
         }
 
+    }
+    private Statistics copy(Statistics oldStatistics){
+        Statistics newStatistics= new Statistics();
+        newStatistics.setNeedDispose(oldStatistics.getNeedDispose());
+        newStatistics.setToDispose(oldStatistics.getToDispose());
+        newStatistics.setDisposeUnit(oldStatistics.getDisposeUnit());
+        newStatistics.setDisposeUnitName(oldStatistics.getDisposeUnitName());
+        newStatistics.setEvent(oldStatistics.getEvent());
+        newStatistics.setTaskId(oldStatistics.getTaskId());
+        newStatistics.setTaskName(oldStatistics.getTaskName());
+        newStatistics.setStartTime(oldStatistics.getStartTime());
+        newStatistics.setDeptTimeLimit(oldStatistics.getDeptTimeLimit());
+        newStatistics.setProcessTimeLimit(oldStatistics.getProcessTimeLimit());
+        return newStatistics;
     }
 
     /**
