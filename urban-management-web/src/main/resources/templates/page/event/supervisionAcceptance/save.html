@@ -24,7 +24,7 @@
                                 <td><span></span>案卷号</td>
                                 <td>
                                     <input type="text" readonly="readonly" th:name="eventCode" id="eventCode"
-                                           class="find_input" disabled />
+                                           class="find_input"/>
                                 </td>
                                 <td><span></span>问题类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
@@ -101,7 +101,7 @@
 
                                 <td><span></span>部件编码</td>
                                 <td>
-                                    <input type="text" disabled>
+                                    <input type="text">
                                 </td>
                                 <td><span></span>案件类型</td>
                                 <td>
@@ -151,7 +151,7 @@
                             <tr>
                                 <td><span></span>事件来源</td>
                                 <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required disabled>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required>
                                         <option th:each="as:${eventSource}" th:value="${as.id}"
                                                 th:text="${as.value}"></option>
                                     </select>
@@ -582,16 +582,18 @@
     $(function () {
         $.ajaxUtil.get(componentTypeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
-        })
+        });
+
         $("#input-id").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+            maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
             showCaption: false,                                 // 是否显示标题
@@ -606,14 +608,17 @@
         }).on('fileselect', function (event, numFiles, label) {
             console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
         }).on("filebatchselected", function (event, files) {
-            // $(this).fileinput("upload");
+            $(this).fileinput("upload");
         }).on("fileuploaded", function (event, data) {
-            console.log('fileuploaded()      ');
 
-            if (data.response.code === web_status.FAIL) {
-                console.log("上传文件失败");
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                console.log("data", data);
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
             }
-            console.log(data);
         }).on('filedeleted', function (event, key) {
             console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
             console.log('Key = ' + key);
