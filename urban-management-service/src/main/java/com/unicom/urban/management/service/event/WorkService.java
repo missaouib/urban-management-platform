@@ -97,34 +97,33 @@ public class WorkService {
      * @param button  按钮
      */
     public void completeByReceptionist(String eventId, String userId, String button) {
-        Statistics s = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-        s.setEndTime(LocalDateTime.now());
+        Statistics statistics1 = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        statistics1.setEndTime(LocalDateTime.now());
         if ("13".equals(button) || "16".equals(button)) {
-            activitiService.claim(s.getTaskId(), SecurityUtil.getUserId());
+            activitiService.claim(statistics1.getTaskId(), SecurityUtil.getUserId());
         }
-        Map<String, Object> map = judgeOverTimeIsOrNot(s.getStartTime(), s.getEndTime(), s.getProcessTimeLimit().getTimeLimit());
+        Map<String, Object> map = judgeOverTimeIsOrNot(statistics1.getStartTime(), statistics1.getEndTime(), statistics1.getProcessTimeLimit().getTimeLimit());
         if ("14".equals(button)) {
-            s.setSendCheckHuman(1);
-            s.setInTimeCheck((Integer) map.get("time"));
-            s.setSts(map.get("sts").toString());
+            statistics1.setSendCheckHuman(1);
+            statistics1.setInTimeCheck((Integer) map.get("time"));
+            statistics1.setSts(map.get("sts").toString());
         }
         if ("11".equals(button)) {
             /* 发核实 */
-            s.setSendVerify(1);
+            statistics1.setSendVerify(1);
             /* 按时发核实 */
-            s.setInTimeSendVerify((Integer) map.get("time"));
-            s.setSts(map.get("sts").toString());
-            s.setSendVerifyHumanName(SecurityUtil.getUser().castToUser());
-            s.setSendVerifyHuman(SecurityUtil.getUser().castToUser());
+            statistics1.setInTimeSendVerify((Integer) map.get("time"));
+            statistics1.setSts(map.get("sts").toString());
+            statistics1.setSendVerifyHumanName(SecurityUtil.getUser().castToUser());
+            statistics1.setSendVerifyHuman(SecurityUtil.getUser().castToUser());
             /*TODO 获取当前登陆人角色*/
-            s.setUser(SecurityUtil.getUser().castToUser());
+            statistics1.setUser(SecurityUtil.getUser().castToUser());
         }
-        setOpinionsAndEventFileList(s, s.getOpinions(), s.getEventFileList());
-        s.setSort(s.getSort() + 1);
-        statisticsService.update(s);
-        activitiService.complete(s.getTaskId(), Collections.singletonList(userId), button);
+        setOpinionsAndEventFileList(statistics1, statistics1.getOpinions(), statistics1.getEventFileList());
+        statisticsService.update(statistics1);
+        activitiService.complete(statistics1.getTaskId(), Collections.singletonList(userId), button);
         Statistics statistics = initStatistics(eventId);
-        statistics.setStartTime(s.getEndTime());
+        statistics.setStartTime(statistics1.getEndTime());
         if ("14".equals(button)) {
             statistics.setNeedCheck(1);
         }
@@ -198,7 +197,6 @@ public class WorkService {
         /* 待受理 */
         statistics.setToOperate(0);
         setOpinionsAndEventFileList(statistics, statistics.getOpinions(), statistics.getEventFileList());
-        statistics.setSort(statistics.getSort() + 1);
         statisticsService.update(statistics);
         /*TODO 查询所有值班长角色的人*/
         activitiService.complete(statistics.getTaskId(), Collections.singletonList("1"), button);
@@ -240,7 +238,6 @@ public class WorkService {
         statistics.setInTimeOperate((Integer) map.get("time"));
         statistics.setSts(map.get("sts").toString());
         setOpinionsAndEventFileList(statistics, statistics.getOpinions(), statistics.getEventFileList());
-        statistics.setSort(statistics.getSort() + 1);
         statisticsService.update(statistics);
         activitiService.complete(statistics.getTaskId(), null, button);
     }
