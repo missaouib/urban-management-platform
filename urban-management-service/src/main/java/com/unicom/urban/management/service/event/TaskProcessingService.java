@@ -361,8 +361,7 @@ public class TaskProcessingService {
             if(collect.size()>0){
 
                 Statistics oldStatistics = collect.get(0);
-                List<String> users = new ArrayList<>();
-                oldStatistics.getDisposeUnit().getUserList().forEach(u->users.add(u.getId()));
+                List<String> users = this.getUsers(oldStatistics.getDisposeUnit());
                 this.avtivitiHandle(eventId, users, buttonId.getId());
 
 
