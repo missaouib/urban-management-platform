@@ -4,6 +4,7 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.vo.EventOneVO;
@@ -67,6 +68,8 @@ public class SupervisionAcceptanceController {
         model.addObject("recType", kvService.findByTableNameAndFieldName("event", "recType"));
         //所在区域
         model.addObject("gridList", gridService.findAllByParentIsNull());
+        //当前登陆人
+        model.addObject("localUserName", SecurityUtil.getUsername());
         EventVO eventVO = new EventVO();
         eventVO.setCreateTime(LocalDateTime.now());
         model.addObject("eventVO", eventVO);

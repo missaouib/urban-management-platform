@@ -158,9 +158,17 @@
                                 </td>
                                 <td><span></span>上报人</td>
                                 <td>
-                                    <input type="text" readonly value="超级管理员">
-                                    <input type="hidden" value="" id="selectDown">
-                                    <input value="1" type="hidden" name="userId">
+                                    <input type="text" readonly th:value="${localUserName}">
+                                    <!--<input type="hidden" value="" id="selectDown">
+                                    <input value="1" type="hidden" name="userId">-->
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>核实监督员</td>
+                                <td>
+                                    <select class="form-control" id="userId" name="userId" required>
+                                        <option value="1">超级管理员</option>
+                                    </select>
                                 </td>
                             </tr>
                             <tr>
@@ -207,9 +215,9 @@
                                     data-target="#modal-sm">相似案件
                             </button>
                             <button class="but_save" type="submit" onclick="submitHandler1()"
-                                    style="margin-right: 10px">保存(登记)
+                                    style="margin-right: 10px">保存
                             </button>
-                            <button class="but_save" type="submit" onclick="submitHandler2()">核实(登记)</button>
+                            <button class="but_save" type="submit" onclick="submitHandler2()">核实</button>
                             <button class="but_close" onclick="Cancel()">返回</button>
                         </div>
                     </div>
