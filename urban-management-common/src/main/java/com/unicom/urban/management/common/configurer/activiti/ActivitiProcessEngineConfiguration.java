@@ -20,7 +20,7 @@ import java.io.InputStream;
 @Configuration
 public class ActivitiProcessEngineConfiguration {
 
-    private static final String FONT_PATH_WQY = "fonts/SIMSUN.TTC";
+    private static final String FONT_PATH_WQY = "fonts/Arial Unicode.ttf";
     private static final String FONT_NAME = "宋体";
 
 
@@ -46,6 +46,9 @@ public class ActivitiProcessEngineConfiguration {
         GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
 
         String fontName = font.getFontName();
+
+        System.out.println("fontName = " + fontName);
+
         processEngineConfiguration.setLabelFontName(fontName);
         processEngineConfiguration.setActivityFontName(fontName);
         processEngineConfiguration.setAnnotationFontName(fontName);

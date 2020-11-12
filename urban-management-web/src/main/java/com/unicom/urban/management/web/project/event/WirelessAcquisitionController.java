@@ -135,7 +135,26 @@ public class WirelessAcquisitionController {
         eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_CASE_INSPECT));
         return eventService.search(eventDTO, pageable);
     }
-
+    /**
+     * 无效案件
+     * @param eventDTO
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/caseInvalidList")
+    public Page<EventVO> caseInvalidList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        return eventService.search(eventDTO, pageable);
+    }
+    /**
+     * 案件历史
+     * @param eventDTO
+     * @param pageable
+     * @return
+     */
+    @GetMapping("/caseHistoryList")
+    public Page<EventVO> caseHistoryList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        return eventService.search(eventDTO, pageable);
+    }
 
     /**
      * 获取立案区域

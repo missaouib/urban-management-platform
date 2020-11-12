@@ -2,10 +2,14 @@ package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.dao.event.EventButtonRepository;
+import com.unicom.urban.management.pojo.dto.RoleDTO;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
+import com.unicom.urban.management.service.dept.DeptService;
 import com.unicom.urban.management.service.processtimelimit.ProcessTimeLimitService;
+import com.unicom.urban.management.service.role.RoleService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +18,10 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 任务处理
@@ -32,27 +38,35 @@ public class TaskProcessingService {
     @Autowired
     private StatisticsService statisticsService;
     @Autowired
-    private WorkService workService;
-    @Autowired
     private EventService eventService;
     @Autowired
     private ProcessTimeLimitService processTimeLimitService;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private DeptService deptService;
+    @Autowired
+    private EventButtonRepository eventButtonRepository;
 
 
     /**
      * 任务处理
      */
-    public void handle(String eventId, String roleId, String buttonId, StatisticsDTO statisticsDTO) {
-        //todo 根据角色获取人员id
+    public void handle(String eventId, String buttonId, StatisticsDTO statisticsDTO) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
         if ("值班长-立案".equals(statistics.getTaskName())) {
-            this.shiftLeader(eventId, Collections.singletonList("1"), buttonId, statisticsDTO);
+            this.shiftLeader(eventId, this.getUsers(KvConstant.DISPATCHER_ROLE), buttonId, statisticsDTO);
         } else if ("派遣员-派遣".equals(statistics.getTaskName())) {
-            this.dispatcher(eventId, Collections.singletonList("1"), buttonId, statisticsDTO);
+            Dept dept = deptService.findOne(statisticsDTO.getDeptId());
+            List<String> users = this.getUsers(dept);
+            this.dispatcher(eventId, users, buttonId, statisticsDTO);
         } else if ("专业部门".equals(statistics.getTaskName())) {
-            this.professionalAgenc(eventId, Collections.singletonList("1"), buttonId, statisticsDTO);
+
+            this.professionalAgenc(eventId, buttonId, statisticsDTO);
         } else if ("值班长-结案".equals(statistics.getTaskName())) {
             this.closeTask(eventId, statisticsDTO);
+        } else if ("派遣员-延时审批".equals(statistics.getTaskName())) {
+            this.delayedApproval(eventId, buttonId, statisticsDTO);
         }
 
     }
@@ -74,7 +88,9 @@ public class TaskProcessingService {
         statistics.setToInst(0);
         statistics.setInstHuman(SecurityUtil.getUser().castToUser());
         statistics.setInstHumanName(SecurityUtil.getUser().castToUser());
-        statistics.setInstRole(null);
+        RoleDTO roleDTO = new RoleDTO();
+        roleDTO.setId(KvConstant.SHIFT_LEADER_ROLE);
+        statistics.setInstRole(roleService.findOne(roleDTO));
         if (KvConstant.SUPERVISOR.equals(statistics.getEvent().getEventSource().getId())) {
             statistics.setValidPatrolReport(1);
         } else {
@@ -83,10 +99,18 @@ public class TaskProcessingService {
         statistics.setValidReport(1);
         statisticsService.update(statistics);
 
+        EventButton eventButton = eventButtonRepository.findById(buttonId).orElse(new EventButton());
         Event event = eventService.findOne(eventId);
         Statistics newStatistics = this.initStatistics(event);
-        newStatistics.setToDispatch(1);
-        newStatistics.setNeedDispatch(1);
+        if ("立案".equals(eventButton.getButtonText())) {
+            newStatistics.setToDispatch(1);
+            newStatistics.setNeedDispatch(1);
+        } else {
+            //回退 受理员
+            newStatistics.setToOperate(1);
+            newStatistics.setBackOff(1);
+            newStatistics.setBackOffDate(LocalDateTime.now());
+        }
         statisticsService.save(newStatistics);
     }
 
@@ -114,7 +138,9 @@ public class TaskProcessingService {
         statistics.setToClose(0);
         statistics.setCloseHuman(SecurityUtil.getUser().castToUser());
         statistics.setCloseHumanName(SecurityUtil.getUser().castToUser());
-        statistics.setCloseRole(null);
+        RoleDTO roleDTO = new RoleDTO();
+        roleDTO.setId(KvConstant.SHIFT_LEADER_ROLE);
+        statistics.setCloseRole(roleService.findOne(roleDTO));
         statisticsService.update(statistics);
 
     }
@@ -135,7 +161,9 @@ public class TaskProcessingService {
         statistics.setSts(String.valueOf(ints[1]));
         statistics.setDispatchHuman(SecurityUtil.getUser().castToUser());
         statistics.setDispatchHumanName(SecurityUtil.getUser().castToUser());
-        statistics.setCloseRole(null);
+        RoleDTO roleDTO = new RoleDTO();
+        roleDTO.setId(KvConstant.DISPATCHER_ROLE);
+        statistics.setDispatchHumanRole(roleService.findOne(roleDTO));
         statisticsService.update(statistics);
 
 
@@ -153,24 +181,110 @@ public class TaskProcessingService {
     /**
      * 专业部门 转核查 申请回退
      */
-    private void professionalAgenc(String eventId, List<String> userId, String buttonId, StatisticsDTO statisticsDTO) {
-        this.avtivitiHandle(eventId, userId, buttonId);
+    private void professionalAgenc(String eventId, String buttonId, StatisticsDTO statisticsDTO) {
+
         Statistics statistics = this.updateStatistics(statisticsDTO);
-        statistics.setDispose(1);
-        statistics.setToDispose(0);
-        int[] num = this.betWeenTime(statistics.getStartTime(),
-                statistics.getEndTime(),
-                statistics.getProcessTimeLimit().getTimeType().getId(),
-                statistics.getProcessTimeLimit().getTimeLimit());
-        statistics.setInTimeDispose(num[0] == 1 ? 1 : 0);
-        statistics.setOvertimeDispose(num[0] == 1 ? 0 : 1);
-        statistics.setSts(String.valueOf(num[1]));
+        EventButton eventButton = eventButtonRepository.findById(buttonId).orElse(new EventButton());
+        Event event = eventService.findOne(eventId);
+        List<String> userId = new ArrayList<>();
+        Statistics newStatistics;
+        switch (eventButton.getButtonText()) {
+            case "申请延时":
+                userId.addAll(this.getUsers(KvConstant.DISPATCHER_ROLE));
+                this.avtivitiHandle(eventId, userId, buttonId);
+                newStatistics = this.initStatistics(event);
+                statisticsService.save(newStatistics);
+                statistics.setNeedDispose(0);
+                statistics.setToDispose(0);
+                statistics.setDelayedHours(statisticsDTO.getDelayedTime());
+                break;
+            case "申请回退":
+                userId.addAll(this.getUsers(KvConstant.DISPATCHER_ROLE));
+                this.avtivitiHandle(eventId, userId, buttonId);
+                newStatistics = this.initStatistics(event);
+                newStatistics.setBackOff(1);
+                newStatistics.setBackOffDate(LocalDateTime.now());
+                statisticsService.save(newStatistics);
+                break;
+            case "申请挂账":
+                userId.addAll(this.getUsers(KvConstant.DISPATCHER_ROLE));
+                this.avtivitiHandle(eventId, userId, buttonId);
+                newStatistics = this.initStatistics(event);
+                newStatistics.setHang(1);
+                newStatistics.setHangDate(LocalDateTime.now());
+                statisticsService.save(newStatistics);
+                break;
+            case "转核查":
+                userId.addAll(this.getUsers(KvConstant.RECEPTIONIST_ROLE));
+                this.avtivitiHandle(eventId, userId, buttonId);
+                newStatistics = this.initStatistics(event);
+                statistics.setDispose(1);
+                statistics.setToDispose(0);
+                int[] num = this.betWeenTime(statistics.getStartTime(),
+                        statistics.getEndTime(),
+                        statistics.getProcessTimeLimit().getTimeType().getId(),
+                        statistics.getProcessTimeLimit().getTimeLimit());
+                statistics.setInTimeDispose(num[0] == 1 ? 1 : 0);
+                statistics.setOvertimeDispose(num[0] == 1 ? 0 : 1);
+                statistics.setSts(String.valueOf(num[1]));
+                statisticsService.save(newStatistics);
+                break;
+        }
         statisticsService.update(statistics);
 
+    }
 
-        Event event = eventService.findOne(eventId);
-        Statistics newStatistics = this.initStatistics(event);
-        statisticsService.save(newStatistics);
+    /**
+     * 派遣员-延时审批
+     */
+    private void delayedApproval(String eventId, String buttonId, StatisticsDTO statisticsDTO) {
+        List<Statistics> statisticsList = statisticsService.findByEventIdToList(eventId);
+        List<Statistics> collect = statisticsList.stream().filter(s -> "专业部门".equals(s.getTaskName())).collect(Collectors.toList());
+        if (collect.size() > 0) {
+            Dept dept = collect.get(0).getDisposeUnit();
+            List<String> users = this.getUsers(dept);
+            this.avtivitiHandle(eventId, users, buttonId);
+            Statistics statistics = this.updateStatistics(statisticsDTO);
+            Event event = eventService.findOne(eventId);
+            Statistics newStatistics = this.initStatistics(event);
+            EventButton eventButton = eventButtonRepository.findById(buttonId).orElse(new EventButton());
+            statistics.setDispatchHuman(SecurityUtil.getUser().castToUser());
+            statistics.setDispatchHumanName(SecurityUtil.getUser().castToUser());
+            RoleDTO roleDTO = new RoleDTO();
+            roleDTO.setId(KvConstant.DISPATCHER_ROLE);
+            statistics.setDispatchHumanRole(roleService.findOne(roleDTO));
+
+            newStatistics.setNeedDispose(1);
+            newStatistics.setToDispose(1);
+            newStatistics.setDisposeUnit(dept);
+            newStatistics.setDisposeUnitName(dept);
+            newStatistics.setStartTime(collect.get(0).getStartTime());
+            if ("通过".equals(eventButton.getButtonText())) {
+                LocalDateTime now = LocalDateTime.now();
+                statistics.setDelayedState(1);
+                statistics.setDelayedDate(now);
+                newStatistics.setDelayedHours(collect.get(0).getDelayedHours());
+            }
+            statisticsService.update(statistics);
+            statisticsService.save(newStatistics);
+        }
+
+    }
+
+    /**
+     * 专业部门获取人员id列表
+     */
+    private List<String> getUsers(Dept dept) {
+        List<String> users = new ArrayList<>();
+        for (User user : dept.getUserList()) {
+            for (Role role : user.getRoleList()) {
+                if (KvConstant.PROFESSIONAL_DEPARTMENTS_ROLE.equals(role.getId())) {
+                    users.add(user.getId());
+                    break;
+                }
+            }
+        }
+        return users;
     }
 
     /**
@@ -227,5 +341,14 @@ public class TaskProcessingService {
         return i;
     }
 
+
+    private List<String> getUsers(String roleId) {
+        RoleDTO roleDTO = new RoleDTO();
+        roleDTO.setId(roleId);
+        Role one = roleService.findOne(roleDTO);
+        List<String> user = new ArrayList<>();
+        one.getUserList().forEach(u -> user.add(u.getId()));
+        return user;
+    }
 
 }

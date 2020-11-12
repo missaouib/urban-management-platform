@@ -33,6 +33,8 @@ public class StatisticsDTO {
 
     private String buttonText;
 
+    private Integer delayedTime;
+
 
 
 }

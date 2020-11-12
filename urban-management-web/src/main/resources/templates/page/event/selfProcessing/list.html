@@ -479,42 +479,10 @@
             sortName: "updateTime",
             sortOrder: "desc",
             modalName: "用户",
-            onClickRow: function (row) {
+            onClickRow: function (row,index) {
                 layerMap.getSource().clear()
                 checkRow(row.id);
-                console.log(row.startTime)
-                var date=new Date();
-                var year=date.getFullYear();
-                var month=date.getMonth()+1;
-                var day=date.getDate();
-                var hh=date.getHours();
-                var mm=date.getMinutes();
-                var ss=date.getSeconds();
-                if (mm < 10){
-                    var MM = "0"+mm;
-                }else {
-                    MM = mm
-                }
-                if (hh < 10){
-                    var HH = "0"+hh;
-                }else {
-                    HH = hh
-                }
-                if (ss < 10){
-                    var SS = "0"+ss;
-                }else {
-                    SS = ss
-                }
-
-                var nowTime=year+"-"+month+"-"+day+" "+HH+":"+MM+":"+SS;
-                console.log(nowTime)
-                var nowTimes= new Date(nowTime);
-                var staTime = new Date(row.startTime)
-                var lessNum = nowTimes - staTime;
-                console.log(lessNum)
-                // if (nowTime > row.startTime){
-                //     alert(nowTime+"：当前时间大于 该行数据的startTime"+row.startTime)
-                // }
+                setTimeLimit(row,index)
             },
             columns: [
                 {
@@ -551,8 +519,6 @@
     }
     /*
      * 判断时限  一分钟变红
-     *  /*
-     * 判断时限  一分钟变红
       */
     setTimeout(function () {
         $(".timeSet").html("")
@@ -582,7 +548,6 @@
     });
 
     function checkRow(eventId) {
-        getButton(eventId);
         getTimeAxis(eventId);
         getEventDetail(eventId);
     }
@@ -600,6 +565,9 @@
                 }
             }
             $("#eventButton").html(buttonHtml);
+            if ($("#eventSourceStr").val() === "监督员上报") {
+                $("#13").remove();
+            }
         });
     }
 

@@ -104,4 +104,30 @@ public class KvConstant {
      */
     public static final String KV_LAYER_GRID = "09122643-501a-4fb7-82b0-d271dbd3d326";
 
+
+    /**
+     * 专业部门
+     */
+    public static final String PROFESSIONAL_DEPARTMENTS_ROLE = "0d90a8c6-30ce-4d03-ad5a-1691706fc9db";
+
+    /**
+     * 监督员
+     */
+    public static final String SUPERVISOR_ROLE = "2d62b759-50ff-4b72-863f-9129cd2d9c4d";
+
+    /**
+     * 值班长
+     */
+    public static final String SHIFT_LEADER_ROLE = "322ae62d-d951-4050-a19f-2bc295bd64b1";
+
+    /**
+     * 派遣员
+     */
+    public static final String DISPATCHER_ROLE = "79bbf2f0-ab61-4bc5-a2f1-cf1ec701662b";
+
+    /**
+     * 受理员
+     */
+    public static final String RECEPTIONIST_ROLE = "dffa2027-a9e3-4ff6-8e52-6a764b4575db";
+
 }

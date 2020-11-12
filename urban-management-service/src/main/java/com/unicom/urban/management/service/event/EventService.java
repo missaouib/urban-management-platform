@@ -211,9 +211,11 @@ public class EventService {
      * @param eventDTO 事件参数
      */
 public void saveTemp(EventDTO eventDTO){
+    //监督员上报kv写死
+    eventDTO.setEventSourceId("d2c15cc9-91bd-4435-86f8-f9c8d351610b");
     Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
     event.setUser(SecurityUtil.getUser().castToUser());
-    Event save = eventRepository.save(event);
+    eventRepository.save(event);
 }
     /**
      * 保存事件
@@ -428,6 +430,8 @@ public void saveTemp(EventDTO eventDTO){
      * @param eventDTO
      */
     public void saveAutoReport(EventDTO eventDTO) {
+        //监督员上报kv写死
+        eventDTO.setEventSourceId("d2c15cc9-91bd-4435-86f8-f9c8d351610b");
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         Event saved = eventRepository.save(event);
@@ -438,6 +442,8 @@ public void saveTemp(EventDTO eventDTO){
      * 案件采集监督员上报
      */
     public void saveReport(EventDTO eventDTO) {
+        //监督员上报kv写死
+        eventDTO.setEventSourceId("d2c15cc9-91bd-4435-86f8-f9c8d351610b");
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         event.setSts(null);

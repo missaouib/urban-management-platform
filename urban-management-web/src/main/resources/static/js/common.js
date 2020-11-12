@@ -1,4 +1,50 @@
 
+/*
+* 时限笑脸判断
+**/
+function setTimeLimit(row,index){
+	var date=new Date();
+	var year=date.getFullYear();
+	var month=date.getMonth()+1;
+	var day=date.getDate();
+	var hh=date.getHours();
+	var mm=date.getMinutes();
+	var ss=date.getSeconds();
+	if (mm < 10){
+		var MM = "0"+mm;
+	}else {
+		MM = mm
+	}
+	if (hh < 10){
+		var HH = "0"+hh;
+	}else {
+		HH = hh
+	}
+	if (ss < 10){
+		var SS = "0"+ss;
+	}else {
+		SS = ss
+	}
+	var nowTime=year+"-"+month+"-"+day+" "+HH+":"+MM+":"+SS;
+	var nowTimes= new Date(nowTime);
+	var staTime = new Date(row.startTime)
+	var lessNum = nowTimes - staTime;
+	if (row.timeType = "分钟"){
+		var num = lessNum/60000
+	}else if(row.timeType = "天"){
+
+	}
+	let indexNum = index[0];
+	if (num > row.timeLimit){
+		var sunArray = indexNum.childNodes
+		var lastTime = sunArray[1].firstChild
+		lastTime.innerHTML = "<img src='../img/0.png' style='width: 100%;height: 100%'></div>"
+	}else if(num < (row.timeLimit)/0.8) {
+		var sunArray = indexNum.childNodes
+		var lastTime = sunArray[1].firstChild
+		lastTime.innerHTML = "<img src='../img/1.png' style='width: 100%;height: 100%'></div>"
+	}
+}
 //重写alert
 // window.alert = function(msg, callback){
 // 	parent.layer.alert(msg, function(index){
