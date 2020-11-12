@@ -127,8 +127,11 @@
                                     </select>
                                 </td>
                                 <td><span></span>上报人</td>
-                                <input type="hidden" name="userId" th:value="${eventOneVO.userId}"/>
-                                <td style="text-align: left"><div class="username"  th:value="${eventOneVO.userName}" id="userName"></div></td>
+                                <td>
+                                    <input type="hidden" name="userId" th:value="${eventOneVO.userId}"/>
+                                    <input type="hidden" th:value="${eventOneVO.userName}" id="userName">
+                                </td>
+<!--                                <td style="text-align: left"><div class="username"  th:value="${eventOneVO.userName}" id="userName"></div></td>-->
                                 <td><span></span>是否自处理</td>
                                 <td style="text-align: left">
                                     <input  id="_doBySelf" name="doBySelf"  placeholder="" class="" type="checkbox" style="width: 30px">
