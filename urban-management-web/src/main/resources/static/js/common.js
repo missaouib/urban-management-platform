@@ -892,7 +892,7 @@ var table = {
 			report: function(id) {
 				table.set();
 				$.modal.confirm("确定上报该条信息吗？", function() {
-					var url = $.common.isEmpty(id) ? table.options.reportUrl : table.options.removeUrl.replace("{id}", id);
+					var url = $.common.isEmpty(id) ? table.options.reportUrl : table.options.reportUrl.replace("{id}", id);
 					if(table.options.type == table_type.bootstrapTreeTable) {
 						$.operate.get(url);
 					} else {
