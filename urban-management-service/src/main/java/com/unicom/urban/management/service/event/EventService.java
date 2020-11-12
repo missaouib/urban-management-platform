@@ -386,17 +386,23 @@ public void saveTemp(EventDTO eventDTO){
     public EventOneVO findOneToVo(String eventId) {
         Event one = eventRepository.findById(eventId).orElse(new Event());
         EventOneVO eventOneVO = EventMapper.INSTANCE.eventToEventOneVO(one);
+        eventOneVO.setEventTypeId(one.getEventType().getParent().getParent().getId());
         eventOneVO.setEventTypeStr(one.getEventType().getParent().getParent().getName() + "-" + one.getEventType().getParent().getName() + "-" + one.getEventType().getName());
+        eventOneVO.setTimeLimitId(one.getTimeLimit().getId());
         eventOneVO.setTimeLimitStr(one.getTimeLimit().getTimeLimit() + one.getTimeLimit().getTimeType().getValue());
         eventOneVO.setCommunity(one.getGrid().getParent().getGridName());
         eventOneVO.setStreet(one.getGrid().getParent().getGridName());
         eventOneVO.setEventRegion(one.getGrid().getParent().getParent().getParent().getGridName());
         eventOneVO.setRegionStr(one.getCondition().getParent().getRegion());
+        eventOneVO.setConditionId(one.getCondition().getId());
         eventOneVO.setConditionValue(one.getCondition().getConditionValue());
+        eventOneVO.setGridId(one.getGrid().getId());
         eventOneVO.setGirdStr(one.getGrid().getGridName());
         eventOneVO.setLevel(one.getTimeLimit().getLevel().getValue());
         eventOneVO.setEventButtonVOS(this.getButton(eventId));
+        eventOneVO.setRecTypeId(one.getRecType().getId());
         eventOneVO.setRecTypeStr(one.getRecType().getValue());
+        eventOneVO.setUserId(Optional.ofNullable(one.getUser()).map(User::getId).orElse(""));
         eventOneVO.setUserName(Optional.ofNullable(one.getUser()).map(User::getName).orElse(""));
         Optional<Petitioner> petitioner = Optional.ofNullable(one.getPetitioner());
         eventOneVO.setPetitionerName(petitioner.map(Petitioner::getName).orElse(""));
@@ -404,7 +410,9 @@ public void saveTemp(EventDTO eventDTO){
         eventOneVO.setPetitionerSex(petitioner.map(Petitioner::getSex).orElse(""));
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         eventOneVO.setCDate(df.format(one.getCreateTime()));
+        eventOneVO.setEventSourceId(one.getEventSource().getId());
         eventOneVO.setEventSourceStr(one.getEventSource().getValue());
+//        eventOneVO.setDoBySelf(one.getDoBySelf());
         List<Map<String,Object>> fileList = new ArrayList<>();
         one.getEventFileList().forEach(f->{
             Map<String,Object> map = new HashMap<>();
@@ -417,6 +425,7 @@ public void saveTemp(EventDTO eventDTO){
         Optional<Dept> dept = Optional.ofNullable(one.getEventType().getDept());
         eventOneVO.setDeptId(dept.map(Dept::getId).orElse(""));
         eventOneVO.setDeptName(dept.map(Dept::getDeptName).orElse(""));
+
         return eventOneVO;
     }
 

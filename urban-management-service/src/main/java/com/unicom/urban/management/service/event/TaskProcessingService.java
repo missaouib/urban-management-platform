@@ -55,7 +55,15 @@ public class TaskProcessingService {
     public void handle(String eventId, String buttonId, StatisticsDTO statisticsDTO) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
         if ("值班长-立案".equals(statistics.getTaskName())) {
-            this.shiftLeader(eventId, this.getUsers(KvConstant.DISPATCHER_ROLE), buttonId, statisticsDTO);
+            EventButton eventButton = eventButtonRepository.findById(buttonId).orElse(new EventButton());
+            List<String> users;
+            if ("立案".equals(eventButton.getButtonText())) {
+                users = this.getUsers(KvConstant.DISPATCHER_ROLE);
+            } else {
+                users = this.getUsers(KvConstant.RECEPTIONIST_ROLE);
+            }
+
+            this.shiftLeader(eventId, users, eventButton, statisticsDTO);
         } else if ("派遣员-派遣".equals(statistics.getTaskName())) {
             Dept dept = deptService.findOne(statisticsDTO.getDeptId());
             List<String> users = this.getUsers(dept);
@@ -74,8 +82,8 @@ public class TaskProcessingService {
     /**
      * 值班长 立案 回退
      */
-    private void shiftLeader(String eventId, List<String> userId, String buttonId, StatisticsDTO statisticsDTO) {
-        this.avtivitiHandle(eventId, userId, buttonId);
+    private void shiftLeader(String eventId, List<String> userId, EventButton buttonId, StatisticsDTO statisticsDTO) {
+        this.avtivitiHandle(eventId, userId, buttonId.getId());
         Statistics statistics = this.updateStatistics(statisticsDTO);
         statistics.setEventFileList(statisticsDTO.getEventFileList());
         statistics.setInst(1);
@@ -99,10 +107,9 @@ public class TaskProcessingService {
         statistics.setValidReport(1);
         statisticsService.update(statistics);
 
-        EventButton eventButton = eventButtonRepository.findById(buttonId).orElse(new EventButton());
         Event event = eventService.findOne(eventId);
         Statistics newStatistics = this.initStatistics(event);
-        if ("立案".equals(eventButton.getButtonText())) {
+        if ("立案".equals(buttonId.getButtonText())) {
             newStatistics.setToDispatch(1);
             newStatistics.setNeedDispatch(1);
         } else {
@@ -183,7 +190,7 @@ public class TaskProcessingService {
      */
     private void professionalAgenc(String eventId, String buttonId, StatisticsDTO statisticsDTO) {
 
-        Statistics statistics = this.updateStatistics(statisticsDTO);
+        Statistics statistics;
         EventButton eventButton = eventButtonRepository.findById(buttonId).orElse(new EventButton());
         Event event = eventService.findOne(eventId);
         List<String> userId = new ArrayList<>();
@@ -193,31 +200,39 @@ public class TaskProcessingService {
                 userId.addAll(this.getUsers(KvConstant.DISPATCHER_ROLE));
                 this.avtivitiHandle(eventId, userId, buttonId);
                 newStatistics = this.initStatistics(event);
-                statisticsService.save(newStatistics);
+                statistics = this.updateStatistics(statisticsDTO);
                 statistics.setNeedDispose(0);
                 statistics.setToDispose(0);
                 statistics.setDelayedHours(statisticsDTO.getDelayedTime());
+                statisticsService.update(statistics);
+                statisticsService.save(newStatistics);
                 break;
             case "申请回退":
                 userId.addAll(this.getUsers(KvConstant.DISPATCHER_ROLE));
                 this.avtivitiHandle(eventId, userId, buttonId);
+                statistics = this.updateStatistics(statisticsDTO);
                 newStatistics = this.initStatistics(event);
                 newStatistics.setBackOff(1);
                 newStatistics.setBackOffDate(LocalDateTime.now());
+                statisticsService.update(statistics);
                 statisticsService.save(newStatistics);
+
                 break;
             case "申请挂账":
                 userId.addAll(this.getUsers(KvConstant.DISPATCHER_ROLE));
                 this.avtivitiHandle(eventId, userId, buttonId);
+                statistics = this.updateStatistics(statisticsDTO);
                 newStatistics = this.initStatistics(event);
                 newStatistics.setHang(1);
                 newStatistics.setHangDate(LocalDateTime.now());
+                statisticsService.update(statistics);
                 statisticsService.save(newStatistics);
                 break;
             case "转核查":
                 userId.addAll(this.getUsers(KvConstant.RECEPTIONIST_ROLE));
                 this.avtivitiHandle(eventId, userId, buttonId);
                 newStatistics = this.initStatistics(event);
+                statistics = this.updateStatistics(statisticsDTO);
                 statistics.setDispose(1);
                 statistics.setToDispose(0);
                 int[] num = this.betWeenTime(statistics.getStartTime(),
@@ -227,10 +242,11 @@ public class TaskProcessingService {
                 statistics.setInTimeDispose(num[0] == 1 ? 1 : 0);
                 statistics.setOvertimeDispose(num[0] == 1 ? 0 : 1);
                 statistics.setSts(String.valueOf(num[1]));
+                statisticsService.update(statistics);
                 statisticsService.save(newStatistics);
                 break;
         }
-        statisticsService.update(statistics);
+
 
     }
 
@@ -270,6 +286,7 @@ public class TaskProcessingService {
         }
 
     }
+
     /**
      * 派遣员-挂账审批
      */
@@ -307,7 +324,35 @@ public class TaskProcessingService {
 
     }
 
+    /**
+     * 派遣员-回退审批
+     */
+    private void backOff(String eventId, EventButton buttonId, StatisticsDTO statisticsDTO) {
+        if ("通过".equals(buttonId.getButtonText())) {
+            List<String> users = this.getUsers(KvConstant.DISPATCHER_ROLE);
+            this.avtivitiHandle(eventId, users, buttonId.getId());
+            Statistics statistics = this.updateStatistics(statisticsDTO);
+            statistics.setBackOff(1);
+            statistics.setBackOffDate(LocalDateTime.now());
+            statisticsService.update(statistics);
+            Event event = eventService.findOne(eventId);
+            Statistics newStatistics = this.initStatistics(event);
+            newStatistics.setToDispatch(1);
+            newStatistics.setNeedDispatch(1);
+            statisticsService.save(newStatistics);
+        }else if("不通过".equals(buttonId.getButtonText())){
+            List<Statistics> statisticsList = statisticsService.findByEventIdToList(eventId);
+            List<Statistics> collect = statisticsList.stream().filter(s -> "专业部门".equals(s.getTaskName())).collect(Collectors.toList());
+            if(collect.size()>0){
 
+            }
+        }
+
+
+
+
+
+    }
 
 
     /**
