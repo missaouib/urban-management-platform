@@ -1516,9 +1516,9 @@ label.error {
 .leftContent .bootstrap-table .table td,.leftContent .bootstrap-table .table th,.leftBox .bootstrap-table .table td,.leftBox .bootstrap-table .table th{
     text-align: left!important;
 }
-.doit{
-    display: flex;justify-content: space-between;
+.leftContent .bootstrap-table .table .doit ,.leftContent .bootstrap-table .table .doit,.leftBox .bootstrap-table .table .doit,.leftBox .bootstrap-table .table .doit{
+    text-align: center!important;
 }
-.doit a{
-    flex: 1;
+.doit{
+   text-align: center!important;
 }
