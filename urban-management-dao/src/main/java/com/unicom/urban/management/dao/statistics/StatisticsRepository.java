@@ -26,4 +26,20 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
 
     List<Statistics> findAllByUser_IdAndEndTimeIsNotNull(String userId);
 
+    /**
+     * 已挂账列表
+     *
+     * @param hang 1
+     * @return list
+     */
+    List<Statistics> findAllByHang(Integer hang);
+
+    /**
+     * 已挂账列表
+     *
+     * @param cancel 1
+     * @return list
+     */
+    List<Statistics> findAllByCancel(Integer cancel);
+
 }

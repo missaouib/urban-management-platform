@@ -107,8 +107,28 @@ public class EventService {
                 list.add(in);
             }
 
-            if(StringUtils.isNotBlank(eventDTO.getMe())){
+            if (StringUtils.isNotBlank(eventDTO.getMe())) {
                 List<String> eventIdByMe = statisticsService.getEventIdByMe();
+                CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
+                if (eventIdByMe.size() == 0) {
+                    eventIdByMe = Collections.singletonList("");
+                }
+                eventIdByMe.forEach(in::value);
+                list.add(in);
+            }
+
+            if (StringUtils.isNotBlank(eventDTO.getHang())) {
+                List<String> eventIdByMe = statisticsService.getEventIdByHang();
+                CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
+                if (eventIdByMe.size() == 0) {
+                    eventIdByMe = Collections.singletonList("");
+                }
+                eventIdByMe.forEach(in::value);
+                list.add(in);
+            }
+
+            if (StringUtils.isNotBlank(eventDTO.getCancel())) {
+                List<String> eventIdByMe = statisticsService.getEventIdByCancel();
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
                 if (eventIdByMe.size() == 0) {
                     eventIdByMe = Collections.singletonList("");

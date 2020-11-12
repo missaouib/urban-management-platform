@@ -456,7 +456,7 @@
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
-    let searchUrl = /*[[@{/event/selfProcessingList}]]*/ "/event/selfProcessingList";
+    let searchUrl = /*[[@{/event/onAccountList}]]*/ "/event/onAccountList";
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
     let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
@@ -566,10 +566,6 @@
                 for (let i = 0; i < button.length; i++) {
                     buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
                 }
-            }
-            $("#eventButton").html(buttonHtml);
-            if ($("#eventSourceStr").val() === "监督员上报") {
-                $("#13").remove();
             }
         });
     }

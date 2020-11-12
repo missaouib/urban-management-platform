@@ -89,10 +89,22 @@ public class EventDTO {
     private Boolean doBySelf;
 
 
-
     private String close;
 
+    /**
+     * 已办列表
+     */
     private String me;
+
+    /**
+     * 挂账
+     */
+    private String hang;
+
+    /**
+     * 作废
+     */
+    private String cancel;
 
 
 }

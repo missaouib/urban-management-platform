@@ -58,19 +58,24 @@ public class EventConstant {
 
     public static final String ACCEPTANCE = "受理员";
 
-    public static final String SHIFTLEADER = "值班长-立案";
+    public static final String SHIFT_LEADER = "值班长-立案";
 
     public static final String DISPATCHER = "派遣员-派遣";
 
-    public static final String PROFESSIONALAGENC = "专业部门";
+    public static final String PROFESSIONAL_AGENCY = "专业部门";
 
-    public static final String CLOSETASK = "值班长-结案";
+    public static final String CLOSE_TASK = "值班长-结案";
 
     public static final String ACCEPTANCE_CASE_VERIFICATION = "监督员-信息核实";
 
     public static final String ACCEPTANCE_CASE_INSPECT = "监督员-案件核查";
 
     public static final String SELF_PROCESSING_AUDIT = "自处理审核";
+
+    public static final String DISPATCHER_DELAYED_APPROVAL = "派遣员-延时审批";
+    public static final String DISPATCHER_BACK_OFF_APPROVAL = "派遣员-回退审批";
+    public static final String SHIFT_LEADER_TO_VOID_APPROVAL = "值班长-作废审批";
+    public static final String DISPATCHER_ON_ACCOUNT_APPROVAL = "派遣员-挂帐审批";
 
 
 }
