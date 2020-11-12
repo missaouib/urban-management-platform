@@ -23,7 +23,7 @@
                             <tr>
                                 <td><span>*</span>案卷号</td>
                                 <td>
-                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" th:value="${eventOneVO.eventCode}" class="find_input" disabled />
+                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" th:value="${eventOneVO.eventCode}" class="find_input" />
                                 </td>
                                 <td><span>*</span>问题类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
@@ -43,13 +43,13 @@
                                 <td><span>*</span>立案区域</td>
                                 <td>
                                     <select id="eventCondition" onchange="getEventCondition()" required>
-                                        <option th:text="${eventOneVO.regionStr}" ></option>
+                                        <option th:each="as:${eventCondition}" th:value="${as.id}" th:text="${as.region}"></option>
                                     </select>
                                 </td>
                                 <td><span>*</span>立案条件</td>
                                 <td>
                                     <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
-                                        <option th:text="${eventOneVO.conditionValue}" ></option>
+                                        <option th:each="as:${eventTerm}" th:value="${as.id}" th:text="${as.conditionValue}"></option>
                                     </select>
                                 </td>
                             </tr>
@@ -94,17 +94,17 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span>*</span>所属区域</td>
+                                <td><span>*</span>所在区域</td>
                                 <td>
                                     <select class="form-control" id="grid1" onchange="getStreetList()" required>
-                                        <option th:text="${eventOneVO.eventRegion}" ></option>
+                                        <option th:text="${eventOneVO.eventRegion}"></option>
                                         <option th:each="as:${region}" th:value="${as.id}" th:text="${as.value}" ></option>
                                     </select>
                                 </td>
                                 <td><span>*</span>所属街道</td>
                                 <td>
                                     <select class="form-control" id="grid2" onchange="getCommunityList()" required>
-                                        <option th:text="${eventOneVO.street}" ></option>
+                                        <option th:text="${eventOneVO.street}"></option>
                                         <option th:each="as:${region}" th:value="${as.id}" th:text="${as.value}" ></option>
                                     </select>
                                 </td>
@@ -113,20 +113,25 @@
                                 <td><span>*</span>所属社区</td>
                                 <td>
                                     <select class="form-control" id="grid3" onchange="getGridList()" required>
-                                        <option th:text="${eventOneVO.community}" ></option>
+                                        <option th:text="${eventOneVO.community}"></option>
+                                        <option th:each="as:${region}" th:value="${as.id}" th:text="${as.value}" ></option>
                                     </select>
                                 </td>
                                 <td><span>*</span>单元网格</td>
                                 <td>
                                     <select  th:name="gridId"  id="grid4" >
-                                        <option th:text="${eventOneVO.girdStr}" ></option>
+                                        <option th:text="${eventOneVO.girdStr}"></option>
+                                        <option th:each="as:${region}" th:value="${as.id}" th:text="${as.value}" ></option>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span>*</span>事件来源</td>
                                 <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId" th:value="${eventOneVO.eventSourceStr}" required>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId"
+                                            th:field="*{eventOneVO.eventSourceStr}" required>
+                                        <option th:each="as:${eventSource}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
                                     </select>
                                 </td>
                                 <td><span></span>上报人</td>
@@ -145,8 +150,7 @@
                             </tr>
                             <tr>
                                 <td><span>*</span>问题描述</td>
-                                <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
-                                <td colspan = "8"><textarea id="problemescription" th:name="represent" th:value="${eventOneVO.represent}" required></textarea></td>
+                                <td colspan = "8"><textarea id="problemescription" th:name="represent"  required>${eventOneVO.represent}</textarea></td>
                             </tr>
                             </tbody>
                         </table>
@@ -538,6 +542,8 @@
         })*/
     }
     $(function () {
+        var represent = [[${eventOneVO.represent}]];
+        $("#represent").text(represent);
         getGridPublishUrl()
 
         let eventOneVO = [[${eventOneVO}]];

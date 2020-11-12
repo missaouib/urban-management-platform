@@ -19,34 +19,64 @@
                     <table class="table">
                         <tbody>
                         <tr>
-                            <td>问题描述<span></span></td>
-                            <td>
-                                <input type="text" class="datepicker" readonly="readonly">
-                            </td>
-                            <td>问题类型<span></span></td>
-                            <td>
-                                <input id="eventType" name="eventType" placeholder="请选择问题类型" class="" type="text"
-                                       maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>所属网格<span></span></td>
-                            <td>
-                                <select id="gridKvId" name="kv" required>
-                                    <option value="">请选择</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                </select>
-                            </td>
-                            <td>问题来源<span></span></td>
+                            <td>当前状态<span></span></td>
                             <td>
                                 <select name="kv" required>
                                     <option value="">请选择</option>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
+                                </select>
+                            </td>
+                            <td>问题描述<span></span></td>
+                            <td>
+                                <input type="text" class="datepicker" name="represent">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>所在网格<span></span></td>
+                            <td>
+                                <select class="form-control" id="grid1" name="grid" onchange="getStreetList()" required>
+                                    <option value="">--请选择--</option>
+                                    <option th:each="as:${gridList}" th:value="${as.id}"
+                                            th:text="${as.gridName}"></option>
+                                </select>
+                            </td>
+                            <td>事件来源<span></span></td>
+                            <td>
+                                <select class="form-control" id="eventSource" name="eventSourceId" required>
+                                    <option value="">--请选择--</option>
+                                    <option th:each="as:${eventSource}" th:value="${as.id}"
+                                            th:text="${as.value}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>问题类型<span></span></td>
+                            <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
+                                <input type="hidden" readonly="readonly" id="eventTypeId" name="eventTypeId"
+                                       class="find_input"/>
+                                <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                    +
+                                </button>
+                            </td>
+                            <td>立案区域<span></span></td>
+                            <td>
+                                <select id="eventCondition" name="eventCondition" onchange="getEventCondition()"
+                                        required>
+                                    <option value="">--请选择--</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>立案条件<span></span></td>
+                            <td>
+                                <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
+                                    <option value="">--请选择--</option>
+                                </select>
+                            </td>
+                            <td>计时等级<span></span></td>
+                            <td>
+                                <select id="timeType" name="timeType" required>
+                                    <option value="">--请选择--</option>
                                 </select>
                             </td>
                         </tr>
@@ -317,6 +347,82 @@
     <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
     <script type="text/javascript" th:inline="javascript">
+        function selectEventTypeTree() {
+            var treeId = $("#treeId").val();
+            var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+            var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+            var options = {
+                title: '选择事件类型',
+                width: "380",
+                url: url,
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmit(index, layero) {
+            var body = layer.getChildFrame('body', index);
+            $("#eventTypeId").val(body.find('#treeId').val());
+            $("#typeStr").val(body.find('#treeName').val());
+            let eventTypeId = $("#eventTypeId").val();
+            //获取立案区域
+            findEventConditionByEventType(eventTypeId)
+            layer.close(index);
+        }
+
+        let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+
+        /**
+         * 获取立案区域
+         */
+        function findEventConditionByEventType(eventTypeId) {
+            let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
+            $.ajaxUtil.get(url, function (e) {
+                let option = "<option value=''>--请选择--</option>";
+                if (e.code === "0") {
+                    $(e.data).each(function (index, value) {
+                        option += "<option value='" + value.id + "'>" + value.region + "</option>"
+                    });
+                    $("#eventCondition").html(option);
+                }
+            });
+        }
+
+        /**
+         * 立案条件
+         */
+        function getEventCondition() {
+            let eventConditionId = $("#eventCondition").val();
+            let url = "/event/getEventCondition/?conditionId=" + eventConditionId;
+            $.ajaxUtil.get(url, function (e) {
+                $("#eventTerm").empty();
+                let option = "<option value=''>--请选择--</option>";
+                if (e.code === "0") {
+                    $(e.data).each(function (index, value) {
+                        option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
+                    });
+                }
+                $("#eventTerm").html(option);
+            });
+        }
+
+        /**
+         * 获取立案时限分类
+         */
+        function getTimeTypeList() {
+            let eventTerm = $("#eventTerm").val();
+            let url = "/event/findDeptTimeLimitByCondition/?conditionId=" + eventTerm;
+            $.ajaxUtil.get(url, function (e) {
+                $("#timeType").empty();
+                let option = "<option value=''>--请选择--</option>";
+                if (e.code === "0") {
+                    $(e.data).each(function (index, value) {
+                        option += "<option value='" + value.id + "'>" + value.level + "</option>"
+                    });
+                }
+                $("#timeType").html(option);
+            });
+        }
         $(function () {
             queryUserList();
             $(".tabTitle span").click(function () {

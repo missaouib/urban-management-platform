@@ -23,7 +23,7 @@
                             <tr>
                                 <td><span></span>案卷号</td>
                                 <td>
-                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input" disabled/>
+                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input" />
                                 </td>
                                 <td><span></span>问题类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
@@ -121,7 +121,7 @@
                             <tr>
                                 <td><span></span>事件来源</td>
                                 <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required disabled>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required>
                                         <option th:each="as:${eventSource}" th:value="${as.id}"
                                                 th:text="${as.value}"></option>
                                     </select>
@@ -427,7 +427,7 @@
     }
 
     /**
-     * 获取立案时限
+     * 获取计时等级
      */
     function getDeptTimeLimitList() {
         let deptTimeLimitId = $("#timeType").val();

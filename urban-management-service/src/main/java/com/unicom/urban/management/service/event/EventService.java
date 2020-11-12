@@ -460,4 +460,14 @@ public void saveTemp(EventDTO eventDTO){
         Event saved = eventRepository.save(event);
         workService.superviseReporting(saved.getId());
     }
+
+    /**
+     * 获取全部立案区域和立案条件
+     * @return
+     */
+    public List<EventCondition> findEventConditionAll(){
+        return eventConditionRepository.findAll();
+    }
+
+
 }

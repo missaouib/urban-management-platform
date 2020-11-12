@@ -59,19 +59,39 @@ public class WirelessAcquisitionController {
     }
     @GetMapping("/toCaseHistoryList")
     public ModelAndView toCaseHistoryList() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseHistory/list");
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseHistory/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
     }
     @GetMapping("/toCaseInspectList")
     public ModelAndView toCaseInspectList() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseInspect/list");
+        ModelAndView modelAndView =  new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseInspect/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
     }
     @GetMapping("/toCaseInvalidList")
     public ModelAndView toCaseInvalidList() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseInvalid/list");
+        ModelAndView modelAndView =  new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseInvalid/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
     }
     @GetMapping("/toCaseVerifyList")
     public ModelAndView toCaseVerifyList() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseVerify/list");
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseVerify/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
     }
 
     @GetMapping("/toWirelessAcquisitionSave")
@@ -79,13 +99,13 @@ public class WirelessAcquisitionController {
         ModelAndView model = new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/save");
         //计时等级
         model.addObject("level", kvService.findByTableNameAndFieldName("deptTimeLimit","level"));
-        //所属区域
+        //所在区域
         model.addObject("region", kvService.findByTableNameAndFieldName("event","region"));
         //问题来源
         model.addObject("eventSource", kvService.findByTableNameAndFieldName("event","eventSource"));
         //案件类型
         model.addObject("recType", kvService.findByTableNameAndFieldName("event","recType"));
-        //所在区域
+        //所属社区
         model.addObject("gridList",gridService.findAllByParentIsNull());
         return model;
     }
@@ -94,16 +114,21 @@ public class WirelessAcquisitionController {
     public ModelAndView toWirelessAcquisitionListUpdate(@PathVariable String id) {
         ModelAndView model = new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/update");
         EventOneVO vo= eventService.findOneToVo(id);
+        Event event = eventService.findOne(id);
         model.addObject("eventOneVO",vo);
-        //案件等级
+        //立案区域
+        model.addObject("eventCondition",eventService.findEventConditionByEventType(event.getEventType().getId()));
+        //立案条件
+        model.addObject("eventTerm",eventService.findEventConditionByEventType(event.getCondition().getId()));
+        //计时等级
         model.addObject("level", kvService.findByTableNameAndFieldName("deptTimeLimit","level"));
-        //所属区域
+        //所在区域
         model.addObject("region", kvService.findByTableNameAndFieldName("event","region"));
-        //问题来源
+        //事件来源
         model.addObject("eventSource", kvService.findByTableNameAndFieldName("event","eventSource"));
         //案件类型
         model.addObject("recType", kvService.findByTableNameAndFieldName("event","recType"));
-        //所在区域
+        //所属社区
         model.addObject("gridList",gridService.findAllByParentIsNull());
         return model;
     }
