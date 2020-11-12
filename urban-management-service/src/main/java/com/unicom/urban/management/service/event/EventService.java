@@ -564,14 +564,5 @@ public class EventService {
         workService.superviseReporting(saved.getId());
     }
 
-    /**
-     * 获取全部立案区域和立案条件
-     *
-     * @return
-     */
-    public List<EventCondition> findEventConditionAll() {
-        return eventConditionRepository.findAll();
-    }
-
 
 }

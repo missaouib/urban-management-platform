@@ -130,7 +130,7 @@
                                 <td style="text-align: left"><div class="username" th:sec:authentication="principal.username"></div></td>
                                 <td><span></span>是否自处理</td>
                                 <td style="text-align: left">
-                                    <input  id="_doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
+                                    <input  id="doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
                                 </td>
                             </tr>
                             <tr>
@@ -164,6 +164,23 @@
                             </div>
 
                         </div>
+                        <div class="send" id="after" style="display:none;">
+                            <div class="sendImg">
+                                <div class="sendText"><span>图片:</span></div>
+                                <div><input id="input-idAfter" type="file"  name="file" multiple="multiple"></div>
+                            </div>
+
+
+                            <div class="sendImg">
+                                <div class="sendText"><span>视频:</span></div>
+                                <div><input id="videoInputAfter" type="file"  name="file" multiple="multiple"></div>
+                            </div>
+                            <div class="sendImg">
+                                <div class="sendText"><span>音频:</span></div>
+                                <div><input id="musicInputAfter" type="file"  name="file" multiple="multiple"></div>
+                            </div>
+
+                        </div>
                     </div>
 
                     <!--                            按钮-->
@@ -174,7 +191,6 @@
                         <div class="r_right but_p girdBtnGroup">
 <!--                            <button class="but_save" type="submit" onclick="reportHandler()" style="margin-right: 10px">上报</button>-->
                             <button class="but_save" type="submit" onclick="submitHandler()">保存</button>
-                            <button class="but_close" onclick="Cancel()">返回</button>
                         </div>
                     </div>
                 </div>
@@ -226,7 +242,14 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
-
+    $("#doBySelf").on('click',function (){
+        var after=$("#after");
+        if($("#doBySelf").is(':checked')){
+            after.css("display","block")
+        }else {
+            after.css('display','none')
+        }
+    });
     $(function () {
         $(".name").click(function () {
             $(this).addClass("active").siblings(".name").removeClass("active");
@@ -235,6 +258,7 @@
         $(".enclosure").click(function () {
             alert("附件详情")
         })
+
         ////日期插件
         $('.form_datetime').datetimepicker({
             language: 'zh-CN',
@@ -613,10 +637,6 @@
         })
     })
 
-    function Cancel() {
-        $.modal.closeTab();
-    }
-
     function save() {
         var data = $('#userForm').serialize();
         $.operate.saveTab(url, data);
@@ -758,10 +778,6 @@
         var reg = /^1[34578]\d{9}$/;
         return reg.test(value);
     }, "petitonerPhone error");
-
-    function Cancel() {
-        $.modal.closeLoading();
-    }
 
     function submitHandler1() {
         //先校验
