@@ -134,7 +134,9 @@ public class EventOneVO {
      * 部门名称
      */
     private String deptName;
-
-//    private Boolean doBySelf;
+    /**
+     * 是否自处理
+     */
+    private Boolean doBySelf;
 
 }

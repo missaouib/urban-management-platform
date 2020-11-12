@@ -22,7 +22,9 @@
                             <tbody>
                             <tr>
                                 <td><span>*</span>案卷号</td>
+
                                 <td>
+                                    <input type="hidden" name="id" th:value="${eventOneVO.id}"/>
                                     <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" th:value="${eventOneVO.eventCode}" class="find_input" />
                                 </td>
                                 <td><span>*</span>问题类型</td>

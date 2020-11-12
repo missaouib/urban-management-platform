@@ -385,6 +385,7 @@ public void saveTemp(EventDTO eventDTO){
     public EventOneVO findOneToVo(String eventId) {
         Event one = eventRepository.findById(eventId).orElse(new Event());
         EventOneVO eventOneVO = EventMapper.INSTANCE.eventToEventOneVO(one);
+        eventOneVO.setId(one.getId());
         eventOneVO.setEventTypeId(one.getEventType().getParent().getParent().getId());
         eventOneVO.setEventTypeStr(one.getEventType().getParent().getParent().getName() + "-" + one.getEventType().getParent().getName() + "-" + one.getEventType().getName());
         eventOneVO.setTimeLimitId(one.getTimeLimit().getId());
