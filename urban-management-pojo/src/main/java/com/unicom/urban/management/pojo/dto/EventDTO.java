@@ -54,9 +54,9 @@ public class EventDTO {
      */
     private String eventSourceId;
 
-    private double x;
+    private Double x;
 
-    private double y;
+    private Double y;
 
     private String recTypeId;
 

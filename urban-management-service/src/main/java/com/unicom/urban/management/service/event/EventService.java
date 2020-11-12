@@ -231,8 +231,7 @@ public class EventService {
      * @param eventDTO 事件参数
      */
 public void saveTemp(EventDTO eventDTO){
-    //监督员上报kv写死
-    eventDTO.setEventSourceId("d2c15cc9-91bd-4435-86f8-f9c8d351610b");
+
     Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
     event.setUser(SecurityUtil.getUser().castToUser());
     eventRepository.save(event);
@@ -443,8 +442,53 @@ public void saveTemp(EventDTO eventDTO){
      * @param eventDTO 需要操作的实体
      */
     public Event updateTemp(EventDTO eventDTO) {
-        Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
+
+        Event event = EventDTOtoEvent(eventDTO);
         return eventRepository.saveAndFlush(event);
+    }
+
+    public Event EventDTOtoEvent(EventDTO eventDTO){
+        Event event = eventRepository.getOne(eventDTO.getId());
+        if (eventDTO.getEventCode() != null) {
+            event.setEventCode(eventDTO.getEventCode());
+        }
+        if (eventDTO.getEventTypeId() != null) {
+            event.getEventType().setId(eventDTO.getEventTypeId());
+        }
+        if (eventDTO.getConditionId() != null) {
+            event.getCondition().setId(eventDTO.getConditionId());
+        }
+        if (eventDTO.getTimeLimitId() != null) {
+            event.getTimeLimit().setId(eventDTO.getTimeLimitId());
+        }
+        if (eventDTO.getGridId() != null) {
+            event.getGrid().setId(eventDTO.getGridId());
+        }
+        if (eventDTO.getLocation() != null) {
+            event.setLocation(eventDTO.getLocation());
+        }
+        if (eventDTO.getUserId() != null) {
+            event.getUser().setId(eventDTO.getUserId());
+        }
+        if (eventDTO.getEventSourceId() != null) {
+            event.getEventSource().setId(eventDTO.getEventSourceId());
+        }
+        if (eventDTO.getX() != null) {
+            event.setX(eventDTO.getX());
+        }
+        if (eventDTO.getY() != null) {
+            event.setY(eventDTO.getY());
+        }
+        if (eventDTO.getRecTypeId() != null) {
+            event.getRecType().setId(eventDTO.getRecTypeId());
+        }
+        if (eventDTO.getDoBySelf() != null) {
+            event.setDoBySelf(eventDTO.getDoBySelf());
+        }
+        if (eventDTO.getEventFileList() != null) {
+            event.setEventFileList(eventDTO.getEventFileList());
+        }
+        return event;
     }
     /**
      * 案件采集删除
@@ -460,8 +504,7 @@ public void saveTemp(EventDTO eventDTO){
      */
     public void saveAutoReport(EventDTO eventDTO) {
         //监督员上报kv写死
-        eventDTO.setEventSourceId("d2c15cc9-91bd-4435-86f8-f9c8d351610b");
-        Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
+        Event event = this.EventDTOtoEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         Event saved = eventRepository.save(event);
         workService.saveAutoReport(saved.getId());
@@ -472,8 +515,7 @@ public void saveTemp(EventDTO eventDTO){
      */
     public void saveReport(EventDTO eventDTO) {
         //监督员上报kv写死
-        eventDTO.setEventSourceId("d2c15cc9-91bd-4435-86f8-f9c8d351610b");
-        Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
+        Event event = this.EventDTOtoEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         event.setSts(null);
         Event saved = eventRepository.save(event);

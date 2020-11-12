@@ -47,6 +47,7 @@ public interface EventMapper {
      * @param eventDTO 实体
      * @return event
      */
+    @Mapping(source = "userId", target = "user.id")
     @Mapping(source = "userName", target = "user.name")
     @Mapping(source = "timeLimitId", target = "timeLimit.id")
     @Mapping(source = "eventTypeId", target = "eventType.id")

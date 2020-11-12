@@ -43,13 +43,13 @@
                                 <td><span>*</span>立案区域</td>
                                 <td>
                                     <select id="eventCondition" onchange="getEventCondition()" required>
-                                        <option th:each="as:${eventCondition}" th:value="${as.id}" th:text="${as.region}"></option>
+                                        <option th:text="${eventOneVO.regionStr}"></option>
                                     </select>
                                 </td>
                                 <td><span>*</span>立案条件</td>
                                 <td>
                                     <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
-                                        <option th:each="as:${eventTerm}" th:value="${as.id}" th:text="${as.conditionValue}"></option>
+                                        <option th:value="${eventOneVO.conditionId}" th:text="${eventOneVO.conditionValue}"></option>
                                     </select>
                                 </td>
                             </tr>
@@ -128,8 +128,7 @@
                                 </td>
                                 <td><span></span>上报人</td>
                                 <td>
-                                    <input type="hidden" name="userId" th:value="${eventOneVO.userId}"/>
-                                    <input type="hidden" th:value="${eventOneVO.userName}" id="userName">
+                                    <input type="text" th:value="${eventOneVO.userName}" id="userName">
                                 </td>
 <!--                                <td style="text-align: left"><div class="username"  th:value="${eventOneVO.userName}" id="userName"></div></td>-->
                                 <td><span></span>是否自处理</td>
@@ -146,7 +145,7 @@
                             </tr>
                             <tr>
                                 <td><span>*</span>问题描述</td>
-                                <td colspan = "8"><textarea id="problemescription" th:name="represent"  required>${eventOneVO.represent}</textarea></td>
+                                <td colspan = "8"><textarea id="problemescription" th:name="represent"  th:text="${eventOneVO.represent}" required></textarea></td>
                             </tr>
                             </tbody>
                         </table>
