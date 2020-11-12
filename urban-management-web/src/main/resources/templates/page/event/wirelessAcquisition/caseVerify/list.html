@@ -601,11 +601,7 @@
                 {
                     title: '时限',
                     field: '',
-                    formatter: function (value,row) {
-                        var e = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
-                            "<img src='../img/2.png' style='width: 100%;height: 100%'></div>"
-                        return e;
-                    }
+                    formatter:setTimeLimit
                 },
                 {
                     title: '案件编号',

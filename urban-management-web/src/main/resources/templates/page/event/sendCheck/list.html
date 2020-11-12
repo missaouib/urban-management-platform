@@ -443,16 +443,15 @@
                 {
                     field: 'index',
                     title: '序号',
+                    formatter : function (value, row, index){
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
                 },
                 {
                     title: '时限',
                     field: '',
-                    formatter: function (value,row) {
-                        console.log(row)//表格数据 row. 什么什么 .png
-                        var e = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
-                            "<img src='../img/2.png' style='width: 100%;height: 100%'></div>"
-                        return e;
-                    }
+                    formatter:setTimeLimit
                 },
                 {
                     title: '案件编号',

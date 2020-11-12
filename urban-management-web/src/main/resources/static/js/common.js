@@ -1,8 +1,7 @@
-
 /*
-* 时限笑脸判断
-**/
-function setTimeLimit(row,index){
+* 时限判断
+* */
+function setTimeLimit(row,index) {
 	var date=new Date();
 	var year=date.getFullYear();
 	var month=date.getMonth()+1;
@@ -27,25 +26,26 @@ function setTimeLimit(row,index){
 	}
 	var nowTime=year+"-"+month+"-"+day+" "+HH+":"+MM+":"+SS;
 	var nowTimes= new Date(nowTime);
-	var staTime = new Date(row.startTime)
+	var staTime = new Date(index.startTime)
 	var lessNum = nowTimes - staTime;
-	if (row.timeType = "分钟"){
+	if (index.timeType = "分钟"){
 		var num = lessNum/60000
-	}else if(row.timeType = "天"){
+	}else if(index.timeType = "天"){
 
 	}
-	let indexNum = index[0];
-	if (num > row.timeLimit){
-		var sunArray = indexNum.childNodes
-		var lastTime = sunArray[1].firstChild
-		lastTime.innerHTML = "<img src='../img/0.png' style='width: 100%;height: 100%'></div>"
-	}else if(num < (row.timeLimit)/0.8) {
-		var sunArray = indexNum.childNodes
-		var lastTime = sunArray[1].firstChild
-		lastTime.innerHTML = "<img src='../img/1.png' style='width: 100%;height: 100%'></div>"
+	if (num > index.timeLimit){
+		var demo = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
+			"<img src='../img/0.png' style='width: 100%;height: 100%'></div>";
+	}else if(num < (index.timeLimit)/0.8) {
+		var demo ="<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
+			"<img src='../img/1.png' style='width: 100%;height: 100%'></div>";
+	}else {
+		var demo= "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
+			"<img src='../img/2.png' style='width: 100%;height: 100%'></div>";
 	}
+	return demo;
 }
-//重写alert
+//*重写alert
 // window.alert = function(msg, callback){
 // 	parent.layer.alert(msg, function(index){
 // 		parent.layer.close(index);
@@ -892,7 +892,7 @@ var table = {
 			report: function(id) {
 				table.set();
 				$.modal.confirm("确定上报该条信息吗？", function() {
-					var url = $.common.isEmpty(id) ? table.options.reportUrl : table.options.reportUrl.replace("{id}", id);
+					var url = $.common.isEmpty(id) ? table.options.reportUrl : table.options.removeUrl.replace("{id}", id);
 					if(table.options.type == table_type.bootstrapTreeTable) {
 						$.operate.get(url);
 					} else {

@@ -484,7 +484,6 @@
             onClickRow: function (row, index) {
                 layerMap.getSource().clear()
                 checkRow(row.id);
-                setTimeLimit(row, index)
             },
             columns: [
                 {
@@ -494,10 +493,7 @@
                 {
                     title: '处理时限',
                     field: '',
-                    formatter: function (value, row) {
-                        return "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
-                            "<img src='../img/2.png' style='width: 100%;height: 100%'></div>";
-                    }
+                    formatter:setTimeLimit
                 },
                 {
                     title: '案件编号',
