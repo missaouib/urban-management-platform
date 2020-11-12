@@ -14,12 +14,14 @@ import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.event.spi.EventSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import sun.java2d.pipe.hw.AccelDeviceEventNotifier;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
@@ -389,7 +391,7 @@ public class EventService {
     public EventOneVO findOneToVo(String eventId) {
         Event one = eventRepository.findById(eventId).orElse(new Event());
         EventOneVO eventOneVO = EventMapper.INSTANCE.eventToEventOneVO(one);
-        eventOneVO.setId(one.getId());
+        eventOneVO.setId(eventId);
         eventOneVO.setEventTypeId(one.getEventType().getParent().getParent().getId());
         eventOneVO.setEventTypeStr(one.getEventType().getParent().getParent().getName() + "-" + one.getEventType().getParent().getName() + "-" + one.getEventType().getName());
         eventOneVO.setTimeLimitId(one.getTimeLimit().getId());
@@ -450,34 +452,46 @@ public class EventService {
     public Event updateTemp(EventDTO eventDTO) {
 
         Event event = EventDTOtoEvent(eventDTO);
-        return eventRepository.saveAndFlush(event);
+        return this.update(event);
     }
 
     public Event EventDTOtoEvent(EventDTO eventDTO) {
-        Event event = eventRepository.getOne(eventDTO.getId());
-        if (eventDTO.getEventCode() != null) {
+        Event event = eventRepository.findById(eventDTO.getId()).orElse(new Event());
+        if (StringUtils.isNotBlank(eventDTO.getEventCode())) {
             event.setEventCode(eventDTO.getEventCode());
         }
-        if (eventDTO.getEventTypeId() != null) {
-            event.getEventType().setId(eventDTO.getEventTypeId());
+        if (StringUtils.isNotBlank(eventDTO.getEventTypeId())) {
+            EventType eventType = new EventType();
+            eventType.setId(eventDTO.getEventTypeId());
+            event.setEventType(eventType);
         }
-        if (eventDTO.getConditionId() != null) {
-            event.getCondition().setId(eventDTO.getConditionId());
+        if (StringUtils.isNotBlank(eventDTO.getConditionId())) {
+            EventCondition condition = new EventCondition();
+            condition.setId(eventDTO.getConditionId());
+            event.setCondition(condition);
         }
-        if (eventDTO.getTimeLimitId() != null) {
-            event.getTimeLimit().setId(eventDTO.getTimeLimitId());
+        if (StringUtils.isNotBlank(eventDTO.getTimeLimitId())) {
+            DeptTimeLimit deptTimeLimit = new DeptTimeLimit();
+            deptTimeLimit.setId(eventDTO.getTimeLimitId());
+            event.setTimeLimit(deptTimeLimit);
         }
-        if (eventDTO.getGridId() != null) {
-            event.getGrid().setId(eventDTO.getGridId());
+        if (StringUtils.isNotBlank(eventDTO.getGridId())) {
+            Grid grid = new Grid();
+            grid.setId(eventDTO.getGridId());
+            event.setGrid(grid);
         }
-        if (eventDTO.getLocation() != null) {
+        if (StringUtils.isNotBlank(eventDTO.getLocation())) {
             event.setLocation(eventDTO.getLocation());
         }
-        if (eventDTO.getUserId() != null) {
-            event.getUser().setId(eventDTO.getUserId());
+        if (StringUtils.isNotBlank(eventDTO.getUserId())) {
+            User user = new User();
+            user.setId(eventDTO.getUserId());
+            event.setUser(user);
         }
-        if (eventDTO.getEventSourceId() != null) {
-            event.getEventSource().setId(eventDTO.getEventSourceId());
+        if (StringUtils.isNotBlank(eventDTO.getEventSourceId())) {
+            KV eventSource = new KV();
+            eventSource.setId(eventDTO.getEventSourceId());
+            event.setEventSource(eventSource);
         }
         if (eventDTO.getX() != null) {
             event.setX(eventDTO.getX());
@@ -485,14 +499,22 @@ public class EventService {
         if (eventDTO.getY() != null) {
             event.setY(eventDTO.getY());
         }
-        if (eventDTO.getRecTypeId() != null) {
-            event.getRecType().setId(eventDTO.getRecTypeId());
+        if (StringUtils.isNotBlank(eventDTO.getRecTypeId())) {
+            KV recType = new KV();
+            recType.setId(eventDTO.getRecTypeId());
+            event.setRecType(recType);
         }
         if (eventDTO.getDoBySelf() != null) {
             event.setDoBySelf(eventDTO.getDoBySelf());
         }
         if (eventDTO.getEventFileList() != null) {
             event.setEventFileList(eventDTO.getEventFileList());
+        }
+        if (StringUtils.isNotBlank(eventDTO.getRepresent())){
+            event.setRepresent(eventDTO.getRepresent());
+        }
+        if (StringUtils.isNotBlank(eventDTO.getLocation())){
+            event.setLocation(eventDTO.getLocation());
         }
         return event;
     }
