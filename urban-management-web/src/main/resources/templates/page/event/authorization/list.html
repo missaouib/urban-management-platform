@@ -236,18 +236,8 @@
                                         <input id="y" type="text" class="find_input" readonly="readonly" value="纬度">
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td><span></span>核实监督员</td>
-                                    <td>
-                                        <select name="safeLevel" id="selectUser" onchange="getUserval()">
-                                            <option selected>请选择</option>
-                                            <option value="1">超级管理员</option>
-                                        </select>
-                                        <input type="hidden" id="userId" value="">
-                                        <input type="hidden" id="eventId" value="">
-                                        <input type="hidden" id="button" value="">
-                                    </td>
-                                </tr>
+                                <input type="hidden" id="eventId" value="">
+                                <input type="hidden" id="button" value="">
                                 </tbody>
                             </table>
 
@@ -459,7 +449,7 @@
     let searchUrl = /*[[@{/event/authorizationList}]]*/ "/event/authorizationList";
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
-    let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
+    let processingUrl = /*[[@{/task/processing}]]*/ "/task/processing";
     let claimAndCompleteByReceptionistUrl = /*[[@{/event/claimAndCompleteByReceptionistWithShiftLeader}]]*/ "/event/claimAndCompleteByReceptionistWithShiftLeader";
     let completeByReceptionistWithSendCheckUrl = /*[[@{/event/completeByReceptionistWithSendCheck}]]*/ "/event/completeByReceptionistWithSendCheck";
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
@@ -568,6 +558,7 @@
                     buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
                 }
             }
+            $("#eventButton").html(buttonHtml);
         });
     }
 
@@ -683,19 +674,39 @@
     }
 
     function completeEvent() {
-        let userIdVal = $("#userId").val();
         let buttonVal = $("#button").val();
         let idVal = $("#eventId").val();
-        if (buttonVal == 13 || buttonVal == 14 || buttonVal == 16) {
-            if (userIdVal == null || userIdVal == "") {
-                alert("请选择监督员");
-                return false;
+        let opinions = $("#textIdioms").val();
+        let data = {
+            "eventId": idVal,
+            "buttonId": buttonVal,
+            "opinions": opinions
+        };
+        $.ajax({
+            type: "post",
+            url: processingUrl,
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            beforeSend: function () {
+                $.modal.loading("正在处理中，请稍后...");
+            },
+            success: function (result) {
+                if (result.code === web_status.SUCCESS) {
+                    $.modal.msgSuccess(result.message);
+                    setTimeout("window.location.reload()", 2000);
+                    return;
+                } else if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTreeTable) {
+                    $.modal.msgSuccess(result.message);
+                } else if (result.code === web_status.SUCCESS && $.common.isEmpty(table.options.type)) {
+                    $.modal.msgSuccess(result.message)
+                } else if (result.code === web_status.WARNING) {
+                    $.modal.alertWarning(result.message)
+                } else {
+                    $.modal.alertError(result.message);
+                    return;
+                }
+                $.modal.closeLoading();
             }
-        }
-        $.operate.saveAndReload(completeByReceptionistUrl, {
-            id: idVal,
-            userId: userIdVal,
-            button: buttonVal
         });
 
     }
