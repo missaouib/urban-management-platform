@@ -4,12 +4,10 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.util.SecurityUtil;
-import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.entity.Event;
-import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
@@ -79,7 +77,7 @@ public class WirelessAcquisitionController {
     @GetMapping("/toWirelessAcquisitionSave")
     public ModelAndView toWirelessAcquisitionListSave() {
         ModelAndView model = new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/save");
-        //案件等级
+        //计时等级
         model.addObject("level", kvService.findByTableNameAndFieldName("deptTimeLimit","level"));
         //所属区域
         model.addObject("region", kvService.findByTableNameAndFieldName("event","region"));
@@ -93,10 +91,21 @@ public class WirelessAcquisitionController {
     }
 
     @GetMapping("/toWirelessAcquisitionUpdate/{id}")
-    public ModelAndView toWirelessAcquisitionListUpdate(@PathVariable String id, Model model) {
+    public ModelAndView toWirelessAcquisitionListUpdate(@PathVariable String id) {
+        ModelAndView model = new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/update");
         EventOneVO vo= eventService.findOneToVo(id);
-        model.addAttribute("eventOneVO",vo);
-        return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/update");
+        model.addObject("eventOneVO",vo);
+        //案件等级
+        model.addObject("level", kvService.findByTableNameAndFieldName("deptTimeLimit","level"));
+        //所属区域
+        model.addObject("region", kvService.findByTableNameAndFieldName("event","region"));
+        //问题来源
+        model.addObject("eventSource", kvService.findByTableNameAndFieldName("event","eventSource"));
+        //案件类型
+        model.addObject("recType", kvService.findByTableNameAndFieldName("event","recType"));
+        //所在区域
+        model.addObject("gridList",gridService.findAllByParentIsNull());
+        return model;
     }
 
     @GetMapping("/wirelessAcquisitionList")
@@ -205,6 +214,15 @@ public class WirelessAcquisitionController {
         return Result.success(list);
     }
     /**
+     * 所属区域获取网格回显
+     *
+     */
+    @GetMapping("/FindGridAll")
+    public Result FindGridAll() {
+        List<GridVO> list = gridService.findGridAll();
+        return Result.success(list);
+    }
+    /**
      * 保存
      * @param eventDTO
      */
@@ -308,5 +326,16 @@ public class WirelessAcquisitionController {
     @GetMapping("getUserName")
     public Result getUserName(){
         return Result.success(SecurityUtil.getUsername());
+    }
+
+    /**
+     * 列表页案件采集上报
+     * @param id
+     */
+    @RequestMapping("reportOnList")
+    public Result reportOnList(String id){
+        eventService.reportOnList(id);
+        return Result.success();
+
     }
 }

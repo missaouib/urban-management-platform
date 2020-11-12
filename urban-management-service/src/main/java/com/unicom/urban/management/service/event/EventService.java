@@ -446,6 +446,17 @@ public void saveTemp(EventDTO eventDTO){
         eventDTO.setEventSourceId("d2c15cc9-91bd-4435-86f8-f9c8d351610b");
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
+        event.setSts(null);
+        Event saved = eventRepository.save(event);
+        workService.superviseReporting(saved.getId());
+    }
+    /**
+     * 案件采集页表页上报
+     */
+    public void reportOnList(String id) {
+        Event event = this.findOne(id);
+        event.setUser(SecurityUtil.getUser().castToUser());
+        event.setSts(null);
         Event saved = eventRepository.save(event);
         workService.superviseReporting(saved.getId());
     }
