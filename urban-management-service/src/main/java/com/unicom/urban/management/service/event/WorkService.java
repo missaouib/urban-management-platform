@@ -365,6 +365,7 @@ public class WorkService {
         eventService.update(event);
 
         Statistics statistics = this.initStatistics(event.getId());
+        statistics.setSort(statistics.getSort() + 1);
         statistics.setNeedSendVerify(1);
         statistics.setReport(1);
         statistics.setPatrolReport(1);
@@ -386,6 +387,7 @@ public class WorkService {
         event.setProcessInstanceId(processInstance.getId());
         eventService.update(event);
         Statistics statistics = this.initStatistics(event.getId());
+        statistics.setSort(statistics.getSort() + 1);
         statistics.setNeedSendVerify(1);
         statistics.setReport(1);
         statistics.setPatrolReport(1);
