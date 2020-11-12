@@ -12,6 +12,7 @@ import com.unicom.urban.management.service.processtimelimit.ProcessTimeLimitServ
 import com.unicom.urban.management.service.role.RoleService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.activiti.engine.task.Task;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,8 +55,8 @@ public class TaskProcessingService {
      */
     public void handle(String eventId, String buttonId, StatisticsDTO statisticsDTO) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        EventButton eventButton = eventButtonRepository.findById(buttonId).orElse(new EventButton());
         if ("值班长-立案".equals(statistics.getTaskName())) {
-            EventButton eventButton = eventButtonRepository.findById(buttonId).orElse(new EventButton());
             List<String> users;
             if ("立案".equals(eventButton.getButtonText())) {
                 users = this.getUsers(KvConstant.DISPATCHER_ROLE);
@@ -75,6 +76,10 @@ public class TaskProcessingService {
             this.closeTask(eventId, statisticsDTO);
         } else if ("派遣员-延时审批".equals(statistics.getTaskName())) {
             this.delayedApproval(eventId, buttonId, statisticsDTO);
+        }else if("派遣员-回退审批".equals(statistics.getTaskName())){
+            this.backOff(eventId,eventButton,statisticsDTO);
+        }else if("值班长-作废审批".equals(statistics.getTaskName())){
+
         }
 
     }
@@ -110,10 +115,12 @@ public class TaskProcessingService {
         Event event = eventService.findOne(eventId);
         Statistics newStatistics = this.initStatistics(event);
         if ("立案".equals(buttonId.getButtonText())) {
+            newStatistics.setSort(statistics.getSort()+1);
             newStatistics.setToDispatch(1);
             newStatistics.setNeedDispatch(1);
         } else {
             //回退 受理员
+            newStatistics.setSort(statistics.getSort()+1);
             newStatistics.setToOperate(1);
             newStatistics.setBackOff(1);
             newStatistics.setBackOffDate(LocalDateTime.now());
@@ -182,6 +189,7 @@ public class TaskProcessingService {
         dept.setId(statisticsDTO.getDeptId());
         newStatistics.setDisposeUnit(dept);
         newStatistics.setDisposeUnitName(dept);
+        newStatistics.setSort(statistics.getSort()+1);
         statisticsService.save(newStatistics);
     }
 
@@ -204,6 +212,7 @@ public class TaskProcessingService {
                 statistics.setNeedDispose(0);
                 statistics.setToDispose(0);
                 statistics.setDelayedHours(statisticsDTO.getDelayedTime());
+                newStatistics.setSort(statistics.getSort()+1);
                 statisticsService.update(statistics);
                 statisticsService.save(newStatistics);
                 break;
@@ -214,6 +223,7 @@ public class TaskProcessingService {
                 newStatistics = this.initStatistics(event);
                 newStatistics.setBackOff(1);
                 newStatistics.setBackOffDate(LocalDateTime.now());
+                newStatistics.setSort(statistics.getSort()+1);
                 statisticsService.update(statistics);
                 statisticsService.save(newStatistics);
 
@@ -225,6 +235,7 @@ public class TaskProcessingService {
                 newStatistics = this.initStatistics(event);
                 newStatistics.setHang(1);
                 newStatistics.setHangDate(LocalDateTime.now());
+                newStatistics.setSort(statistics.getSort()+1);
                 statisticsService.update(statistics);
                 statisticsService.save(newStatistics);
                 break;
@@ -242,6 +253,7 @@ public class TaskProcessingService {
                 statistics.setInTimeDispose(num[0] == 1 ? 1 : 0);
                 statistics.setOvertimeDispose(num[0] == 1 ? 0 : 1);
                 statistics.setSts(String.valueOf(num[1]));
+                newStatistics.setSort(statistics.getSort()+1);
                 statisticsService.update(statistics);
                 statisticsService.save(newStatistics);
                 break;
@@ -281,6 +293,7 @@ public class TaskProcessingService {
                 statistics.setDelayedDate(now);
                 newStatistics.setDelayedHours(collect.get(0).getDelayedHours());
             }
+            newStatistics.setSort(statistics.getSort()+1);
             statisticsService.update(statistics);
             statisticsService.save(newStatistics);
         }
@@ -328,6 +341,7 @@ public class TaskProcessingService {
      * 派遣员-回退审批
      */
     private void backOff(String eventId, EventButton buttonId, StatisticsDTO statisticsDTO) {
+        Event event = eventService.findOne(eventId);
         if ("通过".equals(buttonId.getButtonText())) {
             List<String> users = this.getUsers(KvConstant.DISPATCHER_ROLE);
             this.avtivitiHandle(eventId, users, buttonId.getId());
@@ -335,16 +349,47 @@ public class TaskProcessingService {
             statistics.setBackOff(1);
             statistics.setBackOffDate(LocalDateTime.now());
             statisticsService.update(statistics);
-            Event event = eventService.findOne(eventId);
             Statistics newStatistics = this.initStatistics(event);
             newStatistics.setToDispatch(1);
             newStatistics.setNeedDispatch(1);
+            newStatistics.setSort(statistics.getSort()+1);
             statisticsService.save(newStatistics);
         }else if("不通过".equals(buttonId.getButtonText())){
+
             List<Statistics> statisticsList = statisticsService.findByEventIdToList(eventId);
             List<Statistics> collect = statisticsList.stream().filter(s -> "专业部门".equals(s.getTaskName())).collect(Collectors.toList());
             if(collect.size()>0){
 
+                Statistics oldStatistics = collect.get(0);
+                List<String> users = new ArrayList<>();
+                oldStatistics.getDisposeUnit().getUserList().forEach(u->users.add(u.getId()));
+                this.avtivitiHandle(eventId, users, buttonId.getId());
+
+
+                Statistics statistics = this.updateStatistics(statisticsDTO);
+                statisticsService.update(statistics);
+
+                Statistics newStatistics = new Statistics();
+                newStatistics.setNeedDispose(oldStatistics.getNeedDispose());
+                newStatistics.setToDispose(oldStatistics.getToDispose());
+                newStatistics.setDisposeUnit(oldStatistics.getDisposeUnit());
+                newStatistics.setDisposeUnitName(oldStatistics.getDisposeUnitName());
+                newStatistics.setEvent(oldStatistics.getEvent());
+                newStatistics.setTaskId(oldStatistics.getTaskId());
+                newStatistics.setTaskName(oldStatistics.getTaskName());
+                newStatistics.setStartTime(oldStatistics.getStartTime());
+                newStatistics.setDeptTimeLimit(oldStatistics.getDeptTimeLimit());
+                newStatistics.setProcessTimeLimit(oldStatistics.getProcessTimeLimit());
+                newStatistics.setSort(statistics.getSort()+1);
+                statisticsService.save(newStatistics);
+            }else{
+                List<String> users = this.getUsers(KvConstant.SHIFT_LEADER_ROLE);
+                this.avtivitiHandle(eventId, users, buttonId.getId());
+                Statistics statistics = this.updateStatistics(statisticsDTO);
+                statisticsService.update(statistics);
+                Statistics newStatistics = this.initStatistics(event);
+                newStatistics.setSort(statistics.getSort()+1);
+                statisticsService.save(newStatistics);
             }
         }
 

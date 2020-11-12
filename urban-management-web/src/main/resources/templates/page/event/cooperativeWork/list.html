@@ -398,8 +398,32 @@
     var buttonId = "";
     var eventId = "";
 
+    var deptId = "";
+    var deptName = ""
+
     function eventButton(obj) {
-        buttonId = obj;
+        console.log($(obj).text())
+        $("#deptDiv").empty();
+        if($(obj).text() === "申请延时"){
+            var deptStr = " <span class=\"sendText\"><i>*</i>申请时限</span>\n" +
+                "<input type='number' id='delayedTime'/>";
+            $("#deptDiv").append(deptStr);
+        }else if ("派遣" === $(obj).text()) {
+            $.ajaxUtil.get(deptUrl, function (o) {
+                var deptStr = " <span class=\"sendText\"><i>*</i>专业部门</span>\n" +
+                    "                                <select id=\"dept\">\n"+
+                    "<option value='"+deptId+"'>"+deptName+"</option>";
+                $(o.data).each(function (index,value) {
+                    if(deptId !== value.id){
+                        deptStr += "<option value='"+value.id+"'>"+value.deptName+"</option>"
+                    }
+                })
+                deptStr +="</select>"
+                $("#deptDiv").append(deptStr);
+            })
+
+        }
+        buttonId = $(obj).attr("id");
     }
 
     function reductionButton() {
@@ -482,36 +506,14 @@
                     $("#userName").val(e.data.userName);
                     $("#recTypeStr").val(e.data.recTypeStr);
 
+                    deptId = e.data.deptId;
+                    deptName = e.data.deptName;
 
                     /*按钮*/
                     var buttonStr = "";
                     $(e.data.eventButtonVOS).each(function (index, value) {
-                        buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" onclick='eventButton(" + value.id + ")'  class=\"but_save\">" + value.buttonText + "</button>";
-                        if ("派遣" === value.buttonText) {
-                            $.ajaxUtil.get(deptUrl, function (o) {
-                                $("#deptDiv").empty();
-                                var deptStr = " <span class=\"sendText\"><i>*</i>专业部门</span>\n" +
-                                    "                                <select id=\"dept\">\n"+
-                                    "<option value='"+e.data.deptId+"'>"+e.data.deptName+"</option>";
-                                $(o.data).each(function (index,value) {
-                                    if(e.data.deptId !== value.id){
-                                        deptStr += "<option value='"+value.id+"'>"+value.deptName+"</option>"
-                                    }
-                                })
-                                deptStr +="</select>"
-                                $("#deptDiv").append(deptStr);
-                            })
+                        buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='"+value.id+"' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
 
-                        }
-                        if ("申请延时" === value.buttonText) {
-                            $.ajaxUtil.get(deptUrl, function (o) {
-                                $("#deptDiv").empty();
-                                var deptStr = " <span class=\"sendText\"><i>*</i>申请时限</span>\n" +
-                                    "<input type='number' id='delayedTime'/>";
-                                $("#deptDiv").append(deptStr);
-                            })
-
-                        }
                     })
                     $("#btnGroupGround").empty();
                     $("#btnGroupGround").append(buttonStr);
