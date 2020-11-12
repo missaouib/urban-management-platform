@@ -108,6 +108,7 @@ public class GridService {
         Record saveRecord = recordService.save(record);
 
         Grid grid = GridMapper.INSTANCE.gridDTOToGrid(gridDTO);
+        grid.setLevel(4);
         grid.setPublish(savePublish);
         String userId = SecurityUtil.getUserId();
         User user = userService.findOne(userId);
