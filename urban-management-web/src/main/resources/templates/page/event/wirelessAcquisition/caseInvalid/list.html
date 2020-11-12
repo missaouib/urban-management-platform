@@ -335,6 +335,23 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <script type="text/javascript" th:inline="javascript">
+
+    /**
+     * 获取街道
+     */
+    function getStreetList(){
+        let parentId = $("#grid1 option:selected").val();
+        let url = "/event/findAllByParentId?parentId="+parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option="<option>--请选择--</option>";
+            if (e.code === "0") {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid2").html(option);
+            }
+        });
+    }
     function selectEventTypeTree() {
         var treeId = $("#treeId").val();
         var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
@@ -398,12 +415,6 @@
         $("#treatment").addClass("blockActive")
     }
 
-    function eventImg(){
-        var str = "<img src='"+ img + "7d4adfe6-1dbf-11eb-a1ce-00155dff8d69"+"'>";
-        $("#evnetImg").empty();
-        $("#eventImg").append(str);
-    }
-
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
     let searchUrl = /*[[@{/event/caseInvalidList}]]*/ "/event/caseInvalidList";
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
@@ -420,7 +431,7 @@
             onClickRow: function (row,index) {
                 layerMap.getSource().clear()
                 console.log("row", row);
-                setTimeLimit(row,index)
+                getEventDetail(row.id);
             },
             columns: [
                 {
@@ -429,16 +440,6 @@
                     formatter : function (value, row, index){
                         var page = $('#bootstrap-table').bootstrapTable("getPage");
                         return page.pageSize * (page.pageNumber - 1) + index + 1;
-                    }
-                },
-                {
-                    title: '时限',
-                    field: '',
-                    formatter: function (value,row) {
-                        console.log(row)//表格数据 row. 什么什么 .png
-                        var e = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto'>" +
-                            "<img src='../img/2.png' style='width: 100%;height: 100%'></div>"
-                        return e;
                     }
                 },
                 {
