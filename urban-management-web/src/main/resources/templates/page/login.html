@@ -53,6 +53,11 @@
 
 <script type="text/javascript" th:inline="javascript">
 
+    $(document).keydown(function (e) {
+        if (e.keyCode == 13){
+            login()
+        }
+    })
 
     if (window.top !== window.self) {
         alert('未登录或登录超时。请重新登录');
