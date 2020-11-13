@@ -1527,3 +1527,61 @@ label.error {
    max-height: 100px;
     /*padding-left: 20px;*/
 }
+.duck_duck{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    z-index: 1000;
+    display: none;
+}
+.duck_box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.duck_close{
+width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    position: absolute;
+    right: -50px;
+    top: 0;
+    background-color: #ffffff;
+}
+.allTiel{
+    width: 600px;
+    height: 500px;
+    background-color: #ffffff;
+    position: relative;
+}
+.duck_title{
+    width: 100%;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+.duck_title span{
+    width: 33.3%;
+    display: flex;justify-content: center;align-items: center;
+}
+.duckActive{
+    background-color: #354e85!important;
+    color: white;
+}
+.duck_info{
+    width: 100%;
+    height: 460px;
+    position: relative;
+}
+.info_chance{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;left: 0;
+    display: none;
+    padding: 5px;
+}
