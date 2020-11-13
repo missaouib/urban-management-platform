@@ -121,7 +121,7 @@
                             <tr>
                                 <td><span></span>事件来源</td>
                                 <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required disabled>
                                         <option th:each="as:${eventSource}" th:value="${as.id}"
                                                 th:text="${as.value}"></option>
                                     </select>
@@ -369,6 +369,7 @@
             return;
 
         }
+        $("#eventSource").removeAttr("disabled");
         var data = $('#userForm').serialize();
         $.operate.saveTab(saveUrl, data);
     }

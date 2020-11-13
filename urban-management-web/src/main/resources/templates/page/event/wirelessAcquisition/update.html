@@ -124,7 +124,7 @@
                             <tr>
                                 <td><span>*</span>事件来源</td>
                                 <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required disabled>
                                         <option th:value="${eventOneVO.eventSourceId}" th:text="${eventOneVO.eventSourceStr}"></option>
                                     </select>
                                 </td>
@@ -293,6 +293,7 @@
      * 保存
      */
     function submitHandler() {
+        $("#eventSource").removeAttr("disabled");
         var data = $('#userForm').serialize();
         $.operate.saveTab(updateTempUrl, data);
     }
@@ -305,6 +306,7 @@
         if (!$("form").valid()) {
             return;
         }
+        $("#eventSource").removeAttr("disabled");
         var data = $('#userForm').serialize();
         $.operate.saveTab(preReportUrl, data);
     }

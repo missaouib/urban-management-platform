@@ -28,6 +28,7 @@ public class EventFile {
     private String filePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "management_id")
     private KV management;
 
 }

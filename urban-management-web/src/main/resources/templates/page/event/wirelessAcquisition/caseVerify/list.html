@@ -414,9 +414,10 @@
             $("#eventButton").html(buttonHtml);
         });
     }
-
+    let num = 1;
     function queryUserList() {
         var options = {
+            num: num,
             url: searchUrl,
             uniqueId: "id",
             sortName: "updateTime",

@@ -36,5 +36,13 @@ public class StatisticsVO implements Serializable {
     private String taskName;
 
     private String sts;
+    /**
+     * 当前处理部门
+     */
+    private String deptName;
+    /**
+     * 当前处理人
+     */
+    private String userName;
 
 }

@@ -239,15 +239,6 @@ public class WirelessAcquisitionController {
         return Result.success(list);
     }
     /**
-     * 所属区域获取网格回显
-     *
-     */
-    @GetMapping("/FindGridAll")
-    public Result FindGridAll() {
-        List<GridVO> list = gridService.findGridAll();
-        return Result.success(list);
-    }
-    /**
      * 保存
      * @param eventDTO
      */
@@ -290,6 +281,7 @@ public class WirelessAcquisitionController {
      */
     @RequestMapping("/preReport")
     public void preReport(EventDTO eventDTO){
+        eventDTO.setSts(null);
         if (eventDTO.getDoBySelf()!=null) {
             eventService.saveAutoReport(eventDTO);
         }else {

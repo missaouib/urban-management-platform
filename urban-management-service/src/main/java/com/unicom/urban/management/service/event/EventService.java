@@ -413,7 +413,7 @@ public class EventService {
         eventOneVO.setCDate(df.format(one.getCreateTime()));
         eventOneVO.setEventSourceId(one.getEventSource().getId());
         eventOneVO.setEventSourceStr(one.getEventSource().getValue());
-//        eventOneVO.setDoBySelf(one.getDoBySelf());
+        eventOneVO.setDoBySelf(one.getDoBySelf());
         List<Map<String, Object>> fileList = new ArrayList<>();
         one.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
@@ -543,7 +543,6 @@ public class EventService {
         //监督员上报kv写死
         Event event = this.EventDTOtoEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
-        event.setSts(null);
         Event saved = eventRepository.save(event);
         workService.superviseReporting(saved.getId());
     }
@@ -555,8 +554,12 @@ public class EventService {
         Event event = this.findOne(id);
         event.setUser(SecurityUtil.getUser().castToUser());
         event.setSts(null);
-        Event saved = eventRepository.save(event);
-        workService.superviseReporting(saved.getId());
+        Event saved = eventRepository.saveAndFlush(event);
+        if (event.getDoBySelf()!= null && event.getDoBySelf()) {
+            workService.saveAutoReport(saved.getId());
+        }else {
+            workService.superviseReporting(saved.getId());
+        }
     }
 
 

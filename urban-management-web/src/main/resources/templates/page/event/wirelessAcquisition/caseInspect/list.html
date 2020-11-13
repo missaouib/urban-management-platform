@@ -451,7 +451,7 @@
         let img = /*[[@{/common/img/}]]*/ "/common/img/";
         let searchUrl = /*[[@{/event/caseInspectList}]]*/ "/event/caseInspectList";
         let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
-        //上传 照片视频音频
+        let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
         let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
 
         /* 获取下一步按钮 */
@@ -471,20 +471,20 @@
                 $("#eventButton").html(buttonHtml);
             });
         }
-
+let num = 1;
         function queryUserList() {
             var options = {
+                num:num,
                 url: searchUrl,
                 uniqueId: "id",
                 sortName: "updateTime",
                 sortOrder: "desc",
                 modalName: "用户",
                 onClickRow: function (row) {
-                    //layerMap.getSource().clear()
+                    layerMap.getSource().clear()
                     console.log("row", row);
-                    // $(".tab_update").addClass("active").siblings(".tabTitle span").removeClass("active");
-                    // $(".banner_update").addClass("blockActive").siblings(".banner").removeClass("blockActive");
                     getButton(row.id);
+                    getTimeAxis(row.id);
                     //详情
                     getEventDetail(row.id);
                 },
@@ -527,7 +527,78 @@
             };
             $.table.init(options);
         }
-
+        function getTimeAxis(eventId) {
+            $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
+                let data = e.data;
+                $("#timeAxis").empty();
+                let html = "";
+                if (data.length === 0) {
+                    html += "<div>暂时没有数据，请进入流程处理案件</div>";
+                } else {
+                    for (let i = 0; i < data.length; i++) {
+                        html += "<div class='expressRecord-single-close'>";
+                        html += "<div class='expressRecord-single-noReach-online-top-close'>";
+                        if (i === 0) {
+                            html += "<div class='online-top-closing'></div>";
+                        } else {
+                            html += "<div class='online-top-close'></div>";
+                        }
+                        html += "<div class='dot-close'>";
+                        if (i === 0) {
+                            html += "<div class='yes blockActive'></div>";
+                        } else {
+                            html += "<div class='yes'></div>";
+                        }
+                        html += "</div>";
+                        if (i === (data.length - 1)) {
+                            html += "<div class='online-bottom-start'></div>";
+                        } else {
+                            html += "<div class='online-bottom'></div>";
+                        }
+                        html += "</div>";
+                        html += "<div class='expressRecord-text'>";
+                        html += "<div class='gameEnd'>";
+                        html += "<div class='endBox'>";
+                        html += "<em>回复内容:</em> " + data[i].opinions
+                        html += "</div>";
+                        if (data[i].fileName.length > 0) {
+                            html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                        }
+                        html += "</div>";
+                        html += "<div class='gameEnd'>";
+                        html += "<div class='endBox'>";
+                        html += "<em>by:</em> " + data[i].user + "，角色";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<div class='gameEnd'>";
+                        html += "<div class='endBox'>";
+                        html += "<em>开始时间:</em> " + data[i].starTime
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<div class='gameEnd'>";
+                        html += "<div class='endBox'>";
+                        html += "<em>结束时间:</em> " + data[i].endTime
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<div class='gameEnd'>";
+                        html += "<div class='endBox'>";
+                        html += "<em></em>"
+                        html += "</div>";
+                        if (data[i].fileName.length > 0) {
+                            html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                        }
+                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<div class='expressRecord-date'>";
+                        html += "<div class='expressRecord-date-text'>" + data[i].link + "</div>";
+                        html += "</div>";
+                        html += "</div>"
+                    }
+                }
+                $("#timeAxis").append(html);
+            });
+        }
         function getEventDetail(eventId) {
             $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
                 eventId = e.data.id;
