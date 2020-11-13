@@ -2,7 +2,7 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>热线上报</title>
+    <title>已挂账列表</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
@@ -14,6 +14,7 @@
     <div class="leftContent">
         <form id="userForm">
             <div class="top table2_top">
+                <!--        <div>-->
                 <div class="top_out">
                     <table class="table">
                         <tbody>
@@ -31,15 +32,15 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>所在网格<span></span></td>
+                            <td><span></span>所在网格</td>
                             <td>
-                                <select class="form-control" id="grid1" name="grid" onchange="getStreetList()" required>
+                                <select class="form-control" id="grid1" name="grid" required>
                                     <option value="">--请选择--</option>
                                     <option th:each="as:${gridList}" th:value="${as.id}"
                                             th:text="${as.gridName}"></option>
                                 </select>
                             </td>
-                            <td>事件来源<span></span></td>
+                            <td><span></span>事件来源</td>
                             <td>
                                 <select class="form-control" id="eventSource" name="eventSourceId" required>
                                     <option value="">--请选择--</option>
@@ -58,7 +59,7 @@
                                     +
                                 </button>
                             </td>
-                            <td>立案区域<span></span></td>
+                            <td><span></span>立案区域</td>
                             <td>
                                 <select id="eventCondition" name="eventCondition" onchange="getEventCondition()"
                                         required>
@@ -67,13 +68,13 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>立案条件<span></span></td>
+                            <td><span></span>立案条件</td>
                             <td>
                                 <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
                                     <option value="">--请选择--</option>
                                 </select>
                             </td>
-                            <td>计时等级<span></span></td>
+                            <td><span></span>计时等级</td>
                             <td>
                                 <select id="timeType" name="timeType" required>
                                     <option value="">--请选择--</option>
@@ -84,6 +85,8 @@
                     </table>
                 </div>
             </div>
+
+            <!--    </div>-->
         </form>
         <div class="notice_check">
             <form id="search-form">
@@ -93,7 +96,7 @@
                 </p>
             </form>
         </div>
-        <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+        <table id="bootstrap-table" class="table_style" style="margin: 0 auto;"></table>
 
     </div>
     <div class="rightContent">
@@ -109,12 +112,14 @@
                 <div id="popup" class="ol-popup">
                     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                     <div id="popup-content">
-                        <ul id="message"></ul>
+                        <ul id="message">
+
+                        </ul>
                     </div>
                 </div>
             </div>
             <div class="banner">
-                <h3 class="bigTitle">案件修改</h3>
+                <h3 class="bigTitle">案件详情</h3>
                 <form class="details">
                     <div class="top table2_top">
                         <div class="top_out">
@@ -128,25 +133,33 @@
                                     </td>
                                     <td><span></span>问题类型</td>
                                     <td>
-                                        <input id="eventTypeStr" type="text" maxlength="30" required
-                                               readonly="readonly">
+                                        <input id="eventTypeStr" name="eventType" placeholder="请选择问题类型" class=""
+                                               type="text" maxlength="30" required readonly="readonly"
+                                        >
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>立案区域</td>
                                     <td>
-                                        <input id="regionStr" type="text" maxlength="30" required readonly="readonly">
+                                        <input id="regionStr" name="eventType" placeholder="请选择问题类型" class=""
+                                               type="text" maxlength="30" required readonly="readonly"
+                                        >
                                     </td>
                                     <td><span></span>立案条件</td>
                                     <td>
-                                        <input id="conditionValue" type="text" maxlength="30" required
-                                               readonly="readonly">
+                                        <input id="conditionValue" name="eventType" placeholder="请选择问题类型" class=""
+                                               type="text" maxlength="30" required readonly="readonly"
+                                        >
+
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>案件等级</td>
                                     <td>
-                                        <input id="level" type="text" maxlength="30" required readonly="readonly">
+                                        <input id="level" name="eventType" placeholder="请选择问题类型" class="" type="text"
+                                               maxlength="30" required readonly="readonly"
+                                        >
 
                                     </td>
                                     <td><span></span>处理时限</td>
@@ -156,7 +169,11 @@
                                 </tr>
                                 <tr>
                                     <td><span></span>问题描述</td>
-                                    <td colspan="8"><textarea id="represent" required readonly></textarea></td>
+
+                                    <td colspan="8"><textarea id="represent" name="problemescription" required
+                                                              readonly></textarea></td>
+
+
                                 </tr>
                                 <tr class="col-12">
                                     <td><span></span>案件地址</td>
@@ -175,10 +192,12 @@
                                     <td>
                                         <input id="eventRegion" name="location" placeholder="" class="" readonly
                                                type="text">
+
                                     </td>
                                     <td><span></span>所属街道</td>
                                     <td>
                                         <input id="street" name="location" placeholder="" class="" readonly type="text">
+
                                     </td>
                                 </tr>
                                 <tr class="col-12">
@@ -191,6 +210,7 @@
                                     <td>
                                         <input id="girdStr" name="location" placeholder="" class="" readonly
                                                type="text">
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -203,6 +223,7 @@
                                     <td>
                                         <input id="userName" name="userName" placeholder="" class="" readonly
                                                type="text">
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -210,6 +231,7 @@
                                     <td>
                                         <input id="petitionerName" name="petitionerName" placeholder="" class=""
                                                readonly type="text">
+
                                     </td>
                                     <td><span></span>联系方式</td>
                                     <td><input id="petitionerPhone" name="petitionerPhone" type="text" value=""
@@ -220,10 +242,12 @@
                                     <td>
                                         <input id="petitionerSex" name="petitionerSex" placeholder="" class="" readonly
                                                type="text">
+
                                     </td>
                                     <td><span></span>创建时间</td>
                                     <td>
                                         <input id="cdate" name="cdate" placeholder="" class="" readonly type="text">
+
                                     </td>
                                 </tr>
                                 <tr>
@@ -236,27 +260,15 @@
                                         <input id="y" type="text" class="find_input" readonly="readonly" value="纬度">
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td><span></span>核实监督员</td>
-                                    <td>
-                                        <select name="safeLevel" id="selectUser" onchange="getUserval()">
-                                            <option selected>请选择</option>
-                                            <option value="1">超级管理员</option>
-                                        </select>
-                                        <input type="hidden" id="userId" value="">
-                                        <input type="hidden" id="eventId" value="">
-                                        <input type="hidden" id="button" value="">
-                                    </td>
-                                </tr>
+
                                 </tbody>
                             </table>
-
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
                                     <div>
                                         <!--                                        <input class="input-id" type="file" name="file" multiple="multiple">-->
-                                        <div class="innerPic" style="padding-left: 20px">
+                                        <div class="innerPic">
                                             <img src="../img/streed.png" class="img-rounded">
                                         </div>
                                     </div>
@@ -267,7 +279,7 @@
                                     <div class="sendText"><span>视频:</span></div>
                                     <div>
                                         <!--                                        <input class="videoInput" type="file" name="file" multiple="multiple">-->
-                                        <div class="innerPic" style="padding-left: 20px">
+                                        <div class="innerPic">
                                             无
                                         </div>
                                     </div>
@@ -276,18 +288,20 @@
                                     <div class="sendText"><span>音频:</span></div>
                                     <div>
                                         <!--                                        <input class="musicInput" type="file" name="file" multiple="multiple">-->
-                                        <div class="innerPic" style="padding-left: 20px">
+                                        <div class="innerPic">
                                             无
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
-
                         </div>
-                        <div class="notice_bot">
 
-                            <div class="r_right but_p girdBtnGroup" id="eventButton"></div>
+                        <!--                            按钮-->
+
+                        <div class="notice_bot">
+                            <div class="r_right but_p girdBtnGroup" id="btnGroupGround">
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -300,37 +314,67 @@
                     </div>
                 </div>
             </div>
-            <div class="banner"><img id="eventImg"></div>
+            <div class="banner">
+                <img id="eventImg">
+            </div>
+
         </div>
-    </div>
-    <!--    核实-->
-    <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">核实</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="checkMain" style="position: relative">
-                        <span class="sendText" style="width: 120px"><i style="color: red!important;"></i>核实意见</span>
-                        <textarea type="text" id="textIdioms"></textarea>
-                        <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
-                        <div id="wordSays" class="wordSays" style="background-color:#fff;">
-                            <ul>
-                                <li class="idioms">11</li>
-                                <li class="idioms">33</li>
-                                <li class="idioms">22</li>
-                            </ul>
+
+        <div class="modal fade" id="modal-default">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">处理</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="checkMain" style="position: relative">
+                            <span class="sendText"><i></i>意见</span>
+                            <textarea type="text" id="opinions"></textarea>
+                            <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
+                            <div id="wordSays" class="wordSays">
+                                <ul>
+                                    <li class="idioms">11</li>
+                                    <li class="idioms">33</li>
+                                    <li class="idioms">22</li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div id="deptDiv" class="send" >
+
+                        </div>
+                        <div class="send">
+                            <div class="sendImg">
+                                <div class="sendText" style="width: 72px"><span>照片:</span></div>
+                                <div><input id="picture" class="input-id" type="file" name="file" multiple="multiple">
+                                </div>
+                            </div>
+
+
+                            <div class="sendImg">
+                                <div class="sendText" style="width: 72px"><span>视频:</span></div>
+                                <div><input id="video" type="file" class="videoInput" name="file" multiple="multiple">
+                                </div>
+                            </div>
+                            <div class="sendImg">
+                                <div class="sendText" style="width: 72px"><span>音频:</span></div>
+                                <div><input id="music" type="file" class="musicInput" name="file" multiple="multiple">
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer justify-content-between"
-                     style="display: flex;justify-content: flex-end!important;">
-                    <button type="button" class="btn btn-primary" onclick="completeEvent()">完成</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                    <div class="modal-footer justify-content-between"
+                         style="display: flex;justify-content: flex-end!important;">
+                        <button type="button" class="btn btn-primary" onclick="processing()">处理</button>
+                        <button type="button" class="btn btn-success" onclick="reductionButton()" data-dismiss="modal">
+                            返回
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 
@@ -343,171 +387,163 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <script type="text/javascript" th:inline="javascript">
 
-    function selectEventTypeTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
-        var options = {
-            title: '选择事件类型',
-            width: "380",
-            url: url,
-            callBack: doSubmit
-        };
-        $.modal.openOptions(options);
-    }
-
-    function doSubmit(index, layero) {
-        var body = layer.getChildFrame('body', index);
-        $("#eventTypeId").val(body.find('#treeId').val());
-        $("#typeStr").val(body.find('#treeName').val());
-        let eventTypeId = $("#eventTypeId").val();
-        //获取立案区域
-        findEventConditionByEventType(eventTypeId)
-        layer.close(index);
-    }
-
-    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
-
-    /**
-     * 获取立案区域
-     */
-    function findEventConditionByEventType(eventTypeId) {
-        let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
-        $.ajaxUtil.get(url, function (e) {
-            let option = "<option value=''>--请选择--</option>";
-            if (e.code === "0") {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
-                });
-                $("#eventCondition").html(option);
-            }
-        });
-    }
-
-    /**
-     * 立案条件
-     */
-    function getEventCondition() {
-        let eventConditionId = $("#eventCondition").val();
-        let url = "/event/getEventCondition/?conditionId=" + eventConditionId;
-        $.ajaxUtil.get(url, function (e) {
-            $("#eventTerm").empty();
-            let option = "<option value=''>--请选择--</option>";
-            if (e.code === "0") {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
-                });
-            }
-            $("#eventTerm").html(option);
-        });
-    }
-
-    /**
-     * 获取立案时限分类
-     */
-    function getTimeTypeList() {
-        let eventTerm = $("#eventTerm").val();
-        let url = "/event/findDeptTimeLimitByCondition/?conditionId=" + eventTerm;
-        $.ajaxUtil.get(url, function (e) {
-            $("#timeType").empty();
-            let option = "<option value=''>--请选择--</option>";
-            if (e.code === "0") {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.level + "</option>"
-                });
-            }
-            $("#timeType").html(option);
-        });
-    }
-
-    /*
-    *  userId
-    * */
-    function getUserval() {
-        var options = $("#selectUser option:selected");
-        // alert(options.val());
-        $("#userId").val(options.val())
-    }
-
     $(function () {
         queryUserList();
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         })
+    })
 
-        //选择监督员
-        $("#changeMan").click(function () {
-            $("#selectUser").stop().slideToggle(300)
-        });
-
-        $("#selectUser").on("click", ".monitor", function () {
-            let monitor = $(this).html()
-            $("#userId").val($(this).val())
-            $("#monitor_man").html(monitor);
-            $("#selectUser").slideUp(300)
-        });
-
-        //惯用语
-        $("#alwaysSay").click(function () {
-            $("#wordSays").stop().fadeToggle(300)
-        });
-
-        $("#wordSays").on("click", ".idioms", function () {
-            let idioms = $(this).html()
-            $("#textIdioms").html(idioms);
-            $("#wordSays").fadeOut(300)
-        });
-
-        $("#alwaysSay_tag").click(function () {
-            $("#wordSays_tag").stop().fadeToggle(300)
-        });
-
-        $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
-            let idioms = $(this).html()
-            $("#textIdioms_tag").html(idioms);
-            $("#wordSays_tag").fadeOut(300)
-        });
-    });
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
-    let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
-    let searchUrl = /*[[@{/event/onAccountList}]]*/ "/event/onAccountList";
-    let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
-    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
-    let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
-    let claimAndCompleteByReceptionistUrl = /*[[@{/event/claimAndCompleteByReceptionistWithShiftLeader}]]*/ "/event/claimAndCompleteByReceptionistWithShiftLeader";
-    let completeByReceptionistWithSendCheckUrl = /*[[@{/event/completeByReceptionistWithSendCheck}]]*/ "/event/completeByReceptionistWithSendCheck";
-    let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
-    let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
 
-    let num = 1;
+    let searchUrl = /*[[@{/event/onAccountList}]]*/ "/event/onAccountList";
+
+    let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
+
+    let processingUrl = /*[[@{/task/processing}]]*/ "/task/processing";
+    let deptUrl = /*[[@{/task/dept}]]*/ "/task/dept";
+
+    let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
+
+    var buttonId = "";
+    var eventId = "";
+
+    var deptId = "";
+    var deptName = ""
+
+    function eventButton(obj) {
+        console.log($(obj).text())
+        $("#deptDiv").empty();
+        if($(obj).text() === "申请延时"){
+            var deptStr = " <span class=\"sendText\"><i>*</i>申请时限</span>\n" +
+                "<input type='number' id='delayedTime'/>";
+            $("#deptDiv").append(deptStr);
+        }else if ("派遣" === $(obj).text()) {
+            $.ajaxUtil.get(deptUrl, function (o) {
+                var deptStr = " <span class=\"sendText\"><i>*</i>专业部门</span>\n" +
+                    "                                <select id=\"dept\">\n"+
+                    "<option value='"+deptId+"'>"+deptName+"</option>";
+                $(o.data).each(function (index,value) {
+                    if(deptId !== value.id){
+                        deptStr += "<option value='"+value.id+"'>"+value.deptName+"</option>"
+                    }
+                })
+                deptStr +="</select>"
+                $("#deptDiv").append(deptStr);
+            })
+
+        }
+        buttonId = $(obj).attr("id");
+    }
+
+    function reductionButton() {
+        buttonId = "";
+    }
+
+    function processing() {
+        var data = {
+            "eventId": eventId,
+            "buttonId": buttonId,
+            "opinions": $("#opinions").val(),
+            "deptId":$("#dept").val(),
+            "delayedTime":$("#delayedTime").val()
+        };
+
+        $.ajax({
+            type: "post",
+            url: processingUrl,
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            beforeSend: function () {
+                $.modal.loading("正在处理中，请稍后...");
+            },
+            success: function (result) {
+                if (result.code === web_status.SUCCESS) {
+                    $.modal.msgSuccess(result.message);
+                    setTimeout("window.location.reload()", 2000);
+                    return;
+                } else if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTreeTable) {
+                    $.modal.msgSuccess(result.message);
+                } else if (result.code === web_status.SUCCESS && $.common.isEmpty(table.options.type)) {
+                    $.modal.msgSuccess(result.message)
+                } else if (result.code === web_status.WARNING) {
+                    $.modal.alertWarning(result.message)
+                } else {
+                    $.modal.alertError(result.message);
+                    return;
+                }
+                $.modal.closeLoading();
+            }
+        });
+    }
 
     function queryUserList() {
         var options = {
-            num: num,
             url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
-            // exportUrl: prefix + "/export",
-            // importUrl: prefix + "/importData",
-            // importTemplateUrl: prefix + "/importTemplate",
             uniqueId: "id",
             sortName: "updateTime",
             sortOrder: "desc",
             modalName: "用户",
-            onClickRow: function (row, index) {
+            // 点击每行进行函数的触发
+            onClickRow: function (row, index, tr, flied) {
                 layerMap.getSource().clear()
-                checkRow(row.id);
+                //详情  流程图  流转记录
+                $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
+                    eventId = e.data.id;
+                    /*流程图*/
+                    $("#eventImg").attr('src', img + e.data.processInstanceId);
+                    /*详情*/
+                    $("#eventCode").val(e.data.eventCode);
+                    $("#eventTypeStr").val(e.data.eventTypeStr);
+                    $("#represent").text(e.data.represent);
+                    $("#location").val(e.data.location);
+                    $("#regionStr").val(e.data.regionStr);
+                    $("#conditionValue").val(e.data.conditionValue);
+                    $("#level").val(e.data.level);
+                    $("#timeLimitStr").val(e.data.timeLimitStr);
+                    $("#girdStr").val(e.data.girdStr);
+                    $("#community").val(e.data.community);
+                    $("#street").val(e.data.street);
+                    $("#eventRegion").val(e.data.eventRegion);
+                    $("#x").val(e.data.x);
+                    $("#y").val(e.data.y);
+                    setPoint(e.data.x, e.data.y)
+                    $("#eventSourceStr").val(e.data.eventSourceStr);
+                    $("#cdate").val(e.data.cdate);
+                    $("#petitionerSex").val(e.data.petitionerSex);
+                    $("#petitionerPhone").val(e.data.petitionerPhone);
+                    $("#petitionerName").val(e.data.petitionerName);
+                    $("#userName").val(e.data.userName);
+                    $("#recTypeStr").val(e.data.recTypeStr);
+
+                    deptId = e.data.deptId;
+                    deptName = e.data.deptName;
+
+                    /*按钮*/
+                    var buttonStr = "";
+                    $(e.data.eventButtonVOS).each(function (index, value) {
+                        buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='"+value.id+"' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
+
+                    })
+                    $("#btnGroupGround").empty();
+                    $("#btnGroupGround").append(buttonStr);
+
+                    getTimeAxis(row.id);
+                });
             },
             columns: [
                 {
                     field: 'index',
                     title: '序号',
+                    formatter : function (value, row, index){
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
                 },
                 {
-                    title: '处理时限',
+                    title: '时限',
                     field: '',
                     formatter:setTimeLimit
                 },
@@ -524,62 +560,13 @@
                     field: 'taskName'
                 },
                 {
-                    title: '案件类型',
-                    field: 'recTypeName'
+                    title: '达到时间',
+                    field: 'startTime'
                 },
+
             ]
         };
         $.table.init(options);
-    }
-
-    /*
-     * 判断时限  一分钟变红
-      */
-    setTimeout(function () {
-        $(".timeSet").html("")
-        var cryFace = "<img src='../img/0.png' style='width: 100%;height: 100%'></div>";
-        $(".timeSet").append(cryFace)
-    }, 600000)
-
-    jQuery.extend(jQuery.validator.messages, {
-        required: "必填",
-        phone: "必填",
-        remote: "请修正该字段",
-        email: "请输入正确格式的电子邮件",
-        url: "请输入合法的网址",
-        date: "请输入合法的日期",
-        dateISO: "请输入合法的日期 (ISO).",
-        number: "请输入合法的数字",
-        digits: "只能输入整数",
-        creditcard: "请输入合法的信用卡号",
-        equalTo: "请再次输入相同的值",
-        accept: "请输入拥有合法后缀名的字符串",
-        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
-        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
-        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
-        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
-        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
-        min: jQuery.validator.format("请输入一个最小为{0} 的值")
-    });
-
-    function checkRow(eventId) {
-        getTimeAxis(eventId);
-        getEventDetail(eventId);
-    }
-
-    /* 获取下一步按钮 */
-    function getButton(eventId) {
-        let getButtonUrl = /*[[@{/event/getButton/}]]+eventId*/ "/event/getButton/" + eventId;
-        $.ajaxUtil.get(getButtonUrl, function (e) {
-            $("#eventButton").empty();
-            let button = e.data;
-            let buttonHtml = "";
-            if (button.length > 0) {
-                for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
-                }
-            }
-        });
     }
 
     function getTimeAxis(eventId) {
@@ -655,69 +642,18 @@
         });
     }
 
-    function getEventDetail(eventId) {
-        $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
-            eventId = e.data.id;
-            /*详情*/
-            $("#eventCode").val(e.data.eventCode);
-            $("#eventTypeStr").val(e.data.eventTypeStr);
-            $("#represent").text(e.data.represent);
-            $("#location").val(e.data.location);
-            $("#regionStr").val(e.data.regionStr);
-            $("#conditionValue").val(e.data.conditionValue);
-            $("#level").val(e.data.level);
-            $("#timeLimitStr").val(e.data.timeLimitStr);
-            $("#girdStr").val(e.data.girdStr);
-            $("#community").val(e.data.community);
-            $("#street").val(e.data.street);
-            $("#eventRegion").val(e.data.eventRegion);
-            $("#x").val(e.data.x);
-            $("#y").val(e.data.y);
-            $("#eventSourceStr").val(e.data.eventSourceStr);
-            $("#cdate").val(e.data.cdate);
-            $("#petitionerSex").val(e.data.petitionerSex);
-            $("#petitionerPhone").val(e.data.petitionerPhone);
-            $("#petitionerName").val(e.data.petitionerName);
-            $("#userName").val(e.data.userName);
-            $("#recTypeStr").val(e.data.recTypeStr);
-            /*流程图*/
-            $("#eventImg").attr('src', img + e.data.processInstanceId);
-            /* 坐标 */
-            setPoint(e.data.x, e.data.y);
-        });
-    }
-
-    /* 完成任务 派核实 监督员 */
-    function setValueForCompleteEvent(data) {
-        $("#eventId").val(data.value)
-        $("#button").val(data.id)
-    }
-
-    function completeEvent() {
-        let userIdVal = $("#userId").val();
-        let buttonVal = $("#button").val();
-        let idVal = $("#eventId").val();
-        if (buttonVal == 13 || buttonVal == 14 || buttonVal == 16) {
-            if (userIdVal == null || userIdVal == "") {
-                alert("请选择监督员");
-                return false;
-            }
-        }
-        $.operate.saveAndReload(completeByReceptionistUrl, {
-            id: idVal,
-            userId: userIdVal,
-            button: buttonVal
-        });
-
+    function Cancel() {
+        $.modal.closeLoading();
     }
 
     //上传 照片视频音频
+    let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
     $(function () {
 
-        $("#input-id").fileinput({
+        $(".input-id").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
-            // uploadUrl: uploadUrl,
+            uploadUrl: uploadUrl,
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
@@ -740,6 +676,7 @@
             // $(this).fileinput("upload");
         }).on("fileuploaded", function (event, data) {
             console.log('fileuploaded()      ');
+
             if (data.response.code === web_status.FAIL) {
                 console.log("上传文件失败");
             }
@@ -764,7 +701,7 @@
             console.log(id);
         });
 
-        $("#videoInput").fileinput({
+        $(".videoInput").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             // uploadUrl: uploadUrl,
@@ -783,14 +720,14 @@
             // browseClass: "btn btn-primary",                     // 按钮样式
 
         })
-        $("#musicInput").fileinput({
+        $(".musicInput").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             // uploadUrl: uploadUrl,
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['mov', 'mp4', 'mp3'],       // 接收的文件后缀
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
             maxFileCount: 2,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
@@ -803,7 +740,6 @@
 
         })
     })
-
 
     var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
     // 沽源地图
@@ -840,6 +776,7 @@
         })
     });
 
+
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),
     });
@@ -867,6 +804,85 @@
                 })
             })
         }));
+    }
+
+    function selectEventTypeTree() {
+        console.log(1)
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择事件类型',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        console.log(2)
+        var body = layer.getChildFrame('body', index);
+        $("#eventTypeId").val(body.find('#treeId').val());
+        $("#typeStr").val(body.find('#treeName').val());
+        let eventTypeId = $("#eventTypeId").val();
+        //获取立案区域
+        findEventConditionByEventType(eventTypeId)
+        layer.close(index);
+    }
+
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+
+    /**
+     * 获取立案区域
+     */
+    function findEventConditionByEventType(eventTypeId) {
+        let url = findEventConditionByEventTypeUrl + "?eventTypeId=" + eventTypeId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === "0") {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
+                });
+                $("#eventCondition").html(option);
+            }
+        });
+    }
+
+    /**
+     * 立案条件
+     */
+    function getEventCondition() {
+        let eventConditionId = $("#eventCondition").val();
+        let url = "/event/getEventCondition?conditionId=" + eventConditionId;
+        $.ajaxUtil.get(url, function (e) {
+            $("#eventTerm").empty();
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === "0") {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
+                });
+            }
+            $("#eventTerm").html(option);
+        });
+    }
+
+    /**
+     * 获取立案时限分类
+     */
+    function getTimeTypeList() {
+        let eventTerm = $("#eventTerm").val();
+        let url = "/event/findDeptTimeLimitByCondition?conditionId=" + eventTerm;
+        $.ajaxUtil.get(url, function (e) {
+            $("#timeType").empty();
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === "0") {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.level + "</option>"
+                });
+            }
+            $("#timeType").html(option);
+        });
     }
 </script>
 </body>

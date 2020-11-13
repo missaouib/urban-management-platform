@@ -217,8 +217,7 @@ public class SupervisionAcceptanceController {
         eventDTO.setTaskName(Arrays.asList(EventConstant.SHIFT_LEADER,
                 EventConstant.DISPATCHER,
                 EventConstant.PROFESSIONAL_AGENCY,
-                EventConstant.CLOSE_TASK,
-                EventConstant.RECOVERY));
+                EventConstant.CLOSE_TASK));
         return eventService.search(eventDTO, pageable);
     }
 

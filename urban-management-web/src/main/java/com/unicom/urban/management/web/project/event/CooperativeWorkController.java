@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * 协同工作子系统
@@ -110,7 +111,7 @@ public class CooperativeWorkController {
      */
     @GetMapping("/onAccountList")
     public Page<EventVO> onAccountList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
-        eventDTO.setHang("1");
+        eventDTO.setTaskName(Collections.singletonList(EventConstant.RECOVERY));
         return eventService.search(eventDTO, pageable);
     }
 
