@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
  *
  * @author liukai
  */
+@Getter
+@Setter
 @Component
 @PropertySource("classpath:gisServer.properties")
 @ConfigurationProperties(prefix = "gis.api")
-@Getter
-@Setter
 public class GisServiceProperties {
 
     private String url;
