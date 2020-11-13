@@ -807,7 +807,6 @@
     }
 
     function selectEventTypeTree() {
-        console.log(1)
         var treeId = $("#treeId").val();
         var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
         var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
@@ -821,7 +820,6 @@
     }
 
     function doSubmit(index, layero) {
-        console.log(2)
         var body = layer.getChildFrame('body', index);
         $("#eventTypeId").val(body.find('#treeId').val());
         $("#typeStr").val(body.find('#treeName').val());
