@@ -1522,3 +1522,8 @@ label.error {
 .doit{
    text-align: center!important;
 }
+.innerPic{
+    width: 100px;
+   max-height: 100px;
+    /*padding-left: 20px;*/
+}

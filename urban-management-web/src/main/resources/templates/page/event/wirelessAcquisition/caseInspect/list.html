@@ -245,17 +245,32 @@
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
-                                    <div><input class="input-id" type="file" name="file" multiple="multiple"></div>
+                                    <div>
+<!--                                        <input class="input-id" type="file" name="file" multiple="multiple">-->
+                                        <div class="innerPic">
+                                            <img src="../img/streed.png" class="img-rounded">
+                                        </div>
+                                    </div>
                                 </div>
 
 
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
-                                    <div><input class="videoInput" type="file" name="file" multiple="multiple"></div>
+                                    <div>
+<!--                                        <input class="videoInput" type="file" name="file" multiple="multiple">-->
+                                        <div class="innerPic">
+                                            无
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
-                                    <div><input class="musicInput" type="file" name="file" multiple="multiple"></div>
+                                    <div>
+<!--                                        <input class="musicInput" type="file" name="file" multiple="multiple">-->
+                                        <div class="innerPic">
+                                            无
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
@@ -451,9 +466,102 @@
         let img = /*[[@{/common/img/}]]*/ "/common/img/";
         let searchUrl = /*[[@{/event/caseInspectList}]]*/ "/event/caseInspectList";
         let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
+        //上传 照片视频音频
+
         let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
         let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
 
+        $(function () {
+
+            $(".input-id").fileinput({
+                language: 'zh',                                     // 设置语言
+                theme: 'fa',
+                uploadUrl: uploadUrl,
+                // showUpload: true,
+                // previewFileType: 'any',
+                // enableResumableUpload: true,
+                allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+                maxFileCount: 2,                                    // 最大文件数量
+                hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+                focusCaptionOnBrowse: false,
+                showCaption: false,                                 // 是否显示标题
+                showPreview: true,                                  // 是否显示预览
+                showUpload: false,                                  // 是否显示上传按钮
+                showRemove: true,                                   // 显示移除按钮
+                dropZoneEnabled: false,                             // 是否显示拖拽区域
+                // browseClass: "btn btn-primary",                     // 按钮样式
+
+            }).on('change', function (event) {
+                console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
+            }).on('fileselect', function (event, numFiles, label) {
+                console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
+            }).on("filebatchselected", function (event, files) {
+                // $(this).fileinput("upload");
+            }).on("fileuploaded", function (event, data) {
+                console.log('fileuploaded()      ');
+                if (data.response.code === web_status.FAIL) {
+                    console.log("上传文件失败");
+                }
+                console.log(data);
+            }).on('filedeleted', function (event, key) {
+                console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
+                console.log('Key = ' + key);
+            }).on('filesuccessremove', function (event, id) {
+                console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
+                console.log(id);
+            }).on('fileclear', function (event) {
+                console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
+                console.log(event);
+            }).on('filecleared', function (event) {
+                console.log("filecleared()        在预览中的文件被清除后触发此事件。");
+                console.log(event);
+            }).on('filepredelete', function (event, key) {
+                console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
+                console.log('Key = ' + key);
+            }).on('filesuccessremove', function (event, id) {
+                console.log('filesuccessremove()   ')
+                console.log(id);
+            });
+
+            $(".videoInput").fileinput({
+                language: 'zh',                                     // 设置语言
+                theme: 'fa',
+                uploadUrl: uploadUrl,
+                // showUpload: true,
+                // previewFileType: 'any',
+                // enableResumableUpload: true,
+                allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+                maxFileCount: 2,                                    // 最大文件数量
+                hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+                focusCaptionOnBrowse: false,
+                showCaption: false,                                 // 是否显示标题
+                showPreview: true,                                  // 是否显示预览
+                showUpload: false,                                  // 是否显示上传按钮
+                showRemove: true,                                   // 显示移除按钮
+                dropZoneEnabled: false,                             // 是否显示拖拽区域
+                // browseClass: "btn btn-primary",                     // 按钮样式
+
+            })
+            $(".musicInput").fileinput({
+                language: 'zh',                                     // 设置语言
+                theme: 'fa',
+                uploadUrl: uploadUrl,
+                // showUpload: true,
+                // previewFileType: 'any',
+                // enableResumableUpload: true,
+                allowedFileExtensions: ['mov', 'mp4', 'mp3'],       // 接收的文件后缀
+                maxFileCount: 2,                                    // 最大文件数量
+                hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+                focusCaptionOnBrowse: false,
+                showCaption: false,                                 // 是否显示标题
+                showPreview: true,                                  // 是否显示预览
+                showUpload: false,                                  // 是否显示上传按钮
+                showRemove: true,                                   // 显示移除按钮
+                dropZoneEnabled: false,                             // 是否显示拖拽区域
+                // browseClass: "btn btn-primary",                     // 按钮样式
+
+            })
+        })
         /* 获取下一步按钮 */
         function getButton(eventId) {
             let getButtonUrl = /*[[@{/event/getButton/}]]+eventId*/ "/event/getButton/" + eventId;

@@ -245,17 +245,32 @@
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
-                                    <div><input id="input-id" type="file"  name="file" multiple="multiple"></div>
+                                    <div>
+                                        <!--                                        <input class="input-id" type="file" name="file" multiple="multiple">-->
+                                        <div class="innerPic">
+                                            <img src="../img/streed.png" class="img-rounded">
+                                        </div>
+                                    </div>
                                 </div>
 
 
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
-                                    <div><input id="videoInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div>
+                                        <!--                                        <input class="videoInput" type="file" name="file" multiple="multiple">-->
+                                        <div class="innerPic">
+                                            无
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
-                                    <div><input id="musicInput" type="file"  name="file" multiple="multiple"></div>
+                                    <div>
+                                        <!--                                        <input class="musicInput" type="file" name="file" multiple="multiple">-->
+                                        <div class="innerPic">
+                                            无
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
@@ -419,6 +434,8 @@
     let searchUrl = /*[[@{/event/caseInvalidList}]]*/ "/event/caseInvalidList";
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
+    let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
+
     let num = 1;
     function queryUserList() {
         var options = {
@@ -431,7 +448,6 @@
             onClickRow: function (row,index) {
                 layerMap.getSource().clear()
                 console.log("row", row);
-                getTimeAxis(row.id);
                 getEventDetail(row.id);
             },
             columns: [
@@ -743,7 +759,7 @@
         $("#input-id").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
-            // uploadUrl: uploadUrl,
+            uploadUrl: uploadUrl,
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
@@ -794,7 +810,7 @@
         $("#videoInput").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
-            // uploadUrl: uploadUrl,
+            uploadUrl: uploadUrl,
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
@@ -813,7 +829,7 @@
         $("#musicInput").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
-            // uploadUrl: uploadUrl,
+            uploadUrl: uploadUrl,
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
