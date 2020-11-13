@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "fdfs.nginx-url",
+      "type": "java.lang.String",
+      "description": "fastdfs nginx附件回显地址."
+    }
+  ]
+}

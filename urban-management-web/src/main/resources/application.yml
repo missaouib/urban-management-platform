@@ -12,7 +12,7 @@ spring:
       connection-test-query: SELECT 1    # 连接测试查询
       connection-timeout: 60000          # 连接超时时间 毫秒
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: none
     show-sql: true
