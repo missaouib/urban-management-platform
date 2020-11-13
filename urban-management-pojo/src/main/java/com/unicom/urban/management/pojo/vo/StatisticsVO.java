@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 顾志杰
@@ -24,7 +25,7 @@ public class StatisticsVO implements Serializable {
 
     private String opinions;
 
-    private List<String> fileName;
+    private List<Map<String, Object>> fileName;
 
     private String link;
 

@@ -101,7 +101,7 @@
 
                                 <td><span></span>部件编码</td>
                                 <td>
-                                    <input type="text">
+                                    <input type="text" readonly="readonly">
                                 </td>
                                 <td><span></span>案件类型</td>
                                 <td>
@@ -189,17 +189,18 @@
                         <div class="send">
                             <div class="sendImg">
                                 <div class="sendText"><span>图片:</span></div>
-                                <div><input id="input-id" type="file" name="file" multiple="multiple"></div>
+                                <div><input id="input-id" type="file" name="files" multiple="multiple"></div>
+                                <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
                             </div>
 
 
                             <div class="sendImg">
                                 <div class="sendText"><span>视频:</span></div>
-                                <div><input id="videoInput" type="file" name="file" multiple="multiple"></div>
+                                <div><input id="videoInput" type="file" name="files" multiple="multiple"></div>
                             </div>
                             <div class="sendImg">
                                 <div class="sendText"><span>音频:</span></div>
-                                <div><input id="musicInput" type="file" name="file" multiple="multiple"></div>
+                                <div><input id="musicInput" type="file" name="files" multiple="multiple"></div>
                             </div>
 
                         </div>
@@ -355,6 +356,9 @@
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {
+                let imageUrlList = data.response.data.url;
+                $("#imageUrlList").val(imageUrlList);
+                console.log("data", imageUrlList);
                 $.modal.alertSuccess('上传成功');
             } else {
                 $.modal.alertError(data.response.message);
@@ -422,7 +426,6 @@
     function setCenterForGrid(data) {
         map.getView().setCenter(data);
     }
-
 
     let url = /*[[@{/event/register}]]*/ "/event/register";
     let receiveUrl = /*[[@{/event/receive}]]*/ "/event/receive";

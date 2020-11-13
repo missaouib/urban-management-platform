@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -59,8 +57,14 @@ public class StatisticsService {
             if (statistics.getEndTime() != null) {
                 endTime = dateTimeFormatter.format(statistics.getEndTime());
             }
-            List<String> stringList = new ArrayList<>();
-            statistics.getEventFileList().forEach(eventFile -> stringList.add(eventFile.getFileName()));
+            List<Map<String, Object>> stringList = new ArrayList<>();
+            statistics.getEventFileList().forEach(eventFile -> {
+                Map<String, Object> map = new HashMap<>(3);
+                map.put("url", eventFile.getFilePath());
+                map.put("type", eventFile.getFileType().getValue());
+                map.put("management", eventFile.getManagement().getValue());
+                stringList.add(map);
+            });
             StatisticsVO statisticsVO = StatisticsVO.builder()
                     .starTime(starTime)
                     .endTime(endTime)

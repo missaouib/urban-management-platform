@@ -106,5 +106,10 @@ public class EventDTO {
      */
     private String cancel;
 
+    /**
+     * 图片集合
+     */
+    private List<String> imageUrlList;
+
 
 }

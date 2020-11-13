@@ -11,7 +11,9 @@ import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
+import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
+import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +56,10 @@ public class EventService {
     private EventTypeService eventTypeService;
     @Autowired
     private PetitionerService petitionerService;
+    @Autowired
+    private KVService kvService;
+    @Autowired
+    private EventFileService eventFileService;
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
@@ -250,6 +256,10 @@ public class EventService {
         petitioner.setPhone(eventDTO.getPetitionerPhone());
         Petitioner saveP = petitionerService.save(petitioner);
         event.setPetitioner(saveP);
+
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO);
+        event.setEventFileList(eventFileList);
+
         Event save = eventRepository.save(event);
         /* 受理员保存 */
         if (eventDTO.getInitSts() != null && eventDTO.getInitSts() == 2) {
@@ -257,19 +267,19 @@ public class EventService {
         }
         /* 受理员核实 */
         if (eventDTO.getInitSts() != null && eventDTO.getInitSts() == 3) {
-            workService.caseAcceptanceByReceive(save.getId(), eventDTO.getUserId());
+            eventDTO.setId(save.getId());
+            eventDTO.setEventFileList(null);
+            workService.caseAcceptanceByReceive(eventDTO);
         }
     }
 
     /**
      * 受理员完成任务 并且 激活监督员(领取任务)核实
      *
-     * @param eventId 事件id
-     * @param userId  指派的人的id
-     * @param button  按钮
+     * @param eventDTO 数据
      */
-    public void completeByReceptionist(String eventId, String userId, String button) {
-        workService.completeByReceptionist(eventId, userId, button);
+    public void completeByReceptionist(EventDTO eventDTO) {
+        workService.completeByReceptionist(eventDTO);
     }
 
     /**
@@ -298,35 +308,31 @@ public class EventService {
      * 受理员 核实反馈
      * 受理开启值班长流程
      *
-     * @param eventId 事件id
-     * @param button  按钮
+     * @param eventDTO 事件
      */
-    public void completeByReceptionistForDo(String eventId, String button) {
-        workService.completeByReceptionistForDo(eventId, button);
+    public void completeByReceptionistForDo(EventDTO eventDTO) {
+        workService.completeByReceptionistForDo(eventDTO);
     }
 
     /**
      * 受理员 核实反馈
      * 不予受理直接结束
      *
-     * @param eventId 事件id
-     * @param button  按钮
+     * @param eventDTO 数据
      */
-    public void completeByReceptionistForNotDo(String eventId, String button) {
-        workService.completeByReceptionistForNotDo(eventId, button);
+    public void completeByReceptionistForNotDo(EventDTO eventDTO) {
+        workService.completeByReceptionistForNotDo(eventDTO);
     }
 
     /**
      * 受理员完成任务 并且 激活监督员(领取任务)核查
      * 需要先领取任务
      *
-     * @param eventId 事件id
-     * @param userId  指派的人的id
-     * @param button  按钮
+     * @param eventDTO 事件
      */
-    public void completeByReceptionistWithClaim(String eventId, String userId, String button) {
-        workService.claimByReceptionist(eventId);
-        workService.completeByReceptionist(eventId, userId, button);
+    public void completeByReceptionistWithClaim(EventDTO eventDTO) {
+        workService.claimByReceptionist(eventDTO.getId());
+        workService.completeByReceptionist(eventDTO);
     }
 
     public String createCode(String eventTypeId) {
@@ -418,8 +424,8 @@ public class EventService {
         one.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
             map.put("url", f.getFilePath());
-            map.put("type", f.getFileType());
-            map.put("management", f.getManagement());
+            map.put("type", f.getFileType().getValue());
+            map.put("management", f.getManagement().getValue());
             fileList.add(map);
         });
         eventOneVO.setFile(fileList);

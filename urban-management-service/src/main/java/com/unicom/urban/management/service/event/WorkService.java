@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.EventFile;
 import com.unicom.urban.management.pojo.entity.ProcessTimeLimit;
@@ -70,13 +71,13 @@ public class WorkService {
     /**
      * 案件受理-核实
      *
-     * @param eventId 事件id
-     * @param userId  监督员
+     * @param eventDTO 事件
      */
-    public void caseAcceptanceByReceive(String eventId, String userId) {
-        this.acceptanceReportingByReceptionist(eventId);
-        this.claimByReceptionist(eventId);
-        this.completeByReceptionist(eventId, userId, "11");
+    public void caseAcceptanceByReceive(EventDTO eventDTO) {
+        this.acceptanceReportingByReceptionist(eventDTO.getId());
+        this.claimByReceptionist(eventDTO.getId());
+        eventDTO.setButton("11");
+        this.completeByReceptionist(eventDTO);
     }
 
     /**
@@ -92,23 +93,21 @@ public class WorkService {
     /**
      * 受理员完成任务 并且 激活监督员(领取任务)核实
      *
-     * @param eventId 事件id
-     * @param userId  指派的人的id
-     * @param button  按钮
+     * @param eventDTO 事件
      */
-    public void completeByReceptionist(String eventId, String userId, String button) {
-        Statistics statistics1 = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+    public void completeByReceptionist(EventDTO eventDTO) {
+        Statistics statistics1 = statisticsService.findByEventIdAndEndTimeIsNull(eventDTO.getId());
         statistics1.setEndTime(LocalDateTime.now());
-        if ("13".equals(button) || "16".equals(button)) {
+        if ("13".equals(eventDTO.getButton()) || "16".equals(eventDTO.getButton())) {
             activitiService.claim(statistics1.getTaskId(), SecurityUtil.getUserId());
         }
         Map<String, Object> map = judgeOverTimeIsOrNot(statistics1.getStartTime(), statistics1.getEndTime(), statistics1.getProcessTimeLimit().getTimeLimit());
-        if ("14".equals(button)) {
+        if ("14".equals(eventDTO.getButton())) {
             statistics1.setSendCheckHuman(1);
             statistics1.setInTimeCheck((Integer) map.get("time"));
             statistics1.setSts(map.get("sts").toString());
         }
-        if ("11".equals(button)) {
+        if ("11".equals(eventDTO.getButton())) {
             /* 发核实 */
             statistics1.setSendVerify(1);
             /* 按时发核实 */
@@ -119,21 +118,21 @@ public class WorkService {
             /*TODO 获取当前登陆人角色*/
             statistics1.setUser(SecurityUtil.getUser().castToUser());
         }
-        setOpinionsAndEventFileList(statistics1, statistics1.getOpinions(), statistics1.getEventFileList());
+        setOpinionsAndEventFileList(statistics1, eventDTO.getRepresent(), eventDTO.getEventFileList());
         statisticsService.update(statistics1);
-        activitiService.complete(statistics1.getTaskId(), Collections.singletonList(userId), button);
-        Statistics statistics = initStatistics(eventId);
+        activitiService.complete(statistics1.getTaskId(), Collections.singletonList(eventDTO.getUserId()), eventDTO.getButton());
+        Statistics statistics = initStatistics(eventDTO.getId());
         statistics.setStartTime(statistics1.getEndTime());
         statistics.setSort(statistics1.getSort() + 1);
-        if ("14".equals(button)) {
+        if ("14".equals(eventDTO.getButton())) {
             statistics.setNeedCheck(1);
         }
-        if ("11".equals(button)) {
+        if ("11".equals(eventDTO.getButton())) {
             /* 应核实 */
             statistics.setNeedVerify(1);
         }
         statisticsService.update(statistics);
-        activitiService.claim(statistics.getTaskId(), userId);
+        activitiService.claim(statistics.getTaskId(), eventDTO.getUserId());
 
     }
 
@@ -182,11 +181,10 @@ public class WorkService {
      * 受理员 核实反馈
      * 受理开启值班长流程
      *
-     * @param eventId 事件id
-     * @param button  按钮
+     * @param eventDTO 事件
      */
-    public void completeByReceptionistForDo(String eventId, String button) {
-        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+    public void completeByReceptionistForDo(EventDTO eventDTO) {
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventDTO.getId());
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         statistics.setEndTime(LocalDateTime.now());
         /* 受理数 */
@@ -197,20 +195,20 @@ public class WorkService {
         statistics.setSts(map.get("sts").toString());
         /* 待受理 */
         statistics.setToOperate(0);
-        setOpinionsAndEventFileList(statistics, statistics.getOpinions(), statistics.getEventFileList());
+        setOpinionsAndEventFileList(statistics, eventDTO.getRepresent(), eventDTO.getEventFileList());
         statisticsService.update(statistics);
         /*TODO 查询所有值班长角色的人*/
-        activitiService.complete(statistics.getTaskId(), Collections.singletonList("1"), button);
-        Statistics statistics1 = this.initStatistics(eventId);
-        if ("10".equals(button)) {
+        activitiService.complete(statistics.getTaskId(), Collections.singletonList("1"), eventDTO.getButton());
+        Statistics statistics1 = this.initStatistics(eventDTO.getId());
+        if ("10".equals(eventDTO.getButton())) {
             /* 待结案 */
             statistics1.setToClose(1);
         }
-        if ("3".equals(button)) {
+        if ("3".equals(eventDTO.getButton())) {
             /* 待立案数 */
             statistics1.setToInst(1);
         }
-        if ("17".equals(button)) {
+        if ("17".equals(eventDTO.getButton())) {
             /* 带派遣 */
             statistics1.setToDispatch(1);
             /* 应派遣 */
@@ -223,11 +221,10 @@ public class WorkService {
      * 受理员 核实反馈
      * 不予受理直接结束
      *
-     * @param eventId 事件id
-     * @param button  按钮
+     * @param eventDTO 事件
      */
-    public void completeByReceptionistForNotDo(String eventId, String button) {
-        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+    public void completeByReceptionistForNotDo(EventDTO eventDTO) {
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventDTO.getId());
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         statistics.setEndTime(LocalDateTime.now());
         /* 待受理 */
@@ -238,9 +235,9 @@ public class WorkService {
         /* 按时受理 */
         statistics.setInTimeOperate((Integer) map.get("time"));
         statistics.setSts(map.get("sts").toString());
-        setOpinionsAndEventFileList(statistics, statistics.getOpinions(), statistics.getEventFileList());
+        setOpinionsAndEventFileList(statistics, eventDTO.getRepresent(), eventDTO.getEventFileList());
         statisticsService.update(statistics);
-        activitiService.complete(statistics.getTaskId(), null, button);
+        activitiService.complete(statistics.getTaskId(), null, eventDTO.getButton());
     }
 
     /* -------------------------------------------------------------私有方法- */
