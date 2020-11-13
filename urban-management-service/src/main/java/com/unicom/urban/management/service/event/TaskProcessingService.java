@@ -124,7 +124,6 @@ public class TaskProcessingService {
             newStatistics.setNeedDispatch(1);
         } else {
             //回退 受理员
-            newStatistics.setSort(statistics.getSort() + 1);
             newStatistics.setToOperate(1);
             newStatistics.setBackOff(1);
             newStatistics.setBackOffDate(LocalDateTime.now());
