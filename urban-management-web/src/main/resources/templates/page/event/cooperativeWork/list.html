@@ -649,9 +649,7 @@
                     html += "</div>";
                     if (data[i].fileName.length > 0) {
                         html += "<div class='endBox enclosure'><i></i>附件详情</div>";
-                        html += "<button type='button' onclick='setFileUrl(" + data[i].fileName + ")'>11211111</button>";
-                        console.log("html", data[i].fileName);
-                        console.log("html", html);
+                        html += "<button type='button' value='" + data[i].fileName + "' onclick='setFileUrl(this)'>11211111</button>";
                     }
                     html += "</div>";
                     html += "<div class='gameEnd'>";
@@ -686,12 +684,13 @@
     }
 
     function setFileUrl(data) {
-        console.log(data)
-        if (data.length > 0) {
+        console.log("data", data);
+        let value = data.value;
+        if (value.length > 0) {
             $("#modelImageList").empty();
             let imageHtml = "";
-            for (let i = 0; i < data.length; i++) {
-                imageHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + data[i].url + "'>";
+            for (let i = 0; i < value.length; i++) {
+                imageHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>";
             }
             $("#modelImageList").html(imageHtml);
         }
