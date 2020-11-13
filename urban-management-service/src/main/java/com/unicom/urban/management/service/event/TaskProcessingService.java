@@ -298,7 +298,7 @@ public class TaskProcessingService {
      */
     private void delayedApproval(String eventId, String buttonId, StatisticsDTO statisticsDTO) {
         List<Statistics> statisticsList = statisticsService.findByEventIdToList(eventId);
-        List<Statistics> collect = statisticsList.stream().filter(s -> "专业部门".equals(s.getTaskName())).collect(Collectors.toList());
+        List<Statistics> collect = statisticsList.stream().filter(s->s.getDelayedHours()!=null).filter(s -> "专业部门".equals(s.getTaskName())).collect(Collectors.toList());
         if (collect.size() > 0) {
             Dept dept = collect.get(0).getDisposeUnit();
             List<String> users = this.getUsers(dept);
