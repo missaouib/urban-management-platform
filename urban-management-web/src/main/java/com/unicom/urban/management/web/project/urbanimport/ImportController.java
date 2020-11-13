@@ -12,7 +12,7 @@ import com.unicom.urban.management.service.component.ComponentService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.user.UserService;
-import net.bytebuddy.utility.RandomString;
+import com.unicom.urban.management.web.framework.properties.GisServiceProperties;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -24,7 +24,6 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,23 +61,28 @@ public class ImportController {
     @Autowired
     private GridService gridService;
 
-    @Value("${gis.api.url}")
-    private String url;
+    @Autowired
+    private GisServiceProperties gisServiceProperties;
+
     public static String TYPE_SHP = "SHP";
+
     @GetMapping("/gImport")
     public ModelAndView gImport() {
         return new ModelAndView(SystemConstant.PAGE + "/urbanImport/gImport");
     }
+
     @GetMapping("/cImport")
     public ModelAndView cImport() {
         return new ModelAndView(SystemConstant.PAGE + "/urbanImport/cImport");
     }
+
     /**
      * 网格导入
-     * @param request 要导入的文件request
-     * @param layerName 网格名称
+     *
+     * @param request          要导入的文件request
+     * @param layerName        网格名称
      * @param layerSettingType 部件或网格
-     * @param shpType 预留参数
+     * @param shpType          预留参数
      * @return
      */
     @RequestMapping("/gridImport")
@@ -86,14 +90,14 @@ public class ImportController {
         String layerId = "";
         shpType = "";
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-        if(!this.validImport(multiRequest)){
-            Result.fail("99","");
+        if (!this.validImport(multiRequest)) {
+            Result.fail("99", "");
         }
         // 创建集合接受文件
         HttpClient httpclient = new DefaultHttpClient();
         try {
             //开始导入文件
-            HttpResponse response = gisImport(layerName, layerSettingType,multiRequest, httpclient);
+            HttpResponse response = gisImport(layerName, layerSettingType, multiRequest, httpclient);
 
             int statusCode = response.getStatusLine().getStatusCode();
 
@@ -124,28 +128,28 @@ public class ImportController {
         /*新增发布*/
         Publish publish = savePublish(layerName, layerId, KV.builder().id(KvConstant.KV_RELEASE_COMPONENT).build());
         /*新增部件*/
-        saveGrid(layerName,publish);
+        saveGrid(layerName, publish);
         return Result.success();
     }
 
 
-
     /**
      * 部件导入
-     * @param request 要导入的文件request
-     * @param layerName 部件名称
+     *
+     * @param request          要导入的文件request
+     * @param layerName        部件名称
      * @param layerSettingType 部件或网格
-     * @param shpType 预留参数
-     * @param componentTypeId 部件主键
+     * @param shpType          预留参数
+     * @param componentTypeId  部件主键
      * @return
      */
     @RequestMapping("/componentImport")
-    public Result componentImport(HttpServletRequest request, String layerName, String layerSettingType, String shpType,String componentTypeId) {
+    public Result componentImport(HttpServletRequest request, String layerName, String layerSettingType, String shpType, String componentTypeId) {
         String layerId = "";
         shpType = "";
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-        if (!validImport(multiRequest)){
-            return Result.fail("99","格式错误，请选择正确文件格式！");
+        if (!validImport(multiRequest)) {
+            return Result.fail("99", "格式错误，请选择正确文件格式！");
         }
         // 创建集合接受文件
         HttpClient httpclient = new DefaultHttpClient();
@@ -182,10 +186,10 @@ public class ImportController {
         return Result.success();
     }
 
-    private HttpResponse gisImport(String layerName, String layerSettingType, MultipartHttpServletRequest multiRequest,  HttpClient httpclient) throws IOException {
+    private HttpResponse gisImport(String layerName, String layerSettingType, MultipartHttpServletRequest multiRequest, HttpClient httpclient) throws IOException {
         // 创建集合接受文件
         List<MultipartFile> fileList = multiRequest.getFiles("file");
-        HttpPost httpPost = new HttpPost(url);
+        HttpPost httpPost = new HttpPost(gisServiceProperties.getUrl());
         MultipartEntityBuilder reqEntity = MultipartEntityBuilder.create();
 
         for (MultipartFile multipartFile : fileList) {
@@ -208,7 +212,7 @@ public class ImportController {
     }
 
     /*新增部件*/
-    private void saveComponentGrid(Publish publish,String componentId){
+    private void saveComponentGrid(Publish publish, String componentId) {
         Component component = new Component();
         component.setPublish(publish);
         Component c = componentService.getOne(componentId);
@@ -216,8 +220,9 @@ public class ImportController {
         component.setSts(0);
         componentService.saveComponent4Import(component);
     }
+
     /*新增网格*/
-    private void saveGrid(String layerName,Publish publish){
+    private void saveGrid(String layerName, Publish publish) {
 
         Grid grid = new Grid();
         grid.setGridName(layerName);
@@ -230,8 +235,10 @@ public class ImportController {
         gridService.save4Import(grid);
 
     }
+
     /**
      * 新增发布
+     *
      * @param layerName
      * @param layerId
      * @param kv
@@ -248,18 +255,20 @@ public class ImportController {
 
     /**
      * 查询publish表中是有有网格
+     *
      * @return
      */
     private boolean checkPublish() {
         boolean f = false;
         return f;
     }
-    private boolean validImport( MultipartHttpServletRequest multiRequest){
+
+    private boolean validImport(MultipartHttpServletRequest multiRequest) {
         List<MultipartFile> fileList = multiRequest.getFiles("file");
         boolean flag = false;
         for (MultipartFile multipartFile : fileList) {
             String suffix = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".") + 1);
-            if (TYPE_SHP.equals(suffix)){
+            if (TYPE_SHP.equals(suffix)) {
                 flag = true;
             }
         }

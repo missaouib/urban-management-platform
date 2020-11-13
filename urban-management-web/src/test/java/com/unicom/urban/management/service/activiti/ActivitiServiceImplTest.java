@@ -69,14 +69,19 @@ public class ActivitiServiceImplTest {
         activitiService.claim(paiqianyuan.getId(), "派遣员1");
         activitiService.complete(paiqianyuan.getId(), Arrays.asList("专业部门1", "专业部门2", "专业部门3", "专业部门4"), "6");
 
-        // 专业部门 申请延时
-        Task shenqingyanshi = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
-        activitiService.claim(shenqingyanshi.getId(), "专业部门1");
-        activitiService.complete(shenqingyanshi.getId(), Arrays.asList("派遣员1", "派遣员2", "派遣员3", "派遣员4"), "22");
+        // 专业部门 申请回退
+        Task huitui = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
+        activitiService.claim(huitui.getId(), "专业部门1");
+        activitiService.complete(huitui.getId(), Arrays.asList("派遣员1", "派遣员2", "派遣员3", "派遣员4"), "8");
 
-        Task ta1111 = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
+        Task huituishenpi = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
+        activitiService.claim(huituishenpi.getId(), "派遣员1");
+        activitiService.complete(huituishenpi.getId(), Arrays.asList("值班长1", "值班长2", "值班长3", "值班长4"), "31");
 
-        List<String> strings = activitiService.queryTaskByAssigneeAndTaskName("派遣员1", Arrays.asList("派遣员-延时审批"));
+        Task zuofeishenqing = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());
+        activitiService.claim(zuofeishenqing.getId(), "值班长1");
+        activitiService.complete(zuofeishenqing.getId(), null, "25");
+
 
 //        // 专业部门 领取完成任务
 //        Task zhuangyebumen = activitiService.getTaskByProcessInstanceId(processInstance.getProcessInstanceId());

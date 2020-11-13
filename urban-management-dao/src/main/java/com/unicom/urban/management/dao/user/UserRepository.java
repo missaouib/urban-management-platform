@@ -4,10 +4,8 @@ import com.unicom.urban.management.dao.CustomizeRepository;
 import com.unicom.urban.management.pojo.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 
-import java.util.List;
+import java.util.Collections;
 
 public interface UserRepository extends CustomizeRepository<User, String> {
 
@@ -17,9 +15,6 @@ public interface UserRepository extends CustomizeRepository<User, String> {
 
     Boolean existsByUsername(String username);
 
-    @Modifying
-    @Query(value = "delete from User u where u.id in ?1")
-    void deleteUserWithIds(List<String> ids);
-
+    void deleteByIdIn(Collections ids);
 
 }

@@ -63,6 +63,3 @@ logging:
     org.springframework: warn
     org.activiti.engine: info
     org.hibernate.type.descriptor.sql.BasicBinder: trace
-gis:
-  api:
-    url: http://192.168.23.41:16844/api/urbanImport
