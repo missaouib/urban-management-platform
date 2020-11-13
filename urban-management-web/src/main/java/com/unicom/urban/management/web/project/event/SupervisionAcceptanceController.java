@@ -236,7 +236,7 @@ public class SupervisionAcceptanceController {
      */
     @GetMapping("/closeEventList")
     public Page<EventVO> closeEventList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
-        eventDTO.setClose(KvConstant.CLOS_ETESK);
+        eventDTO.setClose(Arrays.asList(KvConstant.CLOS_ETESK,KvConstant.TO_VOID));
         return eventService.search(eventDTO, pageable);
     }
 

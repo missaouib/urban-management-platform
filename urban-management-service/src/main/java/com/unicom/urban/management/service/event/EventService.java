@@ -58,8 +58,11 @@ public class EventService {
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
-            if (StringUtils.isNotBlank(eventDTO.getClose())) {
-                list.add(criteriaBuilder.equal(root.get("eventSate").get("id").as(String.class), eventDTO.getClose()));
+            if (eventDTO.getClose() != null) {
+                CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("eventSate").get("id"));
+                eventDTO.getClose().forEach(in::value);
+                list.add(in);
+
             }
             if (StringUtils.isNotBlank(eventDTO.getUserName())) {
                 list.add(criteriaBuilder.equal(root.get("user").get("username").as(String.class), eventDTO.getUserName()));
@@ -141,30 +144,15 @@ public class EventService {
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
         List<EventVO> eventVOList = new ArrayList<>();
+        DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        /*循环添加vo*/
         page.getContent().forEach(e -> {
             EventVO eventVO = EventMapper.INSTANCE.eventToEventVO(e);
             eventVO.setEventTypeName(e.getEventType().getParent().getParent().getName() + "-" + e.getEventType().getParent().getName() + "-" + e.getEventType().getName());
-            if (StringUtils.isNotBlank(eventDTO.getClose())) {
-                List<Statistics> collect = e.getStatisticsList().stream().filter(a -> "值班长-结案".equals(a.getTaskName())).collect(Collectors.toList());
-                if (collect.size() > 0) {
-                    DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    eventVO.setCloseTime(df.format(collect.get(0).getEndTime()));
-                    eventVO.setSts(collect.get(0).getSts());
-                }
-            }
-
-            eventVOList.add(eventVO);
-        });
-
-        setListDataByStatistics(eventVOList);
-        return new PageImpl<>(eventVOList, page.getPageable(), page.getTotalElements());
-    }
-
-    private void setListDataByStatistics(List<EventVO> eventVOList) {
-        DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
-        for (EventVO eventVO : eventVOList) {
-            Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventVO.getId());
-            if (Optional.ofNullable(statistics).isPresent()) {
+           /*查询事件步骤endtime为null的  如果有取出这条 附加到vo信息*/
+            List<Statistics> collect1 = e.getStatisticsList().stream().filter(s -> s.getEndTime() == null).collect(Collectors.toList());
+            if (collect1.size()>0) {
+                Statistics statistics = collect1.get(0);
                 eventVO.setTaskName(statistics.getTaskName());
                 String format = simpleDateFormat.format(statistics.getStartTime());
                 eventVO.setStartTime(format);
@@ -173,18 +161,27 @@ public class EventService {
                 String timeType = statistics.getProcessTimeLimit().getTimeType().getValue();
                 eventVO.setTimeType(timeType);
             } else {
-                List<Statistics> byEventId = statisticsService.findByEventIdToList(eventVO.getId());
-                List<Statistics> collect = byEventId.stream().filter(a -> "值班长-结案".equals(a.getTaskName())).collect(Collectors.toList());
+                /*如果事件步骤没有endtime为null的  证明事件已经完成 获取结束时间最近的那条步骤 附加到vo信息*/
+                List<Statistics> collect = e.getStatisticsList().stream()
+                        .sorted(Comparator.comparing(Statistics::getEndTime, Comparator.reverseOrder()))
+                        .collect(Collectors.toList());
                 if (collect.size() > 0) {
+                    DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    eventVO.setCloseTime(df.format(collect.get(0).getEndTime()));
+                    eventVO.setSts(collect.get(0).getSts());
+
                     eventVO.setTaskName(collect.get(0).getTaskName());
                     String format = simpleDateFormat.format(collect.get(0).getStartTime());
                     eventVO.setStartTime(format);
                 }
 
             }
-        }
+            eventVOList.add(eventVO);
+        });
 
+        return new PageImpl<>(eventVOList, page.getPageable(), page.getTotalElements());
     }
+
 
     public List<EventConditionVO> findEventConditionByEventType(String eventTypeId) {
         List<EventCondition> list = eventConditionRepository.findAllByEventTypeId_IdAndTypeAndParentIsNull(eventTypeId, 1);

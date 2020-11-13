@@ -89,7 +89,7 @@ public class EventDTO {
     private Boolean doBySelf;
 
 
-    private String close;
+    private List<String> close;
 
     /**
      * 已办列表

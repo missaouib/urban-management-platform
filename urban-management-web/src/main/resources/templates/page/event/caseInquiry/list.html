@@ -440,7 +440,25 @@
                     html += "<div class='endBox'>";
                     html += "<em>by:</em> " + data[i].user + "，角色";
                     html += "</div>";
-                    html += "<div class='endBox endright'>" + data[i].starTime + "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>开始时间:</em> " + data[i].starTime
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em>结束时间:</em> " + data[i].endTime
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "<em></em>"
+                    html += "</div>";
+                    if (data[i].fileName.length > 0) {
+                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                    }
+                    html += "<div class='endBox enclosure'><i></i>附件详情</div>";
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='expressRecord-date'>";
