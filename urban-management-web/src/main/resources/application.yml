@@ -39,6 +39,7 @@ spring:
       max-request-size: 40MB
 
 fdfs:
+  nginx-url: http://192.168.24.203:8090/
   so-timeout: 1501                      # 上传的超时时间
   connect-timeout: 601                  # 连接超时时间
   thumb-image:                          # 缩略图生成参数
