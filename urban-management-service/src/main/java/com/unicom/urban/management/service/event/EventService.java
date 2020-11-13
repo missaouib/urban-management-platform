@@ -14,14 +14,12 @@ import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.event.spi.EventSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import sun.java2d.pipe.hw.AccelDeviceEventNotifier;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
