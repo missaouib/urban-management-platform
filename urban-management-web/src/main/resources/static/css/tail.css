@@ -456,3 +456,10 @@ ul,li{list-style: none}
 .btn-primary{
     background-color: #354e85!important;
 }
+.file-input{
+    padding-left: 0px!important;
+}
+.sendText{
+    color: black!important;
+    font-size: 12px;
+}

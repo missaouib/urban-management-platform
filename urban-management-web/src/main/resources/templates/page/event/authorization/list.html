@@ -19,15 +19,18 @@
                         <tbody>
                         <tr>
 
-                            <td>当前状态<span></span></td>
-                            <td>
-                                <select name="kv" required>
-                                    <option value="">请选择</option>
-                                </select>
-                            </td>
                             <td>问题描述<span></span></td>
                             <td>
-                                <input type="text" class="datepicker" name="represent">
+                                <input type="text" readonly>
+                            </td>
+                            <td>问题类型<span></span></td>
+                            <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
+                                <input type="hidden" readonly="readonly" id="eventTypeId" name="eventTypeId"
+                                       class="find_input"/>
+                                <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                    +
+                                </button>
                             </td>
                         </tr>
                         <tr>
@@ -39,7 +42,7 @@
                                             th:text="${as.gridName}"></option>
                                 </select>
                             </td>
-                            <td>事件来源<span></span></td>
+                            <td>问题来源<span></span></td>
                             <td>
                                 <select class="form-control" id="eventSource" name="eventSourceId" required>
                                     <option value="">--请选择--</option>
@@ -49,18 +52,17 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>问题类型<span></span></td>
-                            <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
-                                <input type="hidden" readonly="readonly" id="eventTypeId" name="eventTypeId"
-                                       class="find_input"/>
-                                <button type="button" class="addBtn" onclick="selectEventTypeTree()">
-                                    +
-                                </button>
-                            </td>
+
                             <td>立案区域<span></span></td>
                             <td>
                                 <select id="eventCondition" name="eventCondition" onchange="getEventCondition()"
+                                        required>
+                                    <option value="">--请选择--</option>
+                                </select>
+                            </td>
+                            <td>案件等级<span></span></td>
+                            <td>
+                                <select  name="eventCondition" onchange="getEventCondition()"
                                         required>
                                     <option value="">--请选择--</option>
                                 </select>
@@ -70,12 +72,6 @@
                             <td>立案条件<span></span></td>
                             <td>
                                 <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
-                                    <option value="">--请选择--</option>
-                                </select>
-                            </td>
-                            <td>计时等级<span></span></td>
-                            <td>
-                                <select id="timeType" name="timeType" required>
                                     <option value="">--请选择--</option>
                                 </select>
                             </td>
@@ -306,6 +302,69 @@
             </div>
         </div>
     </div>
+<!--model窗-->
+    <div class="modal fade" id="modal-default8">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">申请原因</h4>
+                </div>
+                <div class="modal-body">
+                    <div style="display: flex;justify-content: space-between">
+                        <div style="width: 50%;display: flex;justify-content: space-between">
+                            <div class="sendText" style="width: 100px!important;">当前处理部门</div>
+                            <input type="text" style="width: 50%" class="find_input">
+                        </div>
+                        <div style="width: 50%;display: flex;justify-content: space-between">
+                            <div class="sendText" style="width: 100px!important;">当前处理人</div>
+                            <input type="text" style="width: 50%" class="find_input">
+                        </div>
+                    </div>
+                    <div style="display: flex;justify-content: start;padding-top: 10px">
+                        <div class="sendText" style="width: 100px!important;">申请原因</div>
+                        <input type="text" class="find_input" style="margin-left: 17px;width: 350px!important;">
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
+<!--                    <button type="button" class="btn btn-success">确认</button>-->
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal-default9">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">审批意见</h4>
+                </div>
+                <div class="modal-body">
+                    <div style="display: flex;justify-content: space-between">
+                        <div style="width: 50%;display: flex;justify-content: space-between">
+                            <div class="sendText" style="width: 100px!important;">当前处理部门</div>
+                            <input type="text" style="width: 50%" class="find_input">
+                        </div>
+                        <div style="width: 50%;display: flex;justify-content: space-between">
+                            <div class="sendText" style="width: 100px!important;">当前处理人</div>
+                            <input type="text" style="width: 50%" class="find_input">
+                        </div>
+                    </div>
+                    <div style="display: flex;justify-content: start;padding-top: 10px">
+                        <div class="sendText" style="width: 100px!important;">申请原因</div>
+                        <input type="text" class="find_input" style="margin-left: 17px;width: 350px!important;">
+                    </div>
+                    <div style="display: flex;justify-content: start;padding-top: 10px">
+                        <div class="sendText" style="width: 100px!important;">审批意见</div>
+                        <textarea class="find_input" style="margin-left: 17px;width: 350px!important;height: 100px"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-success">通过</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">不通过</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -485,11 +544,6 @@
                     }
                 },
                 {
-                    title: '处理时限',
-                    field: '',
-                    formatter:setTimeLimit
-                },
-                {
                     title: '案件编号',
                     field: 'eventCode'
                 },
@@ -498,13 +552,28 @@
                     field: 'represent'
                 },
                 {
-                    title: '当前状态',
+                    title: '当前处理部门',
                     field: 'taskName'
                 },
                 {
                     title: '案件类型',
                     field: 'recTypeName'
                 },
+                {
+                    title: '申请类型',
+                    field: 'recTypeName'
+                },
+                {
+                    title: '操作',
+                    field: '',
+                    class:"doit",
+                    width:"150px",
+                    formatter: function (value, row) {
+                        var actions = '<a  href="#" title=""  data-toggle="modal" data-target="#modal-default8">挂账原因</a> ' +
+                                        '<a  href="#" title="" data-toggle="modal" data-target="#modal-default9">审批</a> ';
+                        return actions
+                    }
+                }
             ]
         };
         $.table.init(options);
