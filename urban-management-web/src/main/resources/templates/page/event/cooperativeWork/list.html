@@ -430,6 +430,7 @@
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
 
     let searchUrl = /*[[@{/event/taskProcessingList}]]*/ "/event/cooperativeWorkList";
+    let showUrl = [[${@fastProperties.nginxUrl}]];
 
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
 
@@ -615,7 +616,6 @@
     function getTimeAxis(eventId) {
         $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
             let data = e.data;
-            console.log("data", data)
             $("#timeAxis").empty();
             let html = "";
             if (data.length === 0) {
@@ -648,7 +648,10 @@
                     html += "<em>回复内容:</em> " + data[i].opinions
                     html += "</div>";
                     if (data[i].fileName.length > 0) {
-                        html += "<div class='endBox enclosure' onclick='setFileUrl(data[i].fileName)'><i></i>附件详情</div>";
+                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                        html += "<button type='button' onclick='setFileUrl(" + data[i].fileName + ")'>11211111</button>";
+                        console.log("html", data[i].fileName);
+                        console.log("html", html);
                     }
                     html += "</div>";
                     html += "<div class='gameEnd'>";
@@ -683,6 +686,7 @@
     }
 
     function setFileUrl(data) {
+        console.log(data)
         if (data.length > 0) {
             $("#modelImageList").empty();
             let imageHtml = "";

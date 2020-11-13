@@ -377,113 +377,28 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <script type="text/javascript" th:inline="javascript">
+
     $(function () {
         //附件详情弹出
         $(".duck_title span").click(function () {
             $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
             $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
-        })
+        });
+
         $(".duck_close").click(function () {
             $(".duck_duck").fadeOut(300)
-        })
+        });
+
         $(".banner").on("click", ".enclosure", function () {
             $(".duck_duck").fadeIn(300)
-        })
-    })
-
-    function selectEventTypeTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
-        var options = {
-            title: '选择事件类型',
-            width: "380",
-            url: url,
-            callBack: doSubmit
-        };
-        $.modal.openOptions(options);
-    }
-
-    function doSubmit(index, layero) {
-        var body = layer.getChildFrame('body', index);
-        $("#eventTypeId").val(body.find('#treeId').val());
-        $("#typeStr").val(body.find('#treeName').val());
-        let eventTypeId = $("#eventTypeId").val();
-        //获取立案区域
-        findEventConditionByEventType(eventTypeId)
-        layer.close(index);
-    }
-
-    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
-    let showUrl = [[${@fastProperties.nginxUrl}]];
-
-    /**
-     * 获取立案区域
-     */
-    function findEventConditionByEventType(eventTypeId) {
-        let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
-        $.ajaxUtil.get(url, function (e) {
-            let option = "<option value=''>--请选择--</option>";
-            if (e.code === "0") {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
-                });
-                $("#eventCondition").html(option);
-            }
         });
-    }
 
-    /**
-     * 立案条件
-     */
-    function getEventCondition() {
-        let eventConditionId = $("#eventCondition").val();
-        let url = "/event/getEventCondition/?conditionId=" + eventConditionId;
-        $.ajaxUtil.get(url, function (e) {
-            $("#eventTerm").empty();
-            let option = "<option value=''>--请选择--</option>";
-            if (e.code === "0") {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
-                });
-            }
-            $("#eventTerm").html(option);
-        });
-    }
-
-    /**
-     * 获取立案时限分类
-     */
-    function getTimeTypeList() {
-        let eventTerm = $("#eventTerm").val();
-        let url = "/event/findDeptTimeLimitByCondition/?conditionId=" + eventTerm;
-        $.ajaxUtil.get(url, function (e) {
-            $("#timeType").empty();
-            let option = "<option value=''>--请选择--</option>";
-            if (e.code === "0") {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.level + "</option>"
-                });
-            }
-            $("#timeType").html(option);
-        });
-    }
-
-    /*
-    *  userId
-    * */
-    function getUserval() {
-        var options = $("#selectUser option:selected");
-        // alert(options.val());
-        $("#userId").val(options.val())
-    }
-
-    $(function () {
         queryUserList();
+
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
-        })
+        });
 
         //选择监督员
         $("#changeMan").click(function () {
@@ -617,6 +532,93 @@
 
         })
     });
+
+    function selectEventTypeTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择事件类型',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#eventTypeId").val(body.find('#treeId').val());
+        $("#typeStr").val(body.find('#treeName').val());
+        let eventTypeId = $("#eventTypeId").val();
+        //获取立案区域
+        findEventConditionByEventType(eventTypeId)
+        layer.close(index);
+    }
+
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+    let showUrl = [[${@fastProperties.nginxUrl}]];
+
+    /**
+     * 获取立案区域
+     */
+    function findEventConditionByEventType(eventTypeId) {
+        let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === "0") {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
+                });
+                $("#eventCondition").html(option);
+            }
+        });
+    }
+
+    /**
+     * 立案条件
+     */
+    function getEventCondition() {
+        let eventConditionId = $("#eventCondition").val();
+        let url = "/event/getEventCondition/?conditionId=" + eventConditionId;
+        $.ajaxUtil.get(url, function (e) {
+            $("#eventTerm").empty();
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === "0") {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
+                });
+            }
+            $("#eventTerm").html(option);
+        });
+    }
+
+    /**
+     * 获取立案时限分类
+     */
+    function getTimeTypeList() {
+        let eventTerm = $("#eventTerm").val();
+        let url = "/event/findDeptTimeLimitByCondition/?conditionId=" + eventTerm;
+        $.ajaxUtil.get(url, function (e) {
+            $("#timeType").empty();
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === "0") {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.level + "</option>"
+                });
+            }
+            $("#timeType").html(option);
+        });
+    }
+
+    /*
+    *  userId
+    * */
+    function getUserval() {
+        var options = $("#selectUser option:selected");
+        // alert(options.val());
+        $("#userId").val(options.val())
+    }
 
     let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
@@ -782,7 +784,7 @@
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
-                    html += "<em>结束时间:</em> " + data[i].endTime
+                    html += "<em>结束时间:" + data[i].endTime + "</em> "
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";
