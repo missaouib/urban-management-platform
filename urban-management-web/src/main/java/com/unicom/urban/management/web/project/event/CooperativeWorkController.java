@@ -63,6 +63,11 @@ public class CooperativeWorkController {
      */
     @GetMapping("/toCasesHandledList")
     public ModelAndView toCasesHandledList() {
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/closedCases/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
         return new ModelAndView(SystemConstant.PAGE + "/event/casesHandled/list");
     }
 
