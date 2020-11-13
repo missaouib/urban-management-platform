@@ -262,7 +262,7 @@ public class SupervisionAcceptanceController {
      */
     @PostMapping("/completeByReceptionistWithSendVerification")
     public Result completeByReceptionistWithSendVerification(EventDTO eventDTO) {
-        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO);
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList());
         eventDTO.setEventFileList(eventFileList);
         switch (eventDTO.getButton()) {
             /*

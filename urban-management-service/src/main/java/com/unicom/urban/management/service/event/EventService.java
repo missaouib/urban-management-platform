@@ -257,7 +257,7 @@ public class EventService {
         Petitioner saveP = petitionerService.save(petitioner);
         event.setPetitioner(saveP);
 
-        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO);
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList());
         event.setEventFileList(eventFileList);
 
         Event save = eventRepository.save(event);
