@@ -65,4 +65,4 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: trace
 gis:
   api:
-    url: http://localhost:8099/api/urbanImport
+    url: http://192.168.23.41:16844/api/urbanImport
