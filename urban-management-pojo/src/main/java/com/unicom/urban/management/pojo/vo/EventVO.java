@@ -32,7 +32,7 @@ public class EventVO {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
-    private List<EventFile> eventFileList;
+//    private List<EventFile> eventFileList;
 
     /**
      * 事件来源id
