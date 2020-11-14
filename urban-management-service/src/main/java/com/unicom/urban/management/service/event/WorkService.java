@@ -351,9 +351,8 @@ public class WorkService {
      * @param eventId
      */
     public void saveAutoReport(String eventId) {
-        /*TODO 查询所有有受理员角色的人*/
         List<String> userList = new ArrayList<>();
-        userList.add("1");
+        userList.add(SecurityUtil.getUserId());
         Event event = eventService.findOne(eventId);
         ProcessInstance processInstance = activitiService.reportAutoEvent(eventId, userList);
         event.setProcessInstanceId(processInstance.getId());
@@ -374,9 +373,8 @@ public class WorkService {
      * @param eventId
      */
     public void superviseReporting(String eventId) {
-        /*TODO 查询所有有受理员角色的人*/
         List<String> userList = new ArrayList<>();
-        userList.add("1");
+        userList.add(SecurityUtil.getUserId());
         Event event = eventService.findOne(eventId);
         ProcessInstance processInstance = activitiService.superviseReporting(eventId, userList);
         event.setProcessInstanceId(processInstance.getId());
