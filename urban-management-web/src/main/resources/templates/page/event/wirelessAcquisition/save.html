@@ -150,36 +150,32 @@
                         <div class="send">
                             <div class="sendImg">
                                 <div class="sendText"><span>图片:</span></div>
-                                <div><input id="input-id" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="input-id" type="file" name="files" multiple="multiple"></div>
+                                <input type="hidden" id="imageUrlList" value="">
                             </div>
-
-
                             <div class="sendImg">
                                 <div class="sendText"><span>视频:</span></div>
-                                <div><input id="videoInput" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="videoInput" type="file" name="files" multiple="multiple"></div>
                             </div>
                             <div class="sendImg">
                                 <div class="sendText"><span>音频:</span></div>
-                                <div><input id="musicInput" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="musicInput" type="file" name="files" multiple="multiple"></div>
                             </div>
-
                         </div>
                         <div class="send" id="after" style="display:none;">
                             <div class="sendImg">
                                 <div class="sendText"><span>图片:</span></div>
-                                <div><input id="input-idAfter" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="input-idaAfter" type="file" name="files" multiple="multiple"></div>
+                                <input type="hidden" id="imageUrlListAfter" value="">
                             </div>
-
-
                             <div class="sendImg">
                                 <div class="sendText"><span>视频:</span></div>
-                                <div><input id="videoInputAfter" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="videoInputAfter" type="file" name="files" multiple="multiple"></div>
                             </div>
                             <div class="sendImg">
                                 <div class="sendText"><span>音频:</span></div>
-                                <div><input id="musicInputAfter" type="file"  name="file" multiple="multiple"></div>
+                                <div><input id="musicInputAfter" type="file" name="files" multiple="multiple"></div>
                             </div>
-
                         </div>
                     </div>
 
@@ -551,6 +547,7 @@
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
@@ -578,6 +575,16 @@
                 console.log("上传文件失败");
             }
             console.log(data);
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                let imageUrlList = data.response.data.url;
+                $("#imageUrlList").val(imageUrlList);
+                console.log("data", imageUrlList);
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
+            }
         }).on('filedeleted', function (event, key) {
             console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
             console.log('Key = ' + key);
@@ -597,6 +604,45 @@
             console.log('filesuccessremove()   ')
             console.log(id);
         });
+
+        $("#videoInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            maxFileCount: 2,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        })
+        $("#musicInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            maxFileCount: 2,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        })
 
         $("#videoInput").fileinput({
             language: 'zh',                                     // 设置语言
