@@ -168,6 +168,8 @@ public class WirelessAcquisitionController {
      */
     @GetMapping("/caseInvalidList")
     public Page<EventVO> caseInvalidList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        //查询不予受理案件
+        eventDTO.setNotOperate(1);
         return eventService.search(eventDTO, pageable);
     }
     /**

@@ -111,5 +111,10 @@ public class EventDTO {
      */
     private List<String> imageUrlList;
 
+    /**
+     * 不予受理 受理员
+     */
+    private Integer notOperate;
+
 
 }

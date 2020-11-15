@@ -80,5 +80,7 @@ public class EventVO {
 
     private String sts;
 
+    private String statisticsId;
+
 
 }

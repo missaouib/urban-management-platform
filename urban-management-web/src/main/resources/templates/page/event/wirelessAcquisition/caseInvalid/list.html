@@ -350,7 +350,40 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <script type="text/javascript" th:inline="javascript">
-
+    /**
+     * 立案条件
+     */
+    function getEventCondition() {
+        let eventConditionId = $("#eventCondition").val();
+        let url = "/event/getEventCondition/?conditionId=" + eventConditionId;
+        $.ajaxUtil.get(url, function (e) {
+            $("#eventTerm").empty();
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === "0") {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
+                });
+            }
+            $("#eventTerm").html(option);
+        });
+    }
+    /**
+     * 获取立案时限分类
+     */
+    function getTimeTypeList() {
+        let eventTerm = $("#eventTerm").val();
+        let url = "/event/findDeptTimeLimitByCondition/?conditionId=" + eventTerm;
+        $.ajaxUtil.get(url, function (e) {
+            $("#timeType").empty();
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === "0") {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.level + "</option>"
+                });
+            }
+            $("#timeType").html(option);
+        });
+    }
     /**
      * 获取街道
      */
@@ -396,6 +429,7 @@
      * 获取立案区域
      */
     function findEventConditionByEventType(eventTypeId) {
+        console.log("eventTypeId",eventTypeId)
         let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
         $.ajaxUtil.get(url, function (e) {
             let option = "<option value=''>--请选择--</option>";
@@ -450,6 +484,7 @@
                 layerMap.getSource().clear()
                 getTimeAxis(row.id);
                 getEventDetail(row.id);
+                findOpinions(row.statisticsId);
             },
             columns: [
                 {
@@ -490,9 +525,8 @@
         };
         $.table.init(options);
     }
-    function findOpinions(processInstanceId){
-        debugger
-        $.ajaxUtil.get(findOpinionsUrl + "/?processInstanceId=" + processInstanceId, function (e) {
+    function findOpinions(statisticsId){
+        $.ajaxUtil.get(findOpinionsUrl + "/?statisticsId=" + statisticsId, function (e) {
             let data = e.data;
             if (data != null) {
                 $("#opinions").val(data.opinions);
@@ -603,27 +637,6 @@
             /* 坐标 */
             setPoint(e.data.x, e.data.y);
         });
-    }
-    //模态窗 selectEventTypeTree
-    function selectEventTypeTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
-        var options = {
-            title: '选择事件类型',
-            width: "380",
-            url: url,
-            callBack: doSubmit
-        };
-        $.modal.openOptions(options);
-    }
-
-    function doSubmit(index, layero){
-        var tree = layero.find("iframe")[0].contentWindow.$._tree;
-        var body = layer.getChildFrame('body', index);
-        $("#typeStr").val(body.find('#treeId').val());
-        $("#typeStr").val(body.find('#treeName').val());
-        layer.close(index);
     }
     jQuery.extend(jQuery.validator.messages, {
         required: "必填",

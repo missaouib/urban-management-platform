@@ -25,4 +25,8 @@ public class StatisticsController {
     public List<StatisticsVO> statistics(String eventId){
         return statisticsService.findByEventId(eventId);
     }
+    @GetMapping("/findOpinions")
+    public StatisticsVO findOpinions(String statisticsId){
+        return statisticsService.findById(statisticsId);
+    }
 }

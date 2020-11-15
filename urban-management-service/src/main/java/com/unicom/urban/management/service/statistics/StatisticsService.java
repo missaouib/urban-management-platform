@@ -103,4 +103,23 @@ public class StatisticsService {
         return list.stream().distinct().collect(Collectors.toList());
     }
 
+    public List<String> findEventIdByNotOperate(Integer notOperate) {
+        List<Statistics> statisticsList = statisticsRepository.findByNotOperate(notOperate);
+        List<String> eventIdList = new ArrayList<>();
+        for (Statistics s : statisticsList){
+            eventIdList.add(s.getEvent().getId());
+        }
+        return eventIdList;
+    }
+
+    public StatisticsVO findById(String statisticsId) {
+        Statistics statistics = statisticsRepository.findById(statisticsId).orElse(new Statistics());
+        StatisticsVO statisticsVO = new StatisticsVO();
+        statisticsVO.setOpinions(statistics.getOpinions());
+        if(statistics.getUser() != null){
+            statisticsVO.setUserName(statistics.getUser().getName());
+            statisticsVO.setDeptName("");
+        }
+        return statisticsVO;
+    }
 }

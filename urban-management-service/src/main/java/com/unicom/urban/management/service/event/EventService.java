@@ -145,7 +145,17 @@ public class EventService {
                 eventIdByMe.forEach(in::value);
                 list.add(in);
             }
+            /*无效案件*/
+            if (eventDTO.getNotOperate() == 1 ){
+                CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
+                List<String> eventId = statisticsService.findEventIdByNotOperate(eventDTO.getNotOperate());
+                if (eventId.size() == 0) {
+                    eventId = Collections.singletonList("");
+                }
+                eventId.forEach(in::value);
+                list.add(in);
 
+            }
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
@@ -181,6 +191,10 @@ public class EventService {
                     eventVO.setStartTime(format);
                 }
 
+            }
+            List<Statistics> notOperateCollect = e.getStatisticsList().stream().filter(s -> s.getNotOperate() == 1).collect(Collectors.toList());
+            for (Statistics s : notOperateCollect){
+                eventVO.setStatisticsId(s.getId());
             }
             eventVOList.add(eventVO);
         });
@@ -517,6 +531,7 @@ public class EventService {
         if (StringUtils.isNotBlank(eventDTO.getLocation())){
             event.setLocation(eventDTO.getLocation());
         }
+            event.setSts(eventDTO.getSts());
         return event;
     }
 

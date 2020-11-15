@@ -50,4 +50,6 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      */
     List<Statistics> findAllByCancel(Integer cancel);
 
+    List<Statistics> findByNotOperate(Integer notOperate);
+
 }
