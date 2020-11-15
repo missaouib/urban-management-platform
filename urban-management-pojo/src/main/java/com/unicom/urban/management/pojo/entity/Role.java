@@ -1,9 +1,12 @@
 package com.unicom.urban.management.pojo.entity;
 
 
+import com.unicom.urban.management.pojo.Delete;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,6 +21,8 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "sys_role")
+@SQLDelete(sql = "update sys_role set deleted = " + Delete.DELETE + " where id = ?")
+@Where(clause = "deleted = " + Delete.NORMAL)
 public class Role extends BaseEntity {
 
     @Id
@@ -37,6 +42,15 @@ public class Role extends BaseEntity {
 
     @Column(columnDefinition = "TINYINT(1)")
     private Integer sts;
+
+
+    public Role() {
+
+    }
+
+    public Role(String id) {
+        this.id = id;
+    }
 
 
 }

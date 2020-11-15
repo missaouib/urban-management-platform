@@ -105,9 +105,7 @@ public class TaskProcessingService {
         statistics.setToInst(0);
         statistics.setInstHuman(SecurityUtil.getUser().castToUser());
         statistics.setInstHumanName(SecurityUtil.getUser().castToUser());
-        RoleDTO roleDTO = new RoleDTO();
-        roleDTO.setId(KvConstant.SHIFT_LEADER_ROLE);
-        statistics.setInstRole(roleService.findOne(roleDTO));
+        statistics.setInstRole(roleService.findOne(KvConstant.SHIFT_LEADER_ROLE));
         if (KvConstant.SUPERVISOR.equals(statistics.getEvent().getEventSource().getId())) {
             statistics.setValidPatrolReport(1);
         } else {
@@ -157,9 +155,7 @@ public class TaskProcessingService {
         statistics.setToClose(0);
         statistics.setCloseHuman(SecurityUtil.getUser().castToUser());
         statistics.setCloseHumanName(SecurityUtil.getUser().castToUser());
-        RoleDTO roleDTO = new RoleDTO();
-        roleDTO.setId(KvConstant.SHIFT_LEADER_ROLE);
-        statistics.setCloseRole(roleService.findOne(roleDTO));
+        statistics.setCloseRole(roleService.findOne(KvConstant.SHIFT_LEADER_ROLE));
         statisticsService.update(statistics);
 
     }
@@ -180,9 +176,7 @@ public class TaskProcessingService {
         statistics.setSts(String.valueOf(ints[1]));
         statistics.setDispatchHuman(SecurityUtil.getUser().castToUser());
         statistics.setDispatchHumanName(SecurityUtil.getUser().castToUser());
-        RoleDTO roleDTO = new RoleDTO();
-        roleDTO.setId(KvConstant.DISPATCHER_ROLE);
-        statistics.setDispatchHumanRole(roleService.findOne(roleDTO));
+        statistics.setDispatchHumanRole(roleService.findOne(KvConstant.DISPATCHER_ROLE));
         statisticsService.update(statistics);
 
 
@@ -308,9 +302,7 @@ public class TaskProcessingService {
             EventButton eventButton = eventButtonRepository.findById(buttonId).orElse(new EventButton());
             statistics.setDispatchHuman(SecurityUtil.getUser().castToUser());
             statistics.setDispatchHumanName(SecurityUtil.getUser().castToUser());
-            RoleDTO roleDTO = new RoleDTO();
-            roleDTO.setId(KvConstant.DISPATCHER_ROLE);
-            statistics.setDispatchHumanRole(roleService.findOne(roleDTO));
+            statistics.setDispatchHumanRole(roleService.findOne(KvConstant.DISPATCHER_ROLE));
 
             newStatistics.setNeedDispose(1);
             newStatistics.setToDispose(1);
@@ -530,9 +522,7 @@ public class TaskProcessingService {
 
 
     private List<String> getUsers(String roleId) {
-        RoleDTO roleDTO = new RoleDTO();
-        roleDTO.setId(roleId);
-        Role one = roleService.findOne(roleDTO);
+        Role one = roleService.findOne(roleId);
         List<String> user = new ArrayList<>();
         one.getUserList().forEach(u -> user.add(u.getId()));
         return user;
