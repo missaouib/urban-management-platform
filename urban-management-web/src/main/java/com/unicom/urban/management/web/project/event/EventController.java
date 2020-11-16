@@ -1,7 +1,7 @@
 package com.unicom.urban.management.web.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
-import com.unicom.urban.management.common.constant.KvConstant;
+import com.unicom.urban.management.common.properties.GisServiceProperties;
 import com.unicom.urban.management.common.util.RestTemplateUtil;
 import com.unicom.urban.management.pojo.RestReturn;
 import com.unicom.urban.management.pojo.Result;
@@ -32,6 +32,8 @@ public class EventController {
     private EventService eventService;
     @Autowired
     private PublishService publishService;
+    @Autowired
+    private GisServiceProperties gisServiceProperties;
 
     /**
      * 获取下一环节完成按钮
@@ -63,7 +65,7 @@ public class EventController {
     public Map<String, String> localReverseGeocoding(double x, double y) {
 
         try {
-            RestReturn body = RestTemplateUtil.get(KvConstant.GIS_URL + "/restApi/LocalReverseGeocoding?x=" + x + "&y=" + y, RestReturn.class).getBody();
+            RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/restApi/LocalReverseGeocoding?x=" + x + "&y=" + y, RestReturn.class).getBody();
             assert body != null;
             return (Map<String, String>) body.getData();
         } catch (Exception e) {
@@ -94,7 +96,7 @@ public class EventController {
         Map<String, Object> map = new HashMap<>(2);
         map.put("layerId", KvConstant.KV_LAYER_GRID);
         map.put("columnName", columnNameMapList);*/
-        RestReturn body = RestTemplateUtil.get(KvConstant.GIS_URL + "/queryMongoById?id=" + mongodbId, RestReturn.class).getBody();
+        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/queryMongoById?id=" + mongodbId, RestReturn.class).getBody();
         Map<String, String> dataMap = (Map<String, String>) body.getData();
         System.out.println(dataMap);
     }

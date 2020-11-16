@@ -3,6 +3,7 @@ package com.unicom.urban.management.web.project.component;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.common.properties.GisServiceProperties;
 import com.unicom.urban.management.common.util.RestTemplateUtil;
 import com.unicom.urban.management.mapper.ComponentMapper;
 import com.unicom.urban.management.pojo.RestReturn;
@@ -17,7 +18,6 @@ import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.record.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,6 +51,8 @@ public class ComponentController {
 
     private final RecordService recordService;
 
+    @Autowired
+    private GisServiceProperties gisServiceProperties;
 
     @Autowired
     public ComponentController(EventTypeService eventTypeService, ComponentService componentService, KVService kvService, GridService gridService, PublishService publishService, RecordService recordService) {
@@ -147,7 +149,7 @@ public class ComponentController {
 
     @GetMapping("/getGisComponent")
     public ComponentVO getGisComponent(String mongoId){
-        RestReturn body = RestTemplateUtil.get(KvConstant.GIS_URL + "/queryMongoById?id=" + mongoId, RestReturn.class).getBody();
+        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/queryMongoById?id=" + mongoId, RestReturn.class).getBody();
         Map<String,String> map = (Map<String, String>) body.getData();
         String id = map.get("objId");
         return componentService.getComponentById(id);

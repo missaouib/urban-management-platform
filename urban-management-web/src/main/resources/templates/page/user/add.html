@@ -31,6 +31,11 @@
                            <input type="text" id="mobileNumber" name="mobileNumber"/>
                         </td>
                     </tr>
+                        <td>选择角色<span>*</span></td>
+                        <td>
+                            <select multiple="multiple" id="role" ></select>
+                        </td>
+                    </tr>
                     <tr>
                         <td>部门<span>*</span></td>
                         <td>
@@ -59,6 +64,21 @@
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
 
 <script type="text/javascript" th:inline="javascript">
+
+    $(function (){
+
+
+
+    })
+
+    $(function () {
+        $("#role").select2({
+            language: "es"
+        });
+    })
+
+
+
 
      // 更改error文字
     jQuery.extend(jQuery.validator.messages, {

@@ -1,4 +1,4 @@
-package com.unicom.urban.management.web.framework.properties;
+package com.unicom.urban.management.common.properties;
 
 import lombok.Getter;
 import lombok.Setter;

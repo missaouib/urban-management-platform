@@ -4,6 +4,7 @@ import cn.hutool.json.JSONObject;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.StsConstant;
 import com.unicom.urban.management.common.exception.DataValidException;
+import com.unicom.urban.management.common.properties.GisServiceProperties;
 import com.unicom.urban.management.common.util.RestTemplateUtil;
 import com.unicom.urban.management.dao.release.PublishRepository;
 import com.unicom.urban.management.mapper.PublishMapper;
@@ -48,6 +49,9 @@ public class PublishService {
     private GridService gridService;
 
     @Autowired
+    private GisServiceProperties gisServiceProperties;
+
+    @Autowired
     private ComponentService componentService;
 
     public Publish save(Publish release) {
@@ -83,7 +87,7 @@ public class PublishService {
         if (gridType.equals(type)) {
             List<Grid> gridList = gridService.findAllByPublishIdAndRecordSts(publishId);
             Publish publish = findOne(publishId);
-            ResponseEntity<RestReturn> post = RestTemplateUtil.post(KvConstant.GIS_URL + URL, getGridJson(publish, gridList), RestReturn.class);
+            ResponseEntity<RestReturn> post = RestTemplateUtil.post(gisServiceProperties.getUrl() + URL, getGridJson(publish, gridList), RestReturn.class);
             Map<String, String> map = (Map<String, String>) post.getBody().getData();
             publish.setSts(StsConstant.RELEASE);
             String layerId = map.get("layerId");
@@ -104,7 +108,7 @@ public class PublishService {
         } else if (partType.equals(type)) {
             List<Component> components = componentService.findAllByPublishIdAndRecordSts(publishId);
             Publish publish = findOne(publishId);
-            ResponseEntity<RestReturn> post = RestTemplateUtil.post(KvConstant.GIS_URL + URL, getComponentJson(publish, components), RestReturn.class);
+            ResponseEntity<RestReturn> post = RestTemplateUtil.post(gisServiceProperties.getUrl() + URL, getComponentJson(publish, components), RestReturn.class);
             Map<String, String> map = (Map<String, String>) post.getBody().getData();
             publish.setSts(StsConstant.RELEASE);
             String layerId = map.get("layerId");

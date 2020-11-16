@@ -3,6 +3,7 @@ package com.unicom.urban.management.service.component;
 import cn.hutool.json.JSONObject;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.StsConstant;
+import com.unicom.urban.management.common.properties.GisServiceProperties;
 import com.unicom.urban.management.common.util.RestTemplateUtil;
 import com.unicom.urban.management.dao.component.ComponentRepository;
 import com.unicom.urban.management.mapper.ComponentMapper;
@@ -42,6 +43,9 @@ public class ComponentService {
     private final RecordService recordService;
 
     private final EventTypeService eventTypeService;
+
+    @Autowired
+    private GisServiceProperties gisServiceProperties;
 
     @Autowired
     public ComponentService(ComponentRepository componentRepository, RecordService recordService, EventTypeService eventTypeService) {
@@ -276,7 +280,7 @@ public class ComponentService {
             Map<String, Object> layer = new HashMap<>(1);
             layer.put("id", dto.getLayerId());
             map.put("layer", layer);
-            RestTemplateUtil.post(KvConstant.GIS_URL + "/elementAndAttribute/deleteElementAndAttribute", new JSONObject(map), RestReturn.class);
+            RestTemplateUtil.post(gisServiceProperties.getUrl() + "/elementAndAttribute/deleteElementAndAttribute", new JSONObject(map), RestReturn.class);
         }
 
         if (ifnull.isPresent()) {
