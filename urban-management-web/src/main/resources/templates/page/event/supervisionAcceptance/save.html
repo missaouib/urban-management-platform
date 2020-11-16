@@ -176,13 +176,14 @@
                             <tr>
                                 <td><span></span>案件地址</td>
                                 <td colspan="8">
-                                    <input id="location" th:name="location" type="text" required>
+                                    <input onmouseover="this.title=this.value" id="location" th:name="location" type="text" class="overInput"  required>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span></span>问题描述</td>
-                                <td colspan="8"><textarea id="problemescription" th:name="represent"
-                                                          required></textarea></td>
+                                <td colspan="8">
+                                    <input onmouseover="this.title=this.value" id="problemescription" th:name="represent" type="text" class="overInput"  required>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
