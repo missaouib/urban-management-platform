@@ -23,9 +23,9 @@ public class StatisticsDTO {
     private String deptId;
 
     /**
-     * 附件列表
+     * 图片集合
      */
-    private List<EventFile> eventFileList;
+    private List<String> imageUrlList;
     /**
      * 处理人
      */

@@ -8,6 +8,7 @@ import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.dept.DeptService;
+import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.processtimelimit.ProcessTimeLimitService;
 import com.unicom.urban.management.service.role.RoleService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
@@ -48,6 +49,8 @@ public class TaskProcessingService {
     private DeptService deptService;
     @Autowired
     private EventButtonRepository eventButtonRepository;
+    @Autowired
+    private EventFileService eventFileService;
 
 
     /**
@@ -94,7 +97,6 @@ public class TaskProcessingService {
     private void shiftLeader(String eventId, List<String> userId, EventButton buttonId, StatisticsDTO statisticsDTO) {
         this.avtivitiHandle(eventId, userId, buttonId.getId());
         Statistics statistics = this.updateStatistics(statisticsDTO);
-        statistics.setEventFileList(statisticsDTO.getEventFileList());
         statistics.setInst(1);
         int[] ints = this.betWeenTime(statistics.getStartTime(),
                 statistics.getEndTime(),
@@ -494,6 +496,11 @@ public class TaskProcessingService {
 
     private Statistics updateStatistics(StatisticsDTO statisticsDTO) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(statisticsDTO.getEventId());
+
+        if(statisticsDTO.getImageUrlList() != null){
+            List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList());
+            statistics.setEventFileList(eventFileList);
+        }
         statistics.setOpinions(statisticsDTO.getOpinions());
         LocalDateTime endTime = LocalDateTime.now();
         statistics.setEndTime(endTime);
