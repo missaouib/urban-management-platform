@@ -83,9 +83,9 @@ public class StatisticsService {
 
 
     public List<String> getEventIdByMe() {
-        List<Statistics> allByUser_id = statisticsRepository.findAllByUser_IdAndEndTimeIsNotNull(SecurityUtil.getUserId());
+        List<Statistics> allByUserId = statisticsRepository.findAllByUser_IdAndEndTimeIsNotNull(SecurityUtil.getUserId());
         List<String> list = new ArrayList<>();
-        allByUser_id.forEach(a -> list.add(a.getEvent().getId()));
+        allByUserId.forEach(a -> list.add(a.getEvent().getId()));
         return list.stream().distinct().collect(Collectors.toList());
     }
 
