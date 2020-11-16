@@ -242,9 +242,7 @@
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
                                     <div>
-                                        <!--                                        <input class="input-id" type="file" name="file" multiple="multiple">-->
-                                        <div class="innerPic">
-                                            <img src="../img/streed.png" class="img-rounded">
+                                        <div id="imageList" class="innerPic" style="float:left;">
                                         </div>
                                     </div>
                                 </div>
@@ -297,6 +295,30 @@
         </div>
 
     </div>
+    <!--    附件详情弹出的窗口-->
+    <div class="duck_duck">
+        <div class="duck_box">
+            <div class="allTiel">
+                <div class="duck_close">
+                    <img src="../img/close_duck.png" style="width: 100%;height: 100%">
+                </div>
+                <div class="duck_title">
+                    <span class="duckActive">图片</span>
+                    <span>视频</span>
+                    <span>音频</span>
+                </div>
+                <div class="duck_info">
+                    <div class="info_chance blockActive" id="modelImageList">
+                        <img style="width: 100%;height: 100%" src="../img/streed.png">
+                    </div>
+                    <div class="info_chance">视频
+                        <video style="width: 100%;height: 100%"></video>
+                    </div>
+                    <div class="info_chance">音频</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -316,6 +338,20 @@
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         })
+
+        //附件详情弹出
+        $(".duck_title span").click(function () {
+            $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
+            $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
+        });
+
+        $(".duck_close").click(function () {
+            $(".duck_duck").fadeOut(300)
+        });
+
+        $(".banner").on("click", ".enclosure", function () {
+            $(".duck_duck").fadeIn(300)
+        });
     })
 
 
@@ -327,7 +363,7 @@
 
 
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
-
+    let showUrl = [[${@fastProperties.nginxUrl}]];
 
 
     function queryUserList() {
@@ -368,7 +404,19 @@
                     $("#petitionerName").val(e.data.petitionerName);
                     $("#userName").val(e.data.userName);
                     $("#recTypeStr").val(e.data.recTypeStr);
-
+                    /* 附件图片回显 */
+                    /*$("#imageList").attr('src', showUrl + e.data.processInstanceId); <img class="img-rounded" src="">*/
+                    let file = e.data.file;
+                    if (file.length > 0) {
+                        $("#imageList").empty();
+                        let imageHtml = "";
+                        for (let i = 0; i < file.length; i++) {
+                            imageHtml += "<div class=\"innerPic\" style=\"float:left;margin-left: 10px\">" +
+                                "<img class='img-rounded' src='" + showUrl + file[i].url + "'>" +
+                                "</div>"
+                        }
+                        $("#imageList").html(imageHtml);
+                    }
 
                     getTimeAxis(row.id);
                 });
@@ -432,35 +480,31 @@
                     html += "<div class='expressRecord-text'>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
-                    html += "<em>回复内容:</em> " + data[i].opinions
+                    html += "回复内容:<em class='roleSize'>"+ data[i].opinions +"</em> "
                     html += "</div>";
+
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "by:<em class='roleSize'>"+ data[i].user + "，角色" + "</em> ";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox RecordTime'>";
+                    html += "<div>开始时间:<em>"+ data[i].starTime +"</em></div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox RecordTime'>";
+                    html += "结束时间:<em>"+ data[i].endTime +"</em>"
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
                     if (data[i].fileName.length > 0) {
-                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                        html += "<button class='endBox enclosure' type='button' value='" + JSON.stringify(data[i].fileName) + "' onclick='setFileUrl(this)'><i></i>附件详情</button>";
                     }
                     html += "</div>";
-                    html += "<div class='gameEnd'>";
-                    html += "<div class='endBox'>";
-                    html += "<em>by:</em> " + data[i].user + "，角色";
-                    html += "</div>";
-                    html += "</div>";
-                    html += "<div class='gameEnd'>";
-                    html += "<div class='endBox'>";
-                    html += "<em>开始时间:</em> " + data[i].starTime
-                    html += "</div>";
-                    html += "</div>";
-                    html += "<div class='gameEnd'>";
-                    html += "<div class='endBox'>";
-                    html += "<em>结束时间:</em> " + data[i].endTime
-                    html += "</div>";
-                    html += "</div>";
-                    html += "<div class='gameEnd'>";
-                    html += "<div class='endBox'>";
-                    html += "<em></em>"
-                    html += "</div>";
-                    if (data[i].fileName.length > 0) {
-                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
-                    }
-                    html += "<div class='endBox enclosure'><i></i>附件详情</div>";
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='expressRecord-date'>";
@@ -472,7 +516,17 @@
             $("#timeAxis").append(html);
         });
     }
-
+    function setFileUrl(data) {
+        let value = $.parseJSON(data.value);
+        if (value.length > 0) {
+            $("#modelImageList").empty();
+            let imageHtml = "";
+            for (let i = 0; i < value.length; i++) {
+                imageHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>";
+            }
+            $("#modelImageList").html(imageHtml);
+        }
+    }
     function Cancel() {
         $.modal.closeLoading();
     }

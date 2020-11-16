@@ -121,39 +121,31 @@
                                 <tr>
                                     <td><span></span>案卷号</td>
                                     <td>
-                                        <input id="eventCode" placeholder="" class="" type="text" readonly="readonly"
-                                               required>
+                                        <input id="eventCode" placeholder="" class="" type="text" readonly="readonly" required>
                                     </td>
                                     <td><span></span>问题类型</td>
                                     <td>
                                         <input id="eventTypeStr" name="eventType" placeholder="请选择问题类型" class=""
-                                               type="text" maxlength="30" required readonly="readonly"
-                                        >
-
+                                               type="text" maxlength="30" required readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>立案区域</td>
                                     <td>
-                                        <input id="regionStr" name="eventType" placeholder="请选择问题类型" class=""
-                                               type="text" maxlength="30" required readonly="readonly"
-                                        >
+                                        <input id="regionStr" name="eventType" placeholder="" class=""
+                                               type="text" maxlength="30" required readonly="readonly">
                                     </td>
                                     <td><span></span>立案条件</td>
                                     <td>
-                                        <input id="conditionValue" name="eventType" placeholder="请选择问题类型" class=""
-                                               type="text" maxlength="30" required readonly="readonly"
-                                        >
-
+                                        <input id="conditionValue" name="eventType" placeholder="" class=""
+                                               type="text" maxlength="30" required readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>案件等级</td>
                                     <td>
-                                        <input id="level" name="eventType" placeholder="请选择问题类型" class="" type="text"
-                                               maxlength="30" required readonly="readonly"
-                                        >
-
+                                        <input id="level" name="eventType" placeholder="" class="" type="text"
+                                               maxlength="30" required readonly="readonly">
                                     </td>
                                     <td><span></span>处理时限</td>
                                     <td>
@@ -165,8 +157,6 @@
 
                                     <td colspan="8"><textarea id="represent" name="problemescription" required
                                                               readonly></textarea></td>
-
-
                                 </tr>
                                 <tr class="col-12">
                                     <td><span></span>案件地址</td>
@@ -203,7 +193,6 @@
                                     <td>
                                         <input id="girdStr" name="location" placeholder="" class="" readonly
                                                type="text">
-
                                     </td>
                                 </tr>
                                 <tr>
@@ -259,10 +248,8 @@
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
-                                    <div>
-                                        <!--                                        <input class="input-id" type="file" name="file" multiple="multiple">-->
-                                        <div class="innerPic">
-                                            <img src="../img/streed.png" class="img-rounded">
+                                    <div id="imageList">
+                                        <div class="innerPic" style="float:left;">
                                         </div>
                                     </div>
                                 </div>
@@ -271,7 +258,6 @@
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
                                     <div>
-                                        <!--                                        <input class="videoInput" type="file" name="file" multiple="multiple">-->
                                         <div class="innerPic">
                                             无
                                         </div>
@@ -280,7 +266,6 @@
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
                                     <div>
-                                        <!--                                        <input class="musicInput" type="file" name="file" multiple="multiple">-->
                                         <div class="innerPic">
                                             无
                                         </div>
@@ -289,7 +274,6 @@
 
                             </div>
                         </div>
-
                         <!--                            按钮-->
 
                         <div class="notice_bot">
@@ -321,7 +305,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
-                            <span class="sendText"><i></i>意见</span>
+                            <span class="sendText" id="btnOpinion"><i></i>意见</span>
                             <textarea type="text" id="opinions"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays">
@@ -339,7 +323,7 @@
                         <div class="send">
                             <div class="sendImg">
                                 <div class="sendText" style="width: 72px"><span>照片:</span></div>
-                                <div><input id="picture" class="input-id" type="file" name="file" multiple="multiple">
+                                <div><input id="picture" class="input-id" type="file" name="files" multiple="multiple">
                                 </div>
                             </div>
 
@@ -359,7 +343,7 @@
                     </div>
                     <div class="modal-footer justify-content-between"
                          style="display: flex;justify-content: flex-end!important;">
-                        <button type="button" class="btn btn-primary" onclick="processing()">处理</button>
+                        <button type="button" class="btn btn-primary" onclick="processing()" id="underBtn">处理</button>
                         <button type="button" class="btn btn-success" onclick="reductionButton()" data-dismiss="modal">
                             返回
                         </button>
@@ -369,6 +353,32 @@
         </div>
 
     </div>
+    <!--    附件详情弹出的窗口-->
+    <div class="duck_duck">
+        <div class="duck_box">
+            <div class="allTiel">
+                <div class="duck_close">
+                    <img src="../img/close_duck.png" style="width: 100%;height: 100%">
+                </div>
+                <div class="duck_title">
+                    <span class="duckActive">图片</span>
+                    <span>视频</span>
+                    <span>音频</span>
+                </div>
+                <div class="duck_info">
+                    <div class="info_chance blockActive" id="modelImageList">
+                        <img style="width: 100%;height: 100%" src="../img/streed.png">
+                    </div>
+                    <div class="info_chance">视频
+                        <video style="width: 100%;height: 100%"></video>
+                    </div>
+                    <div class="info_chance">音频</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 
@@ -378,6 +388,8 @@
 <th:block th:include="page/fragments/common :: map_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
@@ -385,13 +397,50 @@
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
-        })
+        });
+
+        $("#deptDiv").on("click",'.add_tree',function () {
+            $("#checkMain").stop().slideToggle(300)
+        });
+
+        //附件详情弹出
+        $(".duck_title span").click(function () {
+            $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
+            $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
+        });
+
+        $(".duck_close").click(function () {
+            $(".duck_duck").fadeOut(300)
+        });
+
+        $(".banner").on("click", ".enclosure", function () {
+            $(".duck_duck").fadeIn(300)
+        });
+
+
     })
 
+    function zTreeOnClick(event, treeId, treeNode) {
+        $("#doorer").val(treeNode.name);
+        $(".closemodal").click();
+    }
+
+    setModelName()
+    function setModelName(){
+        $("#btnGroupGround").on("click",".but_save",function () {
+            $(".modal-title").html($(this).html())
+            $("#underBtn").html($(this).html())
+            $("#btnOpinion").html($(this).html()+"意见")
+        })
+    }
+
+    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
 
     let searchUrl = /*[[@{/event/onAccountList}]]*/ "/event/onAccountList";
+
+    let showUrl = [[${@fastProperties.nginxUrl}]];
 
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
 
@@ -407,27 +456,6 @@
     var deptName = ""
 
     function eventButton(obj) {
-        console.log($(obj).text())
-        $("#deptDiv").empty();
-        if($(obj).text() === "申请延时"){
-            var deptStr = " <span class=\"sendText\"><i>*</i>申请时限</span>\n" +
-                "<input type='number' id='delayedTime'/>";
-            $("#deptDiv").append(deptStr);
-        }else if ("派遣" === $(obj).text()) {
-            $.ajaxUtil.get(deptUrl, function (o) {
-                var deptStr = " <span class=\"sendText\"><i>*</i>专业部门</span>\n" +
-                    "                                <select id=\"dept\">\n"+
-                    "<option value='"+deptId+"'>"+deptName+"</option>";
-                $(o.data).each(function (index,value) {
-                    if(deptId !== value.id){
-                        deptStr += "<option value='"+value.id+"'>"+value.deptName+"</option>"
-                    }
-                })
-                deptStr +="</select>"
-                $("#deptDiv").append(deptStr);
-            })
-
-        }
         buttonId = $(obj).attr("id");
     }
 
@@ -436,12 +464,13 @@
     }
 
     function processing() {
+        console.log(imageUrlList)
         var data = {
             "eventId": eventId,
             "buttonId": buttonId,
             "opinions": $("#opinions").val(),
-            "deptId":$("#dept").val(),
-            "delayedTime":$("#delayedTime").val()
+            "delayedTime":$("#delayedTime").val(),
+            "imageUrlList":imageUrlList
         };
 
         $.ajax({
@@ -513,6 +542,20 @@
 
                     deptId = e.data.deptId;
                     deptName = e.data.deptName;
+
+                    /* 附件图片回显 */
+                    /*$("#imageList").attr('src', showUrl + e.data.processInstanceId); <img class="img-rounded" src="">*/
+                    let file = e.data.file;
+                    if (file.length > 0) {
+                        $("#imageList").empty();
+                        let imageHtml = "";
+                        for (let i = 0; i < file.length; i++) {
+                            imageHtml += "<div class=\"innerPic\" style=\"float:left;margin-left: 10px\">" +
+                                "<img class='img-rounded' src='" + showUrl + file[i].url + "'>" +
+                                "</div>"
+                        }
+                        $("#imageList").html(imageHtml);
+                    }
 
                     /*按钮*/
                     var buttonStr = "";
@@ -594,35 +637,31 @@
                     html += "<div class='expressRecord-text'>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
-                    html += "<em>回复内容:</em> " + data[i].opinions
+                    html += "回复内容:<em class='roleSize'>"+ data[i].opinions +"</em> "
                     html += "</div>";
+
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "by:<em class='roleSize'>"+ data[i].user + "，角色" + "</em> ";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox RecordTime'>";
+                    html += "<div>开始时间:<em>"+ data[i].starTime +"</em></div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox RecordTime'>";
+                    html += "结束时间:<em>"+ data[i].endTime +"</em>"
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
                     if (data[i].fileName.length > 0) {
-                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                        html += "<button class='endBox enclosure' type='button' value='" + JSON.stringify(data[i].fileName) + "' onclick='setFileUrl(this)'><i></i>附件详情</button>";
                     }
                     html += "</div>";
-                    html += "<div class='gameEnd'>";
-                    html += "<div class='endBox'>";
-                    html += "<em>by:</em> " + data[i].user + "，角色";
-                    html += "</div>";
-                    html += "</div>";
-                    html += "<div class='gameEnd'>";
-                    html += "<div class='endBox'>";
-                    html += "<em>开始时间:</em> " + data[i].starTime
-                    html += "</div>";
-                    html += "</div>";
-                    html += "<div class='gameEnd'>";
-                    html += "<div class='endBox'>";
-                    html += "<em>结束时间:</em> " + data[i].endTime
-                    html += "</div>";
-                    html += "</div>";
-                    html += "<div class='gameEnd'>";
-                    html += "<div class='endBox'>";
-                    html += "<em></em>"
-                    html += "</div>";
-                    if (data[i].fileName.length > 0) {
-                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
-                    }
-                    html += "<div class='endBox enclosure'><i></i>附件详情</div>";
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='expressRecord-date'>";
@@ -635,23 +674,37 @@
         });
     }
 
+    function setFileUrl(data) {
+        let value = $.parseJSON(data.value);
+        if (value.length > 0) {
+            $("#modelImageList").empty();
+            let imageHtml = "";
+            for (let i = 0; i < value.length; i++) {
+                imageHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>";
+            }
+            $("#modelImageList").html(imageHtml);
+        }
+    }
+
     function Cancel() {
         $.modal.closeLoading();
     }
 
+    var imageUrlList;
     //上传 照片视频音频
-    let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/common/upload";
     $(function () {
 
         $(".input-id").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+            maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
             showCaption: false,                                 // 是否显示标题
@@ -666,14 +719,18 @@
         }).on('fileselect', function (event, numFiles, label) {
             console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
         }).on("filebatchselected", function (event, files) {
-            // $(this).fileinput("upload");
+            $(this).fileinput("upload");
         }).on("fileuploaded", function (event, data) {
-            console.log('fileuploaded()      ');
 
-            if (data.response.code === web_status.FAIL) {
-                console.log("上传文件失败");
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                console.log(data.response.data.url)
+                imageUrlList = data.response.data.url;
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
             }
-            console.log(data);
         }).on('filedeleted', function (event, key) {
             console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
             console.log('Key = ' + key);
@@ -800,7 +857,6 @@
     }
 
     function selectEventTypeTree() {
-        console.log(1)
         var treeId = $("#treeId").val();
         var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
         var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
@@ -814,7 +870,6 @@
     }
 
     function doSubmit(index, layero) {
-        console.log(2)
         var body = layer.getChildFrame('body', index);
         $("#eventTypeId").val(body.find('#treeId').val());
         $("#typeStr").val(body.find('#treeName').val());
@@ -873,10 +928,32 @@
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.level + "</option>"
                 });
+                console.log(value.level)
             }
             $("#timeType").html(option);
+
         });
     }
+    var setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parent'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+
 </script>
 </body>
 </html>
