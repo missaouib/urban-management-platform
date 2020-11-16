@@ -128,10 +128,7 @@
                                 </td>
                                 <td><span></span>上报人</td>
                                 <td style="text-align: left"><div class="username" th:sec:authentication="principal.username"></div></td>
-                                <td><span></span>是否自处理</td>
-                                <td style="text-align: left">
-                                    <input  id="doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
-                                </td>
+
                             </tr>
                             <tr>
                                 <td><span></span>案件地址</td>
@@ -144,6 +141,12 @@
                                 <td><span></span>问题描述</td>
                                 <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
                                 <td colspan = "8"><textarea id="problemescription" th:name="represent" required></textarea></td>
+                            </tr>
+                            <tr>
+                                <td><span></span>是否自处理</td>
+                                <td style="text-align: left">
+                                    <input  id="doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
+                                </td>
                             </tr>
                             </tbody>
                         </table>
