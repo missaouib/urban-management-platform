@@ -227,20 +227,19 @@
                                     <td></td>
                                     <td>
                                         <input id="y" type="text" class="find_input" readonly="readonly" value="纬度">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><span></span>监督员</td>
-                                    <td>
-                                        <select name="safeLevel" id="selectUser" onchange="getUserval()">
-                                            <option selected>请选择</option>
-                                            <option value="1">超级管理员</option>
-                                        </select>
                                         <input type="hidden" id="userId" value="">
                                         <input type="hidden" id="eventId" value="">
                                         <input type="hidden" id="button" value="">
                                     </td>
                                 </tr>
+                                <!--<tr>
+                                    <td><span></span>监督员</td>
+                                    <td>
+                                        <select name="safeLevel" id="selectUser" onchange="getUserVal()">
+
+                                        </select>
+                                    </td>
+                                </tr>-->
                                 </tbody>
                             </table>
 
@@ -308,6 +307,16 @@
                                 <li class="idioms">22</li>
                             </ul>
                         </div>
+                    </div>
+                    <div class="checkMain" style="position: relative;display: block" id="userListDiv">
+                        <tr>
+                            <td><span></span>监督员</td>
+                            <td>
+                                <select name="safeLevel" id="selectUser" onchange="getUserVal()">
+
+                                </select>
+                            </td>
+                        </tr>
                     </div>
                     <div class="send">
                         <div class="sendImg">
@@ -524,6 +533,9 @@
         $(".enclosure").click(function () {
 
         })
+
+        getUserListForSupervisor();
+
     });
 
     function selectEventTypeTree() {
@@ -604,13 +616,12 @@
         });
     }
 
-    /*
-    *  userId
-    * */
-    function getUserval() {
+    /**
+     * userId
+     */
+    function getUserVal() {
         var options = $("#selectUser option:selected");
-        // alert(options.val());
-        $("#userId").val(options.val())
+        $("#userId").val(options.val());
     }
 
     let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
@@ -854,8 +865,15 @@
 
     /* 完成任务 派核实 监督员 */
     function setValueForCompleteEvent(data) {
-        $("#eventId").val(data.value)
-        $("#button").val(data.id)
+        $("#eventId").val(data.value);
+        let id = data.id;
+        console.log("id-type", typeof id);
+        $("#button").val(id);
+        if (id === "13" || id === "14" || id === "16") {
+            $("#userListDiv").css("display", "block");
+        } else {
+            $("#userListDiv").css("display", "none");
+        }
     }
 
     function completeEvent() {
@@ -875,7 +893,24 @@
             imageUrlList: $("#imageUrlList").val(),
             represent: $("#textIdioms").val()
         });
+    }
 
+    /* 获取有监督员角色的人 */
+    function getUserListForSupervisor() {
+        let getUserListForSupervisorUrl = /*[[@{/event/getUserListForSupervisor/}]]*/ "/event/getUserListForSupervisor/";
+        $.ajaxUtil.get(getUserListForSupervisorUrl, function (e) {
+            $("#selectUser").empty();
+            let userList = e.data;
+            console.log("userList", userList);
+            let userHtml = "";
+            if (e.code === "0") {
+                userHtml += "<option selected value=''>--请选择--</option>"
+                $(userList).each(function (index, value) {
+                    userHtml += "<option value='" + value.id + "'>" + value.name + "</option>"
+                });
+            }
+            $("#selectUser").html(userHtml);
+        });
     }
 
     var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");

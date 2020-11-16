@@ -133,11 +133,7 @@
                                     <input type="text" th:value="${eventOneVO.userName}" id="userName">
                                 </td>
 <!--                                <td style="text-align: left"><div class="username"  th:value="${eventOneVO.userName}" id="userName"></div></td>-->
-                                <td><span></span>是否自处理</td>
-                                <td style="text-align: left">
-                                    <input  id="doBySelf" name="doBySelf"  placeholder="" class="" type="checkbox"
-                                            th:checked="${eventOneVO.doBySelf}" style="width: 30px">
-                                </td>
+
                             </tr>
                             <tr>
                                 <td><span>*</span>案件地址</td>
@@ -149,6 +145,13 @@
                             <tr>
                                 <td><span>*</span>问题描述</td>
                                 <td colspan = "8"><textarea id="problemescription" th:name="represent"  th:text="${eventOneVO.represent}" required></textarea></td>
+                            </tr>
+                            <tr>
+                                <td><span></span>是否自处理</td>
+                                <td style="text-align: left">
+                                    <input  id="doBySelf" name="doBySelf"  placeholder="" class="" type="checkbox"
+                                            th:checked="${eventOneVO.doBySelf}" style="width: 30px">
+                                </td>
                             </tr>
                             </tbody>
                         </table>

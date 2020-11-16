@@ -799,7 +799,7 @@ ul{list-style: none}
 td,th{text-align: center;font-size: 12px;color:#144490;vertical-align: middle !important; }
 #table td,#table th,#table1 td,#table1 th,#table2 td,#table2 th{color: #475059 !important;}
 thead th{background-color: #ECF4FB;border: #ccc 1px solid !important;}
-tbody tr:hover{background-color: #f3f3f3}
+/*tbody tr:hover{background-color: #f3f3f3}*/
 
 .news_check{padding: 16px 15px 16px 15px;border: 1px #ccc solid;margin-bottom: 4px;background-color: #fff;box-shadow: 2px 2px 5px #b1afaf;}
 .check_left input{height: 28px;width: 198px;border-radius: 4px;border: 1px #ccc solid}
@@ -905,7 +905,7 @@ ul{list-style: none}
 .page-list button{font-size: 8px}
 .dropdown-menu a{width: 100%;height: 20px;text-align: center;line-height: 20px;padding: 2px 0}
 .find_input{padding: 0 0 0 10px}
-.bootstrap-table{padding: 0 10px 10px 10px!important;}
+.bootstrap-table{padding: 0 10px 10px 10px!important;cursor:pointer;}
 body{height: 100vh!important;width: 99% !important;margin: 0 auto}
 .bootstrap-table .fixed-table-container .table thead th .desc ,
 .bootstrap-table .fixed-table-container .table thead th .asc{
@@ -933,7 +933,8 @@ body{height: 100vh!important;width: 99% !important;margin: 0 auto}
 .notice_bot{background-color: white!important;padding: 5px 0 5px 0;z-index:-1;border:none!important;width: 100%;}
 .notice_bot>div{font-size: 12px;margin-left: 10px;color: #07141e;line-height: 28px}
 .notice_bot>div input{margin-right: 2px;vertical-align: middle;height: 100%;width: 100%}
-textarea{width: 100%;height: 70px;resize: none;border-radius: 4px;border: 1px #ccc solid;padding: 0 5px}
+textarea{width: 100%;height: 70px;resize: none;border-radius: 4px;border: 1px #ccc solid;padding: 0 5px;}
+
 
 .l_left{float: left}
 .r_right{float: right}
@@ -947,7 +948,7 @@ textarea{width: 100%;height: 70px;resize: none;border-radius: 4px;border: 1px #c
 .table2_top select,.table2_top input[type=text],.table2_top input[type=password],.table2_top input[type=email],#dropdownMenu1{
     text-align: left;width: 100%;height:28px;border-radius: 4px;font-size: 12px;border: 1px #ccc solid;padding-left: 10px;
     }
-tbody tr:hover{background-color: white!important;}
+/*tbody tr:hover{background-color: white!important;}*/
 
 .ol-zoom-in,.ol-zoom-out{width: 15px!important;height: 15px!important;padding: 0!important;}
 ul,li{list-style: none}
@@ -1609,4 +1610,16 @@ width: 50px;
     color: #fff;
     border-radius: 4px;
     font-size: 12px;
+}
+.felx_end{
+    justify-content: flex-end;
+}
+.changeColor{
+    background-color: #31b0d5  !important;
+    color: white;
+}
+.overInput{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

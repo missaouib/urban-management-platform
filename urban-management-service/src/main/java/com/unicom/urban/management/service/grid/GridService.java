@@ -27,7 +27,9 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 网格
@@ -226,9 +228,26 @@ public class GridService {
         return x + "-" + y;
     }
 
-
-    public List<GridVO> findGridAll(){
+    public List<GridVO> findGridAll() {
         List<Grid> gridList = gridRepository.findAll();
         return GridMapper.INSTANCE.gridListToGridVOList(gridList);
     }
+
+    public Grid findByGridCode(String gridCode) {
+        return gridRepository.findByGridCode(gridCode);
+    }
+
+    public Map<String, Object> findByParentId(String parentId) {
+        List<Grid> gridList = gridRepository.findAllByParentId(parentId);
+        if (gridList.size() > 0) {
+            Map<String, Object> map = new HashMap<>(3);
+            map.put("id", gridList.get(0).getId());
+            map.put("name", gridList.get(0).getGridName());
+            map.put("level", gridList.get(0).getLevel());
+            return map;
+        } else {
+            throw new DataValidException("未查询到数据");
+        }
+    }
+
 }

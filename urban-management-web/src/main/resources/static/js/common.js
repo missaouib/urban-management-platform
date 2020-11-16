@@ -969,8 +969,12 @@ var table = {
 
 
 })(jQuery);
+//点击行变色
+$('#bootstrap-table').on('click-row.bs.table', function (e,row,$element) {
+	$('.changeColor').removeClass('changeColor');
+	$($element).addClass('changeColor');
 
-
+});
 /** 弹窗状态码 */
 modal_status = {
 	SUCCESS: "success",

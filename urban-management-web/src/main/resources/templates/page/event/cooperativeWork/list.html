@@ -8,6 +8,7 @@
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
     <th:block th:include="page/fragments/common :: ztree_css"/>
+    <th:block th:include="page/fragments/common :: swiper_css"/>
     <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;">
@@ -249,8 +250,8 @@
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
-                                    <div>
-                                        <div class="innerPic" id="imageList">
+                                    <div id="imageList">
+                                        <div class="innerPic" style="float:left;">
                                         </div>
                                     </div>
                                 </div>
@@ -367,8 +368,19 @@
                     <span>音频</span>
                 </div>
                 <div class="duck_info">
-                    <div class="info_chance blockActive" id="modelImageList">
-                        <img style="width: 100%;height: 100%" src="../img/streed.png">
+<!--                    <div class="info_chance blockActive" id="modelImageList">-->
+                    <div class="info_chance blockActive" style="position: relative">
+<!--                        <img style="width: 100%;height: 100%" src="../img/streed.png">-->
+                        <div class="swiper-container">
+                            <div class="swiper-wrapper"  id="modelImageList">
+
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
                     </div>
                     <div class="info_chance">视频
                         <video style="width: 100%;height: 100%"></video>
@@ -380,8 +392,8 @@
     </div>
 
 
-</div>
 
+</div>
 
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
@@ -390,6 +402,7 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
 
 <script type="text/javascript" th:inline="javascript">
 
@@ -419,7 +432,20 @@
         });
 
 
+        var swiper = new Swiper('.swiper-container', {
+            pagination: '.swiper-pagination',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            loop: true
+        });
+
+
+
     })
+
 
     function zTreeOnClick(event, treeId, treeNode) {
         $("#doorer").val(treeNode.name);
@@ -503,12 +529,14 @@
     }
 
     function processing() {
+        console.log(imageUrlList)
         var data = {
             "eventId": eventId,
             "buttonId": buttonId,
             "opinions": $("#opinions").val(),
             "deptId":$("#dept").val(),
-            "delayedTime":$("#delayedTime").val()
+            "delayedTime":$("#delayedTime").val(),
+            "imageUrlList":imageUrlList
         };
 
         $.ajax({
@@ -547,7 +575,10 @@
             sortOrder: "desc",
             modalName: "用户",
             // 点击每行进行函数的触发
-            onClickRow: function (row, index, tr, flied) {
+            onClickRow: function (row, index, tr, flied,$element) {
+                $('.changeColor').removeClass('changeColor');
+                $($element).addClass('changeColor');
+
                 layerMap.getSource().clear()
                 //详情  流程图  流转记录
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
@@ -588,7 +619,9 @@
                         $("#imageList").empty();
                         let imageHtml = "";
                         for (let i = 0; i < file.length; i++) {
-                            imageHtml += "<img class='img-rounded' src='" + showUrl + file[i].url + "'>";
+                            imageHtml += "<div class=\"innerPic\" style=\"float:left;margin-left: 10px\">" +
+                                             "<img class='img-rounded' src='" + showUrl + file[i].url + "'>" +
+                                        "</div>"
                         }
                         $("#imageList").html(imageHtml);
                     }
@@ -692,7 +725,7 @@
                     html += "结束时间:<em>"+ data[i].endTime +"</em>"
                     html += "</div>";
                     html += "</div>";
-                    html += "<div class='gameEnd'>";
+                    html += "<div class='gameEnd felx_end'>";
                     html += "<div class='endBox'>";
                     if (data[i].fileName.length > 0) {
                         html += "<button class='endBox enclosure' type='button' value='" + JSON.stringify(data[i].fileName) + "' onclick='setFileUrl(this)'><i></i>附件详情</button>";
@@ -716,7 +749,9 @@
             $("#modelImageList").empty();
             let imageHtml = "";
             for (let i = 0; i < value.length; i++) {
-                imageHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>";
+                imageHtml += "<div class=\"swiper-slide\">" +
+                                "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>"+
+                             "</div>"
             }
             $("#modelImageList").html(imageHtml);
         }
@@ -726,19 +761,21 @@
         $.modal.closeLoading();
     }
 
+    var imageUrlList;
     //上传 照片视频音频
-    let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/common/upload";
     $(function () {
 
         $(".input-id").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+            maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
             showCaption: false,                                 // 是否显示标题
@@ -753,12 +790,17 @@
         }).on('fileselect', function (event, numFiles, label) {
             console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
         }).on("filebatchselected", function (event, files) {
-            // $(this).fileinput("upload");
+            $(this).fileinput("upload");
         }).on("fileuploaded", function (event, data) {
-            console.log('fileuploaded()      ');
 
-            if (data.response.code === web_status.FAIL) {
-                console.log("上传文件失败");
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                console.log(data.response.data.url)
+                imageUrlList = data.response.data.url;
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
             }
         }).on('filedeleted', function (event, key) {
             console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');

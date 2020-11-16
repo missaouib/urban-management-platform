@@ -1,19 +1,25 @@
 package com.unicom.urban.management.web.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.properties.GisServiceProperties;
 import com.unicom.urban.management.common.util.RestTemplateUtil;
 import com.unicom.urban.management.pojo.RestReturn;
 import com.unicom.urban.management.pojo.Result;
+import com.unicom.urban.management.pojo.entity.Grid;
 import com.unicom.urban.management.pojo.vo.EventButtonVO;
+import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.event.EventService;
+import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.publish.PublishService;
+import com.unicom.urban.management.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +40,10 @@ public class EventController {
     private PublishService publishService;
     @Autowired
     private GisServiceProperties gisServiceProperties;
+    @Autowired
+    private GridService gridService;
+    @Autowired
+    private RoleService roleService;
 
     /**
      * 获取下一环节完成按钮
@@ -70,8 +80,8 @@ public class EventController {
             return (Map<String, String>) body.getData();
         } catch (Exception e) {
             e.printStackTrace();
-            Map<String,String> map= new HashMap<>();
-            map.put("mongo","");
+            Map<String, String> map = new HashMap<>();
+            map.put("mongo", "");
             return map;
         }
     }
@@ -82,23 +92,36 @@ public class EventController {
      * @param mongodbId mongoId
      */
     @GetMapping("/getGridByCheckLayer")
-    public void getGridByCheckLayer(String mongodbId) {
-        /*List<Map<String, Object>> valueMapList = new ArrayList<>(1);
-        Map<String, Object> valueMap = new HashMap<>(2);
-        valueMap.put("value", mongodbId);
-        valueMap.put("queryCriteria", "regex");
-        valueMapList.add(valueMap);
-        List<Map<String, Object>> columnNameMapList = new ArrayList<>(1);
-        Map<String, Object> columnNameMap = new HashMap<>(2);
-        columnNameMap.put("columnName", "objId");
-        columnNameMap.put("value", valueMapList);
-        columnNameMapList.add(columnNameMap);
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("layerId", KvConstant.KV_LAYER_GRID);
-        map.put("columnName", columnNameMapList);*/
+    public Result getGridByCheckLayer(String mongodbId) {
         RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/queryMongoById?id=" + mongodbId, RestReturn.class).getBody();
         Map<String, String> dataMap = (Map<String, String>) body.getData();
-        System.out.println(dataMap);
+        String objId = dataMap.get("objId");
+        System.out.println(objId);
+        Grid byGridCode = gridService.findByGridCode(objId);
+        List<Map<String, Object>> mapList = new ArrayList<>(4);
+        Map<String, Object> map = new HashMap<>(3);
+        map.put("id", byGridCode.getId());
+        map.put("name", byGridCode.getGridName());
+        map.put("level", byGridCode.getLevel());
+        /* todo 获取所属社区 */
+        mapList.add(gridService.findByParentId(byGridCode.getParent().getId()));
+        /* todo 获取所属街道 */
+        mapList.add(gridService.findByParentId(byGridCode.getParent().getParent().getId()));
+        /* todo 获取所在区域 */
+        mapList.add(gridService.findByParentId(byGridCode.getParent().getParent().getParent().getId()));
+        mapList.add(map);
+        return Result.success(mapList);
+    }
+
+    /**
+     * 获取有监督员角色的人
+     *
+     * @return 人
+     */
+    @GetMapping("/getUserListForSupervisor")
+    public Result getUserListForSupervisor() {
+        List<UserVO> userList = roleService.findUserListByRoleId(KvConstant.SUPERVISOR_ROLE);
+        return Result.success(userList);
     }
 
 }
