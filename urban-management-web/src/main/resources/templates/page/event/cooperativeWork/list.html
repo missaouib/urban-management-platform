@@ -456,7 +456,6 @@
     var deptName = ""
 
     function eventButton(obj) {
-        console.log($(obj).text())
         $("#deptDiv").empty();
         if($(obj).text() === "申请延时"){
             var deptStr = " <span class=\"sendText\"><i>*</i>申请时限</span>\n" +
@@ -475,7 +474,7 @@
                      <div class="checkMain" style="position: relative;align-items: center">
                         <span class="sendText" style="width: 73px"><i></i>专业部门</span>
                         <input type="text" class="find_input" id="doorer">
-                        <input type="hidden" class="find_input" id="doorid">
+                        <input type="hidden" class="find_input" id="dept">
                         <span class="add_tree">+</span>
                     </div>
                     <div class="checkMain" style="position: relative;display: none" id="checkMain">
@@ -489,7 +488,7 @@
                `
                 $("#deptDiv").append(deptStr);
                 $("#doorer").val(deptName)
-                $("#doorid").val(deptId)
+                $("#dept").val(deptId)
 
                 $.ajaxUtil.get(componentTypeUrl, function (e) {
                     var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
