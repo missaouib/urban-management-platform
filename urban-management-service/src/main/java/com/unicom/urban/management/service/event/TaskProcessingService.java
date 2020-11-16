@@ -528,7 +528,7 @@ public class TaskProcessingService {
     }
 
 
-    private List<String> getUsers(String roleId) {
+    public List<String> getUsers(String roleId) {
         Role one = roleService.findOne(roleId);
         List<String> user = new ArrayList<>();
         one.getUserList().forEach(u -> user.add(u.getId()));

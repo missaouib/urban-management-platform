@@ -503,12 +503,14 @@
     }
 
     function processing() {
+        console.log(imageUrlList)
         var data = {
             "eventId": eventId,
             "buttonId": buttonId,
             "opinions": $("#opinions").val(),
             "deptId":$("#dept").val(),
-            "delayedTime":$("#delayedTime").val()
+            "delayedTime":$("#delayedTime").val(),
+            "imageUrlList":imageUrlList
         };
 
         $.ajax({
@@ -728,19 +730,21 @@
         $.modal.closeLoading();
     }
 
+    var imageUrlList;
     //上传 照片视频音频
-    let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/common/upload";
     $(function () {
 
         $(".input-id").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+            maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
             showCaption: false,                                 // 是否显示标题
@@ -755,12 +759,17 @@
         }).on('fileselect', function (event, numFiles, label) {
             console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
         }).on("filebatchselected", function (event, files) {
-            // $(this).fileinput("upload");
+            $(this).fileinput("upload");
         }).on("fileuploaded", function (event, data) {
-            console.log('fileuploaded()      ');
 
-            if (data.response.code === web_status.FAIL) {
-                console.log("上传文件失败");
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                console.log(data.response.data.url)
+                imageUrlList = data.response.data.url;
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
             }
         }).on('filedeleted', function (event, key) {
             console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
