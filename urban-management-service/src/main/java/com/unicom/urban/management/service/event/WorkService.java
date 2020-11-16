@@ -3,12 +3,10 @@ package com.unicom.urban.management.service.event;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.dto.EventDTO;
-import com.unicom.urban.management.pojo.entity.Event;
-import com.unicom.urban.management.pojo.entity.EventFile;
-import com.unicom.urban.management.pojo.entity.ProcessTimeLimit;
-import com.unicom.urban.management.pojo.entity.Statistics;
+import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.processtimelimit.ProcessTimeLimitService;
+import com.unicom.urban.management.service.role.RoleService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
@@ -39,7 +37,8 @@ public class WorkService {
     private StatisticsService statisticsService;
     @Autowired
     private TaskProcessingService taskProcessingService;
-
+    @Autowired
+    private RoleService roleService;
     public List<String> queryTaskByAssignee() {
         return activitiService.queryTaskByAssignee(SecurityUtil.getUserId());
     }
@@ -143,26 +142,32 @@ public class WorkService {
      * 监督员-信息核实
      *
      * @param eventId 事件id
-     * @param userId  指派的人的id
      * @param button  按钮
      */
-    public void completeByVerificationist(String eventId, String userId, String button) {
-        String s = testFinish(eventId);
-        activitiService.complete(s, Collections.singletonList("1"), button);
-        sortStatistics(eventId);
+    public void completeByVerificationist(String eventId, String button) {
+        Statistics saved = statisticsFinish(eventId);
+        List<String> users = this.getUsers(KvConstant.RECEPTIONIST_ROLE);
+        activitiService.complete(saved.getTaskId(), users, button);
+        Event event = eventService.findOne(eventId);
+        Statistics statistics = createStatistics(event);
+        statistics.setSort(saved.getSort() + 1);
+        statisticsService.save(statistics);
     }
 
     /**
      * 监督员-案件核查
      *
      * @param eventId 事件id
-     * @param userId  指派的人的id
      * @param button  按钮
      */
-    public void completeByInspect(String eventId, String userId, String button) {
-        String s = testFinish(eventId);
-        activitiService.complete(s, Collections.singletonList("1"), button);
-        sortStatistics(eventId);
+    public void completeByInspect(String eventId, String button) {
+        Statistics saved = statisticsFinish(eventId);
+        List<String> users = this.getUsers(KvConstant.RECEPTIONIST_ROLE);
+        activitiService.complete(saved.getTaskId(), users, button);
+        Event event = eventService.findOne(eventId);
+        Statistics statistics = createStatistics(event);
+        statistics.setSort(saved.getSort() + 1);
+        statisticsService.save(statistics);
     }
 
     /**
@@ -262,7 +267,7 @@ public class WorkService {
         statistics.setReport(1);
         /* 应发核实 */
         statistics.setNeedSendVerify(1);
-        statisticsService.update(statistics);
+        statisticsService.save(statistics);
     }
 
     /**
@@ -276,6 +281,18 @@ public class WorkService {
         statistics.setEndTime(LocalDateTime.now());
         statisticsService.update(statistics);
         return statistics.getTaskId();
+    }
+    /**
+     * 测试期间 直接完结statistics表
+     *
+     * @param eventId
+     * @return
+     */
+    public Statistics statisticsFinish(String eventId) {
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        statistics.setEndTime(LocalDateTime.now());
+        statisticsService.update(statistics);
+        return statistics;
     }
 
     /**
@@ -305,11 +322,10 @@ public class WorkService {
     /**
      * 初始化实例
      *
-     * @param eventId 事件id
+     * @param event 事件id
      * @return 流转统计
      */
-    public Statistics createStatistics(String eventId) {
-        Event event = eventService.findOne(eventId);
+    private Statistics createStatistics(Event event) {
         Statistics statistics = new Statistics();
         statistics.setEvent(event);
         /* 获取当前环节 */
@@ -318,36 +334,11 @@ public class WorkService {
         statistics.setTaskName(task.getName());
         statistics.setStartTime(LocalDateTime.now());
         statistics.setDeptTimeLimit(event.getTimeLimit());
-        /* todo 此处是目前数据库数据尚未完善 所以用一条假数据暂替 ——姜文 ——2020/11/10 */
+        /* 此处是目前数据库数据尚未完善 所以用一条假数据暂替 ——姜文 ——2020/11/10 */
         /*ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());*/
         ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId("值班长-立案", "28526efe-3db5-415b-8c7a-d0e3a49cab8f");
         statistics.setProcessTimeLimit(processTimeLimit);
-        statistics.setSort(1);
-        return statisticsService.save(statistics);
-    }
-    /**
-     * 初始化实例
-     *
-     * @param eventId 事件id
-     * @return 流转统计
-     */
-    public Statistics sortStatistics(String eventId) {
-        Event event = eventService.findOne(eventId);
-        Statistics statistics = new Statistics();
-        statistics.setEvent(event);
-        /* 获取当前环节 */
-        Task task = activitiService.getTaskByProcessInstanceId(event.getProcessInstanceId());
-        statistics.setTaskId(task.getId());
-        statistics.setTaskName(task.getName());
-        statistics.setStartTime(LocalDateTime.now());
-        statistics.setDeptTimeLimit(event.getTimeLimit());
-        /* todo 此处是目前数据库数据尚未完善 所以用一条假数据暂替 ——姜文 ——2020/11/10 */
-        /*ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());*/
-        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId("值班长-立案", "28526efe-3db5-415b-8c7a-d0e3a49cab8f");
-        statistics.setProcessTimeLimit(processTimeLimit);
-        Statistics sortStatistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-        statistics.setSort(sortStatistics.getSort() + 1);
-        return statisticsService.save(statistics);
+        return statistics;
     }
     /**
      * 为每条实例增加 意见 和 附件
@@ -393,19 +384,19 @@ public class WorkService {
      * @param eventId
      */
     public void saveAutoReport(String eventId) {
-        List<String> userList = new ArrayList<>();
-        userList.add(SecurityUtil.getUserId());
+        List<String> users = this.getUsers(KvConstant.RECEPTIONIST_ROLE);
         Event event = eventService.findOne(eventId);
-        ProcessInstance processInstance = activitiService.reportAutoEvent(eventId, userList);
+        ProcessInstance processInstance = activitiService.reportAutoEvent(eventId, users);
         event.setProcessInstanceId(processInstance.getId());
         eventService.update(event);
 
-        Statistics statistics = this.createStatistics(event.getId());
+        Statistics statistics = this.createStatistics(event);
         statistics.setNeedSendVerify(1);
         statistics.setReport(1);
         statistics.setPatrolReport(1);
         statistics.setToOperate(1);
-        statisticsService.update(statistics);
+        statistics.setSort(1);
+        statisticsService.save(statistics);
     }
 
     /**
@@ -414,18 +405,24 @@ public class WorkService {
      * @param eventId
      */
     public void superviseReporting(String eventId) {
-        List<String> userList = new ArrayList<>();
-        userList.add(SecurityUtil.getUserId());
+        List<String> users = this.getUsers(KvConstant.RECEPTIONIST_ROLE);
         Event event = eventService.findOne(eventId);
-        ProcessInstance processInstance = activitiService.superviseReporting(eventId, userList);
+        ProcessInstance processInstance = activitiService.superviseReporting(eventId, users);
         event.setProcessInstanceId(processInstance.getId());
         eventService.update(event);
-        Statistics statistics = this.createStatistics(event.getId());
+        Statistics statistics = this.createStatistics(event);
         statistics.setNeedSendVerify(1);
         statistics.setReport(1);
         statistics.setPatrolReport(1);
         statistics.setToOperate(1);
-        statisticsService.update(statistics);
+        statistics.setSort(1);
+        statisticsService.save(statistics);
     }
 
+    public List<String> getUsers(String roleId) {
+        Role one = roleService.findOne(roleId);
+        List<String> user = new ArrayList<>();
+        one.getUserList().forEach(u -> user.add(u.getId()));
+        return user;
+    }
 }

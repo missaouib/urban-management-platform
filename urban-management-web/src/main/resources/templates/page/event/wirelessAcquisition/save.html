@@ -141,7 +141,7 @@
                                 <td><span></span>问题描述</td>
                                 <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
                                 <td colspan = "8">
-                                    <input id="problemescription" type="text" class="overInput" onmouseover="this.title=this.value"  required>
+                                    <input th:name="represent" id="problemescription" type="text" class="overInput" onmouseover="this.title=this.value"  required>
                                 </td>
                             </tr>
                             <tr>
@@ -153,6 +153,7 @@
                             </tbody>
                         </table>
                         <div class="send" style="float:left;width: 48%">
+                            <div><span>处置前</span></div>
                             <div class="sendImg">
                                 <div class="sendText"><span>图片:</span></div>
                                 <div><input id="input-id" class="input-id" type="file" name="files" multiple="multiple"></div>
@@ -168,6 +169,7 @@
                             </div>
                         </div>
                         <div class="send" id="after" style="display:none;">
+                            <div><span>处置后</span></div>
                             <div class="sendImg">
                                 <div class="sendText"><span>图片:</span></div>
                                 <div><input id="input-idaAfter" type="file" class="input-id" name="files" multiple="multiple"></div>
@@ -568,14 +570,9 @@
         }).on('fileselect', function (event, numFiles, label) {
             console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
         }).on("filebatchselected", function (event, files) {
-            // $(this).fileinput("upload");
+            $(this).fileinput("upload");
         }).on("fileuploaded", function (event, data) {
-            console.log('fileuploaded()      ');
 
-            if (data.response.code === web_status.FAIL) {
-                console.log("上传文件失败");
-            }
-            console.log(data);
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {

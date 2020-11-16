@@ -110,6 +110,10 @@ public class EventDTO {
      * 图片集合
      */
     private List<String> imageUrlList;
+    /**
+     * 处置后图片
+     */
+    private List<String> imageUrlListAfter;
 
     /**
      * 不予受理 受理员

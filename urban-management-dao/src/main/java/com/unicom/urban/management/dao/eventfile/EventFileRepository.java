@@ -10,4 +10,5 @@ import com.unicom.urban.management.pojo.entity.EventFile;
  */
 public interface EventFileRepository extends CustomizeRepository<EventFile, String> {
 
+    //void deleteByEvent_id(String eventId);
 }

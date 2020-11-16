@@ -251,7 +251,7 @@ public class EventService {
      * @param eventDTO 事件参数
      */
     public void saveTemp(EventDTO eventDTO) {
-
+        eventDTO.setSts(0);
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         eventRepository.save(event);
@@ -302,22 +302,20 @@ public class EventService {
      * 监督员信息核实
      *
      * @param eventId 事件id
-     * @param userId  指派的人的id
      * @param button  按钮
      */
-    public void completeByVerification(String eventId, String userId, String button) {
-        workService.completeByVerificationist(eventId, userId, button);
+    public void completeByVerification(String eventId, String button) {
+        workService.completeByVerificationist(eventId,button);
     }
 
     /**
      * 监督员案件核查
      *
      * @param eventId 事件id
-     * @param userId  指派的人的id
      * @param button  按钮
      */
-    public void completeByInspect(String eventId, String userId, String button) {
-        workService.completeByInspect(eventId, userId, button);
+    public void completeByInspect(String eventId, String button) {
+        workService.completeByInspect(eventId, button);
     }
 
     /**
@@ -467,7 +465,7 @@ public class EventService {
      * @param eventDTO 需要操作的实体
      */
     public Event updateTemp(EventDTO eventDTO) {
-
+        eventDTO.setSts(0);
         Event event = EventDTOtoEvent(eventDTO);
         return this.update(event);
     }
@@ -533,7 +531,11 @@ public class EventService {
         if (StringUtils.isNotBlank(eventDTO.getLocation())){
             event.setLocation(eventDTO.getLocation());
         }
+        if (eventDTO.getSts() == null) {
+            event.setSts(null);
+        }else {
             event.setSts(eventDTO.getSts());
+        }
         return event;
     }
 
@@ -552,7 +554,6 @@ public class EventService {
      * @param eventDTO
      */
     public void saveAutoReport(EventDTO eventDTO) {
-        //监督员上报kv写死
         Event event = this.EventDTOtoEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         Event saved = eventRepository.save(event);
@@ -563,7 +564,7 @@ public class EventService {
      * 案件采集监督员上报
      */
     public void saveReport(EventDTO eventDTO) {
-        //监督员上报kv写死
+        eventDTO.setSts(null);
         Event event = this.EventDTOtoEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         Event saved = eventRepository.save(event);

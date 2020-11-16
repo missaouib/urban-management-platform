@@ -50,4 +50,8 @@ public class EventFileService {
         return this.saveAll(eventFileList);
     }
 
+
+    //public void deleteByEventId(String eventId) {
+//        eventFileRepository.deleteByEvent_id(eventId);
+//    }
 }
