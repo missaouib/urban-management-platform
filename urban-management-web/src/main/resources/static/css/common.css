@@ -1600,3 +1600,13 @@ width: 50px;
 .innerPic img{
     width: 100%;height: 100%;
 }
+.saveTheBtn{
+    width: 58px;
+    height: 28px;
+    line-height: 28px;
+    border: none;
+    background-color: #5cb85c;
+    color: #fff;
+    border-radius: 4px;
+    font-size: 12px;
+}

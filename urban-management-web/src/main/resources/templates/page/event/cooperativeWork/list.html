@@ -306,7 +306,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
-                            <span class="sendText"><i></i>意见</span>
+                            <span class="sendText" id="btnOpinion"><i></i>意见</span>
                             <textarea type="text" id="opinions"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays">
@@ -428,10 +428,11 @@
 
     setModelName()
     function setModelName(){
-        $("#btnGroupGround").on("click","#btnGroupGround button",function () {
+        $("#btnGroupGround").on("click",".but_save",function () {
             let btnName = $(this).html()
             $(".modal-title").html($(this).html())
             $("#underBtn").html($(this).html())
+            $("#btnOpinion").html($(this).html()+"意见")
         })
     }
 
@@ -458,7 +459,7 @@
     function eventButton(obj) {
         $("#deptDiv").empty();
         if($(obj).text() === "申请延时"){
-            var deptStr = " <span class=\"sendText\"><i>*</i>申请时限</span>\n" +
+            var deptStr = " <span class=\"sendText\" style='float: left;width: 73px'><i>*</i>申请时限</span>\n" +
                 "<input type='text' id='delayedTime' oninput=\"value=value.replace(/[^\\d]/g,'')\"/>";
             $("#deptDiv").append(deptStr);
         }else if ("派遣" === $(obj).text()) {
@@ -675,9 +676,7 @@
                     html += "<div class='endBox'>";
                     html += "回复内容:<em class='roleSize'>"+ data[i].opinions +"</em> "
                     html += "</div>";
-                    if (data[i].fileName.length > 0) {
-                        html += "<button class='endBox enclosure' type='button' value='" + JSON.stringify(data[i].fileName) + "' onclick='setFileUrl(this)'><i></i>附件详情</button>";
-                    }
+
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
@@ -696,7 +695,9 @@
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
-                    html += "<em></em>"
+                    if (data[i].fileName.length > 0) {
+                        html += "<button class='endBox enclosure' type='button' value='" + JSON.stringify(data[i].fileName) + "' onclick='setFileUrl(this)'><i></i>附件详情</button>";
+                    }
                     html += "</div>";
                     html += "</div>";
                     html += "</div>";
