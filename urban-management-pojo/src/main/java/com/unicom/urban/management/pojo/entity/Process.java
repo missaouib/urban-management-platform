@@ -7,7 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 /**
- * 流程实体类
+ * 业务的流程实体类 和Activiti的工作流程没有关系
  *
  * @author liukai
  */
