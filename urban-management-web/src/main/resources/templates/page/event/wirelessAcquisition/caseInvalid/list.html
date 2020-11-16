@@ -561,7 +561,7 @@
                     html += "<div class='expressRecord-text'>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
-                    html += "<em>回复内容:</em> " + data[i].opinions
+                    html += "回复内容:<em class='roleSize'>"+ data[i].opinions +"</em> ";
                     html += "</div>";
                     if (data[i].fileName.length > 0) {
                         html += "<div class='endBox enclosure'><i></i>附件详情</div>";
@@ -569,17 +569,17 @@
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
-                    html += "<em>by:</em> " + data[i].user + "，角色";
+                    html += "by:<em class='roleSize'>"+ data[i].user + "，角色" + "</em> ";
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";
-                    html += "<div class='endBox'>";
-                    html += "<em>开始时间:</em> " + data[i].starTime
+                    html += "<div class='endBox RecordTime'>";
+                    html += "<div>开始时间:<em>"+ data[i].starTime +"</em></div>";
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";
-                    html += "<div class='endBox'>";
-                    html += "<em>结束时间:</em> " + data[i].endTime
+                    html += "<div class='endBox RecordTime'>";
+                    html += "结束时间:<em>"+ data[i].endTime +"</em>"
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";

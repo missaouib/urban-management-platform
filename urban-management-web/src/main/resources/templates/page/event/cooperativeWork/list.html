@@ -275,7 +275,6 @@
 
                             </div>
                         </div>
-
                         <!--                            按钮-->
 
                         <div class="notice_bot">
@@ -345,7 +344,7 @@
                     </div>
                     <div class="modal-footer justify-content-between"
                          style="display: flex;justify-content: flex-end!important;">
-                        <button type="button" class="btn btn-primary" onclick="processing()">处理</button>
+                        <button type="button" class="btn btn-primary" onclick="processing()" id="underBtn">处理</button>
                         <button type="button" class="btn btn-success" onclick="reductionButton()" data-dismiss="modal">
                             返回
                         </button>
@@ -427,6 +426,14 @@
         $(".closemodal").click();
     }
 
+    setModelName()
+    function setModelName(){
+        $("#btnGroupGround").on("click","#btnGroupGround button",function () {
+            let btnName = $(this).html()
+            $(".modal-title").html($(this).html())
+            $("#underBtn").html($(this).html())
+        })
+    }
 
     let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
 
@@ -456,15 +463,22 @@
                 "<input type='text' id='delayedTime' oninput=\"value=value.replace(/[^\\d]/g,'')\"/>";
             $("#deptDiv").append(deptStr);
         }else if ("派遣" === $(obj).text()) {
-
             $.ajaxUtil.get(deptUrl, function (o) {
-               let deptStr = `
-                     <div class="checkMain" style="position: relative">
-                        <span class="sendText"><i></i>专业部门</span>
+                var deptName;
+                var deptId;
+                $(o.data).each(function (index,value) {
+                    deptName = value.deptName
+                    deptId = value.id
+                })
+
+                let deptStr = `
+                     <div class="checkMain" style="position: relative;align-items: center">
+                        <span class="sendText" style="width: 73px"><i></i>专业部门</span>
                         <input type="text" class="find_input" id="doorer">
+                        <input type="hidden" class="find_input" id="doorid">
                         <span class="add_tree">+</span>
                     </div>
-                    <div class="checkMain" style="position: relative;" id="checkMain">
+                    <div class="checkMain" style="position: relative;display: none" id="checkMain">
                         <span class="sendText"><i></i></span>
                         <div class="tree" id="treeMain">
                             <div class="treeDemo">
@@ -474,11 +488,13 @@
                     </div>
                `
                 $("#deptDiv").append(deptStr);
-            })
-            $.ajaxUtil.get(componentTypeUrl, function (e) {
-                var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
-            })
+                $("#doorer").val(deptName)
+                $("#doorid").val(deptId)
 
+                $.ajaxUtil.get(componentTypeUrl, function (e) {
+                    var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+                })
+            })
         }
         buttonId = $(obj).attr("id");
     }
@@ -942,8 +958,10 @@
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.level + "</option>"
                 });
+                console.log(value.level)
             }
             $("#timeType").html(option);
+
         });
     }
     var setting = {
