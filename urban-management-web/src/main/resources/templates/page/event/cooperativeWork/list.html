@@ -249,8 +249,8 @@
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
-                                    <div>
-                                        <div class="innerPic" id="imageList">
+                                    <div id="imageList">
+                                        <div class="innerPic" style="float:left;">
                                         </div>
                                     </div>
                                 </div>
@@ -588,7 +588,9 @@
                         $("#imageList").empty();
                         let imageHtml = "";
                         for (let i = 0; i < file.length; i++) {
-                            imageHtml += "<img class='img-rounded' src='" + showUrl + file[i].url + "'>";
+                            imageHtml += "<div class=\"innerPic\" style=\"float:left;margin-left: 10px\">" +
+                                             "<img class='img-rounded' src='" + showUrl + file[i].url + "'>" +
+                                        "</div>"
                         }
                         $("#imageList").html(imageHtml);
                     }
