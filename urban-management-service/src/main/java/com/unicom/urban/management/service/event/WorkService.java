@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.event;
 
+import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.Event;
@@ -36,6 +37,8 @@ public class WorkService {
     private ProcessTimeLimitService processTimeLimitService;
     @Autowired
     private StatisticsService statisticsService;
+    @Autowired
+    private TaskProcessingService taskProcessingService;
 
     public List<String> queryTaskByAssignee() {
         return activitiService.queryTaskByAssignee(SecurityUtil.getUserId());
@@ -51,7 +54,7 @@ public class WorkService {
         //todo eventId userList buttonId
         activitiService.complete(eventId, userId, buttonId);
         this.testFinish(eventId);
-        this.initStatistics(eventId);
+        this.initStatistics(eventId, 0);
     }
 
     /**
@@ -65,7 +68,7 @@ public class WorkService {
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         activitiService.complete(statistics.getTaskId(), userid, buttonId);
         this.testFinish(eventId);
-        this.initStatistics(eventId);
+        this.initStatistics(eventId, 0);
     }
 
     /**
@@ -101,6 +104,7 @@ public class WorkService {
         if ("13".equals(eventDTO.getButton()) || "16".equals(eventDTO.getButton())) {
             activitiService.claim(statistics1.getTaskId(), SecurityUtil.getUserId());
         }
+        /* todo 此处需要修改方法 */
         Map<String, Object> map = judgeOverTimeIsOrNot(statistics1.getStartTime(), statistics1.getEndTime(), statistics1.getProcessTimeLimit().getTimeLimit());
         if ("14".equals(eventDTO.getButton())) {
             statistics1.setSendCheckHuman(1);
@@ -115,13 +119,12 @@ public class WorkService {
             statistics1.setSts(map.get("sts").toString());
             statistics1.setSendVerifyHumanName(SecurityUtil.getUser().castToUser());
             statistics1.setSendVerifyHuman(SecurityUtil.getUser().castToUser());
-            /*TODO 获取当前登陆人角色*/
             statistics1.setUser(SecurityUtil.getUser().castToUser());
         }
         setOpinionsAndEventFileList(statistics1, eventDTO.getRepresent(), eventDTO.getEventFileList());
         statisticsService.update(statistics1);
         activitiService.complete(statistics1.getTaskId(), Collections.singletonList(eventDTO.getUserId()), eventDTO.getButton());
-        Statistics statistics = initStatistics(eventDTO.getId());
+        Statistics statistics = initStatistics(eventDTO.getId(), statistics1.getSort());
         statistics.setStartTime(statistics1.getEndTime());
         statistics.setSort(statistics1.getSort() + 1);
         if ("14".equals(eventDTO.getButton())) {
@@ -146,7 +149,7 @@ public class WorkService {
     public void completeByVerificationist(String eventId, String userId, String button) {
         String s = testFinish(eventId);
         activitiService.complete(s, Collections.singletonList("1"), button);
-        initStatistics(eventId);
+        initStatistics(eventId, 0);
     }
 
     /**
@@ -159,7 +162,7 @@ public class WorkService {
     public void completeByInspect(String eventId, String userId, String button) {
         String s = testFinish(eventId);
         activitiService.complete(s, Collections.singletonList("1"), button);
-        initStatistics(eventId);
+        initStatistics(eventId, 0);
     }
 
     /**
@@ -171,7 +174,6 @@ public class WorkService {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
         statistics.setOperateHuman(SecurityUtil.getUser().castToUser());
         statistics.setOperateHumanName(SecurityUtil.getUser().castToUser());
-        /*TODO 获取当前登陆人的角色*/
         statistics.setUser(SecurityUtil.getUser().castToUser());
         statisticsService.update(statistics);
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
@@ -197,9 +199,9 @@ public class WorkService {
         statistics.setToOperate(0);
         setOpinionsAndEventFileList(statistics, eventDTO.getRepresent(), eventDTO.getEventFileList());
         statisticsService.update(statistics);
-        /*TODO 查询所有值班长角色的人*/
-        activitiService.complete(statistics.getTaskId(), Collections.singletonList("1"), eventDTO.getButton());
-        Statistics statistics1 = this.initStatistics(eventDTO.getId());
+        List<String> userList = taskProcessingService.getUsers(KvConstant.SHIFT_LEADER_ROLE);
+        activitiService.complete(statistics.getTaskId(), userList, eventDTO.getButton());
+        Statistics statistics1 = this.initStatistics(eventDTO.getId(), statistics.getSort());
         if ("10".equals(eventDTO.getButton())) {
             /* 待结案 */
             statistics1.setToClose(1);
@@ -248,14 +250,12 @@ public class WorkService {
      * @param eventId 上报的事件
      */
     private void acceptanceReportingByReceptionist(String eventId) {
-        /*TODO 查询所有有受理员角色的人*/
-        List<String> userList = new ArrayList<>();
-        userList.add("1");
+        List<String> userList = taskProcessingService.getUsers(KvConstant.RECEPTIONIST_ROLE);
         Event event = eventService.findOne(eventId);
         ProcessInstance processInstance = activitiService.acceptanceReporting(eventId, userList);
         event.setProcessInstanceId(processInstance.getId());
         eventService.update(event);
-        Statistics statistics = this.initStatistics(event.getId());
+        Statistics statistics = this.initStatistics(event.getId(), 0);
         /* 公众举报 */
         statistics.setPublicReport(1);
         /* 上报数 */
@@ -284,7 +284,7 @@ public class WorkService {
      * @param eventId 事件id
      * @return 流转统计
      */
-    public Statistics initStatistics(String eventId) {
+    public Statistics initStatistics(String eventId, int sort) {
         Event event = eventService.findOne(eventId);
         Statistics statistics = new Statistics();
         statistics.setEvent(event);
@@ -298,12 +298,7 @@ public class WorkService {
         /*ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());*/
         ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId("值班长-立案", "28526efe-3db5-415b-8c7a-d0e3a49cab8f");
         statistics.setProcessTimeLimit(processTimeLimit);
-        Statistics byEventIdAndEndTimeIsNull = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-        if (byEventIdAndEndTimeIsNull != null) {
-            statistics.setSort(byEventIdAndEndTimeIsNull.getSort() + 1);
-        } else {
-            statistics.setSort(1);
-        }
+        statistics.setSort(sort + 1);
         return statisticsService.save(statistics);
     }
 
@@ -358,7 +353,7 @@ public class WorkService {
         event.setProcessInstanceId(processInstance.getId());
         eventService.update(event);
 
-        Statistics statistics = this.initStatistics(event.getId());
+        Statistics statistics = this.initStatistics(event.getId(), 0);
         statistics.setNeedSendVerify(1);
         statistics.setReport(1);
         statistics.setPatrolReport(1);
@@ -378,7 +373,7 @@ public class WorkService {
         ProcessInstance processInstance = activitiService.superviseReporting(eventId, userList);
         event.setProcessInstanceId(processInstance.getId());
         eventService.update(event);
-        Statistics statistics = this.initStatistics(event.getId());
+        Statistics statistics = this.initStatistics(event.getId(), 0);
         statistics.setNeedSendVerify(1);
         statistics.setReport(1);
         statistics.setPatrolReport(1);
