@@ -297,7 +297,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="checkMain" style="position: relative">
-                        <span class="sendText" style="width: 120px"><i style="color: red!important;"></i>核实意见</span>
+                        <span class="sendText" style="width: 102px" id="btnOpinion"><i style="color: red!important;"></i></span>
                         <textarea type="text" id="textIdioms"></textarea>
                         <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                         <div id="wordSays" class="wordSays" style="background-color:#fff;">
@@ -309,14 +309,12 @@
                         </div>
                     </div>
                     <div class="checkMain" style="position: relative;display: block" id="userListDiv">
-                        <tr>
-                            <td><span></span>监督员</td>
-                            <td>
-                                <select name="safeLevel" id="selectUser" onchange="getUserVal()">
+
+                            <div class="sendText" style="float:left;">监督员</div>
+                                <select name="safeLevel" id="selectUser" onchange="getUserVal()" type="text" class="find_input">
 
                                 </select>
-                            </td>
-                        </tr>
+
                     </div>
                     <div class="send">
                         <div class="sendImg">
@@ -336,7 +334,7 @@
                 </div>
                 <div class="modal-footer justify-content-between"
                      style="display: flex;justify-content: flex-end!important;">
-                    <button type="button" class="btn btn-primary" onclick="completeEvent()">完成</button>
+                    <button type="button" class="btn btn-primary" onclick="completeEvent()" id="underBtn">完成</button>
                     <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
                 </div>
             </div>
@@ -537,6 +535,16 @@
         getUserListForSupervisor();
 
     });
+
+
+    setModelName()
+    function setModelName(){
+        $("#eventButton").on("click",".but_save",function () {
+            $(".modal-title").html($(this).html())
+            $("#underBtn").html($(this).html())
+            $("#btnOpinion").html($(this).html()+"意见")
+        })
+    }
 
     function selectEventTypeTree() {
         var treeId = $("#treeId").val();
