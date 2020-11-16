@@ -429,7 +429,6 @@
     setModelName()
     function setModelName(){
         $("#btnGroupGround").on("click",".but_save",function () {
-            let btnName = $(this).html()
             $(".modal-title").html($(this).html())
             $("#underBtn").html($(this).html())
             $("#btnOpinion").html($(this).html()+"意见")
@@ -460,7 +459,7 @@
         $("#deptDiv").empty();
         if($(obj).text() === "申请延时"){
             var deptStr = " <span class=\"sendText\" style='float: left;width: 73px'><i>*</i>申请时限</span>\n" +
-                "<input type='text' id='delayedTime' oninput=\"value=value.replace(/[^\\d]/g,'')\"/>";
+                "<input type='text' class='find_input' id='delayedTime' oninput=\"value=value.replace(/[^\\d]/g,'')\"/>";
             $("#deptDiv").append(deptStr);
         }else if ("派遣" === $(obj).text()) {
             $.ajaxUtil.get(deptUrl, function (o) {
