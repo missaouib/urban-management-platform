@@ -26,7 +26,7 @@ public class TaskProcessingController {
 
     @PostMapping("/processing")
     public void processing(@RequestBody StatisticsDTO statisticsDTO){
-//        taskProcessingService.handle(statisticsDTO.getEventId(),statisticsDTO.getButtonId(),statisticsDTO);
+        taskProcessingService.handle(statisticsDTO.getEventId(),statisticsDTO.getButtonId(),statisticsDTO);
     }
 
 
