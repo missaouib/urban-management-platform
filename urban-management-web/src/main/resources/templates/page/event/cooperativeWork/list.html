@@ -20,19 +20,10 @@
                     <table class="table">
                         <tbody>
                         <tr>
-
-                            <td>当前状态<span></span></td>
-                            <td>
-                                <select name="kv" required>
-                                    <option value="">请选择</option>
-                                </select>
-                            </td>
                             <td>问题描述<span></span></td>
                             <td>
                                 <input type="text" class="datepicker" name="represent">
                             </td>
-                        </tr>
-                        <tr>
                             <td><span></span>所在网格</td>
                             <td>
                                 <select class="form-control" id="grid1" name="grid" required>
@@ -41,6 +32,8 @@
                                             th:text="${as.gridName}"></option>
                                 </select>
                             </td>
+                        </tr>
+                        <tr>
                             <td><span></span>事件来源</td>
                             <td>
                                 <select class="form-control" id="eventSource" name="eventSourceId" required>
@@ -49,8 +42,6 @@
                                             th:text="${as.value}"></option>
                                 </select>
                             </td>
-                        </tr>
-                        <tr>
                             <td>问题类型<span></span></td>
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                 <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
@@ -60,6 +51,8 @@
                                     +
                                 </button>
                             </td>
+                        </tr>
+                        <tr>
                             <td><span></span>立案区域</td>
                             <td>
                                 <select id="eventCondition" name="eventCondition" onchange="getEventCondition()"
@@ -67,14 +60,14 @@
                                     <option value="">--请选择--</option>
                                 </select>
                             </td>
-                        </tr>
-                        <tr>
                             <td><span></span>立案条件</td>
                             <td>
                                 <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
                                     <option value="">--请选择--</option>
                                 </select>
                             </td>
+                        </tr>
+                        <tr>
                             <td><span></span>计时等级</td>
                             <td>
                                 <select id="timeType" name="timeType" required>
@@ -410,21 +403,32 @@
 
         $("#deptDiv").on("click",'.add_tree',function () {
             $("#checkMain").stop().slideToggle(300)
-        })
+        });
+
         //附件详情弹出
         $(".duck_title span").click(function () {
             $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
             $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
-        })
+        });
+
         $(".duck_close").click(function () {
             $(".duck_duck").fadeOut(300)
-        })
+        });
+
         $(".banner").on("click", ".enclosure", function () {
             $(".duck_duck").fadeIn(300)
-        })
+        });
+
 
     })
 
+    function zTreeOnClick(event, treeId, treeNode) {
+        $("#doorer").val(treeNode.name);
+        $(".closemodal").click();
+    }
+
+
+    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
 
@@ -452,6 +456,7 @@
                 "<input type='text' id='delayedTime' oninput=\"value=value.replace(/[^\\d]/g,'')\"/>";
             $("#deptDiv").append(deptStr);
         }else if ("派遣" === $(obj).text()) {
+
             $.ajaxUtil.get(deptUrl, function (o) {
                let deptStr = `
                      <div class="checkMain" style="position: relative">
@@ -459,7 +464,7 @@
                         <input type="text" class="find_input" id="doorer">
                         <span class="add_tree">+</span>
                     </div>
-                    <div class="checkMain" style="position: relative; id="checkMain">
+                    <div class="checkMain" style="position: relative;" id="checkMain">
                         <span class="sendText"><i></i></span>
                         <div class="tree" id="treeMain">
                             <div class="treeDemo">
@@ -469,6 +474,9 @@
                     </div>
                `
                 $("#deptDiv").append(deptStr);
+            })
+            $.ajaxUtil.get(componentTypeUrl, function (e) {
+                var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
             })
 
         }
@@ -961,19 +969,6 @@
         }
     };
 
-    function zTreeOnClick(event, treeId, treeNode) {
-        $("#doorer").val(treeNode.name);
-        // $("#eventTypeId").val(treeNode.id);
-        $(".closemodal").click();
-    }
-
-    $(function () {
-        $.ajaxUtil.get(componentTypeUrl, function (e) {
-            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
-        })
-    })
-
-    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
 </script>
 </body>
 </html>

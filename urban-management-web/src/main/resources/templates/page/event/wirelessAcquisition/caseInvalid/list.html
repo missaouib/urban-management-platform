@@ -19,18 +19,10 @@
                     <table class="table">
                         <tbody>
                         <tr>
-                            <td>当前状态<span></span></td>
-                            <td>
-                                <select name="kv" required>
-                                    <option value="">请选择</option>
-                                </select>
-                            </td>
                             <td>问题描述<span></span></td>
                             <td>
                                 <input type="text" class="datepicker" name="represent">
                             </td>
-                        </tr>
-                        <tr>
                             <td>所在网格<span></span></td>
                             <td>
                                 <select class="form-control" id="grid1" name="grid" onchange="getStreetList()" required>
@@ -39,6 +31,8 @@
                                             th:text="${as.gridName}"></option>
                                 </select>
                             </td>
+                        </tr>
+                        <tr>
                             <td>事件来源<span></span></td>
                             <td>
                                 <select class="form-control" id="eventSource" name="eventSourceId" required>
@@ -47,8 +41,6 @@
                                             th:text="${as.value}"></option>
                                 </select>
                             </td>
-                        </tr>
-                        <tr>
                             <td>问题类型<span></span></td>
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                 <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
@@ -58,6 +50,8 @@
                                     +
                                 </button>
                             </td>
+                        </tr>
+                        <tr>
                             <td>立案区域<span></span></td>
                             <td>
                                 <select id="eventCondition" name="eventCondition" onchange="getEventCondition()"
@@ -65,14 +59,14 @@
                                     <option value="">--请选择--</option>
                                 </select>
                             </td>
-                        </tr>
-                        <tr>
                             <td>立案条件<span></span></td>
                             <td>
                                 <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
                                     <option value="">--请选择--</option>
                                 </select>
                             </td>
+                        </tr>
+                        <tr>
                             <td>计时等级<span></span></td>
                             <td>
                                 <select id="timeType" name="timeType" required>
