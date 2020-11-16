@@ -7,6 +7,7 @@
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
     <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;">
@@ -128,39 +129,31 @@
                                 <tr>
                                     <td><span></span>案卷号</td>
                                     <td>
-                                        <input id="eventCode" placeholder="" class="" type="text" readonly="readonly"
-                                               required>
+                                        <input id="eventCode" placeholder="" class="" type="text" readonly="readonly" required>
                                     </td>
                                     <td><span></span>问题类型</td>
                                     <td>
                                         <input id="eventTypeStr" name="eventType" placeholder="请选择问题类型" class=""
-                                               type="text" maxlength="30" required readonly="readonly"
-                                               >
-
+                                               type="text" maxlength="30" required readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>立案区域</td>
                                     <td>
-                                        <input id="regionStr" name="eventType" placeholder="请选择问题类型" class=""
-                                               type="text" maxlength="30" required readonly="readonly"
-                                              >
+                                        <input id="regionStr" name="eventType" placeholder="" class=""
+                                               type="text" maxlength="30" required readonly="readonly">
                                     </td>
                                     <td><span></span>立案条件</td>
                                     <td>
-                                        <input id="conditionValue" name="eventType" placeholder="请选择问题类型" class=""
-                                               type="text" maxlength="30" required readonly="readonly"
-                                               >
-
+                                        <input id="conditionValue" name="eventType" placeholder="" class=""
+                                               type="text" maxlength="30" required readonly="readonly">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><span></span>案件等级</td>
                                     <td>
-                                        <input id="level" name="eventType" placeholder="请选择问题类型" class="" type="text"
-                                               maxlength="30" required readonly="readonly"
-                                               >
-
+                                        <input id="level" name="eventType" placeholder="" class="" type="text"
+                                               maxlength="30" required readonly="readonly">
                                     </td>
                                     <td><span></span>处理时限</td>
                                     <td>
@@ -172,8 +165,6 @@
 
                                     <td colspan="8"><textarea id="represent" name="problemescription" required
                                                               readonly></textarea></td>
-
-
                                 </tr>
                                 <tr class="col-12">
                                     <td><span></span>案件地址</td>
@@ -210,7 +201,6 @@
                                     <td>
                                         <input id="girdStr" name="location" placeholder="" class="" readonly
                                                type="text">
-
                                     </td>
                                 </tr>
                                 <tr>
@@ -396,6 +386,8 @@
             </div>
         </div>
     </div>
+
+
 </div>
 
 
@@ -405,6 +397,8 @@
 <th:block th:include="page/fragments/common :: map_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
@@ -412,6 +406,10 @@
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
+        });
+
+        $("#deptDiv").on("click",'.add_tree',function () {
+            $("#checkMain").stop().slideToggle(300)
         })
         //附件详情弹出
         $(".duck_title span").click(function () {
@@ -424,6 +422,7 @@
         $(".banner").on("click", ".enclosure", function () {
             $(".duck_duck").fadeIn(300)
         })
+
     })
 
 
@@ -450,19 +449,25 @@
         $("#deptDiv").empty();
         if($(obj).text() === "申请延时"){
             var deptStr = " <span class=\"sendText\"><i>*</i>申请时限</span>\n" +
-                "<input type='number' id='delayedTime'/>";
+                "<input type='text' id='delayedTime' oninput=\"value=value.replace(/[^\\d]/g,'')\"/>";
             $("#deptDiv").append(deptStr);
         }else if ("派遣" === $(obj).text()) {
             $.ajaxUtil.get(deptUrl, function (o) {
-                var deptStr = " <span class=\"sendText\"><i>*</i>专业部门</span>\n" +
-                    "                                <select id=\"dept\">\n"+
-                    "<option value='"+deptId+"'>"+deptName+"</option>";
-                $(o.data).each(function (index,value) {
-                    if(deptId !== value.id){
-                        deptStr += "<option value='"+value.id+"'>"+value.deptName+"</option>"
-                    }
-                })
-                deptStr +="</select>"
+               let deptStr = `
+                     <div class="checkMain" style="position: relative">
+                        <span class="sendText"><i></i>专业部门</span>
+                        <input type="text" class="find_input" id="doorer">
+                        <span class="add_tree">+</span>
+                    </div>
+                    <div class="checkMain" style="position: relative; id="checkMain">
+                        <span class="sendText"><i></i></span>
+                        <div class="tree" id="treeMain">
+                            <div class="treeDemo">
+                                <ul id="treeDemo" class="ztree"></ul>
+                            </div>
+                        </div>
+                    </div>
+               `
                 $("#deptDiv").append(deptStr);
             })
 
@@ -645,7 +650,7 @@
                     html += "<div class='expressRecord-text'>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
-                    html += "<em>回复内容:</em> " + data[i].opinions
+                    html += "回复内容:<em class='roleSize'>"+ data[i].opinions +"</em> "
                     html += "</div>";
                     if (data[i].fileName.length > 0) {
                         html += "<div class='endBox enclosure'><i></i>附件详情</div>";
@@ -654,17 +659,17 @@
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
-                    html += "<em>by:</em> " + data[i].user + "，角色";
+                    html += "by:<em class='roleSize'>"+ data[i].user + "，角色" + "</em> ";
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";
-                    html += "<div class='endBox'>";
-                    html += "<em>开始时间:</em> " + data[i].starTime
+                    html += "<div class='endBox RecordTime'>";
+                    html += "<div>开始时间:<em>"+ data[i].starTime +"</em></div>";
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";
-                    html += "<div class='endBox'>";
-                    html += "<em>结束时间:</em> " + data[i].endTime
+                    html += "<div class='endBox RecordTime'>";
+                    html += "结束时间:<em>"+ data[i].endTime +"</em>"
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";
@@ -936,6 +941,39 @@
             $("#timeType").html(option);
         });
     }
+    var setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parent'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        $("#doorer").val(treeNode.name);
+        // $("#eventTypeId").val(treeNode.id);
+        $(".closemodal").click();
+    }
+
+    $(function () {
+        $.ajaxUtil.get(componentTypeUrl, function (e) {
+            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        })
+    })
+
+    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
 </script>
 </body>
 </html>
