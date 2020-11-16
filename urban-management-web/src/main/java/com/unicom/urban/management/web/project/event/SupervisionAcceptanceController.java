@@ -14,6 +14,7 @@ import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
+import com.unicom.urban.management.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +46,8 @@ public class SupervisionAcceptanceController {
     private GridService gridService;
     @Autowired
     private EventFileService eventFileService;
+    @Autowired
+    private RoleService roleService;
 
 
     @GetMapping("/toSupervisionAcceptanceList")
@@ -72,6 +75,8 @@ public class SupervisionAcceptanceController {
         model.addObject("gridList", gridService.findAllByParentIsNull());
         //当前登陆人
         model.addObject("localUserName", SecurityUtil.getUsername());
+        //获取有监督员角色的人
+        model.addObject("userList", roleService.findUserListByRoleId(KvConstant.SUPERVISOR_ROLE));
         EventVO eventVO = new EventVO();
         eventVO.setCreateTime(LocalDateTime.now());
         model.addObject("eventVO", eventVO);

@@ -2,9 +2,12 @@ package com.unicom.urban.management.service.role;
 
 import com.unicom.urban.management.dao.role.RoleRepository;
 import com.unicom.urban.management.mapper.RoleMapper;
+import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.dto.RoleDTO;
 import com.unicom.urban.management.pojo.entity.Role;
+import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.RoleVO;
+import com.unicom.urban.management.pojo.vo.UserVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -67,5 +70,10 @@ public class RoleService {
 //        roleRepository.saveAndFlush(one);
 //        throw new BusinessException("saveAndFlush");
 //    }
+
+    public List<UserVO> findUserListByRoleId(String id) {
+        List<User> userList = roleRepository.getOne(id).getUserList();
+        return UserMapper.INSTANCE.userListToUserVOList(userList);
+    }
 
 }

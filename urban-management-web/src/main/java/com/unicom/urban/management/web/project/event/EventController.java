@@ -1,15 +1,18 @@
 package com.unicom.urban.management.web.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.properties.GisServiceProperties;
 import com.unicom.urban.management.common.util.RestTemplateUtil;
 import com.unicom.urban.management.pojo.RestReturn;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.entity.Grid;
 import com.unicom.urban.management.pojo.vo.EventButtonVO;
+import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.publish.PublishService;
+import com.unicom.urban.management.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,6 +42,8 @@ public class EventController {
     private GisServiceProperties gisServiceProperties;
     @Autowired
     private GridService gridService;
+    @Autowired
+    private RoleService roleService;
 
     /**
      * 获取下一环节完成按钮
@@ -106,6 +111,17 @@ public class EventController {
         mapList.add(gridService.findByParentId(byGridCode.getParent().getParent().getParent().getId()));
         mapList.add(map);
         return Result.success(mapList);
+    }
+
+    /**
+     * 获取有监督员角色的人
+     *
+     * @return 人
+     */
+    @GetMapping("/getUserListForSupervisor")
+    public Result getUserListForSupervisor() {
+        List<UserVO> userList = roleService.findUserListByRoleId(KvConstant.SUPERVISOR_ROLE);
+        return Result.success(userList);
     }
 
 }

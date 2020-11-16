@@ -168,7 +168,8 @@
                                 <td><span></span>监督员</td>
                                 <td>
                                     <select class="form-control" id="userId" name="userId" required>
-                                        <option value="1">超级管理员</option>
+                                        <option th:each="as:${userList}" th:value="${as.id}"
+                                                th:text="${as.name}"></option>
                                     </select>
                                 </td>
                             </tr>
@@ -180,7 +181,6 @@
                             </tr>
                             <tr>
                                 <td><span></span>问题描述</td>
-                                <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
                                 <td colspan="8"><textarea id="problemescription" th:name="represent"
                                                           required></textarea></td>
                             </tr>
