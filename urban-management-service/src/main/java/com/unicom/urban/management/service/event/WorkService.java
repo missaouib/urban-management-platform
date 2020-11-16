@@ -308,6 +308,30 @@ public class WorkService {
     }
 
     /**
+     * 初始化实例
+     *
+     * @param eventId 事件id
+     * @return 流转统计
+     */
+    public Statistics createStatistics(String eventId) {
+        Event event = eventService.findOne(eventId);
+        Statistics statistics = new Statistics();
+        statistics.setEvent(event);
+        /* 获取当前环节 */
+        Task task = activitiService.getTaskByProcessInstanceId(event.getProcessInstanceId());
+        statistics.setTaskId(task.getId());
+        statistics.setTaskName(task.getName());
+        statistics.setStartTime(LocalDateTime.now());
+        statistics.setDeptTimeLimit(event.getTimeLimit());
+        /* todo 此处是目前数据库数据尚未完善 所以用一条假数据暂替 ——姜文 ——2020/11/10 */
+        /*ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());*/
+        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId("值班长-立案", "28526efe-3db5-415b-8c7a-d0e3a49cab8f");
+        statistics.setProcessTimeLimit(processTimeLimit);
+        statistics.setSort(1);
+        return statisticsService.save(statistics);
+    }
+
+    /**
      * 为每条实例增加 意见 和 附件
      *
      * @param statistics    要修改的实例
@@ -358,7 +382,7 @@ public class WorkService {
         event.setProcessInstanceId(processInstance.getId());
         eventService.update(event);
 
-        Statistics statistics = this.initStatistics(event.getId());
+        Statistics statistics = this.createStatistics(event.getId());
         statistics.setNeedSendVerify(1);
         statistics.setReport(1);
         statistics.setPatrolReport(1);
@@ -378,7 +402,7 @@ public class WorkService {
         ProcessInstance processInstance = activitiService.superviseReporting(eventId, userList);
         event.setProcessInstanceId(processInstance.getId());
         eventService.update(event);
-        Statistics statistics = this.initStatistics(event.getId());
+        Statistics statistics = this.createStatistics(event.getId());
         statistics.setNeedSendVerify(1);
         statistics.setReport(1);
         statistics.setPatrolReport(1);
