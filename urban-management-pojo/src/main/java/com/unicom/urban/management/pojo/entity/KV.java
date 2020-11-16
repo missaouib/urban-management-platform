@@ -33,6 +33,9 @@ public class KV implements Serializable {
 
     private String fieldName;
 
+    @Column(name = "key_")
+    private String key;
+
     private String value;
 
     @Column(columnDefinition = "TINYINT(1)")
