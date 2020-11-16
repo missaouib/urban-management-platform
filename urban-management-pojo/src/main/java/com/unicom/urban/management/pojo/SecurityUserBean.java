@@ -1,5 +1,6 @@
 package com.unicom.urban.management.pojo;
 
+import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.User;
 import lombok.Data;
 import lombok.ToString;
@@ -9,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * 存放在SpringSecurity中的实体用户对象
@@ -25,16 +27,7 @@ public class SecurityUserBean implements UserDetails {
 
     private String password;
 
-    /**
-     * 当前登录人所属部门ID
-     */
-    private String deptId;
-
-    /**
-     * 当前登录人所属部门名称
-     */
-    private String deptName;
-
+    private Set<Dept> deptList;
 
     public SecurityUserBean() {
 

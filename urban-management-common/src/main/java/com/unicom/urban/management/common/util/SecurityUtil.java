@@ -1,8 +1,12 @@
 package com.unicom.urban.management.common.util;
 
 import com.unicom.urban.management.pojo.SecurityUserBean;
+import com.unicom.urban.management.pojo.entity.Dept;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 获取当前登录人工具类
@@ -34,17 +38,21 @@ public abstract class SecurityUtil {
 
     /**
      * 获取当前登录人部门ID
+     *
+     * @return 部门ID集合
      */
-    public static String getDeptId() {
-        return getUser().getDeptId();
+    public static List<String> getDeptId() {
+        return getUser().getDeptList().stream().map(Dept::getId).collect(Collectors.toList());
     }
 
 
     /**
      * 获取当前登录人部门名称
+     *
+     * @return 部门名称集合
      */
-    public static String getDeptName() {
-        return getUser().getDeptName();
+    public static List<String> getDeptName() {
+        return getUser().getDeptList().stream().map(Dept::getDeptName).collect(Collectors.toList());
     }
 
 

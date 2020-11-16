@@ -47,4 +47,11 @@ public class Dept extends BaseEntity {
     @JoinColumn(name = "dept_id")
     private List<Role> roleList;
 
+    public Dept() {
+    }
+
+    public Dept(String id) {
+        this.id = id;
+    }
+
 }

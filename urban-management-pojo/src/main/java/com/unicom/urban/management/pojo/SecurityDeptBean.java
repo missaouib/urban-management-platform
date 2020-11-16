@@ -14,5 +14,7 @@ public class SecurityDeptBean {
 
     private String id;
 
+    private String deptName;
+
 
 }
