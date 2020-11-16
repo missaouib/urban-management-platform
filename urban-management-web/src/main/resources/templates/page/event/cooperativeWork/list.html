@@ -661,8 +661,7 @@
                     html += "回复内容:<em class='roleSize'>"+ data[i].opinions +"</em> "
                     html += "</div>";
                     if (data[i].fileName.length > 0) {
-                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
-                        html += "<button type='button' value='" + data[i].fileName + "' onclick='setFileUrl(this)'>11211111</button>";
+                        html += "<button class='endBox enclosure' type='button' value='" + JSON.stringify(data[i].fileName) + "' onclick='setFileUrl(this)'><i></i>附件详情</button>";
                     }
                     html += "</div>";
                     html += "<div class='gameEnd'>";
@@ -697,8 +696,7 @@
     }
 
     function setFileUrl(data) {
-        console.log("data", data);
-        let value = data.value;
+        let value = $.parseJSON(data.value);
         if (value.length > 0) {
             $("#modelImageList").empty();
             let imageHtml = "";
@@ -747,7 +745,6 @@
             if (data.response.code === web_status.FAIL) {
                 console.log("上传文件失败");
             }
-            console.log(data);
         }).on('filedeleted', function (event, key) {
             console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
             console.log('Key = ' + key);
