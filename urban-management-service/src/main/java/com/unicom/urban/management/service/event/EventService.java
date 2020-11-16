@@ -146,7 +146,7 @@ public class EventService {
                 list.add(in);
             }
             /*无效案件*/
-            if (eventDTO.getNotOperate() == 1 ){
+            if (eventDTO.getNotOperate() !=null &&eventDTO.getNotOperate() == 1 ){
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
                 List<String> eventId = statisticsService.findEventIdByNotOperate(eventDTO.getNotOperate());
                 if (eventId.size() == 0) {
