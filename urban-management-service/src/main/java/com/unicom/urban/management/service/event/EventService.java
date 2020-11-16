@@ -192,9 +192,11 @@ public class EventService {
                 }
 
             }
-            List<Statistics> notOperateCollect = e.getStatisticsList().stream().filter(s -> s.getNotOperate() == 1).collect(Collectors.toList());
+            List<Statistics> notOperateCollect = e.getStatisticsList();
             for (Statistics s : notOperateCollect){
-                eventVO.setStatisticsId(s.getId());
+                if (s.getNotOperate()!= null && s.getNotOperate() ==1 ) {
+                    eventVO.setStatisticsId(s.getId());
+                }
             }
             eventVOList.add(eventVO);
         });
