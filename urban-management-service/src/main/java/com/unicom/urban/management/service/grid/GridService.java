@@ -50,6 +50,8 @@ public class GridService {
     private KVService kvService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private GridService gridService;
 
     public Page<GridVO> search(GridDTO gridDTO, Pageable pageable) {
         Page<Grid> page = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
@@ -177,7 +179,7 @@ public class GridService {
      *
      * @return
      */
-    public List<GridVO> findAllByParentIsNull(){
+    public List<GridVO> findAllByParentIsNull() {
         List<Grid> gridList = gridRepository.findAllByParentIsNull();
         return GridMapper.INSTANCE.gridListToGridVOList(gridList);
     }
@@ -237,17 +239,23 @@ public class GridService {
         return gridRepository.findByGridCode(gridCode);
     }
 
-    public Map<String, Object> findByParentId(String parentId) {
-        List<Grid> gridList = gridRepository.findAllByParentId(parentId);
-        if (gridList.size() > 0) {
-            Map<String, Object> map = new HashMap<>(3);
-            map.put("id", gridList.get(0).getId());
-            map.put("name", gridList.get(0).getGridName());
-            map.put("level", gridList.get(0).getLevel());
-            return map;
-        } else {
-            throw new DataValidException("未查询到数据");
-        }
+    private Map<String, Object> findByParentId(String id) {
+        Grid grid = this.findOne(id);
+        Map<String, Object> map = new HashMap<>(3);
+        map.put("id", grid.getId());
+        map.put("name", grid.getGridName());
+        map.put("level", grid.getLevel());
+        return map;
+    }
+
+    public void addMapToList(Grid byGridCode, List<Map<String, Object>> mapList) {
+        Grid grid = this.findOne(byGridCode.getId());
+        Grid parent1 = grid.getParent();
+        mapList.add(gridService.findByParentId(parent1.getId()));
+        Grid parent2 = parent1.getParent();
+        mapList.add(gridService.findByParentId(parent2.getId()));
+        Grid parent3 = parent2.getParent();
+        mapList.add(gridService.findByParentId(parent3.getId()));
     }
 
 }

@@ -103,13 +103,8 @@ public class EventController {
         map.put("id", byGridCode.getId());
         map.put("name", byGridCode.getGridName());
         map.put("level", byGridCode.getLevel());
-        /* todo 获取所属社区 */
-        mapList.add(gridService.findByParentId(byGridCode.getParent().getId()));
-        /* todo 获取所属街道 */
-        mapList.add(gridService.findByParentId(byGridCode.getParent().getParent().getId()));
-        /* todo 获取所在区域 */
-        mapList.add(gridService.findByParentId(byGridCode.getParent().getParent().getParent().getId()));
         mapList.add(map);
+        gridService.addMapToList(byGridCode, mapList);
         return Result.success(mapList);
     }
 

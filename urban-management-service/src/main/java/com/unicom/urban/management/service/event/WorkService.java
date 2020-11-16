@@ -121,7 +121,7 @@ public class WorkService {
             statistics1.setSendVerifyHuman(SecurityUtil.getUser().castToUser());
             statistics1.setUser(SecurityUtil.getUser().castToUser());
         }
-        setOpinionsAndEventFileList(statistics1, eventDTO.getRepresent(), eventDTO.getEventFileList());
+        setOpinionsAndEventFileList(statistics1, null, eventDTO.getEventFileList());
         statisticsService.update(statistics1);
         activitiService.complete(statistics1.getTaskId(), Collections.singletonList(eventDTO.getUserId()), eventDTO.getButton());
         Statistics statistics = initStatistics(eventDTO.getId(), statistics1.getSort());
