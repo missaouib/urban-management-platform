@@ -189,7 +189,7 @@ public class ImportController {
     private HttpResponse gisImport(String layerName, String layerSettingType, MultipartHttpServletRequest multiRequest, HttpClient httpclient) throws IOException {
         // 创建集合接受文件
         List<MultipartFile> fileList = multiRequest.getFiles("file");
-        HttpPost httpPost = new HttpPost(gisServiceProperties.getUrl());
+        HttpPost httpPost = new HttpPost(gisServiceProperties.getUrl() + "/urbanImport");
         MultipartEntityBuilder reqEntity = MultipartEntityBuilder.create();
 
         for (MultipartFile multipartFile : fileList) {
