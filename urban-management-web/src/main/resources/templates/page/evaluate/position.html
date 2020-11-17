@@ -15,7 +15,7 @@
 <div class="bigTitle">监督员岗位评价</div>
 <div class="search_box">
     <div class="search_inner">
-        <form class="details">
+        <form class="details" id="searchForm">
             <div class="top table2_top">
                 <div class="top_out">
                     <table class="table">
@@ -23,11 +23,11 @@
                         <tr>
                             <td><span></span>开始日期</td>
                             <td>
-                                <input size="16" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" name="startTime" class="form_datetime" type="text" value="" readonly>
                             </td>
                             <td><span></span>结束日期</td>
                             <td>
-                                <input size="16" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" name="endTime" class="form_datetime" type="text" value="" readonly>
                             </td>
                             <td style="float: right;margin-right: 5px">
                                 <button class="check_btn">查询</button>
@@ -140,51 +140,51 @@
             },
             {
                 title: '姓名',
-                class: "check"
+                class: "reportPatrolName"
             },
             {
-                field: 'eventType',
+                field: 'gridOnwer',
                 title: '责任网格',
             },
             {
-                field: 'objId',
+                field: 'patrolReport',
                 title: '监督员上报数',
             },
             {
-                field: 'objName',
+                field: 'validPatrolReport',
                 title: "监督员有效上报数",
             },
             {
-                field: 'mainDeptCode',
+                field: 'reportVaildNumRate',
                 title: '监督员有效上报率',
             },
             {
-                field: 'mainDeptName',
+                field: 'intimeVerify',
                 title: '按时核实数',
             },
             {
-                field: 'ownershipDeptCode',
+                field: 'needVerify',
                 title: '应核实数',
             },
             {
-                field: 'ownershipDeptCode',
+                field: 'intimeVerifyRate',
                 title: '按时核实率',
             },
             {
-                field: 'maintenanceDeptCode',
+                field: 'intimeCheck',
                 title: '按时核查数',
             },
             {
-                field: 'maintenanceDeptName',
+                field: 'publicReport',
                 title: '漏报数',
             },
             {
-                field: 'grid',
+                field: 'validReport',
                 title: '立案数',
 
             },
             {
-                field: 'objState',
+                field: 'publicReportRate',
                 title: '漏报率',
 
             },
