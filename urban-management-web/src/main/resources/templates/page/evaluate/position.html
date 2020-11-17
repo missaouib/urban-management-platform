@@ -176,16 +176,16 @@
             },
             {
                 field: 'maintenanceDeptName',
-                title: '公众有效举报数',
+                title: '漏报数',
             },
             {
                 field: 'grid',
-                title: '有效上报数',
+                title: '立案数',
 
             },
             {
                 field: 'objState',
-                title: '公众举报率',
+                title: '漏报率',
 
             },
             {
@@ -215,20 +215,40 @@
             },
             {
                 field: 'eventType',
-                title: '立案数',
+                title: '受理数',
             },
             {
                 field: 'objId',
-                title: '按时立案数',
+                title: '核实按时派发数',
             },
             {
                 field: 'objName',
-                title: "按时立案率",
+                title: "核实应派发数",
             },
             {
                 field: 'mainDeptCode',
-                title: '评价等级',
+                title: '核实按时派发率',
             },
+            {
+                field: 'mainDeptName',
+                title: '核查按时派发数',
+            },
+            {
+                field: 'ownershipDeptCode',
+                title: '核查应派发数',
+            },
+            {
+                field: 'ownershipDeptCode',
+                title: '核查按时派发率',
+            },
+            {
+                field: 'maintenanceDeptCode',
+                title: '综合指标值',
+            },
+            {
+                field: 'maintenanceDeptName',
+                title: '评价等级',
+            }
         ],
         data:[
 
@@ -258,6 +278,26 @@
             },
             {
                 field: 'mainDeptCode',
+                title: '准确立案数',
+            },
+            {
+                field: 'eventType',
+                title: '准确立案率',
+            },
+            {
+                field: 'objId',
+                title: '按时结案数',
+            },
+            {
+                field: 'objName',
+                title: "应结案数",
+            },
+            {
+                field: 'mainDeptCode',
+                title: '按时结案率',
+            },
+            {
+                field: 'mainDeptCode',
                 title: '评价等级',
             },
         ],
@@ -279,7 +319,7 @@
             },
             {
                 field: 'eventType',
-                title: '应派遣数',
+                title: '派遣数',
             },
             {
                 field: 'objId',
@@ -287,7 +327,7 @@
             },
             {
                 field: 'objName',
-                title: "派遣数",
+                title: "应派遣数",
             },
             {
                 field: 'mainDeptCode',
@@ -299,11 +339,7 @@
             },
             {
                 field: 'ownershipDeptCode',
-                title: '错误派遣数',
-            },
-            {
-                field: 'ownershipDeptCode',
-                title: '首次派遣准确率',
+                title: '准确派遣率',
             },
             {
                 field: 'maintenanceDeptCode',
