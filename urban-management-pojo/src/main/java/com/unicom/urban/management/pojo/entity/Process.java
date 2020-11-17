@@ -30,7 +30,9 @@ public class Process extends BaseEntity {
      * 子环节名称
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "node_id")
+//    @JoinColumn(name = "node_id", referencedColumnName = "key_")
+//    @Where(clause = "table_name = 'process' and field_name = 'node_id' ")
+//    @WhereJoinTable(clause = "table_name = 'process' and field_name = 'node_id' ")
     private KV node;
 
     /**
