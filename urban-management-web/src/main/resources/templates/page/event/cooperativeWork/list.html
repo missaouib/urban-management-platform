@@ -373,14 +373,9 @@
                     <span>音频</span>
                 </div>
                 <div class="duck_info">
-<!--                    <div class="info_chance blockActive" id="modelImageList">-->
                     <div class="info_chance blockActive">
-<!--                        <img style="width: 100%;height: 100%" src="../img/streed.png">-->
                         <div class="swiper-container sw1">
                             <div class="swiper-wrapper"  id="modelImageList">
-<!--                                <div class="swiper-slide">11</div>-->
-<!--                                <div class="swiper-slide">22</div>-->
-<!--                                <div class="swiper-slide">33</div>-->
                             </div>
                             <!-- Add Pagination -->
                             <div class="swiper-pagination pg1"></div>
@@ -399,7 +394,7 @@
     </div>
 
     <!-- &lt;!&ndash;  点击图片弹出  &ndash;&gt;-->
-        <div class="duk_duck" id="pictureBoxDuc" style="display: none">
+    <div class="duk_duck" id="pictureBoxDuc" style="display: none">
             <div class="duk_box">
                 <div class="allTiel" id="allTiel">
                     <div class="fullScreen" id="fullScreen">全屏</div>
@@ -433,7 +428,6 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <th:block th:include="page/fragments/common :: swiper_js"/>
-
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
@@ -457,12 +451,12 @@
             $(".duck_duck").fadeOut(300)
         });
 
-        $(".duk_close").click(function () {
-            $("#pictureBoxDuc").fadeOut(300)
-        });
-
         $(".banner").on("click", ".enclosure", function () {
             $(".duck_duck").fadeIn(300)
+        });
+
+        $(".duk_close").click(function () {
+            $("#pictureBoxDuc").fadeOut(300)
         });
 
         $(".banner").on("click", ".innerPic", function () {
@@ -488,8 +482,17 @@
             $(".selectmenu").css('transform', 'rotate(' + r + 'deg)');
         })
 
-
-        getGridPublishUrl()
+        var swiper2 = new Swiper('.sw2', {
+            pagination: '.pg2',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            // loop: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
 
         var swiper = new Swiper('.sw1', {
             pagination: '.pg1',
@@ -503,17 +506,7 @@
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
 
-        var swiper2 = new Swiper('.sw2', {
-            pagination: '.pg2',
-            nextButton: '.swiper-button-next',
-            prevButton: '.swiper-button-prev',
-            slidesPerView: 1,
-            paginationClickable: true,
-            spaceBetween: 30,
-            // loop: true,
-            observer: true, //修改swiper自己或子元素时，自动初始化swiper
-            observeParents: true //修改swiper的父元素时，自动初始化swiperd
-        });
+        getGridPublishUrl()
 
 
     })
@@ -864,7 +857,7 @@
                     html += "结束时间:<em>"+ data[i].endTime +"</em>"
                     html += "</div>";
                     html += "</div>";
-                    html += "<div class='gameEnd felx_end'>";
+                    html += "<div class='setFileUrl felx_end'>";
                     html += "<div class='endBox'>";
                     if (data[i].fileName.length > 0) {
                         html += "<button class='endBox enclosure' type='button' value='" + JSON.stringify(data[i].fileName) + "' onclick='setFileUrl(this)'><i></i>附件详情</button>";

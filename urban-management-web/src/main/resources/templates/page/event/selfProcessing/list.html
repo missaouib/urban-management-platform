@@ -7,84 +7,90 @@
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: swiper_css"/>
     <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;">
 <div class="content">
     <div class="leftContent">
-        <form id="userForm">
-            <div class="top table2_top">
-                <div class="top_out">
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <td>问题描述<span></span></td>
-                            <td>
-                                <input type="text" class="datepicker" name="represent">
-                            </td>
-                            <td>所在网格<span></span></td>
-                            <td>
-                                <select class="form-control" id="grid1" name="grid" onchange="getStreetList()" required>
-                                    <option value="">--请选择--</option>
-                                    <option th:each="as:${gridList}" th:value="${as.id}"
-                                            th:text="${as.gridName}"></option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>事件来源<span></span></td>
-                            <td>
-                                <select class="form-control" id="eventSource" name="eventSourceId" required>
-                                    <option value="">--请选择--</option>
-                                    <option th:each="as:${eventSource}" th:value="${as.id}"
-                                            th:text="${as.value}"></option>
-                                </select>
-                            </td>
-                            <td>问题类型<span></span></td>
-                            <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
-                                <input type="hidden" readonly="readonly" id="eventTypeId" name="eventTypeId"
-                                       class="find_input"/>
-                                <button type="button" class="addBtn" onclick="selectEventTypeTree()">
-                                    +
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>立案区域<span></span></td>
-                            <td>
-                                <select id="eventCondition" name="eventCondition" onchange="getEventCondition()"
-                                        required>
-                                    <option value="">--请选择--</option>
-                                </select>
-                            </td>
-                            <td>立案条件<span></span></td>
-                            <td>
-                                <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
-                                    <option value="">--请选择--</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>计时等级<span></span></td>
-                            <td>
-                                <select id="timeType" name="timeType" required>
-                                    <option value="">--请选择--</option>
-                                </select>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+        <div class="selectPoint">
+            <form id="userForm">
+                <div class="top table2_top">
+                    <div class="top_out">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td>问题描述<span></span></td>
+                                <td>
+                                    <input type="text" class="datepicker" name="represent">
+                                </td>
+                                <td>所在网格<span></span></td>
+                                <td>
+                                    <select class="form-control" id="grid1" name="grid" onchange="getStreetList()" required>
+                                        <option value="">--请选择--</option>
+                                        <option th:each="as:${gridList}" th:value="${as.id}"
+                                                th:text="${as.gridName}"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>事件来源<span></span></td>
+                                <td>
+                                    <select class="form-control" id="eventSource" name="eventSourceId" required>
+                                        <option value="">--请选择--</option>
+                                        <option th:each="as:${eventSource}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
+                                    </select>
+                                </td>
+                                <td>问题类型<span></span></td>
+                                <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                    <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
+                                    <input type="hidden" readonly="readonly" id="eventTypeId" name="eventTypeId"
+                                           class="find_input"/>
+                                    <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                        +
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>立案区域<span></span></td>
+                                <td>
+                                    <select id="eventCondition" name="eventCondition" onchange="getEventCondition()"
+                                            required>
+                                        <option value="">--请选择--</option>
+                                    </select>
+                                </td>
+                                <td>立案条件<span></span></td>
+                                <td>
+                                    <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
+                                        <option value="">--请选择--</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>计时等级<span></span></td>
+                                <td>
+                                    <select id="timeType" name="timeType" required>
+                                        <option value="">--请选择--</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
-        </form>
-        <div class="notice_check">
-            <form id="search-form">
-                <p style="display: flex;justify-content: flex-end">
-                    <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
-                    <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">
-                </p>
             </form>
+            <div class="notice_check">
+                <form id="search-form">
+                    <p style="display: flex;justify-content: flex-end">
+                        <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
+                        <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">
+                    </p>
+                </form>
+            </div>
+        </div>
+        <div style="width: 100%;width: 100%;display: flex;justify-content: center">
+            <div class="xiala"><i class="selectmenu"></i></div>
         </div>
         <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
 
@@ -247,8 +253,9 @@
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
                                     <div>
-                                        <div class="innerPic" id="imageList">
-
+                                        <div id="imageList">
+                                            <div class="innerPic" style="float:left;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -346,7 +353,7 @@
         <div class="duck_box">
             <div class="allTiel">
                 <div class="duck_close">
-                    <img src="../img/close_duck.png" style="width: 100%;height: 100%">
+                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png" style="width: 100%;height: 100%"></i>
                 </div>
                 <div class="duck_title">
                     <span class="duckActive">图片</span>
@@ -354,13 +361,46 @@
                     <span>音频</span>
                 </div>
                 <div class="duck_info">
-                    <div class="info_chance blockActive" id="modelImageList">
-                        <img style="width: 100%;height: 100%" src="../img/streed.png">
+                    <div class="info_chance blockActive">
+                        <div class="swiper-container sw1">
+                            <div class="swiper-wrapper" id="modelImageList">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination pg1"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
                     </div>
                     <div class="info_chance">视频
                         <video style="width: 100%;height: 100%"></video>
                     </div>
                     <div class="info_chance">音频</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- &lt;!&ndash;  点击图片弹出  &ndash;&gt;-->
+    <div class="duk_duck" id="pictureBoxDuc" style="display: none">
+        <div class="duk_box">
+            <div class="allTiel" id="allTiel">
+                <div class="fullScreen" id="fullScreen">全屏</div>
+                <div class="fullScreen exitfullScreen" id="exitfullScreen">退出全屏</div>
+                <div class="duk_close" id="duk_picture">
+                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png" style="width: 100%;height: 100%"></i>
+                </div>
+                <div style="width: 100%;height: 100%;padding: 5px">
+                    <div class="swiper-container sw2">
+                        <div class="swiper-wrapper" id="pictureList">
+
+                        </div>
+                        <!-- Add Pagination -->
+                        <div class="swiper-pagination pg2"></div>
+                        <!-- Add Arrows -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -376,6 +416,7 @@
 <th:block th:include="page/fragments/common :: map_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
@@ -434,6 +475,57 @@
         });
 
         getGridPublishUrl()
+
+        $(".duk_close").click(function() {
+            $("#pictureBoxDuc").fadeOut(300)
+        });
+
+        $(".banner").on("click", ".innerPic", function() {
+            $("#pictureBoxDuc").fadeIn(300)
+        });
+
+        //全屏
+        $("#fullScreen").click(function() {
+            $("#allTiel").addClass("allTielFont");
+            $("#exitfullScreen").css("display", "block");
+            $(this).css("display", "none")
+        });
+
+        $("#exitfullScreen").click(function() {
+            $("#allTiel").removeClass("allTielFont");
+            $(this).css("display", "none");
+            $("#fullScreen").css("display", "block");
+        })
+        var r = 0;
+        $(".xiala").click(function() {
+            r += 180;
+            $(".selectPoint").slideToggle(300);
+            $(".selectmenu").css('transform', 'rotate(' + r + 'deg)');
+        })
+
+        var swiper2 = new Swiper('.sw2', {
+            pagination: '.pg2',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            // loop: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        var swiper = new Swiper('.sw1', {
+            pagination: '.pg1',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            // loop: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
 
         $("#input-id").fileinput({
             language: 'zh',                                     // 设置语言
