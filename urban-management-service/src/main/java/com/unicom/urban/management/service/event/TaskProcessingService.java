@@ -145,6 +145,11 @@ public class TaskProcessingService {
         eventService.update(one);
 
         Statistics statistics = this.updateStatistics(statisticsDTO);
+        List<Statistics> total = statisticsService.findByEventIdToList(eventId).stream().filter(s -> "专业部门".equals(s.getTaskName())).collect(Collectors.toList());
+        List<String> unitSize = total.stream().map(t->t.getDisposeUnitName().getId()).collect(Collectors.toList());
+        if(total.size()!= unitSize.stream().distinct().count()){
+            statistics.setRework(1);
+        }
         statistics.setClose(1);
         int[] ints = this.betWeenTime(statistics.getStartTime(),
                 statistics.getEndTime(),
