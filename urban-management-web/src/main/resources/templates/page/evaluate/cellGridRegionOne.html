@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>热线上报</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
@@ -9,7 +9,9 @@
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
 </head>
 <style>
-    .bootstrap-table{width: 100%}
+    .bootstrap-table {
+        width: 100%
+    }
 </style>
 <body style="border-radius: 8px;">
 <div class="bigTitle">单元网格区域评价</div>
@@ -55,7 +57,7 @@
     </div>
 </div>
 <div class="contents">
-    <table id="table" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
+    <table id="table" class="table_style" style="margin: 0 auto;margin-top: 10px"></table>
 </div>
 
 <th:block th:include="page/fragments/common :: common_js"/>
@@ -77,7 +79,12 @@
             showMeridian: 1,
             format: "yyyy-mm-dd hh:ii:ss"
         });
-    })
+
+        search();
+    });
+
+    let cellGridRegionUrl = /*[[@{/evaluate/cellGridRegion}]]*/ "/evaluate/cellGridRegion";
+
     $('#table').bootstrapTable({
         columns: [
             {
@@ -85,20 +92,20 @@
                 title: '序号',
             },
             {
-                title: '单元网格',
-                class: "check"
+                field: 'check',
+                title: '街道'
             },
             {
                 field: 'eventType',
-                title: '公众有效举报数',
+                title: '社区',
             },
             {
-                field: 'objId',
-                title: '有效上报数',
+                field: 'gridName',
+                title: '单元网格',
             },
             {
                 field: 'objName',
-                title: "公众举报率",
+                title: '监督举报核实数',
             },
             {
                 field: 'mainDeptCode',
@@ -106,49 +113,50 @@
             },
             {
                 field: 'mainDeptName',
-                title: '结案数',
+                title: '监督举报率',
             },
             {
                 field: 'ownershipDeptCode',
-                title: '按期结案数',
+                title: '应结案数',
             },
             {
                 field: 'ownershipDeptName',
-                title: '结案率',
+                title: '结案数',
             },
             {
                 field: 'maintenanceDeptCode',
-                title: '按期结案率',
+                title: '结案率',
             },
             {
-                field: 'maintenanceDeptName',
-                title: '处置数',
+                field: 'inTimeCloseSize',
+                title: '按期结案数',
             },
             {
                 field: 'grid',
-                title: '按期处置数',
-
-            },
-            {
-                field: 'objState',
-                title: '按期处置率',
-
+                title: '按期结案率',
             },
             {
                 field: 'initialDate',
                 title: '综合指标',
             },
-            {
-                field: 'changeDate',
-                title: "评价等级",
-            },
         ],
-        data:[
-
-        ]
+        data: []
     });
 
-
+    function search() {
+        $.ajaxUtil.get(cellGridRegionUrl, function (e) {
+            $(e.data).each(function (index, value) {
+                $('#table').bootstrapTable('insertRow', {
+                    index: index,
+                    row: {
+                        index: index + 1,
+                        gridName: value.gridName,
+                        inTimeCloseSize: value.inTimeCloseSize
+                    }
+                });
+            });
+        });
+    }
 
 </script>
 </body>

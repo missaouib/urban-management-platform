@@ -258,4 +258,14 @@ public class GridService {
         mapList.add(gridService.findByParentId(parent3.getId()));
     }
 
+    /**
+     * 查询发布挖的网格
+     * 目前网格和区域街道在一个数据表中 所以需要level字段 将来会修改
+     *
+     * @return 网格
+     */
+    public List<Grid> allByLevelAndRecordSts() {
+        return gridRepository.findAllByLevelAndRecord_Sts(4, StsConstant.RELEASE);
+    }
+
 }

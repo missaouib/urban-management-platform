@@ -33,4 +33,14 @@ public interface GridRepository extends CustomizeRepository<Grid, String> {
      */
     Grid findByGridCode(String gridCode);
 
+    /**
+     * 查询发布挖的网格
+     * 目前网格和区域街道在一个数据表中 所以需要level字段 将来会修改
+     *
+     * @param level 判断网格
+     * @param sts   发布
+     * @return 网格
+     */
+    List<Grid> findAllByLevelAndRecord_Sts(int level, int sts);
+
 }

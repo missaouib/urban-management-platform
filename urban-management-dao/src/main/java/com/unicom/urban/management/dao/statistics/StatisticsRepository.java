@@ -2,6 +2,7 @@ package com.unicom.urban.management.dao.statistics;
 
 import com.unicom.urban.management.dao.CustomizeRepository;
 import com.unicom.urban.management.pojo.entity.Statistics;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -51,5 +52,14 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
     List<Statistics> findAllByCancel(Integer cancel);
 
     List<Statistics> findByNotOperate(Integer notOperate);
+
+    /**
+     * 按期结案数
+     *
+     * @param gridId 网格id
+     * @return 数据
+     */
+    @Query(value = "SELECT s,e,g FROM Statistics s LEFT JOIN Event e on s.event = e.id LEFT JOIN e.grid g on e.grid.id = g.id WHERE s.inTimeClose= 1 and g.id = ?1 ")
+    List<Statistics> findAllByInTimeClose(String gridId);
 
 }

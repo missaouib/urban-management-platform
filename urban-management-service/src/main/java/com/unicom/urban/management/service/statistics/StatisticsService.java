@@ -2,9 +2,12 @@ package com.unicom.urban.management.service.statistics;
 
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.statistics.StatisticsRepository;
+import com.unicom.urban.management.pojo.entity.Grid;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.entity.User;
+import com.unicom.urban.management.pojo.vo.CellGridRegionVO;
 import com.unicom.urban.management.pojo.vo.StatisticsVO;
+import com.unicom.urban.management.service.grid.GridService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +27,8 @@ public class StatisticsService {
 
     @Autowired
     private StatisticsRepository statisticsRepository;
+    @Autowired
+    private GridService gridService;
 
     public Statistics save(Statistics statistics) {
         return statisticsRepository.save(statistics);
@@ -106,7 +111,7 @@ public class StatisticsService {
     public List<String> findEventIdByNotOperate(Integer notOperate) {
         List<Statistics> statisticsList = statisticsRepository.findByNotOperate(notOperate);
         List<String> eventIdList = new ArrayList<>();
-        for (Statistics s : statisticsList){
+        for (Statistics s : statisticsList) {
             eventIdList.add(s.getEvent().getId());
         }
         return eventIdList;
@@ -116,10 +121,30 @@ public class StatisticsService {
         Statistics statistics = statisticsRepository.findById(statisticsId).orElse(new Statistics());
         StatisticsVO statisticsVO = new StatisticsVO();
         statisticsVO.setOpinions(statistics.getOpinions());
-        if(statistics.getUser() != null){
+        if (statistics.getUser() != null) {
             statisticsVO.setUserName(statistics.getUser().getName());
             statisticsVO.setDeptName("");
         }
         return statisticsVO;
+    }
+
+    /**
+     * 区域评价
+     *
+     * @return 数据
+     */
+    public List<CellGridRegionVO> findAllForCellGridRegion() {
+        List<Grid> gridList = gridService.allByLevelAndRecordSts();
+        List<CellGridRegionVO> cellGridRegionVOList = new ArrayList<>();
+        for (Grid grid : gridList) {
+            CellGridRegionVO cellGridRegionVO = new CellGridRegionVO();
+            cellGridRegionVO.setGridName(grid.getGridName());
+            int inTimeCloseSize = statisticsRepository.findAllByInTimeClose(grid.getId()).size();
+            cellGridRegionVO.setInTimeCloseSize(inTimeCloseSize);
+
+            cellGridRegionVOList.add(cellGridRegionVO);
+        }
+        return cellGridRegionVOList;
+
     }
 }
