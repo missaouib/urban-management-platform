@@ -1,7 +1,8 @@
 package com.unicom.urban.management.common.util;
 
+import com.unicom.urban.management.pojo.SecurityDeptBean;
+import com.unicom.urban.management.pojo.SecurityRoleBean;
 import com.unicom.urban.management.pojo.SecurityUserBean;
-import com.unicom.urban.management.pojo.entity.Dept;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -42,7 +43,7 @@ public abstract class SecurityUtil {
      * @return 部门ID集合
      */
     public static List<String> getDeptId() {
-        return getUser().getDeptList().stream().map(Dept::getId).collect(Collectors.toList());
+        return getUser().getDeptList().stream().map(SecurityDeptBean::getId).collect(Collectors.toList());
     }
 
 
@@ -52,7 +53,25 @@ public abstract class SecurityUtil {
      * @return 部门名称集合
      */
     public static List<String> getDeptName() {
-        return getUser().getDeptList().stream().map(Dept::getDeptName).collect(Collectors.toList());
+        return getUser().getDeptList().stream().map(SecurityDeptBean::getDeptName).collect(Collectors.toList());
+    }
+
+    /**
+     * 获取当前登录人角色ID
+     *
+     * @return 角色ID集合
+     */
+    public static List<String> getRoleId() {
+        return getUser().getRoleList().stream().map(SecurityRoleBean::getId).collect(Collectors.toList());
+    }
+
+    /**
+     * 获取当前登录人角色名称
+     *
+     * @return 角色名称集合
+     */
+    public static List<String> getRoleName() {
+        return getUser().getRoleList().stream().map(SecurityRoleBean::getRoleName).collect(Collectors.toList());
     }
 
 

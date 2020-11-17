@@ -1,6 +1,5 @@
 package com.unicom.urban.management.pojo;
 
-import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.User;
 import lombok.Data;
 import lombok.ToString;
@@ -27,7 +26,9 @@ public class SecurityUserBean implements UserDetails {
 
     private String password;
 
-    private Set<Dept> deptList;
+    private Set<SecurityDeptBean> deptList;
+
+    private Set<SecurityRoleBean> roleList;
 
     public SecurityUserBean() {
 

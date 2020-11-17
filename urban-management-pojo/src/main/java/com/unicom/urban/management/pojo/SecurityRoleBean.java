@@ -15,6 +15,8 @@ public class SecurityRoleBean implements GrantedAuthority {
 
     private String id;
 
+    private String roleName;
+
     @Override
     public String getAuthority() {
         return null;
