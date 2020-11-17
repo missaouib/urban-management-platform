@@ -937,7 +937,7 @@
         let id = data.id;
         console.log("id-type", typeof id);
         $("#button").val(id);
-        if (id === "13" || id === "14" || id === "16") {
+        if (id === "11" || id === "13" || id === "14" || id === "16") {
             $("#userListDiv").css("display", "block");
         } else {
             $("#userListDiv").css("display", "none");
@@ -948,7 +948,7 @@
         let userIdVal = $("#userId").val();
         let buttonVal = $("#button").val();
         let idVal = $("#eventId").val();
-        if (buttonVal == 13 || buttonVal == 14 || buttonVal == 16) {
+        if (buttonVal === "11" || buttonVal == 13 || buttonVal == 14 || buttonVal == 16) {
             if (userIdVal == null || userIdVal == "") {
                 alert("请选择监督员");
                 return false;
