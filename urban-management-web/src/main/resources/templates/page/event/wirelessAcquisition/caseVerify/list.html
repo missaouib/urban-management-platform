@@ -261,7 +261,8 @@
                         <!--                            按钮-->
                         <div class="notice_bot">
                             <div class="r_right but_p girdBtnGroup">
-                                <input class="modelDo" value="处理" type="text" data-toggle="modal" data-target="#modal-default" style="padding-left: 0px!important;">
+                                <div class="r_right but_p girdBtnGroup" id="eventButton"></div>
+<!--                                <input class="modelDo" value="处理" type="text" data-toggle="modal" data-target="#modal-default" style="padding-left: 0px!important;">-->
                             </div>
                         </div>
                     </div>
@@ -315,10 +316,14 @@
 
                             </div>
                         </div>
+
+                    <div class="modal-footer justify-content-between"
+                         style="display: flex;justify-content: flex-end!important;">
                         <input type="hidden" id="eventId" name="eventId" />
                         <input type="hidden" id="buttonText" name="buttonText" />
-                        <div class="modal-footer justify-content-between" id="eventButton" style="display: flex;justify-content: flex-end!important;">
-
+                        <button type="button" class="btn btn-primary" onclick="save()" id="underBtn">完成</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                    </div>
                         </div>
                 </div>
             </div>
@@ -400,7 +405,7 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='btn btn-primary' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='save()'>" + button[i].buttonText + "</button>";
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button'>" + button[i].buttonText + "</button>";
                 }
             }
             $("#eventId").val(eventId);
