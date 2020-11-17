@@ -131,77 +131,94 @@
             showMeridian: 1,
             format: "yyyy-mm-dd hh:ii:ss"
         });
+        queryUserList();
     })
-    $('#tables').bootstrapTable({
-        columns: [
-            {
-                field: 'index',
-                title: '序号',
+    let searchUrl = /*[[@{/evaluate/searchSupervisorEvaluate}]]*/ "/evaluate/searchSupervisorEvaluate";
+    let num = 1
+    function queryUserList() {
+        var options = {
+            num: num,
+            url: searchUrl,
+            // uniqueId: "id",
+            // sortName: "updateTime",
+            // sortOrder: "desc",
+            // modalName: "用户",
+            // 点击每行进行函数的触发
+            onClickRow: function (row, tr, flied) {
+                console.log(row.id)
             },
-            {
-                title: '姓名',
-                class: "reportPatrolName"
-            },
-            {
-                field: 'gridOnwer',
-                title: '责任网格',
-            },
-            {
-                field: 'patrolReport',
-                title: '监督员上报数',
-            },
-            {
-                field: 'validPatrolReport',
-                title: "监督员有效上报数",
-            },
-            {
-                field: 'reportVaildNumRate',
-                title: '监督员有效上报率',
-            },
-            {
-                field: 'intimeVerify',
-                title: '按时核实数',
-            },
-            {
-                field: 'needVerify',
-                title: '应核实数',
-            },
-            {
-                field: 'intimeVerifyRate',
-                title: '按时核实率',
-            },
-            {
-                field: 'intimeCheck',
-                title: '按时核查数',
-            },
-            {
-                field: 'publicReport',
-                title: '漏报数',
-            },
-            {
-                field: 'validReport',
-                title: '立案数',
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    // formatter : function (value, row, index){
+                    //     var page = $('#table').bootstrapTable("getPage");
+                    //     return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    // }
+                },
+                {
+                    title: '姓名',
+                    class: "reportPatrolName"
+                },
+                {
+                    field: 'gridOnwer',
+                    title: '责任网格',
+                },
+                {
+                    field: 'patrolReport',
+                    title: '监督员上报数',
+                },
+                {
+                    field: 'validPatrolReport',
+                    title: "监督员有效上报数",
+                },
+                {
+                    field: 'reportVaildNumRate',
+                    title: '监督员有效上报率',
+                },
+                {
+                    field: 'intimeVerify',
+                    title: '按时核实数',
+                },
+                {
+                    field: 'needVerify',
+                    title: '应核实数',
+                },
+                {
+                    field: 'intimeVerifyRate',
+                    title: '按时核实率',
+                },
+                {
+                    field: 'intimeCheck',
+                    title: '按时核查数',
+                },
+                {
+                    field: 'publicReport',
+                    title: '漏报数',
+                },
+                {
+                    field: 'inst',
+                    title: '立案数',
 
-            },
-            {
-                field: 'publicReportRate',
-                title: '漏报率',
+                },
+                {
+                    field: 'publicReportRate',
+                    title: '漏报率',
 
-            },
-            {
-                field: 'initialDate',
-                title: '综合指标值',
-            },
-            {
-                field: 'initialDate',
-                title: '评价等级',
-            },
-        ],
-        data:[
+                },
+                {
+                    field: 'initialDate',
+                    title: '综合指标值',
+                },
+                {
+                    field: 'initialDate',
+                    title: '评价等级',
+                },
 
-        ]
-    });
-
+            ]
+        };
+        $.table.init(options);
+    }
 
     $('#tableIn').bootstrapTable({
         columns: [

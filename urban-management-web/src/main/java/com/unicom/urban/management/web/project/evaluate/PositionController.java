@@ -4,14 +4,17 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.vo.SupervisorEvaluateVO;
+import com.unicom.urban.management.service.evaluate.PositionService;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -28,6 +31,8 @@ public class PositionController {
     private EventService eventService;
     @Autowired
     private StatisticsService statisticsService;
+    @Autowired
+    private PositionService positionService;
     /**
      * 单元网格区域评价
      *
@@ -47,11 +52,12 @@ public class PositionController {
      * 监督员岗位评价
      * @return
      */
-    @GetMapping("/toSupervisorEvaluate")
-    public List<SupervisorEvaluateVO> SupervisorEvaluation(){
-        List<SupervisorEvaluateVO> list = null;
-        return list;
-
+    @GetMapping("/searchSupervisorEvaluate")
+    public Model SupervisorEvaluation(Model model){
+        LocalDateTime startTime = LocalDateTime.now();
+        LocalDateTime endTime = LocalDateTime.now();
+        List<SupervisorEvaluateVO> list = positionService.findSupervisorEvaluateByCondition(startTime,endTime);
+        return model.addAttribute("SupervisorEvaluationJson",list);
     }
 //    /**
 //     * 受理员岗位评价

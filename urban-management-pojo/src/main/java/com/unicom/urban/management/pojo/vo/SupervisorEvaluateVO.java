@@ -1,9 +1,18 @@
 package com.unicom.urban.management.pojo.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * 监督员评价实体VO
  * @author Liubozhi
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class  SupervisorEvaluateVO {
 
     /**
@@ -19,10 +28,6 @@ public class  SupervisorEvaluateVO {
      *监督员上报数
      */
     private Integer patrolReport;
-    /**
-     * 上报监督员
-     */
-    private String reportPatrolName;
     /**
      *监督员有效上报数
      */
@@ -43,11 +48,11 @@ public class  SupervisorEvaluateVO {
     /**
      *'按时核实率
      */
-    private Float intimeVerifyRate;
+    private Float inTimeVerifyRate;
     /**
      *'按时核查数
      */
-    private Integer intimeCheck;
+    private Integer inTimeCheck;
     /**
      * 漏报数(公众举报)
      */
@@ -55,11 +60,11 @@ public class  SupervisorEvaluateVO {
     /**
      * 立案数(监督员有效上报 立案+作废)
      */
-    private Integer validReport;
+    private Integer inst;
     /**
      * 漏报率(漏报数/立案数×100%)
      */
-    private Integer publicReportRate;
+    private Float publicReportRate;
     /**
      *综合指标值
      */
