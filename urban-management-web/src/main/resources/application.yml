@@ -63,4 +63,6 @@ logging:
     com.unicom: debug
     org.springframework: warn
     org.activiti.engine: info
+    com.github.tobato: debug
+    com.github.tobato.fastdfs.domain.proto: warn
     org.hibernate.type.descriptor.sql.BasicBinder: trace
