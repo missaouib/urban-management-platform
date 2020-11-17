@@ -104,7 +104,7 @@ public class WorkService {
         if ("13".equals(eventDTO.getButton()) || "16".equals(eventDTO.getButton())) {
             activitiService.claim(statistics1.getTaskId(), SecurityUtil.getUserId());
         }
-        int[] map = taskProcessingService.betWeenTime(statistics1.getStartTime(), statistics1.getEndTime(), statistics1.getProcessTimeLimit().getLevel().getValue(), statistics1.getProcessTimeLimit().getTimeLimit());
+        int[] map = taskProcessingService.betWeenTime(statistics1.getStartTime(), statistics1.getEndTime(), statistics1.getProcessTimeLimit().getTimeType().getId(), statistics1.getProcessTimeLimit().getTimeLimit());
         if ("14".equals(eventDTO.getButton())) {
             statistics1.setSendCheckHuman(1);
             statistics1.setInTimeCheck(map[0]);
@@ -199,7 +199,7 @@ public class WorkService {
         statistics.setEndTime(LocalDateTime.now());
         /* 受理数 */
         statistics.setOperate(1);
-        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getLevel().getValue(), statistics.getProcessTimeLimit().getTimeLimit());
+        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit());
         /* 按时受理 */
         statistics.setInTimeOperate(map[0]);
         statistics.setSts(String.valueOf(map[1]));
@@ -241,7 +241,7 @@ public class WorkService {
         statistics.setToOperate(0);
         /* 不予受理 */
         statistics.setNotOperate(1);
-        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getLevel().getValue(), statistics.getProcessTimeLimit().getTimeLimit());
+        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit());
         /* 按时受理 */
         statistics.setInTimeOperate(map[0]);
         statistics.setSts(String.valueOf(map[1]));
