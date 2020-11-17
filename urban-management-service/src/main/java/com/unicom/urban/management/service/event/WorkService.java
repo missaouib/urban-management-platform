@@ -14,9 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 调用工作流
@@ -103,24 +104,26 @@ public class WorkService {
         if ("13".equals(eventDTO.getButton()) || "16".equals(eventDTO.getButton())) {
             activitiService.claim(statistics1.getTaskId(), SecurityUtil.getUserId());
         }
-        /* todo 此处需要修改方法 */
-        Map<String, Object> map = judgeOverTimeIsOrNot(statistics1.getStartTime(), statistics1.getEndTime(), statistics1.getProcessTimeLimit().getTimeLimit());
+        int[] map = taskProcessingService.betWeenTime(statistics1.getStartTime(), statistics1.getEndTime(), statistics1.getProcessTimeLimit().getLevel().getValue(), statistics1.getProcessTimeLimit().getTimeLimit());
         if ("14".equals(eventDTO.getButton())) {
             statistics1.setSendCheckHuman(1);
-            statistics1.setInTimeCheck((Integer) map.get("time"));
-            statistics1.setSts(map.get("sts").toString());
+            statistics1.setInTimeCheck(map[0]);
+            statistics1.setSts(String.valueOf(map[1]));
         }
         if ("11".equals(eventDTO.getButton())) {
             /* 发核实 */
             statistics1.setSendVerify(1);
             /* 按时发核实 */
-            statistics1.setInTimeSendVerify((Integer) map.get("time"));
-            statistics1.setSts(map.get("sts").toString());
+            statistics1.setInTimeSendVerify(map[0]);
+            statistics1.setSts(String.valueOf(map[1]));
             statistics1.setSendVerifyHumanName(SecurityUtil.getUser().castToUser());
             statistics1.setSendVerifyHuman(SecurityUtil.getUser().castToUser());
             statistics1.setUser(SecurityUtil.getUser().castToUser());
+            setOpinionsAndEventFileList(statistics1, null, eventDTO.getEventFileList());
+        } else {
+            setOpinionsAndEventFileList(statistics1, eventDTO.getRepresent(), eventDTO.getEventFileList());
         }
-        setOpinionsAndEventFileList(statistics1, null, eventDTO.getEventFileList());
+
         statisticsService.update(statistics1);
         activitiService.complete(statistics1.getTaskId(), Collections.singletonList(eventDTO.getUserId()), eventDTO.getButton());
         Statistics statistics = initStatistics(eventDTO.getId(), statistics1.getSort());
@@ -196,10 +199,10 @@ public class WorkService {
         statistics.setEndTime(LocalDateTime.now());
         /* 受理数 */
         statistics.setOperate(1);
-        Map<String, Object> map = judgeOverTimeIsOrNot(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeLimit());
+        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getLevel().getValue(), statistics.getProcessTimeLimit().getTimeLimit());
         /* 按时受理 */
-        statistics.setInTimeOperate((Integer) map.get("time"));
-        statistics.setSts(map.get("sts").toString());
+        statistics.setInTimeOperate(map[0]);
+        statistics.setSts(String.valueOf(map[1]));
         /* 待受理 */
         statistics.setToOperate(0);
         setOpinionsAndEventFileList(statistics, eventDTO.getRepresent(), eventDTO.getEventFileList());
@@ -238,10 +241,10 @@ public class WorkService {
         statistics.setToOperate(0);
         /* 不予受理 */
         statistics.setNotOperate(1);
-        Map<String, Object> map = judgeOverTimeIsOrNot(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeLimit());
+        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getLevel().getValue(), statistics.getProcessTimeLimit().getTimeLimit());
         /* 按时受理 */
-        statistics.setInTimeOperate((Integer) map.get("time"));
-        statistics.setSts(map.get("sts").toString());
+        statistics.setInTimeOperate(map[0]);
+        statistics.setSts(String.valueOf(map[1]));
         setOpinionsAndEventFileList(statistics, eventDTO.getRepresent(), eventDTO.getEventFileList());
         statisticsService.update(statistics);
         activitiService.complete(statistics.getTaskId(), null, eventDTO.getButton());
@@ -340,6 +343,7 @@ public class WorkService {
         statistics.setProcessTimeLimit(processTimeLimit);
         return statistics;
     }
+
     /**
      * 为每条实例增加 意见 和 附件
      *
@@ -350,32 +354,6 @@ public class WorkService {
     private void setOpinionsAndEventFileList(Statistics statistics, String opinions, List<EventFile> eventFileList) {
         statistics.setOpinions(opinions);
         statistics.setEventFileList(eventFileList);
-    }
-
-    private Map<String, Object> judgeOverTimeIsOrNot(LocalDateTime starTime, LocalDateTime endTime, int processTimeLimit) {
-        /* 计算出的实际完成任务时长 */
-        Duration duration = Duration.between(starTime, endTime);
-        /* 规定任务时限 processTimeLimit*/
-        int two = 2;
-        Map<String, Object> map = new HashMap<>(two);
-        /* 超时 红灯 */
-        if (duration.toDays() > processTimeLimit) {
-            map.put("time", 0);
-            map.put("sts", "0");
-        } else {
-            /* 超过80% */
-            double v = processTimeLimit * 0.8;
-            if (duration.toDays() > v) {
-                /* 黄灯 */
-                map.put("time", 1);
-                map.put("sts", "1");
-            } else {
-                /* 按时 绿灯 */
-                map.put("time", 1);
-                map.put("sts", "2");
-            }
-        }
-        return map;
     }
 
     /**

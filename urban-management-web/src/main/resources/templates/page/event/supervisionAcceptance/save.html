@@ -481,6 +481,22 @@
             });
         })
     }
+    //回调函数接收查询结果
+    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
+
+    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
+
+    function success_jsonpCallback(res) {
+        var features = geojsonFormat.readFeatures(res);
+        console.log('点击查询返回的结果如下：');
+        console.log("features", features);
+        let mongodbId = features[0].H.mongodb_id;
+        console.log("features", mongodbId);
+        $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
+            console.log("e", e);
+        });
+    }
+
 
     var setting = {
         callback: {
@@ -937,21 +953,7 @@
 
     }
 
-    //回调函数接收查询结果
-    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
 
-    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
-
-    function success_jsonpCallback(res) {
-        var features = geojsonFormat.readFeatures(res);
-        console.log('点击查询返回的结果如下：');
-        console.log("features", features);
-        let mongodbId = features[0].H.mongodb_id;
-        console.log("features", mongodbId);
-        $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
-            console.log("e", e);
-        });
-    }
 
 </script>
 </body>

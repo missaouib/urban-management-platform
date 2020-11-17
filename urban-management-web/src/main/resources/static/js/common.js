@@ -54,6 +54,17 @@ function setTimeLimit(row,index) {
 // 		}
 // 	});
 // };
+function success_jsonpCallback(res) {
+	var features = geojsonFormat.readFeatures(res);
+	console.log('点击查询返回的结果如下：');
+	console.log("features", features);
+	let mongodbId = features[0].H.mongodb_id;
+	console.log("features", mongodbId);
+	/*$.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
+        console.log("e", e);
+    });*/
+}
+
 
 //重写confirm式样框
 // window.confirm = function(msg, callback){
