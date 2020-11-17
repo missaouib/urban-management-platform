@@ -501,6 +501,7 @@ public class TaskProcessingService {
             List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList());
             statistics.setEventFileList(eventFileList);
         }
+        statistics.setUser(SecurityUtil.getUser().castToUser());
         statistics.setOpinions(statisticsDTO.getOpinions());
         LocalDateTime endTime = LocalDateTime.now();
         statistics.setEndTime(endTime);
