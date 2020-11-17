@@ -376,11 +376,13 @@ font-size: 20px;
 }
 
 .headerRight{
-    width: 380px;
+    width: 480px;
     height: 100%;
     position: absolute;
     top: 0;
     right: 0;
+    display: flex;
+    justify-content: space-between;
 }
 .date div{
     width: 100%;
@@ -392,10 +394,12 @@ font-size: 20px;
     margin-top: 10px;
 }
 .date{
-    width: 50%;
+    /*width: 50%;*/
     height: 100%;
     float: left;
     text-align: center;
+    margin-left: 10px;
+    padding: 0 10px;
 }
 .quitBtn{
     width: 70px;
@@ -457,4 +461,15 @@ font-size: 20px;
     position: absolute;
     top: -3px;
     right: -3px;
+}
+.userNameTop{
+   max-width: 130px;
+    margin: 0 10px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: white;
+    float: left;
 }
