@@ -54,18 +54,43 @@ function setTimeLimit(row,index) {
 // 		}
 // 	});
 // };
-function success_jsonpCallback(res) {
-	var features = geojsonFormat.readFeatures(res);
-	console.log('点击查询返回的结果如下：');
-	console.log("features", features);
-	let mongodbId = features[0].H.mongodb_id;
-	console.log("features", mongodbId);
-	/*$.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
-        console.log("e", e);
-    });*/
+// function success_jsonpCallback(res) {
+// 	var features = geojsonFormat.readFeatures(res);
+// 	console.log('点击查询返回的结果如下：');
+// 	console.log("features", features);
+// 	let mongodbId = features[0].H.mongodb_id;
+// 	console.log("features", mongodbId);
+// 	/*$.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
+//         console.log("e", e);
+//     });*/
+// }
+
+//全屏 body
+function fullScreen() {
+	var element = document.documentElement;
+	if (element.requestFullscreen) {
+		element.requestFullscreen();
+	} else if (element.msRequestFullscreen) {
+		element.msRequestFullscreen();
+	} else if (element.mozRequestFullScreen) {
+		element.mozRequestFullScreen();
+	} else if (element.webkitRequestFullscreen) {
+		element.webkitRequestFullscreen();
+	}
 }
 
-
+//退出全屏
+function exitFullscreen() {
+	if (document.exitFullscreen) {
+		document.exitFullscreen();
+	} else if (document.msExitFullscreen) {
+		document.msExitFullscreen();
+	} else if (document.mozCancelFullScreen) {
+		document.mozCancelFullScreen();
+	} else if (document.webkitExitFullscreen) {
+		document.webkitExitFullscreen();
+	}
+}
 //重写confirm式样框
 // window.confirm = function(msg, callback){
 // 	parent.layer.confirm(msg, {btn: ['确定','取消']},

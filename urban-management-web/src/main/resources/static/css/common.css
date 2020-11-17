@@ -1554,12 +1554,19 @@ width: 50px;
     right: -50px;
     top: 0;
     background-color: #ffffff;
+    display: flex;justify-content: center;align-items: center;
 }
 .allTiel{
     width: 600px;
     height: 500px;
     background-color: #ffffff;
     position: relative;
+}
+.allTielFont{
+    width: 100%!important;height: 100% !important;
+}
+.exitfullScreen{
+    display: none;
 }
 .duck_title{
     width: 100%;
@@ -1622,4 +1629,43 @@ width: 50px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.xiala{
+    display: inline-block;
+    width: 100px;
+    height: 0;
+    border-top: 12px solid #354e85;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    cursor: pointer;
+}
+.xiala:hover .selectmenu{
+    transform: rotate(-360deg);
+}
+.selectmenu{
+    width: 10px;
+    height: 10px;
+    background: url("../img/selectmenu.png");
+    background-size: 100% 100%;
+    transition: all 0.3s;
+}
+.fullScreen{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 99;
+    padding: 5px 10px;
+    font-size: 12px;
+    background-color: #354e85!important;
+    color: white;
+   text-align: center;
+    border-radius: 10px;
+}
+.selectPoint{
+    width: 100%;
+    position: relative;
+    display: none;
 }
