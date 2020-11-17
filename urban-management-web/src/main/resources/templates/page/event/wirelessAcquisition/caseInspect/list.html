@@ -275,8 +275,8 @@
                             <!--            <div class="l_left">-->
                             <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                             <!--            </div>-->
-                            <div class="r_right but_p girdBtnGroup">
-                                <!--                                <button class="but_save" type="submit" onclick="submitHandler()" >处理</button>-->
+                            <div class="r_right but_p girdBtnGroup" id="btnGroupGround">
+<!--                                                                <button class="but_save" type="button" data-toggle='modal' data-target='#modal-default' onclick="submitHandler()" >处理</button>-->
 <!--                                <input name="eventType" class="modelDo" value="处理" type="text" data-toggle="modal"-->
 <!--                                       data-target="#modal-default" style="padding-left: 0px!important;">-->
 <!--                                <button class="but_close" onclick="Cancel()">返回</button>-->
@@ -306,7 +306,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
-                            <span class="sendText"><i></i>意见</span>
+                            <span class="sendText" id="btnOpinion"><i></i>意见</span>
                             <textarea type="text" id="opinions"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays">
@@ -892,6 +892,16 @@ let num = 1;
                 buttonText: $("#buttonText").val(),
                 opinions: $("#opinions").val()
             });
+        }
+
+
+        setModelName()
+        function setModelName(){
+            $("#btnGroupGround").on("click",".but_save",function () {
+                $(".modal-title").html($(this).html())
+                $("#underBtn").html($(this).html())
+                $("#btnOpinion").html($(this).html()+"意见")
+            })
         }
     </script>
 </body>

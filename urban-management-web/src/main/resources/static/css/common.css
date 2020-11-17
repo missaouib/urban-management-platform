@@ -1530,7 +1530,7 @@ label.error {
    max-height: 100px;
     /*padding-left: 20px;*/
 }
-.duck_duck{
+.duck_duck,.duk_duck{
     width: 100%;
     height: 100%;
     position: fixed;
@@ -1539,14 +1539,14 @@ label.error {
     z-index: 1000;
     display: none;
 }
-.duck_box {
+.duck_box,.duk_box{
     width: 100%;
     height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.duck_close{
+.duck_close,.duk_close{
 width: 50px;
     height: 50px;
     border-radius: 5px;

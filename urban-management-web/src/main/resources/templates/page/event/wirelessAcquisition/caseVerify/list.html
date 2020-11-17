@@ -287,7 +287,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
-                            <span class="sendText"><i>*</i>意见</span>
+                            <span class="sendText" id="btnOpinion"><i>*</i>意见</span>
                             <textarea type="text" id="opinions" name="opinions"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays" style="background-color:#fff;">
@@ -375,6 +375,17 @@
 
         getGridPublishUrl()
     })
+
+
+    setModelName()
+    function setModelName(){
+        $("#eventButton").on("click",".but_save",function () {
+            $(".modal-title").html($(this).html())
+            $("#underBtn").html($(this).html())
+            $("#btnOpinion").html($(this).html()+"意见")
+        })
+    }
+
 
     let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
 
