@@ -1,9 +1,9 @@
 package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.constant.KvConstant;
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventButtonRepository;
-import com.unicom.urban.management.pojo.dto.RoleDTO;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
@@ -13,7 +13,6 @@ import com.unicom.urban.management.service.processtimelimit.ProcessTimeLimitServ
 import com.unicom.urban.management.service.role.RoleService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.activiti.engine.task.Task;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,6 @@ import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -257,6 +255,8 @@ public class TaskProcessingService {
                 statisticsService.update(statistics);
                 statisticsService.save(newStatistics);
                 break;
+            default:
+                throw new DataValidException("Read time out");
         }
 
 
@@ -293,7 +293,7 @@ public class TaskProcessingService {
      */
     private void delayedApproval(String eventId, String buttonId, StatisticsDTO statisticsDTO) {
         List<Statistics> statisticsList = statisticsService.findByEventIdToList(eventId);
-        List<Statistics> collect = statisticsList.stream().filter(s->s.getDelayedHours()!=null).filter(s -> "专业部门".equals(s.getTaskName())).collect(Collectors.toList());
+        List<Statistics> collect = statisticsList.stream().filter(s -> s.getDelayedHours() != null).filter(s -> "专业部门".equals(s.getTaskName())).collect(Collectors.toList());
         if (collect.size() > 0) {
             Dept dept = collect.get(0).getDisposeUnit();
             List<String> users = this.getUsers(dept);
@@ -487,7 +487,7 @@ public class TaskProcessingService {
         newStatistics.setTaskName(task.getName());
         newStatistics.setStartTime(LocalDateTime.now());
         newStatistics.setDeptTimeLimit(event.getTimeLimit());
-        /* 此处是目前数据库数据尚未完善 所以用一条假数据暂替 ——姜文 ——2020/11/10 */
+        /* todo 此处是目前数据库数据尚未完善 所以用一条假数据暂替 ——姜文 ——2020/11/10 */
         /*ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());*/
         ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId("值班长-立案", "28526efe-3db5-415b-8c7a-d0e3a49cab8f");
         newStatistics.setProcessTimeLimit(processTimeLimit);
@@ -497,7 +497,7 @@ public class TaskProcessingService {
     private Statistics updateStatistics(StatisticsDTO statisticsDTO) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(statisticsDTO.getEventId());
 
-        if(statisticsDTO.getImageUrlList() != null){
+        if (statisticsDTO.getImageUrlList() != null) {
             List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList());
             statistics.setEventFileList(eventFileList);
         }
@@ -520,6 +520,8 @@ public class TaskProcessingService {
             case KvConstant.TASK_MINUTE:
                 timeLimit = timeLimit * 60 * 1000;
                 break;
+            default:
+                throw new DataValidException("Read time out");
         }
         int[] i = new int[2];
         i[0] = millis <= timeLimit ? 1 : 0;
