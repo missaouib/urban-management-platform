@@ -519,7 +519,9 @@ public class EventService {
             recType.setId(eventDTO.getRecTypeId());
             event.setRecType(recType);
         }
-        if (eventDTO.getDoBySelf() != null) {
+        if (eventDTO.getDoBySelf() == null){
+            event.setDoBySelf(null);
+        }else {
             event.setDoBySelf(eventDTO.getDoBySelf());
         }
         if (eventDTO.getEventFileList() != null) {
