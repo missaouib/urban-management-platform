@@ -251,19 +251,7 @@ public class WirelessAcquisitionController {
     @RequestMapping("/saveTemp")
     public void saveTemp(EventDTO eventDTO){
         eventDTO.setSts(EventConstant.SUPERVISE_SAVE);
-        List<EventFile> eventFileList = new ArrayList<>();
-        if (eventDTO.getImageUrlList() != null && eventDTO.getImageUrlList().size()>0) {
-            eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList());
-        }
-
-        //处置后的图片上传
-        if (eventDTO.getImageUrlListAfter() != null && (eventDTO.getImageUrlListAfter().size()>0)) {
-            List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlListAfter());
-            for (EventFile e : eventFileListAfter){
-                eventFileList.add(e);
-            }
-        }
-        eventDTO.setEventFileList(eventFileList);
+        uploadFiles(eventDTO);
         eventService.saveTemp(eventDTO);
     }
 
@@ -273,7 +261,7 @@ public class WirelessAcquisitionController {
      */
     @RequestMapping("/updateTemp")
     public void updateTemp(EventDTO eventDTO){
-        //uploadFiles(eventDTO);
+        uploadFiles(eventDTO);
         eventService.updateTemp(eventDTO);
     }
     /**
@@ -294,7 +282,7 @@ public class WirelessAcquisitionController {
     @RequestMapping("/preReport")
     public void preReport(EventDTO eventDTO){
         eventDTO.setSts(null);
-        //uploadFiles(eventDTO);
+        uploadFiles(eventDTO);
         if (eventDTO.getDoBySelf()!=null) {
             eventService.saveAutoReport(eventDTO);
         }else {
