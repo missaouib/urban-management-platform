@@ -90,9 +90,7 @@
                                 </td>
                                 <td><span></span>诉求时间</td>
                                 <td>
-                                    <input th:name="createTime"
-                                           th:value="${#temporals.format(eventVO.createTime, 'yyyy-MM-dd HH:mm:ss')}"
-                                           type="text" class=""/>
+                                    <input th:name="createTime" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}" type="text" class=""/>
                                 </td>
                             </tr>
 
@@ -151,15 +149,13 @@
                             <tr>
                                 <td><span></span>事件来源</td>
                                 <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required
-                                            readonly="readonly">
-                                        <option th:each="as:${eventSource}" th:value="${as.id}"
-                                                th:text="${as.value}"></option>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required readonly="readonly">
+                                        <option th:each="as:${eventSource}" th:value="${as.id}" th:text="${as.value}"></option>
                                     </select>
                                 </td>
                                 <td><span></span>上报人</td>
                                 <td>
-                                    <input type="text" readonly th:value="${localUserName}">
+                                    <input type="text" readonly th:value="${#authentication.getName()}">
                                     <!--<input type="hidden" value="" id="selectDown">
                                     <input value="1" type="hidden" name="userId">-->
                                 </td>

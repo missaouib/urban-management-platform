@@ -73,13 +73,8 @@ public class SupervisionAcceptanceController {
         model.addObject("recType", kvService.findByTableNameAndFieldName("event", "recType"));
         //所在区域
         model.addObject("gridList", gridService.findAllByParentIsNull());
-        //当前登陆人
-        model.addObject("localUserName", SecurityUtil.getUsername());
         //获取有监督员角色的人
         model.addObject("userList", roleService.findUserListByRoleId(KvConstant.SUPERVISOR_ROLE));
-        EventVO eventVO = new EventVO();
-        eventVO.setCreateTime(LocalDateTime.now());
-        model.addObject("eventVO", eventVO);
         return model;
     }
 
