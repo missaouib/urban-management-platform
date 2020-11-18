@@ -8,12 +8,14 @@ import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.CellGridRegionVO;
 import com.unicom.urban.management.pojo.vo.StatisticsVO;
 import com.unicom.urban.management.service.grid.GridService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -135,7 +137,9 @@ public class StatisticsService {
      *
      * @return 数据
      */
-    public List<CellGridRegionVO> findAllForCellGridRegion() {
+    public List<CellGridRegionVO> findAllForCellGridRegion(String time1, String time2) {
+        String startTime = getTimeForBetween(time1, time2).get("startTime");
+        String endTime = getTimeForBetween(time1, time2).get("endTime");
         List<Grid> gridList = gridService.allByLevelAndRecordSts();
         List<CellGridRegionVO> cellGridRegionVOList = new ArrayList<>();
         for (Grid grid : gridList) {
@@ -186,5 +190,21 @@ public class StatisticsService {
         NumberFormat nt = NumberFormat.getPercentInstance();
         nt.setMinimumFractionDigits(2);
         return nt.format(percent);
+    }
+
+    private Map<String, String> getTimeForBetween(String startTime, String endTime) {
+        Map<String, String> map = new HashMap<>(2);
+        if (StringUtils.isNotBlank(startTime)) {
+            map.put("startTime", startTime);
+        } else {
+            map.put("startTime", "1970-01-01 00:00:00");
+        }
+        if (StringUtils.isNotBlank(endTime)) {
+            map.put("endTime", startTime);
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            map.put("endTime", sdf.format(new Date()));
+        }
+        return map;
     }
 }

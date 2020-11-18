@@ -25,11 +25,11 @@
                         <tr>
                             <td><span></span>开始日期</td>
                             <td>
-                                <input size="16" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" id="startTime" class="form_datetime" type="text" value="" readonly>
                             </td>
                             <td><span></span>结束日期</td>
                             <td>
-                                <input size="16" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" id="endTime" class="form_datetime" type="text" value="" readonly>
                             </td>
                             <td style="float: right;margin-right: 5px">
                                 <button class="check_btn">查询</button>
@@ -144,7 +144,9 @@
     });
 
     function search() {
-        $.ajaxUtil.get(cellGridRegionUrl, function (e) {
+        let startTime = $("#startTime").val();
+        let endTime = $("#endTime").val();
+        $.ajaxUtil.get(cellGridRegionUrl + "?startTime=" + startTime + "&endTime=" + endTime, function (e) {
             $(e.data).each(function (index, value) {
                 $('#table').bootstrapTable('insertRow', {
                     index: index,

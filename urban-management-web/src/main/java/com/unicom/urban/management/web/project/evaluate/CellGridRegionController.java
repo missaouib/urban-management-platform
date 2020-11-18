@@ -51,8 +51,8 @@ public class CellGridRegionController {
      * @return 数据
      */
     @GetMapping("/cellGridRegionOne")
-    public List<CellGridRegionVO> cellGridRegionOne() {
-        return statisticsService.findAllForCellGridRegion();
+    public List<CellGridRegionVO> cellGridRegionOne(String startTime, String endTime) {
+        return statisticsService.findAllForCellGridRegion(startTime, endTime);
     }
 
     /**
@@ -61,8 +61,8 @@ public class CellGridRegionController {
      * @return 数据
      */
     @GetMapping("/cellGridRegionTwo")
-    public List<CellGridRegionVO> cellGridRegionTwo() {
-        return statisticsService.findAllForCellGridRegion();
+    public List<CellGridRegionVO> cellGridRegionTwo(String startTime, String endTime) {
+        return statisticsService.findAllForCellGridRegion(startTime, endTime);
     }
 
 }
