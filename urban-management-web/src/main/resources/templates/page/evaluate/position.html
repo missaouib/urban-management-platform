@@ -15,7 +15,7 @@
 <div class="bigTitle">监督员岗位评价</div>
 <div class="search_box">
     <div class="search_inner">
-        <form class="details" id="searchForm">
+        <form class="details">
             <div class="top table2_top">
                 <div class="top_out">
                     <table class="table">
@@ -69,6 +69,47 @@
     </div>
 </div>
 <div class="bigTitle">受理员岗位评价</div>
+<div class="search_box">
+    <div class="search_inner">
+        <form class="details" >
+            <div class="top table2_top">
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span></span>开始日期</td>
+                            <td>
+                                <input size="16" name="startTime" class="form_datetime" type="text" value="" readonly>
+                            </td>
+                            <td><span></span>结束日期</td>
+                            <td>
+                                <input size="16" name="endTime" class="form_datetime" type="text" value="" readonly>
+                            </td>
+                            <td style="float: right;margin-right: 5px">
+                                <button class="check_btn" onclick="acceptanceEvaluationSearch()">查询</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!--                            按钮-->
+                <div class="notice_bot">
+                    <!--            <div class="l_left">-->
+                    <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                    <!--            </div>-->
+                    <div class="r_right but_p btn_search dates">
+                        <button class="check_btn2">本周</button>
+                        <button class="check_btn2">本月</button>
+                        <button class="check_btn2">本季</button>
+                        <button class="check_btn2">本年</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="contentTable">
     <table id="tableIn" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
     <div class="explain">
@@ -83,6 +124,47 @@
     </div>
 </div>
 <div class="bigTitle">值班长岗位评价</div>
+<div class="search_box">
+    <div class="search_inner">
+        <form class="details">
+            <div class="top table2_top">
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span></span>开始日期</td>
+                            <td>
+                                <input size="16" name="startTime" class="form_datetime" type="text" value="" readonly>
+                            </td>
+                            <td><span></span>结束日期</td>
+                            <td>
+                                <input size="16" name="endTime" class="form_datetime" type="text" value="" readonly>
+                            </td>
+                            <td style="float: right;margin-right: 5px">
+                                <button class="check_btn" onclick="shiftForemanEvaluationSearch()">查询</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!--                            按钮-->
+                <div class="notice_bot">
+                    <!--            <div class="l_left">-->
+                    <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                    <!--            </div>-->
+                    <div class="r_right but_p btn_search dates">
+                        <button class="check_btn2">本周</button>
+                        <button class="check_btn2">本月</button>
+                        <button class="check_btn2">本季</button>
+                        <button class="check_btn2">本年</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="contentTable">
     <table id="tableOn" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
     <div class="explain">
@@ -98,6 +180,44 @@
     </div>
 </div>
 <div class="bigTitle">派遣员岗位评价</div>
+<div class="search_box">
+    <div class="search_inner">
+        <form class="details">
+            <div class="top table2_top">
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span></span>开始日期</td>
+                            <td>
+                                <input size="16" name="startTime" class="form_datetime" type="text" value="" readonly>
+                            </td>
+                            <td><span></span>结束日期</td>
+                            <td>
+                                <input size="16" name="endTime" class="form_datetime" type="text" value="" readonly>
+                            </td>
+                            <td style="float: right;margin-right: 5px">
+                                <button class="check_btn" onclick="dispatcherEvaluationSearch()">查询</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!--                            按钮-->
+                <div class="notice_bot">
+                    <div class="r_right but_p btn_search dates">
+                        <button class="check_btn2">本周</button>
+                        <button class="check_btn2">本月</button>
+                        <button class="check_btn2">本季</button>
+                        <button class="check_btn2">本年</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="contentTable">
     <table id="tableOf" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
     <div class="explain">
@@ -131,34 +251,38 @@
             showMeridian: 1,
             format: "yyyy-mm-dd hh:ii:ss"
         });
-        queryUserList();
+        supervisorEvaluationSearch();
+        acceptanceEvaluationSearch();
+        shiftForemanEvaluationSearch();
+        dispatcherEvaluationSearch();
     })
-    let searchUrl = /*[[@{/evaluate/supervisorEvaluation}]]*/ "/evaluate/supervisorEvaluation";
-    let num = 1
-    function queryUserList() {
-        var options = {
-            num: num,
-            url: searchUrl,
-            // uniqueId: "id",
-            // sortName: "updateTime",
-            // sortOrder: "desc",
-            // modalName: "用户",
-            // 点击每行进行函数的触发
-            onClickRow: function (row, tr, flied) {
-                console.log(row.id)
-            },
+    let supervisorEvaluationUrl = /*[[@{/evaluate/supervisorEvaluation}]]*/ "/evaluate/supervisorEvaluation";
+    let acceptanceEvaluationUrl = /*[[@{/evaluate/acceptanceEvaluation}]]*/ "/evaluate/acceptanceEvaluation";
+    let shiftForemanEvaluationUrl = /*[[@{/evaluate/shiftForemanEvaluation}]]*/ "/evaluate/shiftForemanEvaluation";
+    let dispatcherEvaluationUrl = /*[[@{/evaluate/dispatcherEvaluation}]]*/ "/evaluate/dispatcherEvaluation";
+    function supervisorEvaluationSearch() {
+        $('#tables').bootstrapTable('removeAll');
+        var count = $('#tables').bootstrapTable('getData').length;
+        var param = "?1=1";
+        // if ($("#eventTypeId").val() !== "") {
+        //     param += "&eventTypeId=" + $("#eventTypeId").val();
+        // }
+        // if ($("#objId").val() !== "") {
+        //     param += "&objId=" + $("#objId").val();
+        // }
+        // if ($("#objName").val() !== "") {
+        //     param += "&objName=" + $("#objName").val();
+        // }
+
+        $('#tables').bootstrapTable({
             columns: [
                 {
                     field: 'index',
                     title: '序号',
-                    // formatter : function (value, row, index){
-                    //     var page = $('#table').bootstrapTable("getPage");
-                    //     return page.pageSize * (page.pageNumber - 1) + index + 1;
-                    // }
                 },
                 {
                     title: '姓名',
-                    class: "reportPatrolName"
+                    field: "supervisorName"
                 },
                 {
                     field: 'gridOnwer',
@@ -207,176 +331,304 @@
 
                 },
                 {
-                    field: 'initialDate',
+                    field: 'aggregativeIndicator',
                     title: '综合指标值',
                 },
                 {
-                    field: 'initialDate',
+                    field: 'ratingLevel',
                     title: '评价等级',
                 },
+            ],
+            data: []
+        });
+        $.ajaxUtil.get(supervisorEvaluationUrl + param, function (e) {
+            $(e.data).each(function (index, value) {
+                console.log("supervisorEvaluationUrl",value)
+                $('#tables').bootstrapTable('insertRow', {
+                    index: index,
+                    row: {
+                        index: index+1,
+                        supervisorName:value.supervisorName,
+                        gridOnwer:value.gridOnwer,
+                        patrolReport:value.patrolReport,
+                        validPatrolReport:value.validPatrolReport,
+                        reportVaildNumRate:value.reportVaildNumRate,
+                        intimeVerify:value.intimeVerify,
+                        needVerify:value.needVerify,
+                        inTimeVerifyRate:value.inTimeVerifyRate,
+                        inTimeCheck:value.inTimeCheck,
+                        publicReport:value.publicReport,
+                        inst:value.inst,
+                        publicReportRate:value.publicReportRate,
+                        aggregativeIndicator:value.aggregativeIndicator,
+                        ratingLevel:value.ratingLevel,
+                    }
+                });
+            })
+
+        })
+    }
+    function acceptanceEvaluationSearch(){
+        $('#tableIn').bootstrapTable('removeAll');
+        var count = $('#tableIn').bootstrapTable('getData').length;
+        var param = "?1=1";
+        // if ($("#eventTypeId").val() !== "") {
+        //     param += "&eventTypeId=" + $("#eventTypeId").val();
+        // }
+        // if ($("#objId").val() !== "") {
+        //     param += "&objId=" + $("#objId").val();
+        // }
+        // if ($("#objName").val() !== "") {
+        //     param += "&objName=" + $("#objName").val();
+        // }
+        $('#tableIn').bootstrapTable({
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                },
+                {
+                    title: '姓名',
+                    field: "operateHumanNameId"
+                },
+                {
+                    field: 'operate',
+                    title: '受理数',
+                },
+                {
+                    field: 'intimeSendVerify',
+                    title: '核实按时派发数',
+                },
+                {
+                    field: 'needSendVerify',
+                    title: "核实应派发数",
+                },
+                {
+                    field: 'SendVerifyRate',
+                    title: '核实按时派发率',
+                },
+                {
+                    field: 'intimeSendCheck',
+                    title: '核查按时派发数',
+                },
+                {
+                    field: 'needSendCheck',
+                    title: '核查应派发数',
+                },
+                {
+                    field: 'needSendCheckRate',
+                    title: '核查按时派发率',
+                },
+                {
+                    field: 'aggregativeIndicator',
+                    title: '综合指标值',
+                },
+                {
+                    field: 'ratingLevel',
+                    title: '评价等级',
+                }
+            ],
+            data:[
 
             ]
-        };
-        $.table.init(options);
+        });
+        $.ajaxUtil.get(acceptanceEvaluationUrl + param, function (e) {
+            console.log("acceptanceEvaluationUrl",e.data)
+            $(e.data).each(function (index, value) {
+                console.log("acceptanceEvaluationUrl",value)
+                $('#tableIn').bootstrapTable('insertRow', {
+                    index: index,
+                    row: {
+                        index: index+1,
+                        operateHumanNameId:value.operateHumanNameId,
+                        operate:value.operate,
+                        intimeSendVerify:value.intimeSendVerify,
+                        needSendVerify:value.needSendVerify,
+                        endVerifyRate:value.endVerifyRate,
+                        intimeSendCheck:value.intimeSendCheck,
+                        needSendCheck:value.needSendCheck,
+                        needSendCheckRate:value.needSendCheckRate,
+                        aggregativeIndicator:value.aggregativeIndicator,
+                        ratingLevel:value.ratingLevel,
+                    }
+                });
+            })
+
+        })
     }
+    function shiftForemanEvaluationSearch(){
+        $('#tableOn').bootstrapTable('removeAll');
+        var count = $('#tableOn').bootstrapTable('getData').length;
+        var param = "?1=1";
+        // if ($("#eventTypeId").val() !== "") {
+        //     param += "&eventTypeId=" + $("#eventTypeId").val();
+        // }
+        // if ($("#objId").val() !== "") {
+        //     param += "&objId=" + $("#objId").val();
+        // }
+        // if ($("#objName").val() !== "") {
+        //     param += "&objName=" + $("#objName").val();
+        // }
+        $('#tableOn').bootstrapTable({
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                },
+                {
+                    title: '姓名',
+                    field: "instHumanName"
+                },
+                {
+                    field: 'inst',
+                    title: '立案数',
+                },
+                {
+                    field: 'intimeInst',
+                    title: '按时立案数',
+                },
+                {
+                    field: 'intimeInstRate',
+                    title: "按时立案率",
+                },
+                {
+                    field: 'exactInst',
+                    title: '准确立案数',
+                },
+                {
+                    field: 'exactInstRate',
+                    title: '准确立案率',
+                },
+                {
+                    field: 'inTimeClose',
+                    title: '按时结案数',
+                },
+                {
+                    field: 'close',
+                    title: "应结案数",
+                },
+                {
+                    field: 'inTimeCloseRate',
+                    title: '按时结案率',
+                },
+                {
+                    field: 'aggregativeIndicator',
+                    title: '综合指标值',
+                },
+                {
+                    field: 'ratingLevel',
+                    title: '评价等级',
+                },
+            ],
+            data:[
 
-    $('#tableIn').bootstrapTable({
-        columns: [
-            {
-                field: 'index',
-                title: '序号',
-            },
-            {
-                title: '姓名',
-                class: "operateHumanName"
-            },
-            {
-                field: 'operate',
-                title: '受理数',
-            },
-            {
-                field: 'intimeSendVerify',
-                title: '核实按时派发数',
-            },
-            {
-                field: 'needSendVerify',
-                title: "核实应派发数",
-            },
-            {
-                field: 'SendVerifyRate',
-                title: '核实按时派发率',
-            },
-            {
-                field: 'intimeSendCheck',
-                title: '核查按时派发数',
-            },
-            {
-                field: 'needSendCheck',
-                title: '核查应派发数',
-            },
-            {
-                field: 'needSendCheckRate',
-                title: '核查按时派发率',
-            },
-            {
-                field: 'aggregativeIndicator',
-                title: '综合指标值',
-            },
-            {
-                field: 'ratingLevel',
-                title: '评价等级',
-            }
-        ],
-        data:[
+            ]
+        });
+        $.ajaxUtil.get(shiftForemanEvaluationUrl + param, function (e) {
+            $(e.data).each(function (index, value) {
+                console.log("shiftForemanEvaluationUrl",value)
+                $('#tableOn').bootstrapTable('insertRow', {
+                    index: index,
+                    row: {
+                        index: index+1,
+                        instHumanName:value.instHumanName,
+                        inst:value.inst,
+                        intimeInst:value.intimeInst,
+                        intimeInstRate:value.intimeInstRate,
+                        exactInst:value.exactInst,
+                        exactInstRate:value.exactInstRate,
+                        inTimeClose:value.inTimeClose,
+                        close:value.close,
+                        inTimeCloseRate:value.inTimeCloseRate,
+                        aggregativeIndicator:value.aggregativeIndicator,
+                        ratingLevel:value.ratingLevel,
+                    }
+                });
+            })
+        })
+    }
+    function dispatcherEvaluationSearch(){
+        $('#tableOf').bootstrapTable('removeAll');
+        var count = $('#tableOf').bootstrapTable('getData').length;
+        var param = "?1=1";
+        // if ($("#eventTypeId").val() !== "") {
+        //     param += "&eventTypeId=" + $("#eventTypeId").val();
+        // }
+        // if ($("#objId").val() !== "") {
+        //     param += "&objId=" + $("#objId").val();
+        // }
+        // if ($("#objName").val() !== "") {
+        //     param += "&objName=" + $("#objName").val();
+        // }
+        $('#tableOf').bootstrapTable({
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                },
+                {
+                    title: '姓名',
+                    field: "dispatch"
+                },
+                {
+                    field: 'toDispatch',
+                    title: '派遣数',
+                },
+                {
+                    field: 'intimeDispatch',
+                    title: '按时派遣数',
+                },
+                {
+                    field: 'needDispatch',
+                    title: "应派遣数",
+                },
+                {
+                    field: 'intimeDispatchRate',
+                    title: '按时派遣率',
+                },
+                {
+                    field: 'accuracyDispatch',
+                    title: '准确派遣数（派遣数-返工数）',
+                },
+                {
+                    field: 'accuracyDispatchRate',
+                    title: '准确派遣率',
+                },
+                {
+                    field: 'aggregativeIndicator',
+                    title: '综合指标值',
+                },
+                {
+                    field: 'ratingLevel',
+                    title: '评价等级',
+                },
+            ],
+            data:[
 
-        ]
-    });
-    $('#tableOn').bootstrapTable({
-        columns: [
-            {
-                field: 'index',
-                title: '序号',
-            },
-            {
-                title: '姓名',
-                class: "instHumanName"
-            },
-            {
-                field: 'inst',
-                title: '立案数',
-            },
-            {
-                field: 'intimeInst',
-                title: '按时立案数',
-            },
-            {
-                field: 'intimeInstRate',
-                title: "按时立案率",
-            },
-            {
-                field: 'exactInst',
-                title: '准确立案数',
-            },
-            {
-                field: 'exactInstRate',
-                title: '准确立案率',
-            },
-            {
-                field: 'inTimeClose',
-                title: '按时结案数',
-            },
-            {
-                field: 'close',
-                title: "应结案数",
-            },
-            {
-                field: 'inTimeCloseRate',
-                title: '按时结案率',
-            },
-            {
-                field: 'aggregativeIndicator',
-                title: '综合指标值',
-            },
-            {
-                field: 'ratingLevel',
-                title: '评价等级',
-            },
-        ],
-        data:[
+            ]
+        });
+        $.ajaxUtil.get(dispatcherEvaluationUrl + param, function (e) {
+            $(e.data).each(function (index, value) {
+                console.log("dispatcherEvaluationUrl",value)
+                $('#tableOf').bootstrapTable('insertRow', {
+                    index: index,
+                    row: {
+                        index: index+1,
+                        dispatch:value.dispatch,
+                        toDispatch:value.toDispatch,
+                        intimeDispatch:value.intimeDispatch,
+                        needDispatch:value.needDispatch,
+                        intimeDispatchRate:value.intimeDispatchRate,
+                        accuracyDispatch:value.accuracyDispatch,
+                        accuracyDispatchRate:value.accuracyDispatchRate,
+                        aggregativeIndicator:value.aggregativeIndicator,
+                        ratingLevel:value.ratingLevel,
 
-        ]
-    });
-
-
-    $('#tableOf').bootstrapTable({
-        columns: [
-            {
-                field: 'index',
-                title: '序号',
-            },
-            {
-                title: '姓名',
-                class: "check"
-            },
-            {
-                field: 'eventType',
-                title: '派遣数',
-            },
-            {
-                field: 'objId',
-                title: '按时派遣数',
-            },
-            {
-                field: 'objName',
-                title: "应派遣数",
-            },
-            {
-                field: 'mainDeptCode',
-                title: '按时派遣率',
-            },
-            {
-                field: 'mainDeptName',
-                title: '准确派遣数（派遣数-返工数）',
-            },
-            {
-                field: 'ownershipDeptCode',
-                title: '准确派遣率',
-            },
-            {
-                field: 'maintenanceDeptCode',
-                title: '综合指标值',
-            },
-            {
-                field: 'initialDate',
-                title: '评价等级',
-            },
-        ],
-        data:[
-
-        ]
-    });
-
-
+                    }
+                });
+            })
+        })
+    }
 </script>
 </body>
 </html>

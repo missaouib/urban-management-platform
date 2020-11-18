@@ -18,8 +18,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Stri
     /**
      * 监督员岗位评价
      */
-
-    @Query(value = "select DISTINCT(s.user_id),gridCount.userName as SupervisorName, \n" +
+    @Query(value = "select DISTINCT(s.user_id),gridCount.userName as supervisorName, \n" +
             "gridCount.gridOnwer as gridOnwer, \n" +
             "patrol_report as patrolReport,\n" +
             "valid_patrol_report as validPatrolReport,\n" +
@@ -59,7 +58,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Stri
             "\tWHEN 40<=(operate*0.25+(in_time_send_verify/need_send_verify)*0.4+(in_time_send_check/need_send_check)*0.35)<60 THEN 'D'\n" +
             "\tELSE 'E' END\n" +
             ")as ratingLevel #评价等级\n" +
-            "from  statistics", nativeQuery = true)
+            "from  statistics where operate_human_name_id is not null", nativeQuery = true)
     List<Map<String, Object>> findAcceptorEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
@@ -93,7 +92,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Stri
             "\tWHEN 40<=((in_time_inst/inst)*0.25+((inst-cancel)/inst)*0.4+(in_time_close/`close`)*0.35)<60 THEN 'D'\n" +
             "\tELSE 'E' END\n" +
             ") as ratingLevel#评价等级 \n" +
-            "from  statistics\n", nativeQuery = true)
+            "from  statistics where inst_human_name_id is not null\n", nativeQuery = true)
     List<Map<String, Object>> findShiftForemanEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
@@ -121,7 +120,6 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Stri
             "\tWHEN 40<=(to_dispatch*0.2+(in_time_dispatch/need_dispatch)*0.4+(accuracy_dispatch/in_time_dispatch)*0.4)<60 THEN 'D'\n" +
             "\tELSE 'E' END\n" +
             ") as ratingLevel\n" +
-            "from  statistics\n" +
-            "ORDER BY inst_human_name_id", nativeQuery = true)
+            "from  statistics where dispatch is not null\n", nativeQuery = true)
     List<Map<String, Object>> findDispatcherEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 }

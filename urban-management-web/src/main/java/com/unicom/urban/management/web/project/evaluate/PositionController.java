@@ -51,11 +51,11 @@ public class PositionController {
      * @return
      */
     @GetMapping("/supervisorEvaluation")
-    public Result supervisorEvaluation() {
+    public List<SupervisorEvaluateVO> supervisorEvaluation() {
         LocalDateTime startTime = LocalDateTime.now();
         LocalDateTime endTime = LocalDateTime.now();
         List<SupervisorEvaluateVO> list = positionService.findSupervisorEvaluateByCondition(startTime, endTime);
-        return Result.success(list);
+        return list;
     }
 
     /**
@@ -64,11 +64,11 @@ public class PositionController {
      * @return
      */
     @GetMapping("/acceptanceEvaluation")
-    public Result acceptanceEvaluation() {
+    public List<AcceptorEvaluateVO> acceptanceEvaluation() {
         LocalDateTime startTime = LocalDateTime.now();
         LocalDateTime endTime = LocalDateTime.now();
         List<AcceptorEvaluateVO> list = positionService.findAcceptorEvaluateByCondition(startTime, endTime);
-        return Result.success(list);
+        return list;
 
     }
 
@@ -78,11 +78,11 @@ public class PositionController {
      * @return
      */
     @GetMapping("/shiftForemanEvaluation")
-    public Result shiftForemanEvaluation() {
+    public List<ShiftForemanEvaluateVO> shiftForemanEvaluation() {
         LocalDateTime startTime = LocalDateTime.now();
         LocalDateTime endTime = LocalDateTime.now();
         List<ShiftForemanEvaluateVO> list = positionService.findShiftForemanEvaluateByCondition(startTime, endTime);
-        return Result.success(list);
+        return list;
 
     }
 
@@ -92,11 +92,11 @@ public class PositionController {
      * @return
      */
     @GetMapping("/dispatcherEvaluation")
-    public Result dispatcherEvaluation() {
+    public List<DispatcherEvaluateVO> dispatcherEvaluation() {
         LocalDateTime startTime = LocalDateTime.now();
         LocalDateTime endTime = LocalDateTime.now();
         List<DispatcherEvaluateVO> list = positionService.findDispatcherEvaluateByCondition(startTime, endTime);
-        return Result.success(list);
+        return list;
 
     }
 

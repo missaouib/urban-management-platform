@@ -38,7 +38,7 @@ public class PositionService {
         if (mapList != null && mapList.size() > 0) {
             for (Map<String, Object> map : mapList) {
                 SupervisorEvaluateVO sVO = new SupervisorEvaluateVO();
-                sVO.setSupervisorName(map.get("SupervisorName").toString());
+                sVO.setSupervisorName(map.get("supervisorName").toString());
                 sVO.setGridOnwer(map.get("gridOnwer") == null ? 0 : (Integer.parseInt(map.get("gridOnwer").toString())));
                 sVO.setPatrolReport(map.get("patrolReport") == null ? 0 : (Integer.parseInt(map.get("patrolReport").toString())));
                 sVO.setValidPatrolReport(map.get("validPatrolReport") == null ? 0 : (Integer.parseInt(map.get("validPatrolReport").toString())));
@@ -82,6 +82,7 @@ public class PositionService {
                 sVO.setNeedSendCheckRate(map.get("needSendCheckRate") == null ? 0 : (Integer.parseInt(map.get("needSendCheckRate").toString())));
                 sVO.setAggregativeIndicator(map.get("aggregativeIndicator") == null ? (float) 0.0 : Float.parseFloat(map.get("aggregativeIndicator").toString()));
                 sVO.setRatingLevel(map.get("ratingLevel") == null ? "" : map.get("ratingLevel").toString());
+                list.add(sVO);
             }
         }
         return list;
@@ -111,6 +112,7 @@ public class PositionService {
                 sVO.setInTimeCloseRate(map.get("inTimeCloseRate") == null ? (float) 0.0 : Float.parseFloat(map.get("inTimeCloseRate").toString()));
                 sVO.setAggregativeIndicator(map.get("aggregativeIndicator") == null ? (float) 0.0 : Float.parseFloat(map.get("aggregativeIndicator").toString()));
                 sVO.setRatingLevel(map.get("ratingLevel") == null ? "" : map.get("ratingLevel").toString());
+                list.add(sVO);
             }
         }
         return list;
@@ -138,6 +140,7 @@ public class PositionService {
                 sVO.setAccuracyDispatchRate(map.get("accuracyDispatchRate") == null ? (float) 0.0 : Float.parseFloat(map.get("accuracyDispatchRate").toString()));
                 sVO.setAggregativeIndicator(map.get("aggregativeIndicator") == null ? (float) 0.0 : Float.parseFloat(map.get("aggregativeIndicator").toString()));
                 sVO.setRatingLevel(map.get("ratingLevel") == null ? "" : map.get("ratingLevel").toString());
+                list.add(sVO);
             }
         }
         return list;

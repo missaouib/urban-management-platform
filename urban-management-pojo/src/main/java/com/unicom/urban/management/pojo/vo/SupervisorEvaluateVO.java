@@ -18,7 +18,7 @@ public class  SupervisorEvaluateVO {
     /**
      * 姓名
      */
-    private String SupervisorName;
+    private String supervisorName;
     /**
      * 责任网格
      */
