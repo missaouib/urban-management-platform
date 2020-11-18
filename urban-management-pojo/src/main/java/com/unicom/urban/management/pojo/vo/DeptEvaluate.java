@@ -72,6 +72,9 @@ public class DeptEvaluate {
     private String reworkRate;
 
 
-
+    /**
+     * 总评
+     */
+    private double comprehensive;
 
 }

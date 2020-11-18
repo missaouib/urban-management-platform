@@ -1,13 +1,16 @@
 package com.unicom.urban.management.web.project.deptevaluate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.pojo.vo.DeptEvaluate;
 import com.unicom.urban.management.service.deptevaluate.DeptEvaluateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -24,7 +27,8 @@ public class DeptEvaluateController {
 
 
     @GetMapping("/evaluate")
-    public List<DeptEvaluate> evaluates(){
+    public List<DeptEvaluate> evaluates(String starTime,
+                                        String endTime) {
         return evaluateService.deptEvaluates();
     }
 }

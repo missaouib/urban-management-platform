@@ -64,28 +64,31 @@ public class DeptEvaluateService {
             /*应结案数*/
             Integer mustCloseNum = this.mustCloseNum(all, d.getId());
             deptEvaluate.setMustCloseNum(mustCloseNum);
-            deptEvaluate.setCloseRate(this.getRate(closeNum, mustCloseNum));
+            String closeRate = this.getRate(closeNum, mustCloseNum);
+            deptEvaluate.setCloseRate(closeRate);
             deptEvaluate.setManagementNum(this.managementNum(disposeList, d.getId()));
             /*按时处置数*/
             Integer onTimeManagementNum = this.onTimeManagementNum(disposeList, d.getId());
             deptEvaluate.setOnTimeManagementNum(onTimeManagementNum);
             /*应处置数*/
             Integer mustManagementNum = this.mustManagementNum(needDisposeList, d.getId());
-            deptEvaluate.setOnTimeManagementRate(this.getRate(onTimeManagementNum, mustManagementNum));
+            String onTimeManagementRate = this.getRate(onTimeManagementNum, mustManagementNum);
+            deptEvaluate.setOnTimeManagementRate(onTimeManagementRate);
             deptEvaluate.setMustManagementNum(mustManagementNum);
             /*返工数*/
             Integer reworkNum = this.reworkNum(reworkList, d.getId());
             deptEvaluate.setReworkNum(reworkNum);
-            deptEvaluate.setReworkRate(this.getRate(reworkNum, mustCloseNum));
-
+            String reworkRate = this.getRate(reworkNum, mustCloseNum);
+            deptEvaluate.setReworkRate(reworkRate);
+            deptEvaluate.setComprehensive(this.comprehensive(reworkNum,closeRate,onTimeManagementRate,reworkRate));
             list.add(deptEvaluate);
 
         });
         return list;
     }
 
-    private double comprehensive(Integer registerNum) {
-        Double register = 0.0;
+    private double comprehensive(Integer registerNum, String closeRateStr, String onTimeManagementRateStr, String reworkRateStr) {
+        double register = 0.0;
         if (registerNum <= 50) {
             register = 10.0;
         } else if (registerNum <= 100) {
@@ -99,7 +102,23 @@ public class DeptEvaluateService {
         } else {
             register = 0.0;
         }
-        return 0.0;
+        double closeRate = 0.0;
+        if (!"0".equals(closeRateStr)) {
+            closeRate = Double.parseDouble(closeRateStr.substring(0,closeRateStr.indexOf("%"))) * 0.3;
+        }
+
+        double onTimeManagementRate = 0.0;
+        if (!"0".equals(onTimeManagementRateStr)) {
+            onTimeManagementRate = Double.parseDouble(onTimeManagementRateStr.substring(0,onTimeManagementRateStr.indexOf("%"))) * 0.3;
+        }
+
+        double reworkRate = 0.0;
+        if (!"0".equals(reworkRateStr)) {
+            reworkRate = (100 - Double.parseDouble(reworkRateStr.substring(0,reworkRateStr.indexOf("%")))) * 0.3;
+        }
+
+
+        return register + closeRate + onTimeManagementRate + reworkRate;
     }
 
 
