@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>热线上报</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
@@ -9,7 +9,10 @@
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
 </head>
 <style>
-    .bootstrap-table{width: 100%;padding: 0 10px 0px 10px!important;}
+    .bootstrap-table {
+        width: 100%;
+        padding: 0 10px 0px 10px !important;
+    }
 </style>
 <body style="border-radius: 8px;">
 <div class="bigTitle">专业部门评价</div>
@@ -55,7 +58,7 @@
     </div>
 </div>
 <div class="contents">
-    <table id="table" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
+    <table id="table" class="table_style" style="margin: 0 auto;margin-top: 10px"></table>
     <div class="explain">
         <div class="explain_box">
             <p style="padding-left: 0px">注：1）综合指标值中，各个指标的分值计算方法如下：</p>
@@ -89,6 +92,8 @@
             showMeridian: 1,
             format: "yyyy-mm-dd hh:ii:ss"
         });
+
+        search();
     })
 
     $('#table').bootstrapTable({
@@ -99,50 +104,50 @@
             },
             {
                 title: '部门',
-                class: "check"
+                field: "deptName"
             },
             {
-                field: 'eventType',
+                field: 'registerNum',
                 title: '立案数',
             },
             {
-                field: 'objId',
+                field: 'onTimeCloseNum',
                 title: '按期结案数',
             },
             {
-                field: 'objName',
+                field: 'closeNum',
                 title: "总结案数",
             },
             {
-                field: 'mainDeptCode',
+                field: 'mustCloseNum',
                 title: '应结案数',
             },
             {
-                field: 'mainDeptName',
+                field: 'closeRate',
                 title: '结案率',
             },
             {
-                field: 'ownershipDeptCode',
+                field: 'onTimeManagementNum',
                 title: '按期处置数',
             },
             {
-                field: 'ownershipDept',
+                field: 'mustManagementNum',
                 title: '应处置数',
             },
             {
-                field: 'maintenanceDeptCode',
+                field: 'onTimeManagementRate',
                 title: '按期处置率',
             },
             {
-                field: 'maintenanceDeptName',
+                field: 'reworkNum',
                 title: '返工数',
             },
             {
-                field: 'maintenanceDep',
-                title: '按期处置率',
+                field: 'managementNum',
+                title: '处置数',
             },
             {
-                field: 'grid',
+                field: 'reworkRate',
                 title: '返工率',
 
             },
@@ -157,11 +162,35 @@
             },
 
         ],
-        data:[
-
-        ]
+        data: []
     });
+    let cellGridRegionUrl = /*[[@{/dept/evaluate}]]*/ "/dept/evaluate";
 
+    function search() {
+        $.ajaxUtil.get(cellGridRegionUrl, function (e) {
+            console.log(e.data)
+            $(e.data).each(function (index, value) {
+                $('#table').bootstrapTable('insertRow', {
+                    index: index,
+                    row: {
+                        index: index + 1,
+                        deptName: value.deptName,
+                        registerNum: value.registerNum,
+                        onTimeCloseNum: value.onTimeCloseNum,
+                        closeNum: value.closeNum,
+                        mustCloseNum: value.mustCloseNum,
+                        closeRate: value.closeRate,
+                        mustManagementNum: value.mustManagementNum,
+                        onTimeManagementNum: value.onTimeManagementNum,
+                        onTimeManagementRate: value.onTimeManagementRate,
+                        reworkNum: value.reworkNum,
+                        managementNum: value.managementNum,
+                        reworkRate: value.reworkRate
+                    }
+                });
+            });
+        });
+    }
 
 
 </script>
