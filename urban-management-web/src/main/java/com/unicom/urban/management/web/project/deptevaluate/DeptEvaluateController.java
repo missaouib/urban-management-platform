@@ -29,6 +29,6 @@ public class DeptEvaluateController {
     @GetMapping("/evaluate")
     public List<DeptEvaluate> evaluates(String starTime,
                                         String endTime) {
-        return evaluateService.deptEvaluates();
+        return evaluateService.deptEvaluates(starTime, endTime);
     }
 }

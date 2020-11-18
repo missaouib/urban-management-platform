@@ -6,10 +6,18 @@ import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.vo.DeptEvaluate;
 import com.unicom.urban.management.pojo.vo.DeptVO;
 import com.unicom.urban.management.service.dept.DeptService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,11 +45,28 @@ public class DeptEvaluateService {
         nt.setMinimumFractionDigits(0);
     }
 
-    public List<DeptEvaluate> deptEvaluates() {
+    public List<DeptEvaluate> deptEvaluates(String starTimeStr,String endTimeStr) {
+
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+
         List<DeptEvaluate> list = new ArrayList<>();
         List<DeptVO> deptVOS = deptService.getAll();
 
-        List<Statistics> all = statisticsRepository.findAll();
+        List<Statistics> all = statisticsRepository.findAll((Specification<Statistics>) (root, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> list1 = new ArrayList<>();
+            //查询更新时间在此时间范围内的所有spu对象
+            if (StringUtils.isNotBlank(starTimeStr)){
+                LocalDateTime starTime = LocalDateTime.parse(starTimeStr, df);
+                list1.add(criteriaBuilder.greaterThanOrEqualTo(root.get("event").get("createTime").as(LocalDateTime.class), starTime));
+            }
+            if (StringUtils.isNotBlank(endTimeStr)){
+                LocalDateTime endTime = LocalDateTime.parse(endTimeStr, df);
+                list1.add(criteriaBuilder.lessThanOrEqualTo(root.get("event").get("createTime").as(LocalDateTime.class), endTime));
+            }
+            Predicate[] p = new Predicate[list1.size()];
+            return criteriaBuilder.and(list1.toArray(p));
+        });
         /*endtime不等于null的*/
         List<Statistics> endTimeIsNotNull = all.stream().filter(s -> s.getEndTime() != null).collect(Collectors.toList());
         /*结案数*/
