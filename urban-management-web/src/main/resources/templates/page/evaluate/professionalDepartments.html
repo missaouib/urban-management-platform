@@ -26,11 +26,11 @@
                         <tr>
                             <td><span></span>开始日期</td>
                             <td>
-                                <input size="16" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" class="form_datetime" id="begin" type="text" value="" readonly>
                             </td>
                             <td><span></span>结束日期</td>
                             <td>
-                                <input size="16" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" class="form_datetime" id="end" type="text" value="" readonly>
                             </td>
                             <td style="float: right;margin-right: 5px">
                                 <button class="check_btn">查询</button>
@@ -47,10 +47,10 @@
                     <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                     <!--            </div>-->
                     <div class="r_right but_p btn_search dates">
-                        <button class="check_btn2">本周</button>
-                        <button class="check_btn2">本月</button>
-                        <button class="check_btn2">本季</button>
-                        <button class="check_btn2">本年</button>
+                        <button class="check_btn2" type="button" id="theWeek">本周</button>
+                        <button class="check_btn2" type="button" id="theMonth">本月</button>
+                        <button class="check_btn2" type="button" id="theuarter">本季</button>
+                        <button class="check_btn2" type="button" id="theYear">本年</button>
                     </div>
                 </div>
             </div>
@@ -94,6 +94,83 @@
         });
 
         search();
+
+        var date = new Date();
+        //本周
+        $("#theWeek").click(function () {
+            // 本周一的日期
+            date.setDate(date.getDate() - date.getDay() + 1);
+            let begin = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " 00:00:00";
+            $("#begin").val(begin)
+            // 本周日的日期
+            date.setDate(date.getDate() + 6);
+            let end = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " 23:59:59";
+            $("#end").val(end)
+            // console.log(begin,end)
+        });
+
+        //本月
+        $("#theMonth").click(function () {
+            //月一
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            month = month > 9 ? month : "0" + month;
+
+            let firstDayOfCurMonth = `${year}-${month}-01`;
+            let lastDay = new Date(year, month, 0);
+            let lastDayOfCurMonth = `${year}-${month}-${lastDay.getDate()}`;
+            $("#begin").val(firstDayOfCurMonth + " 00:00:00")
+            $("#end").val(lastDayOfCurMonth + " 23:59:59")
+        });
+
+        //本季
+        $("#theuarter").click(function () {
+            function getQuarterMonth(type){
+                var now = new Date();
+                var nowMonth = now.getMonth();
+                var year = now.getFullYear();
+                var quarterStartMonth = 1;
+                if(nowMonth<3){
+                    quarterStartMonth = 1;
+                }
+                if(2<nowMonth && nowMonth<6){
+                    quarterStartMonth = 4;
+                }
+                if(5<nowMonth && nowMonth<9){
+                    quarterStartMonth = 7;
+                }
+                if(nowMonth>8){
+                    quarterStartMonth = 10;
+                }
+                if (type == "s") {
+                    var day = year+"-"+quarterStartMonth+"-01";
+                };
+                if (type == "e") {
+                    if(quarterStartMonth==1){
+                        var day = year+"-"+(quarterStartMonth+2)+"-31";
+                    }
+                    if(quarterStartMonth==10){
+                        var day = year+"-"+(quarterStartMonth+2)+"-31";
+                    }
+                    if(quarterStartMonth==4){
+                        var day = year+"-"+(quarterStartMonth+2)+"-30";
+                    }
+                    if(quarterStartMonth==7){
+                        var day = year+"-"+(quarterStartMonth+2)+"-30";
+                    }
+                };
+                return day;
+            }
+            $("#begin").val(getQuarterMonth("s",1) + " 00:00:00")
+            $("#end").val(getQuarterMonth("e",1) + " 23:59:59")
+        });
+
+        //本年
+        $("#theYear").click(function () {
+            let year = date.getFullYear();
+            $("#begin").val(year + "-" +"01-01" + " 00:00:00")
+            $("#end").val(year + "-" +"12-31" + " 23:59:59")
+        });
     })
 
     $('#table').bootstrapTable({
