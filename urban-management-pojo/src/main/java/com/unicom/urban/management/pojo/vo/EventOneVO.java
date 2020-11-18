@@ -139,4 +139,19 @@ public class EventOneVO {
      */
     private Boolean doBySelf;
 
+    /**
+     * 延时时限
+     */
+    private Integer delayedHours;
+
+    /**
+     * 申请部门
+     */
+    private String taskDeptName;
+
+    /**
+     * 申请意见
+     */
+    private String opinions;
+
 }

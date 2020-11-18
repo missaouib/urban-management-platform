@@ -7,7 +7,7 @@
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
-    <th:block th:include="page/fragments/common :: swiper_css" />
+    <th:block th:include="page/fragments/common :: swiper_css"/>
     <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;">
@@ -38,7 +38,8 @@
                             <tr>
                                 <td>所在网格<span></span></td>
                                 <td>
-                                    <select class="form-control" id="grid1" name="grid" onchange="getStreetList()" required>
+                                    <select class="form-control" id="grid1" name="grid" onchange="getStreetList()"
+                                            required>
                                         <option value="">--请选择--</option>
                                         <option th:each="as:${gridList}" th:value="${as.id}"
                                                 th:text="${as.gridName}"></option>
@@ -64,8 +65,8 @@
                                 </td>
                                 <td>案件等级<span></span></td>
                                 <td>
-                                    <select  name="eventCondition" onchange="getEventCondition()"
-                                             required>
+                                    <select name="eventCondition" onchange="getEventCondition()"
+                                            required>
                                         <option value="">--请选择--</option>
                                     </select>
                                 </td>
@@ -279,7 +280,7 @@
                         </div>
                         <div class="notice_bot">
 
-                            <div class="r_right but_p girdBtnGroup" id="eventButton"></div>
+
                         </div>
                     </div>
                 </form>
@@ -346,57 +347,7 @@
             </div>
         </div>
     </div>
-    <!--    核实-->
-    <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">审核</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="checkMain" style="position: relative">
-                        <span class="sendText" style="width: 120px"><i style="color: red!important;"></i>审核意见</span>
-                        <textarea type="text" id="textIdioms"></textarea>
-                        <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
-                        <div id="wordSays" class="wordSays" style="background-color:#fff;">
-                            <ul>
-                                <li class="idioms">11</li>
-                                <li class="idioms">33</li>
-                                <li class="idioms">22</li>
-                            </ul>
-                        </div>
-
-                    </div>
-                    <div class="send">
-                        <div class="sendImg">
-                            <div class="sendText" style="width: 72px"><span>照片:</span></div>
-                            <div><input id="picture" class="input-id" type="file" name="files" multiple="multiple">
-                            </div>
-                        </div>
-
-
-                        <div class="sendImg">
-                            <div class="sendText" style="width: 72px"><span>视频:</span></div>
-                            <div><input id="video" type="file" class="videoInput" name="file" multiple="multiple">
-                            </div>
-                        </div>
-                        <div class="sendImg">
-                            <div class="sendText" style="width: 72px"><span>音频:</span></div>
-                            <div><input id="music" type="file" class="musicInput" name="file" multiple="multiple">
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between"
-                     style="display: flex;justify-content: flex-end!important;">
-                    <button type="button" class="btn btn-primary" onclick="completeEvent()">完成</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
-                </div>
-            </div>
-        </div>
-    </div>
-<!--model窗-->
+    <!--model窗-->
     <div class="modal fade" id="modal-default8">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -407,20 +358,21 @@
                     <div style="display: flex;justify-content: space-between">
                         <div style="width: 50%;display: flex;justify-content: space-between">
                             <div class="sendText" style="width: 100px!important;">当前处理部门</div>
-                            <input type="text" style="width: 50%" class="find_input">
+                            <input type="text" id="dept2" style="width: 50%" class="find_input" readonly="readonly">
                         </div>
-                        <div style="width: 50%;display: flex;justify-content: space-between">
-                            <div class="sendText" style="width: 100px!important;">当前处理人</div>
-                            <input type="text" style="width: 50%" class="find_input">
+                        <div style="width: 50%;display: flex;justify-content: space-between" id="delayedHours">
+
                         </div>
                     </div>
                     <div style="display: flex;justify-content: start;padding-top: 10px">
                         <div class="sendText" style="width: 100px!important;">申请原因</div>
-                        <input type="text" class="find_input" style="margin-left: 17px;width: 350px!important;">
+                        <input id="opinions1" type="text" class="find_input"
+                               style="margin-left: 17px;width: 350px!important;" readonly="readonly">
                     </div>
                 </div>
-                <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
-<!--                    <button type="button" class="btn btn-success">确认</button>-->
+                <div class="modal-footer justify-content-between"
+                     style="display: flex;justify-content: flex-end!important;">
+                    <!--                    <button type="button" class="btn btn-success">确认</button>-->
                     <button type="button" class="btn btn-danger" data-dismiss="modal">关闭</button>
                 </div>
             </div>
@@ -436,26 +388,21 @@
                     <div style="display: flex;justify-content: space-between">
                         <div style="width: 50%;display: flex;justify-content: space-between">
                             <div class="sendText" style="width: 100px!important;">当前处理部门</div>
-                            <input type="text" style="width: 50%" class="find_input">
-                        </div>
-                        <div style="width: 50%;display: flex;justify-content: space-between">
-                            <div class="sendText" style="width: 100px!important;">当前处理人</div>
-                            <input type="text" style="width: 50%" class="find_input">
+                            <input type="text" id="dept1" style="width: 50%" class="find_input" readonly="readonly">
                         </div>
                     </div>
                     <div style="display: flex;justify-content: start;padding-top: 10px">
                         <div class="sendText" style="width: 100px!important;">申请原因</div>
-                        <input type="text" class="find_input" style="margin-left: 17px;width: 350px!important;">
+                        <input id="opinions2" type="text" class="find_input"
+                               style="margin-left: 17px;width: 350px!important;" readonly="readonly">
                     </div>
                     <div style="display: flex;justify-content: start;padding-top: 10px">
                         <div class="sendText" style="width: 100px!important;">审批意见</div>
-                        <textarea class="find_input" style="margin-left: 17px;width: 350px!important;height: 100px"></textarea>
+                        <textarea id="textIdioms" class="find_input"
+                                  style="margin-left: 17px;width: 350px!important;height: 100px"></textarea>
                     </div>
                 </div>
-                <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
-                    <button type="button" class="btn btn-success">通过</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">不通过</button>
-                </div>
+                <div class="r_right but_p girdBtnGroup" id="eventButton"></div>
             </div>
         </div>
     </div>
@@ -464,7 +411,8 @@
         <div class="duck_box">
             <div class="allTiel">
                 <div class="duck_close">
-                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png" style="width: 100%;height: 100%"></i>
+                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png"
+                                                             style="width: 100%;height: 100%"></i>
                 </div>
                 <div class="duck_title">
                     <span class="duckActive">图片</span>
@@ -499,7 +447,8 @@
                 <div class="fullScreen" id="fullScreen">全屏</div>
                 <div class="fullScreen exitfullScreen" id="exitfullScreen">退出全屏</div>
                 <div class="duk_close" id="duk_picture">
-                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png" style="width: 100%;height: 100%"></i>
+                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png"
+                                                             style="width: 100%;height: 100%"></i>
                 </div>
                 <div style="width: 100%;height: 100%;padding: 5px">
                     <div class="swiper-container sw2">
@@ -525,7 +474,7 @@
 <th:block th:include="page/fragments/common :: map_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
-<th:block th:include="page/fragments/common :: swiper_js" />
+<th:block th:include="page/fragments/common :: swiper_js"/>
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
@@ -587,28 +536,28 @@
 
         getGridPublishUrl()
 
-        $(".duk_close").click(function() {
+        $(".duk_close").click(function () {
             $("#pictureBoxDuc").fadeOut(300)
         });
 
-        $(".banner").on("click", ".innerPic", function() {
+        $(".banner").on("click", ".innerPic", function () {
             $("#pictureBoxDuc").fadeIn(300)
         });
 
         //全屏
-        $("#fullScreen").click(function() {
+        $("#fullScreen").click(function () {
             $("#allTiel").addClass("allTielFont");
             $("#exitfullScreen").css("display", "block");
             $(this).css("display", "none")
         });
 
-        $("#exitfullScreen").click(function() {
+        $("#exitfullScreen").click(function () {
             $("#allTiel").removeClass("allTielFont");
             $(this).css("display", "none");
             $("#fullScreen").css("display", "block");
         })
         var r = 0;
-        $(".xiala").click(function() {
+        $(".xiala").click(function () {
             r += 180;
             $(".selectPoint").slideToggle(300);
             $(".selectmenu").css('transform', 'rotate(' + r + 'deg)');
@@ -726,7 +675,6 @@
     }
 
 
-
     let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
 
     function getGridPublishUrl() {
@@ -770,6 +718,7 @@
             });
         })
     }
+
     //回调函数接收查询结果
     var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
 
@@ -820,7 +769,7 @@
                 {
                     field: 'index',
                     title: '序号',
-                    formatter : function (value, row, index){
+                    formatter: function (value, row, index) {
                         var page = $('#bootstrap-table').bootstrapTable("getPage");
                         return page.pageSize * (page.pageNumber - 1) + index + 1;
                     }
@@ -848,11 +797,11 @@
                 {
                     title: '操作',
                     field: '',
-                    class:"doit",
-                    width:"150px",
+                    class: "doit",
+                    width: "150px",
                     formatter: function (value, row) {
                         var actions = '<a  href="#" title=""  data-toggle="modal" data-target="#modal-default8">挂账原因</a> ' +
-                                        '<a  href="#" title="" data-toggle="modal" data-target="#modal-default9">审批</a> ';
+                            '<a  href="#" title="" data-toggle="modal" data-target="#modal-default9">审批</a> ';
                         return actions
                     }
                 }
@@ -906,7 +855,7 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px;' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
                 }
             }
             $("#eventButton").html(buttonHtml);
@@ -945,23 +894,23 @@
                     html += "<div class='expressRecord-text'>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
-                    html += "回复内容:<em class='roleSize'>"+ data[i].opinions +"</em> "
+                    html += "回复内容:<em class='roleSize'>" + data[i].opinions + "</em> "
                     html += "</div>";
 
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
-                    html += "by:<em class='roleSize'>"+ data[i].user + "，角色" + "</em> ";
+                    html += "by:<em class='roleSize'>" + data[i].user + "，角色" + "</em> ";
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox RecordTime'>";
-                    html += "<div>开始时间:<em>"+ data[i].starTime +"</em></div>";
+                    html += "<div>开始时间:<em>" + data[i].starTime + "</em></div>";
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox RecordTime'>";
-                    html += "结束时间:<em>"+ data[i].endTime +"</em>"
+                    html += "结束时间:<em>" + data[i].endTime + "</em>"
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd felx_end'>";
@@ -995,6 +944,7 @@
             $("#modelImageList").html(imageHtml);
         }
     }
+
     function getEventDetail(eventId) {
         $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
             eventId = e.data.id;
@@ -1020,6 +970,18 @@
             $("#petitionerName").val(e.data.petitionerName);
             $("#userName").val(e.data.userName);
             $("#recTypeStr").val(e.data.recTypeStr);
+            $("#dept1").val(e.data.taskDeptName);
+            $("#dept2").val(e.data.taskDeptName);
+            $("#opinions1").val(e.data.opinions);
+            $("#opinions2").val(e.data.opinions);
+
+            if (e.data.delayedHours != null && "" !== e.data.delayedHours) {
+                $("#delayedHours").empty();
+                var str = "<div class=\"sendText\" style=\"width: 100px!important;\">申请时限</div>\n" +
+                    "                            <input type=\"text\" value='" + e.data.delayedHours + "小时' style=\"width: 50%\" class=\"find_input\" readonly=\"readonly\">"
+                $("#delayedHours").append(str);
+            }
+
             /*流程图*/
             $("#eventImg").attr('src', img + e.data.processInstanceId);
             /* 坐标 */
@@ -1053,6 +1015,7 @@
     function setValueForCompleteEvent(data) {
         $("#eventId").val(data.value)
         $("#button").val(data.id)
+        completeEvent();
     }
 
     function completeEvent() {
@@ -1063,7 +1026,7 @@
             "eventId": idVal,
             "buttonId": buttonVal,
             "opinions": opinions,
-            "imageUrlList":imageUrlList
+            "imageUrlList": imageUrlList
         };
         $.ajax({
             type: "post",
@@ -1093,6 +1056,7 @@
         });
 
     }
+
     var imageUrlList;
     let uploadUrl = /*[[@{/common/uploads}]]*/ "/common/upload";
     //上传 照片视频音频

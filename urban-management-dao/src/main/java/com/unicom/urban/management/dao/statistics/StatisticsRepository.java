@@ -17,6 +17,7 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
 
     List<Statistics> findAllByEvent_IdOrderByStartTimeDesc(String eventId);
 
+
     /**
      * 根据sort字段排序
      *

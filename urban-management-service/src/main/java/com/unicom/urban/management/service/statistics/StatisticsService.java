@@ -207,4 +207,8 @@ public class StatisticsService {
         }
         return map;
     }
+
+    public List<Statistics> findAllByEventIdOrderBySort(String eventId){
+        return statisticsRepository.findAllByEvent_IdOrderBySortDesc(eventId);
+    }
 }

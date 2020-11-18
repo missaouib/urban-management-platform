@@ -447,6 +447,17 @@ public class EventService {
         eventOneVO.setDeptId(dept.map(Dept::getId).orElse(""));
         eventOneVO.setDeptName(dept.map(Dept::getDeptName).orElse(""));
 
+        List<Statistics> statisticsList = statisticsService.findAllByEventIdOrderBySort(eventId);
+        if(statisticsList.size()>0){
+            Statistics statistics = statisticsList.get(1);
+            if("派遣员-申请延时".equals(statisticsList.get(0).getTaskName())){
+                eventOneVO.setDelayedHours(statistics.getDelayedHours());
+            }
+            eventOneVO.setTaskDeptName(Optional.ofNullable(statistics.getDisposeUnitName()).map(Dept::getDeptName).orElse(""));
+            eventOneVO.setOpinions(statistics.getOpinions());
+        }
+
+
         return eventOneVO;
     }
 
