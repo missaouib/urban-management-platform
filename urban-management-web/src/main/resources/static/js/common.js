@@ -65,9 +65,30 @@ function setTimeLimit(row,index) {
 //     });*/
 // }
 
+/**
+ * 步骤进行到哪一步
+ * @param bgmNum
+ */
+
+function setConduct(bgmNum) {
+	var alist = document.querySelectorAll(".alist")
+	$(".alert").removeClass("dieselActive")
+	alist[bgmNum].classList.add("dieselActive");
+}
+
 //全屏 body
 function fullScreen() {
-	var element = document.documentElement;
+	// var element = document.documentElement;
+	// if (element.requestFullscreen) {
+	// 	element.requestFullscreen();
+	// } else if (element.msRequestFullscreen) {
+	// 	element.msRequestFullscreen();
+	// } else if (element.mozRequestFullScreen) {
+	// 	element.mozRequestFullScreen();
+	// } else if (element.webkitRequestFullscreen) {
+	// 	element.webkitRequestFullscreen();
+	// }
+	var element = document.getElementById("content-wrapper");
 	if (element.requestFullscreen) {
 		element.requestFullscreen();
 	} else if (element.msRequestFullscreen) {
@@ -81,6 +102,7 @@ function fullScreen() {
 
 //退出全屏
 function exitFullscreen() {
+	var element = document.getElementById("content-wrapper");
 	if (document.exitFullscreen) {
 		document.exitFullscreen();
 	} else if (document.msExitFullscreen) {
