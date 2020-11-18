@@ -30,7 +30,7 @@
                                 <input size="16" name="endTime" class="form_datetime" type="text" value="" readonly>
                             </td>
                             <td style="float: right;margin-right: 5px">
-                                <button class="check_btn">查询</button>
+                                <button class="check_btn" onclick="supervisorEvaluationSearch()">查询</button>
                             </td>
                         </tr>
                         </tbody>
@@ -133,7 +133,7 @@
         });
         queryUserList();
     })
-    let searchUrl = /*[[@{/evaluate/searchSupervisorEvaluate}]]*/ "/evaluate/searchSupervisorEvaluate";
+    let searchUrl = /*[[@{/evaluate/supervisorEvaluation}]]*/ "/evaluate/supervisorEvaluation";
     let num = 1
     function queryUserList() {
         var options = {
@@ -228,42 +228,42 @@
             },
             {
                 title: '姓名',
-                class: "check"
+                class: "operateHumanName"
             },
             {
-                field: 'eventType',
+                field: 'operate',
                 title: '受理数',
             },
             {
-                field: 'objId',
+                field: 'intimeSendVerify',
                 title: '核实按时派发数',
             },
             {
-                field: 'objName',
+                field: 'needSendVerify',
                 title: "核实应派发数",
             },
             {
-                field: 'mainDeptCode',
+                field: 'SendVerifyRate',
                 title: '核实按时派发率',
             },
             {
-                field: 'mainDeptName',
+                field: 'intimeSendCheck',
                 title: '核查按时派发数',
             },
             {
-                field: 'ownershipDeptCode',
+                field: 'needSendCheck',
                 title: '核查应派发数',
             },
             {
-                field: 'ownershipDeptCode',
+                field: 'needSendCheckRate',
                 title: '核查按时派发率',
             },
             {
-                field: 'maintenanceDeptCode',
+                field: 'aggregativeIndicator',
                 title: '综合指标值',
             },
             {
-                field: 'maintenanceDeptName',
+                field: 'ratingLevel',
                 title: '评价等级',
             }
         ],
@@ -279,42 +279,46 @@
             },
             {
                 title: '姓名',
-                class: "check"
+                class: "instHumanName"
             },
             {
-                field: 'eventType',
+                field: 'inst',
                 title: '立案数',
             },
             {
-                field: 'objId',
+                field: 'intimeInst',
                 title: '按时立案数',
             },
             {
-                field: 'objName',
+                field: 'intimeInstRate',
                 title: "按时立案率",
             },
             {
-                field: 'mainDeptCode',
+                field: 'exactInst',
                 title: '准确立案数',
             },
             {
-                field: 'eventType',
+                field: 'exactInstRate',
                 title: '准确立案率',
             },
             {
-                field: 'objId',
+                field: 'inTimeClose',
                 title: '按时结案数',
             },
             {
-                field: 'objName',
+                field: 'close',
                 title: "应结案数",
             },
             {
-                field: 'mainDeptCode',
+                field: 'inTimeCloseRate',
                 title: '按时结案率',
             },
             {
-                field: 'mainDeptCode',
+                field: 'aggregativeIndicator',
+                title: '综合指标值',
+            },
+            {
+                field: 'ratingLevel',
                 title: '评价等级',
             },
         ],
@@ -352,7 +356,7 @@
             },
             {
                 field: 'mainDeptName',
-                title: '准确派遣数',
+                title: '准确派遣数（派遣数-返工数）',
             },
             {
                 field: 'ownershipDeptCode',
