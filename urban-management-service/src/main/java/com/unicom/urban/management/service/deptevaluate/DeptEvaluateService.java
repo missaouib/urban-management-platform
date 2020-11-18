@@ -144,10 +144,9 @@ public class DeptEvaluateService {
      * 按时结案数
      */
     private Integer onTimeCloseNum(List<Statistics> statistics, String deptId) {
-        List<Statistics> collect = statistics.stream().filter(s -> null != s.getInTimeClose()).filter(s -> s.getInTimeClose() == 1).collect(Collectors.toList());
         List<Event> events = new ArrayList<>();
-        collect.forEach(s -> events.add(s.getEvent()));
-        return statisticsRepository.findAllByEventInAndTaskNameAndDisposeUnit_Id(events, "专业部门", deptId).size();
+        statistics.forEach(s -> events.add(s.getEvent()));
+        return Math.toIntExact(statisticsRepository.findAllByEventInAndTaskNameAndDisposeUnit_Id(events, "专业部门", deptId).stream().filter(s->null!=s.getInTimeDispose()).filter(s -> s.getInTimeDispose() == 1).count());
     }
 
 
