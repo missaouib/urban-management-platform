@@ -46,12 +46,22 @@ public class CellGridRegionController {
     }
 
     /**
-     * 区域评价
+     * 区域评价 1类
      *
      * @return 数据
      */
-    @GetMapping("/cellGridRegion")
-    public List<CellGridRegionVO> cellGridRegion() {
+    @GetMapping("/cellGridRegionOne")
+    public List<CellGridRegionVO> cellGridRegionOne() {
+        return statisticsService.findAllForCellGridRegion();
+    }
+
+    /**
+     * 区域评价 2类
+     *
+     * @return 数据
+     */
+    @GetMapping("/cellGridRegionTwo")
+    public List<CellGridRegionVO> cellGridRegionTwo() {
         return statisticsService.findAllForCellGridRegion();
     }
 

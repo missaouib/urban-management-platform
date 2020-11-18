@@ -83,7 +83,7 @@
         search();
     });
 
-    let cellGridRegionUrl = /*[[@{/evaluate/cellGridRegion}]]*/ "/evaluate/cellGridRegion";
+    let cellGridRegionUrl = /*[[@{/evaluate/cellGridRegionOne}]]*/ "/evaluate/cellGridRegionOne";
 
     $('#table').bootstrapTable({
         columns: [
@@ -104,27 +104,27 @@
                 title: '单元网格',
             },
             {
-                field: 'objName',
+                field: 'publicReportAndInstSize',
                 title: '监督举报核实数',
             },
             {
-                field: 'mainDeptCode',
+                field: 'instSize',
                 title: '立案数',
             },
             {
-                field: 'mainDeptName',
+                field: 'publicReportAndInstRate',
                 title: '监督举报率',
             },
             {
-                field: 'ownershipDeptCode',
+                field: 'closeOrToCloseSize',
                 title: '应结案数',
             },
             {
-                field: 'ownershipDeptName',
+                field: 'closeSize',
                 title: '结案数',
             },
             {
-                field: 'maintenanceDeptCode',
+                field: 'closeRate',
                 title: '结案率',
             },
             {
@@ -132,11 +132,11 @@
                 title: '按期结案数',
             },
             {
-                field: 'grid',
+                field: 'inTimeCloseRate',
                 title: '按期结案率',
             },
             {
-                field: 'initialDate',
+                field: 'comprehensiveIndexValue',
                 title: '综合指标',
             },
         ],
@@ -151,7 +151,15 @@
                     row: {
                         index: index + 1,
                         gridName: value.gridName,
-                        inTimeCloseSize: value.inTimeCloseSize
+                        inTimeCloseSize: value.inTimeCloseSize,
+                        closeSize: value.closeSize,
+                        closeOrToCloseSize: value.closeOrToCloseSize,
+                        publicReportAndInstSize: value.publicReportAndInstSize,
+                        publicReportAndInstRate: value.publicReportAndInstRate,
+                        closeRate: value.closeRate,
+                        inTimeCloseRate: value.inTimeCloseRate,
+                        instSize: value.instSize,
+                        comprehensiveIndexValue: value.comprehensiveIndexValue
                     }
                 });
             });

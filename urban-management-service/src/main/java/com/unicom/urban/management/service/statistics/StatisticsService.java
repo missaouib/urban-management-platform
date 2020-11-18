@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -140,11 +142,49 @@ public class StatisticsService {
             CellGridRegionVO cellGridRegionVO = new CellGridRegionVO();
             cellGridRegionVO.setGridName(grid.getGridName());
             int inTimeCloseSize = statisticsRepository.findAllByInTimeClose(grid.getId()).size();
+            int closeSize = statisticsRepository.findAllByClose(grid.getId()).size();
+            int closeOrToCloseSize = statisticsRepository.findAllByCloseOrToClose(grid.getId()).size();
+            int publicReportAndInstSize = statisticsRepository.findAllByPublicReportAndInst(grid.getId()).size();
+            int instSize = statisticsRepository.findAllByInst(grid.getId()).size();
+            int hangSize = statisticsRepository.findAllByHang(grid.getId()).size();
+            /* 按期结案数 */
             cellGridRegionVO.setInTimeCloseSize(inTimeCloseSize);
-
+            /* 结案数 */
+            cellGridRegionVO.setCloseSize(closeSize);
+            /* 应结案数 */
+            cellGridRegionVO.setCloseOrToCloseSize(closeOrToCloseSize);
+            /* 监督举报核实数 */
+            cellGridRegionVO.setPublicReportAndInstSize(publicReportAndInstSize);
+            /* 立案数 = 立案数 - 挂账数 */
+            cellGridRegionVO.setInstSize(instSize - hangSize);
+            /* 监督举报率：监督举报核实数/立案数×100% */
+            cellGridRegionVO.setPublicReportAndInstRate(getRateByDouble(publicReportAndInstSize, cellGridRegionVO.getInstSize()));
+            /* 结案率：结案数/应结案数×100%*/
+            cellGridRegionVO.setCloseRate(getRateByDouble(closeSize, closeOrToCloseSize));
+            /* 按期结案率：按期结案数/应结案数×100%*/
+            cellGridRegionVO.setInTimeCloseRate(getRateByDouble(inTimeCloseSize, closeOrToCloseSize));
+            /* todo 综合指标值=监督举报率分值×10%+立案数分值×20%+结案率分值×30%+按期结案率分值×10% 目前没有立案数分值 */
+            double publicReportAndInstRate = 100D - Double.parseDouble(cellGridRegionVO.getPublicReportAndInstRate().split("%")[0]);
+            double closeRate = 100D - Double.parseDouble(cellGridRegionVO.getCloseRate().split("%")[0]);
+            double inTimeCloseRate = 100D - Double.parseDouble(cellGridRegionVO.getInTimeCloseRate().split("%")[0]);
+            double comprehensiveIndexValue = publicReportAndInstRate * 0.1 + closeRate * 0.3 + inTimeCloseRate * 0.1;
+            BigDecimal bigDecimal = BigDecimal.valueOf(comprehensiveIndexValue);
+            double f1 = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            cellGridRegionVO.setComprehensiveIndexValue(f1);
             cellGridRegionVOList.add(cellGridRegionVO);
         }
         return cellGridRegionVOList;
+    }
 
+    private String getRateByDouble(int a, int b) {
+        double percent;
+        if (b == 0) {
+            percent = 0;
+        } else {
+            percent = (double) a / (double) b;
+        }
+        NumberFormat nt = NumberFormat.getPercentInstance();
+        nt.setMinimumFractionDigits(2);
+        return nt.format(percent);
     }
 }
