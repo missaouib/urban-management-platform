@@ -72,8 +72,8 @@ function setTimeLimit(row,index) {
 
 function setConduct(bgmNum) {
 	var alist = document.querySelectorAll(".alist")
-	$(".alert").removeClass("dieselActive")
-	alist[bgmNum].classList.add("dieselActive");
+	$(".alist").addClass("dieselActive")
+	alist[bgmNum].classList.remove("dieselActive");
 }
 
 //全屏 body

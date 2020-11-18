@@ -1685,7 +1685,8 @@ width: 50px;
     margin: 45px 20px;
     color: #354e85!important;
     text-decoration: none;
-    font-size: 12px;
+    font-size: 18px;
+    font-weight: 800;
     text-transform: uppercase;
     transition: 0.5s;
     overflow: hidden;
@@ -1783,4 +1784,18 @@ width: 50px;
     100% {
         bottom: 100%;
     }
+}
+
+.rootBox{
+    display: flex;
+    justify-content: space-between;align-items: center;
+}
+.downIn{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+.downi{
+    width: 33.3%;
+    text-align: center;
 }
