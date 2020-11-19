@@ -49,7 +49,8 @@ public class Supervise extends BaseEntity {
      */
     private String replayOpinion;
 
-    @Column(columnDefinition = "TINYINT(1)")
-    private Integer sts;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sts")
+    private KV sts;
 
 }
