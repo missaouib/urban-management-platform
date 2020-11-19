@@ -412,6 +412,175 @@
         </div>
     </div>
 
+
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">督办</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                    <form id="supervise">
+                        <div class="top table2_top">
+                            <!--        <div>-->
+                            <div class="top_out">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td>督办状态<span></span></td>
+                                        <td>
+                                            <input class="" value="园林局">
+                                        </td>
+                                        <td>当前处理人<span></span></td>
+                                        <td>
+                                            <input class="" value="张辉">
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>督办意见<span></span></td>
+
+                                        <td colspan="8"><textarea name="problemescription" required></textarea></td>
+
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!--    </div>-->
+                    </form>
+                    </p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-default1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">督办</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                    <form id="details">
+                        <div class="top table2_top">
+                            <!--        <div>-->
+                            <div class="top_out">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td>督办状态<span></span></td>
+                                        <td>
+                                            <input class="" value="园林局">
+                                        </td>
+                                        <td>当前处理人<span></span></td>
+                                        <td>
+                                            <input class="" value="张辉">
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>督办意见<span></span></td>
+
+                                        <td colspan="8">
+                                            <div class="modelOpin">请园林局对此上报与10月30日处理完毕</div>
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>专业部门意见<span></span></td>
+
+                                        <td colspan="8">
+                                            <div class="modelOpin">已收到信息，正在督办，会如期解决</div>
+                                        </td>
+
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!--    </div>-->
+                    </form>
+                    </p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-default2">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">专业部门回复意见</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                    <form id="opinion">
+                        <div class="top table2_top">
+                            <!--        <div>-->
+                            <div class="top_out">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td>督办状态<span></span></td>
+                                        <td>
+                                            <input class="" value="园林局">
+                                        </td>
+                                        <td>当前处理人<span></span></td>
+                                        <td>
+                                            <input class="" value="张辉">
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>督办意见<span></span></td>
+
+                                        <td colspan="8">
+                                            <div class="modelOpin">请园林局对此上报与10月30日处理完毕</div>
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td>专业部门意见<span></span></td>
+
+                                        <td colspan="8"><textarea name="problemescription" required></textarea></td>
+
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!--    </div>-->
+                    </form>
+                    </p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 
 
@@ -667,8 +836,18 @@
                 {
                     title: '办结时间',
                     field: 'closeTime'
-                }
-
+                },
+                {
+                    title: '操作',
+                    field: '',
+                    width:"100px",
+                    formatter: function(value, row) {
+                        var e = '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default">督办</a> ' +
+                        '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default1">督办详情</a> '+
+                        '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default2">意见回复</a> ';
+                        return e;
+                    }
+                },
             ]
         };
         $.table.init(options);
