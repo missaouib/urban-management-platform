@@ -16,9 +16,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @SpringBootTest(classes = WebApplication.class)
 @RunWith(SpringRunner.class)
@@ -153,6 +151,16 @@ public class ActivitiServiceImplTest {
     @Test
     public void queryTaskByAssigneeAndTaskNameTest() {
         List<String> eventIdList = activitiService.queryTaskByAssigneeAndTaskName("1", Collections.singletonList("派遣员-延时审批"));
+    }
+
+    @Test
+    @Transactional
+    public void testListener() {
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("userList", "liukai");
+        ProcessInstance eventListener = runtimeService.startProcessInstanceByKey("event_listener", variables);
+
+
     }
 
 
