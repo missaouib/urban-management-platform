@@ -17,7 +17,7 @@
 <div class="bigTitle">单元网格区域评价</div>
 <div class="search_box">
     <div class="search_inner">
-        <form class="details">
+        <form class="details" id="userForm">
             <div class="top table2_top">
                 <div class="top_out">
                     <table class="table">
@@ -25,11 +25,13 @@
                         <tr>
                             <td><span></span>开始日期</td>
                             <td>
-                                <input size="16" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" id="startTime" name="startTime" class="form_datetime" type="text"
+                                       value="" readonly>
                             </td>
                             <td><span></span>结束日期</td>
                             <td>
-                                <input size="16" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" id="endTime" name="endTime" class="form_datetime" type="text" value=""
+                                       readonly>
                             </td>
                             <td style="float: right;margin-right: 5px">
                                 <button class="check_btn">查询</button>
@@ -57,7 +59,7 @@
     </div>
 </div>
 <div class="contents">
-    <table id="table" class="table_style" style="margin: 0 auto;margin-top: 10px"></table>
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
 </div>
 
 <th:block th:include="page/fragments/common :: common_js"/>
@@ -81,79 +83,140 @@
         });
 
         search();
+
+        var date = new Date();
+        //本周
+        $("#theWeek").click(function () {
+            // 本周一的日期
+            date.setDate(date.getDate() - date.getDay() + 1);
+            let startTime = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " 00:00:00";
+            $("#startTime").val(startTime)
+            // 本周日的日期
+            date.setDate(date.getDate() + 6);
+            let endTime = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " 23:59:59";
+            $("#endTime").val(endTime)
+        });
+
+        //本月
+        $("#theMonth").click(function () {
+            //月一
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            month = month > 9 ? month : "0" + month;
+
+            let firstDayOfCurMonth = `${year}-${month}-01`;
+            let lastDay = new Date(year, month, 0);
+            let lastDayOfCurMonth = `${year}-${month}-${lastDay.getDate()}`;
+            $("#startTime").val(firstDayOfCurMonth + " 00:00:00")
+            $("#endTime").val(lastDayOfCurMonth + " 23:59:59")
+        });
+
+        //本季
+        $("#theQuarter").click(function () {
+            function getQuarterMonth(type) {
+                var now = new Date();
+                var nowMonth = now.getMonth();
+                var year = now.getFullYear();
+                var quarterStartMonth = 1;
+                if (nowMonth < 3) {
+                    quarterStartMonth = 1;
+                }
+                if (2 < nowMonth && nowMonth < 6) {
+                    quarterStartMonth = 4;
+                }
+                if (5 < nowMonth && nowMonth < 9) {
+                    quarterStartMonth = 7;
+                }
+                if (nowMonth > 8) {
+                    quarterStartMonth = 10;
+                }
+                if (type == "s") {
+                    var day = year + "-" + quarterStartMonth + "-01";
+                }
+                ;
+                if (type == "e") {
+                    if (quarterStartMonth == 1) {
+                        var day = year + "-" + (quarterStartMonth + 2) + "-31";
+                    }
+                    if (quarterStartMonth == 10) {
+                        var day = year + "-" + (quarterStartMonth + 2) + "-31";
+                    }
+                    if (quarterStartMonth == 4) {
+                        var day = year + "-" + (quarterStartMonth + 2) + "-30";
+                    }
+                    if (quarterStartMonth == 7) {
+                        var day = year + "-" + (quarterStartMonth + 2) + "-30";
+                    }
+                }
+                return day;
+            }
+
+            $("#startTime").val(getQuarterMonth("s", 1) + " 00:00:00")
+            $("#endTime").val(getQuarterMonth("e", 1) + " 23:59:59")
+        });
+
+        //本年
+        $("#theYear").click(function () {
+            let year = date.getFullYear();
+            $("#startTime").val(year + "-" + "01-01" + " 00:00:00")
+            $("#endTime").val(year + "-" + "12-31" + " 23:59:59")
+        });
     });
 
     let cellGridRegionUrl = /*[[@{/evaluate/cellGridRegionTwo}]]*/ "/evaluate/cellGridRegionTwo";
 
-    $('#table').bootstrapTable({
-        columns: [
-            {
-                field: 'index',
-                title: '序号',
-            },
-            {
-                field: 'check',
-                title: '街道'
-            },
-            {
-                field: 'eventType',
-                title: '社区',
-            },
-            {
-                field: 'gridName',
-                title: '单元网格',
-            },
-            {
-                field: 'publicReportAndInstSize',
-                title: '监督举报核实数',
-            },
-            {
-                field: 'instSize',
-                title: '立案数',
-            },
-            {
-                field: 'publicReportAndInstRate',
-                title: '监督举报率',
-            },
-            {
-                field: 'closeOrToCloseSize',
-                title: '应结案数',
-            },
-            {
-                field: 'closeSize',
-                title: '结案数',
-            },
-            {
-                field: 'closeRate',
-                title: '结案率',
-            },
-            {
-                field: 'comprehensiveIndexValue',
-                title: '综合指标',
-            },
-        ],
-        data: []
-    });
-
     function search() {
-        $.ajaxUtil.get(cellGridRegionUrl, function (e) {
-            $(e.data).each(function (index, value) {
-                $('#table').bootstrapTable('insertRow', {
-                    index: index,
-                    row: {
-                        index: index + 1,
-                        gridName: value.gridName,
-                        closeSize: value.closeSize,
-                        closeOrToCloseSize: value.closeOrToCloseSize,
-                        publicReportAndInstSize: value.publicReportAndInstSize,
-                        publicReportAndInstRate: value.publicReportAndInstRate,
-                        closeRate: value.closeRate,
-                        instSize: value.instSize,
-                        comprehensiveIndexValue: value.comprehensiveIndexValue
-                    }
-                });
-            });
-        });
+        var options = {
+            url: cellGridRegionUrl,
+            pagination: false,
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                },
+                {
+                    field: 'check',
+                    title: '街道'
+                },
+                {
+                    field: 'eventType',
+                    title: '社区',
+                },
+                {
+                    field: 'gridName',
+                    title: '单元网格',
+                },
+                {
+                    field: 'publicReportAndInstSize',
+                    title: '监督举报核实数',
+                },
+                {
+                    field: 'instSize',
+                    title: '立案数',
+                },
+                {
+                    field: 'publicReportAndInstRate',
+                    title: '监督举报率',
+                },
+                {
+                    field: 'closeOrToCloseSize',
+                    title: '应结案数',
+                },
+                {
+                    field: 'closeSize',
+                    title: '结案数',
+                },
+                {
+                    field: 'closeRate',
+                    title: '结案率',
+                },
+                {
+                    field: 'comprehensiveIndexValue',
+                    title: '综合指标',
+                },
+            ],
+        };
+        $.table.init(options);
     }
 
 </script>

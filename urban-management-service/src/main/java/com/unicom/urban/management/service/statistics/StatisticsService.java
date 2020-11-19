@@ -10,12 +10,15 @@ import com.unicom.urban.management.pojo.vo.StatisticsVO;
 import com.unicom.urban.management.service.grid.GridService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -137,20 +140,19 @@ public class StatisticsService {
      *
      * @return 数据
      */
-    public List<CellGridRegionVO> findAllForCellGridRegion(String time1, String time2) {
-        String startTime = getTimeForBetween(time1, time2).get("startTime");
-        String endTime = getTimeForBetween(time1, time2).get("endTime");
+    public Page<CellGridRegionVO> findAllForCellGridRegion(String time1, String time2, Pageable pageable) {
+        LocalDateTime startTime = getTimeForBetween(time1, time2).get("startTime");
+        LocalDateTime endTime = getTimeForBetween(time1, time2).get("endTime");
         List<Grid> gridList = gridService.allByLevelAndRecordSts();
         List<CellGridRegionVO> cellGridRegionVOList = new ArrayList<>();
         for (Grid grid : gridList) {
             CellGridRegionVO cellGridRegionVO = new CellGridRegionVO();
             cellGridRegionVO.setGridName(grid.getGridName());
-            int inTimeCloseSize = statisticsRepository.findAllByInTimeClose(grid.getId()).size();
-            int closeSize = statisticsRepository.findAllByClose(grid.getId()).size();
-            int closeOrToCloseSize = statisticsRepository.findAllByCloseOrToClose(grid.getId()).size();
-            int publicReportAndInstSize = statisticsRepository.findAllByPublicReportAndInst(grid.getId()).size();
-            int instSize = statisticsRepository.findAllByInst(grid.getId()).size();
-            int hangSize = statisticsRepository.findAllByHang(grid.getId()).size();
+            int inTimeCloseSize = statisticsRepository.findAllByInTimeClose(grid.getId(), startTime, endTime).size();
+            int closeSize = statisticsRepository.findAllByClose(grid.getId(), startTime, endTime).size();
+            int closeOrToCloseSize = statisticsRepository.findAllByCloseOrToClose(grid.getId(), startTime, endTime).size();
+            int publicReportAndInstSize = statisticsRepository.findAllByPublicReportAndInst(grid.getId(), startTime, endTime).size();
+            int instSize = statisticsRepository.findAllByInst(grid.getId(), startTime, endTime).size();
             /* 按期结案数 */
             cellGridRegionVO.setInTimeCloseSize(inTimeCloseSize);
             /* 结案数 */
@@ -159,25 +161,38 @@ public class StatisticsService {
             cellGridRegionVO.setCloseOrToCloseSize(closeOrToCloseSize);
             /* 监督举报核实数 */
             cellGridRegionVO.setPublicReportAndInstSize(publicReportAndInstSize);
-            /* 立案数 = 立案数 - 挂账数 */
-            cellGridRegionVO.setInstSize(instSize - hangSize);
+            /* 立案数 */
+            cellGridRegionVO.setInstSize(instSize);
             /* 监督举报率：监督举报核实数/立案数×100% */
-            cellGridRegionVO.setPublicReportAndInstRate(getRateByDouble(publicReportAndInstSize, cellGridRegionVO.getInstSize()));
+            cellGridRegionVO.setPublicReportAndInstRate(getRateByDouble(publicReportAndInstSize, instSize));
             /* 结案率：结案数/应结案数×100%*/
             cellGridRegionVO.setCloseRate(getRateByDouble(closeSize, closeOrToCloseSize));
             /* 按期结案率：按期结案数/应结案数×100%*/
             cellGridRegionVO.setInTimeCloseRate(getRateByDouble(inTimeCloseSize, closeOrToCloseSize));
-            /* todo 综合指标值=监督举报率分值×10%+立案数分值×20%+结案率分值×30%+按期结案率分值×10% 目前没有立案数分值 */
             double publicReportAndInstRate = 100D - Double.parseDouble(cellGridRegionVO.getPublicReportAndInstRate().split("%")[0]);
             double closeRate = 100D - Double.parseDouble(cellGridRegionVO.getCloseRate().split("%")[0]);
             double inTimeCloseRate = 100D - Double.parseDouble(cellGridRegionVO.getInTimeCloseRate().split("%")[0]);
-            double comprehensiveIndexValue = publicReportAndInstRate * 0.1 + closeRate * 0.3 + inTimeCloseRate * 0.1;
+            double instSizeValue;
+            if (instSize == 0) {
+                instSizeValue = 100;
+            } else if (instSize < 3) {
+                instSizeValue = 90;
+            } else if (instSize < 5) {
+                instSizeValue = 75;
+            } else if (instSize < 7) {
+                instSizeValue = 60;
+            } else if (instSize < 9) {
+                instSizeValue = 40;
+            } else {
+                instSizeValue = 0;
+            }
+            double comprehensiveIndexValue = publicReportAndInstRate * 0.1 + instSizeValue * 0.2 + closeRate * 0.3 + inTimeCloseRate * 0.1;
             BigDecimal bigDecimal = BigDecimal.valueOf(comprehensiveIndexValue);
             double f1 = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             cellGridRegionVO.setComprehensiveIndexValue(f1);
             cellGridRegionVOList.add(cellGridRegionVO);
         }
-        return cellGridRegionVOList;
+        return new PageImpl<>(cellGridRegionVOList, pageable, 0);
     }
 
     private String getRateByDouble(int a, int b) {
@@ -192,18 +207,18 @@ public class StatisticsService {
         return nt.format(percent);
     }
 
-    private Map<String, String> getTimeForBetween(String startTime, String endTime) {
-        Map<String, String> map = new HashMap<>(2);
+    private Map<String, LocalDateTime> getTimeForBetween(String startTime, String endTime) {
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        Map<String, LocalDateTime> map = new HashMap<>(2);
         if (StringUtils.isNotBlank(startTime)) {
-            map.put("startTime", startTime);
+            map.put("startTime", LocalDateTime.parse(startTime, df));
         } else {
-            map.put("startTime", "1970-01-01 00:00:00");
+            map.put("startTime", LocalDateTime.parse("1970-01-01 00:00:00", df));
         }
         if (StringUtils.isNotBlank(endTime)) {
-            map.put("endTime", startTime);
+            map.put("endTime", LocalDateTime.parse(endTime, df));
         } else {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            map.put("endTime", sdf.format(new Date()));
+            map.put("endTime", LocalDateTime.now());
         }
         return map;
     }

@@ -5,6 +5,7 @@ import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -62,8 +63,8 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      * @param gridId 网格id
      * @return 数据
      */
-    @Query(value = "SELECT s,e,g FROM Statistics s LEFT JOIN Event e on s.event = e.id LEFT JOIN e.grid g on e.grid.id = g.id WHERE s.inTimeClose= 1 and g.id = ?1 ")
-    List<Statistics> findAllByInTimeClose(String gridId);
+    @Query(value = "SELECT s,e,g FROM Statistics s LEFT JOIN Event e on s.event = e.id LEFT JOIN e.grid g on e.grid.id = g.id WHERE s.inTimeClose= 1 and g.id = ?1 and e.createTime between ?2 and ?3 ")
+    List<Statistics> findAllByInTimeClose(String gridId, LocalDateTime startTime, LocalDateTime endTime);
 
 
     List<Statistics> findAllByEventInAndTaskNameAndDisposeUnit_Id(Collection<Event> event, String taskName, String disposeUnit_id);
@@ -75,8 +76,8 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      * @param gridId 网格id
      * @return 数据
      */
-    @Query(value = "SELECT s,e,g FROM Statistics s LEFT JOIN Event e on s.event = e.id LEFT JOIN e.grid g on e.grid.id = g.id WHERE s.close = 1 and g.id = ?1 ")
-    List<Statistics> findAllByClose(String gridId);
+    @Query(value = "SELECT s,e,g FROM Statistics s LEFT JOIN Event e on s.event = e.id LEFT JOIN e.grid g on e.grid.id = g.id WHERE s.close = 1 and g.id = ?1 and e.createTime between ?2 and ?3 ")
+    List<Statistics> findAllByClose(String gridId, LocalDateTime startTime, LocalDateTime endTime);
 
     /**
      * 应结案数 按照规范按时结案的事件 能够结案的事件一定先立案了 ——
@@ -84,8 +85,8 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      * @param gridId 网格id
      * @return 数据
      */
-    @Query(value = "SELECT s,e,g FROM Statistics s LEFT JOIN Event e on s.event = e.id LEFT JOIN e.grid g on e.grid.id = g.id WHERE (s.close = 1 or s.toClose = 1) and g.id = ?1 ")
-    List<Statistics> findAllByCloseOrToClose(String gridId);
+    @Query(value = "SELECT s,e,g FROM Statistics s LEFT JOIN Event e on s.event = e.id LEFT JOIN e.grid g on e.grid.id = g.id WHERE (s.close = 1 or s.toClose = 1) and g.id = ?1 and e.createTime between ?2 and ?3 ")
+    List<Statistics> findAllByCloseOrToClose(String gridId, LocalDateTime startTime, LocalDateTime endTime);
 
     /**
      * 监督举报核实数 受理员上报 并且 值班长立案的事件
@@ -93,8 +94,8 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      * @param gridId 网格id
      * @return 数据
      */
-    @Query(value = "SELECT s,e,g FROM Statistics s LEFT JOIN Event e on s.event = e.id LEFT JOIN e.grid g on e.grid.id = g.id WHERE s.event.id IN ( SELECT ss.event.id FROM Statistics ss WHERE ss.publicReport = 1 ) and s.inst = 1 and g.id = ?1 ")
-    List<Statistics> findAllByPublicReportAndInst(String gridId);
+    @Query(value = "SELECT s,e,g FROM Statistics s LEFT JOIN Event e on s.event = e.id LEFT JOIN e.grid g on e.grid.id = g.id WHERE s.event.id in (SELECT ss.event.id FROM Statistics ss where ss.publicReport = 1) and s.inst = 1 and g.id = ?1 and e.createTime between ?2 and ?3 ")
+    List<Statistics> findAllByPublicReportAndInst(String gridId, LocalDateTime startTime, LocalDateTime endTime);
 
     /**
      * 立案数 派遣员派遣并且值班长立案的数量 因为立案的先决条件是派遣 所以直接查询立案 ——
@@ -102,8 +103,8 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      * @param gridId 网格id
      * @return 数据
      */
-    @Query(value = "SELECT s,e,g FROM Statistics s LEFT JOIN Event e on s.event = e.id LEFT JOIN e.grid g on e.grid.id = g.id WHERE s.inst = 1 and g.id = ?1 ")
-    List<Statistics> findAllByInst(String gridId);
+    @Query(value = "SELECT s,e,g FROM Statistics s LEFT JOIN Event e on s.event = e.id LEFT JOIN e.grid g on e.grid.id = g.id WHERE s.inst = 1 and g.id = ?1 and e.createTime between ?2 and ?3 ")
+    List<Statistics> findAllByInst(String gridId, LocalDateTime startTime, LocalDateTime endTime);
 
     /**
      * 挂账数 理解：应派遣 应该是派遣员决定派遣的事件，在值班长立案之后应该由派遣员决定是派遣还是作废一类的操作，其中包含挂账

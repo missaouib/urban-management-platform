@@ -5,12 +5,13 @@ import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.vo.CellGridRegionVO;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 /**
  * 区域评价
@@ -51,8 +52,8 @@ public class CellGridRegionController {
      * @return 数据
      */
     @GetMapping("/cellGridRegionOne")
-    public List<CellGridRegionVO> cellGridRegionOne(String startTime, String endTime) {
-        return statisticsService.findAllForCellGridRegion(startTime, endTime);
+    public Page<CellGridRegionVO> cellGridRegionOne(String startTime, String endTime, @PageableDefault Pageable pageable) {
+        return statisticsService.findAllForCellGridRegion(startTime, endTime, pageable);
     }
 
     /**
@@ -61,8 +62,8 @@ public class CellGridRegionController {
      * @return 数据
      */
     @GetMapping("/cellGridRegionTwo")
-    public List<CellGridRegionVO> cellGridRegionTwo(String startTime, String endTime) {
-        return statisticsService.findAllForCellGridRegion(startTime, endTime);
+    public Page<CellGridRegionVO> cellGridRegionTwo(String startTime, String endTime, @PageableDefault Pageable pageable) {
+        return statisticsService.findAllForCellGridRegion(startTime, endTime, pageable);
     }
 
 }
