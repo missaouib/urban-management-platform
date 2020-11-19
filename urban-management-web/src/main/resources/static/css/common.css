@@ -1799,3 +1799,6 @@ width: 50px;
     width: 33.3%;
     text-align: center;
 }
+.select2{
+    width: 100% !important;
+}
