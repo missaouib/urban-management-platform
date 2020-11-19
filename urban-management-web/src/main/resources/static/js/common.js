@@ -85,8 +85,13 @@ function cleanSearchInput() {
 
 function setConduct(bgmNum) {
 	var alist = document.querySelectorAll(".alist")
-	$(".alist").addClass("dieselActive")
+	$(".alist").removeClass("dieselActive")
+	$(".alist span").removeClass("spanlist")
 	alist[bgmNum].classList.remove("dieselActive");
+	alist[bgmNum].childNodes[1].classList.add("spanlist");
+	alist[bgmNum].childNodes[3].classList.add("spanlist");
+	alist[bgmNum].childNodes[5].classList.add("spanlist");
+	alist[bgmNum].childNodes[7].classList.add("spanlist");
 }
 
 //全屏 body
