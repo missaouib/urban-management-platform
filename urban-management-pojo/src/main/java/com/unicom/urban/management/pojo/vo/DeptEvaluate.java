@@ -75,6 +75,6 @@ public class DeptEvaluate {
     /**
      * 总评
      */
-    private double comprehensive;
+    private String comprehensive;
 
 }

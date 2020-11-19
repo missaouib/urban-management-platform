@@ -15,6 +15,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -112,7 +113,7 @@ public class DeptEvaluateService {
         return list;
     }
 
-    private double comprehensive(Integer registerNum, String closeRateStr, String onTimeManagementRateStr, String reworkRateStr) {
+    private String comprehensive(Integer registerNum, String closeRateStr, String onTimeManagementRateStr, String reworkRateStr) {
         double register = 0.0;
         if (registerNum <= 50) {
             register = 10.0;
@@ -141,9 +142,9 @@ public class DeptEvaluateService {
         if (!"0".equals(reworkRateStr)) {
             reworkRate = (100 - Double.parseDouble(reworkRateStr.substring(0,reworkRateStr.indexOf("%")))) * 0.3;
         }
+        DecimalFormat df = new DecimalFormat("0");
 
-
-        return register + closeRate + onTimeManagementRate + reworkRate;
+        return df.format(register + closeRate + onTimeManagementRate + reworkRate);
     }
 
 
@@ -181,7 +182,10 @@ public class DeptEvaluateService {
     private Integer closeNum(List<Statistics> statistics, String deptId) {
         List<Event> events = new ArrayList<>();
         statistics.forEach(s -> events.add(s.getEvent()));
-        return statisticsRepository.findAllByEventInAndTaskNameAndDisposeUnit_Id(events, "专业部门", deptId).size();
+        List<Statistics> statisticsList = statisticsRepository.findAllByEventInAndTaskNameAndDisposeUnit_Id(events, "专业部门", deptId).stream().filter(s -> null != s.getDispose()).filter(s -> s.getDispose() == 1).collect(Collectors.toList());
+        List<String> event = new ArrayList<>();
+        statisticsList.forEach(s->event.add(s.getEvent().getId()));
+        return Math.toIntExact(event.stream().distinct().count());
     }
 
     /**
