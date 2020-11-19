@@ -183,7 +183,7 @@ public class EventService {
                 eventVO.setTimeLimit(timeLimit);
                 String timeType = statistics.getProcessTimeLimit().getTimeType().getValue();
                 eventVO.setTimeType(timeType);
-                eventVO.setDeptName(statistics.getDisposeUnit().getDeptName());
+                eventVO.setDeptName(Optional.ofNullable(statistics.getDisposeUnit()).map(Dept::getDeptName).orElse(""));
             } else {
                 /*如果事件步骤没有endtime为null的  证明事件已经完成 获取结束时间最近的那条步骤 附加到vo信息*/
                 List<Statistics> collect = e.getStatisticsList().stream()
