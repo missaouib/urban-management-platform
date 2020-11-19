@@ -32,7 +32,7 @@ public class DeptTimeLimit {
      */
     private int timeLimit;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private KV timeType;
 
 }

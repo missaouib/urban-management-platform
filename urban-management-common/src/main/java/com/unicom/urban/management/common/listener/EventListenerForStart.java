@@ -43,12 +43,12 @@ public class EventListenerForStart implements ExecutionListener {
         String eventSource = (String) execution.getVariable("eventSource");
         String eventId = execution.getProcessBusinessKey();
         if (EventSourceConstant.SUPERVISE_REPORTING.equals(eventSource)) {
-            log.debug("----------------------监督员上报事件开始--------------------------------------");
+            log.debug("----------------------监督员上报事件监听--------------------------------------");
             return;
         }
 
         if (EventSourceConstant.ACCEPTANCE_REPORTING.equals(eventSource)) {
-            log.debug("----------------------受理员上报事件开始--------------------------------------");
+            log.debug("----------------------受理员上报事件监听--------------------------------------");
             return;
         }
         throw new BusinessException("未知的上报类型");
