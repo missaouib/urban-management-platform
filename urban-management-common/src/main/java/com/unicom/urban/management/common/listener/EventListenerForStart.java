@@ -21,6 +21,7 @@ public class EventListenerForStart implements ExecutionListener {
         String eventName = execution.getEventName();
         if (EVENTNAME_START.equals(eventName)) {
             start(execution);
+            return;
         }
 
         if (EVENTNAME_END.equals(eventName)) {
