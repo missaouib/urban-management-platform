@@ -11,6 +11,7 @@ import com.unicom.urban.management.pojo.vo.EventButtonVO;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.grid.GridService;
+import com.unicom.urban.management.service.process.ProcessService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,8 @@ public class EventController {
     private GridService gridService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private ProcessService processService;
 
     /**
      * 获取下一环节完成按钮
@@ -117,6 +120,17 @@ public class EventController {
     public Result getUserListForSupervisor() {
         List<UserVO> userList = roleService.findUserListByRoleId(KvConstant.SUPERVISOR_ROLE);
         return Result.success(userList);
+    }
+
+    /**
+     * 获取有监督员角色的人
+     *
+     * @return 人
+     */
+    @GetMapping("/getNodeName")
+    public Result getNodeName(String eventId) {
+        int nodeName = processService.findAllByNodeNameAndParentIsNotNull(eventId);
+        return Result.success(nodeName);
     }
 
 }

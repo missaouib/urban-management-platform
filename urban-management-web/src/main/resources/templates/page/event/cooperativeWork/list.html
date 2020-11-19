@@ -483,10 +483,6 @@
 
     $(function () {
 
-        //步骤进行到
-        var bgmNum = 2;
-        setConduct(bgmNum)
-
         queryUserList();
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
@@ -653,6 +649,7 @@
     let deptUrl = /*[[@{/task/dept}]]*/ "/task/dept";
 
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
+    let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
 
     var buttonId = "";
     var eventId = "";
@@ -817,13 +814,15 @@
                     /*按钮*/
                     var buttonStr = "";
                     $(e.data.eventButtonVOS).each(function (index, value) {
-                        buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='"+value.id+"' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
+                        buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='" + value.id + "' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
 
                     })
                     $("#btnGroupGround").empty();
                     $("#btnGroupGround").append(buttonStr);
 
                     getTimeAxis(row.id);
+
+                    getNodeName(row.id);
                 });
             },
             columns: [
@@ -938,11 +937,17 @@
             let imageHtml = "";
             for (let i = 0; i < value.length; i++) {
                 imageHtml += "<div class=\"swiper-slide\">" +
-                                "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>"+
-                             "</div>"
+                    "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>" +
+                    "</div>"
             }
             $("#modelImageList").html(imageHtml);
         }
+    }
+
+    function getNodeName(eventId) {
+        $.ajaxUtil.get(getNodeNameUrl + "?eventId=" + eventId, function (e) {
+            setConduct(e.data);
+        });
     }
 
     function Cancel() {
