@@ -164,6 +164,13 @@ public class EventService {
         /*循环添加vo*/
         page.getContent().forEach(e -> {
             EventVO eventVO = EventMapper.INSTANCE.eventToEventVO(e);
+            if(e.getSupervises().size()>0){
+                /*督办*/
+                eventVO.setSupSts("1");
+            }else{
+                /*未督办*/
+                eventVO.setSupSts("0");
+            }
             eventVO.setEventTypeName(e.getEventType().getParent().getParent().getName() + "-" + e.getEventType().getParent().getName() + "-" + e.getEventType().getName());
            /*查询事件步骤endtime为null的  如果有取出这条 附加到vo信息*/
             List<Statistics> collect1 = e.getStatisticsList().stream().filter(s -> s.getEndTime() == null).collect(Collectors.toList());
@@ -176,6 +183,7 @@ public class EventService {
                 eventVO.setTimeLimit(timeLimit);
                 String timeType = statistics.getProcessTimeLimit().getTimeType().getValue();
                 eventVO.setTimeType(timeType);
+                eventVO.setDeptName(statistics.getDisposeUnit().getDeptName());
             } else {
                 /*如果事件步骤没有endtime为null的  证明事件已经完成 获取结束时间最近的那条步骤 附加到vo信息*/
                 List<Statistics> collect = e.getStatisticsList().stream()

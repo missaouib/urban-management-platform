@@ -76,11 +76,24 @@ public class EventVO {
      */
     private String timeType;
 
+    /**
+     * 办结时间
+     */
     private String closeTime;
 
     private String sts;
 
     private String statisticsId;
 
+
+    /**
+     * 督办状态
+     */
+    private String supSts;
+
+    /**
+     * 部门
+     */
+    private String deptName;
 
 }

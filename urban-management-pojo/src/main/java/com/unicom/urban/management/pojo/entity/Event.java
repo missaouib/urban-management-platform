@@ -126,4 +126,8 @@ public class Event extends BaseEntity {
      */
     private Boolean doBySelf;
 
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
+    private List<Supervise> supervises;
+
 }

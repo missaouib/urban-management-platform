@@ -827,24 +827,35 @@
                 },
                 {
                     title: '当前处理部门',
-                    field: 'represent'
+                    field: 'deptName'
                 },
                 {
                     title: '案件类型',
                     field: 'eventTypeName'
                 },
                 {
-                    title: '办结时间',
-                    field: 'closeTime'
+                    title: '督办状态',
+                    formatter: function(value, row) {
+                        if(row.supSts==="1"){
+                            return "已督办";
+                        }else{
+                            return "未督办";
+                        }
+
+                    }
                 },
                 {
                     title: '操作',
                     field: '',
                     width:"100px",
                     formatter: function(value, row) {
-                        var e = '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default">督办</a> ' +
-                        '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default1">督办详情</a> '+
-                        '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default2">意见回复</a> ';
+                        var e = "";
+                        if(row.supSts==="1"){
+                            e += '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default1">督办详情</a> '+
+                            '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default2">意见回复</a> ';
+                        }else{
+                            e += '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default">督办</a> ';
+                        }
                         return e;
                     }
                 },
