@@ -428,22 +428,15 @@
                                 <table class="table">
                                     <tbody>
                                     <tr>
-                                        <td>督办状态<span></span></td>
+                                        <td><span>处理部门</span></td>
                                         <td>
-                                            <input class="" value="园林局">
+                                            <input class="" readonly="readonly" id="deptName" value="园林局">
                                         </td>
-                                        <td>当前处理人<span></span></td>
-                                        <td>
-                                            <input class="" value="张辉">
-                                        </td>
-
                                     </tr>
                                     <tr>
                                         <td>督办意见<span></span></td>
 
-                                        <td colspan="8"><textarea name="problemescription" required></textarea></td>
-
-
+                                        <td colspan="8"><textarea id="supOpinion" name="problemescription" required></textarea></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -456,7 +449,7 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">确认</button>
+                    <button type="button" class="btn btn-primary" onclick="save()">确认</button>
                 </div>
             </div>
         </div>
@@ -477,21 +470,21 @@
                                 <table class="table">
                                     <tbody>
                                     <tr>
-                                        <td>督办状态<span></span></td>
+                                        <td>处理部门<span></span></td>
                                         <td>
-                                            <input class="" value="园林局">
-                                        </td>
-                                        <td>当前处理人<span></span></td>
-                                        <td>
-                                            <input class="" value="张辉">
+                                            <input readonly="readonly" class="" id="deptName1" >
                                         </td>
 
+                                        <td>督办人员<span></span></td>
+                                        <td>
+                                            <input readonly="readonly" class="" id="user" >
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>督办意见<span></span></td>
 
                                         <td colspan="8">
-                                            <div class="modelOpin">请园林局对此上报与10月30日处理完毕</div>
+                                            <div class="modelOpin"><textarea id="supOpinion1" name="problemescription" readonly="readonly="readonly""></textarea></div>
                                         </td>
 
 
@@ -500,7 +493,7 @@
                                         <td>专业部门意见<span></span></td>
 
                                         <td colspan="8">
-                                            <div class="modelOpin">已收到信息，正在督办，会如期解决</div>
+                                            <div class="modelOpin"><textarea id="supReplayOpinion" name="problemescription" readonly="readonly"></textarea></div>
                                         </td>
 
 
@@ -516,7 +509,6 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">确认</button>
                 </div>
             </div>
         </div>
@@ -537,21 +529,20 @@
                                 <table class="table">
                                     <tbody>
                                     <tr>
-                                        <td>督办状态<span></span></td>
+                                        <td>处理部门<span></span></td>
                                         <td>
-                                            <input class="" value="园林局">
+                                            <input readonly="readonly" class="" id="deptName2" value="园林局">
                                         </td>
-                                        <td>当前处理人<span></span></td>
+                                        <td>督办人员<span></span></td>
                                         <td>
-                                            <input class="" value="张辉">
+                                            <input readonly="readonly" class="" id="user1" >
                                         </td>
-
                                     </tr>
                                     <tr>
                                         <td>督办意见<span></span></td>
 
                                         <td colspan="8">
-                                            <div class="modelOpin">请园林局对此上报与10月30日处理完毕</div>
+                                            <div class="modelOpin"><textarea id="supOpinion2" name="problemescription" readonly="readonly"></textarea></div>
                                         </td>
 
 
@@ -559,7 +550,7 @@
                                     <tr>
                                         <td>专业部门意见<span></span></td>
 
-                                        <td colspan="8"><textarea name="problemescription" required></textarea></td>
+                                        <td colspan="8"><textarea id="supReplayOpinion1" name="problemescription"></textarea></td>
 
 
                                     </tr>
@@ -574,7 +565,7 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">确认</button>
+                    <button type="button" class="btn btn-primary" id="replyButton" onclick="reply()">确认</button>
                 </div>
             </div>
         </div>
@@ -671,6 +662,20 @@
         });
     })
 
+    var eventId;
+    function save(){
+        $.operate.saveAndReload(superviseUrl, {
+            eventId: eventId,
+            opinion: $("#supOpinion").val()
+        });
+    }
+
+    function reply(){
+        $.operate.saveAndReload(replyUrl, {
+            eventId: eventId,
+            replayOpinion: $("#supReplayOpinion1").val()
+        });
+    }
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
 
@@ -740,6 +745,8 @@
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
     let showUrl = [[${@fastProperties.nginxUrl}]];
     let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
+    let superviseUrl = /*[[@{/supervise/supervise}]]*/ "/supervise/supervise";
+    let replyUrl = /*[[@{/supervise/reply}]]*/ "/supervise/reply";
 
     function queryUserList() {
         var options = {
@@ -806,6 +813,27 @@
 
                     getNodeName(row.id);
                 });
+
+                $.ajaxUtil.get(superviseUrl + "?eventId=" + row.id, function (e) {
+                    console.log(e.data)
+                    $("#deptName").val(e.data.deptName);
+                    $("#deptName1").val(e.data.deptName);
+                    $("#deptName2").val(e.data.deptName);
+                    $("#user").val(e.data.user);
+                    $("#user1").val(e.data.user);
+                    $("#supOpinion1").text(e.data.opinion);
+                    $("#supOpinion2").text(e.data.opinion);
+
+                    if(e.data.replayOpinion!==null){
+                        $("#replyButton").css("display","none");
+                        $("#supReplayOpinion").text(e.data.replayOpinion);
+                        $("#supReplayOpinion1").text(e.data.replayOpinion);
+
+                    }
+                    eventId = e.data.eventId;
+
+
+                })
             },
             columns: [
                 {
