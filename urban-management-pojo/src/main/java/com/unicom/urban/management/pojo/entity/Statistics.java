@@ -456,13 +456,13 @@ public class Statistics {
     /**
      * 处置部门标识
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Dept disposeUnit;
 
     /**
      * 处置部门
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Dept disposeUnitName;
 
     /* --------------------------------------------------------- */
