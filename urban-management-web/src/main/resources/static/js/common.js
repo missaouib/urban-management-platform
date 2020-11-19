@@ -65,6 +65,19 @@ function setTimeLimit(row,index) {
 //     });*/
 // }
 
+
+/**
+ * 清空时间框里的值
+ */
+function cleanSearchInput() {
+	$("#search_clean").click(function () {
+		$("#begin").val("");
+		$("#end").val("")
+	})
+}
+
+
+
 /**
  * 步骤进行到哪一步
  * @param bgmNum

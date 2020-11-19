@@ -33,7 +33,7 @@
                                 <input size="16" class="form_datetime" id="end" type="text" value="" readonly>
                             </td>
                             <td style="float: right;margin-right: 5px">
-                                <button type="button" class="check_btn" onclick="search()">查询</button>
+                                <button type="button" class="check_btn" id="search_clean" onclick="search()">查询</button>
                             </td>
                         </tr>
                         </tbody>
@@ -94,6 +94,8 @@
         });
 
         search();
+        cleanSearchInput()
+
 
         var date = new Date();
         //本周
@@ -172,6 +174,8 @@
             $("#end").val(year + "-" +"12-31" + " 23:59:59")
         });
     })
+
+
 
     $('#table').bootstrapTable({
         columns: [
