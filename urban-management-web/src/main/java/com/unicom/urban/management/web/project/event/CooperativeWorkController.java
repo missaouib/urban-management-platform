@@ -200,34 +200,6 @@ public class CooperativeWorkController {
         return new ModelAndView(SystemConstant.PAGE + "/event/superviseCases/list");
     }
 
-    /**
-     * 督办案件
-     *
-     * @return 督办页面
-     */
-    @GetMapping("/toSupervise")
-    public ModelAndView toSupervise() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/superviseCases/supervise");
-    }
 
-    /**
-     * 督办案件
-     *
-     * @return 督办详情页面
-     */
-    @GetMapping("/toSuperviseCasesDetails")
-    public ModelAndView toSuperviseCasesDetails() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/superviseCases/details");
-    }
-
-    /**
-     * 督办案件
-     *
-     * @return 专业部门督办意见回复页面
-     */
-    @GetMapping("/toSuperviseCommentsReply")
-    public ModelAndView toSuperviseCommentsReply() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/superviseCases/commentsReply");
-    }
 
 }

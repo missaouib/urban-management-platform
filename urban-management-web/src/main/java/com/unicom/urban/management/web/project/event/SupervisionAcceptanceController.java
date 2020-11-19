@@ -50,15 +50,7 @@ public class SupervisionAcceptanceController {
     private RoleService roleService;
 
 
-    @GetMapping("/toSupervisionAcceptanceList")
-    public ModelAndView toSupervisionAcceptanceList() {
-        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/list");
-        //问题来源
-        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
-        //所属网格
-        modelAndView.addObject("gridList", gridService.searchAll());
-        return modelAndView;
-    }
+
 
     @GetMapping("/toSupervisionAcceptanceSave")
     public ModelAndView toSupervisionAcceptanceSave() {
@@ -218,6 +210,12 @@ public class SupervisionAcceptanceController {
                 EventConstant.DISPATCHER,
                 EventConstant.PROFESSIONAL_AGENCY,
                 EventConstant.CLOSE_TASK));
+        return eventService.search(eventDTO, pageable);
+    }
+
+    @GetMapping("/toSupervisionAcceptanceList")
+    public Page<EventVO> toSupervisionAcceptanceList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setTaskName(Collections.singletonList(EventConstant.PROFESSIONAL_AGENCY));
         return eventService.search(eventDTO, pageable);
     }
 
