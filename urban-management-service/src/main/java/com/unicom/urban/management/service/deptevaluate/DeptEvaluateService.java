@@ -46,7 +46,7 @@ public class DeptEvaluateService {
         nt.setMinimumFractionDigits(0);
     }
 
-    public List<DeptEvaluate> deptEvaluates(String starTimeStr,String endTimeStr) {
+    public List<DeptEvaluate> deptEvaluates(String starTimeStr, String endTimeStr) {
 
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -57,11 +57,11 @@ public class DeptEvaluateService {
         List<Statistics> all = statisticsRepository.findAll((Specification<Statistics>) (root, criteriaQuery, criteriaBuilder) -> {
             List<Predicate> list1 = new ArrayList<>();
             //查询更新时间在此时间范围内的所有spu对象
-            if (StringUtils.isNotBlank(starTimeStr)){
+            if (StringUtils.isNotBlank(starTimeStr)) {
                 LocalDateTime starTime = LocalDateTime.parse(starTimeStr, df);
                 list1.add(criteriaBuilder.greaterThanOrEqualTo(root.get("event").get("createTime").as(LocalDateTime.class), starTime));
             }
-            if (StringUtils.isNotBlank(endTimeStr)){
+            if (StringUtils.isNotBlank(endTimeStr)) {
                 LocalDateTime endTime = LocalDateTime.parse(endTimeStr, df);
                 list1.add(criteriaBuilder.lessThanOrEqualTo(root.get("event").get("createTime").as(LocalDateTime.class), endTime));
             }
@@ -106,7 +106,7 @@ public class DeptEvaluateService {
             deptEvaluate.setReworkNum(reworkNum);
             String reworkRate = this.getRate(reworkNum, mustCloseNum);
             deptEvaluate.setReworkRate(reworkRate);
-            deptEvaluate.setComprehensive(this.comprehensive(reworkNum,closeRate,onTimeManagementRate,reworkRate));
+            deptEvaluate.setComprehensive(this.comprehensive(reworkNum, closeRate, onTimeManagementRate, reworkRate));
             list.add(deptEvaluate);
 
         });
@@ -130,17 +130,17 @@ public class DeptEvaluateService {
         }
         double closeRate = 0.0;
         if (!"0".equals(closeRateStr)) {
-            closeRate = Double.parseDouble(closeRateStr.substring(0,closeRateStr.indexOf("%"))) * 0.3;
+            closeRate = Double.parseDouble(closeRateStr.substring(0, closeRateStr.indexOf("%"))) * 0.3;
         }
 
         double onTimeManagementRate = 0.0;
         if (!"0".equals(onTimeManagementRateStr)) {
-            onTimeManagementRate = Double.parseDouble(onTimeManagementRateStr.substring(0,onTimeManagementRateStr.indexOf("%"))) * 0.3;
+            onTimeManagementRate = Double.parseDouble(onTimeManagementRateStr.substring(0, onTimeManagementRateStr.indexOf("%"))) * 0.3;
         }
 
         double reworkRate = 0.0;
         if (!"0".equals(reworkRateStr)) {
-            reworkRate = (100 - Double.parseDouble(reworkRateStr.substring(0,reworkRateStr.indexOf("%")))) * 0.3;
+            reworkRate = (100 - Double.parseDouble(reworkRateStr.substring(0, reworkRateStr.indexOf("%")))) * 0.3;
         }
         DecimalFormat df = new DecimalFormat("0");
 
@@ -149,6 +149,9 @@ public class DeptEvaluateService {
 
 
     private String getRate(Integer num1, Integer num2) {
+        if (num2 == 0) {
+            return "0";
+        }
         Double closeRate = (double) (num1) / (double) num2;
         return Optional.of(nt.format(closeRate)).filter(s -> !"NaN".equals(s)).orElse("0");
     }
@@ -172,7 +175,7 @@ public class DeptEvaluateService {
     private Integer onTimeCloseNum(List<Statistics> statistics, String deptId) {
         List<Event> events = new ArrayList<>();
         statistics.forEach(s -> events.add(s.getEvent()));
-        return Math.toIntExact(statisticsRepository.findAllByEventInAndTaskNameAndDisposeUnit_Id(events, "专业部门", deptId).stream().filter(s->null!=s.getInTimeDispose()).filter(s -> s.getInTimeDispose() == 1).count());
+        return Math.toIntExact(statisticsRepository.findAllByEventInAndTaskNameAndDisposeUnit_Id(events, "专业部门", deptId).stream().filter(s -> null != s.getInTimeDispose()).filter(s -> s.getInTimeDispose() == 1).count());
     }
 
 
@@ -184,7 +187,7 @@ public class DeptEvaluateService {
         statistics.forEach(s -> events.add(s.getEvent()));
         List<Statistics> statisticsList = statisticsRepository.findAllByEventInAndTaskNameAndDisposeUnit_Id(events, "专业部门", deptId).stream().filter(s -> null != s.getDispose()).filter(s -> s.getDispose() == 1).collect(Collectors.toList());
         List<String> event = new ArrayList<>();
-        statisticsList.forEach(s->event.add(s.getEvent().getId()));
+        statisticsList.forEach(s -> event.add(s.getEvent().getId()));
         return Math.toIntExact(event.stream().distinct().count());
     }
 
