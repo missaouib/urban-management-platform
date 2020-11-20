@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+    <title>起步</title>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <link rel="stylesheet" href="vendor/bpmn-js/assets/diagram-js.css" />
+    <link rel="stylesheet" href="vendor/bpmn-js/assets/bpmn-font/css/bpmn-embedded.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <style>
+
+        html, body, #canvas {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        .diagram-note {
+            background-color: rgba(66, 180, 21, 0.7);
+            color: White;
+            border-radius: 5px;
+            font-family: Arial;
+            font-size: 12px;
+            padding: 5px;
+            min-height: 16px;
+            width: 50px;
+            text-align: center;
+        }
+
+        .needs-discussion:not(.djs-connection) .djs-visual > :nth-child(1) {
+            stroke: rgba(66, 180, 21, 0.7) !important; /* color elements as red */
+        }
+
+        .properties-panel-parent {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            width: 260px;
+            z-index: 10;
+            border-left: 1px solid #ccc;
+            overflow: auto;
+
+
+        }
+
+    </style>
+</head>
+<body>
+<div id="canvas"></div>
+<div class="properties-panel-parent" id="js-properties-panel"></div>
+<script src="./bundle.js"></script>
+</body>
+</html>
