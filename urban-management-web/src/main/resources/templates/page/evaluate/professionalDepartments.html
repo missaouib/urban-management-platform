@@ -20,27 +20,28 @@
     <div class="search_inner">
         <form class="details">
             <div class="top table2_top">
+                <form id="userForm">
                 <div class="top_out">
                     <table class="table">
                         <tbody>
                         <tr>
                             <td><span></span>开始日期</td>
                             <td>
-                                <input size="16" class="form_datetime" id="begin" type="text" value="" readonly>
+                                <input size="16" class="form_datetime"  name="startTime" id="begin" type="text" value="" readonly>
                             </td>
                             <td><span></span>结束日期</td>
                             <td>
-                                <input size="16" class="form_datetime" id="end" type="text" value="" readonly>
+                                <input size="16" class="form_datetime"  name="endTime" id="end" type="text" value="" readonly>
                             </td>
                             <td style="float: right;margin-right: 5px">
-                                <button type="button" class="check_btn" id="search_clean" onclick="search()">查询</button>
+                                <button type="button" class="check_btn" id="search_clean" onclick="$.table.search()">查询</button>
                             </td>
                         </tr>
                         </tbody>
                     </table>
 
                 </div>
-
+                </form>
                 <!--                            按钮-->
                 <div class="notice_bot">
                     <!--            <div class="l_left">-->
@@ -58,7 +59,7 @@
     </div>
 </div>
 <div class="contents">
-    <table id="table" class="table_style" style="margin: 0 auto;margin-top: 10px"></table>
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
     <div class="explain">
         <div class="explain_box">
             <p style="padding-left: 0px">注：1）综合指标值中，各个指标的分值计算方法如下：</p>
@@ -176,101 +177,82 @@
     })
 
 
-
-    $('#table').bootstrapTable({
-        columns: [
-            {
-                field: 'index',
-                title: '序号',
-            },
-            {
-                title: '部门',
-                field: "deptName"
-            },
-            {
-                field: 'registerNum',
-                title: '立案数',
-            },
-            {
-                field: 'onTimeCloseNum',
-                title: '按期结案数',
-            },
-            {
-                field: 'closeNum',
-                title: "总结案数",
-            },
-            {
-                field: 'mustCloseNum',
-                title: '应结案数',
-            },
-            {
-                field: 'closeRate',
-                title: '结案率',
-            },
-            {
-                field: 'onTimeManagementNum',
-                title: '按期处置数',
-            },
-            {
-                field: 'mustManagementNum',
-                title: '应处置数',
-            },
-            {
-                field: 'onTimeManagementRate',
-                title: '按期处置率',
-            },
-            {
-                field: 'reworkNum',
-                title: '返工数',
-            },
-            {
-                field: 'managementNum',
-                title: '处置数',
-            },
-            {
-                field: 'reworkRate',
-                title: '返工率',
-
-            },
-            {
-                field: 'comprehensive',
-                title: '综合标准值',
-
-            },
-            {
-                field: 'initialDate',
-                title: '评价等级',
-            },
-
-        ],
-        data: []
-    });
     let cellGridRegionUrl = /*[[@{/dept/evaluate}]]*/ "/dept/evaluate";
 
     function search() {
-        $.ajaxUtil.get(cellGridRegionUrl+"?starTime="+$("#begin").val()+"&endTime="+$("#end").val(), function (e) {
-            $(e.data).each(function (index, value) {
-                $('#table').bootstrapTable('insertRow', {
-                    index: index,
-                    row: {
-                        index: index + 1,
-                        deptName: value.deptName,
-                        registerNum: value.registerNum,
-                        onTimeCloseNum: value.onTimeCloseNum,
-                        closeNum: value.closeNum,
-                        mustCloseNum: value.mustCloseNum,
-                        closeRate: value.closeRate,
-                        mustManagementNum: value.mustManagementNum,
-                        onTimeManagementNum: value.onTimeManagementNum,
-                        onTimeManagementRate: value.onTimeManagementRate,
-                        reworkNum: value.reworkNum,
-                        managementNum: value.managementNum,
-                        reworkRate: value.reworkRate,
-                        comprehensive: value.comprehensive
+        var options = {
+            url: cellGridRegionUrl,
+            pagination: false,
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
                     }
-                });
-            });
-        });
+                },
+                {
+                    title: '部门',
+                    field: "deptName"
+                },
+                {
+                    field: 'registerNum',
+                    title: '立案数',
+                },
+                {
+                    field: 'onTimeCloseNum',
+                    title: '按期结案数',
+                },
+                {
+                    field: 'closeNum',
+                    title: "总结案数",
+                },
+                {
+                    field: 'mustCloseNum',
+                    title: '应结案数',
+                },
+                {
+                    field: 'closeRate',
+                    title: '结案率',
+                },
+                {
+                    field: 'onTimeManagementNum',
+                    title: '按期处置数',
+                },
+                {
+                    field: 'mustManagementNum',
+                    title: '应处置数',
+                },
+                {
+                    field: 'onTimeManagementRate',
+                    title: '按期处置率',
+                },
+                {
+                    field: 'reworkNum',
+                    title: '返工数',
+                },
+                {
+                    field: 'managementNum',
+                    title: '处置数',
+                },
+                {
+                    field: 'reworkRate',
+                    title: '返工率',
+
+                },
+                {
+                    field: 'comprehensive',
+                    title: '综合标准值',
+
+                },
+                {
+                    field: 'initialDate',
+                    title: '评价等级',
+                },
+            ]
+        };
+        $.table.init(options);
     }
 
 
