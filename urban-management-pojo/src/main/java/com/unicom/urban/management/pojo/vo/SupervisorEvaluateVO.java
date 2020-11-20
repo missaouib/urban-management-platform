@@ -22,7 +22,7 @@ public class  SupervisorEvaluateVO {
     /**
      * 责任网格
      */
-    private Integer gridOnwer;
+    private String gridOnwer;
 
     /**
      *监督员上报数

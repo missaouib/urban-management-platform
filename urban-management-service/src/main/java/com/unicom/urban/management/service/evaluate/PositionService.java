@@ -44,7 +44,7 @@ public class PositionService {
             for (Map<String, Object> map : mapList) {
                 SupervisorEvaluateVO sVO = new SupervisorEvaluateVO();
                 sVO.setSupervisorName(map.get("supervisorName").toString());
-                sVO.setGridOnwer(map.get("gridOnwer") == null ? 0 : (Integer.parseInt(map.get("gridOnwer").toString())));
+                sVO.setGridOnwer(map.get("gridOnwer") == null ? "" : (map.get("gridOnwer").toString()));
                 sVO.setPatrolReport(map.get("patrolReport") == null ? 0 : (Integer.parseInt(map.get("patrolReport").toString())));
                 sVO.setValidPatrolReport(map.get("validPatrolReport") == null ? 0 : (Integer.parseInt(map.get("validPatrolReport").toString())));
                 sVO.setReportVaildNumRate(map.get("reportVaildNumRate") == null ? "0%" : ((Float.parseFloat(map.get("reportVaildNumRate").toString())) * 100) + "%");
