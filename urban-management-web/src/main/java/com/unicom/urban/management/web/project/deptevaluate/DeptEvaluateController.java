@@ -5,6 +5,10 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.pojo.vo.DeptEvaluate;
 import com.unicom.urban.management.service.deptevaluate.DeptEvaluateService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +31,9 @@ public class DeptEvaluateController {
 
 
     @GetMapping("/evaluate")
-    public List<DeptEvaluate> evaluates(String starTime,
-                                        String endTime) {
-        return evaluateService.deptEvaluates(starTime, endTime);
+    public Page<DeptEvaluate> evaluates(String starTime,
+                                        String endTime, @PageableDefault Pageable pageable) {
+        List<DeptEvaluate> list = evaluateService.deptEvaluates(starTime, endTime);
+        return new PageImpl<>(list, pageable, 0);
     }
 }
