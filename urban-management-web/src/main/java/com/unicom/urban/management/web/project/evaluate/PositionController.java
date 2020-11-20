@@ -51,9 +51,7 @@ public class PositionController {
      * @return
      */
     @GetMapping("/supervisorEvaluation")
-    public List<SupervisorEvaluateVO> supervisorEvaluation() {
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = LocalDateTime.now();
+    public List<SupervisorEvaluateVO> supervisorEvaluation(String startTime, String endTime) {
         List<SupervisorEvaluateVO> list = positionService.findSupervisorEvaluateByCondition(startTime, endTime);
         return list;
     }
@@ -64,9 +62,7 @@ public class PositionController {
      * @return
      */
     @GetMapping("/acceptanceEvaluation")
-    public List<AcceptorEvaluateVO> acceptanceEvaluation() {
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = LocalDateTime.now();
+    public List<AcceptorEvaluateVO> acceptanceEvaluation(String startTime, String endTime) {
         List<AcceptorEvaluateVO> list = positionService.findAcceptorEvaluateByCondition(startTime, endTime);
         return list;
 
@@ -78,9 +74,7 @@ public class PositionController {
      * @return
      */
     @GetMapping("/shiftForemanEvaluation")
-    public List<ShiftForemanEvaluateVO> shiftForemanEvaluation() {
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = LocalDateTime.now();
+    public List<ShiftForemanEvaluateVO> shiftForemanEvaluation(String startTime, String endTime) {
         List<ShiftForemanEvaluateVO> list = positionService.findShiftForemanEvaluateByCondition(startTime, endTime);
         return list;
 
@@ -92,9 +86,7 @@ public class PositionController {
      * @return
      */
     @GetMapping("/dispatcherEvaluation")
-    public List<DispatcherEvaluateVO> dispatcherEvaluation() {
-        LocalDateTime startTime = LocalDateTime.now();
-        LocalDateTime endTime = LocalDateTime.now();
+    public List<DispatcherEvaluateVO> dispatcherEvaluation(String startTime, String endTime) {
         List<DispatcherEvaluateVO> list = positionService.findDispatcherEvaluateByCondition(startTime, endTime);
         return list;
 

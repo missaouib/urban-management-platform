@@ -35,7 +35,7 @@ public class  SupervisorEvaluateVO {
     /**
      *监督员有效上报率
      */
-    private Float reportVaildNumRate;
+    private String reportVaildNumRate;
     /**
      *'按时核实数
      */
@@ -48,7 +48,7 @@ public class  SupervisorEvaluateVO {
     /**
      *'按时核实率
      */
-    private Float inTimeVerifyRate;
+    private String inTimeVerifyRate;
     /**
      *'按时核查数
      */
@@ -64,11 +64,11 @@ public class  SupervisorEvaluateVO {
     /**
      * 漏报率(漏报数/立案数×100%)
      */
-    private Float publicReportRate;
+    private String publicReportRate;
     /**
      *综合指标值
      */
-    private Float aggregativeIndicator;
+    private String aggregativeIndicator;
     /**
      *评价等级
      */

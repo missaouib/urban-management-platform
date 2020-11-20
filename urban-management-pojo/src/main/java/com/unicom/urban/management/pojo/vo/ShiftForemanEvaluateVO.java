@@ -31,7 +31,7 @@ public class ShiftForemanEvaluateVO {
     /**
      * 按时立案率
      */
-    private Float intimeInstRate;
+    private String intimeInstRate;
     /**
      * 准确立案数(立案数  - 作废数)
      */
@@ -39,7 +39,7 @@ public class ShiftForemanEvaluateVO {
     /**
      * '准确立案率'
      */
-    private Float exactInstRate;
+    private String exactInstRate;
     /**
      * '按时结案数'
      */
@@ -51,11 +51,11 @@ public class ShiftForemanEvaluateVO {
     /**
      * 按时结案率
      */
-    private Float inTimeCloseRate;
+    private String inTimeCloseRate;
     /**
      * 综合指标值
      */
-    private Float aggregativeIndicator;
+    private String aggregativeIndicator;
     /**
      * 评价等级
      *

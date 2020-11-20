@@ -23,14 +23,16 @@
                         <tr>
                             <td><span></span>开始日期</td>
                             <td>
-                                <input size="16" name="startTime" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" id="startTimeOne" name="startTime" class="form_datetime" type="text"
+                                       value="" readonly>
                             </td>
                             <td><span></span>结束日期</td>
                             <td>
-                                <input size="16" name="endTime" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" id="endTimeOne" name="endTime" class="form_datetime" type="text"
+                                       value="" readonly>
                             </td>
                             <td style="float: right;margin-right: 5px">
-                                <button class="check_btn" onclick="supervisorEvaluationSearch()">查询</button>
+                                <button class="check_btn" type="button" onclick="supervisorEvaluationSearch()">查询</button>
                             </td>
                         </tr>
                         </tbody>
@@ -44,10 +46,10 @@
                     <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                     <!--            </div>-->
                     <div class="r_right but_p btn_search dates">
-                        <button class="check_btn2">本周</button>
-                        <button class="check_btn2">本月</button>
-                        <button class="check_btn2">本季</button>
-                        <button class="check_btn2">本年</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeOne','endTimeOne','theWeek','','','')">本周</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeOne','endTimeOne','','theMonth','','')">本月</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeOne','endTimeOne','','','theQuarter','')">本季</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeOne','endTimeOne','','','','theYear')">本年</button>
                     </div>
                 </div>
             </div>
@@ -79,14 +81,16 @@
                         <tr>
                             <td><span></span>开始日期</td>
                             <td>
-                                <input size="16" name="startTime" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" id="startTimeTwo" name="startTime" class="form_datetime" type="text"
+                                       value="" readonly>
                             </td>
                             <td><span></span>结束日期</td>
                             <td>
-                                <input size="16" name="endTime" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" id="endTimeTwo" name="endTime" class="form_datetime" type="text"
+                                       value="" readonly>
                             </td>
                             <td style="float: right;margin-right: 5px">
-                                <button class="check_btn" onclick="acceptanceEvaluationSearch()">查询</button>
+                                <button class="check_btn" type="button" onclick="acceptanceEvaluationSearch()">查询</button>
                             </td>
                         </tr>
                         </tbody>
@@ -100,10 +104,10 @@
                     <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                     <!--            </div>-->
                     <div class="r_right but_p btn_search dates">
-                        <button class="check_btn2">本周</button>
-                        <button class="check_btn2">本月</button>
-                        <button class="check_btn2">本季</button>
-                        <button class="check_btn2">本年</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeTwo','endTimeTwo','theWeek','','','')">本周</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeTwo','endTimeTwo','','theMonth','','')">本月</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeTwo','endTimeTwo','','','theQuarter','')">本季</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeTwo','endTimeTwo','','','','theYear')">本年</button>
                     </div>
                 </div>
             </div>
@@ -134,14 +138,16 @@
                         <tr>
                             <td><span></span>开始日期</td>
                             <td>
-                                <input size="16" name="startTime" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" id="startTimeThree" name="startTime" class="form_datetime" type="text"
+                                       value="" readonly>
                             </td>
                             <td><span></span>结束日期</td>
                             <td>
-                                <input size="16" name="endTime" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" id="endTimeThree" name="endTime" class="form_datetime" type="text"
+                                       value="" readonly>
                             </td>
                             <td style="float: right;margin-right: 5px">
-                                <button class="check_btn" onclick="shiftForemanEvaluationSearch()">查询</button>
+                                <button class="check_btn" type="button" onclick="shiftForemanEvaluationSearch()">查询</button>
                             </td>
                         </tr>
                         </tbody>
@@ -155,10 +161,10 @@
                     <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                     <!--            </div>-->
                     <div class="r_right but_p btn_search dates">
-                        <button class="check_btn2">本周</button>
-                        <button class="check_btn2">本月</button>
-                        <button class="check_btn2">本季</button>
-                        <button class="check_btn2">本年</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeThree','endTimeThree','theWeek','','','')">本周</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeThree','endTimeThree','','theMonth','','')">本月</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeThree','endTimeThree','','','theQuarter','')">本季</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeThree','endTimeThree','','','','theYear')">本年</button>
                     </div>
                 </div>
             </div>
@@ -190,14 +196,16 @@
                         <tr>
                             <td><span></span>开始日期</td>
                             <td>
-                                <input size="16" name="startTime" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" id="startTimeFour" name="startTime" class="form_datetime" type="text"
+                                       value="" readonly>
                             </td>
                             <td><span></span>结束日期</td>
                             <td>
-                                <input size="16" name="endTime" class="form_datetime" type="text" value="" readonly>
+                                <input size="16" id="endTimeFour" name="endTime" class="form_datetime" type="text"
+                                       value="" readonly>
                             </td>
                             <td style="float: right;margin-right: 5px">
-                                <button class="check_btn" onclick="dispatcherEvaluationSearch()">查询</button>
+                                <button class="check_btn" type="button" onclick="dispatcherEvaluationSearch()">查询</button>
                             </td>
                         </tr>
                         </tbody>
@@ -208,10 +216,10 @@
                 <!--                            按钮-->
                 <div class="notice_bot">
                     <div class="r_right but_p btn_search dates">
-                        <button class="check_btn2">本周</button>
-                        <button class="check_btn2">本月</button>
-                        <button class="check_btn2">本季</button>
-                        <button class="check_btn2">本年</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeFour','endTimeFour','theWeek','','','')">本周</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeFour','endTimeFour','','theMonth','','')">本月</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeFour','endTimeFour','','','theQuarter','')">本季</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeFour','endTimeFour','','','','theYear')">本年</button>
                     </div>
                 </div>
             </div>
@@ -239,23 +247,91 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <script type="text/javascript" th:inline="javascript">
     $(function () {
-        ////日期插件
-        $('.form_datetime').datetimepicker({
-            language: 'zh-CN',
-            weekStart: 1,
-            todayBtn: 1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
-            showMeridian: 1,
-            format: "yyyy-mm-dd hh:ii:ss"
-        });
         supervisorEvaluationSearch();
         acceptanceEvaluationSearch();
         shiftForemanEvaluationSearch();
         dispatcherEvaluationSearch();
-    })
+    });
+    function setDate(startTime,endTime,theWeek,theMonth,theQuarter,theYear){
+        ////日期插件
+        var date = new Date();
+        //本周
+        if (theWeek !== '') {
+            // 本周一的日期
+            date.setDate(date.getDate() - date.getDay() + 1);
+            let begin = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " 00:00:00";
+            $("#"+startTime).val(begin)
+            // 本周日的日期
+            date.setDate(date.getDate() + 6);
+            let end = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " 23:59:59";
+            $("#"+endTime).val(end)
+        }
+
+        //本月
+        if (theMonth !== ''){
+            //月一
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            month = month > 9 ? month : "0" + month;
+
+            let firstDayOfCurMonth = `${year}-${month}-01`;
+            let lastDay = new Date(year, month, 0);
+            let lastDayOfCurMonth = `${year}-${month}-${lastDay.getDate()}`;
+            $("#"+startTime).val(firstDayOfCurMonth + " 00:00:00")
+            $("#"+endTime).val(lastDayOfCurMonth + " 23:59:59")
+        }
+
+        //本季
+            if (theQuarter !== ''){
+            function getQuarterMonth(type) {
+                var now = new Date();
+                var nowMonth = now.getMonth();
+                var year = now.getFullYear();
+                var quarterStartMonth = 1;
+                if (nowMonth < 3) {
+                    quarterStartMonth = 1;
+                }
+                if (2 < nowMonth && nowMonth < 6) {
+                    quarterStartMonth = 4;
+                }
+                if (5 < nowMonth && nowMonth < 9) {
+                    quarterStartMonth = 7;
+                }
+                if (nowMonth > 8) {
+                    quarterStartMonth = 10;
+                }
+                if (type == "s") {
+                    var day = year + "-" + quarterStartMonth + "-01";
+                }
+                ;
+                if (type == "e") {
+                    if (quarterStartMonth == 1) {
+                        var day = year + "-" + (quarterStartMonth + 2) + "-31";
+                    }
+                    if (quarterStartMonth == 10) {
+                        var day = year + "-" + (quarterStartMonth + 2) + "-31";
+                    }
+                    if (quarterStartMonth == 4) {
+                        var day = year + "-" + (quarterStartMonth + 2) + "-30";
+                    }
+                    if (quarterStartMonth == 7) {
+                        var day = year + "-" + (quarterStartMonth + 2) + "-30";
+                    }
+                }
+                return day;
+            }
+
+            $("#"+startTime).val(getQuarterMonth("s", 1) + " 00:00:00")
+            $("#"+endTime).val(getQuarterMonth("e", 1) + " 23:59:59")
+        }
+
+        //本年
+        if (theYear !== '') {
+            let year = date.getFullYear();
+            $("#"+startTime).val(year + "-" + "01-01" + " 00:00:00")
+            $("#"+endTime).val(year + "-" + "12-31" + " 23:59:59")
+        }
+    }
     let supervisorEvaluationUrl = /*[[@{/evaluate/supervisorEvaluation}]]*/ "/evaluate/supervisorEvaluation";
     let acceptanceEvaluationUrl = /*[[@{/evaluate/acceptanceEvaluation}]]*/ "/evaluate/acceptanceEvaluation";
     let shiftForemanEvaluationUrl = /*[[@{/evaluate/shiftForemanEvaluation}]]*/ "/evaluate/shiftForemanEvaluation";
@@ -264,15 +340,8 @@
         $('#tables').bootstrapTable('removeAll');
         var count = $('#tables').bootstrapTable('getData').length;
         var param = "?1=1";
-        // if ($("#eventTypeId").val() !== "") {
-        //     param += "&eventTypeId=" + $("#eventTypeId").val();
-        // }
-        // if ($("#objId").val() !== "") {
-        //     param += "&objId=" + $("#objId").val();
-        // }
-        // if ($("#objName").val() !== "") {
-        //     param += "&objName=" + $("#objName").val();
-        // }
+        param += "&startTime=" + $("#startTimeOne").val();
+        param += "&endTime=" + $("#endTimeOne").val();
 
         $('#tables').bootstrapTable({
             columns: [
@@ -372,15 +441,8 @@
         $('#tableIn').bootstrapTable('removeAll');
         var count = $('#tableIn').bootstrapTable('getData').length;
         var param = "?1=1";
-        // if ($("#eventTypeId").val() !== "") {
-        //     param += "&eventTypeId=" + $("#eventTypeId").val();
-        // }
-        // if ($("#objId").val() !== "") {
-        //     param += "&objId=" + $("#objId").val();
-        // }
-        // if ($("#objName").val() !== "") {
-        //     param += "&objName=" + $("#objName").val();
-        // }
+        param += "&startTime=" + $("#startTimeTwo").val();
+        param += "&endTime=" + $("#endTimeTwo").val();
         $('#tableIn').bootstrapTable({
             columns: [
                 {
@@ -404,7 +466,7 @@
                     title: "核实应派发数",
                 },
                 {
-                    field: 'SendVerifyRate',
+                    field: 'sendVerifyRate',
                     title: '核实按时派发率',
                 },
                 {
@@ -450,6 +512,7 @@
                         needSendCheckRate:value.needSendCheckRate,
                         aggregativeIndicator:value.aggregativeIndicator,
                         ratingLevel:value.ratingLevel,
+                        sendVerifyRate: value.sendVerifyRate
                     }
                 });
             })
@@ -460,15 +523,8 @@
         $('#tableOn').bootstrapTable('removeAll');
         var count = $('#tableOn').bootstrapTable('getData').length;
         var param = "?1=1";
-        // if ($("#eventTypeId").val() !== "") {
-        //     param += "&eventTypeId=" + $("#eventTypeId").val();
-        // }
-        // if ($("#objId").val() !== "") {
-        //     param += "&objId=" + $("#objId").val();
-        // }
-        // if ($("#objName").val() !== "") {
-        //     param += "&objName=" + $("#objName").val();
-        // }
+        param += "&startTime=" + $("#startTimeThree").val();
+        param += "&endTime=" + $("#endTimeThree").val();
         $('#tableOn').bootstrapTable({
             columns: [
                 {
@@ -551,15 +607,10 @@
         $('#tableOf').bootstrapTable('removeAll');
         var count = $('#tableOf').bootstrapTable('getData').length;
         var param = "?1=1";
-        // if ($("#eventTypeId").val() !== "") {
-        //     param += "&eventTypeId=" + $("#eventTypeId").val();
-        // }
-        // if ($("#objId").val() !== "") {
-        //     param += "&objId=" + $("#objId").val();
-        // }
-        // if ($("#objName").val() !== "") {
-        //     param += "&objName=" + $("#objName").val();
-        // }
+            param += "&startTime=" + $("#startTimeFour").val();
+            param += "&endTime=" + $("#endTimeFour").val();
+
+
         $('#tableOf').bootstrapTable({
             columns: [
                 {

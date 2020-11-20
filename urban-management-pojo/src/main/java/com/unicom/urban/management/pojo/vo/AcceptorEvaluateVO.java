@@ -35,7 +35,7 @@ public class AcceptorEvaluateVO {
     /**
      * 核实按时派发率
      */
-    private Float SendVerifyRate;
+    private String SendVerifyRate;
     /**
      * 核查按时派发数
      */
@@ -53,7 +53,7 @@ public class AcceptorEvaluateVO {
     /**
      *综合指标值
      */
-    private Float aggregativeIndicator;
+    private String aggregativeIndicator;
     /**
      *评价等级
      */

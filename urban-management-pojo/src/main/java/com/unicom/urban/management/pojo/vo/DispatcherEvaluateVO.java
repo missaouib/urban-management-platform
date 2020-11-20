@@ -34,7 +34,7 @@ public class DispatcherEvaluateVO {
     /**
      * '按时派遣率'
      */
-    private Float intimeDispatchRate;
+    private String intimeDispatchRate;
     /**
      * 准确派遣数（派遣数-返工数）
      */
@@ -42,11 +42,11 @@ public class DispatcherEvaluateVO {
     /**
      * '准确派遣率'
      */
-    private Float accuracyDispatchRate;
+    private String accuracyDispatchRate;
     /**
      * 综合指标值
      */
-    private Float aggregativeIndicator;
+    private String aggregativeIndicator;
     /**
      * 评价等级
      */
