@@ -1,0 +1,24 @@
+{
+  "name": "bpmn",
+  "version": "1.0.0",
+  "description": "流程图绘制工具",
+  "private": true,
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "liukai",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.6.0",
+    "webpack-cli": "^4.2.0"
+  },
+  "dependencies": {
+    "bpmn-js": "^7.4.1",
+    "bpmn-js-properties-panel": "^0.37.5",
+    "copy-webpack-plugin": "^6.3.2",
+    "diagram-js": "^6.8.1",
+    "jquery": "^3.5.1"
+  }
+}
