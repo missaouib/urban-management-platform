@@ -44,13 +44,13 @@ public class ProcessService {
                     index = 2;
                     break;
                 case ProcessConstant.TASK_PROCESSING:
-                    index = 3;
+                    index = 5;
                     break;
                 case ProcessConstant.HANDLING_FEEDBACK:
                     index = 4;
                     break;
                 case ProcessConstant.CHECK_CLOSE_CASE:
-                    index = 5;
+                    index = 3;
                     break;
                 default:
                     throw new DataValidException("环节数据出现错误");
