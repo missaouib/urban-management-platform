@@ -18,7 +18,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Stri
     /**
      * 监督员上报数
      */
-    @Query(value = "SELECT count(ev.event_code) as patrolReport from grid g,`event` ev where g.user_id=ev.user_id AND sts is null AND g.grid_id=?1 AND ev.create_time BETWEEN ?2 and ?3", nativeQuery = true)
+    @Query(value = "SELECT count(ev.event_code) as patrolReport from grid g,`event` ev where g.user_id=ev.user_id AND sts is null AND g.grid_id=?1  AND ev.create_time BETWEEN ?2 and ?3", nativeQuery = true)
     SupervisorEvaluateVO findPatrolReport(String gridId,LocalDateTime startTime, LocalDateTime endTime);
 
     /**
@@ -108,7 +108,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Stri
             "END)*0.25+(sum(in_time_send_verify)/sum(need_send_verify))*0.4+(sum(in_time_send_check)/sum(need_send_check))*0.35)<60 THEN 'D'\n" +
             "\tELSE 'E' END\n" +
             ")as ratingLevel #评价等级\n" +
-            "from  statistics st,sys_user su,`event` ev where st.operate_human_name_id is not null and st.operate_human_name_id=su.id and st.event_id=ev.id AND ev.create_time BETWEEN ?1 and ?2 GROUP BY st.operate_human_name_id", nativeQuery = true)
+            "from  statistics st,sys_user su,`event` ev where st.operate_human_name_id is not null and st.operate_human_name_id=su.id and st.event_id=ev.id  GROUP BY st.operate_human_name_id", nativeQuery = true)
     List<Map<String, Object>> findAcceptorEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
@@ -138,7 +138,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Stri
             "\tWHEN 40<=(sum(in_time_close)/sum(`close`)*0.25+((sum(inst)-sum(cancel))/sum(inst))*0.4+(sum(in_time_close)/sum(`close`))*0.35) <60 THEN 'D'\n" +
             "\tELSE 'E' END\n" +
             ") as ratingLevel#评价等级 \n" +
-            "from  statistics st,sys_user su,`event` ev where st.inst_human_name_id is not null and st.inst_human_name_id=su.id and st.event_id=ev.id AND ev.create_time BETWEEN ?1 and ?2 GROUP BY st.inst_human_name_id\n", nativeQuery = true)
+            "from  statistics st,sys_user su,`event` ev where st.inst_human_name_id is not null and st.inst_human_name_id=su.id and st.event_id=ev.id  GROUP BY st.inst_human_name_id\n", nativeQuery = true)
     List<Map<String, Object>> findShiftForemanEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
@@ -162,6 +162,6 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Stri
             "\tWHEN 40<=(sum(to_dispatch)*100*0.2+(sum(in_time_dispatch)/sum(need_dispatch))*100*0.4+(sum(accuracy_dispatch)/sum(in_time_dispatch))*100*0.4)<60 THEN 'D'\n" +
             "\tELSE 'E' END\n" +
             ") as ratingLevel\n" +
-            "from  statistics st,sys_user su ,`event` ev where dispatch is not null and st.dispatch=su.id and st.event_id=ev.id AND ev.create_time BETWEEN ?1 and ?2 GROUP BY dispatch", nativeQuery = true)
+            "from  statistics st,sys_user su ,`event` ev where dispatch is not null and st.dispatch=su.id and st.event_id=ev.id  GROUP BY dispatch", nativeQuery = true)
     List<Map<String, Object>> findDispatcherEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 }
