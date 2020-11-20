@@ -641,6 +641,12 @@
     let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
     let findOpinionsUrl = /*[[@{/statistics/findOpinions}]]*/ "/statistics/findOpinions";
     let num = 1;
+    let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
+    function getNodeName(eventId) {
+        $.ajaxUtil.get(getNodeNameUrl + "?eventId=" + eventId, function (e) {
+            setConduct(e.data);
+        });
+    }
     function queryUserList() {
         var options = {
             num: num,
@@ -655,6 +661,8 @@
                 getTimeAxis(row.id);
                 getEventDetail(row.id);
                 findOpinions(row.statisticsId);
+                //步骤图
+                getNodeName(row.id);
             },
             columns: [
                 {

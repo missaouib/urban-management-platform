@@ -601,6 +601,13 @@
         });
     }
     let num = 1;
+    let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
+
+    function getNodeName(eventId) {
+        $.ajaxUtil.get(getNodeNameUrl + "?eventId=" + eventId, function (e) {
+            setConduct(e.data);
+        });
+    }
     function queryUserList() {
         var options = {
             num: num,
@@ -615,6 +622,8 @@
                 layerMap.getSource().clear()
                 getEventDetail(row.id);
                 getTimeAxis(row.id)
+                //步骤图
+                getNodeName(row.id);
             },
             columns: [
                 {

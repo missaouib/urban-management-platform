@@ -419,6 +419,7 @@
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
     <th:block th:include="page/fragments/common :: swiper_js"/>
     <script type="text/javascript" th:inline="javascript">
+
         /**
          * 获取街道
          */
@@ -753,7 +754,15 @@
                 $("#eventButton").html(buttonHtml);
             });
         }
-let num = 1;
+
+        let num = 1;
+        let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
+
+        function getNodeName(eventId) {
+            $.ajaxUtil.get(getNodeNameUrl + "?eventId=" + eventId, function (e) {
+                setConduct(e.data);
+            });
+        }
         function queryUserList() {
             var options = {
                 num:num,
@@ -769,6 +778,8 @@ let num = 1;
                     getTimeAxis(row.id);
                     //详情
                     getEventDetail(row.id);
+                    //步骤图
+                    getNodeName(row.id);
                 },
                 columns: [
                     {

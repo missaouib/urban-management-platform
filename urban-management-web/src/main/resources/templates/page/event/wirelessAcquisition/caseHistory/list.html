@@ -356,6 +356,12 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: swiper_js"/>
 <script type="text/javascript" th:inline="javascript">
+    let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
+    function getNodeName(eventId) {
+        $.ajaxUtil.get(getNodeNameUrl + "?eventId=" + eventId, function (e) {
+            setConduct(e.data);
+        });
+    }
     function selectEventTypeTree() {
         var treeId = $("#treeId").val();
         var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
@@ -589,6 +595,7 @@
                 layerMap.getSource().clear()
                 getTimeAxis(row.id);
                 getEventDetail(row.id);
+                getNodeName(row.id);
             },
             columns: [
                 {
