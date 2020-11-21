@@ -2,9 +2,12 @@ package com.unicom.urban.management.web.framework.activiti;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.pojo.vo.ProcessDefinitionVO;
 import com.unicom.urban.management.service.processdef.ProcessDefService;
+import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,16 +18,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 流程定义管理
  *
  * @author liukai
  */
+@Slf4j
 @RestController
 @ResponseResultBody
 public class ProcessDefinitionController {
@@ -61,22 +65,21 @@ public class ProcessDefinitionController {
     }
 
 
+    /**
+     * 获取流程定义xml格式
+     */
     @GetMapping("/process/{deploymentId}/{resourceName}")
-    public void afd(@PathVariable String deploymentId, @PathVariable String resourceName, HttpServletRequest request, HttpServletResponse response) {
+    public Map<String, Object> getProcessXML(@PathVariable String deploymentId, @PathVariable String resourceName) {
         try {
             InputStream inputStream = repositoryService.getResourceAsStream(deploymentId, resourceName);
-            int count = inputStream.available();
-            byte[] bytes = new byte[count];
-//            response.setContentType("text/xml");
-            response.setContentType("image/png");
-            OutputStream outputStream = response.getOutputStream();
-            while (inputStream.read(bytes) != -1) {
-                outputStream.write(bytes);
-            }
-            inputStream.close();
-            outputStream.close();
+            String xml = IOUtils.toString(inputStream, StandardCharsets.UTF_8.name());
+            Map<String, Object> map = new HashMap<>(3);
+            map.put("xml", xml);
+            map.put("resourceName", resourceName);
+            return map;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("读取工作流定义文件失败", e);
+            throw new BusinessException("读取工作流定义文件失败");
         }
 
     }

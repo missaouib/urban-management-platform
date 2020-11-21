@@ -541,7 +541,7 @@
                     "F_EnCode": "SysManage",
                     "F_FullName": "bpmn.js",
                     "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/bpmn/dist/index.html",
+                    "F_UrlAddress": "/bpmn/dist/bpmn.html",
                     "F_Target": "expand",
                     "F_IsMenu": 0,
                     "F_AllowExpand": 1,
