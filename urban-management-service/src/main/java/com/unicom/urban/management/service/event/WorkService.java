@@ -158,6 +158,7 @@ public class WorkService {
         Event event = eventService.findOne(eventId);
         Statistics statistics = createStatistics(event);
         statistics.setSort(saved.getSort() + 1);
+        statistics.setOperateHumanName(SecurityUtil.getUser().castToUser());
         statisticsService.save(statistics);
     }
 
@@ -174,6 +175,7 @@ public class WorkService {
         Event event = eventService.findOne(eventId);
         Statistics statistics = createStatistics(event);
         statistics.setSort(saved.getSort() + 1);
+        statistics.setOperateHumanName(SecurityUtil.getUser().castToUser());
         statisticsService.save(statistics);
     }
 
@@ -419,6 +421,7 @@ public class WorkService {
         statistics.setPatrolReport(1);
         statistics.setToOperate(1);
         statistics.setSort(1);
+        statistics.setReportPatrolName(SecurityUtil.getUser().castToUser());
         statisticsService.save(statistics);
     }
 
@@ -439,6 +442,7 @@ public class WorkService {
         statistics.setPatrolReport(1);
         statistics.setToOperate(1);
         statistics.setSort(1);
+        statistics.setReportPatrolName(SecurityUtil.getUser().castToUser());
         statisticsService.save(statistics);
     }
 
