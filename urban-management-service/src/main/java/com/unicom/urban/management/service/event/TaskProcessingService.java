@@ -251,8 +251,8 @@ public class TaskProcessingService {
                 statistics.setToDispose(0);
                 int[] num = this.betWeenTime(statistics.getStartTime(),
                         statistics.getEndTime(),
-                        statistics.getProcessTimeLimit().getTimeType().getId(),
-                        statistics.getProcessTimeLimit().getTimeLimit());
+                        statistics.getDeptTimeLimit().getTimeType().getId(),
+                        statistics.getDeptTimeLimit().getTimeLimit());
                 statistics.setInTimeDispose(num[0] == 1 ? 1 : 0);
                 statistics.setOvertimeDispose(num[0] == 1 ? 0 : 1);
                 statistics.setSts(String.valueOf(num[1]));
@@ -524,6 +524,12 @@ public class TaskProcessingService {
                 break;
             case KvConstant.TASK_MINUTE:
                 timeLimit = timeLimit * 60 * 1000;
+                break;
+            case KvConstant.DAY:
+                timeLimit = timeLimit * 24 * 60 * 60 * 1000;
+                break;
+            case KvConstant.HOUR:
+                timeLimit = timeLimit * 60 * 60 * 1000;
                 break;
             default:
                 throw new DataValidException("Read time out");
