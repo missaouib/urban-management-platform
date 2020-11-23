@@ -4,7 +4,7 @@ import BpmnModeler from 'bpmn-js/lib/Modeler';
 import minimapModule from 'diagram-js-minimap';
 import propertiesPanelModule from 'bpmn-js-properties-panel';
 import propertiesProviderModule from '../resources/bpmn-js-properties-panel-activiti-support/lib/provider/activiti';
-
+import camundaModdleDescriptor from '../resources/bpmn-js-properties-panel-activiti-support/lib/provider/activiti/activiti.json';
 
 $(function () {
     const url = 'http://localhost:8080/process/428a86a6-2a10-11eb-a60b-da1aaa82783c/%E4%BA%8B%E4%BB%B6%E4%B8%8A%E6%8A%A5.bpmn20.xml';
@@ -19,6 +19,9 @@ $(function () {
             propertiesPanelModule,
             propertiesProviderModule
         ],
+        moddleExtensions: {
+            camunda: camundaModdleDescriptor
+        }
     });
     openFromUrl(url, bpmnJS);
 })
