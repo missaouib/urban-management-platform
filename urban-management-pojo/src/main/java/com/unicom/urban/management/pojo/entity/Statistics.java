@@ -619,4 +619,9 @@ public class Statistics {
     @Column(columnDefinition = "TINYINT(50)")
     private Integer sort;
 
+    /**
+     * 核查数
+     */
+    private Integer checkNum;
+
 }
