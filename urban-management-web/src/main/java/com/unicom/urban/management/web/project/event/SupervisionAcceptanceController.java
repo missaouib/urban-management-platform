@@ -4,7 +4,6 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
-import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.EventFile;
@@ -23,7 +22,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -49,8 +47,15 @@ public class SupervisionAcceptanceController {
     @Autowired
     private RoleService roleService;
 
-
-
+    @GetMapping("/toSupervisionAcceptanceList")
+    public ModelAndView toSupervisionAcceptanceList() {
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
+    }
 
     @GetMapping("/toSupervisionAcceptanceSave")
     public ModelAndView toSupervisionAcceptanceSave() {
@@ -236,7 +241,7 @@ public class SupervisionAcceptanceController {
      */
     @GetMapping("/closeEventList")
     public Page<EventVO> closeEventList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
-        eventDTO.setClose(Arrays.asList(KvConstant.CLOS_ETESK,KvConstant.TO_VOID));
+        eventDTO.setClose(Arrays.asList(KvConstant.CLOS_ETESK, KvConstant.TO_VOID));
         return eventService.search(eventDTO, pageable);
     }
 
@@ -309,57 +314,26 @@ public class SupervisionAcceptanceController {
     }
 
     /**
-     * 1首先受理员领取任务
-     * 2然后完成任务
-     * 3最后
-     * 3.1激活监督员(领取任务)重新核实
-     * 3.2值班长受理
-     * 3.3不予受理(流程结束)
+     * 自处理审核
      *
-     * @param eventDTO 事件id 指派的人的id 按钮
+     * @param eventDTO 按钮 / eventId
+     * @return 结果
      */
-    /*@PostMapping("/claimAndCompleteByReceptionistWithShiftLeader")
-    public Result claimAndCompleteByReceptionistWithShiftLeader(EventDTO eventDTO) {
+    @PostMapping("/completeBySelfProcessingAudit")
+    public Result completeBySelfProcessingAudit(EventDTO eventDTO) {
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList());
+        eventDTO.setEventFileList(eventFileList);
         switch (eventDTO.getButton()) {
-            case "2":
-                eventService.completeByReceptionistForNotDo(eventDTO.getId(), eventDTO.getButton());
+            case "20":
+                eventService.completeForInvalidCases(eventDTO);
                 break;
-            case "3":
-                eventService.completeByReceptionistForDo(eventDTO.getId(), eventDTO.getButton());
-                break;
-            case "13":
-                eventService.completeByReceptionist(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
+            case "21":
+                eventService.completeForClosingAndFiling(eventDTO);
                 break;
             default:
                 return Result.fail("500", "未检测到应有的步骤");
         }
         return Result.success();
-    }*/
-
-    /**
-     * 受理员完成任务 并且 激活监督员(领取任务)核查
-     *
-     * @param eventDTO 事件id 指派的人的id 按钮
-     */
-    /*@PostMapping("/completeByReceptionistWithSendCheck")
-    public Result completeByReceptionistWithSendCheck(EventDTO eventDTO) {
-        switch (eventDTO.getButton()) {
-            case "14":
-                eventService.completeByReceptionistWithClaim(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
-                break;
-            case "10":
-                eventService.completeByReceptionistForDo(eventDTO.getId(), eventDTO.getButton());
-                break;
-            case "16":
-                eventService.completeByReceptionist(eventDTO.getId(), eventDTO.getUserId(), eventDTO.getButton());
-                break;
-            case "17":
-                eventService.completeByReceptionistForDo(eventDTO.getId(), eventDTO.getButton());
-                break;
-            default:
-                return Result.fail("500", "未检测到应有的步骤");
-        }
-        return Result.success();
-    }*/
+    }
 
 }

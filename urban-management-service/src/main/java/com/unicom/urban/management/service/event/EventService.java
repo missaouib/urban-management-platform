@@ -600,12 +600,29 @@ public class EventService {
         event.setUser(SecurityUtil.getUser().castToUser());
         event.setSts(null);
         Event saved = eventRepository.saveAndFlush(event);
-        if (event.getDoBySelf()!= null && event.getDoBySelf()) {
+        if (event.getDoBySelf() != null && event.getDoBySelf()) {
             workService.saveAutoReport(saved.getId());
-        }else {
+        } else {
             workService.superviseReporting(saved.getId());
         }
     }
 
+    /**
+     * 无效案件
+     *
+     * @param eventDTO 数据
+     */
+    public void completeForInvalidCases(EventDTO eventDTO) {
+        workService.completeForInvalidCases(eventDTO);
+    }
+
+    /**
+     * 结案存档
+     *
+     * @param eventDTO 数据
+     */
+    public void completeForClosingAndFiling(EventDTO eventDTO) {
+        workService.completeForClosingAndFiling(eventDTO);
+    }
 
 }

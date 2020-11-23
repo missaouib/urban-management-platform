@@ -1121,7 +1121,6 @@
         $.ajaxUtil.get(getUserListForSupervisorUrl, function (e) {
             $("#selectUser").empty();
             let userList = e.data;
-            console.log("userList", userList);
             let userHtml = "";
             if (e.code === "0") {
                 userHtml += "<option selected value=''>--请选择--</option>"

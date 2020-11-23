@@ -75,8 +75,11 @@ public class EventConstant {
     public static final String SELF_PROCESSING_AUDIT = "自处理审核";
 
     public static final String DISPATCHER_DELAYED_APPROVAL = "派遣员-延时审批";
+
     public static final String DISPATCHER_BACK_OFF_APPROVAL = "派遣员-回退审批";
+
     public static final String SHIFT_LEADER_TO_VOID_APPROVAL = "值班长-作废审批";
+
     public static final String DISPATCHER_ON_ACCOUNT_APPROVAL = "派遣员-挂账审批";
 
 

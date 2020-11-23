@@ -40,6 +40,7 @@ public class WorkService {
     private TaskProcessingService taskProcessingService;
     @Autowired
     private RoleService roleService;
+
     public List<String> queryTaskByAssignee() {
         return activitiService.queryTaskByAssignee(SecurityUtil.getUserId());
     }
@@ -250,6 +251,45 @@ public class WorkService {
         activitiService.complete(statistics.getTaskId(), null, eventDTO.getButton());
     }
 
+    /**
+     * 无效案件
+     *
+     * @param eventDTO 数据
+     */
+    public void completeForInvalidCases(EventDTO eventDTO) {
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventDTO.getId());
+        activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
+        statistics.setEndTime(LocalDateTime.now());
+        statistics.setInvalidEvent(1);
+        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit());
+        /* 按时受理 */
+        statistics.setInTimeOperate(map[0]);
+        statistics.setSts(String.valueOf(map[1]));
+        setOpinionsAndEventFileList(statistics, eventDTO.getRepresent(), eventDTO.getEventFileList());
+        statisticsService.update(statistics);
+        activitiService.complete(statistics.getTaskId(), null, eventDTO.getButton());
+    }
+
+    /**
+     * 结案存档
+     *
+     * @param eventDTO 数据
+     */
+    public void completeForClosingAndFiling(EventDTO eventDTO) {
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventDTO.getId());
+        activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
+        statistics.setEndTime(LocalDateTime.now());
+        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit());
+        /* 按时受理 */
+        statistics.setInTimeOperate(map[0]);
+        statistics.setSts(String.valueOf(map[1]));
+        setOpinionsAndEventFileList(statistics, eventDTO.getRepresent(), eventDTO.getEventFileList());
+        statisticsService.update(statistics);
+        List<String> userList = taskProcessingService.getUsers(KvConstant.SHIFT_LEADER_ROLE);
+        activitiService.complete(statistics.getTaskId(), userList, eventDTO.getButton());
+    }
+
+
     /* -------------------------------------------------------------私有方法- */
 
     /**
@@ -285,6 +325,7 @@ public class WorkService {
         statisticsService.update(statistics);
         return statistics.getTaskId();
     }
+
     /**
      * 测试期间 直接完结statistics表
      *
@@ -315,8 +356,8 @@ public class WorkService {
         statistics.setStartTime(LocalDateTime.now());
         statistics.setDeptTimeLimit(event.getTimeLimit());
         /* todo 此处是目前数据库数据尚未完善 所以用一条假数据暂替 ——姜文 ——2020/11/10 */
-        /*ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());*/
-        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId("值班长-立案", "28526efe-3db5-415b-8c7a-d0e3a49cab8f");
+        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());
+//        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId("值班长-立案", "28526efe-3db5-415b-8c7a-d0e3a49cab8f");
         statistics.setProcessTimeLimit(processTimeLimit);
         statistics.setSort(sort + 1);
         return statisticsService.save(statistics);
