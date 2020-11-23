@@ -5,6 +5,7 @@ import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
+import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.processtimelimit.ProcessTimeLimitService;
 import com.unicom.urban.management.service.role.RoleService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
@@ -40,6 +41,8 @@ public class WorkService {
     private TaskProcessingService taskProcessingService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private DeptTimeLimitService deptTimeLimitService;
 
     public List<String> queryTaskByAssignee() {
         return activitiService.queryTaskByAssignee(SecurityUtil.getUserId());
@@ -355,8 +358,9 @@ public class WorkService {
         statistics.setTaskName(task.getName());
         statistics.setStartTime(LocalDateTime.now());
         statistics.setDeptTimeLimit(event.getTimeLimit());
-        /* todo 此处是目前数据库数据尚未完善 所以用一条假数据暂替 ——姜文 ——2020/11/10 */
-        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());
+        DeptTimeLimit timeLimit = event.getTimeLimit();
+        DeptTimeLimit one = deptTimeLimitService.findOne(timeLimit.getId());
+        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), one.getLevel().getId());
 //        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId("值班长-立案", "28526efe-3db5-415b-8c7a-d0e3a49cab8f");
         statistics.setProcessTimeLimit(processTimeLimit);
         statistics.setSort(sort + 1);

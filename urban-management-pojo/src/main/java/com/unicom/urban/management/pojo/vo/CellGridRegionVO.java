@@ -57,4 +57,14 @@ public class CellGridRegionVO {
      */
     private Double comprehensiveIndexValue;
 
+    /**
+     * 社区
+     */
+    private String communityName;
+
+    /**
+     * 街道
+     */
+    private String streetName;
+
 }

@@ -148,6 +148,10 @@ public class StatisticsService {
         for (Grid grid : gridList) {
             CellGridRegionVO cellGridRegionVO = new CellGridRegionVO();
             cellGridRegionVO.setGridName(grid.getGridName());
+            Grid community = grid.getParent();
+            cellGridRegionVO.setCommunityName(community.getGridName());
+            Grid street = community.getParent();
+            cellGridRegionVO.setStreetName(street.getGridName());
             int inTimeCloseSize = statisticsRepository.findAllByInTimeClose(grid.getId(), startTime, endTime).size();
             int closeSize = statisticsRepository.findAllByClose(grid.getId(), startTime, endTime).size();
             int closeOrToCloseSize = statisticsRepository.findAllByCloseOrToClose(grid.getId(), startTime, endTime).size();

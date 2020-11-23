@@ -173,13 +173,17 @@
                 {
                     field: 'index',
                     title: '序号',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
                 },
                 {
-                    field: 'check',
+                    field: 'streetName',
                     title: '街道'
                 },
                 {
-                    field: 'eventType',
+                    field: 'communityName',
                     title: '社区',
                 },
                 {
