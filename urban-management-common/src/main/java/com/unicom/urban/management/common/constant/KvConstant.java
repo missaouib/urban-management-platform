@@ -127,4 +127,14 @@ public class KvConstant {
      */
     public static final String RECEPTIONIST_ROLE = "dffa2027-a9e3-4ff6-8e52-6a764b4575db";
 
+    /**
+     * 热线上报
+     */
+    public static final String HOTLINE = "热线上报";
+
+    /**
+     * 监督员上报
+     */
+    public static final String SUPERVISE = "监督员上报";
+
 }
