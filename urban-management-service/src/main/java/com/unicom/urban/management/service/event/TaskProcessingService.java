@@ -85,6 +85,8 @@ public class TaskProcessingService {
             this.onAccount(eventId, eventButton, statisticsDTO);
         } else if ("挂账恢复".equals(statistics.getTaskName())) {
             this.recovery(eventId, eventButton, statisticsDTO);
+        }else if("自处理案件结案".equals(statistics.getTaskName())){
+            this.meCloseTask(eventId, eventButton, statisticsDTO);
         }
 
     }
@@ -162,6 +164,45 @@ public class TaskProcessingService {
         statistics.setCloseHumanName(SecurityUtil.getUser().castToUser());
         statistics.setCloseRole(roleService.findOne(KvConstant.SHIFT_LEADER_ROLE));
         statisticsService.update(statistics);
+
+    }
+    /**
+     * 值班长 结案
+     */
+    private void meCloseTask(String eventId,EventButton eventButton, StatisticsDTO statisticsDTO) {
+
+        if("结案存档".equals(eventButton.getButtonText())){
+            this.avtivitiHandle(eventId, null, eventButton.getId());
+            Event one = eventService.findOne(eventId);
+            KV kv = new KV();
+            kv.setId(KvConstant.CLOS_ETESK);
+            one.setEventSate(kv);
+            eventService.update(one);
+            Statistics statistics = this.updateStatistics(statisticsDTO);
+            statistics.setClose(1);
+            statistics.setClosingFiling(1);
+            int[] ints = this.betWeenTime(statistics.getStartTime(),
+                    statistics.getEndTime(),
+                    statistics.getProcessTimeLimit().getTimeType().getId(),
+                    statistics.getProcessTimeLimit().getTimeLimit());
+            statistics.setInTimeClose(ints[0]);
+            statistics.setSts(String.valueOf(ints[1]));
+            statistics.setToClose(0);
+            statistics.setCloseHuman(SecurityUtil.getUser().castToUser());
+            statistics.setCloseHumanName(SecurityUtil.getUser().castToUser());
+            statistics.setCloseRole(roleService.findOne(KvConstant.SHIFT_LEADER_ROLE));
+            statisticsService.update(statistics);
+        }else{
+            List<String> users = this.getUsers(KvConstant.RECEPTIONIST_ROLE);
+            this.avtivitiHandle(eventId, users, eventButton.getId());
+            Statistics statistics = this.updateStatistics(statisticsDTO);
+            statisticsService.update(statistics);
+            Event event = eventService.findOne(eventId);
+            Statistics newStatistics = this.initStatistics(event);
+            statisticsService.save(newStatistics);
+        }
+
+
 
     }
 

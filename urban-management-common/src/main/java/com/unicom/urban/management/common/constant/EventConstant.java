@@ -65,6 +65,7 @@ public class EventConstant {
     public static final String PROFESSIONAL_AGENCY = "专业部门";
 
     public static final String CLOSE_TASK = "值班长-结案";
+    public static final String ME_CLOSE_TASK = "自处理案件结案";
 
     public static final String RECOVERY = "挂账恢复";
 
