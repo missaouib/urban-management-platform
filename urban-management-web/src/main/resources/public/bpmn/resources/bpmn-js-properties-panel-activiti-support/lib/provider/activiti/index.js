@@ -4,5 +4,5 @@ module.exports = {
     require('diagram-js/lib/i18n/translate').default
   ],
   __init__: [ 'propertiesProvider' ],
-  propertiesProvider: [ 'type', require('./CamundaPropertiesProvider') ]
+  propertiesProvider: [ 'type', require('./ActivitiPropertiesProvider') ]
 };
