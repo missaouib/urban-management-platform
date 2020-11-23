@@ -213,8 +213,8 @@ public class SupervisionAcceptanceController {
         return eventService.search(eventDTO, pageable);
     }
 
-    @GetMapping("/toSupervisionAcceptanceList")
-    public Page<EventVO> toSupervisionAcceptanceList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+    @GetMapping("/superviseCasesList")
+    public Page<EventVO> superviseCasesList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
         eventDTO.setTaskName(Collections.singletonList(EventConstant.PROFESSIONAL_AGENCY));
         return eventService.search(eventDTO, pageable);
     }
