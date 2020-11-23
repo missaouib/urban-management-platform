@@ -20,7 +20,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
     @Query(value = "select su.`name` as supervisorName, \n" +
             "            g.grid_name as gridOnwer, \n" +
             "\t\t\t\t\t\t#监督员上报数：监督员巡查上报的部件和事件问题数\n" +
-            "            sum(patrol_report) as patrolReport,\n" +
+            "            sum(report) as patrolReport,\n" +
             "\t\t\t\t\t\t#监督员有效上报数：监督员上报数中，经监督中心审核立案的案件数\n" +
             "            sum(valid_patrol_report) as validPatrolReport,\n" +
             "\t\t\t\t\t\t#监督员有效上报率：监督员有效上报数/监督员上报数×100%。\n" +
@@ -47,8 +47,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "            WHEN 60<=((sum(valid_patrol_report)*100*0.4+(1-(sum(public_report)/sum(inst)))*100*0.2+(sum(in_time_verify)/sum(need_verify))*100*0.2)+ (sum(in_time_check)/sum(need_send_check))*100*0.2)<75 THEN 'C'\n" +
             "            WHEN 40<=((sum(valid_patrol_report)*100*0.4+(1-(sum(public_report)/sum(inst)))*100*0.2+(sum(in_time_verify)/sum(need_verify))*100*0.2)+ (sum(in_time_check)/sum(need_send_check))*100*0.2)<60 THEN 'D'\n" +
             "             ELSE 'E' END ) as ratingLevel\n" +
-            "            from statistics st,grid g,`event` ev,sys_user su where st.event_id=ev.id and ev.sts is null and g.user_id=su.id and su.id=st.send_check_human_name AND ev.sts is null and ev.create_time between ?1 and ?2\n" +
-            "\t\t\t\t\t\tGROUP BY st.send_check_human_name,g.id", nativeQuery = true)
+            "            from grid g,statistics st,`event` ev,sys_user su,user_role ur where ur.role_id='2d62b759-50ff-4b72-863f-9129cd2d9c4d' and ur.user_id=st.user_id and g.id=ev.grid_id and ev.id=st.event_id and su.id=st.user_id and ev.create_time between ?1 and ?2 GROUP BY g.id,su.`name`,st.user_id \n", nativeQuery = true)
     List<Map<String,Object>> findSupervisorEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
@@ -93,7 +92,8 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "END)*0.25+(sum(in_time_send_verify)/sum(need_send_verify))*100*0.4+(sum(in_time_send_check)/sum(need_send_check))*100*0.35)<60 THEN 'D'\n" +
             "\tELSE 'E' END\n" +
             ")as ratingLevel #评价等级\n" +
-            "from  statistics st,sys_user su,`event` ev where st.operate_human_name_id=su.id and st.event_id=ev.id and ev.sts is null and ev.create_time between ?1 and ?2 GROUP BY st.operate_human_name_id", nativeQuery = true)
+            "from  statistics st,sys_user su,`event` ev,user_role ur  where st.operate_human_name_id=su.id and st.event_id=ev.id " +
+            "and ur.role_id='dffa2027-a9e3-4ff6-8e52-6a764b4575db' and st.operate_human_name_id=ur.user_id and ev.create_time between ?1 and ?2 GROUP BY st.operate_human_name_id", nativeQuery = true)
     List<Map<String, Object>> findAcceptorEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
@@ -127,7 +127,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "\tWHEN 40<=((sum(in_time_close)/sum(`close`))*100*0.25+((sum(inst)-sum(cancel))/sum(inst))*100*0.4+(sum(in_time_close)/sum(`close`))*100*0.35)<60 THEN 'D'\n" +
             "\tELSE 'E' END\n" +
             ") as ratingLevel#评价等级 \n" +
-            "from  statistics st,sys_user su,`event` ev where (st.inst_human_name_id=su.id or st.close_human_name_id=su.id) and st.event_id=ev.id and ev.sts is null and ev.create_time between ?1 and ?2 GROUP BY su.name\n", nativeQuery = true)
+            "from  statistics st,sys_user su,`event` ev where (st.inst_human_name_id=su.id or st.close_human_name_id=su.id) and st.event_id=ev.id and ev.create_time between ?1 and ?2 GROUP BY su.name\n", nativeQuery = true)
     List<Map<String, Object>> findShiftForemanEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
@@ -141,7 +141,6 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "(sum(in_time_dispatch)/sum(need_dispatch)) as intimeDispatchRate,\n" +
             "sum(accuracy_dispatch) as accuracyDispatch,\n" +
             "(sum(accuracy_dispatch)/sum(in_time_dispatch)) as accuracyDispatchRate,\n" +
-            "(sum(in_time_send_check)/sum(need_send_check)) as needSendCheckRate,\n" +
             " (sum(to_dispatch)*100*0.2+(sum(in_time_dispatch)/sum(need_dispatch))*100*0.4+(sum(accuracy_dispatch)/sum(in_time_dispatch))*100*0.4) as aggregativeIndicator,\n" +
             "#评价等级\n" +
             "(CASE \n" +
@@ -151,6 +150,6 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "\tWHEN 40<=(sum(to_dispatch)*100*0.2+(sum(in_time_dispatch)/sum(need_dispatch))*100*0.4+(sum(accuracy_dispatch)/sum(in_time_dispatch))*100*0.4)<60 THEN 'D'\n" +
             "\tELSE 'E' END\n" +
             ") as ratingLevel\n" +
-            "from  statistics st,sys_user su ,`event` ev where st.dispatch=su.id and st.event_id=ev.id and ev.sts is null  and ev.create_time between ?1 and ?2 GROUP BY dispatch", nativeQuery = true)
+            "from  statistics st,sys_user su ,`event` ev where st.dispatch=su.id and st.event_id=ev.id and ev.create_time between ?1 and ?2 GROUP BY dispatch", nativeQuery = true)
     List<Map<String, Object>> findDispatcherEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 }
