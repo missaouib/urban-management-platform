@@ -65,7 +65,10 @@ function setTimeLimit(row,index) {
 //     });*/
 // }
 
-
+// var bee = `
+// 	<div style="width: 20px;height: 20px;background-color:red;">ss</div>
+// `
+// $(".tabTitle").prepend(bee)
 /**
  * 清空时间框里的值
  */

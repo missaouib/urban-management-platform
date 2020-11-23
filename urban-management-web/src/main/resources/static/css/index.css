@@ -448,6 +448,7 @@ font-size: 20px;
     position: relative;
     background-image: url("../img/smallBell.png");
     background-size: 100% 100%;
+    cursor: pointer;
 }
 .messageNum{
     width: 10px;
