@@ -35,7 +35,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(
                 "/captcha.jpeg",
-                "/page/**",
                 "/css/**",
                 "/fonts/**",
                 "/img/**",
