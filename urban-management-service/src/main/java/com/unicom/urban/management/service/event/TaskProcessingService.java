@@ -492,7 +492,7 @@ public class TaskProcessingService {
         newStatistics.setTaskName(task.getName());
         newStatistics.setStartTime(LocalDateTime.now());
         newStatistics.setDeptTimeLimit(event.getTimeLimit());
-        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getId());
+        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), event.getTimeLimit().getLevel().getId());
 //        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId("值班长-立案", "28526efe-3db5-415b-8c7a-d0e3a49cab8f");
         newStatistics.setProcessTimeLimit(processTimeLimit);
         return newStatistics;
