@@ -114,7 +114,7 @@
             if (dataId != "") {
                 //top.$.cookie('nfine_currentmoduleid', dataId, { path: "/" });
             }
-            var dataUrl = $(this).attr('href');
+            var dataUrl = $(this).attr('data-href');
 
             var menuName = $.trim($(this).text());
             var flag = true;
@@ -1697,12 +1697,12 @@
                                     var subchildNodesrow = subchildNodes[i];
                                     // _html += '<li><a class="menuItem" data-id="' + subrow.F_ModuleId + '" href="' + subrow.F_UrlAddress + '"><i class="' + subchildNodesrow.F_Icon + '"></i>' + subchildNodesrow.F_FullName + '</a></li>';
                                     //把subrow修改为subchildNodesrow 不知道是不是源代码写错了
-                                    _html += '<li><a class="menuItem" data-id="' + subchildNodesrow.F_ModuleId + '" href="' + subchildNodesrow.F_UrlAddress + '"><i class="' + subchildNodesrow.F_Icon + '"></i>' + subchildNodesrow.F_FullName + '</a></li>';
+                                    _html += '<li><a class="menuItem" data-id="' + subchildNodesrow.F_ModuleId + '" href="javascript:void(0)" data-href="' + subchildNodesrow.F_UrlAddress + '"><i class="' + subchildNodesrow.F_Icon + '"></i>' + subchildNodesrow.F_FullName + '</a></li>';
                                 });
                                 _html += '</ul>';
 
                             } else {
-                                _html += '<a class="menuItem" data-id="' + subrow.F_ModuleId + '" href="' + subrow.F_UrlAddress + '"><i class="' + subrow.F_Icon + '"></i>' + subrow.F_FullName + '</a>';
+                                _html += '<a class="menuItem" data-id="' + subrow.F_ModuleId + '" href="javascript:void(0)" data-href="' + subrow.F_UrlAddress + '"><i class="' + subrow.F_Icon + '"></i>' + subrow.F_FullName + '</a>';
                             }
                             _html += '</li>';
                         });

@@ -3,7 +3,7 @@ import $ from 'jquery';
 import BpmnModeler from 'bpmn-js/lib/Modeler';
 import minimapModule from 'diagram-js-minimap';
 import propertiesPanelModule from 'bpmn-js-properties-panel';
-import propertiesProviderModule from 'bpmn-js-properties-panel/lib/provider/camunda';
+import propertiesProviderModule from '../resources/bpmn-js-properties-panel-activiti-support/lib/provider/activiti';
 
 
 $(function () {
