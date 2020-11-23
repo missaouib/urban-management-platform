@@ -179,10 +179,18 @@ public class EventService {
                 eventVO.setTaskName(statistics.getTaskName());
                 String format = simpleDateFormat.format(statistics.getStartTime());
                 eventVO.setStartTime(format);
-                int timeLimit = statistics.getProcessTimeLimit().getTimeLimit();
-                eventVO.setTimeLimit(timeLimit);
-                String timeType = statistics.getProcessTimeLimit().getTimeType().getValue();
-                eventVO.setTimeType(timeType);
+                if("专业部门".equals(statistics.getTaskName())){
+                    int timeLimit = statistics.getDeptTimeLimit().getTimeLimit();
+                    eventVO.setTimeLimit(timeLimit);
+                    String timeType = statistics.getDeptTimeLimit().getTimeType().getValue();
+                    eventVO.setTimeType(timeType);
+                }else{
+                    int timeLimit = statistics.getProcessTimeLimit().getTimeLimit();
+                    eventVO.setTimeLimit(timeLimit);
+                    String timeType = statistics.getProcessTimeLimit().getTimeType().getValue();
+                    eventVO.setTimeType(timeType);
+                }
+
                 eventVO.setDeptName(Optional.ofNullable(statistics.getDisposeUnit()).map(Dept::getDeptName).orElse(""));
             } else {
                 /*如果事件步骤没有endTime为null的  证明事件已经完成 获取结束时间最近的那条步骤 附加到vo信息*/
