@@ -135,14 +135,22 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
      * 派遣员岗位评价
      */
     @Query(value = "SELECT\n" +
+            "#姓名\n" +
             "su.name as dispatch,\n" +
-            "sum(to_dispatch) as toDispatch,\n" +
+            "#派遣数\n" +
+            "sum(need_dispatch) as toDispatch,\n" +
+            "#按时派遣数\n" +
             "sum(in_time_dispatch) as intimeDispatch,\n" +
+            "#应派遣数\n" +
             "sum(need_dispatch) as needDispatch,\n" +
+            "#按时派遣率：按时派遣数/应派遣数×100%\n" +
             "(sum(in_time_dispatch)/sum(need_dispatch)) as intimeDispatchRate,\n" +
-            "sum(accuracy_dispatch) as accuracyDispatch,\n" +
-            "(sum(accuracy_dispatch)/sum(in_time_dispatch)) as accuracyDispatchRate,\n" +
-            " (sum(to_dispatch)*100*0.2+(sum(in_time_dispatch)/sum(need_dispatch))*100*0.4+(sum(accuracy_dispatch)/sum(in_time_dispatch))*100*0.4) as aggregativeIndicator,\n" +
+            "#准确派遣数（派遣数-返工数）\n" +
+            "sum(need_dispatch)-ifnull(sum(rework),0) as accuracyDispatch,\n" +
+            "#准确派遣率：准确派遣数/应派遣数×100%\n" +
+            "(sum(need_dispatch)-ifnull(sum(rework),0))/sum(in_time_dispatch) as accuracyDispatchRate,\n" +
+            "#综合指标值=派遣数分值×20%+按时派遣率×40%+准确派遣率分值×40%\n" +
+            " (sum(to_dispatch)*100*0.2+(sum(in_time_dispatch)/sum(need_dispatch))*100*0.4+(sum(need_dispatch)-ifnull(sum(rework),0))/sum(in_time_dispatch)*100*0.4) as aggregativeIndicator,\n" +
             "#评价等级\n" +
             "(CASE \n" +
             "\tWHEN 90<=(sum(to_dispatch)*100*0.2+(sum(in_time_dispatch)/sum(need_dispatch))*100*0.4+(sum(accuracy_dispatch)/sum(in_time_dispatch))*100*0.4)<=100 THEN 'A'\t\n" +
@@ -151,6 +159,6 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "\tWHEN 40<=(sum(to_dispatch)*100*0.2+(sum(in_time_dispatch)/sum(need_dispatch))*100*0.4+(sum(accuracy_dispatch)/sum(in_time_dispatch))*100*0.4)<60 THEN 'D'\n" +
             "\tELSE 'E' END\n" +
             ") as ratingLevel\n" +
-            "from  statistics st,sys_user su ,`event` ev where st.dispatch=su.id and st.event_id=ev.id and ev.create_time between ?1 and ?2 GROUP BY dispatch", nativeQuery = true)
+            "from  statistics st,sys_user su,`event` ev where dispatch is not null and st.dispatch_human_name_id=su.id and st.event_id=ev.id and ev.create_time between ?1 and ?2 GROUP BY su.name", nativeQuery = true)
     List<Map<String, Object>> findDispatcherEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 }
