@@ -110,22 +110,22 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "#按时立案率 = 按时立案数/立案数×100%\n" +
             "sum(in_time_inst)/sum(inst) as intimeInstRate,\n" +
             "#准确立案数(立案数  - 作废数)\n" +
-            "sum(inst)-sum(cancel) as exactInst,\n" +
+            "sum(inst)-ifnull(sum(cancel),0) as exactInst,\n" +
             "#准确立案率 = 准确立案数/立案数×100%\n" +
-            "(sum(inst)-sum(cancel))/sum(inst) as exactInstRate,\n" +
+            "(sum(inst)-ifnull(sum(cancel),0))/sum(inst) as exactInstRate,\n" +
             "#按时结案数\n" +
             "sum(in_time_close) as inTimeClose,\n" +
             "#应结案数\n" +
             "sum(`close`) as close,\n" +
             "#按时结案率 按时结案数/结案数×100%。\n" +
-            " (sum(inst)-sum(cancel))/sum(`close`) as inTimeCloseRate,\n" +
+            " sum(in_time_close)/sum(`close`) as inTimeCloseRate,\n" +
             " #综合指标值 = 按时立案率分值×25%+准确立案率分值×40%+按时结案率分值×35%\n" +
-            " ((sum(in_time_close)/sum(`close`))*100*0.25+((sum(inst)-sum(cancel))/sum(inst))*100*0.4+(sum(in_time_close)/sum(`close`))*100*0.35) as aggregativeIndicator,\n" +
+            " ((sum(in_time_close)/sum(`close`))*100*0.25+((sum(inst)-ifnull(sum(cancel),0))/sum(inst))*100*0.4+(sum(in_time_close)/sum(`close`))*100*0.35) as aggregativeIndicator,\n" +
             "(CASE \n" +
-            "\tWHEN 90<=((sum(in_time_close)/sum(`close`))*100*0.25+((sum(inst)-sum(cancel))/sum(inst))*100*0.4+(sum(in_time_close)/sum(`close`))*100*0.35)<=100 THEN 'A'\t\n" +
-            "\tWHEN 75<=((sum(in_time_close)/sum(`close`))*100*0.25+((sum(inst)-sum(cancel))/sum(inst))*100*0.4+(sum(in_time_close)/sum(`close`))*100*0.35)<90 THEN 'B'\n" +
-            "\tWHEN 60<=((sum(in_time_close)/sum(`close`))*100*0.25+((sum(inst)-sum(cancel))/sum(inst))*100*0.4+(sum(in_time_close)/sum(`close`))*100*0.35)<75 THEN 'C'\n" +
-            "\tWHEN 40<=((sum(in_time_close)/sum(`close`))*100*0.25+((sum(inst)-sum(cancel))/sum(inst))*100*0.4+(sum(in_time_close)/sum(`close`))*100*0.35)<60 THEN 'D'\n" +
+            "\tWHEN 90<=((sum(in_time_close)/sum(`close`))*100*0.25+((sum(inst)-ifnull(sum(cancel),0))/sum(inst))*100*0.4+(sum(in_time_close)/sum(`close`))*100*0.35)<=100 THEN 'A'\t\n" +
+            "\tWHEN 75<=((sum(in_time_close)/sum(`close`))*100*0.25+((sum(inst)-ifnull(sum(cancel),0))/sum(inst))*100*0.4+(sum(in_time_close)/sum(`close`))*100*0.35)<90 THEN 'B'\n" +
+            "\tWHEN 60<=((sum(in_time_close)/sum(`close`))*100*0.25+((sum(inst)-ifnull(sum(cancel),0))/sum(inst))*100*0.4+(sum(in_time_close)/sum(`close`))*100*0.35)<75 THEN 'C'\n" +
+            "\tWHEN 40<=((sum(in_time_close)/sum(`close`))*100*0.25+((sum(inst)-ifnull(sum(cancel),0))/sum(inst))*100*0.4+(sum(in_time_close)/sum(`close`))*100*0.35)<60 THEN 'D'\n" +
             "\tELSE 'E' END\n" +
             ") as ratingLevel#评价等级 \n" +
             "from  statistics st,sys_user su,`event` ev where (st.inst_human_name_id=su.id or st.close_human_name_id=su.id) and st.event_id=ev.id and ev.create_time between ?1 and ?2 GROUP BY su.name\n", nativeQuery = true)
