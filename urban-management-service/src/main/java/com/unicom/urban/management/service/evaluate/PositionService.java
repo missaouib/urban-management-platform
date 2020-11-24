@@ -52,7 +52,7 @@ public class PositionService {
                 sVO.setIntimeVerify(map.get("intimeVerify") == null ? 0 : (Integer.parseInt(map.get("intimeVerify").toString())));
                 sVO.setNeedVerify(map.get("needVerify") == null ? 0 : (Integer.parseInt(map.get("needVerify").toString())));
                 sVO.setInTimeVerifyRate(map.get("inTimeVerifyRate") == null ? "0%" : ((new BigDecimal(Float.parseFloat(map.get("inTimeVerifyRate").toString())).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue()) * 100) + "%");
-                sVO.setInTimeCheck(map.get("inTimeCheck;") == null ? 0 : (Integer.parseInt(map.get("inTimeCheck").toString())));
+                sVO.setInTimeCheck(map.get("inTimeCheck") == null ? 0 : (Integer.parseInt(map.get("inTimeCheck").toString())));
                 sVO.setPublicReport(map.get("publicReport") == null ? 0 : (Integer.parseInt(map.get("publicReport").toString())));
                 sVO.setInst(map.get("inst") == null ? 0 : Integer.parseInt(map.get("inst").toString()) );
                 sVO.setPublicReportRate(map.get("publicReportRate") == null ? "0%" : ((new BigDecimal(Float.parseFloat(map.get("publicReportRate").toString())).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue()) * 100) + "%");
