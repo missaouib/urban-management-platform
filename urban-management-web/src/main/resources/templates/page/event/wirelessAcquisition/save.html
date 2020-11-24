@@ -114,7 +114,7 @@
                                 </td>
                                 <td><span></span>所属网格</td>
                                 <td>
-                                    <select  th:name="gridId"  id="grid4" >
+                                    <select  th:name="gridId"  id="grid4"  onchange="getGridCenter(this)" >
                                     </select>
                                 </td>
                             </tr>
@@ -346,6 +346,7 @@
                     jsonp: 'format_options',
                     jsonpCallback: "callback:success_jsonpCallback"
                 });
+
             });
         })
     }
@@ -923,17 +924,72 @@
             })
         }));
     }
+
+    //回调函数接收查询结果
+    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
+
+    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
+    /* 点击网格列表赋值 */
     function success_jsonpCallback(res) {
         var features = geojsonFormat.readFeatures(res);
-        console.log('点击查询返回的结果如下：');
-        console.log("features", features);
         let mongodbId = features[0].H.mongodb_id;
-        console.log("features", mongodbId);
-        /*$.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
+        $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
             console.log("e", e);
-        })*/
+            let data = e.data;
+            for (let i = 0; i < data.length; i++) {
+                switch (data[i].level) {
+                    case 1:
+                        $("#grid1").val(data[i].id);
+                        break;
+                    case 2:
+                        $("#grid2").empty();
+                        let option2 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid2").html(option2);
+                        break;
+                    case 3:
+                        $("#grid3").empty();
+                        let option3 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid3").html(option3);
+                        break;
+                    case 4:
+                        $("#grid4").empty();
+                        let option4 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid4").html(option4);
+                        break;
+                    default:
+                        console.log("查询出了网格之外的东西");
+                }
+            }
+            /* todo 上面的方式是单纯的回显 想做一个触发级联之后再赋值的操作 可能需要类似等待的方式 需要执行完一个函数之后通过回调执行下一个 同步 */
+            /*let grid1 = getLevelWithList(data, 1);
+            $("#grid1").val(grid1.id);
+            getStreetList();
+            let grid2 = getLevelWithList(data, 2);
+            $("#grid2").val(grid2.id);
+            getCommunityList();
+            let grid3 = getLevelWithList(data, 3);
+            $("#grid3").val(grid3.id);
+            getGridList();
+            let grid4 = getLevelWithList(data, 4);
+            $("#grid4").val(grid4.id);*/
+        });
     }
 
+
+    /**
+     * 获取网格的中心点
+     */
+    function getGridCenter() {
+        let pointOfCenter = $("#grid4 option:selected").val();
+        let url = "/grid/getGridCenter?gridId=" + pointOfCenter;
+        $.ajaxUtil.get(url, function (e) {
+            let data = e.data;
+            let pointArray = [];
+            pointArray.push(data.split("-")[0] * 1);
+            pointArray.push(data.split("-")[1] * 1);
+            setCenterForGrid(pointArray);
+        });
+    }
 </script>
 </body>
 </html>
