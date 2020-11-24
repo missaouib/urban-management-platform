@@ -110,7 +110,10 @@ public class WorkService {
         }
         int[] map = taskProcessingService.betWeenTime(statistics1.getStartTime(), statistics1.getEndTime(), statistics1.getProcessTimeLimit().getTimeType().getId(), statistics1.getProcessTimeLimit().getTimeLimit());
         if ("14".equals(eventDTO.getButton())) {
-            statistics1.setSendCheckHuman(1);
+            statistics1.setSendCheckHuman(SecurityUtil.getUser().castToUser());
+            statistics1.setSendCheckHumanName(SecurityUtil.getUser().castToUser());
+            Role role = new Role(KvConstant.RECEPTIONIST_ROLE);
+            statistics1.setSendCheckHumanRole(role);
             statistics1.setInTimeCheck(map[0]);
             statistics1.setSts(String.valueOf(map[1]));
         }
