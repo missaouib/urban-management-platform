@@ -399,6 +399,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" id="imageUrlList" value="">
                 <div class="modal-footer justify-content-between"
                      style="display: flex;justify-content: flex-end!important;">
                     <button type="button" class="btn btn-primary" onclick="completeEvent()" id="underBtn">完成</button>
@@ -690,7 +691,7 @@
     let searchUrl = /*[[@{/event/supervisionAcceptanceList}]]*/ "/event/supervisionAcceptanceList";
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
-    let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
+    let completeBySelfProcessingAuditUrl = /*[[@{/event/completeBySelfProcessingAudit}]]*/ "/event/completeBySelfProcessingAudit";
     let claimAndCompleteByReceptionistUrl = /*[[@{/event/claimAndCompleteByReceptionistWithShiftLeader}]]*/ "/event/claimAndCompleteByReceptionistWithShiftLeader";
     let completeByReceptionistWithSendCheckUrl = /*[[@{/event/completeByReceptionistWithSendCheck}]]*/ "/event/completeByReceptionistWithSendCheck";
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
@@ -957,9 +958,10 @@
     }
 
     function completeEvent() {
-        $.operate.saveAndReload(completeByReceptionistUrl, {
+        $.operate.saveAndReload(completeBySelfProcessingAuditUrl, {
             id: $("#eventId").val(),
-            button: $("#button").val()
+            button: $("#button").val(),
+            imageUrlList: $("#imageUrlList").val()
         });
     }
 
