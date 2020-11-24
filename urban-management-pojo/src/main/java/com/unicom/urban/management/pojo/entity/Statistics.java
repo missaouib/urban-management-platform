@@ -490,12 +490,16 @@ public class Statistics {
     /**
      * 核查监督员标识
      */
-    private Integer checkPatrolId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "check_patrol_id")
+    private Role checkPatrolId;
 
     /**
      * 核查监督员
      */
-    private String checkPatrolName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "check_patrol_name")
+    private User checkPatrolName;
 
     /**
      * 核查受理员标识
@@ -505,13 +509,15 @@ public class Statistics {
     /**
      * 核查受理员
      */
-    private String checkTransHumanName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "check_trans_human_name")
+    private User checkTransHumanName;
 
     /**
      * 核查受理员岗位标识
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
+    @JoinColumn(name = "check_trans_human_role")
     private Role checkTransHumanRole;
 
     /**
