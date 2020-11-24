@@ -167,7 +167,7 @@ public class TaskProcessingService {
 
     }
     /**
-     * 值班长 结案
+     * 自处理案件结案
      */
     private void meCloseTask(String eventId,EventButton eventButton, StatisticsDTO statisticsDTO) {
 
