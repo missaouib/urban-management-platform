@@ -284,7 +284,8 @@ public class StatisticsService {
         }
     }
 
-    private void getTrendAnalysisForYear() {
+    private List<Integer> getTrendAnalysisForYear() {
+        List<Integer> list = new ArrayList<>();
         /* 格式化 */
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         /* 获取当前时间 */
@@ -313,10 +314,19 @@ public class StatisticsService {
             int closeSize = statisticsRepository.findByClose(
                     LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
                     LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+            list.add(reportSize);
+            list.add(operateSize);
+            list.add(instSize);
+            list.add(dispatchSize);
+            list.add(disposeSize);
+            list.add(checkNumSize);
+            list.add(closeSize);
         }
+        return list;
     }
 
-    private void getTrendAnalysisForMonth() {
+    private List<Integer> getTrendAnalysisForMonth() {
+        List<Integer> list = new ArrayList<>();
         /* 格式化 */
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -349,10 +359,19 @@ public class StatisticsService {
             int closeSize = statisticsRepository.findByClose(
                     LocalDateTime.parse(startTime + " 00:00:01", df),
                     LocalDateTime.parse(endTime + " 23:59:59", df)).size();
+            list.add(reportSize);
+            list.add(operateSize);
+            list.add(instSize);
+            list.add(dispatchSize);
+            list.add(disposeSize);
+            list.add(checkNumSize);
+            list.add(closeSize);
         }
+        return list;
     }
 
-    private void getTrendAnalysisForDay() {
+    private List<Integer> getTrendAnalysisForDay() {
+        List<Integer> list = new ArrayList<>();
         /* 格式化 */
         DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -383,7 +402,15 @@ public class StatisticsService {
             int closeSize = statisticsRepository.findByClose(
                     LocalDateTime.parse(localDate + " 00:00:01", df),
                     LocalDateTime.parse(localDate + " 23:59:59", df)).size();
+            list.add(reportSize);
+            list.add(operateSize);
+            list.add(instSize);
+            list.add(dispatchSize);
+            list.add(disposeSize);
+            list.add(checkNumSize);
+            list.add(closeSize);
         }
+        return list;
     }
 
 }

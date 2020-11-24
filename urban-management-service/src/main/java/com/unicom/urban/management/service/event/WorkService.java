@@ -114,7 +114,7 @@ public class WorkService {
             statistics1.setSendCheckHumanName(SecurityUtil.getUser().castToUser());
             Role role = new Role(KvConstant.RECEPTIONIST_ROLE);
             statistics1.setSendCheckHumanRole(role);
-            statistics1.setInTimeCheck(map[0]);
+            statistics1.setInTimeSendCheck(map[0]);
             statistics1.setSts(String.valueOf(map[1]));
         }
         if ("11".equals(eventDTO.getButton())) {
