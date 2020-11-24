@@ -2,6 +2,7 @@ package com.unicom.urban.management.web.framework.common;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.util.FileUploadUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.model.BpmnModel;
 import org.activiti.engine.*;
 import org.activiti.engine.history.HistoricActivityInstance;
@@ -32,6 +33,7 @@ import java.util.*;
  */
 @RestController
 @ResponseResultBody
+@Slf4j
 public class CommonController {
 
 
@@ -70,6 +72,7 @@ public class CommonController {
         List<String> urlList = new ArrayList<>(10);
         for (MultipartFile file : files) {
             String url = fileUploadUtil.uploadFileToFastDFS(file);
+            log.debug("url:{}", url);
             urlList.add(url);
         }
         map.put("url", urlList);
