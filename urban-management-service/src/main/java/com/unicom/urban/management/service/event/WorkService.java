@@ -183,7 +183,7 @@ public class WorkService {
         statistics.setSort(saved.getSort() + 1);
         statistics.setCheckNum(1);
         statistics.setInTimeCheck(1);
-        statistics.setToClose(1);
+        statistics.setToCloseEvent(1);
         statistics.setCheckPatrolName(SecurityUtil.getUser().castToUser());
         statisticsService.save(statistics);
     }

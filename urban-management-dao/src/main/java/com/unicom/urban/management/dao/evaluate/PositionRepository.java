@@ -48,7 +48,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "            WHEN 40<=((sum(valid_patrol_report)*100*0.4+(1-(sum(public_report)/sum(inst)))*100*0.2+(sum(in_time_verify)/sum(need_verify))*100*0.2)+ (sum(in_time_check)/sum(need_send_check))*100*0.2)<60 THEN 'D'\n" +
             "             ELSE 'E' END ) as ratingLevel\n" +
             "            from grid g,statistics st,`event` ev,sys_user su where  \n" +
-            "\t\t\t\t\t\t(su.id=st.report_patrol_name_id or su.id=st.verify_patrol_name_id or su.id=st.check_patrol_name) \n" +
+            "\t\t\t\t\t\t (su.id=st.report_patrol_name_id or su.id=st.inst_human_name_id or su.id=st.check_patrol_name) \n" +
             "\t\t\t\t\t\tand g.id=ev.grid_id and ev.id=st.event_id and ev.create_time between ?1 and ?2 GROUP BY g.id,su.`name` \n", nativeQuery = true)
     List<Map<String,Object>> findSupervisorEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 
@@ -138,7 +138,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "#姓名\n" +
             "su.name as dispatch,\n" +
             "#派遣数\n" +
-            "sum(need_dispatch) as toDispatch,\n" +
+            "sum(dispatch) as toDispatch,\n" +
             "#按时派遣数\n" +
             "sum(in_time_dispatch) as intimeDispatch,\n" +
             "#应派遣数\n" +
