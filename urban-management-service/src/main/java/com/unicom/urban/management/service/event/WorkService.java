@@ -202,6 +202,10 @@ public class WorkService {
     public void completeByReceptionistForDo(EventDTO eventDTO) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventDTO.getId());
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
+        statistics.setOperateHuman(SecurityUtil.getUser().castToUser());
+        statistics.setOperateHumanName(SecurityUtil.getUser().castToUser());
+        Role role = new Role(KvConstant.RECEPTIONIST_ROLE);
+        statistics.setOperateRole(role);
         statistics.setEndTime(LocalDateTime.now());
         /* 受理数 */
         statistics.setOperate(1);
