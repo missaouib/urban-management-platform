@@ -47,7 +47,9 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "            WHEN 60<=((sum(valid_patrol_report)*100*0.4+(1-(sum(public_report)/sum(inst)))*100*0.2+(sum(in_time_verify)/sum(need_verify))*100*0.2)+ (sum(in_time_check)/sum(need_send_check))*100*0.2)<75 THEN 'C'\n" +
             "            WHEN 40<=((sum(valid_patrol_report)*100*0.4+(1-(sum(public_report)/sum(inst)))*100*0.2+(sum(in_time_verify)/sum(need_verify))*100*0.2)+ (sum(in_time_check)/sum(need_send_check))*100*0.2)<60 THEN 'D'\n" +
             "             ELSE 'E' END ) as ratingLevel\n" +
-            "            from grid g,statistics st,`event` ev,sys_user su,user_role ur where ur.role_id='2d62b759-50ff-4b72-863f-9129cd2d9c4d' and ur.user_id=st.report_patrol_name_id and g.id=ev.grid_id and ev.id=st.event_id and su.id=st.report_patrol_name_id and ev.create_time between ?1 and ?2 GROUP BY g.id,su.`name` \n", nativeQuery = true)
+            "            from grid g,statistics st,`event` ev,sys_user su where  \n" +
+            "\t\t\t\t\t\t(su.id=st.report_patrol_name_id or su.id=st.verify_patrol_name_id or su.id=st.check_patrol_name) \n" +
+            "\t\t\t\t\t\tand g.id=ev.grid_id and ev.id=st.event_id and ev.create_time between ?1 and ?2 GROUP BY g.id,su.`name` \n", nativeQuery = true)
     List<Map<String,Object>> findSupervisorEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
@@ -92,8 +94,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "END)*0.25+(sum(in_time_send_verify)/sum(need_send_verify))*100*0.4+(sum(in_time_send_check)/sum(need_send_check))*100*0.35)<60 THEN 'D'\n" +
             "\tELSE 'E' END\n" +
             ")as ratingLevel #评价等级\n" +
-            "from  statistics st,sys_user su,`event` ev,user_role ur  where st.operate_human_name_id=su.id and st.event_id=ev.id " +
-            "and ur.role_id='dffa2027-a9e3-4ff6-8e52-6a764b4575db' and st.operate_human_name_id=ur.user_id and ev.create_time between ?1 and ?2 GROUP BY su.`name`", nativeQuery = true)
+            "from  statistics st,sys_user su,`event` ev where st.event_id=ev.id and  su.id=st.operate_human_id and ev.create_time between ?1 and ?2 GROUP BY st.operate_human_id", nativeQuery = true)
     List<Map<String, Object>> findAcceptorEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
