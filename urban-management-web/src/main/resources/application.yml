@@ -60,4 +60,4 @@ logging:
     org.activiti.engine: info
     com.github.tobato: debug
     com.github.tobato.fastdfs.domain.proto: warn
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.hibernate.type.descriptor.sql.BasicBinder: info
