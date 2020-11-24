@@ -2,6 +2,7 @@ package com.unicom.urban.management.service.activiti;
 
 import com.unicom.urban.management.common.constant.EventSourceConstant;
 import com.unicom.urban.management.common.exception.BusinessException;
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.event.EventButtonRepository;
 import com.unicom.urban.management.pojo.entity.EventButton;
 import lombok.extern.slf4j.Slf4j;
@@ -192,10 +193,10 @@ public class ActivitiServiceImpl implements ActivitiService {
     @Override
     public void claim(String taskId, String userId) {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
-        if (StringUtils.isEmpty(task.getAssignee())) {
-            taskService.claim(taskId, userId);
+        if (!StringUtils.isEmpty(task.getAssignee())) {
+            throw new DataValidException("此事件已被他人领取");
         }
-        throw new BusinessException("此事件已被他人领取");
+        taskService.claim(taskId, userId);
     }
 
     @Override
@@ -229,7 +230,7 @@ public class ActivitiServiceImpl implements ActivitiService {
     public void complete(String taskId, List<String> userList, String buttonId) {
         Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
         if (task == null) {
-            throw new BusinessException("此事件已被他人领取");
+            throw new DataValidException("此事件已被他人领取");
         }
         Map<String, Object> variables = new HashMap<>(3);
         variables.put("buttonId", buttonId);
