@@ -278,12 +278,16 @@ public class Statistics {
     /**
      * 发核查人标识 受理员
      */
-    private Integer sendCheckHuman;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "send_check_human")
+    private User sendCheckHuman;
 
     /**
      * 发核查人
      */
-    private Integer sendCheckHumanName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "send_check_human_name")
+    private User sendCheckHumanName;
 
     /**
      * 发核查人岗位标识
