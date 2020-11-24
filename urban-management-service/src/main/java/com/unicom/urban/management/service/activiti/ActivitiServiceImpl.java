@@ -191,7 +191,11 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     @Override
     public void claim(String taskId, String userId) {
-        taskService.claim(taskId, userId);
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        if (StringUtils.isEmpty(task.getAssignee())) {
+            taskService.claim(taskId, userId);
+        }
+        throw new BusinessException("此事件已被他人领取");
     }
 
     @Override
@@ -223,6 +227,10 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     @Override
     public void complete(String taskId, List<String> userList, String buttonId) {
+        Task task = taskService.createTaskQuery().taskId(taskId).singleResult();
+        if (task == null) {
+            throw new BusinessException("此事件已被他人领取");
+        }
         Map<String, Object> variables = new HashMap<>(3);
         variables.put("buttonId", buttonId);
         variables.put("userId", StringUtils.collectionToCommaDelimitedString(userList));
