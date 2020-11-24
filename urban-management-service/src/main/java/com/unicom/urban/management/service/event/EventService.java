@@ -160,7 +160,7 @@ public class EventService {
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
         List<EventVO> eventVOList = new ArrayList<>();
-        DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+        DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         /*循环添加vo*/
         page.getContent().forEach(e -> {
             EventVO eventVO = EventMapper.INSTANCE.eventToEventVO(e);
