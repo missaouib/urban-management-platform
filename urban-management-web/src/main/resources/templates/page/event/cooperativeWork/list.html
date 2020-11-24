@@ -987,6 +987,7 @@
         }).on("fileuploaded", function (event, data) {
 
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            imageUrlList = null;
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {
                 console.log(data.response.data.url)
@@ -996,9 +997,11 @@
                 $.modal.alertError(data.response.message);
             }
         }).on('filedeleted', function (event, key) {
+            imageUrlList = null;
             console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
             console.log('Key = ' + key);
         }).on('filesuccessremove', function (event, id) {
+            imageUrlList=null;
             console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
             console.log(id);
         }).on('fileclear', function (event) {
