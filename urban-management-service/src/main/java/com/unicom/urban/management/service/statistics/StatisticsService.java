@@ -6,7 +6,6 @@ import com.unicom.urban.management.pojo.entity.Grid;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.CellGridRegionVO;
-import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.pojo.vo.StatisticsVO;
 import com.unicom.urban.management.service.grid.GridService;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +20,7 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -228,7 +228,7 @@ public class StatisticsService {
         return map;
     }
 
-    public List<Statistics> findAllByEventIdOrderBySort(String eventId){
+    public List<Statistics> findAllByEventIdOrderBySort(String eventId) {
         return statisticsRepository.findAllByEvent_IdOrderBySortDesc(eventId);
     }
 
@@ -256,11 +256,134 @@ public class StatisticsService {
         if (parentId != null) {
             Grid grid = gridService.findOne(gridId);
             if (grid.getParent().getId() == null) {
-                    return grid.getGridName();
+                return grid.getGridName();
             } else {
                 parentId = findFirstGrid(grid.getParent().getId());
             }
         }
         return "";
     }
+
+    public void getTrendAnalysis(String time) {
+        final String year = "year";
+        final String month = "month";
+        final String day = "day";
+        switch (time) {
+            case year:
+                getTrendAnalysisForYear();
+                break;
+            case month:
+                getTrendAnalysisForMonth();
+                break;
+            case day:
+                getTrendAnalysisForDay();
+                break;
+            default:
+                System.out.println("none");
+                break;
+        }
+    }
+
+    private void getTrendAnalysisForYear() {
+        /* 格式化 */
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        /* 获取当前时间 */
+        LocalDateTime now = LocalDateTime.now();
+        /* 本年 */
+        int year = now.getYear();
+        for (int i = 0; i < 7; i++) {
+            int reportSize = statisticsRepository.findByReport(
+                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
+                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+            int operateSize = statisticsRepository.findByOperate(
+                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
+                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+            int instSize = statisticsRepository.findByInst(
+                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
+                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+            int dispatchSize = statisticsRepository.findByDispatch(
+                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
+                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+            int disposeSize = statisticsRepository.findByDispose(
+                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
+                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+            int checkNumSize = statisticsRepository.findByCheckNum(
+                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
+                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+            int closeSize = statisticsRepository.findByClose(
+                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
+                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+        }
+    }
+
+    private void getTrendAnalysisForMonth() {
+        /* 格式化 */
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        /* 获取当前时间 */
+        LocalDateTime now = LocalDateTime.now();
+        /* 本月 */
+        for (int i = 0; i < 7; i++) {
+            LocalDateTime startLocalTime = now.with(TemporalAdjusters.firstDayOfMonth()).minusMonths(i).with(TemporalAdjusters.firstDayOfMonth());
+            String startTime = dateTime.format(startLocalTime);
+            LocalDateTime endLocalTime = now.with(TemporalAdjusters.lastDayOfMonth()).minusMonths(i).with(TemporalAdjusters.lastDayOfMonth());
+            String endTime = dateTime.format(endLocalTime);
+            int reportSize = statisticsRepository.findByReport(
+                    LocalDateTime.parse(startTime + " 00:00:01", df),
+                    LocalDateTime.parse(endTime + " 23:59:59", df)).size();
+            int operateSize = statisticsRepository.findByOperate(
+                    LocalDateTime.parse(startTime + " 00:00:01", df),
+                    LocalDateTime.parse(endTime + " 23:59:59", df)).size();
+            int instSize = statisticsRepository.findByInst(
+                    LocalDateTime.parse(startTime + " 00:00:01", df),
+                    LocalDateTime.parse(endTime + " 23:59:59", df)).size();
+            int dispatchSize = statisticsRepository.findByDispatch(
+                    LocalDateTime.parse(startTime + " 00:00:01", df),
+                    LocalDateTime.parse(endTime + " 23:59:59", df)).size();
+            int disposeSize = statisticsRepository.findByDispose(
+                    LocalDateTime.parse(startTime + " 00:00:01", df),
+                    LocalDateTime.parse(endTime + " 23:59:59", df)).size();
+            int checkNumSize = statisticsRepository.findByCheckNum(
+                    LocalDateTime.parse(startTime + " 00:00:01", df),
+                    LocalDateTime.parse(endTime + " 23:59:59", df)).size();
+            int closeSize = statisticsRepository.findByClose(
+                    LocalDateTime.parse(startTime + " 00:00:01", df),
+                    LocalDateTime.parse(endTime + " 23:59:59", df)).size();
+        }
+    }
+
+    private void getTrendAnalysisForDay() {
+        /* 格式化 */
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter dateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        /* 获取当前时间 */
+        LocalDateTime now = LocalDateTime.now();
+        /* 本月 */
+        for (int i = 0; i < 7; i++) {
+            LocalDateTime localDateTime = now.minusDays(i);
+            String localDate = dateTime.format(localDateTime);
+            int reportSize = statisticsRepository.findByReport(
+                    LocalDateTime.parse(localDate + " 00:00:01", df),
+                    LocalDateTime.parse(localDate + " 23:59:59", df)).size();
+            int operateSize = statisticsRepository.findByOperate(
+                    LocalDateTime.parse(localDate + " 00:00:01", df),
+                    LocalDateTime.parse(localDate + " 23:59:59", df)).size();
+            int instSize = statisticsRepository.findByInst(
+                    LocalDateTime.parse(localDate + " 00:00:01", df),
+                    LocalDateTime.parse(localDate + " 23:59:59", df)).size();
+            int dispatchSize = statisticsRepository.findByDispatch(
+                    LocalDateTime.parse(localDate + " 00:00:01", df),
+                    LocalDateTime.parse(localDate + " 23:59:59", df)).size();
+            int disposeSize = statisticsRepository.findByDispose(
+                    LocalDateTime.parse(localDate + " 00:00:01", df),
+                    LocalDateTime.parse(localDate + " 23:59:59", df)).size();
+            int checkNumSize = statisticsRepository.findByCheckNum(
+                    LocalDateTime.parse(localDate + " 00:00:01", df),
+                    LocalDateTime.parse(localDate + " 23:59:59", df)).size();
+            int closeSize = statisticsRepository.findByClose(
+                    LocalDateTime.parse(localDate + " 00:00:01", df),
+                    LocalDateTime.parse(localDate + " 23:59:59", df)).size();
+        }
+    }
+
 }

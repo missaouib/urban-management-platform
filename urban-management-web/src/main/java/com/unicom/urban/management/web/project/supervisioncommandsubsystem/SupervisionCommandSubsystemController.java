@@ -2,7 +2,8 @@ package com.unicom.urban.management.web.project.supervisioncommandsubsystem;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
-import com.unicom.urban.management.service.grid.GridService;
+import com.unicom.urban.management.pojo.Result;
+import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class SupervisionCommandSubsystemController {
 
     @Autowired
-    private GridService gridService;
+    private StatisticsService statisticsService;
 
     @GetMapping("/index")
     public ModelAndView index() {
@@ -45,6 +46,12 @@ public class SupervisionCommandSubsystemController {
     @GetMapping("/gridInformation")
     public ModelAndView gridInformation() {
         return new ModelAndView(SystemConstant.PAGE + "/command/gridInformation");
+    }
+
+    @GetMapping("/getTrendAnalysis")
+    public Result getTrendAnalysis(String time) {
+        statisticsService.getTrendAnalysis(time);
+        return Result.success();
     }
 
 

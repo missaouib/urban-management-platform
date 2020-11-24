@@ -115,13 +115,86 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      */
     @Query(value = "SELECT s,e,g FROM Statistics s LEFT JOIN Event e on s.event = e.id LEFT JOIN e.grid g on e.grid.id = g.id WHERE s.hang = 1 and g.id = ?1 ")
     List<Statistics> findAllByHang(String gridId);
+
     /**
      * 高发区域
      *
      * @param
      * @return 数据
      */
-    @Query(value = "SELECT (SUM(ifnull(inst,0))) as totalInst,sum(ifnull(`close`,0)) as totalClose,g.id as gridId  from `event` ev,grid g,statistics st where g.id=ev.grid_id and ev.id=st.event_id GROUP BY g.id",nativeQuery = true)
-    List<Map<String,Object>> findHotGrid();
+    @Query(value = "SELECT (SUM(ifnull(inst,0))) as totalInst,sum(ifnull(`close`,0)) as totalClose,g.id as gridId  from `event` ev,grid g,statistics st where g.id=ev.grid_id and ev.id=st.event_id GROUP BY g.id", nativeQuery = true)
+    List<Map<String, Object>> findHotGrid();
+
+    /* -------------------------------------------------------------- */
+
+    /**
+     * report : int //上报
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return list
+     */
+    @Query(value = "SELECT s,e FROM Statistics s LEFT JOIN Event e on s.event = e.id WHERE s.report = 1 and e.createTime between ?1 and ?2 ")
+    List<Statistics> findByReport(LocalDateTime startTime, LocalDateTime endTime);
+
+    /**
+     * operate : int //受理 批转值班长 触发
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return list
+     */
+    @Query(value = "SELECT s,e FROM Statistics s LEFT JOIN Event e on s.event = e.id WHERE s.operate = 1 and e.createTime between ?1 and ?2 ")
+    List<Statistics> findByOperate(LocalDateTime startTime, LocalDateTime endTime);
+
+    /**
+     * inst : int //立案 值班长 立案
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return list
+     */
+    @Query(value = "SELECT s,e FROM Statistics s LEFT JOIN Event e on s.event = e.id WHERE s.inst = 1 and e.createTime between ?1 and ?2 ")
+    List<Statistics> findByInst(LocalDateTime startTime, LocalDateTime endTime);
+
+    /**
+     * dispatch : int //派遣 派遣员 已派遣 派遣数 所有 专业 应处置
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return list
+     */
+    @Query(value = "SELECT s,e FROM Statistics s LEFT JOIN Event e on s.event = e.id WHERE s.dispatch = 1 and e.createTime between ?1 and ?2 ")
+    List<Statistics> findByDispatch(LocalDateTime startTime, LocalDateTime endTime);
+
+    /**
+     * dispose : int //处置 //专业部门
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return list
+     */
+    @Query(value = "SELECT s,e FROM Statistics s LEFT JOIN Event e on s.event = e.id WHERE s.dispose = 1 and e.createTime between ?1 and ?2 ")
+    List<Statistics> findByDispose(LocalDateTime startTime, LocalDateTime endTime);
+
+    /**
+     * checkNum : int //核查数
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return list
+     */
+    @Query(value = "SELECT s,e FROM Statistics s LEFT JOIN Event e on s.event = e.id WHERE s.checkNum = 1 and e.createTime between ?1 and ?2 ")
+    List<Statistics> findByCheckNum(LocalDateTime startTime, LocalDateTime endTime);
+
+    /**
+     * close : int //结案
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return list
+     */
+    @Query(value = "SELECT s,e FROM Statistics s LEFT JOIN Event e on s.event = e.id WHERE s.close = 1 and e.createTime between ?1 and ?2 ")
+    List<Statistics> findByClose(LocalDateTime startTime, LocalDateTime endTime);
 
 }

@@ -231,6 +231,9 @@ public class WorkService {
         Statistics statistics1 = this.initStatistics(eventDTO.getId(), statistics.getSort());
         if ("10".equals(eventDTO.getButton())) {
             /* 待结案 */
+            statistics1.setCloseOperate(1);
+            statistics1.setCloseInTimeOperate(1);
+            statistics1.setToCloseEvent(0);
             statistics1.setToClose(1);
         }
         if ("3".equals(eventDTO.getButton())) {
