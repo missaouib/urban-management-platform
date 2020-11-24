@@ -249,6 +249,38 @@
                                 </tr>
                                 </tbody>
                             </table>
+                            <div class="send">
+                                <div class="sendImg">
+                                    <div class="sendText"><span>照片:</span></div>
+                                    <div>
+                                        <div id="imageList">
+                                            <div class="innerPic" style="float:left;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="sendImg">
+                                    <div class="sendText"><span>视频:</span></div>
+                                    <div>
+                                        <!--                                        <input class="videoInput" type="file" name="file" multiple="multiple">-->
+                                        <div class="innerPic">
+                                            无
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="sendImg">
+                                    <div class="sendText"><span>音频:</span></div>
+                                    <div>
+                                        <!--                                        <input class="musicInput" type="file" name="file" multiple="multiple">-->
+                                        <div class="innerPic">
+                                            无
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                             <div id="before" class="send" style="display: none">
                                 <div class="sendImg">
                                     <div class="sendText"><span>图片:</span></div>
@@ -711,6 +743,16 @@
             $("#petitionerName").val(e.data.petitionerName);
             $("#userName").val(e.data.userName);
             $("#recTypeStr").val(e.data.recTypeStr);
+            let file = e.data.file;
+            if (file.length > 0) {
+                let showUrl = [[${@fastProperties.nginxUrl}]];
+                $("#imageList").empty();
+                let imageHtml = "";
+                for (let i = 0; i < file.length; i++) {
+                    imageHtml += "<img class='img-rounded' src='" + showUrl + file[i].url + "'>";
+                }
+                $("#imageList").html(imageHtml);
+            }
             /*流程图*/
             console.log("eventImg",e.data.processInstanceId)
             $("#eventImg").attr('src', img + e.data.processInstanceId);

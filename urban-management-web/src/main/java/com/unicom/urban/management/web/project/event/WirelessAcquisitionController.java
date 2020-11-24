@@ -126,6 +126,7 @@ public class WirelessAcquisitionController {
         model.addObject("recType", kvService.findByTableNameAndFieldName("event","recType"));
         //所属社区
         model.addObject("gridList",gridService.findAllByParentIsNull());
+        model.addObject("files",vo.getFile());
         return model;
     }
 
