@@ -32,7 +32,7 @@ public class User extends BaseEntity {
     /**
      * 姓名
      */
-    @Column(nullable = false, columnDefinition = "char(15)")
+    @Column(nullable = false, columnDefinition = "varchar(15)")
     private String name;
 
     /**
