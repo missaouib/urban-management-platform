@@ -1691,7 +1691,7 @@ width: 50px;
     transition: 0.5s;
     overflow: hidden;
     letter-spacing: 4px;
-    -webkit-box-reflect: below 1px linear-gradient(transparent, #0003);
+    /*-webkit-box-reflect: below 1px linear-gradient(transparent, #0003);*/
     cursor: pointer;
 }
 
