@@ -378,8 +378,7 @@
                         <div class="send">
                             <div class="sendImg">
                                 <div class="sendText" style="width: 72px"><span>照片:</span></div>
-                                <div><input id="picture" type="file" class="input-id" name="file"
-                                            multiple="multiple"></div>
+                                <div><input id="input-id" class="input-id" type="file" name="file" multiple="multiple"></div>
                             </div>
 
 
@@ -409,7 +408,66 @@
                 </div>
             </div>
         </div>
+    <!--    附件详情弹出的窗口-->
+    <div class="duck_duck">
+        <div class="duck_box">
+            <div class="allTiel">
+                <div class="duck_close">
+                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png"
+                                                             style="width: 100%;height: 100%"></i>
+                </div>
+                <div class="duck_title">
+                    <span class="duckActive">图片</span>
+                    <span>视频</span>
+                    <span>音频</span>
+                </div>
+                <div class="duck_info">
+                    <div class="info_chance blockActive">
+                        <div class="swiper-container sw1">
+                            <div class="swiper-wrapper" id="modelImageList">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination pg1"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+                    <div class="info_chance">视频
+                        <video style="width: 100%;height: 100%"></video>
+                    </div>
+                    <div class="info_chance">音频</div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- &lt;!&ndash;  点击图片弹出  &ndash;&gt;-->
+    <div class="duk_duck" id="pictureBoxDuc" style="display: none">
+        <div class="duk_box">
+            <div class="allTiel" id="allTiel">
+                <div class="fullScreen" id="fullScreen">全屏</div>
+                <div class="fullScreen exitfullScreen" id="exitfullScreen">退出全屏</div>
+                <div class="duk_close" id="duk_picture">
+                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png"
+                                                             style="width: 100%;height: 100%"></i>
+                </div>
+                <div style="width: 100%;height: 100%;padding: 5px">
+                    <div class="swiper-container sw2">
+                        <div class="swiper-wrapper" id="pictureList">
+
+                        </div>
+                        <!-- Add Pagination -->
+                        <div class="swiper-pagination pg2"></div>
+                        <!-- Add Arrows -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
     <th:block th:include="page/fragments/common :: common_js"/>
     <th:block th:include="page/fragments/common :: jquery_validation_js"/>
@@ -419,7 +477,39 @@
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
     <th:block th:include="page/fragments/common :: swiper_js"/>
     <script type="text/javascript" th:inline="javascript">
+        //惯用语
+        $("#alwaysSay").click(function () {
+            $("#wordSays").stop().fadeToggle(300)
+        });
 
+        $("#wordSays").on("click", ".idioms", function () {
+            let idioms = $(this).html()
+            $("#textIdioms").html(idioms);
+            $("#wordSays").fadeOut(300)
+        });
+
+        $("#alwaysSay_tag").click(function () {
+            $("#wordSays_tag").stop().fadeToggle(300)
+        });
+
+        $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
+            let idioms = $(this).html()
+            $("#textIdioms_tag").html(idioms);
+            $("#wordSays_tag").fadeOut(300)
+        });
+        //附件详情弹出
+        $(".duck_title span").click(function () {
+            $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
+            $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
+        });
+
+        $(".duck_close").click(function () {
+            $(".duck_duck").fadeOut(300)
+        });
+
+        $(".banner").on("click", ".enclosure", function () {
+            $(".duck_duck").fadeIn(300)
+        });
         /**
          * 获取街道
          */
@@ -643,7 +733,6 @@
         let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
         //上传 照片视频音频
 
-        let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
         let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
 
         $(function () {
@@ -652,11 +741,12 @@
                 language: 'zh',                                     // 设置语言
                 theme: 'fa',
                 uploadUrl: uploadUrl,
+                uploadAsync: false,                                       //关闭异步上传，改为同步上传。
                 // showUpload: true,
                 // previewFileType: 'any',
                 // enableResumableUpload: true,
-                allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-                maxFileCount: 2,                                    // 最大文件数量
+                allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+                maxFileCount: 10,                                    // 最大文件数量
                 hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
                 focusCaptionOnBrowse: false,
                 showCaption: false,                                 // 是否显示标题
@@ -671,17 +761,25 @@
             }).on('fileselect', function (event, numFiles, label) {
                 console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
             }).on("filebatchselected", function (event, files) {
-                // $(this).fileinput("upload");
+                $(this).fileinput("upload");
             }).on("fileuploaded", function (event, data) {
-                console.log('fileuploaded()      ');
-                if (data.response.code === web_status.FAIL) {
-                    console.log("上传文件失败");
+
+            }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+                imageUrlList=null;
+                console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+                if (data.response.code === web_status.SUCCESS) {
+                    console.log(data.response.data.url)
+                    imageUrlList = data.response.data.url;
+                    $.modal.alertSuccess('上传成功');
+                } else {
+                    $.modal.alertError(data.response.message);
                 }
-                console.log(data);
             }).on('filedeleted', function (event, key) {
+                imageUrlList=null;
                 console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
                 console.log('Key = ' + key);
             }).on('filesuccessremove', function (event, id) {
+                imageUrlList=null;
                 console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
                 console.log(id);
             }).on('fileclear', function (event) {
@@ -697,11 +795,10 @@
                 console.log('filesuccessremove()   ')
                 console.log(id);
             });
-
-            $(".videoInput").fileinput({
+            $("#video").fileinput({
                 language: 'zh',                                     // 设置语言
                 theme: 'fa',
-                uploadUrl: uploadUrl,
+                // uploadUrl: uploadUrl,
                 // showUpload: true,
                 // previewFileType: 'any',
                 // enableResumableUpload: true,
@@ -717,10 +814,10 @@
                 // browseClass: "btn btn-primary",                     // 按钮样式
 
             })
-            $(".musicInput").fileinput({
+            $("#music").fileinput({
                 language: 'zh',                                     // 设置语言
                 theme: 'fa',
-                uploadUrl: uploadUrl,
+                // uploadUrl: uploadUrl,
                 // showUpload: true,
                 // previewFileType: 'any',
                 // enableResumableUpload: true,
@@ -821,6 +918,7 @@
             $.table.init(options);
         }
         function getTimeAxis(eventId) {
+            let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
             $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
                 let data = e.data;
                 $("#timeAxis").empty();
@@ -852,34 +950,31 @@
                         html += "<div class='expressRecord-text'>";
                         html += "<div class='gameEnd'>";
                         html += "<div class='endBox'>";
-                        html += "回复内容:<em class='roleSize'>"+ data[i].opinions +"</em> ";
+                        html += "回复内容:<em class='roleSize'>" + data[i].opinions + "</em> "
                         html += "</div>";
-                        if (data[i].fileName.length > 0) {
-                            html += "<div class='endBox enclosure'><i></i>附件详情</div>";
-                        }
+
                         html += "</div>";
                         html += "<div class='gameEnd'>";
                         html += "<div class='endBox'>";
-                        html += "by:<em class='roleSize'>"+ data[i].user  + "</em> ";
+                        html += "by:<em class='roleSize'>" + data[i].user + "</em> ";
                         html += "</div>";
                         html += "</div>";
                         html += "<div class='gameEnd'>";
                         html += "<div class='endBox RecordTime'>";
-                        html += "<div>开始时间:<em>"+ data[i].starTime +"</em></div>";
+                        html += "<div>开始时间:<em>" + data[i].starTime + "</em></div>";
                         html += "</div>";
                         html += "</div>";
                         html += "<div class='gameEnd'>";
                         html += "<div class='endBox RecordTime'>";
-                        html += "结束时间:<em>"+ data[i].endTime +"</em>"
+                        html += "结束时间:<em>" + data[i].endTime + "</em>"
                         html += "</div>";
                         html += "</div>";
-                        html += "<div class='gameEnd'>";
+                        html += "<div class='gameEnd felx_end'>";
                         html += "<div class='endBox'>";
-                        html += "<em></em>"
-                        html += "</div>";
                         if (data[i].fileName.length > 0) {
-                            html += "<div class='endBox enclosure'><i></i>附件详情</div>";
+                            html += "<button class='endBox enclosure' type='button' value='" + JSON.stringify(data[i].fileName) + "' onclick='setFileUrl(this)'><i></i>附件详情</button>";
                         }
+                        html += "</div>";
                         html += "</div>";
                         html += "</div>";
                         html += "<div class='expressRecord-date'>";
@@ -890,6 +985,20 @@
                 }
                 $("#timeAxis").append(html);
             });
+        }
+        let showUrl = [[${@fastProperties.nginxUrl}]];
+        function setFileUrl(data) {
+            let value = $.parseJSON(data.value);
+            if (value.length > 0) {
+                $("#modelImageList").empty();
+                let imageHtml = "";
+                for (let i = 0; i < value.length; i++) {
+                    imageHtml += "<div class=\"swiper-slide\">" +
+                        "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>" +
+                        "</div>"
+                }
+                $("#modelImageList").html(imageHtml);
+            }
         }
         function getEventDetail(eventId) {
             $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
@@ -918,7 +1027,6 @@
                 $("#recTypeStr").val(e.data.recTypeStr);
                 let file = e.data.file;
                 if (file.length > 0) {
-                    let showUrl = [[${@fastProperties.nginxUrl}]];
                     $("#imageList").empty();
                     let imageHtml = "";
                     for (let i = 0; i < file.length; i++) {

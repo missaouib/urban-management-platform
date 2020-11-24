@@ -158,7 +158,7 @@
                             </tbody>
                         </table>
                         <div class="send" style="float:left;width: 48%">
-                            <div><span>处置前</span></div>
+<!--                            <div><span>处置前</span></div>-->
                             <div class="sendImg">
                                 <div class="sendText"><span>图片:</span></div>
                                 <div><input id="input-id" class="input-id" type="file" name="files" multiple="multiple"></div>
@@ -966,13 +966,14 @@
     }
 
     function showImage(){
+        let showUrl = [[${@fastProperties.nginxUrl}]];
         let file = [[${files}]];
         console.log("file",file)
         if (file.length > 0) {
             $("#imageList").empty();
             let imageHtml = "";
             for (let i = 0; i < file.length; i++) {
-                imageHtml += "<img class='img-rounded' src='" + file[i].url + "'>";
+                imageHtml += "<img class='img-rounded' src='" + showUrl +file[i].url + "'>";
             }
             $("#imageList").html(imageHtml);
         }
