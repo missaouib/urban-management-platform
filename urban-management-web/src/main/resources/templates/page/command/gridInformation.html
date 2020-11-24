@@ -1,10 +1,314 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: swiper_css" />
+    <link th:href="@{/css/gridInformation.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
-gridInformation gridInformation gridInformation gridInformation gridInformation
+<div class="warp">
+    <div class="linebox">
+        <div class="line_box_rell">
+            <div class="title">网格信息</div>
+            <div class="geographical">
+                <div>哈尔滨</div>
+                <span class="direction"></span>
+                <div>南岗区</div>
+            </div>
+            <div class="tableTitle">
+                <div class="tabletext">序号</div>
+                <div class="tabletext">乡村(街道)名称</div>
+                <div class="tabletext">村居(社区)数</div>
+                <div class="tabletext">网格数</div>
+            </div>
+            <div class="table">
+                <div id="scroll">
+                    <div id="con1">
+                        <ul>
+                            <li class="tableOptions">
+                                <span>1</span>
+                                <span>和平街道办事处</span>
+                                <span>5</span>
+                                <span>187</span>
+                            </li>
+                            <li class="tableOptions">
+                                <span>2</span>
+                                <span>大庆街道办事处</span>
+                                <span>5</span>
+                                <span>187</span>
+                            </li>
+                            <li class="tableOptions">
+                                <span>3</span>
+                                <span>鸡西街道办事处</span>
+                                <span>5</span>
+                                <span>187</span>
+                            </li>
+                            <li class="tableOptions">
+                                <span>4</span>
+                                <span>绥化街道办事处</span>
+                                <span>5</span>
+                                <span>187</span>
+                            </li>
+                            <li class="tableOptions">
+                                <span>5</span>
+                                <span>福星街道办事处</span>
+                                <span>5</span>
+                                <span>187</span>
+                            </li>
+                            <li class="tableOptions">
+                                <span>6</span>
+                                <span>福星街道办事处</span>
+                                <span>5</span>
+                                <span>187</span>
+                            </li>
+                            <li class="tableOptions">
+                                <span>7</span>
+                                <span>福星街道办事处</span>
+                                <span>5</span>
+                                <span>187</span>
+                            </li>
+                            <li class="tableOptions">
+                                <span>8</span>
+                                <span>福星街道办事处</span>
+                                <span>5</span>
+                                <span>187</span>
+                            </li>
+                            <li class="tableOptions">
+                                <span>9</span>
+                                <span>福星街道办事处</span>
+                                <span>5</span>
+                                <span>187</span>
+                            </li>
+                            <li class="tableOptions">
+                                <span>10</span>
+                                <span>福星街道办事处</span>
+                                <span>5</span>
+                                <span>187</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="con2"></div>
+                    <div class="con2"></div>
+                    <div class="con2"></div>
+                    <div class="con2"></div>
+                </div>
+            </div>
+            <div class="chart">
+                <div id="high" style="width: 100%;height:100%;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="map_box">
+        <div class="map" id="map" style="width: 100%;height: 100%"></div>
+        <div class="follMap"></div>
+    </div>
+</div>
+</body>
+
+
+</div>
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
+<th:block th:include="page/fragments/common :: echarts_js"/>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        var time = 60;
+        var box = document.getElementById('scroll');
+        var con1 = document.getElementById('con1');
+        var con2 = document.querySelectorAll('.con2');
+        $(".con2").html($("#con1").html())
+
+        function Up() {
+            if (box.scrollTop >= con1.offsetHeight) {
+                box.scrollTop = 0;
+            } else {
+                box.scrollTop++
+            }
+        }
+
+        var setlId = setInterval(Up, time);
+
+        $("#scroll").mouseover(function () {
+            clearInterval(setlId);
+        })
+
+        $("#scroll").mouseleave(function () {
+            setlId = setInterval(Up, time);
+        })
+
+
+        var myChart2 = echarts.init(document.getElementById('high'));
+        var option3 = {
+            tooltip: {
+                trigger: "axis"
+            },
+            legend: {
+                data: ["结案量", "立案量"],
+                x: "right",
+                orient: "horizontal",
+                y: "top"
+            },
+            title: {
+                x: "left"
+            },
+            toolbox: {
+                show: false,
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true
+                    },
+                    magicType: {
+                        show: false,
+                        type: ["line", "bar"]
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: "category",
+                    data: ["和兴办事处", "大成办事处", "芦家办事处", "公滨办事处", "七政办事处", "通达办事处", "荣市办事处", "花园办事处", "文化办事处", "曲线办事处"],
+                    splitArea: {
+                        show: false
+                    },
+                    position: "bottom",
+                    axisTick: {
+                        show: true
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    nameTextStyle: {
+                        color: "#C4EAFC"
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: "#48b"
+                        }
+                    },
+                    axisLabel: {
+                        interval: 0,
+                        formatter:function(value)
+                        {
+                            var ret = "";//拼接加\n返回的类目项
+                            var maxLength = 1;//每项显示文字个数
+                            var valLength = value.length;//X轴类目项的文字个数
+                            var rowN = Math.ceil(valLength / maxLength); //类目项需要换行的行数
+                            if (rowN > 1)//如果类目项的文字大于5,
+                            {
+                                for (var i = 0; i < rowN; i++) {
+                                    var temp = "";//每次截取的字符串
+                                    var start = i * maxLength;//开始截取的位置
+                                    var end = start + maxLength;//结束截取的位置
+                                    //这里也可以加一个是否是最后一行的判断，但是不加也没有影响，那就不加吧
+                                    temp = value.substring(start, end) + "\n";
+                                    ret += temp; //凭借最终的字符串
+                                }
+                                return ret;
+                            }
+                            else {
+                                return value;
+                            }
+                        }
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: "value",
+                    splitLine: {
+                        show: true
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: "立案量",
+                    type: "bar",
+                    data: [20, 4.9, 30, 23.2, 120, 76.7, 76.7, 76.7, 76.7, 76.7]
+                },
+                {
+                    name: "结案量",
+                    type: "bar",
+                    data: [2.6, 5.9, 20, 26.4, 28.7, 70.7, 70.7, 70.7, 70.7, 200]
+                }
+            ],
+            calculableColor: "rgba(255,165,0,0.6)",
+            animation: true,
+            animationEasing: "ExponentialInOut",
+            grid: {
+                x: 56,
+                x2: 51,
+                y2: 70,
+                y: 38
+            }
+        };
+        myChart2.setOption(option3);
+
+
+
+        var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
+        // 沽源地图
+        var center = [115.68192, 41.66462];
+        var projection = new ol.proj.Projection({
+            code: 'EPSG:4326',
+            units: 'degrees',
+            axisOrientation: 'neu',
+            global: true
+        });
+        var untiled = new ol.layer.Image({
+            source: new ol.source.ImageWMS({
+                ratio: 1,
+                url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
+                params: {
+                    'VERSION': '1.1.1',
+                    "LAYERS": 'guyuan20201010:guyuan',
+                    "exceptions": 'application/vnd.ogc.se_inimage',
+                }
+            })
+        });
+        var source = new ol.source.Vector({wrapX: false});
+
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                untiled
+            ],
+            view: new ol.View({
+                // projection: projection,
+                center: center,
+                zoom: 17,
+                projection: projection
+            })
+        });
+
+        var layerMap = new ol.layer.Vector({
+            source: new ol.source.Vector(),
+        });
+        map.addLayer(layerMap);
+
+    })
+</script>
 </body>
 </html>

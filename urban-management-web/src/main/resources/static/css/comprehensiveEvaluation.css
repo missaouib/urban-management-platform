@@ -1,0 +1,247 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    background-color: #031636;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.warp {
+    width: 98%;
+    height: 98%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.linebox {
+    width: 34%;
+    height: 100%;
+    background: url("../img/tuqileft.png");
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.map_box {
+    width: 65%;
+    height: 100%;
+    position: relative;
+}
+
+.follMap {
+    position: absolute;left: 0;top: 0;
+    width: 100%;
+    height: 100%;
+    background: url("../img/tuqimapright.png");
+    background-size: 100% 100%;
+}
+
+.line_box_rell {
+    width: 95%;
+    height: 96%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.buttons {
+    width: 100%;
+    height: 5%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.sport {
+    width: 100%;
+    height: 94%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sport_line {
+    width: 6px;
+    height: 90%;
+    position: relative;
+    background: #396CFF;
+    border-radius: 3px;
+}
+
+.line_time {
+    width: 100px;
+    height: 100%;
+    position: absolute;
+    left: -110px;
+    top: 0;
+    text-align: center;
+}
+
+.times {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.times div:nth-child(2) {
+    margin: 0 10px;
+}
+
+.controls {
+    width: 40%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.close {
+    width: 8%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.closelogo {
+    background: url("../img/close.png");
+    background-size: 100% 100%;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.titleone {
+    font-size: 18px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #0194CB;
+}
+
+.titleorther {
+    font-size: 14px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #0194CB;
+}
+
+.controls div {
+    width: 30px;
+    height: 30px;
+    background: url("../img/start.png");
+    background-size: 100% 100%;
+    cursor: pointer;
+}
+
+.controls div:nth-child(2) {
+    margin: 0 10px;
+    background: url("../img/stop.png");
+    background-size: 100% 100%;
+}
+
+.controls div:nth-child(3) {
+    background: url("../img/wait.png");
+    background-size: 100% 100%;
+}
+
+.timestart {
+    width: 50px;
+    text-align: center;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #4EF106;
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    margin-left: -25px;
+}
+
+.timeend {
+    width: 50px;
+    text-align: center;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #FF2A2A;
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    margin-left: -25px;
+}
+
+.startPoint,
+.endPoint,
+.centerPoint {
+    width: 15px;
+    height: 15px;
+    background: #396CFF;
+    border-radius: 50%;
+    border: 2px solid #133BB1;
+    left: 50%;
+    margin-left: -7.5px;
+}
+
+.startPoint {
+    position: absolute;
+    top: 0;
+}
+
+.endPoint {
+    position: absolute;
+    bottom: 0;
+}
+
+.centerPoint {
+    position: absolute;
+    top: 50%;
+}
+
+.contorl_times {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.startTimes,
+.endTimes,
+.centerTimes {
+    width: 100%;
+    height: 15px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    color: #0194CB;
+    line-height: 30px;
+    position: absolute;
+    margin-top: -7px;
+}
+
+.startTimes {
+    top: 0;
+}
+
+.endTimes {
+    bottom: 0;
+    margin-bottom: 7px;
+}
+
+.centerTimes {
+    top: 50%;
+}
+
+.sportPoint {
+    width: 32px;
+    height: 40px;
+    background: url("../img/sportPoint.png");
+    background-size: 100% 100%;
+    position: absolute;
+    top: -26px;
+    right: -46px;
+}
