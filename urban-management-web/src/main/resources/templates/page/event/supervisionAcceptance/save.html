@@ -485,6 +485,7 @@
 
     let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
 
+    /* 点击网格列表赋值 */
     function success_jsonpCallback(res) {
         var features = geojsonFormat.readFeatures(res);
         let mongodbId = features[0].H.mongodb_id;
