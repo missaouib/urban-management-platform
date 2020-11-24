@@ -94,7 +94,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "END)*0.25+(sum(in_time_send_verify)/sum(need_send_verify))*100*0.4+(sum(in_time_send_check)/sum(need_send_check))*100*0.35)<60 THEN 'D'\n" +
             "\tELSE 'E' END\n" +
             ")as ratingLevel #评价等级\n" +
-            "from  statistics st,sys_user su,`event` ev where st.event_id=ev.id and  su.id=st.operate_human_id and ev.create_time between ?1 and ?2 GROUP BY st.operate_human_id", nativeQuery = true)
+            "from  statistics st,sys_user su,`event` ev where st.event_id=ev.id and  (su.id=st.operate_human_id or su.id=st.send_check_human_name) and ev.create_time between ?1 and ?2 GROUP BY su.`name`", nativeQuery = true)
     List<Map<String, Object>> findAcceptorEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
