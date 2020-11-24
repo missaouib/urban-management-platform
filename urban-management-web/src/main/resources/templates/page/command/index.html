@@ -1,10 +1,784 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: swiper_css" />
+    <link th:href="@{/css/fullindex.css}" rel="stylesheet" type="text/css">
 </head>
-<body>
-index index index index index
+<body style="width: 100vw;height: 100vh;background-color: #031636;">
+<div class="warp">
+    <div class="leftWarp">
+        <div class="fullMap">
+            <div class="map" id="map" style="width: 100%;height: 100%"></div>
+            <div class="fugai">
+                <div class="checkTime">
+                    <div class="timeText">时间</div>
+                    <div class="selectTime">
+                        <select class="timeSelect">
+                            <option selected>天</option>
+                            <option>月</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="numBosen">
+                    <div class="bosenActive">
+                        <span>上报</span>
+                        <span id="Reporting">177</span>
+                    </div>
+                    <div>
+                        <span>立案</span>
+                        <span>165</span>
+                    </div>
+                    <div>
+                        <span>结案</span>
+                        <span>78</span>
+                    </div>
+                    <div>
+                        <span>人员</span>
+                        <span>12</span>
+                    </div>
+                    <div>
+                        <span>车辆</span>
+                        <span>98</span>
+                    </div>
+                    <div>
+                        <span>视频</span>
+                        <span>6</span>
+                    </div>
+                </div>
+
+                <div class="checkBox">
+                    <div class="mapLayers">
+                        <div class="clickLayer">
+                            <img th:src="@{/img/1.jpg}" alt="">
+                        </div>
+                        <span class="clickName">热力图</span>
+                    </div>
+                </div>
+
+                <div class="viewGroup">
+                    <div class="mapView">
+                        <div class="optionLayers">
+                            <div class="layerGrounp" id="map1">
+                                <div class="layerInfo">
+                                    <img th:src="@{/img/1.jpg}" alt="">
+                                </div>
+                                <span class="layerName">热力图</span>
+                            </div>
+                        </div>
+
+                        <div class="optionLayers">
+                            <div class="layerGrounp" id="map2">
+                                <div class="layerInfo">
+                                    <img th:src="@{/img/2.jpg}" alt="">
+                                </div>
+                                <span class="layerName">人群图</span>
+                            </div>
+                        </div>
+
+
+                        <div class="optionLayers">
+                            <div class="layerGrounp" id="map3">
+                                <div class="layerInfo">
+                                    <img th:src="@{/img/3.jpg}" alt="">
+                                </div>
+                                <span class="layerName">街道图</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="content_bottom">
+            <div class="bar">
+                <div class="title">事件、部件</div>
+                <div class="barinnner">
+                    <div class="chars bandCha">
+                        <div class="abend">
+                            <div class="meter">
+                                <div id="watch" style="width: 100%;height:100%;"></div>
+                            </div>
+                            <div class="meterText">
+                                <div class="meterNum">
+                                    <span class="did">已处置</span>
+                                    <span class="line"></span>
+                                    <span class="didNum">1121</span>
+                                </div>
+                                <div class="meterNum">
+                                    <span class="did">应处置</span>
+                                    <span class="line"></span>
+                                    <span class="didNum">1121</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="abend">
+                            <div class="meter">
+                                <div id="watch2" style="width: 100%;height:100%;"></div>
+                            </div>
+                            <div class="meterText">
+                                <div class="meterNum">
+                                    <span class="did">已处置</span>
+                                    <span class="line"></span>
+                                    <span class="didNum">1121</span>
+                                </div>
+                                <div class="meterNum">
+                                    <span class="did">应处置</span>
+                                    <span class="line"></span>
+                                    <span class="didNum">1121</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bar barorther">
+                <div class="title titleOrter">问题来源</div>
+                <div class="barinnner">
+                    <div class="chars">
+                        <div id="question" style="width: 100%;height:100%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="rightWarp">
+        <div class="bar barIn">
+            <div class="title">高发问题</div>
+            <div class="barinnner">
+                <div class="chars">
+                    <div id="main" style="width: 100%;height:100%;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="bar barIn">
+            <div class="title">高发区域</div>
+            <div class="barinnner">
+                <div class="chars">
+                    <div id="region" style="width: 100%;height:100%;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="bar barIn">
+            <div class="title">高发时段趋势分析</div>
+            <div class="barinnner">
+                <div class="chars">
+                    <div id="high" style="width: 100%;height:100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</div>
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: echarts_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        $(".checkBox").click(function() {
+            $(this).fadeOut(300);
+            $(".viewGroup").fadeIn(300);
+        });
+
+        $(".layerGrounp").click(function() {
+            $(".clickLayer").html($(this).children(".layerInfo").html())
+            $(".clickName").html($(this).children(".layerName").html())
+            $(".viewGroup").fadeOut(300);
+            $(".checkBox").fadeIn(300);
+        });
+
+
+        $("#map1").click(function() {})
+
+        $("#map2").click(function() {})
+
+        $("#map3").click(function() {})
+
+
+        //表格
+
+        //高发问题
+        var myChart = echarts.init(document.getElementById('main'));
+        var option1 = {
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    type: "shadow"
+                }
+            },
+            legend: {
+                data: ["立案量", "结案量"],
+                x: "right"
+            },
+            toolbox: {
+                show: false,
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true
+                    },
+                    magicType: {
+                        show: false,
+                        type: ["line", "bar", "stack", "tiled"]
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: "value",
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: false,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    splitArea: {
+                        show: false
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: "category",
+                    data: ["违章建筑", "私乱搭建", "暴露垃圾", "违规户外广告", "户外广告位置设置不合理"],
+                    axisTick: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: "立案量",
+                    type: "bar",
+                    stack: "总量",
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true,
+                                position: "insideRight"
+                            },
+                            borderWidth: 0
+                        },
+                        emphasis: {
+                            borderWidth: 0
+                        }
+                    },
+                    data: [16, 12, 20, 12, 16]
+                },
+                {
+                    name: "结案量",
+                    type: "bar",
+                    stack: "总量",
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true,
+                                position: "insideRight"
+                            }
+                        }
+                    },
+                    data: [50, 30, 50, 30, 40],
+                    barGap: "38%"
+                }
+            ],
+            grid: {
+                x2: 12,
+                x: 150,
+                y: 43,
+                y2: 24
+            }
+        };
+        myChart.setOption(option1);
+
+        //高发区域
+        var myChart1 = echarts.init(document.getElementById('region'));
+        var option2 = {
+            title: {
+                x: "left"
+            },
+            legend: {
+                data: ["结案量", "立案量"],
+                x: "right",
+                orient: "horizontal",
+                y: "top"
+            },
+            tooltip: {
+                trigger: "axis"
+            },
+            toolbox: {
+                show: false,
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true
+                    },
+                    magicType: {
+                        show: false,
+                        type: ["line", "bar"]
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: "category",
+                    data: ["南岗区", "道里区", "香坊区", "道外区", "群里区", "松北区"],
+                    splitArea: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    },
+                    position: "bottom",
+                    axisTick: {
+                        show: true
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    nameTextStyle: {
+                        color: "#C4EAFC"
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: "value",
+                    splitLine: {
+                        show: true
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: "立案量",
+                    type: "bar",
+                    data: [20, 4.9, 30, 23.2, 120, 76.7]
+                },
+                {
+                    name: "结案量",
+                    type: "bar",
+                    data: [2.6, 5.9, 20, 26.4, 28.7, 70.7]
+                }
+            ],
+            calculableColor: "rgba(255,165,0,0.6)",
+            animation: true,
+            animationEasing: "ExponentialInOut",
+            grid: {
+                x: 56,
+                x2: 51,
+                y2: 38,
+                y: 38
+            }
+        };
+        myChart1.setOption(option2);
+
+
+        //高发趋势
+        var myChart2 = echarts.init(document.getElementById('high'));
+        var option3 = {
+            tooltip: {
+                trigger: "axis"
+            },
+            legend: {
+                data: ["结案量", "立案量"],
+                x: "right",
+                orient: "horizontal",
+                y: "top"
+            },
+            toolbox: {
+                feature: {
+                    dataView: {
+                        readOnly: true
+                    },
+                    magicType: {
+                        type: ["line", "bar"],
+                        show: false
+                    }
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: "category",
+                    data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+                    axisTick: {
+                        lineStyle: {
+                            color: "rgb(56, 178, 234)"
+                        },
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    boundaryGap: false,
+                    axisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: "value",
+                    axisLine: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: "#C4EAFC",
+                            width: 1
+                        }
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    nameTextStyle: {
+                        color: "rgb(20, 159, 224)"
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        }
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: "结案量",
+                    type: "line",
+                    data: [11, 11, 1500, 1300, 1200, 2100, 10],
+                    smooth: true
+                },
+                {
+                    name: "立案量",
+                    type: "line",
+                    data: [1, 300, 2, 500, 3, 2000, 300],
+                    itemStyle: {
+                        normal: {
+                            lineStyle: {
+                                type: "solid"
+                            }
+                        }
+                    },
+                    smooth: true
+                }
+            ],
+            grid: {
+                x: 56,
+                x2: 51,
+                y2: 38,
+                y: 38
+            }
+        };
+        myChart2.setOption(option3);
+
+        var myChart3 = echarts.init(document.getElementById('watch'));
+        var option4 = {
+            tooltip: {
+                formatter: "{a} <br/>{b} : {c}%"
+            },
+            toolbox: {
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                },
+                show: false
+            },
+            series: [
+                {
+                    name: "业务指标",
+                    type: "gauge",
+                    detail: {
+                        formatter: "{value}%",
+                        offsetCenter: [0, 45],
+                        width: 61,
+                        textStyle:{
+                            fontSize: 14,
+                        },
+                    },
+                    data: [
+                        {
+                            value: 59.05,
+                            name: "处置率",
+                        }
+                    ],
+                    axisLine: {
+                        lineStyle: {
+                            color: [
+                                [0.2, "rgb(20, 159, 224)"], [1, "rgb(13, 138, 196)"], [1, "rgb(13, 138, 196)"]
+                            ],
+                            width: 11
+                        }
+                    },
+                    title: {
+                        offsetCenter: [0, 30],
+                        show: true,
+                        textStyle: {
+                            fontWeight: "bold",
+                            fontSize: 12,
+                            color: '#fff'
+                        }
+                    },
+                    center: ["50%", "50%"],
+                    radius: "96%",
+                    axisLabel: {
+                        show: true
+                    },
+                    axisTick: {
+                        length: 6,
+                        splitNumber: 5,
+                        lineStyle: {
+                            width: 3
+                        }
+                    },
+                    splitLine: {
+                        length: 10
+                    }
+                }
+            ]
+        };
+        myChart3.setOption(option4);
+
+        var myChart4 = echarts.init(document.getElementById('watch2'));
+        var option5 = {
+            tooltip: {
+                formatter: "{a} <br/>{b} : {c}%"
+            },
+            toolbox: {
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                },
+                show: false
+            },
+            series: [
+                {
+                    name: "业务指标",
+                    type: "gauge",
+                    detail: {
+                        formatter: "{value}%",
+                        offsetCenter: [0, 45],
+                        width: 61,
+                        textStyle:{
+                            fontSize: 14,
+                        },
+                    },
+                    data: [
+                        {
+                            value: 50.05,
+                            name: "处置率",
+                        }
+                    ],
+                    axisLine: {
+                        lineStyle: {
+                            color: [
+                                [0.2, "rgb(122, 216, 28)"], [1, "rgb(99, 178, 19)"], [1, "rgb(132, 234, 23)"]
+                            ],
+                            width: 11
+                        }
+                    },
+                    title: {
+                        offsetCenter: [0, 30],
+                        show: true,
+                        textStyle: {
+                            fontWeight: "bold",
+                            fontSize: 12,
+                            color: '#fff'
+                        }
+                    },
+                    center: ["50%", "50%"],
+                    radius: "96%",
+                    axisLabel: {
+                        show: true
+                    },
+                    axisTick: {
+                        length: 6,
+                        splitNumber: 5,
+                        lineStyle: {
+                            width: 3
+                        }
+                    },
+                    splitLine: {
+                        length: 10
+                    }
+                }
+            ]
+        };
+        myChart4.setOption(option5);
+
+        var myChart5 = echarts.init(document.getElementById('question'));
+        var option6 = {
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b}: {c} ({d}%)'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 10,
+                x: "center",
+                data: ['自行处理上报', '信息采集员上报'],
+                y: "bottom"
+            },
+            series: [
+                {
+                    name: '访问来源',
+                    type: 'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                            show: true,
+                            fontSize: '30',
+                            fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: [
+                        {value: 335, name: '自行处理上报'},
+                        {value: 310, name: '信息采集员上报'},
+                    ]
+                }
+            ]
+        };
+        myChart5.setOption(option6);
+
+        var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
+        // 沽源地图
+        var center = [115.68192, 41.66462];
+        var projection = new ol.proj.Projection({
+            code: 'EPSG:4326',
+            units: 'degrees',
+            axisOrientation: 'neu',
+            global: true
+        });
+        var untiled = new ol.layer.Image({
+            source: new ol.source.ImageWMS({
+                ratio: 1,
+                url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
+                params: {
+                    'VERSION': '1.1.1',
+                    "LAYERS": 'guyuan20201010:guyuan',
+                    "exceptions": 'application/vnd.ogc.se_inimage',
+                }
+            })
+        });
+        var source = new ol.source.Vector({wrapX: false});
+
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                untiled
+            ],
+            view: new ol.View({
+                // projection: projection,
+                center: center,
+                zoom: 17,
+                projection: projection
+            })
+        });
+
+        var layerMap = new ol.layer.Vector({
+            source: new ol.source.Vector(),
+        });
+        map.addLayer(layerMap);
+
+    })
+</script>
 </body>
 </html>

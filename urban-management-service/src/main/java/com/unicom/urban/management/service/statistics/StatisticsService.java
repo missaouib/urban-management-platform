@@ -6,6 +6,7 @@ import com.unicom.urban.management.pojo.entity.Grid;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.CellGridRegionVO;
+import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.pojo.vo.StatisticsVO;
 import com.unicom.urban.management.service.grid.GridService;
 import org.apache.commons.lang3.StringUtils;
@@ -229,5 +230,37 @@ public class StatisticsService {
 
     public List<Statistics> findAllByEventIdOrderBySort(String eventId){
         return statisticsRepository.findAllByEvent_IdOrderBySortDesc(eventId);
+    }
+
+    /**
+     * 高发区域
+     * @return mapList
+     */
+    public List<Map<String,Object>> findHotGrid(){
+        List<Map<String,Object>> hotGridList = new ArrayList<>();
+        List<Map<String,Object>> mapList = statisticsRepository.findHotGrid();
+        if (mapList != null && mapList.size() > 0) {
+            Map<String,Object> hotMap = new HashMap<>(3);
+            for (Map<String, Object> map : mapList) {
+                hotMap.put("hotInst",map.get("hotInst").toString());
+                hotMap.put("totalClose",map.get("totalClose").toString());
+                hotMap.put("gridName",findFirstGrid(map.get("gridId").toString()));
+                hotGridList.add(hotMap);
+            }
+        }
+        return hotGridList;
+    }
+
+    private String findFirstGrid(String gridId){
+        String parentId ="";
+        if (parentId != null) {
+            Grid grid = gridService.findOne(gridId);
+            if (grid.getParent().getId() == null) {
+                    return grid.getGridName();
+            } else {
+                parentId = findFirstGrid(grid.getParent().getId());
+            }
+        }
+        return "";
     }
 }

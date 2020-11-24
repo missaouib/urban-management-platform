@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 网格
@@ -114,5 +115,13 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      */
     @Query(value = "SELECT s,e,g FROM Statistics s LEFT JOIN Event e on s.event = e.id LEFT JOIN e.grid g on e.grid.id = g.id WHERE s.hang = 1 and g.id = ?1 ")
     List<Statistics> findAllByHang(String gridId);
+    /**
+     * 高发区域
+     *
+     * @param
+     * @return 数据
+     */
+    @Query(value = "SELECT (SUM(ifnull(inst,0))) as totalInst,sum(ifnull(`close`,0)) as totalClose,g.id as gridId  from `event` ev,grid g,statistics st where g.id=ev.grid_id and ev.id=st.event_id GROUP BY g.id",nativeQuery = true)
+    List<Map<String,Object>> findHotGrid();
 
 }

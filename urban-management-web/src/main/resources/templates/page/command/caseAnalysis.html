@@ -1,10 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: swiper_css" />
+    <link th:href="@{/css/caseAnalysis.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
-caseAnalysis caseAnalysis caseAnalysis caseAnalysis caseAnalysis
+<div class="warp">
+    <div class="top">
+        <div class="once">
+            <div class="texts">按条件搜索：</div>
+            <div class="searchInput">
+                <input type="text" placeholder="请输入搜索条件" class="searchoption">
+                <i class="i_mirror"></i>
+            </div>
+        </div>
+        <div class="onceoption">
+            <div>
+                <span>上限</span>
+                <span>1,234</span>
+            </div>
+            <div>
+                <span>受理</span>
+                <span style="color: #00FF4E;">1,945</span>
+            </div>
+            <div>
+                <span>立案</span>
+                <span style="color: #FF6600;">1,345</span>
+            </div>
+            <div>
+                <span>派遣</span>
+                <span style="color: #F600FF;">1,145</span>
+            </div>
+            <div>
+                <span>核查</span>
+                <span style="color: #5BFEE5;">1,167</span>
+            </div>
+            <div>
+                <span>处置</span>
+                <span style="color: #FFBF36;">1,145</span>
+            </div>
+            <div>
+                <span>结案</span>
+                <span style="color: #FF4901;">1,145</span>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="map" id="map" style="width: 100%;height: 100%"></div>
+        <div class="show_map">
+            <div class="checkBox">
+                <div class="mapLayers">
+                    <div class="clickLayer">
+                        <img th:src="@{/img/1.jpg}" alt="">
+                    </div>
+                    <span class="clickName">热力图</span>
+                </div>
+            </div>
+            <div class="viewGroup">
+                <div class="mapView">
+                    <div class="optionLayers">
+                        <div class="layerGrounp" id="map1">
+                            <div class="layerInfo">
+                                <img th:src="@{/img/1.jpg}" alt="">
+                            </div>
+                            <span class="layerName">热力图</span>
+                        </div>
+                    </div>
+
+                    <div class="optionLayers">
+                        <div class="layerGrounp" id="map2">
+                            <div class="layerInfo">
+                                <img th:src="@{/img/2.jpg}" alt="">
+                            </div>
+                            <span class="layerName">人群图</span>
+                        </div>
+                    </div>
+
+
+                    <div class="optionLayers">
+                        <div class="layerGrounp" id="map3">
+                            <div class="layerInfo">
+                                <img th:src="@{/img/3.jpg}" alt="">
+                            </div>
+                            <span class="layerName">街道图</span>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</div>
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        $(".checkBox").click(function() {
+            $(this).fadeOut(300);
+            $(".viewGroup").fadeIn(300);
+        });
+
+        $(".layerGrounp").click(function() {
+            $(".clickLayer").html($(this).children(".layerInfo").html())
+            $(".clickName").html($(this).children(".layerName").html())
+            $(".viewGroup").fadeOut(300);
+            $(".checkBox").fadeIn(300);
+        });
+
+
+        $("#map1").click(function() {})
+
+        $("#map2").click(function() {})
+
+        $("#map3").click(function() {})
+
+
+        var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
+        // 沽源地图
+        var center = [115.68192, 41.66462];
+        var projection = new ol.proj.Projection({
+            code: 'EPSG:4326',
+            units: 'degrees',
+            axisOrientation: 'neu',
+            global: true
+        });
+        var untiled = new ol.layer.Image({
+            source: new ol.source.ImageWMS({
+                ratio: 1,
+                url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
+                params: {
+                    'VERSION': '1.1.1',
+                    "LAYERS": 'guyuan20201010:guyuan',
+                    "exceptions": 'application/vnd.ogc.se_inimage',
+                }
+            })
+        });
+        var source = new ol.source.Vector({wrapX: false});
+
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                untiled
+            ],
+            view: new ol.View({
+                // projection: projection,
+                center: center,
+                zoom: 17,
+                projection: projection
+            })
+        });
+
+        var layerMap = new ol.layer.Vector({
+            source: new ol.source.Vector(),
+        });
+        map.addLayer(layerMap);
+
+    })
+</script>
 </body>
 </html>
