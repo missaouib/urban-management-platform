@@ -280,8 +280,6 @@ public class WorkService {
         statistics.setEndTime(LocalDateTime.now());
         statistics.setInvalidEvent(1);
         int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit());
-        /* 按时受理 */
-        statistics.setInTimeOperate(map[0]);
         statistics.setSts(String.valueOf(map[1]));
         setOpinionsAndEventFileList(statistics, eventDTO.getRepresent(), eventDTO.getEventFileList());
         statisticsService.update(statistics);
@@ -298,13 +296,12 @@ public class WorkService {
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         statistics.setEndTime(LocalDateTime.now());
         int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit());
-        /* 按时受理 */
-        statistics.setInTimeOperate(map[0]);
         statistics.setSts(String.valueOf(map[1]));
         setOpinionsAndEventFileList(statistics, eventDTO.getRepresent(), eventDTO.getEventFileList());
         statisticsService.update(statistics);
         List<String> userList = taskProcessingService.getUsers(KvConstant.SHIFT_LEADER_ROLE);
         activitiService.complete(statistics.getTaskId(), userList, eventDTO.getButton());
+        Statistics statistics1 = this.initStatistics(eventDTO.getId(), statistics.getSort());
     }
 
 
