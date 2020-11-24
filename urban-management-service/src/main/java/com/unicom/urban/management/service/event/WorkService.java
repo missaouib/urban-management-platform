@@ -144,8 +144,6 @@ public class WorkService {
             statistics.setNeedVerify(1);
         }
         statisticsService.update(statistics);
-        activitiService.claim(statistics.getTaskId(), eventDTO.getUserId());
-
     }
 
     /**
