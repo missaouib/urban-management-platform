@@ -9,6 +9,7 @@ import com.unicom.urban.management.mapper.GridMapper;
 import com.unicom.urban.management.pojo.dto.GridDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.GridVO;
+import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.record.RecordService;
@@ -52,6 +53,8 @@ public class GridService {
     private UserService userService;
     @Autowired
     private GridService gridService;
+    @Autowired
+    private EventService eventService;
 
     public Page<GridVO> search(GridDTO gridDTO, Pageable pageable) {
         Page<Grid> page = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
@@ -266,6 +269,17 @@ public class GridService {
      */
     public List<Grid> allByLevelAndRecordSts() {
         return gridRepository.findAllByLevelAndRecord_Sts(4, StsConstant.RELEASE);
+    }
+
+    /**
+     * 坐标
+     *
+     * @param eventId id
+     * @return 坐标
+     */
+    public String getGridPolygon(String eventId) {
+        Event one = eventService.findOne(eventId);
+        return one.getGrid().getRecord().getCoordinate();
     }
 
 }

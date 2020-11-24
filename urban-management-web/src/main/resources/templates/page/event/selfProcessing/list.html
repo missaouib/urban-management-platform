@@ -841,6 +841,7 @@
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
     let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
+    let getGridPolygonUrl = /*[[@{/event/getGridPolygon}]]*/ "/event/getGridPolygon";
     let searchUrl = /*[[@{/event/selfProcessingList}]]*/ "/event/selfProcessingList";
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
@@ -931,6 +932,7 @@
         getTimeAxis(eventId);
         getEventDetail(eventId);
         getNodeName(eventId);
+        getGridPolygon(eventId);
     }
 
     /* 获取下一步按钮 */
@@ -952,6 +954,7 @@
         });
     }
 
+    /* 时间轴 */
     function getTimeAxis(eventId) {
         $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
             let data = e.data;
@@ -1078,6 +1081,7 @@
         });
     }
 
+    /* 步骤图 */
     function getNodeName(eventId) {
         $.ajaxUtil.get(getNodeNameUrl + "?eventId=" + eventId, function (e) {
             setConduct(e.data);
@@ -1129,6 +1133,13 @@
                 });
             }
             $("#selectUser").html(userHtml);
+        });
+    }
+
+    /* 点击获取网格 */
+    function getGridPolygon(eventId) {
+        $.ajaxUtil.get(getGridPolygonUrl + "?eventId=" + eventId, function (e) {
+            console.log("e", e);
         });
     }
 

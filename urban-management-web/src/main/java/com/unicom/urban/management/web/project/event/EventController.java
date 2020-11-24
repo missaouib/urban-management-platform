@@ -134,4 +134,15 @@ public class EventController {
         return Result.success(nodeName);
     }
 
+    /**
+     * 获取有监督员角色的人
+     *
+     * @return 人
+     */
+    @GetMapping("/getGridPolygon")
+    public Result getGridPolygon(String eventId) {
+        String gridPolygon = gridService.getGridPolygon(eventId);
+        return Result.success(gridPolygon);
+    }
+
 }
