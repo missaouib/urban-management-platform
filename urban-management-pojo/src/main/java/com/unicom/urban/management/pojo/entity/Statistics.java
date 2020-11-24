@@ -634,4 +634,22 @@ public class Statistics {
      */
     private Integer checkNum;
 
+    /**
+     * 待结案受理
+     */
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer toCloseEvent;
+
+    /**
+     * 结案受理
+     */
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer closeOperate;
+
+    /**
+     * 按时结案受理
+     */
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer closeInTimeOperate;
+
 }
