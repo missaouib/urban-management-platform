@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 顾志杰
@@ -28,5 +29,9 @@ public class StatisticsController {
     @GetMapping("/findOpinions")
     public StatisticsVO findOpinions(String statisticsId){
         return statisticsService.findById(statisticsId);
+    }
+    @GetMapping("/findHotGrid")
+    public List<Map<String,Object>> findHotGrid(){
+        return statisticsService.findHotGrid();
     }
 }
