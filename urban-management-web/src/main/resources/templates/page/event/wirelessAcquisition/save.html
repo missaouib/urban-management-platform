@@ -864,9 +864,19 @@
         })
     });
     var source = new ol.source.Vector({wrapX: false});
-
+    var container = document.getElementById('popup');
+    var content = document.getElementById('popup-content');
+    var closer = document.getElementById('popup-closer');
+    var overlay = new ol.Overlay({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    });
     var map = new ol.Map({
         target: 'map',
+        overlays: [overlay],
         layers: [
             untiled
         ],
@@ -877,12 +887,22 @@
             projection: projection
         })
     });
+    map.addOverlay(overlay);
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),
     });
     map.addLayer(layerMap);
+
+
     let localReverseGeocoding = /*[[@{/event/localReverseGeocoding}]]*/ "/event/localReverseGeocoding";
     map.on('singleclick', function (evt) {
+        var coordinate = evt.coordinate;
+        overlay.setPosition(coordinate);
+        $("#popup-content").html(`<div class="demo2">${evt.coordinate}
+                                    <em>&#9670;</em>
+                                    <span>&#9670;</span>
+                                    </div>`);
+
         let t = evt.coordinate;
         $("#longitude").val(t[0])
         $("#latitude").val(t[1])
