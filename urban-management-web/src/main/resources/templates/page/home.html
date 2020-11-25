@@ -164,19 +164,19 @@
                                     </div>
                                     <div class="mation">
                                         <div style="float:left;font-size: 16px;color: #131313;">角色信息</div>
-                                        <div style="float: right;color: #666666;font-size: 16px">管理员</div>
+                                        <div style="float: right;color: #666666;font-size: 16px" id="roleName"></div>
                                     </div>
                                     <div class="mation">
                                         <div style="float:left;font-size: 16px;color: #131313;">参与案件数量</div>
-                                        <div style="float: right;color: #666666;font-size: 16px">30</div>
+                                        <div style="float: right;color: #666666;font-size: 16px" id="takeCase"></div>
                                     </div>
                                     <div class="mation">
                                         <div style="float:left;font-size: 16px;color: #131313;">办理案件数量</div>
-                                        <div style="float: right;color: #666666;font-size: 16px">40</div>
+                                        <div style="float: right;color: #666666;font-size: 16px" id="instCase"></div>
                                     </div>
                                     <div class="mation">
                                         <div style="float:left;font-size: 16px;color: #131313;">完结案件数量</div>
-                                        <div style="float: right;color: #666666;font-size: 16px">50</div>
+                                        <div style="float: right;color: #666666;font-size: 16px" id="closeCase"></div>
                                     </div>
                                 </table>
                             </div>
@@ -337,8 +337,19 @@
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <script type="text/javascript" th:inline="javascript">
+    function getCase() {
+        $.ajaxUtil.get("/statistics/personInfo", function (e) {
+            console.log(e)
+            $("#roleName").html(e.data[0]);
+            $("#takeCase").html(e.data[1]);
+            $("#instCase").html(e.data[2]);
+            $("#closeCase").html(e.data[3]);
+        });
+    }
     $(function () {
-        queryUserList()
+        getCase()
+
+    queryUserList()
 
         $(".star").click(function () {
             $(this).addClass("staractive").siblings(".star").removeClass("staractive");

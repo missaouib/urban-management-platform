@@ -196,5 +196,25 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      */
     @Query(value = "SELECT s,e FROM Statistics s LEFT JOIN Event e on s.event = e.id WHERE s.close = 1 and e.createTime between ?1 and ?2 ")
     List<Statistics> findByClose(LocalDateTime startTime, LocalDateTime endTime);
-
+    /**
+     * 岗位案件数量
+     *
+     * @return int
+     */
+    @Query(value = "select sum(1) from statistics where report_patrol_name_id=?1  or verify_patrol_name_id=?1  or operate_human_name_id=?1  or send_verify_human_name_id=?1  or send_check_human_name=?1  or inst_human_name_id=?1  or close_human_name_id=?1  or dispatch_human_name_id=?1  or dispose_unit_name_id=?1  or check_patrol_name=?1  or check_trans_human_name=?1 ",nativeQuery = true)
+    Integer findTakeCase(String userId);
+    /**
+     * 办理案件数量
+     *
+     * @return int
+     */
+    @Query(value = "select sum(inst) from statistics where report_patrol_name_id=?1  or verify_patrol_name_id=?1  or operate_human_name_id=?1  or send_verify_human_name_id=?1  or send_check_human_name=?1  or inst_human_name_id=?1  or close_human_name_id=?1  or dispatch_human_name_id=?1  or dispose_unit_name_id=?1  or check_patrol_name=?1  or check_trans_human_name=?1 ",nativeQuery = true)
+    Integer findInstCase(String userId);
+    /**
+     * 结案件数量
+     *
+     * @return int
+     */
+    @Query(value = "select sum(close) from statistics where report_patrol_name_id=?1  or verify_patrol_name_id=?1  or operate_human_name_id=?1  or send_verify_human_name_id=?1  or send_check_human_name=?1  or inst_human_name_id=?1  or close_human_name_id=?1  or dispatch_human_name_id=?1  or dispose_unit_name_id=?1  or check_patrol_name=?1  or check_trans_human_name=?1",nativeQuery = true)
+    Integer findCloseCase(String userId);
 }

@@ -3,6 +3,7 @@ package com.unicom.urban.management.service.statistics;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.statistics.StatisticsRepository;
 import com.unicom.urban.management.pojo.entity.Grid;
+import com.unicom.urban.management.pojo.entity.Role;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.CellGridRegionVO;
@@ -430,4 +431,17 @@ public class StatisticsService {
         return map;
     }
 
+    public Map<String, Object> findPersonInfo() {
+        Map<String, Object> personMap = new HashMap<>();
+        String roleName = SecurityUtil.getRoleName().get(0);
+        String userId = SecurityUtil.getUserId();
+        Integer takeCase = statisticsRepository.findTakeCase(userId);
+        Integer instCase = statisticsRepository.findInstCase(userId);
+        Integer closeCase = statisticsRepository.findCloseCase(userId);
+        personMap.put("roleName",roleName);
+        personMap.put("takeCase",takeCase);
+        personMap.put("instCase",instCase);
+        personMap.put("closeCase",closeCase);
+        return personMap;
+    }
 }
