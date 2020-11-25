@@ -896,13 +896,6 @@
 
     let localReverseGeocoding = /*[[@{/event/localReverseGeocoding}]]*/ "/event/localReverseGeocoding";
     map.on('singleclick', function (evt) {
-        var coordinate = evt.coordinate;
-        overlay.setPosition(coordinate);
-        $("#popup-content").html(`<div class="demo2">${evt.coordinate}
-                                    <em>&#9670;</em>
-                                    <span>&#9670;</span>
-                                    </div>`);
-
         let t = evt.coordinate;
         $("#longitude").val(t[0])
         $("#latitude").val(t[1])
@@ -971,6 +964,13 @@
                         $("#grid3").html(option3);
                         break;
                     case 4:
+                        var coordinate = [$("#longitude").val(),
+                            $("#latitude").val()];
+                        overlay.setPosition(coordinate);
+                        $("#popup-content").html(`<div class="demo2">网格名称:`+data[i].name+`
+                                    <em>&#9670;</em>
+                                    <span>&#9670;</span>
+                                    </div>`);
                         $("#grid4").empty();
                         let option4 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                         $("#grid4").html(option4);

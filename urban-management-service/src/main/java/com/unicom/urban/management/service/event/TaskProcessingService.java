@@ -298,6 +298,7 @@ public class TaskProcessingService {
                 statistics.setOvertimeDispose(num[0] == 1 ? 0 : 1);
                 statistics.setSts(String.valueOf(num[1]));
                 newStatistics.setSort(statistics.getSort() + 1);
+                newStatistics.setNeedSendCheck(1);
                 statisticsService.update(statistics);
                 statisticsService.save(newStatistics);
                 break;
