@@ -454,7 +454,6 @@
             $(".duck_duck").fadeIn(300)
         });
 
-        getGridPublishUrl()
 
         $(".duk_close").click(function () {
             $("#pictureBoxDuc").fadeOut(300)
@@ -515,64 +514,10 @@
 
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
 
-    let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
 
-    function getGridPublishUrl() {
-        $.ajaxUtil.get(getGridUrl, function (e) {
-            // console.log("e", e);
-            /*
-            * 初始渲染底图g
-            * */
-            var urlParam = e.data.split("?");
-            var url = urlParam[0];
-            var param = urlParam[1];
-            // console.log(url+","+param)
-            var ImageVector = new ol.layer.Tile({
-                source: new ol.source.TileWMS({
-                    url: url,
-                    params: {
-                        'VERSION': '1.1.1',
-                        tiled: true,
-                        "LAYERS": param,
-                        "exceptions": ''
-                    }
-                })
-            });
-            var layersArray = map.getLayers();
-            layersArray.insertAt(1, ImageVector);
-            //获取地图数据s
-            map.on('singleclick', function (evt) {
-                var viewResolution = map.getView().getResolution();
-                var url = ImageVector.getSource().getGetFeatureInfoUrl(
-                    evt.coordinate, viewResolution, 'EPSG:4326', {
-                        'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
-                        'FEATURE_COUNT': 50 //点击查询能返回的数量上限
-                    });
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    dataType: 'jsonp',
-                    jsonp: 'format_options',
-                    jsonpCallback: "callback:success_jsonpCallback"
-                });
-            });
-        })
-    }
     //回调函数接收查询结果
     var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
 
-    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
-
-    function success_jsonpCallback(res) {
-        var features = geojsonFormat.readFeatures(res);
-        console.log('点击查询返回的结果如下：');
-        console.log("features", features);
-        let mongodbId = features[0].H.mongodb_id;
-        console.log("features", mongodbId);
-        $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
-            console.log("e", e);
-        });
-    }
 
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
     let showUrl = [[${@fastProperties.nginxUrl}]];
@@ -591,6 +536,8 @@
                 layerMap.getSource().clear()
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
                     eventId = e.data.id;
+                    getGridPolygon(eventId);
+
                     /*流程图*/
                     $("#eventImg").attr('src',img+e.data.processInstanceId);
                     /*详情*/
@@ -988,6 +935,36 @@
             }
             $("#timeType").html(option);
         });
+    }
+    let getGridPolygonUrl = /*[[@{/event/getGridPolygon}]]*/ "/event/getGridPolygon";
+    /* 点击获取网格 */
+    function getGridPolygon(eventId) {
+        $.ajaxUtil.get(getGridPolygonUrl + "?eventId=" + eventId, function (e) {
+            let data = e.data
+            let split = data.split("-");
+            let polygonArray = [];
+            let polygonArrayEnd = [];
+            for (let j = 0; j < split.length; j++) {
+                let pointArray = [];
+                pointArray.push(split[j].split(",")[0]);
+                pointArray.push(split[j].split(",")[1]);
+                polygonArray.push(pointArray);
+                polygonArrayEnd.push(polygonArray);
+            }
+            setPolygon(polygonArrayEnd, 1);
+        });
+    }
+    function setPolygon(coordinates, id) {
+
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(coordinates),
+            data: {
+                id: id,
+                // name: name,
+                coordinate: coordinates
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
     }
 </script>
 </body>
