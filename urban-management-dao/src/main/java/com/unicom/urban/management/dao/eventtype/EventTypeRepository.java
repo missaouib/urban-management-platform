@@ -13,4 +13,6 @@ import java.util.List;
 public interface EventTypeRepository extends CustomizeRepository<EventType, String> {
     List<EventType> findAllByType(int type);
 
+    List<EventType> findAllByLevelAndParent_Name(String level,String pName);
+
 }
