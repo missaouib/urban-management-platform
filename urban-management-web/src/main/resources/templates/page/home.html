@@ -5,13 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>城市综合管理服务平台</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="../../static/js/bootstrap/css/bootstrap.min.css" th:href="@{/js/bootstrap/css/bootstrap.min.css}">
-    <link rel="stylesheet" href="../../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}">
-    <link rel="stylesheet" href="../../static/css/common.css" th:href="@{/css/common.css}">
-    <link rel="stylesheet" href="../../static/css/home.css" th:href="@{/css/home.css}"/>
-    <link rel="stylesheet" href="../../static/css/index.css" th:href="@{/css/index.css}">
-
-    <!--    <script src="../../static/js/statistical.js" th:src="@{/js/statistical.js}"></script>-->
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
     <style>
         .page-list {display: none !important;}
         td {border: 1px #ccc solid !important;}
@@ -34,66 +30,31 @@
                                 <div class="block">
                                     <img th:src="@{/img/ground2.png}" alt="">
                                     <div class="test1">上报数</div>
-                                    <div class="test2">80</div>
+                                    <div class="test2" id="report">80</div>
                                     <div class="test3">本周</div>
                                 </div>
                                 <div class="block">
                                     <img th:src="@{/img/ground3.png}" alt="">
                                     <div class="test1">立案数</div>
-                                    <div class="test2">180</div>
+                                    <div class="test2" id="inst">180</div>
                                     <div class="test3">本周</div>
                                 </div>
                             </div>
                             <!--                        表格处-->
 
                                 <div class="mannertable">
-                                    <table class="table">
+                                    <table class="table" >
                                         <thead>
                                         <tr>
-                                            <th>事件</th>
+                                            <th>部件</th>
                                             <th>本周</th>
                                             <th>本月</th>
                                             <th>总数</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>市容环境</td>
-                                            <td>1</td>
-                                            <td>26</td>
-                                            <td>28</td>
-                                        </tr>
-                                        <tr>
-                                            <td>宣传广告</td>
-                                            <td>5</td>
-                                            <td>30</td>
-                                            <td>35</td>
-                                        </tr>
-                                        <tr>
-                                            <td>施工管理</td>
-                                            <td>4</td>
-                                            <td>4</td>
-                                            <td>12</td>
-                                        </tr>
+                                        <tbody id="unitCount">
 
-                                        <tr>
-                                            <td>突发事件</td>
-                                            <td>6</td>
-                                            <td>8</td>
-                                            <td>17</td>
-                                        </tr>
-                                        <tr>
-                                            <td>街面秩序</td>
-                                            <td>7</td>
-                                            <td>89</td>
-                                            <td>30</td>
-                                        </tr>
-                                        <tr>
-                                            <td>其他设施</td>
-                                            <td>1</td>
-                                            <td>26</td>
-                                            <td>28</td>
-                                        </tr>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -104,13 +65,13 @@
                                 <div class="block">
                                     <img th:src="@{/img/ground33.png}" alt="">
                                     <div class="test1">派遣数</div>
-                                    <div class="test2">90</div>
+                                    <div class="test2" id="dispatch">90</div>
                                     <div class="test3">本周</div>
                                 </div>
                                 <div class="block">
                                     <img th:src="@{/img/ground4.png}" alt="">
                                     <div class="test1">结案数</div>
-                                    <div class="test2">20</div>
+                                    <div class="test2" id="close">20</div>
                                     <div class="test3">本周</div>
                                 </div>
                             </div>
@@ -378,33 +339,51 @@
 <!--        <div class="clear"></div>-->
     </div>
 </body>
-<script src="../../static/js/jquery/jQuery-2.2.0.min.js" th:src="@{/js/jquery/jQuery-2.2.0.min.js}"></script>
-<script src="../../static/js/bootstrap/js/bootstrap.min.js" th:src="@{/js/bootstrap/js/bootstrap.min.js}"></script>
 <th:block th:include="page/fragments/common :: common_js"/>
-<th:block th:include="page/fragments/common :: jquery_validation_js"/>
-<th:block th:include="page/fragments/common :: fileUpload_js"/>
-<th:block th:include="page/fragments/common :: map_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
-<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
-<th:block th:include="page/fragments/common :: swiper_js"/>
-<!--<script src="../../static/js/jquery/jQuery-2.2.0.min.js" th:src="@{/js/jquery/jQuery-2.2.0.min.js}"></script>-->
-<!--<script src="../../static/js/bstable/js/bootstrap.min.js" th:src="@{/js/bstable/js/bootstrap.min.js}"></script>-->
-<!--<script src="../../static/js/bstable/js/bootstrap-table.js" th:src="@{js/bstable/js/bootstrap-table.js}"></script>-->
-<!--<script src="../../static/js/bstable/js/bootstrap-table-zh-CN.min.js" th:src="@{/js/bstable/js/bootstrap-table-zh-CN.min.js}"></script>-->
 <script type="text/javascript" th:inline="javascript">
-    $(function() {
+    $(function () {
         queryUserList()
 
-        $(".star").click(function() {
+        $(".star").click(function () {
             $(this).addClass("staractive").siblings(".star").removeClass("staractive");
             $(".zara").eq($(this).index(".star")).addClass("tiaoActive").siblings(".zara").removeClass("tiaoActive");
             // $(".tiao").eq($(this).index(".star")).addClass("tiaoActive").siblings(".tiao").removeClass("tiaoActive");
             $(this).children(".tiao").addClass("tiaoActive").parent(".star").siblings('.star').children(".tiao").removeClass("tiaoActive");
         })
-        $(".innerBottom").height($(".bottomInner").height() - $(".innerTop").height()-20)
-    })
+        $(".innerBottom").height($(".bottomInner").height() - $(".innerTop").height() - 20);
 
+        getIndexValueByWeek();
+        unitCount();
 
+    });
+
+    let getIndexValueByWeekUrl = /*[[@{/home/getIndexValueByWeek}]]*/ "/home/getIndexValueByWeek";
+
+    function getIndexValueByWeek() {
+        $.ajaxUtil.get(getIndexValueByWeekUrl, function (e) {
+            console.log("e", e);
+            $("#report").text(e.data.report);
+            $("#inst").text(e.data.inst);
+            $("#dispatch").text(e.data.dispatch);
+            $("#close").text(e.data.close);
+        });
+    }
+
+    let unitCountUrl = /*[[@{/home/unitCount}]]*/ "/home/unitCount";
+    function unitCount() {
+        $.ajaxUtil.get(unitCountUrl, function (e) {
+            var html = "";
+            $(e.data).each(function (index,value) {
+                html+="<tr> <td>"+value.typeName+"</td>" +
+                    "<td>"+value.weekCount+"</td>" +
+                    "<td>"+value.monthCount+"</td>" +
+                    "<td>"+value.count+"</td></tr>"
+            })
+            $("#unitCount").empty();
+            $("#unitCount").append(html);
+        });
+    }
 
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
     let showUrl = [[${@fastProperties.nginxUrl}]];
@@ -421,6 +400,7 @@
     let completeByReceptionistWithSendCheckUrl = /*[[@{/event/completeByReceptionistWithSendCheck}]]*/ "/event/completeByReceptionistWithSendCheck";
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
+
 
     let num = 1;
 
