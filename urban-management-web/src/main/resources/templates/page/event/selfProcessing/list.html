@@ -528,7 +528,7 @@
             $("#wordSays_tag").fadeOut(300)
         });
 
-        getGridPublishUrl()
+        // getGridPublishUrl()
 
         $(".duk_close").click(function() {
             $("#pictureBoxDuc").fadeOut(300)
@@ -1281,6 +1281,56 @@
                 })
             })
         }));
+    }
+
+
+        //面
+
+    // function getPublishOneUrl(id) {
+    //     let getPublishOneUrl = /*[[@{/publish/getPublishOne/}]]+id*/ "/publish/getPublishOne/" + id;
+    //     $.ajaxUtil.get(getPublishOneUrl, function (e) {
+    //         let data = e.data;
+    //         if (data.length === 0) {
+    //             return false;
+    //         }
+    //         if (data[0].type === "部件") {
+    //             for (let i = 0; i < data.length; i++) {
+    //                 setPoint(data[i].coordinate.split(",")[0], data[i].coordinate.split(",")[1], data[i].id, data[i].type);
+    //             }
+    //         } else if (data[0].type === "网格") {
+    //             for (let i = 0; i < data.length; i++) {
+    //                 let data1 = data[i].coordinate;
+    //                 let split = data1.split("-");
+    //                 let polygonArray = [];
+    //                 let polygonArrayEnd = [];
+    //                 for (let j = 0; j < split.length; j++) {
+    //                     let pointArray = [];
+    //                     pointArray.push(split[j].split(",")[0]);
+    //                     pointArray.push(split[j].split(",")[1]);
+    //                     polygonArray.push(pointArray);
+    //                     polygonArrayEnd.push(polygonArray);
+    //                 }
+    //                 setPolygon(polygonArrayEnd, data[i].id);
+    //             }
+    //         } else {
+    //             console.log("error")
+    //         }
+    //     });
+    //
+    // }
+    //
+
+    function setPolygon(coordinates, id) {
+
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(coordinates),
+            data: {
+                id: id,
+                // name: name,
+                coordinate: coordinates
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
     }
 </script>
 </body>
