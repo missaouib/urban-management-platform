@@ -1,6 +1,7 @@
 package com.unicom.urban.management.web.framework.security;
 
 import com.unicom.urban.management.dao.user.UserRepository;
+import com.unicom.urban.management.pojo.SecurityRoleBean;
 import com.unicom.urban.management.pojo.SecurityUserBean;
 import com.unicom.urban.management.pojo.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -32,6 +35,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userBean.setUsername(user.getName());
 
         userBean.setPassword(user.getPassword());
+
+        userBean.setRoleList(user.getRoleList().stream().map(role -> {
+            SecurityRoleBean securityUserBean = new SecurityRoleBean();
+            securityUserBean.setId(role.getId());
+            securityUserBean.setRoleName(role.getName());
+            return securityUserBean;
+        }).collect(Collectors.toSet()));
 
 //        userBean.setDeptId(user.getDept().getId());
 
