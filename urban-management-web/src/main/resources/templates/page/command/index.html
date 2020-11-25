@@ -29,15 +29,15 @@
                 <div class="numBosen">
                     <div class="bosenActive">
                         <span>上报</span>
-                        <span id="Reporting">177</span>
+                        <span id="count">177</span>
                     </div>
                     <div>
                         <span>立案</span>
-                        <span>165</span>
+                        <span id="inst">165</span>
                     </div>
                     <div>
                         <span>结案</span>
-                        <span>78</span>
+                        <span id="close">78</span>
                     </div>
                     <div>
                         <span>人员</span>
@@ -111,12 +111,12 @@
                                 <div class="meterNum">
                                     <span class="did">已处置</span>
                                     <span class="line"></span>
-                                    <span class="didNum">1121</span>
+                                    <span class="didNum" id="eventDisponse">1121</span>
                                 </div>
                                 <div class="meterNum">
                                     <span class="did">应处置</span>
                                     <span class="line"></span>
-                                    <span class="didNum">1121</span>
+                                    <span class="didNum" id="eventNum">1121</span>
                                 </div>
                             </div>
                         </div>
@@ -128,12 +128,12 @@
                                 <div class="meterNum">
                                     <span class="did">已处置</span>
                                     <span class="line"></span>
-                                    <span class="didNum">1121</span>
+                                    <span class="didNum" id="unitDisponse">1121</span>
                                 </div>
                                 <div class="meterNum">
                                     <span class="did">应处置</span>
                                     <span class="line"></span>
-                                    <span class="didNum">1121</span>
+                                    <span class="didNum" id="unitNum">1121</span>
                                 </div>
                             </div>
                         </div>
@@ -190,7 +190,166 @@
 <th:block th:include="page/fragments/common :: echarts_js"/>
 <th:block th:include="page/fragments/common :: swiper_js"/>
 <script type="text/javascript" th:inline="javascript">
+   var countUrl = /*[[@{/bigscreen/count}]]*/ "/bigscreen/count";
     $(function () {
+        $.ajaxUtil.get(countUrl, function (e) {
+         console.log(e.data);
+         $("#count").text(e.data.count);
+         $("#close").text(e.data.close);
+         $("#inst").text(e.data.inst);
+         $("#eventNum").text(e.data.eventNum);
+         $("#eventDisponse").text(e.data.eventDisponse);
+         $("#unitNum").text(e.data.unitNum);
+         $("#unitDisponse").text(e.data.unitDisponse);
+            var myChart3 = echarts.init(document.getElementById('watch'));
+            var option4 = {
+                tooltip: {
+                    formatter: "{a} <br/>{b} : {c}%"
+                },
+                toolbox: {
+                    feature: {
+                        mark: {
+                            show: true
+                        },
+                        restore: {
+                            show: true
+                        },
+                        saveAsImage: {
+                            show: true
+                        }
+                    },
+                    show: false
+                },
+                series: [
+                    {
+                        name: "业务指标",
+                        type: "gauge",
+                        detail: {
+                            formatter: "{value}%",
+                            offsetCenter: [0, 45],
+                            width: 61,
+                            textStyle:{
+                                fontSize: 14,
+                            },
+                        },
+                        data: [
+                            {
+                                value: e.data.eventRate,
+                                name: "处置率",
+                            }
+                        ],
+                        axisLine: {
+                            lineStyle: {
+                                color: [
+                                    [0.2, "rgb(20, 159, 224)"], [1, "rgb(13, 138, 196)"], [1, "rgb(13, 138, 196)"]
+                                ],
+                                width: 11
+                            }
+                        },
+                        title: {
+                            offsetCenter: [0, 30],
+                            show: true,
+                            textStyle: {
+                                fontWeight: "bold",
+                                fontSize: 12,
+                                color: '#fff'
+                            }
+                        },
+                        center: ["50%", "50%"],
+                        radius: "96%",
+                        axisLabel: {
+                            show: true
+                        },
+                        axisTick: {
+                            length: 6,
+                            splitNumber: 5,
+                            lineStyle: {
+                                width: 3
+                            }
+                        },
+                        splitLine: {
+                            length: 10
+                        }
+                    }
+                ]
+            };
+            myChart3.setOption(option4);
+
+            var myChart4 = echarts.init(document.getElementById('watch2'));
+            var option5 = {
+                tooltip: {
+                    formatter: "{a} <br/>{b} : {c}%"
+                },
+                toolbox: {
+                    feature: {
+                        mark: {
+                            show: true
+                        },
+                        restore: {
+                            show: true
+                        },
+                        saveAsImage: {
+                            show: true
+                        }
+                    },
+                    show: false
+                },
+                series: [
+                    {
+                        name: "业务指标",
+                        type: "gauge",
+                        detail: {
+                            formatter: "{value}%",
+                            offsetCenter: [0, 45],
+                            width: 61,
+                            textStyle:{
+                                fontSize: 14,
+                            },
+                        },
+                        data: [
+                            {
+                                value: e.data.unitRate,
+                                name: "处置率",
+                            }
+                        ],
+                        axisLine: {
+                            lineStyle: {
+                                color: [
+                                    [0.2, "rgb(122, 216, 28)"], [1, "rgb(99, 178, 19)"], [1, "rgb(132, 234, 23)"]
+                                ],
+                                width: 11
+                            }
+                        },
+                        title: {
+                            offsetCenter: [0, 30],
+                            show: true,
+                            textStyle: {
+                                fontWeight: "bold",
+                                fontSize: 12,
+                                color: '#fff'
+                            }
+                        },
+                        center: ["50%", "50%"],
+                        radius: "96%",
+                        axisLabel: {
+                            show: true
+                        },
+                        axisTick: {
+                            length: 6,
+                            splitNumber: 5,
+                            lineStyle: {
+                                width: 3
+                            }
+                        },
+                        splitLine: {
+                            length: 10
+                        }
+                    }
+                ]
+            };
+            myChart4.setOption(option5);
+        });
+
         $(".checkBox").click(function() {
             $(this).fadeOut(300);
             $(".viewGroup").fadeIn(300);
@@ -548,153 +707,7 @@
         };
         myChart2.setOption(option3);
 
-        var myChart3 = echarts.init(document.getElementById('watch'));
-        var option4 = {
-            tooltip: {
-                formatter: "{a} <br/>{b} : {c}%"
-            },
-            toolbox: {
-                feature: {
-                    mark: {
-                        show: true
-                    },
-                    restore: {
-                        show: true
-                    },
-                    saveAsImage: {
-                        show: true
-                    }
-                },
-                show: false
-            },
-            series: [
-                {
-                    name: "业务指标",
-                    type: "gauge",
-                    detail: {
-                        formatter: "{value}%",
-                        offsetCenter: [0, 45],
-                        width: 61,
-                        textStyle:{
-                            fontSize: 14,
-                        },
-                    },
-                    data: [
-                        {
-                            value: 59.05,
-                            name: "处置率",
-                        }
-                    ],
-                    axisLine: {
-                        lineStyle: {
-                            color: [
-                                [0.2, "rgb(20, 159, 224)"], [1, "rgb(13, 138, 196)"], [1, "rgb(13, 138, 196)"]
-                            ],
-                            width: 11
-                        }
-                    },
-                    title: {
-                        offsetCenter: [0, 30],
-                        show: true,
-                        textStyle: {
-                            fontWeight: "bold",
-                            fontSize: 12,
-                            color: '#fff'
-                        }
-                    },
-                    center: ["50%", "50%"],
-                    radius: "96%",
-                    axisLabel: {
-                        show: true
-                    },
-                    axisTick: {
-                        length: 6,
-                        splitNumber: 5,
-                        lineStyle: {
-                            width: 3
-                        }
-                    },
-                    splitLine: {
-                        length: 10
-                    }
-                }
-            ]
-        };
-        myChart3.setOption(option4);
 
-        var myChart4 = echarts.init(document.getElementById('watch2'));
-        var option5 = {
-            tooltip: {
-                formatter: "{a} <br/>{b} : {c}%"
-            },
-            toolbox: {
-                feature: {
-                    mark: {
-                        show: true
-                    },
-                    restore: {
-                        show: true
-                    },
-                    saveAsImage: {
-                        show: true
-                    }
-                },
-                show: false
-            },
-            series: [
-                {
-                    name: "业务指标",
-                    type: "gauge",
-                    detail: {
-                        formatter: "{value}%",
-                        offsetCenter: [0, 45],
-                        width: 61,
-                        textStyle:{
-                            fontSize: 14,
-                        },
-                    },
-                    data: [
-                        {
-                            value: 50.05,
-                            name: "处置率",
-                        }
-                    ],
-                    axisLine: {
-                        lineStyle: {
-                            color: [
-                                [0.2, "rgb(122, 216, 28)"], [1, "rgb(99, 178, 19)"], [1, "rgb(132, 234, 23)"]
-                            ],
-                            width: 11
-                        }
-                    },
-                    title: {
-                        offsetCenter: [0, 30],
-                        show: true,
-                        textStyle: {
-                            fontWeight: "bold",
-                            fontSize: 12,
-                            color: '#fff'
-                        }
-                    },
-                    center: ["50%", "50%"],
-                    radius: "96%",
-                    axisLabel: {
-                        show: true
-                    },
-                    axisTick: {
-                        length: 6,
-                        splitNumber: 5,
-                        lineStyle: {
-                            width: 3
-                        }
-                    },
-                    splitLine: {
-                        length: 10
-                    }
-                }
-            ]
-        };
-        myChart4.setOption(option5);
 
         var myChart5 = echarts.init(document.getElementById('question'));
         var option6 = {
