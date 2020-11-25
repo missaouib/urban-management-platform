@@ -155,7 +155,7 @@
             <div class="title">高发问题</div>
             <div class="barinnner">
                 <div class="chars">
-                    <div id="main" style="width: 100%;height:100%;"></div>
+                    <div id="highIncidence" style="width: 100%;height:100%;"></div>
                 </div>
             </div>
         </div>
@@ -171,7 +171,7 @@
             <div class="title">高发时段趋势分析</div>
             <div class="barinnner">
                 <div class="chars">
-                    <div id="high" style="width: 100%;height:100%;"></div>
+                    <div id="trendAnalysis" style="width: 100%;height:100%;"></div>
                 </div>
             </div>
         </div>
@@ -190,17 +190,19 @@
 <th:block th:include="page/fragments/common :: echarts_js"/>
 <th:block th:include="page/fragments/common :: swiper_js"/>
 <script type="text/javascript" th:inline="javascript">
-   var countUrl = /*[[@{/bigscreen/count}]]*/ "/bigscreen/count";
+    var countUrl = /*[[@{/bigscreen/count}]]*/ "/bigscreen/count";
+    var findHighIncidenceUrl = /*[[@{/commandSubsystem/findHighIncidence}]]*/ "/commandSubsystem/findHighIncidence";
+    var getTrendAnalysisUrl = /*[[@{/commandSubsystem/getTrendAnalysis}]]*/ "/commandSubsystem/getTrendAnalysis";
     $(function () {
         $.ajaxUtil.get(countUrl, function (e) {
-         console.log(e.data);
-         $("#count").text(e.data.count);
-         $("#close").text(e.data.close);
-         $("#inst").text(e.data.inst);
-         $("#eventNum").text(e.data.eventNum);
-         $("#eventDisponse").text(e.data.eventDisponse);
-         $("#unitNum").text(e.data.unitNum);
-         $("#unitDisponse").text(e.data.unitDisponse);
+            console.log(e.data);
+            $("#count").text(e.data.count);
+            $("#close").text(e.data.close);
+            $("#inst").text(e.data.inst);
+            $("#eventNum").text(e.data.eventNum);
+            $("#eventDisponse").text(e.data.eventDisponse);
+            $("#unitNum").text(e.data.unitNum);
+            $("#unitDisponse").text(e.data.unitDisponse);
             var myChart3 = echarts.init(document.getElementById('watch'));
             var option4 = {
                 tooltip: {
@@ -373,147 +375,7 @@
         //表格
 
         //高发问题
-        var myChart = echarts.init(document.getElementById('main'));
-        var option1 = {
-            tooltip: {
-                trigger: "axis",
-                axisPointer: {
-                    type: "shadow"
-                }
-            },
-            legend: {
-                data: ["立案量", "结案量"],
-                x: "right",
-                textStyle:{
-                    color: '#ffffff'//字体颜色
-                }
-            },
-            toolbox: {
-                show: false,
-                feature: {
-                    mark: {
-                        show: true
-                    },
-                    dataView: {
-                        show: true,
-                        readOnly: true
-                    },
-                    magicType: {
-                        show: false,
-                        type: ["line", "bar", "stack", "tiled"]
-                    },
-                    restore: {
-                        show: true
-                    },
-                    saveAsImage: {
-                        show: true
-                    }
-                }
-            },
-            calculable: true,
-            xAxis: [
-                {
-                    type: "value",
-                    axisTick: {
-                        show: false
-                    },
-                    axisLine: {
-                        show: false
-                    },
-                    axisLabel: {
-                        show: false,
-                        textStyle: {
-                            color: '#fff'
-                        }
-                    },
-                    splitLine: {
-                        show: false
-                    },
-                    splitArea: {
-                        show: false
-                    }
-                }
-            ],
-            yAxis: [
-                {
-                    type: "category",
-                    data: ["违章建筑", "私乱搭建", "暴露垃圾", "违规户外广告", "户外广告位置设置不合理"],
-                    axisTick: {
-                        show: false
-                    },
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#71f5eb'
-                        }
-                    },
-                    splitLine: {
-                        show: false
-                    },
-                    splitArea: {
-                        show: false
-                    },
-                    axisLine: {
-                        show: false
-                    }
-                }
-            ],
-            series: [
-                {
-                    name: "立案量",
-                    barWidth:10,
-                    type: "bar",
-                    stack: "总量",
-                    itemStyle: {
-                        normal: {
-                            label: {
-                                show: true,
-                                position: "insideRight"
-                            },
-                            borderWidth: 0
-                        },
-                        emphasis: {
-                            borderWidth: 0
-                        }
-                    },
-                    data: [16, 12, 20, 12, 16],
-                    itemStyle:{
-                        normal:{
-                            color:"#71f5eb",
-                            barBorderRadius: 7
-                        },
-                    }
-                },
-                {
-                    name: "结案量",
-                    type: "bar",
-                    stack: "总量",
-                    itemStyle: {
-                        normal: {
-                            label: {
-                                show: true,
-                                position: "insideRight"
-                            }
-                        }
-                    },
-                    data: [50, 30, 50, 30, 40],
-                    barGap: "38%",
-                    itemStyle:{
-                        normal:{
-                            color:"#3f6898",
-                            barBorderRadius: 7
-                        }
-                    }
-                }
-            ],
-            grid: {
-                x2: 12,
-                x: 150,
-                y: 43,
-                y2: 24
-            }
-        };
-        myChart.setOption(option1);
+        findHighIncidence();
 
         //高发区域
         var myChart1 = echarts.init(document.getElementById('region'));
@@ -671,124 +533,10 @@
         };
         myChart1.setOption(option2);
 
+        //高发时段趋势分析
+        getTrendAnalysis();
 
-        //高发趋势
-        var myChart2 = echarts.init(document.getElementById('high'));
-        var option3 = {
-            tooltip: {
-                trigger: "axis"
-            },
-            legend: {
-                data: ["结案量", "立案量"],
-                x: "right",
-                orient: "horizontal",
-                y: "top",
-                textStyle:{
-                    color: '#ffffff'//字体颜色
-                }
-            },
-            toolbox: {
-                feature: {
-                    dataView: {
-                        readOnly: true
-                    },
-                    magicType: {
-                        type: ["line", "bar"],
-                        show: false
-                    }
-                }
-            },
-            calculable: true,
-            xAxis: [
-                {
-                    type: "category",
-                    data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-                    axisTick: {
-                        lineStyle: {
-                            color: "rgb(56, 178, 234)"
-                        },
-                        show: false
-                    },
-                    splitLine: {
-                        show: false
-                    },
-                    boundaryGap: false,
-                    axisLine: {
-                        show: false
-                    },
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#3677FF'
-                        }
-                    }
-                }
-            ],
-            yAxis: [
-                {
-                    type: "value",
-                    axisLine: {
-                        show: false
-                    },
-                    splitLine: {
-                        show: true,
-                        lineStyle: {
-                            color: "#C4EAFC",
-                            width: 1
-                        }
-                    },
-                    splitArea: {
-                        show: false
-                    },
-                    nameTextStyle: {
-                        color: "rgb(20, 159, 224)"
-                    },
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#3677FF'
-                        }
-                    }
-                }
-            ],
-            series: [
-                {
-                    name: "结案量",
-                    type: "line",
-                    data: [11, 11, 1500, 1300, 1200, 2100, 10],
-                    smooth: true,
-                    itemStyle:{
-                        normal:{
-                            color:"#71f5eb"
-                        }
-                    }
-                },
-                {
-                    name: "立案量",
-                    type: "line",
-                    data: [1, 300, 2, 500, 3, 2000, 300],
-                    itemStyle: {
-                        normal: {
-                            lineStyle: {
-                                type: "solid"
-                            },
-                            color:"#f1b840"
-                        }
-                    },
-                    smooth: true
-                }
-            ],
-            grid: {
-                x: 56,
-                x2: 51,
-                y2: 38,
-                y: 38
-            }
-        };
-        myChart2.setOption(option3);
-
-
-
+        //问题来源
         var myChart5 = echarts.init(document.getElementById('question'));
         var option6 = {
             tooltip: {
@@ -890,7 +638,374 @@
         });
         map.addLayer(layerMap);
 
-    })
+    });
+
+    /* 高发问题 */
+    function findHighIncidence() {
+        let highIncidence = echarts.init(document.getElementById('highIncidence'));
+        $.ajaxUtil.get(findHighIncidenceUrl, function (e) {
+            let data = e.data;
+            let nameArray = [];
+            let instArray = [];
+            let closeArray = [];
+            for (let i = 0; i < data.length; i++) {
+                nameArray.push(data[i].name);
+                instArray.push(data[i].totalInst);
+                closeArray.push(data[i].totalClose);
+            }
+            let highIncidenceOption = {
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                        type: "shadow"
+                    }
+                },
+                legend: {
+                    data: ["立案量", "结案量"],
+                    x: "right",
+                    textStyle: {
+                        color: '#ffffff'//字体颜色
+                    }
+                },
+                toolbox: {
+                    show: false,
+                    feature: {
+                        mark: {
+                            show: true
+                        },
+                        dataView: {
+                            show: true,
+                            readOnly: true
+                        },
+                        magicType: {
+                            show: false,
+                            type: ["line", "bar", "stack", "tiled"]
+                        },
+                        restore: {
+                            show: true
+                        },
+                        saveAsImage: {
+                            show: true
+                        }
+                    }
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: "value",
+                        axisTick: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: false,
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        splitLine: {
+                            show: false
+                        },
+                        splitArea: {
+                            show: false
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: "category",
+                        data: nameArray,
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#71f5eb'
+                            }
+                        },
+                        splitLine: {
+                            show: false
+                        },
+                        splitArea: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: false
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: "立案量",
+                        barWidth: 10,
+                        type: "bar",
+                        stack: "总量",
+                        itemStyle: {
+                            normal: {
+                                label: {
+                                    show: true,
+                                    position: "insideRight"
+                                },
+                                borderWidth: 0
+                            },
+                            emphasis: {
+                                borderWidth: 0
+                            }
+                        },
+                        data: instArray,
+                        itemStyle: {
+                            normal: {
+                                color: "#71f5eb",
+                                barBorderRadius: 7
+                            },
+                        }
+                    },
+                    {
+                        name: "结案量",
+                        type: "bar",
+                        stack: "总量",
+                        itemStyle: {
+                            normal: {
+                                label: {
+                                    show: true,
+                                    position: "insideRight"
+                                }
+                            }
+                        },
+                        data: closeArray,
+                        barGap: "38%",
+                        itemStyle: {
+                            normal: {
+                                color: "#3f6898",
+                                barBorderRadius: 7
+                            }
+                        }
+                    }
+                ],
+                grid: {
+                    x2: 12,
+                    x: 150,
+                    y: 43,
+                    y2: 24
+                }
+            };
+            highIncidence.setOption(highIncidenceOption);
+        });
+    }
+
+    /* 高发时段趋势分析 */
+    function getTrendAnalysis() {
+        let trendAnalysis = echarts.init(document.getElementById('trendAnalysis'));
+        $.ajaxUtil.get(getTrendAnalysisUrl + "?time=year", function (e) {
+            let data = e.data;
+            let nameArray = [];
+            let dataArray = [];
+            /* 标题 */
+            for (let i = 0; i < data.length; i++) {
+                nameArray.push(data[i].name);
+            }
+            /* x轴 */
+            dataArray.push(data[0].data6.time6);
+            dataArray.push(data[0].data5.time5);
+            dataArray.push(data[0].data4.time4);
+            dataArray.push(data[0].data3.time3);
+            dataArray.push(data[0].data2.time2);
+            dataArray.push(data[0].data1.time1);
+            dataArray.push(data[0].data0.time0);
+            /* 线轴 */
+            let listDataArray0 = setArray(data[0]);
+            let listDataArray1 = setArray(data[1]);
+            let listDataArray2 = setArray(data[2]);
+            let listDataArray3 = setArray(data[3]);
+            let listDataArray4 = setArray(data[4]);
+            let listDataArray5 = setArray(data[5]);
+            let listDataArray6 = setArray(data[6]);
+
+            let trendAnalysisOption = {
+                tooltip: {
+                    trigger: "axis"
+                },
+                legend: {
+                    data: nameArray,
+                    x: "right",
+                    orient: "horizontal",
+                    y: "top",
+                    textStyle: {
+                        color: '#ffffff'//字体颜色
+                    }
+                },
+                toolbox: {
+                    feature: {
+                        dataView: {
+                            readOnly: true
+                        },
+                        magicType: {
+                            type: ["line", "bar"],
+                            show: false
+                        }
+                    }
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: "category",
+                        data: dataArray,
+                        axisTick: {
+                            lineStyle: {
+                                color: "rgb(56, 178, 234)"
+                            },
+                            show: false
+                        },
+                        splitLine: {
+                            show: false
+                        },
+                        boundaryGap: false,
+                        axisLine: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#3677FF'
+                            }
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: "value",
+                        axisLine: {
+                            show: false
+                        },
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                color: "#C4EAFC",
+                                width: 1
+                            }
+                        },
+                        splitArea: {
+                            show: false
+                        },
+                        nameTextStyle: {
+                            color: "rgb(20, 159, 224)"
+                        },
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#3677FF'
+                            }
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: listDataArray0[0],
+                        type: "line",
+                        data: listDataArray0[1],
+                        smooth: true,
+                        itemStyle: {
+                            normal: {
+                                color: "#71f5eb"
+                            }
+                        }
+                    },
+                    {
+                        name: listDataArray1[0],
+                        type: "line",
+                        data: listDataArray1[1],
+                        itemStyle: {
+                            normal: {
+                                color: "#f1b840"
+                            }
+                        },
+                        smooth: true
+                    },
+                    {
+                        name: listDataArray2[0],
+                        type: "line",
+                        data: listDataArray2[1],
+                        itemStyle: {
+                            normal: {
+                                color: "#f1b840"
+                            }
+                        },
+                        smooth: true
+                    },
+                    {
+                        name: listDataArray3[0],
+                        type: "line",
+                        data: listDataArray3[1],
+                        itemStyle: {
+                            normal: {
+                                color: "#f1b840"
+                            }
+                        },
+                        smooth: true
+                    },
+                    {
+                        name: listDataArray4[0],
+                        type: "line",
+                        data: listDataArray4[1],
+                        itemStyle: {
+                            normal: {
+                                color: "#f1b840"
+                            }
+                        },
+                        smooth: true
+                    },
+                    {
+                        name: listDataArray5[0],
+                        type: "line",
+                        data: listDataArray5[1],
+                        itemStyle: {
+                            normal: {
+                                color: "#f1b840"
+                            }
+                        },
+                        smooth: true
+                    },
+                    {
+                        name: listDataArray6[0],
+                        type: "line",
+                        data: listDataArray6[1],
+                        itemStyle: {
+                            normal: {
+                                color: "#f1b840"
+                            }
+                        },
+                        smooth: true
+                    }
+                ],
+                grid: {
+                    x: 56,
+                    x2: 51,
+                    y: 38,
+                    y2: 38
+                }
+            };
+            trendAnalysis.setOption(trendAnalysisOption);
+        });
+    }
+
+    function setArray(data) {
+        let listDataArray = [];
+        listDataArray.push(data.name);
+        let dataArray = [];
+        dataArray.push(data.data6.size6);
+        dataArray.push(data.data5.size5);
+        dataArray.push(data.data4.size4);
+        dataArray.push(data.data3.size3);
+        dataArray.push(data.data2.size2);
+        dataArray.push(data.data1.size1);
+        dataArray.push(data.data0.size0);
+        listDataArray.push(dataArray);
+        return listDataArray;
+    }
+
 </script>
 </body>
 </html>
