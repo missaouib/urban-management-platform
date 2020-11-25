@@ -82,7 +82,7 @@ public class WorkService {
      */
     public void caseAcceptanceByReceive(EventDTO eventDTO) {
         this.acceptanceReportingByReceptionist(eventDTO.getId());
-        this.claimByReceptionist(eventDTO.getId());
+        /*this.claimByReceptionist(eventDTO.getId());*/
         eventDTO.setButton("11");
         this.completeByReceptionist(eventDTO);
     }
@@ -104,18 +104,49 @@ public class WorkService {
      */
     public void completeByReceptionist(EventDTO eventDTO) {
         Statistics statistics1 = statisticsService.findByEventIdAndEndTimeIsNull(eventDTO.getId());
+        activitiService.claim(statistics1.getTaskId(), SecurityUtil.getUserId());
         statistics1.setEndTime(LocalDateTime.now());
-        if ("13".equals(eventDTO.getButton()) || "16".equals(eventDTO.getButton())) {
-            activitiService.claim(statistics1.getTaskId(), SecurityUtil.getUserId());
-        }
         int[] map = taskProcessingService.betWeenTime(statistics1.getStartTime(), statistics1.getEndTime(), statistics1.getProcessTimeLimit().getTimeType().getId(), statistics1.getProcessTimeLimit().getTimeLimit());
-        if ("14".equals(eventDTO.getButton())) {
-            statistics1.setSendCheckHuman(SecurityUtil.getUser().castToUser());
-            statistics1.setSendCheckHumanName(SecurityUtil.getUser().castToUser());
-            Role role = new Role(KvConstant.RECEPTIONIST_ROLE);
-            statistics1.setSendCheckHumanRole(role);
+        if ("16".equals(eventDTO.getButton())) {
+            /* 按时发核查 */
             statistics1.setInTimeSendCheck(map[0]);
             statistics1.setSts(String.valueOf(map[1]));
+            /* 标识人 */
+            statistics1.setSendCheckHuman(SecurityUtil.getUser().castToUser());
+            statistics1.setSendCheckHumanName(SecurityUtil.getUser().castToUser());
+            statistics1.setUser(SecurityUtil.getUser().castToUser());
+            Role role = new Role(KvConstant.RECEPTIONIST_ROLE);
+            statistics1.setSendCheckHumanRole(role);
+            /* 附件 */
+            setOpinionsAndEventFileList(statistics1, eventDTO.getRepresent(), eventDTO.getEventFileList());
+        }
+        if ("13".equals(eventDTO.getButton())) {
+            /* 按时发核实 */
+            statistics1.setInTimeSendVerify(map[0]);
+            statistics1.setSts(String.valueOf(map[1]));
+            /* 标识人 */
+            statistics1.setSendVerifyHumanName(SecurityUtil.getUser().castToUser());
+            statistics1.setSendVerifyHuman(SecurityUtil.getUser().castToUser());
+            statistics1.setUser(SecurityUtil.getUser().castToUser());
+            Role role = new Role(KvConstant.RECEPTIONIST_ROLE);
+            statistics1.setSendVerifyHumanRole(role);
+            /* 附件 */
+            setOpinionsAndEventFileList(statistics1, eventDTO.getRepresent(), eventDTO.getEventFileList());
+        }
+        if ("14".equals(eventDTO.getButton())) {
+            /* 发核查 */
+            statistics1.setSendCheckNum(1);
+            /* 按时发核查 */
+            statistics1.setInTimeSendCheck(map[0]);
+            statistics1.setSts(String.valueOf(map[1]));
+            /* 标识人 */
+            statistics1.setSendCheckHuman(SecurityUtil.getUser().castToUser());
+            statistics1.setSendCheckHumanName(SecurityUtil.getUser().castToUser());
+            statistics1.setUser(SecurityUtil.getUser().castToUser());
+            Role role = new Role(KvConstant.RECEPTIONIST_ROLE);
+            statistics1.setSendCheckHumanRole(role);
+            /* 附件 */
+            setOpinionsAndEventFileList(statistics1, eventDTO.getRepresent(), eventDTO.getEventFileList());
         }
         if ("11".equals(eventDTO.getButton())) {
             /* 发核实 */
@@ -123,25 +154,41 @@ public class WorkService {
             /* 按时发核实 */
             statistics1.setInTimeSendVerify(map[0]);
             statistics1.setSts(String.valueOf(map[1]));
+            /* 标识人 */
             statistics1.setSendVerifyHumanName(SecurityUtil.getUser().castToUser());
             statistics1.setSendVerifyHuman(SecurityUtil.getUser().castToUser());
             statistics1.setUser(SecurityUtil.getUser().castToUser());
+            Role role = new Role(KvConstant.RECEPTIONIST_ROLE);
+            statistics1.setSendVerifyHumanRole(role);
+            /* 附件 */
             setOpinionsAndEventFileList(statistics1, null, eventDTO.getEventFileList());
         } else {
             setOpinionsAndEventFileList(statistics1, eventDTO.getRepresent(), eventDTO.getEventFileList());
         }
-
         statisticsService.update(statistics1);
         activitiService.complete(statistics1.getTaskId(), Collections.singletonList(eventDTO.getUserId()), eventDTO.getButton());
         Statistics statistics = initStatistics(eventDTO.getId(), statistics1.getSort());
         statistics.setStartTime(statistics1.getEndTime());
         statistics.setSort(statistics1.getSort() + 1);
-        if ("14".equals(eventDTO.getButton())) {
+        User user = new User(eventDTO.getUserId());
+        if ("14".equals(eventDTO.getButton()) || "16".equals(eventDTO.getButton())) {
+            /* 应核查 */
             statistics.setNeedCheck(1);
+            /* 标识人 */
+            statistics.setCheckPatrolName(user);
+            statistics.setUser(user);
+            Role role = new Role(KvConstant.SUPERVISOR_ROLE);
+            statistics.setCheckPatrolId(role);
         }
-        if ("11".equals(eventDTO.getButton())) {
+        if ("11".equals(eventDTO.getButton()) || "13".equals(eventDTO.getButton())) {
             /* 应核实 */
             statistics.setNeedVerify(1);
+            /* 标识人 */
+            statistics.setVerifyPatrol(user);
+            statistics.setVerifyPatrolName(user);
+            statistics.setUser(user);
+            Role role = new Role(KvConstant.SUPERVISOR_ROLE);
+            statistics.setVerifyPatrolRole(role);
         }
         statisticsService.update(statistics);
     }
@@ -194,6 +241,8 @@ public class WorkService {
         statistics.setOperateHuman(SecurityUtil.getUser().castToUser());
         statistics.setOperateHumanName(SecurityUtil.getUser().castToUser());
         statistics.setUser(SecurityUtil.getUser().castToUser());
+        Role role = new Role(KvConstant.RECEPTIONIST_ROLE);
+        statistics.setOperateRole(role);
         statisticsService.update(statistics);
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
     }
@@ -211,6 +260,7 @@ public class WorkService {
         statistics.setOperateHumanName(SecurityUtil.getUser().castToUser());
         Role role = new Role(KvConstant.RECEPTIONIST_ROLE);
         statistics.setOperateRole(role);
+        statistics.setUser(SecurityUtil.getUser().castToUser());
         statistics.setEndTime(LocalDateTime.now());
         /* 受理数 */
         statistics.setOperate(1);
@@ -237,7 +287,7 @@ public class WorkService {
             statistics1.setToInst(1);
         }
         if ("17".equals(eventDTO.getButton())) {
-            /* 带派遣 */
+            /* 待派遣 */
             statistics1.setToDispatch(1);
             /* 应派遣 */
             statistics1.setNeedDispatch(1);
@@ -255,6 +305,11 @@ public class WorkService {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventDTO.getId());
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         statistics.setEndTime(LocalDateTime.now());
+        statistics.setOperateHuman(SecurityUtil.getUser().castToUser());
+        statistics.setOperateHumanName(SecurityUtil.getUser().castToUser());
+        statistics.setUser(SecurityUtil.getUser().castToUser());
+        Role role = new Role(KvConstant.RECEPTIONIST_ROLE);
+        statistics.setOperateRole(role);
         /* 待受理 */
         statistics.setToOperate(0);
         /* 不予受理 */
