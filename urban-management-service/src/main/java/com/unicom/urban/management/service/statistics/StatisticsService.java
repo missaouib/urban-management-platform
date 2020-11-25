@@ -244,7 +244,7 @@ public class StatisticsService {
         if (mapList != null && mapList.size() > 0) {
             Map<String,Object> hotMap = new HashMap<>(3);
             for (Map<String, Object> map : mapList) {
-                hotMap.put("hotInst",map.get("hotInst").toString());
+                hotMap.put("totalInst",map.get("totalInst").toString());
                 hotMap.put("totalClose",map.get("totalClose").toString());
                 hotMap.put("gridName",findFirstGrid(map.get("gridId").toString()));
                 hotGridList.add(hotMap);
@@ -254,16 +254,8 @@ public class StatisticsService {
     }
 
     private String findFirstGrid(String gridId){
-        String parentId ="";
-        if (parentId != null) {
-            Grid grid = gridService.findOne(gridId);
-            if (grid.getParent().getId() == null) {
-                return grid.getGridName();
-            } else {
-                parentId = findFirstGrid(grid.getParent().getId());
-            }
-        }
-        return "";
+        Grid grid = gridService.findOne(gridId);
+        return grid.getParent().getParent().getParent().getGridName();
     }
 
     public void getTrendAnalysis(String time) {

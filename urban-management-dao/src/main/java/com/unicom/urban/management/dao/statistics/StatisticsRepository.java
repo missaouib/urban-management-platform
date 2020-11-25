@@ -122,7 +122,7 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      * @param
      * @return 数据
      */
-    @Query(value = "SELECT (SUM(ifnull(inst,0))) as totalInst,sum(ifnull(`close`,0)) as totalClose,g.id as gridId  from `event` ev,grid g,statistics st where g.id=ev.grid_id and ev.id=st.event_id GROUP BY g.id", nativeQuery = true)
+    @Query(value = "SELECT SUM(inst) as totalInst,sum(`close`) as totalClose,g.id as gridId  from `event` ev,grid g,statistics st where g.id=ev.grid_id and ev.id=st.event_id GROUP BY g.id", nativeQuery = true)
     List<Map<String, Object>> findHotGrid();
 
     /* -------------------------------------------------------------- */
