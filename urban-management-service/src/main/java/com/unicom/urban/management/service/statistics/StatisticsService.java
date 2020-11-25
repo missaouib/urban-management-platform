@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
@@ -411,6 +412,22 @@ public class StatisticsService {
             list.add(closeSize);
         }
         return list;
+    }
+
+    public Map<String, Object> getIndexValueByWeek() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime monday = now.with(TemporalAdjusters.previous(DayOfWeek.SUNDAY)).plusDays(1).withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime sunday = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).minusDays(1).withHour(23).withMinute(59).withSecond(59);
+        int reportSize = statisticsRepository.findByReport(monday, sunday).size();
+        int instSize = statisticsRepository.findByInst(monday, sunday).size();
+        int dispatchSize = statisticsRepository.findByDispatch(monday, sunday).size();
+        int closeSize = statisticsRepository.findByClose(monday, sunday).size();
+        Map<String, Object> map = new HashMap<>(4);
+        map.put("report", reportSize);
+        map.put("inst", instSize);
+        map.put("dispatch", dispatchSize);
+        map.put("close", closeSize);
+        return map;
     }
 
 }

@@ -392,18 +392,28 @@
 <!--<script src="../../static/js/bstable/js/bootstrap-table.js" th:src="@{js/bstable/js/bootstrap-table.js}"></script>-->
 <!--<script src="../../static/js/bstable/js/bootstrap-table-zh-CN.min.js" th:src="@{/js/bstable/js/bootstrap-table-zh-CN.min.js}"></script>-->
 <script type="text/javascript" th:inline="javascript">
-    $(function() {
+    $(function () {
         queryUserList()
 
-        $(".star").click(function() {
+        $(".star").click(function () {
             $(this).addClass("staractive").siblings(".star").removeClass("staractive");
             $(".zara").eq($(this).index(".star")).addClass("tiaoActive").siblings(".zara").removeClass("tiaoActive");
             // $(".tiao").eq($(this).index(".star")).addClass("tiaoActive").siblings(".tiao").removeClass("tiaoActive");
             $(this).children(".tiao").addClass("tiaoActive").parent(".star").siblings('.star').children(".tiao").removeClass("tiaoActive");
         })
-        $(".innerBottom").height($(".bottomInner").height() - $(".innerTop").height()-20)
-    })
+        $(".innerBottom").height($(".bottomInner").height() - $(".innerTop").height() - 20);
 
+        getIndexValueByWeek();
+
+    });
+
+    let getIndexValueByWeekUrl = /*[[@{/home/getIndexValueByWeek}]]*/ "/home/getIndexValueByWeek";
+
+    function getIndexValueByWeek() {
+        $.ajaxUtil.get(getIndexValueByWeekUrl, function (e) {
+            console.log("e", e);
+        });
+    }
 
 
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";

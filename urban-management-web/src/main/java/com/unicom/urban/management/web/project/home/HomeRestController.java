@@ -1,7 +1,9 @@
 package com.unicom.urban.management.web.project.home;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.service.home.HomeService;
+import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +24,18 @@ public class HomeRestController {
 
     @Autowired
     private HomeService homeService;
+    @Autowired
+    private StatisticsService statisticsService;
 
 
     @GetMapping("/unitCount")
-    public List<Map<String,Object>> unitCount(){
+    public List<Map<String, Object>> unitCount() {
         return homeService.eventTypeCount();
+    }
+
+    @GetMapping("/getIndexValueByWeek")
+    public Result getIndexValueByWeek() {
+        Map<String, Object> indexValueByWeek = statisticsService.getIndexValueByWeek();
+        return Result.success(indexValueByWeek);
     }
 }
