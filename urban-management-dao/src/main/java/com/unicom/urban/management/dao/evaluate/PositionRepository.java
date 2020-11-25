@@ -19,37 +19,37 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
      */
     @Query(value = "select su.`name` as supervisorName, \n" +
             "            g.grid_name as gridOnwer, \n" +
-            "\t\t\t\t\t\t#监督员上报数：监督员巡查上报的部件和事件问题数\n" +
+            "            #监督员上报数：监督员巡查上报的部件和事件问题数\n" +
             "            sum(patrol_report) as patrolReport,\n" +
-            "\t\t\t\t\t\t#监督员有效上报数：监督员上报数中，经监督中心审核立案的案件数\n" +
+            "            #监督员有效上报数：监督员上报数中，经监督中心审核立案的案件数\n" +
             "            sum(valid_patrol_report) as validPatrolReport,\n" +
-            "\t\t\t\t\t\t#监督员有效上报率：监督员有效上报数/监督员上报数×100%。\n" +
+            "            #监督员有效上报率：监督员有效上报数/监督员上报数×100%。\n" +
             "            (sum(valid_patrol_report)/sum(report)) as reportVaildNumRate,\n" +
-            "\t\t\t\t\t\t#按时核实数：监督员在规定的工作时限内完成核实的问题数。\n" +
+            "            #按时核实数：监督员在规定的工作时限内完成核实的问题数。\n" +
             "            sum(in_time_verify) as inTimeVerify,\n" +
-            "\t\t\t\t\t\t#应核实数：监督举报数中，应核实的部件和事件问题数\n" +
+            "            #应核实数：监督举报数中，应核实的部件和事件问题数\n" +
             "            sum(need_verify) as needVerify, \n" +
-            "\t\t\t\t\t\t#按时核实率：按时核实数/应核实数×100%\n" +
+            "            #按时核实率：按时核实数/应核实数×100%\n" +
             "            (sum(in_time_verify)/sum(need_verify)) as inTimeVerifyRate,\n" +
-            "\t\t\t\t\t\t#按时核查数：监督员在规定的工作时限内完成核查并回复的次数\n" +
+            "            #按时核查数：监督员在规定的工作时限内完成核查并回复的次数\n" +
             "            sum(in_time_check) as inTimeCheck,\n" +
-            "\t\t\t\t\t\t#漏报数：经确认的监督员应上报而未上报的问题数\n" +
-            "            sum(public_report) as publicReport,\n" +
-            "\t\t\t\t\t\t#立案数：经审核后符合立案条件，确定立案并应派遣给专业部门处置的案件数\n" +
-            "            sum(inst) as inst,\n" +
-            "\t\t\t\t\t\t#漏报率：漏报数/立案数×100%\n" +
-            "            (sum(public_report)/sum(inst)) as publicReportRate,\n" +
-            "\t\t\t\t\t\t#综合指标值=监督员有效上报率分值×40%+漏报率分值×20%+按时核实率分值×20%+按时核查率分值×20%\n" +
-            "            ((sum(valid_patrol_report)*0.4+(1-(sum(public_report)/sum(inst)))*0.2+(sum(in_time_verify)/sum(need_verify))*0.2)+ (sum(in_time_check)/sum(need_send_check))*0.2) as aggregativeIndicator,\n" +
+            "            #漏报数：经确认的监督员应上报而未上报的问题数\n" +
+            "            sum(st.verify) as publicReport,\n" +
+            "            #立案数：经审核后符合立案条件，确定立案并应派遣给专业部门处置的案件数\n" +
+            "            (sum(st.verify)+sum(st.patrol_report))as inst,\n" +
+            "            #漏报率：漏报数/立案数×100%\n" +
+            "            (sum(st.verify)/(sum(st.verify)+sum(st.patrol_report))) as publicReportRate,\n" +
+            "            #综合指标值=监督员有效上报率分值×40%+漏报率分值×20%+按时核实率分值×20%+按时核查率分值×20%\n" +
+            "            ((sum(valid_patrol_report)*100*0.4+(1-(sum(public_report)/sum(inst)))*100*0.2+(sum(in_time_verify)/sum(need_verify))*100*0.2)+ (sum(in_time_check)/sum(need_send_check))*100*0.2) as aggregativeIndicator,\n" +
             "            (CASE \n" +
-            "            WHEN 90<=((sum(valid_patrol_report)*0.4+(1-(sum(public_report)/sum(inst)))*0.2+(sum(in_time_verify)/sum(need_verify))*0.2)+ (sum(in_time_check)/sum(need_send_check))*0.2)<=100 THEN 'A'\n" +
-            "            WHEN 75<=((sum(valid_patrol_report)*0.4+(1-(sum(public_report)/sum(inst)))*0.2+(sum(in_time_verify)/sum(need_verify))*0.2)+ (sum(in_time_check)/sum(need_send_check))*0.2)<90 THEN 'B'\n" +
-            "            WHEN 60<=((sum(valid_patrol_report)*0.4+(1-(sum(public_report)/sum(inst)))*0.2+(sum(in_time_verify)/sum(need_verify))*0.2)+ (sum(in_time_check)/sum(need_send_check))*0.2)<75 THEN 'C'\n" +
-            "            WHEN 40<=((sum(valid_patrol_report)*0.4+(1-(sum(public_report)/sum(inst)))*0.2+(sum(in_time_verify)/sum(need_verify))*0.2)+ (sum(in_time_check)/sum(need_send_check))*0.2)<60 THEN 'D'\n" +
+            "            WHEN 90<=((sum(valid_patrol_report)*100*0.4+(1-(sum(public_report)/sum(inst)))*100*0.2+(sum(in_time_verify)/sum(need_verify))*100*0.2)+ (sum(in_time_check)/sum(need_send_check))*100*0.2)<=100 THEN 'A'\n" +
+            "            WHEN 75<=((sum(valid_patrol_report)*100*0.4+(1-(sum(public_report)/sum(inst)))*100*0.2+(sum(in_time_verify)/sum(need_verify))*100*0.2)+ (sum(in_time_check)/sum(need_send_check))*100*0.2)<90 THEN 'B'\n" +
+            "            WHEN 60<=((sum(valid_patrol_report)*100*0.4+(1-(sum(public_report)/sum(inst)))*100*0.2+(sum(in_time_verify)/sum(need_verify))*100*0.2)+ (sum(in_time_check)/sum(need_send_check))*100*0.2)<75 THEN 'C'\n" +
+            "            WHEN 40<=((sum(valid_patrol_report)*100*0.4+(1-(sum(public_report)/sum(inst)))*100*0.2+(sum(in_time_verify)/sum(need_verify))*100*0.2)+ (sum(in_time_check)/sum(need_send_check))*100*0.2)<60 THEN 'D'\n" +
             "             ELSE 'E' END ) as ratingLevel\n" +
             "            from grid g,statistics st,`event` ev,sys_user su where  \n" +
-            "\t\t\t\t\t\t (su.id=st.report_patrol_name_id or su.id=st.inst_human_name_id or su.id=st.check_patrol_name) \n" +
-            "\t\t\t\t\t\tand g.id=ev.grid_id and ev.id=st.event_id and ev.create_time between ?1 and ?2 GROUP BY g.id,su.`name` \n", nativeQuery = true)
+            "            (su.id=st.report_patrol_name_id or su.id=st.check_patrol_id or su.id=st.verify_patrol_name_id) and\n" +
+            "            g.id=ev.grid_id and ev.id=st.event_id  and ev.create_time between ?1 and ?2 GROUP BY su.`name`,g.id \n", nativeQuery = true)
     List<Map<String,Object>> findSupervisorEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
