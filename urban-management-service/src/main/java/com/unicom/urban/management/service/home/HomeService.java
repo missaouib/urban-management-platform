@@ -7,6 +7,7 @@ import com.unicom.urban.management.pojo.entity.EventType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(rollbackOn = Exception.class)
 public class HomeService {
 
     @Autowired
@@ -29,7 +31,7 @@ public class HomeService {
         List<Event> all = eventRepository.findAll();
         List<Event> weekList = all.stream().filter(e -> e.getCreateTime().isAfter(week.toLocalDate().atStartOfDay())).collect(Collectors.toList());
         List<Event> monthList = all.stream().filter(e -> e.getCreateTime().isAfter(month.toLocalDate().atStartOfDay())).collect(Collectors.toList());
-        List<EventType> unit = eventTypeRepository.findAllByLevelAndParent_Name("2", "部件");
+        List<EventType> unit = eventTypeRepository.findAllByLevelAndParent_Name("1", "部件");
         List<Map<String,Object>> list = new ArrayList<>();
         unit.forEach(u->{
             Map<String,Object> map = new ConcurrentHashMap<>();

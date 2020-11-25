@@ -43,53 +43,18 @@
                             <!--                        表格处-->
 
                                 <div class="mannertable">
-                                    <table class="table">
+                                    <table class="table" >
                                         <thead>
                                         <tr>
-                                            <th>事件</th>
+                                            <th>部件</th>
                                             <th>本周</th>
                                             <th>本月</th>
                                             <th>总数</th>
                                         </tr>
                                         </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>市容环境</td>
-                                            <td>1</td>
-                                            <td>26</td>
-                                            <td>28</td>
-                                        </tr>
-                                        <tr>
-                                            <td>宣传广告</td>
-                                            <td>5</td>
-                                            <td>30</td>
-                                            <td>35</td>
-                                        </tr>
-                                        <tr>
-                                            <td>施工管理</td>
-                                            <td>4</td>
-                                            <td>4</td>
-                                            <td>12</td>
-                                        </tr>
+                                        <tbody id="unitCount">
 
-                                        <tr>
-                                            <td>突发事件</td>
-                                            <td>6</td>
-                                            <td>8</td>
-                                            <td>17</td>
-                                        </tr>
-                                        <tr>
-                                            <td>街面秩序</td>
-                                            <td>7</td>
-                                            <td>89</td>
-                                            <td>30</td>
-                                        </tr>
-                                        <tr>
-                                            <td>其他设施</td>
-                                            <td>1</td>
-                                            <td>26</td>
-                                            <td>28</td>
-                                        </tr>
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -389,6 +354,7 @@
         $(".innerBottom").height($(".bottomInner").height() - $(".innerTop").height() - 20);
 
         getIndexValueByWeek();
+        unitCount();
 
     });
 
@@ -404,6 +370,20 @@
         });
     }
 
+    let unitCountUrl = /*[[@{/home/unitCount}]]*/ "/home/unitCount";
+    function unitCount() {
+        $.ajaxUtil.get(unitCountUrl, function (e) {
+            var html = "";
+            $(e.data).each(function (index,value) {
+                html+="<tr> <td>"+value.typeName+"</td>" +
+                    "<td>"+value.weekCount+"</td>" +
+                    "<td>"+value.monthCount+"</td>" +
+                    "<td>"+value.count+"</td></tr>"
+            })
+            $("#unitCount").empty();
+            $("#unitCount").append(html);
+        });
+    }
 
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
     let showUrl = [[${@fastProperties.nginxUrl}]];
@@ -420,6 +400,7 @@
     let completeByReceptionistWithSendCheckUrl = /*[[@{/event/completeByReceptionistWithSendCheck}]]*/ "/event/completeByReceptionistWithSendCheck";
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
+
 
     let num = 1;
 
