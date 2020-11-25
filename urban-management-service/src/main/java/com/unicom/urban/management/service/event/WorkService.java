@@ -159,10 +159,6 @@ public class WorkService {
         Event event = eventService.findOne(eventId);
         Statistics statistics = createStatistics(event);
         statistics.setSort(saved.getSort() + 1);
-        statistics.setVerify(1);
-        statistics.setInTimeVerify(1);
-        statistics.setToOperate(1);
-        statistics.setVerifyPatrolName(SecurityUtil.getUser().castToUser());
         statisticsService.save(statistics);
     }
 
@@ -179,10 +175,6 @@ public class WorkService {
         Event event = eventService.findOne(eventId);
         Statistics statistics = createStatistics(event);
         statistics.setSort(saved.getSort() + 1);
-        statistics.setCheckNum(1);
-        statistics.setInTimeCheck(1);
-        statistics.setToCloseEvent(1);
-        statistics.setCheckPatrolName(SecurityUtil.getUser().castToUser());
         statisticsService.save(statistics);
     }
 
