@@ -604,3 +604,13 @@ textarea {
     top: 4px;
     color: red;}
 .demo2 span{left:-9px;color:white;}
+.closePopup{
+    position: absolute;
+    top: -20px;right: 0;
+    display: block;
+    width: 20px!important;
+    height: 20px!important;
+    line-height: 20px;
+    text-align: center;
+    z-index: 99;
+}

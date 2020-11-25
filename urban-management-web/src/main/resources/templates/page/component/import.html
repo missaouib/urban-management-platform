@@ -253,6 +253,8 @@
     }
 
     $(function () {
+
+        $(".ol-full-screen-false").html("全屏");
         ////日期插件
         $('.form_date').datetimepicker({
             language: 'fr',
@@ -289,8 +291,38 @@
                 gridStr += "<option value='" + value.id + "'>" + value.gridName + "</option>"
             })
             $("#bgid").append(gridStr);
-        })
+        });
+
+        getGridPublishUrl()
     })
+
+    let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
+
+    function getGridPublishUrl() {
+        $.ajaxUtil.get(getGridUrl, function (e) {
+            // console.log("e", e);
+            /*
+            * 初始渲染底图g
+            * */
+            var urlParam = e.data.split("?");
+            var url = urlParam[0];
+            var param = urlParam[1];
+            // console.log(url+","+param)
+            var ImageVector = new ol.layer.Tile({
+                source: new ol.source.TileWMS({
+                    url: url,
+                    params: {
+                        'VERSION': '1.1.1',
+                        tiled: true,
+                        "LAYERS": param,
+                        "exceptions": ''
+                    }
+                })
+            });
+            var layersArray = map.getLayers();
+            layersArray.insertAt(1, ImageVector);
+        })
+    }
 
     function saveComponent() {
         let data = $('#component').serialize();
@@ -332,6 +364,7 @@
 
     // 沽源地图
     var center = [115.68192, 41.66462];
+    var fullScreenControl = new ol.control.FullScreen();
     var projection = new ol.proj.Projection({
         code: 'EPSG:4326',
         units: 'degrees',
@@ -368,7 +401,7 @@
         })
     });
     //画笔
-
+    map.addControl(fullScreenControl)
     var draw = new ol.interaction.Draw({
         source: source,
         //点：Point   线:LineString      面:Polygon

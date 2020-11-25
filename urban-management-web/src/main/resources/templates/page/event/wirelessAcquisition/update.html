@@ -209,6 +209,7 @@
             <div class="map" id="map"></div>
 
             <div id="popup" class="ol-popup">
+                <div class="closePopup">×</div>
                 <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                 <div id="popup-content">
                     <ul id="message">
@@ -572,6 +573,17 @@
                         $("#grid3").html(option3);
                         break;
                     case 4:
+                        var coordinate = [$("#longitude").val(),
+                            $("#latitude").val()];
+                        overlay.setPosition(coordinate);
+                        $("#popup-content").html(`<div class="demo2">网格名称:`+data[i].name+`
+                                    <em>&#9670;</em>
+                                    <span>&#9670;</span>
+                                    </div>`);
+                        $("#popup").on("click",".closePopup",function (e) {
+                            e.preventDefault();
+                            overlay.setPosition(undefined);
+                        })
                         $("#grid4").empty();
                         let option4 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                         $("#grid4").html(option4);
@@ -595,6 +607,8 @@
         });
     }
     $(function () {
+        $(".ol-full-screen-false").html("全屏")
+
         var doBySelf = [[${eventOneVO.doBySelf}]];
         if (doBySelf){
             $("#after").css('display','block');
@@ -907,9 +921,21 @@
         })
     });
     var source = new ol.source.Vector({wrapX: false});
-
+    var source = new ol.source.Vector({wrapX: false});
+    var container = document.getElementById('popup');
+    var content = document.getElementById('popup-content');
+    var closer = document.getElementById('popup-closer');
+    var fullScreenControl = new ol.control.FullScreen();
+    var overlay = new ol.Overlay({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    });
     var map = new ol.Map({
         target: 'map',
+        overlays: [overlay],
         layers: [
             untiled
         ],
@@ -923,6 +949,8 @@
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),
     });
+    map.addControl(fullScreenControl)
+    map.addOverlay(overlay);
     map.addLayer(layerMap);
     map.on('singleclick', function (evt) {
         let t = evt.coordinate;

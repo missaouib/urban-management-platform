@@ -82,7 +82,13 @@ function cleanSearchInput() {
 	})
 }
 
-
+/*
+* 问题描述
+* */
+$(".leftContent").on("mouseover",".problem",function () {
+	var problemTitle = $(this).html()
+	$(".problem").attr("title",problemTitle);
+})
 
 /**
  * 步骤进行到哪一步

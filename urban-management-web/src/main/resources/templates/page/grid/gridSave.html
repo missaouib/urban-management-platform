@@ -145,6 +145,7 @@
     }
 
     $(function () {
+        $(".ol-full-screen-false").html("全屏");
         // $(".datepicker").datepicker({
         //     language: 'zh-CN',
         //     autoclose: true,
@@ -293,7 +294,7 @@
         })
     });
     var source = new ol.source.Vector({wrapX: false});
-
+    var fullScreenControl = new ol.control.FullScreen();
     var map = new ol.Map({
         target: 'map',
         layers: [
@@ -322,7 +323,7 @@
         });
         $(".but_esc").removeClass("blockActive")
     })
-
+    map.addControl(fullScreenControl)
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),
     });

@@ -199,6 +199,7 @@
             <div class="map" id="map"></div>
 
             <div id="popup" class="ol-popup">
+                <div class="closePopup">×</div>
                 <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                 <div id="popup-content">
                     <ul id="message">
@@ -250,6 +251,8 @@
     //     }
     // });
     $(function () {
+        $(".ol-full-screen-false").html("全屏");
+
         $(".name").click(function () {
             $(this).addClass("active").siblings(".name").removeClass("active");
             $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
@@ -272,7 +275,6 @@
         });
 
         getGridPublishUrl()
-
     })
 
 
@@ -867,6 +869,7 @@
     var container = document.getElementById('popup');
     var content = document.getElementById('popup-content');
     var closer = document.getElementById('popup-closer');
+    var fullScreenControl = new ol.control.FullScreen();
     var overlay = new ol.Overlay({
         element: container,
         autoPan: true,
@@ -887,6 +890,7 @@
             projection: projection
         })
     });
+    map.addControl(fullScreenControl)
     map.addOverlay(overlay);
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),
@@ -944,54 +948,60 @@
     /* 点击网格列表赋值 */
     function success_jsonpCallback(res) {
         var features = geojsonFormat.readFeatures(res);
-        let mongodbId = features[0].H.mongodb_id;
-        $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
-            console.log("e", e);
-            let data = e.data;
-            for (let i = 0; i < data.length; i++) {
-                switch (data[i].level) {
-                    case 1:
-                        $("#grid1").val(data[i].id);
-                        break;
-                    case 2:
-                        $("#grid2").empty();
-                        let option2 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        $("#grid2").html(option2);
-                        break;
-                    case 3:
-                        $("#grid3").empty();
-                        let option3 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        $("#grid3").html(option3);
-                        break;
-                    case 4:
-                        var coordinate = [$("#longitude").val(),
-                            $("#latitude").val()];
-                        overlay.setPosition(coordinate);
-                        $("#popup-content").html(`<div class="demo2">网格名称:`+data[i].name+`
+        if(features.length != 0){
+            let mongodbId = features[0].H.mongodb_id;
+            $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
+                console.log("e", e);
+                let data = e.data;
+                for (let i = 0; i < data.length; i++) {
+                    switch (data[i].level) {
+                        case 1:
+                            $("#grid1").val(data[i].id);
+                            break;
+                        case 2:
+                            $("#grid2").empty();
+                            let option2 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            $("#grid2").html(option2);
+                            break;
+                        case 3:
+                            $("#grid3").empty();
+                            let option3 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            $("#grid3").html(option3);
+                            break;
+                        case 4:
+                            var coordinate = [$("#longitude").val(),
+                                $("#latitude").val()];
+                            overlay.setPosition(coordinate);
+                            $("#popup-content").html(`<div class="demo2">网格名称:`+data[i].name+`
                                     <em>&#9670;</em>
                                     <span>&#9670;</span>
                                     </div>`);
-                        $("#grid4").empty();
-                        let option4 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                        $("#grid4").html(option4);
-                        break;
-                    default:
-                        console.log("查询出了网格之外的东西");
+                            $("#popup").on("click",".closePopup",function (e) {
+                                e.preventDefault();
+                                overlay.setPosition(undefined);
+                            })
+                            $("#grid4").empty();
+                            let option4 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                            $("#grid4").html(option4);
+                            break;
+                        default:
+                            console.log("查询出了网格之外的东西");
+                    }
                 }
-            }
-            /* todo 上面的方式是单纯的回显 想做一个触发级联之后再赋值的操作 可能需要类似等待的方式 需要执行完一个函数之后通过回调执行下一个 同步 */
-            /*let grid1 = getLevelWithList(data, 1);
-            $("#grid1").val(grid1.id);
-            getStreetList();
-            let grid2 = getLevelWithList(data, 2);
-            $("#grid2").val(grid2.id);
-            getCommunityList();
-            let grid3 = getLevelWithList(data, 3);
-            $("#grid3").val(grid3.id);
-            getGridList();
-            let grid4 = getLevelWithList(data, 4);
-            $("#grid4").val(grid4.id);*/
-        });
+                /* todo 上面的方式是单纯的回显 想做一个触发级联之后再赋值的操作 可能需要类似等待的方式 需要执行完一个函数之后通过回调执行下一个 同步 */
+                /*let grid1 = getLevelWithList(data, 1);
+                $("#grid1").val(grid1.id);
+                getStreetList();
+                let grid2 = getLevelWithList(data, 2);
+                $("#grid2").val(grid2.id);
+                getCommunityList();
+                let grid3 = getLevelWithList(data, 3);
+                $("#grid3").val(grid3.id);
+                getGridList();
+                let grid4 = getLevelWithList(data, 4);
+                $("#grid4").val(grid4.id);*/
+            });
+        }
     }
 
 

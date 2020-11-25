@@ -45,9 +45,7 @@
     display: flex;
     justify-content: flex-end;
 }
-.ol-overlaycontainer-stopevent{
-    display: none;
-}
+
 .notice_check p{
     padding: 5px 0;
 }

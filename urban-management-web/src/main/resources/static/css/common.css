@@ -1812,3 +1812,9 @@ width: 50px;
 #imageList img{
     width: 100%;height: 100%;
 }
+.problem{
+    max-width: 100px!important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
