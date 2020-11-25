@@ -387,3 +387,6 @@ table {
     width: 100%;
     height: 39%;
 }
+.fixed-table-toolbar{
+    display: none!important;
+}
