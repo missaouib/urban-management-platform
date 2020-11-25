@@ -377,18 +377,28 @@
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <script type="text/javascript" th:inline="javascript">
-    $(function() {
+    $(function () {
         queryUserList()
 
-        $(".star").click(function() {
+        $(".star").click(function () {
             $(this).addClass("staractive").siblings(".star").removeClass("staractive");
             $(".zara").eq($(this).index(".star")).addClass("tiaoActive").siblings(".zara").removeClass("tiaoActive");
             // $(".tiao").eq($(this).index(".star")).addClass("tiaoActive").siblings(".tiao").removeClass("tiaoActive");
             $(this).children(".tiao").addClass("tiaoActive").parent(".star").siblings('.star').children(".tiao").removeClass("tiaoActive");
         })
-        $(".innerBottom").height($(".bottomInner").height() - $(".innerTop").height()-20)
-    })
+        $(".innerBottom").height($(".bottomInner").height() - $(".innerTop").height() - 20);
 
+        getIndexValueByWeek();
+
+    });
+
+    let getIndexValueByWeekUrl = /*[[@{/home/getIndexValueByWeek}]]*/ "/home/getIndexValueByWeek";
+
+    function getIndexValueByWeek() {
+        $.ajaxUtil.get(getIndexValueByWeekUrl, function (e) {
+            console.log("e", e);
+        });
+    }
 
 
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
