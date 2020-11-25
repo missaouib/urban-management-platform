@@ -1506,6 +1506,9 @@ label.error {
     font-size: 14px!important;
     border-radius: 4px!important;
 }
+.ol-rotate{
+    display: none!important;
+}
 .such,.sameArray{
     font-size: 14px;
 }

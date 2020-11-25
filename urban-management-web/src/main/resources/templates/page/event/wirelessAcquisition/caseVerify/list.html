@@ -521,6 +521,7 @@
 
     $(function () {
 
+        $(".ol-full-screen-false").html("全屏")
         //步骤进行到
         var bgmNum = 2;
         setConduct(bgmNum)
@@ -867,7 +868,7 @@
         })
     });
     var source = new ol.source.Vector({wrapX: false});
-
+    var fullScreenControl = new ol.control.FullScreen();
     var map = new ol.Map({
         target: 'map',
         layers: [
@@ -875,11 +876,12 @@
         ],
         view: new ol.View({
             // projection: projection,
-            center:center,
-            zoom:17,
+            center: center,
+            zoom: 17,
             projection: projection
         })
     });
+    map.addControl(fullScreenControl)
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),
     });

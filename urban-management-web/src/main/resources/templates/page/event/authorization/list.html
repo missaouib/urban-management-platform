@@ -510,6 +510,8 @@
             $("#wordSays").fadeOut(300)
         });
 
+        $(".ol-full-screen-false").html("全屏")
+
         $("#alwaysSay_tag").click(function () {
             $("#wordSays_tag").stop().fadeToggle(300)
         });
@@ -1181,6 +1183,7 @@
         })
     });
     var source = new ol.source.Vector({wrapX: false});
+    var fullScreenControl = new ol.control.FullScreen();
 
     var map = new ol.Map({
         target: 'map',
@@ -1194,6 +1197,7 @@
             projection: projection
         })
     });
+    map.addControl(fullScreenControl)
 
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),

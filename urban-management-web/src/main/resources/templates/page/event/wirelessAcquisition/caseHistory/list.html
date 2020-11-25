@@ -445,6 +445,8 @@
 
     $(function () {
 
+        $(".ol-full-screen-false").html("全屏")
+
         //步骤进行到
         var bgmNum = 2;
         setConduct(bgmNum)
@@ -868,7 +870,7 @@
         })
     });
     var source = new ol.source.Vector({wrapX: false});
-
+    var fullScreenControl = new ol.control.FullScreen();
     var map = new ol.Map({
         target: 'map',
         layers: [
@@ -876,17 +878,21 @@
         ],
         view: new ol.View({
             // projection: projection,
-            center: center,
-            zoom: 17,
+            center:center,
+            zoom:17,
             projection: projection
+        }),//加载控件到地图容器中
+        controls: ol.control.defaults({
+            zoom: true,
+            rotate: false,
+            attribution: false
         })
     });
-
+    map.addControl(fullScreenControl)
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),
     });
     map.addLayer(layerMap);
-
     function setPoint(x, y) {
         let point = new ol.Feature({
             geometry: new ol.geom.Point([x, y]),

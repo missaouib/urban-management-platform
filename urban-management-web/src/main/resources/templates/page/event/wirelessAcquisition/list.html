@@ -67,6 +67,7 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
+        $(".ol-full-screen-false").html("全屏")
         queryUserList();
 
         getGridPublishUrl()
@@ -260,7 +261,7 @@
         })
     });
     var source = new ol.source.Vector({wrapX: false});
-
+    var fullScreenControl = new ol.control.FullScreen();
     var map = new ol.Map({
         target: 'map',
         layers: [
@@ -273,6 +274,11 @@
             projection: projection
         })
     });
+    map.addControl(fullScreenControl)
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
 </script>
 </body>
 </html>

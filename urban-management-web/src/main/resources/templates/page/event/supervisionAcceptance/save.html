@@ -301,6 +301,8 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
+
+        $(".ol-full-screen-false").html("全屏")
         $(".name").click(function () {
             $(this).addClass("active").siblings(".name").removeClass("active");
             $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
@@ -934,6 +936,7 @@
         })
     });
     var source = new ol.source.Vector({wrapX: false});
+    var fullScreenControl = new ol.control.FullScreen();
 
     var map = new ol.Map({
         target: 'map',
@@ -947,6 +950,8 @@
             projection: projection
         })
     });
+    map.addControl(fullScreenControl)
+
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),
     });

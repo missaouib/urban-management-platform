@@ -484,6 +484,9 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
+        $(".ol-full-screen-false").html("全屏")
+
+
         //步骤进行到
         var bgmNum = 2;
         setConduct(bgmNum)
@@ -1028,6 +1031,7 @@
         })
     });
     var source = new ol.source.Vector({wrapX: false});
+    var fullScreenControl = new ol.control.FullScreen();
 
     var map = new ol.Map({
         target: 'map',
@@ -1041,6 +1045,7 @@
             projection: projection
         })
     });
+    map.addControl(fullScreenControl)
 
 
     var layerMap = new ol.layer.Vector({
