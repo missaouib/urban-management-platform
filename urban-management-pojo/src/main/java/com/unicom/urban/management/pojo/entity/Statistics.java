@@ -95,17 +95,20 @@ public class Statistics {
     /**
      * 监督员上报
      */
-    private Integer patrolReport;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer patrolReport = 0;
 
     /**
      * 公众举报 = 漏报数
      */
-    private Integer publicReport;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer publicReport = 0;
 
     /**
      * 上报
      */
-    private Integer report;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer report = 0;
 
     /**
      * 上报监督员标识
@@ -131,34 +134,40 @@ public class Statistics {
     /**
      * 监督员有效上报 立案+作废
      */
-    private Integer validPatrolReport;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer validPatrolReport = 0;
 
     /**
      * 公众举报有效上报
      */
-    private Integer validPublicReport;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer validPublicReport = 0;
 
     /**
      * 有效上报
      */
-    private Integer validReport;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer validReport = 0;
 
     /* --------------------------------------------------------- */
 
     /**
      * 应核实 监督员 应核实 = 受理员发给该监督员的核实的案件
      */
-    private Integer needVerify;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer needVerify = 0;
 
     /**
      * 核实 监督员 有监督员回馈的核实结果的事
      */
-    private Integer verify;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer verify = 0;
 
     /**
      * 按时核实 监督员 不超期的 核实数
      */
-    private Integer inTimeVerify;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer inTimeVerify = 0;
 
     /**
      * 核实监督员标识 监督员
@@ -186,22 +195,26 @@ public class Statistics {
     /**
      * 不予受理 受理员
      */
-    private Integer notOperate;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer notOperate = 0;
 
     /**
      * 待受理 未批转值班长
      */
-    private Integer toOperate;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer toOperate = 0;
 
     /**
      * 按时受理
      */
-    private Integer inTimeOperate;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer inTimeOperate = 0;
 
     /**
      * 受理 批转值班长 触发
      */
-    private Integer operate;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer operate = 0;
 
     /**
      * 受理人标识
@@ -230,17 +243,20 @@ public class Statistics {
     /**
      * 应发核实 受理员 按时完成的核实 = 待发核实 + 已发核实
      */
-    private Integer needSendVerify;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer needSendVerify = 0;
 
     /**
      * 发核实 受理员 只要派出去就算
      */
-    private Integer sendVerify;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer sendVerify = 0;
 
     /**
      * 按时发核实 受理员 按时下发核实
      */
-    private Integer inTimeSendVerify;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer inTimeSendVerify = 0;
 
     /**
      * 发核实人姓名
@@ -268,12 +284,14 @@ public class Statistics {
     /**
      * 发核查 受理员
      */
-    private Integer sendCheck;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer sendCheck = 0;
 
     /**
      * 应发核查 受理员
      */
-    private Integer needSendCheck;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer needSendCheck = 0;
 
     /**
      * 发核查人标识 受理员
@@ -301,17 +319,20 @@ public class Statistics {
     /**
      * 立案 值班长 立案
      */
-    private Integer inst;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer inst = 0;
 
     /**
      * 按时立案 值班长 不超时立案
      */
-    private Integer inTimeInst;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer inTimeInst = 0;
 
     /**
      * 待立案 值班长 未立案的数
      */
-    private Integer toInst;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer toInst = 0;
 
     /**
      * 立案人标识
@@ -339,17 +360,20 @@ public class Statistics {
     /**
      * 结案
      */
-    private Integer close;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer close = 0;
 
     /**
      * 按时结案
      */
-    private Integer inTimeClose;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer inTimeClose = 0;
 
     /**
      * 待结案
      */
-    private Integer toClose;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer toClose = 0;
 
     /**
      * 结案人标识
@@ -377,32 +401,38 @@ public class Statistics {
     /**
      * 派遣 派遣员 已派遣
      */
-    private Integer dispatch;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer dispatch = 0;
 
     /**
      * 待派遣 派遣员
      */
-    private Integer toDispatch;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer toDispatch = 0;
 
     /**
      * 应派遣 派遣员 应派遣 = 已派遣 + 未派遣
      */
-    private Integer needDispatch;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer needDispatch = 0;
 
     /**
      * 按时派遣 派遣员 = 未超时的派遣
      */
-    private Integer inTimeDispatch;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer inTimeDispatch = 0;
 
     /**
      * 准确派遣数 未出现重新派的其他专业部门 结案触发
      */
-    private Integer accuracyDispatch;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer accuracyDispatch = 0;
 
     /**
      * 错误派遣 出现派遣2个或者以上的专业部门 结案触发 例如 第一派遣A 第二次派遣 A B 两个部门
      */
-    private Integer errorDispatch;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer errorDispatch = 0;
 
     /**
      * 派遣员标识
@@ -430,32 +460,38 @@ public class Statistics {
     /**
      * 处置   专业部门
      */
-    private Integer dispose;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer dispose = 0;
 
     /**
      * 应处置
      */
-    private Integer needDispose;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer needDispose = 0;
 
     /**
      * 待处置
      */
-    private Integer toDispose;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer toDispose = 0;
 
     /**
      * 按时处置
      */
-    private Integer inTimeDispose;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer inTimeDispose = 0;
 
     /**
      * 超时未处置
      */
-    private Integer overtimeToDispose;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer overtimeToDispose = 0;
 
     /**
      * 超时处置
      */
-    private Integer overtimeDispose;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer overtimeDispose = 0;
 
     /**
      * 处置部门标识
@@ -474,22 +510,26 @@ public class Statistics {
     /**
      * 应核查   监督员
      */
-    private Integer needCheck;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer needCheck = 0;
 
     /**
      * 按时核查
      */
-    private Integer inTimeCheck;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer inTimeCheck = 0;
 
     /**
      * 按时发核查
      */
-    private Integer inTimeSendCheck;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer inTimeSendCheck = 0;
 
     /**
      * 核查批转
      */
-    private Integer checkTrans;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer checkTrans = 0;
 
     /**
      * 核查监督员标识
@@ -508,7 +548,8 @@ public class Statistics {
     /**
      * 核查受理员标识
      */
-    private Integer checkTransHuman;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer checkTransHuman = 0;
 
     /**
      * 核查受理员
@@ -535,7 +576,8 @@ public class Statistics {
     /**
      * 作废
      */
-    private Integer cancel;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer cancel = 0;
 
     /**
      * 作废时间
@@ -546,7 +588,8 @@ public class Statistics {
     /**
      * 挂账
      */
-    private Integer hang;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer hang = 0;
 
     /**
      * 挂账时间
@@ -557,41 +600,44 @@ public class Statistics {
     /**
      * 返工 二次或者多次派遣同一个专业部门 经历核查阶段 结案触发
      */
-    private Integer rework;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer rework = 0;
 
     /**
      * 显示类型标识
      */
-    private Integer displayStyleId;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer displayStyleId = 0;
 
     /**
      * 推诿
      */
-    private Integer shuffle;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer shuffle = 0;
 
     /**
      * 发核查
      */
-    @Column(columnDefinition = "TINYINT(1)")
-    private Integer sendCheckNum;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer sendCheckNum = 0;
 
     /**
      * 结案存档（自处理被判定有效案件）
      */
-    @Column(columnDefinition = "TINYINT(1)")
-    private Integer closingFiling;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer closingFiling = 0;
 
     /**
      * 无效案件（自处理被判定无效案件）
      */
-    @Column(columnDefinition = "TINYINT(1)")
-    private Integer invalidEvent;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer invalidEvent = 0;
 
     /**
      * 延时
      */
-    @Column(columnDefinition = "TINYINT(1)")
-    private Integer delayedState;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer delayedState = 0;
 
     /**
      * 延时       申请延时的时间
@@ -601,7 +647,8 @@ public class Statistics {
     /**
      * 回退
      */
-    private Integer backOff;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer backOff = 0;
 
     /**
      * 回退        申请回退的时间
@@ -621,7 +668,8 @@ public class Statistics {
     /**
      * 延时多久
      */
-    private Integer delayedHours;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer delayedHours = 0;
 
     /**
      * 排序
@@ -632,24 +680,25 @@ public class Statistics {
     /**
      * 核查数
      */
-    private Integer checkNum;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer checkNum = 0;
 
     /**
      * 待结案受理
      */
-    @Column(columnDefinition = "TINYINT(1)")
-    private Integer toCloseEvent;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer toCloseEvent = 0;
 
     /**
      * 结案受理
      */
-    @Column(columnDefinition = "TINYINT(1)")
-    private Integer closeOperate;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer closeOperate = 0;
 
     /**
      * 按时结案受理
      */
-    @Column(columnDefinition = "TINYINT(1)")
-    private Integer closeInTimeOperate;
+    @Column(nullable = false, columnDefinition = "tinyint default 0")
+    private Integer closeInTimeOperate = 0;
 
 }
