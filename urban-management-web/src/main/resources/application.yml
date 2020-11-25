@@ -55,9 +55,9 @@ fdfs:
 
 logging:
   level:
-    com.unicom: debug
-    org.springframework: warn
+    com.unicom: info
+    org.springframework: info
     org.activiti.engine: info
-    com.github.tobato: debug
-    com.github.tobato.fastdfs.domain.proto: warn
+    com.github.tobato: info
+    com.github.tobato.fastdfs.domain.proto: info
     org.hibernate.type.descriptor.sql.BasicBinder: info

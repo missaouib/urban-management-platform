@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+import java.util.Map;
+
 /**
- * 网格管理
+ * 大屏
  *
- * @author liukai
+ * @author jiangwen
  */
 @RestController
 @ResponseResultBody
@@ -50,8 +53,14 @@ public class SupervisionCommandSubsystemController {
 
     @GetMapping("/getTrendAnalysis")
     public Result getTrendAnalysis(String time) {
-        statisticsService.getTrendAnalysis(time);
-        return Result.success();
+        List<Map<String, Object>> trendAnalysis = statisticsService.getTrendAnalysis(time);
+        return Result.success(trendAnalysis);
+    }
+
+    @GetMapping("/findHighIncidence")
+    public Result findHighIncidence() {
+        List<Map<String, String>> highIncidence = statisticsService.findHighIncidence();
+        return Result.success(highIncidence);
     }
 
 

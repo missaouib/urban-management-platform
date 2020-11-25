@@ -2,7 +2,7 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>热线上报</title>
+    <title>授权批示列表</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
@@ -536,7 +536,6 @@
             $(".duck_duck").fadeIn(300)
         });
 
-        getGridPublishUrl()
 
         $(".duk_close").click(function () {
             $("#pictureBoxDuc").fadeOut(300)
@@ -677,65 +676,10 @@
     }
 
 
-    let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
-
-    function getGridPublishUrl() {
-        $.ajaxUtil.get(getGridUrl, function (e) {
-            // console.log("e", e);
-            /*
-            * 初始渲染底图g
-            * */
-            var urlParam = e.data.split("?");
-            var url = urlParam[0];
-            var param = urlParam[1];
-            // console.log(url+","+param)
-            var ImageVector = new ol.layer.Tile({
-                source: new ol.source.TileWMS({
-                    url: url,
-                    params: {
-                        'VERSION': '1.1.1',
-                        tiled: true,
-                        "LAYERS": param,
-                        "exceptions": ''
-                    }
-                })
-            });
-            var layersArray = map.getLayers();
-            layersArray.insertAt(1, ImageVector);
-            //获取地图数据s
-            map.on('singleclick', function (evt) {
-                var viewResolution = map.getView().getResolution();
-                var url = ImageVector.getSource().getGetFeatureInfoUrl(
-                    evt.coordinate, viewResolution, 'EPSG:4326', {
-                        'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
-                        'FEATURE_COUNT': 50 //点击查询能返回的数量上限
-                    });
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    dataType: 'jsonp',
-                    jsonp: 'format_options',
-                    jsonpCallback: "callback:success_jsonpCallback"
-                });
-            });
-        })
-    }
 
     //回调函数接收查询结果
     var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
 
-    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
-
-    function success_jsonpCallback(res) {
-        var features = geojsonFormat.readFeatures(res);
-        console.log('点击查询返回的结果如下：');
-        console.log("features", features);
-        let mongodbId = features[0].H.mongodb_id;
-        console.log("features", mongodbId);
-        $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
-            console.log("e", e);
-        });
-    }
 
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
@@ -847,6 +791,8 @@
         getTimeAxis(eventId);
         getEventDetail(eventId);
         getButton(eventId);
+        getGridPolygon(eventId);
+
     }
 
     /* 获取下一步按钮 */
@@ -951,6 +897,7 @@
     function getEventDetail(eventId) {
         $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
             eventId = e.data.id;
+            console.log(e.data)
             /*详情*/
             $("#eventCode").val(e.data.eventCode);
             $("#eventTypeStr").val(e.data.eventTypeStr);
@@ -1227,6 +1174,36 @@
                 })
             })
         }));
+    }
+    let getGridPolygonUrl = /*[[@{/event/getGridPolygon}]]*/ "/event/getGridPolygon";
+    /* 点击获取网格 */
+    function getGridPolygon(eventId) {
+        $.ajaxUtil.get(getGridPolygonUrl + "?eventId=" + eventId, function (e) {
+            let data = e.data
+            let split = data.split("-");
+            let polygonArray = [];
+            let polygonArrayEnd = [];
+            for (let j = 0; j < split.length; j++) {
+                let pointArray = [];
+                pointArray.push(split[j].split(",")[0]);
+                pointArray.push(split[j].split(",")[1]);
+                polygonArray.push(pointArray);
+                polygonArrayEnd.push(polygonArray);
+            }
+            setPolygon(polygonArrayEnd, 1);
+        });
+    }
+    function setPolygon(coordinates, id) {
+
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(coordinates),
+            data: {
+                id: id,
+                // name: name,
+                coordinate: coordinates
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
     }
 </script>
 </body>

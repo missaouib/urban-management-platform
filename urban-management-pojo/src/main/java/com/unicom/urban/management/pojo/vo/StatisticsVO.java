@@ -46,4 +46,12 @@ public class StatisticsVO implements Serializable {
      */
     private String userName;
 
+    private String id;
+
+    private String name;
+
+    private String totalInst;
+
+    private String totalClose;
+
 }

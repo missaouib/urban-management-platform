@@ -62,7 +62,7 @@ public class SuperviseService {
                     .replayOpinion(supervise.getReplayOpinion())
                     .build();
         } else {
-            List<Statistics> collect = event.getStatisticsList().stream().filter(s -> null != s.getEndTime()).collect(Collectors.toList());
+            List<Statistics> collect = event.getStatisticsList().stream().filter(s -> null == s.getEndTime()).collect(Collectors.toList());
             if(collect.size()>0){
                 Statistics statistics = collect.get(0);
                 return SuperviseVO.builder()

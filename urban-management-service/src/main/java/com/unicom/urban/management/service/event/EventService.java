@@ -185,10 +185,13 @@ public class EventService {
                     String timeType = statistics.getDeptTimeLimit().getTimeType().getValue();
                     eventVO.setTimeType(timeType);
                 }else{
-                    int timeLimit = statistics.getProcessTimeLimit().getTimeLimit();
-                    eventVO.setTimeLimit(timeLimit);
-                    String timeType = statistics.getProcessTimeLimit().getTimeType().getValue();
-                    eventVO.setTimeType(timeType);
+                    if(Optional.ofNullable(statistics.getProcessTimeLimit()).isPresent()){
+                        int timeLimit = statistics.getProcessTimeLimit().getTimeLimit();
+                        eventVO.setTimeLimit(timeLimit);
+                        String timeType = statistics.getProcessTimeLimit().getTimeType().getValue();
+                        eventVO.setTimeType(timeType);
+                    }
+
                 }
 
                 eventVO.setDeptName(Optional.ofNullable(statistics.getDisposeUnit()).map(Dept::getDeptName).orElse(""));
@@ -468,6 +471,9 @@ public class EventService {
             Statistics statistics = statisticsList.get(1);
             if("派遣员-申请延时".equals(statisticsList.get(0).getTaskName())){
                 eventOneVO.setDelayedHours(statistics.getDelayedHours());
+            }
+            if("值班长-作废审批".equals(statisticsList.get(0).getTaskName())){
+                eventOneVO.setTaskDeptName(Optional.ofNullable(statisticsList.get(2).getDisposeUnitName()).map(Dept::getDeptName).orElse(""));
             }
             eventOneVO.setTaskDeptName(Optional.ofNullable(statistics.getDisposeUnitName()).map(Dept::getDeptName).orElse(""));
             eventOneVO.setOpinions(statistics.getOpinions());
