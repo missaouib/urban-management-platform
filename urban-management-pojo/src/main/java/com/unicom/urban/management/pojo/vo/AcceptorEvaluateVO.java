@@ -49,7 +49,7 @@ public class AcceptorEvaluateVO {
     /**
      * 核查按时派发率
      */
-    private Integer needSendCheckRate;
+    private String needSendCheckRate;
     /**
      *综合指标值
      */

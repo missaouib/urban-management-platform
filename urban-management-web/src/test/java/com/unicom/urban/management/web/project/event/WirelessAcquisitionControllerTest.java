@@ -82,4 +82,24 @@ public class WirelessAcquisitionControllerTest {
         log.info("返回结果:{}, contentLength:{} ", new String(mvcResult.getResponse().getContentAsByteArray(), StandardCharsets.UTF_8),
                 mvcResult.getResponse().getContentLength());
     }
+    @Test
+    @Transactional
+    public void findHotGridTest() throws Exception {
+        // get请求接口-无参数
+        MvcResult mvcResult = mockMvc
+                .perform(MockMvcRequestBuilders.get("/statistics/findHotGrid/"))
+                .andReturn();
+        log.info("返回结果:{}, contentLength:{} ", new String(mvcResult.getResponse().getContentAsByteArray(), StandardCharsets.UTF_8),
+                mvcResult.getResponse().getContentLength());
+    }
+    @Test
+    @Transactional
+    public void findEventSourceTest() throws Exception {
+        // get请求接口-无参数
+        MvcResult mvcResult = mockMvc
+                .perform(MockMvcRequestBuilders.get("/statistics/findEventSource/"))
+                .andReturn();
+        log.info("返回结果:{}, contentLength:{} ", new String(mvcResult.getResponse().getContentAsByteArray(), StandardCharsets.UTF_8),
+                mvcResult.getResponse().getContentLength());
+    }
 }

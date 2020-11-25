@@ -217,4 +217,18 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      */
     @Query(value = "select sum(close) from statistics where report_patrol_name_id=?1  or verify_patrol_name_id=?1  or operate_human_name_id=?1  or send_verify_human_name_id=?1  or send_check_human_name=?1  or inst_human_name_id=?1  or close_human_name_id=?1  or dispatch_human_name_id=?1  or dispose_unit_name_id=?1  or check_patrol_name=?1  or check_trans_human_name=?1",nativeQuery = true)
     Integer findCloseCase(String userId);
+    /**
+     * 问题来源-信息采集人上报
+     *
+     * @return int
+     */
+    @Query(value = "select count(1) from `event` where event_source_id in (select id from kv where field_name='eventSource') and do_by_self is NULL ",nativeQuery = true)
+    Integer findReportPatrolNum();
+    /**
+     * 问题来源-自行处理上报
+     *
+     * @return int
+     */
+    @Query(value = "select count(1) from `event` where event_source_id in (select id from kv where field_name='eventSource') and do_by_self=1",nativeQuery = true)
+    Integer findReportSelfNum();
 }

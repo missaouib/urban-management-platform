@@ -87,7 +87,7 @@ public class PositionService {
                 sVO.setSendVerifyRate(map.get("sendVerifyRate") == null ? "0%" : ((new BigDecimal(Float.parseFloat(map.get("sendVerifyRate").toString())).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue()) * 100) + "%");
                 sVO.setIntimeSendCheck(map.get("intimeSendCheck") == null ? 0 : (Integer.parseInt(map.get("intimeSendCheck").toString())));
                 sVO.setNeedSendCheck(map.get("needSendCheck") == null ? 0 : (Integer.parseInt(map.get("needSendCheck").toString())));
-                sVO.setNeedSendCheckRate(map.get("needSendCheckRate") == null ? 0 : (Integer.parseInt(map.get("needSendCheckRate").toString())));
+                sVO.setNeedSendCheckRate(map.get("needSendCheckRate") == null ? "0%" : ((new BigDecimal(Float.parseFloat(map.get("needSendCheckRate").toString())).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue()) * 100) + "%");
                 sVO.setAggregativeIndicator(map.get("aggregativeIndicator") == null ? "0%" : ((new BigDecimal(Float.parseFloat(map.get("aggregativeIndicator").toString())).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue()) * 100) + "%");
                 sVO.setRatingLevel(map.get("ratingLevel") == null ? "" : map.get("ratingLevel").toString());
                 list.add(sVO);

@@ -35,10 +35,20 @@ public class StatisticsController {
     public StatisticsVO findOpinions(String statisticsId){
         return statisticsService.findById(statisticsId);
     }
+
+    /**
+     * 高发区域（大屏）
+     * @return
+     */
     @GetMapping("/findHotGrid")
     public List<Map<String,Object>> findHotGrid(){
         return statisticsService.findHotGrid();
     }
+
+    /**
+     * 个人信息（首页）
+     * @return
+     */
     @GetMapping("/personInfo")
     public String[] personInfo(){
         Map<String,Object>  personMap = statisticsService.findPersonInfo();
@@ -48,5 +58,13 @@ public class StatisticsController {
         arr[2] = personMap.get("instCase").toString();
         arr[3] = personMap.get("closeCase").toString();
         return arr;
+    }
+    /**
+     * 问题来源（大屏）
+     * @return
+     */
+    @GetMapping("/findEventSource")
+    public Map<String,Object> findEventSource(){
+        return statisticsService.findEventSource();
     }
 }

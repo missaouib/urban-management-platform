@@ -436,4 +436,13 @@ public class StatisticsService {
         personMap.put("closeCase",closeCase);
         return personMap;
     }
+
+    public Map<String, Object> findEventSource() {
+        Map<String, Object> map = new HashMap<>();
+        Integer reportPatrolNum = statisticsRepository.findReportPatrolNum();
+        Integer reportSelfNum = statisticsRepository.findReportSelfNum();
+        map.put("reportPatrolNum",reportPatrolNum);
+        map.put("reportSelfNum",reportSelfNum);
+        return map;
+    }
 }
