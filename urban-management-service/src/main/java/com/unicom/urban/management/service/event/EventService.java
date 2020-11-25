@@ -361,7 +361,7 @@ public class EventService {
      * @param eventDTO 事件
      */
     public void completeByReceptionistWithClaim(EventDTO eventDTO) {
-        workService.claimByReceptionist(eventDTO.getId());
+        /*workService.claimByReceptionist(eventDTO.getId());*/
         workService.completeByReceptionist(eventDTO);
     }
 
