@@ -22,7 +22,7 @@ public class IndexRestController {
     private IndexService indexService;
 
     @GetMapping("/count")
-    public Map<String,Object> count(){
-        return indexService.count();
+    public Map<String,Object> count(String timeType){
+        return indexService.count(timeType);
     }
 }
