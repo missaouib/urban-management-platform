@@ -158,12 +158,13 @@
                             </tbody>
                         </table>
                         <div class="send" style="float:left;width: 48%">
-<!--                            <div><span>处置前</span></div>-->
+                            <div><span>处置前</span></div>
                             <div class="sendImg">
                                 <div class="sendText"><span>图片:</span></div>
                                 <div><input id="input-id" class="input-id" type="file" name="files" multiple="multiple"></div>
                                 <div>
-                                    <div id="imageList">
+                                    <input type="hidden" id="imageUrlList" name="imageUrlList" />
+                                    <div id="imageList" >
                                         <div class="innerPic" style="float:left;">
                                         </div>
                                     </div>
@@ -182,8 +183,12 @@
                             <div><span>处置后</span></div>
                             <div class="sendImg">
                                 <div class="sendText"><span>图片:</span></div>
-                                <div><input id="input-idaAfter" type="file" class="input-id" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="imageUrlListAfter" value="">
+                                <div><input id="input-id-after" type="file" class="input-id" name="files" multiple="multiple"></div>
+                                <input type="hidden" id="imageUrlListAfter" name="imageUrlListAfter"/>
+                                <div id="imageListAfter" >
+                                    <div class="innerPic" style="float:left;">
+                                    </div>
+                                </div>
                             </div>
                             <div class="sendImg">
                                 <div class="sendText"><span>视频:</span></div>
@@ -622,14 +627,14 @@
         let eventOneVO = [[${eventOneVO}]];
         setPoint(eventOneVO.x,eventOneVO.y);
 
-        // $("#doBySelf").on('click',function (){
-        //     var after=$("#after");
-        //     if($("#doBySelf").is(':checked')){
-        //         after.css("display","block")
-        //     }else {
-        //         after.css('display','none')
-        //     }
-        // });
+        $("#doBySelf").on('click',function (){
+            var after=$("#after");
+            if($("#doBySelf").is(':checked')){
+                after.css("display","block")
+            }else {
+                after.css('display','none')
+            }
+        });
         $(".name").click(function () {
             $(this).addClass("active").siblings(".name").removeClass("active");
             $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
@@ -640,15 +645,16 @@
         $.ajaxUtil.get(componentTypeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
-        $(".input-id").fileinput({
+        $("#input-id").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+            maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
             showCaption: false,                                 // 是否显示标题
@@ -663,14 +669,19 @@
         }).on('fileselect', function (event, numFiles, label) {
             console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
         }).on("filebatchselected", function (event, files) {
-            // $(this).fileinput("upload");
+            $(this).fileinput("upload");
         }).on("fileuploaded", function (event, data) {
-            console.log('fileuploaded()      ');
 
-            if (data.response.code === web_status.FAIL) {
-                console.log("上传文件失败");
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                console.log(data.response.data);
+                let imageUrlList = data.response.data.url;
+                $("#imageUrlList").val(imageUrlList);
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
             }
-            console.log(data);
         }).on('filedeleted', function (event, key) {
             console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
             console.log('Key = ' + key);
@@ -690,6 +701,100 @@
             console.log('filesuccessremove()   ')
             console.log(id);
         });
+        $("#input-id-after").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+            maxFileCount: 10,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        }).on('change', function (event) {
+            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
+        }).on('fileselect', function (event, numFiles, label) {
+            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
+        }).on("filebatchselected", function (event, files) {
+            $(this).fileinput("upload");
+        }).on("fileuploaded", function (event, data) {
+
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                console.log(data.response.data);
+                let imageUrlListAfter = data.response.data.url;
+                $("#imageUrlListAfter").val(imageUrlListAfter);
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
+            }
+        }).on('filedeleted', function (event, key) {
+            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
+            console.log('Key = ' + key);
+        }).on('filesuccessremove', function (event, id) {
+            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
+            console.log(id);
+        }).on('fileclear', function (event) {
+            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
+            console.log(event);
+        }).on('filecleared', function (event) {
+            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
+            console.log(event);
+        }).on('filepredelete', function (event, key) {
+            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
+            console.log('Key = ' + key);
+        }).on('filesuccessremove', function (event, id) {
+            console.log('filesuccessremove()   ')
+            console.log(id);
+        });
+        $("#videoInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            maxFileCount: 2,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        })
+        $(".musicInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
+            maxFileCount: 2,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        })
 
         $(".videoInput").fileinput({
             language: 'zh',                                     // 设置语言
@@ -992,21 +1097,29 @@
             setCenterForGrid(pointArray);
         });
     }
-
+    /**
+     * 回显上传照片
+     */
     function showImage(){
         let showUrl = [[${@fastProperties.nginxUrl}]];
         let file = [[${files}]];
         console.log("file",file)
+        let imageHtml = "";
+        let imageHtmlAfter = "";
         if (file.length > 0) {
             $("#imageList").empty();
-            let imageHtml = "";
-            for (let i = 0; i < file.length; i++) {
-                imageHtml += "<img class='img-rounded' src='" + showUrl +file[i].url + "'>";
-            }
-            $("#imageList").html(imageHtml);
+            $("#imageListAfter").empty();
+                for (let i = 0; i < file.length; i++) {
+                    if (file[i].management ==="处置前"){
+                        imageHtml += "<img class='img-rounded' name='imageUrlList' src='" + showUrl +file[i].url + "'>";
+                    }else {
+                        imageHtmlAfter += "<img class='img-rounded' name='imageUrlListAfter' src='" + showUrl +file[i].url + "'>";
+                    }
+                }
         }
+        $("#imageList").html(imageHtml);
+        $("#imageListAfter").html(imageHtmlAfter);
     }
-
 </script>
 </body>
 </html>

@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 无线采集子系统
@@ -292,21 +293,8 @@ public class WirelessAcquisitionController {
     }
 
     private void uploadFiles(EventDTO eventDTO) {
-        List<EventFile> eventFileList = new ArrayList<>();
-        //处置前的图片上传
-        if (eventDTO.getImageUrlList() != null&& eventDTO.getImageUrlList().size()>0) {
-            //eventFileService.deleteByEventId(eventDTO.getId());
-            eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList());
-        }
-        //处置后的图片上传
-        if (eventDTO.getImageUrlListAfter() != null && (eventDTO.getImageUrlListAfter().size()>0)) {
-           // eventFileService.deleteByEventId(eventDTO.getId());
-            List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlListAfter());
-            for (EventFile e : eventFileListAfter){
-                eventFileList.add(e);
-            }
-        }
-        eventDTO.setEventFileList(eventFileList);
+        eventService.uploadFiles(eventDTO);
+
     }
 
     /**

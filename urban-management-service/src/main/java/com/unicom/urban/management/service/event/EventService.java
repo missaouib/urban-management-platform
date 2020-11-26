@@ -639,4 +639,55 @@ public class EventService {
         workService.completeForClosingAndFiling(eventDTO);
     }
 
+    public void uploadFiles(EventDTO eventDTO) {
+        List<EventFile> eventFileList = new ArrayList<>();
+        if (eventDTO.getId() != null) {
+            Event event = eventRepository.findById(eventDTO.getId()).orElse(new Event());
+            List<EventFile> files = event.getEventFileList();
+            //处置前的图片上传
+            if (eventDTO.getImageUrlList() != null && eventDTO.getImageUrlList().size() > 0) {
+                eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList());
+            } else {
+                if (files.size() > 0) {
+                    for (EventFile e : files) {
+                        if (e.getManagement().getValue().equals("处置前")) {
+                            eventFileList.add(e);
+                        }
+                    }
+                }
+            }
+            //处置后的图片上传
+            if (eventDTO.getImageUrlListAfter() != null && (eventDTO.getImageUrlListAfter().size() > 0)) {
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getImageUrlListAfter());
+                if (eventFileListAfter.size() > 0) {
+                    for (EventFile e : eventFileListAfter) {
+                        eventFileList.add(e);
+                    }
+                }
+            } else {
+                if (files.size() > 0) {
+                    for (EventFile e : files) {
+                        if (e.getManagement().getValue().equals("处置后")) {
+                            eventFileList.add(e);
+                        }
+                    }
+                }
+            }
+        }else {
+            //处置前的图片上传
+            if (eventDTO.getImageUrlList() != null && eventDTO.getImageUrlList().size() > 0) {
+                eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList());
+            }
+            //处置后的图片上传
+            if (eventDTO.getImageUrlListAfter() != null && (eventDTO.getImageUrlListAfter().size() > 0)) {
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getImageUrlListAfter());
+                if (eventFileListAfter.size() > 0) {
+                    for (EventFile e : eventFileListAfter) {
+                        eventFileList.add(e);
+                    }
+                }
+            }
+        }
+        eventDTO.setEventFileList(eventFileList);
+    }
 }

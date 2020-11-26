@@ -49,9 +49,21 @@ public class EventFileService {
         /* todo 视频 */
         return this.saveAll(eventFileList);
     }
-
-
-    //public void deleteByEventId(String eventId) {
-//        eventFileRepository.deleteByEvent_id(eventId);
-//    }
+    public List<EventFile> joinEventFileListToObjetAfter(List<String> imageUrlListAfter) {
+        /* todo 此处应该是图片集合 音频集合 视频集合的总和 目前只有图片 */
+        List<EventFile> eventFileList = new ArrayList<>(imageUrlListAfter.size());
+        if (imageUrlListAfter.size() > 0) {
+            for (String s : imageUrlListAfter) {
+                EventFile eventFile = new EventFile();
+                eventFile.setFilePath(s);
+                eventFile.setFileName(s.contains("/") ? s.split("/")[s.split("/").length - 1] : "");
+                eventFile.setManagement(kvService.findByTableNameAndFieldNameAndValue("eventFile", "management", "处置后").get(0));
+                eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "图片").get(0));
+                eventFileList.add(eventFile);
+            }
+        }
+        /* todo 音频 */
+        /* todo 视频 */
+        return this.saveAll(eventFileList);
+    }
 }
