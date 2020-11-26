@@ -30,7 +30,11 @@ public class HomeRestController {
 
     @GetMapping("/unitCount")
     public List<Map<String, Object>> unitCount() {
-        return homeService.eventTypeCount();
+        return homeService.eventTypeCount("部件");
+    }
+    @GetMapping("/eventCount")
+    public List<Map<String, Object>> eventCount() {
+        return homeService.eventTypeCount("事件");
     }
 
     @GetMapping("/getIndexValueByWeek")
