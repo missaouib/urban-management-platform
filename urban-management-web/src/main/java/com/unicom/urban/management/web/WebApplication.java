@@ -1,17 +1,13 @@
 package com.unicom.urban.management.web;
 
 import org.activiti.spring.boot.SecurityAutoConfiguration;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.temporal.TemporalAdjusters;
 
 /**
  * @author liukai
@@ -25,8 +21,7 @@ import java.time.temporal.TemporalAdjusters;
 public class WebApplication {
 
     public static void main(String[] args) {
-//        SpringApplication.run(WebApplication.class, args);
-        LocalDateTime.of(LocalDate.from(LocalDateTime.now().with(TemporalAdjusters.firstDayOfMonth())), LocalTime.MIN);
+        SpringApplication.run(WebApplication.class, args);
     }
 
 }
