@@ -122,8 +122,8 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      * @param
      * @return 数据
      */
-    @Query(value = "SELECT SUM(inst) as totalInst,sum(`close`) as totalClose,g.id as gridId  from `event` ev,grid g,statistics st where g.id=ev.grid_id and ev.id=st.event_id GROUP BY g.id", nativeQuery = true)
-    List<Map<String, Object>> findHotGrid();
+    @Query(value = "SELECT SUM(inst) as totalInst,sum(`close`) as totalClose,g.id as gridId  from `event` ev,grid g,statistics st where g.id=ev.grid_id and ev.id=st.event_id and ev.create_time between ?1 and ?2 GROUP BY g.id", nativeQuery = true)
+    List<Map<String, Object>> findHotGrid(LocalDateTime startTime, LocalDateTime endTime);
 
     /* -------------------------------------------------------------- */
 
@@ -226,16 +226,16 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      *
      * @return int
      */
-    @Query(value = "select count(1) from `event` where event_source_id in (select id from kv where field_name='eventSource') and do_by_self is NULL ", nativeQuery = true)
-    Integer findReportPatrolNum();
+    @Query(value = "select count(1) from `event` where event_source_id in (select id from kv where field_name='eventSource') and do_by_self is NULL and create_time between ?1 and ?2 ", nativeQuery = true)
+    Integer findReportPatrolNum(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
      * 问题来源-自行处理上报
      *
      * @return int
      */
-    @Query(value = "select count(1) from `event` where event_source_id in (select id from kv where field_name='eventSource') and do_by_self=1", nativeQuery = true)
-    Integer findReportSelfNum();
+    @Query(value = "select count(1) from `event` where event_source_id in (select id from kv where field_name='eventSource') and do_by_self=1 and create_time between ?1 and ?2 ", nativeQuery = true)
+    Integer findReportSelfNum(LocalDateTime startTime, LocalDateTime endTime);
 
     /* -------------------------------------------------------------- */
 

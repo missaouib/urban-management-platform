@@ -7,6 +7,7 @@ import com.unicom.urban.management.pojo.entity.Grid;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.CellGridRegionVO;
+import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.pojo.vo.StatisticsVO;
 import com.unicom.urban.management.service.grid.GridService;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -240,15 +242,28 @@ public class StatisticsService {
      * 高发区域
      * @return mapList
      */
-    public List<Map<String,Object>> findHotGrid(){
+    public List<Map<String,Object>> findHotGrid(String time){
+        LocalDateTime[] timeArr = this.getStartEndTime(time);
         List<Map<String,Object>> hotGridList = new ArrayList<>();
-        List<Map<String,Object>> mapList = statisticsRepository.findHotGrid();
+        List<Map<String,Object>> mapList = statisticsRepository.findHotGrid(timeArr[0],timeArr[1]);
         if (mapList != null && mapList.size() > 0) {
+            List<GridVO> gridList = gridService.findAllByParentIsNull();
+
             Map<String,Object> hotMap = new HashMap<>(3);
-            for (Map<String, Object> map : mapList) {
-                hotMap.put("totalInst",map.get("totalInst").toString());
-                hotMap.put("totalClose",map.get("totalClose").toString());
-                hotMap.put("gridName",findFirstGrid(map.get("gridId").toString()));
+            Integer totalInst = 0;
+            Integer totalClose =0;
+            for (GridVO vo : gridList){
+                String gridName = vo.getGridName();
+                for (Map<String, Object> map : mapList) {
+                    String gridN = findFirstGrid(map.get("gridId").toString());
+                    if (gridName.equals(gridN)){
+                        totalInst += Integer.parseInt(map.get("totalInst").toString());
+                        totalClose += Integer.parseInt(map.get("totalClose").toString());
+                    }
+                }
+                hotMap.put("totalInst",totalInst);
+                hotMap.put("totalClose",totalClose);
+                hotMap.put("gridName",gridName);
                 hotGridList.add(hotMap);
             }
         }
@@ -576,7 +591,7 @@ public class StatisticsService {
         map.put("close", closeSize);
         return map;
     }
-
+    /* 首页 个人信息 */
     public Map<String, Object> findPersonInfo() {
         Map<String, Object> personMap = new HashMap<>();
         String roleName = SecurityUtil.getRoleName().get(0);
@@ -590,13 +605,17 @@ public class StatisticsService {
         personMap.put("closeCase",closeCase);
         return personMap;
     }
-
-    public Map<String, Object> findEventSource() {
-        Map<String, Object> map = new HashMap<>();
-        Integer reportPatrolNum = statisticsRepository.findReportPatrolNum();
-        Integer reportSelfNum = statisticsRepository.findReportSelfNum();
-        map.put("reportPatrolNum", reportPatrolNum);
-        map.put("reportSelfNum", reportSelfNum);
+    /**
+     * 问题来源（大屏）
+     * @return
+     */
+    public Map<String, String> findEventSource(String time) {
+        LocalDateTime[] timeArr = this.getStartEndTime(time);
+        Map<String, String> map = new HashMap<>();
+        Integer reportPatrolNum = statisticsRepository.findReportPatrolNum(timeArr[0], timeArr[1]);
+        Integer reportSelfNum = statisticsRepository.findReportSelfNum(timeArr[0], timeArr[1]);
+        map.put("reportPatrolNum", String.valueOf(reportPatrolNum));
+        map.put("reportSelfNum", String.valueOf(reportSelfNum));
         return map;
     }
 
@@ -705,4 +724,36 @@ public class StatisticsService {
         return mapList;
     }
 
+    /**
+     * 获取本年的开始时间和结束时间
+     * @return
+     */
+    private LocalDateTime[] getStartEndTime(String time){
+        final String year = "year";
+        final String month = "month";
+        final String day = "day";
+        LocalDateTime startTime;
+        LocalDateTime endTime;
+        LocalDateTime now = LocalDateTime.now();
+        switch (time) {
+            case year:
+                startTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.firstDayOfYear())), LocalTime.MIN);
+                endTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.lastDayOfYear())), LocalTime.MAX);
+                break;
+            case month:
+                startTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.firstDayOfMonth())), LocalTime.MIN);
+                endTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.lastDayOfMonth())), LocalTime.MAX);
+                break;
+            case day:
+                startTime = LocalDateTime.of(LocalDate.from(now), LocalTime.MIN);
+                endTime = LocalDateTime.of(LocalDate.from(now), LocalTime.MAX);
+                break;
+            default:
+                throw new DataValidException("请正确选择日期");
+        }
+        LocalDateTime[] timeArr= new LocalDateTime[2];
+        timeArr[0] = startTime;
+        timeArr[1] = endTime;
+        return timeArr;
+    }
 }

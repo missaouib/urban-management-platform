@@ -303,227 +303,302 @@
 
         //高发问题
         findHighIncidence();
-
         //高发区域
-        var myChart1 = echarts.init(document.getElementById('region'));
-        var option2 = {
-            title: {
-                x: "left"
-            },
-            legend: {
-                data: ["结案量", "立案量"],
-                x: "right",
-                orient: "horizontal",
-                y: "top",
-                textStyle: {
-                    color: '#ffffff'//字体颜色
-                }
-            },
-            tooltip: {
-                trigger: "axis"
-            },
-            toolbox: {
-                show: false,
-                feature: {
-                    mark: {
-                        show: true
-                    },
-                    dataView: {
-                        show: true,
-                        readOnly: true
-                    },
-                    magicType: {
-                        show: false,
-                        type: ["line", "bar"]
-                    },
-                    restore: {
-                        show: true
-                    },
-                    saveAsImage: {
-                        show: true
-                    }
-                }
-            },
-            calculable: true,
-            xAxis: [
-                {
-                    type: "category",
-                    data: ["南岗区", "道里区", "香坊区", "道外区", "群里区", "松北区"],
-                    splitArea: {
-                        show: false
-                    },
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#fff'
-                        },
-                        lineStyle: {
-                            color: new echarts.graphic.LinearGradient(
-                                0, 0, 1, 0,
-                                [
-                                    {offset: 0, color: '#CE9FFC'},
-                                    {offset: 1, color: '#7367F0'}
-                                ]
-                            )
-                        }
-                    },
-                    position: "bottom",
-                    axisTick: {
-                        show: true
-                    },
-                    splitLine: {
-                        show: false
-                    },
-                    nameTextStyle: {
-                        color: "#C4EAFC"
-                    }
-                }
-            ],
-            yAxis: [
-                {
-                    type: "value",
-                    splitLine: {
-                        show: true
-                    },
-                    splitLine: {
-                        show: true,
-                        lineStyle: {
-                            color: ['#0396FF'],
-                            width: 1,
-                            type: 'solid'
-                        }
-                    },
-                    axisLabel: {
-                        show: true,
-                        textStyle: {
-                            color: '#fff'
-                        },
-                        lineStyle: {
-                            color: new echarts.graphic.LinearGradient(
-                                0, 0, 1, 0,
-                                [
-                                    {offset: 0, color: '#CE9FFC'},
-                                    {offset: 1, color: '#7367F0'}
-                                ]
-                            )
-                        }
-                    }
-                }
-            ],
-            series: [
-                {
-                    name: "立案量",
-                    barWidth: 10,
-                    type: "bar",
-                    data: [20, 4.9, 30, 23.2, 120, 76.7],
-                    itemStyle: {
-                        normal: {
-                            color: new echarts.graphic.LinearGradient(
-                                0, 0, 1, 0,
-                                [
-                                    {offset: 0, color: '#3977E6'},
-                                    {offset: 1, color: '#37BBF8'}
+        findHighGrid();
 
-                                ]
-                            )
-                        }
-                    }
-                },
-                {
-                    name: "结案量",
-                    type: "bar",
-                    barWidth: 10,
-                    data: [2.6, 5.9, 20, 26.4, 28.7, 70.7],
-                    itemStyle: {
-                        normal: {
-                            color: new echarts.graphic.LinearGradient(
-                                0, 0, 1, 0,
-                                [
-                                    {offset: 0, color: '#CE9FFC'},
-                                    {offset: 1, color: '#7367F0'}
-                                ]
-                            )
-                        }
-                    }
-                },
 
-            ],
-            calculableColor: "rgba(255,165,0,0.6)",
-            animation: true,
-            animationEasing: "ExponentialInOut",
-            grid: {
-                x: 56,
-                x2: 51,
-                y2: 38,
-                y: 38
-            }
-        };
-        myChart1.setOption(option2);
 
         //高发时段趋势分析
         getTrendAnalysis();
+        getEventSource();
 
-        //问题来源
-        var myChart5 = echarts.init(document.getElementById('question'));
-        var option6 = {
-            tooltip: {
-                trigger: 'item',
-                formatter: '{a} <br/>{b}: {c} ({d}%)'
-            },
-            legend: {
-                orient: 'vertical',
-                left: 10,
-                x: "center",
-                data: ['自行处理上报', '信息采集员上报'],
-                y: "bottom",
-                textStyle: {
-                    color: '#ffffff'//字体颜色
+
+
+        var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
+        // 沽源地图
+        var center = [115.68192, 41.66462];
+        var projection = new ol.proj.Projection({
+            code: 'EPSG:4326',
+            units: 'degrees',
+            axisOrientation: 'neu',
+            global: true
+        });
+        var untiled = new ol.layer.Image({
+            source: new ol.source.ImageWMS({
+                ratio: 1,
+                url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
+                params: {
+                    'VERSION': '1.1.1',
+                    "LAYERS": 'guyuan20201010:guyuan',
+                    "exceptions": 'application/vnd.ogc.se_inimage',
                 }
-            },
-            series: [
-                {
-                    name: '访问来源',
-                    type: 'pie',
-                    radius: ['50%', '70%'],
-                    avoidLabelOverlap: false,
-                    label: {
-                        show: false,
-                        position: 'center'
+            })
+        });
+        var source = new ol.source.Vector({wrapX: false});
+
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                untiled
+            ],
+            view: new ol.View({
+                // projection: projection,
+                center: center,
+                zoom: 17,
+                projection: projection
+            })
+        });
+
+        var layerMap = new ol.layer.Vector({
+            source: new ol.source.Vector(),
+        });
+        map.addLayer(layerMap);
+
+    });
+    function findHighGrid(){
+        let time = $("#time").val();
+        var myChart1 = echarts.init(document.getElementById('region'));
+        $.ajaxUtil.get("/statistics/findHotGrid?time="+time, function (e) {
+            console.log("e===",e)
+            if (e.code === "0") {
+                let gridNameArray=[];
+                let totalInstArray=[];
+                let totalCloseArray=[];
+                let datas = e.data;
+                for (let i=0; i< datas.length; i++){
+                    gridNameArray.push(datas[i].gridName);
+                    totalInstArray.push(datas[i].totalInst);
+                    totalCloseArray.push(datas[i].totalClose);
+                }
+                console.log(gridNameArray)
+                console.log(totalInstArray)
+                console.log(totalCloseArray)
+                var option2 = {
+                    title: {
+                        x: "left"
                     },
-                    emphasis: {
-                        label: {
-                            show: true,
-                            fontSize: '30',
-                            fontWeight: 'bold'
+                    legend: {
+                        data: ["结案量", "立案量"],
+                        x: "right",
+                        orient: "horizontal",
+                        y: "top",
+                        textStyle: {
+                            color: '#ffffff'//字体颜色
                         }
                     },
-                    labelLine: {
-                        show: false
+                    tooltip: {
+                        trigger: "axis"
                     },
-                    data: [
-                        {value: 335, name: '自行处理上报'},
-                        {value: 310, name: '信息采集员上报'},
-                    ],
-                    itemStyle: {
-                        emphasis: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        },
-                        normal: {
-                            color: function (params) {
-                                //自定义颜色
-                                var colorList = [
-                                    '#00FFFF', '#00FF00', '#FFFF00', '#FF8C00', '#FF0000', '#FE8463',
-                                ];
-                                return colorList[params.dataIndex]
+                    toolbox: {
+                        show: false,
+                        feature: {
+                            mark: {
+                                show: true
+                            },
+                            dataView: {
+                                show: true,
+                                readOnly: true
+                            },
+                            magicType: {
+                                show: false,
+                                type: ["line", "bar"]
+                            },
+                            restore: {
+                                show: true
+                            },
+                            saveAsImage: {
+                                show: true
                             }
                         }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: "category",
+                            data: gridNameArray,
+                            splitArea: {
+                                show: false
+                            },
+                            axisLabel: {
+                                show: true,
+                                textStyle: {
+                                    color: '#fff'
+                                },
+                                lineStyle: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        0, 0, 1, 0,
+                                        [
+                                            {offset: 0, color: '#CE9FFC'},
+                                            {offset: 1, color: '#7367F0'}
+                                        ]
+                                    )
+                                }
+                            },
+                            position: "bottom",
+                            axisTick: {
+                                show: true
+                            },
+                            splitLine: {
+                                show: false
+                            },
+                            nameTextStyle: {
+                                color: "#C4EAFC"
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: "value",
+                            splitLine: {
+                                show: true
+                            },
+                            splitLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: ['#0396FF'],
+                                    width: 1,
+                                    type: 'solid'
+                                }
+                            },
+                            axisLabel: {
+                                show: true,
+                                textStyle: {
+                                    color: '#fff'
+                                },
+                                lineStyle: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        0, 0, 1, 0,
+                                        [
+                                            {offset: 0, color: '#CE9FFC'},
+                                            {offset: 1, color: '#7367F0'}
+                                        ]
+                                    )
+                                }
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: "立案量",
+                            barWidth: 10,
+                            type: "bar",
+                            data: totalInstArray,
+                            itemStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        0, 0, 1, 0,
+                                        [
+                                            {offset: 0, color: '#3977E6'},
+                                            {offset: 1, color: '#37BBF8'}
+
+                                        ]
+                                    )
+                                }
+                            }
+                        },
+                        {
+                            name: "结案量",
+                            type: "bar",
+                            barWidth: 10,
+                            data: totalCloseArray,
+                            itemStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        0, 0, 1, 0,
+                                        [
+                                            {offset: 0, color: '#CE9FFC'},
+                                            {offset: 1, color: '#7367F0'}
+                                        ]
+                                    )
+                                }
+                            }
+                        },
+
+                    ],
+                    calculableColor: "rgba(255,165,0,0.6)",
+                    animation: true,
+                    animationEasing: "ExponentialInOut",
+                    grid: {
+                        x: 56,
+                        x2: 51,
+                        y2: 38,
+                        y: 38
                     }
-                }
-            ]
-        };
-        myChart5.setOption(option6);
+                };
+                myChart1.setOption(option2);
+            }
+        });
+
+    }
+    //问题来源
+    function getEventSource() {
+
+        var myChart5 = echarts.init(document.getElementById('question'));
+        let time = $("#time").val();
+        $.ajaxUtil.get("/statistics/findEventSource?time="+time, function (e) {
+            if (e.code === "0") {
+                var option6 = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 10,
+                        x: "center",
+                        data: ['自行处理上报', '信息采集员上报'],
+                        y: "bottom",
+                        textStyle: {
+                            color: '#ffffff'//字体颜色
+                        }
+                    },
+                    series: [
+                        {
+                            name: '访问来源',
+                            type: 'pie',
+                            radius: ['50%', '70%'],
+                            avoidLabelOverlap: false,
+                            label: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            },
+                            labelLine: {
+                                show: false
+                            },
+                            data: [
+                                {value: e.data.reportSelfNum, name: '自行处理上报'},
+                                {value: e.data.reportPatrolNum, name: '信息采集员上报'},
+                            ],
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                },
+                                normal: {
+                                    color: function (params) {
+                                        //自定义颜色
+                                        var colorList = [
+                                            '#00FFFF', '#00FF00', '#FFFF00', '#FF8C00', '#FF0000', '#FE8463',
+                                        ];
+                                        return colorList[params.dataIndex]
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                };
+            }
+            myChart5.setOption(option6);
+        })
+    }
 
         var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
         // 沽源地图
@@ -566,10 +641,7 @@
         map.addLayer(layerMap);
         map.on("click", function(e) {
             console.log(e.coordinate);
-        })
-
-    });
-
+        });
     function timeQuery() {
         count();
         findHighIncidence();

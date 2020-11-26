@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +42,8 @@ public class StatisticsController {
      * @return
      */
     @GetMapping("/findHotGrid")
-    public List<Map<String,Object>> findHotGrid(){
-        return statisticsService.findHotGrid();
+    public List<Map<String,Object>> findHotGrid(String time){
+        return statisticsService.findHotGrid(time);
     }
 
     /**
@@ -64,7 +65,7 @@ public class StatisticsController {
      * @return
      */
     @GetMapping("/findEventSource")
-    public Map<String,Object> findEventSource(){
-        return statisticsService.findEventSource();
+    public Map<String,String> findEventSource(String time){
+        return statisticsService.findEventSource(time);
     }
 }
