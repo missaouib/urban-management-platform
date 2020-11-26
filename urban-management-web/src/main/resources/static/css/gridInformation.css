@@ -36,6 +36,8 @@ body {
 	height: 100%;
 	position: relative;
 	background-color: #fff;
+	overflow: hidden;
+	border-radius: 10px;
 }
 
 .follMap {

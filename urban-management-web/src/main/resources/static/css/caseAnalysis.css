@@ -32,6 +32,8 @@ body {
 	height: 85%;
 	position: relative;
 	background-color: #fff;
+	overflow: hidden;
+	border-radius: 10px;
 }
 
 .show_map {

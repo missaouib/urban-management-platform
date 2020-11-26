@@ -14,6 +14,8 @@ body {
 	height: 100%;
 	position: relative;
 	background-color: #fff;
+	border-radius: 10px;
+	overflow: hidden;
 }
 
 .warpmap {
@@ -430,7 +432,7 @@ body {
 	height: 100%;
 	padding-top: 20px;
 	text-align: justify;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 400;
 	color: #00C0FF;
 }
@@ -438,7 +440,7 @@ body {
 .whoMy {
 	width: 68%;
 	height: 100%;
-	font-size: 14px;
+	font-size: 12px;
 	padding-top: 20px;
 	/* display: flex; */
 	overflow: hidden;
