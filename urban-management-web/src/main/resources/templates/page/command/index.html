@@ -19,9 +19,10 @@
                 <div class="checkTime">
                     <div class="timeText">时间</div>
                     <div class="selectTime">
-                        <select class="timeSelect">
-                            <option selected>天</option>
-                            <option>月</option>
+                        <select class="timeSelect" id="time">
+                            <option value="year" selected>年</option>
+                            <option value="month">月</option>
+                            <option value="day">日</option>
                         </select>
                     </div>
                 </div>
@@ -642,8 +643,9 @@
 
     /* 高发问题 */
     function findHighIncidence() {
+        let time = $("#time").val();
         let highIncidence = echarts.init(document.getElementById('highIncidence'));
-        $.ajaxUtil.get(findHighIncidenceUrl, function (e) {
+        $.ajaxUtil.get(findHighIncidenceUrl + "?time=" + time, function (e) {
             let data = e.data;
             let nameArray = [];
             let instArray = [];
@@ -798,8 +800,9 @@
 
     /* 高发时段趋势分析 */
     function getTrendAnalysis() {
+        let time = $("#time").val();
         let trendAnalysis = echarts.init(document.getElementById('trendAnalysis'));
-        $.ajaxUtil.get(getTrendAnalysisUrl + "?time=year", function (e) {
+        $.ajaxUtil.get(getTrendAnalysisUrl + "?time=" + time, function (e) {
             let data = e.data;
             let nameArray = [];
             let dataArray = [];
