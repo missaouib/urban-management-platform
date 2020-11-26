@@ -337,10 +337,9 @@ body {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	line-height: 19px;
 	color: #fff;
+	text-align: center;
 }
 
 .humenversion {

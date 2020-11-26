@@ -75,7 +75,7 @@
 <script type="text/javascript" th:inline="javascript">
     $(function () {
 
-        var center = ol.proj.transform([113.28523708519815, 31.22223383481966], "EPSG:3857", "EPSG:4326");
+        var center = ol.proj.transform([86.52895133699217, 10.28715531622708], "EPSG:3857", "EPSG:4326");
         var raster = new ol.layer.Tile({
             source: new ol.source.OSM()
         });
@@ -92,7 +92,7 @@
             view: new ol.View({
                 // projection : projection,
                 center: center,
-                zoom: 20,
+                zoom: 19,
 
             })
         });
@@ -378,7 +378,6 @@
         startButton.addEventListener('click', startAnimation, false);
 
         map.on("click", function(e) {
-
             console.log(e.coordinate);
         })
 
