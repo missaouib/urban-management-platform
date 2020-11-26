@@ -498,31 +498,31 @@ public class StatisticsService {
                     LocalDateTime.parse(localDate + " 23:59:59", df)).size();
 
             Map<String, Object> reportSizeMap = new HashMap<>(2);
-            reportSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            reportSizeMap.put("time" + i, now.minusDays(i).getDayOfMonth());
             reportSizeMap.put("size" + i, reportSize);
             reportMap.put("data" + i, reportSizeMap);
             Map<String, Object> operateSizeMap = new HashMap<>(2);
-            operateSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            operateSizeMap.put("time" + i, now.minusDays(i).getDayOfMonth());
             operateSizeMap.put("size" + i, operateSize);
             operateMap.put("data" + i, operateSizeMap);
             Map<String, Object> instSizeMap = new HashMap<>(2);
-            instSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            instSizeMap.put("time" + i, now.minusDays(i).getDayOfMonth());
             instSizeMap.put("size" + i, instSize);
             instMap.put("data" + i, instSizeMap);
             Map<String, Object> dispatchSizeMap = new HashMap<>(2);
-            dispatchSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            dispatchSizeMap.put("time" + i, now.minusDays(i).getDayOfMonth());
             dispatchSizeMap.put("size" + i, dispatchSize);
             dispatchMap.put("data" + i, dispatchSizeMap);
             Map<String, Object> disposeSizeMap = new HashMap<>(2);
-            disposeSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            disposeSizeMap.put("time" + i, now.minusDays(i).getDayOfMonth());
             disposeSizeMap.put("size" + i, disposeSize);
             disposeMap.put("data" + i, disposeSizeMap);
             Map<String, Object> checkNumSizeMap = new HashMap<>(2);
-            checkNumSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            checkNumSizeMap.put("time" + i, now.minusDays(i).getDayOfMonth());
             checkNumSizeMap.put("size" + i, checkNumSize);
             checkNumMap.put("data" + i, checkNumSizeMap);
             Map<String, Object> closeSizeMap = new HashMap<>(2);
-            closeSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            closeSizeMap.put("time" + i, now.minusDays(i).getDayOfMonth());
             closeSizeMap.put("size" + i, closeSize);
             closeMap.put("data" + i, closeSizeMap);
         }
