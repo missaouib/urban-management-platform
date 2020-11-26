@@ -20,7 +20,9 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
@@ -302,54 +304,49 @@ public class StatisticsService {
             int reportSize = statisticsRepository.findByReport(
                     LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
                     LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+            int operateSize = statisticsRepository.findByOperate(
+                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
+                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+            int instSize = statisticsRepository.findByInst(
+                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
+                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+            int dispatchSize = statisticsRepository.findByDispatch(
+                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
+                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+            int disposeSize = statisticsRepository.findByDispose(
+                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
+                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+            int checkNumSize = statisticsRepository.findByCheckNum(
+                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
+                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+            int closeSize = statisticsRepository.findByClose(
+                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
+                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
+
             Map<String, Object> reportSizeMap = new HashMap<>(2);
             reportSizeMap.put("time" + i, (year - i));
             reportSizeMap.put("size" + i, reportSize);
             reportMap.put("data" + i, reportSizeMap);
-
-            int operateSize = statisticsRepository.findByOperate(
-                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
-                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
             Map<String, Object> operateSizeMap = new HashMap<>(2);
             operateSizeMap.put("time" + i, (year - i));
             operateSizeMap.put("size" + i, operateSize);
             operateMap.put("data" + i, operateSizeMap);
-
-            int instSize = statisticsRepository.findByInst(
-                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
-                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
             Map<String, Object> instSizeMap = new HashMap<>(2);
             instSizeMap.put("time" + i, (year - i));
             instSizeMap.put("size" + i, instSize);
             instMap.put("data" + i, instSizeMap);
-
-            int dispatchSize = statisticsRepository.findByDispatch(
-                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
-                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
             Map<String, Object> dispatchSizeMap = new HashMap<>(2);
             dispatchSizeMap.put("time" + i, (year - i));
             dispatchSizeMap.put("size" + i, dispatchSize);
             dispatchMap.put("data" + i, dispatchSizeMap);
-
-            int disposeSize = statisticsRepository.findByDispose(
-                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
-                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
             Map<String, Object> disposeSizeMap = new HashMap<>(2);
             disposeSizeMap.put("time" + i, (year - i));
             disposeSizeMap.put("size" + i, disposeSize);
             disposeMap.put("data" + i, disposeSizeMap);
-
-            int checkNumSize = statisticsRepository.findByCheckNum(
-                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
-                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
             Map<String, Object> checkNumSizeMap = new HashMap<>(2);
             checkNumSizeMap.put("time" + i, (year - i));
             checkNumSizeMap.put("size" + i, checkNumSize);
             checkNumMap.put("data" + i, checkNumSizeMap);
-
-            int closeSize = statisticsRepository.findByClose(
-                    LocalDateTime.parse((year - i) + "-01-01 00:00:01", df),
-                    LocalDateTime.parse((year - i) + "-12-31 23:59:59", df)).size();
             Map<String, Object> closeSizeMap = new HashMap<>(2);
             closeSizeMap.put("time" + i, (year - i));
             closeSizeMap.put("size" + i, closeSize);
@@ -373,6 +370,20 @@ public class StatisticsService {
         /* 获取当前时间 */
         LocalDateTime now = LocalDateTime.now();
         List<Map<String, Object>> mapList = new ArrayList<>();
+        Map<String, Object> reportMap = new HashMap<>(2);
+        reportMap.put("name", "上报量");
+        Map<String, Object> operateMap = new HashMap<>(2);
+        operateMap.put("name", "受理量");
+        Map<String, Object> instMap = new HashMap<>(2);
+        instMap.put("name", "立案量");
+        Map<String, Object> dispatchMap = new HashMap<>(2);
+        dispatchMap.put("name", "派遣量");
+        Map<String, Object> disposeMap = new HashMap<>(2);
+        disposeMap.put("name", "处置量");
+        Map<String, Object> checkNumMap = new HashMap<>(2);
+        checkNumMap.put("name", "核查量");
+        Map<String, Object> closeMap = new HashMap<>(2);
+        closeMap.put("name", "结案量");
         for (int i = 0; i < 7; i++) {
             LocalDateTime startLocalTime = now.with(TemporalAdjusters.firstDayOfMonth()).minusMonths(i).with(TemporalAdjusters.firstDayOfMonth());
             String startTime = dateTime.format(startLocalTime);
@@ -399,7 +410,43 @@ public class StatisticsService {
             int closeSize = statisticsRepository.findByClose(
                     LocalDateTime.parse(startTime + " 00:00:01", df),
                     LocalDateTime.parse(endTime + " 23:59:59", df)).size();
+
+            Map<String, Object> reportSizeMap = new HashMap<>(2);
+            reportSizeMap.put("time" + i, now.minusMonths(i).getMonth().getValue());
+            reportSizeMap.put("size" + i, reportSize);
+            reportMap.put("data" + i, reportSizeMap);
+            Map<String, Object> operateSizeMap = new HashMap<>(2);
+            operateSizeMap.put("time" + i, now.minusMonths(i).getMonth().getValue());
+            operateSizeMap.put("size" + i, operateSize);
+            operateMap.put("data" + i, operateSizeMap);
+            Map<String, Object> instSizeMap = new HashMap<>(2);
+            instSizeMap.put("time" + i, now.minusMonths(i).getMonth().getValue());
+            instSizeMap.put("size" + i, instSize);
+            instMap.put("data" + i, instSizeMap);
+            Map<String, Object> dispatchSizeMap = new HashMap<>(2);
+            dispatchSizeMap.put("time" + i, now.minusMonths(i).getMonth().getValue());
+            dispatchSizeMap.put("size" + i, dispatchSize);
+            dispatchMap.put("data" + i, dispatchSizeMap);
+            Map<String, Object> disposeSizeMap = new HashMap<>(2);
+            disposeSizeMap.put("time" + i, now.minusMonths(i).getMonth().getValue());
+            disposeSizeMap.put("size" + i, disposeSize);
+            disposeMap.put("data" + i, disposeSizeMap);
+            Map<String, Object> checkNumSizeMap = new HashMap<>(2);
+            checkNumSizeMap.put("time" + i, now.minusMonths(i).getMonth().getValue());
+            checkNumSizeMap.put("size" + i, checkNumSize);
+            checkNumMap.put("data" + i, checkNumSizeMap);
+            Map<String, Object> closeSizeMap = new HashMap<>(2);
+            closeSizeMap.put("time" + i, now.minusMonths(i).getMonth().getValue());
+            closeSizeMap.put("size" + i, closeSize);
+            closeMap.put("data" + i, closeSizeMap);
         }
+        mapList.add(reportMap);
+        mapList.add(operateMap);
+        mapList.add(instMap);
+        mapList.add(dispatchMap);
+        mapList.add(disposeMap);
+        mapList.add(checkNumMap);
+        mapList.add(closeMap);
         return mapList;
     }
 
@@ -411,6 +458,20 @@ public class StatisticsService {
         /* 获取当前时间 */
         LocalDateTime now = LocalDateTime.now();
         List<Map<String, Object>> mapList = new ArrayList<>();
+        Map<String, Object> reportMap = new HashMap<>(2);
+        reportMap.put("name", "上报量");
+        Map<String, Object> operateMap = new HashMap<>(2);
+        operateMap.put("name", "受理量");
+        Map<String, Object> instMap = new HashMap<>(2);
+        instMap.put("name", "立案量");
+        Map<String, Object> dispatchMap = new HashMap<>(2);
+        dispatchMap.put("name", "派遣量");
+        Map<String, Object> disposeMap = new HashMap<>(2);
+        disposeMap.put("name", "处置量");
+        Map<String, Object> checkNumMap = new HashMap<>(2);
+        checkNumMap.put("name", "核查量");
+        Map<String, Object> closeMap = new HashMap<>(2);
+        closeMap.put("name", "结案量");
         for (int i = 0; i < 7; i++) {
             LocalDateTime localDateTime = now.minusDays(i);
             String localDate = dateTime.format(localDateTime);
@@ -435,7 +496,43 @@ public class StatisticsService {
             int closeSize = statisticsRepository.findByClose(
                     LocalDateTime.parse(localDate + " 00:00:01", df),
                     LocalDateTime.parse(localDate + " 23:59:59", df)).size();
+
+            Map<String, Object> reportSizeMap = new HashMap<>(2);
+            reportSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            reportSizeMap.put("size" + i, reportSize);
+            reportMap.put("data" + i, reportSizeMap);
+            Map<String, Object> operateSizeMap = new HashMap<>(2);
+            operateSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            operateSizeMap.put("size" + i, operateSize);
+            operateMap.put("data" + i, operateSizeMap);
+            Map<String, Object> instSizeMap = new HashMap<>(2);
+            instSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            instSizeMap.put("size" + i, instSize);
+            instMap.put("data" + i, instSizeMap);
+            Map<String, Object> dispatchSizeMap = new HashMap<>(2);
+            dispatchSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            dispatchSizeMap.put("size" + i, dispatchSize);
+            dispatchMap.put("data" + i, dispatchSizeMap);
+            Map<String, Object> disposeSizeMap = new HashMap<>(2);
+            disposeSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            disposeSizeMap.put("size" + i, disposeSize);
+            disposeMap.put("data" + i, disposeSizeMap);
+            Map<String, Object> checkNumSizeMap = new HashMap<>(2);
+            checkNumSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            checkNumSizeMap.put("size" + i, checkNumSize);
+            checkNumMap.put("data" + i, checkNumSizeMap);
+            Map<String, Object> closeSizeMap = new HashMap<>(2);
+            closeSizeMap.put("time" + i, now.minusDays(0).getDayOfYear());
+            closeSizeMap.put("size" + i, closeSize);
+            closeMap.put("data" + i, closeSizeMap);
         }
+        mapList.add(reportMap);
+        mapList.add(operateMap);
+        mapList.add(instMap);
+        mapList.add(dispatchMap);
+        mapList.add(disposeMap);
+        mapList.add(checkNumMap);
+        mapList.add(closeMap);
         return mapList;
     }
 
@@ -480,15 +577,37 @@ public class StatisticsService {
     }
 
     /* 大屏 高发问题 */
-    public List<Map<String, String>> findHighIncidence() {
-        List<Map<String, String>> highIncidenceByInst = findHighIncidenceByInst();
+    public List<Map<String, String>> findHighIncidence(String time) {
+        final String year = "year";
+        final String month = "month";
+        final String day = "day";
+        LocalDateTime startTime;
+        LocalDateTime endTime;
+        LocalDateTime now = LocalDateTime.now();
+        switch (time) {
+            case year:
+                startTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.firstDayOfYear())), LocalTime.MIN);
+                endTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.lastDayOfYear())), LocalTime.MAX);
+                break;
+            case month:
+                startTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.firstDayOfMonth())), LocalTime.MIN);
+                endTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.lastDayOfMonth())), LocalTime.MAX);
+                break;
+            case day:
+                startTime = LocalDateTime.of(LocalDate.from(now), LocalTime.MIN);
+                endTime = LocalDateTime.of(LocalDate.from(now), LocalTime.MAX);
+                break;
+            default:
+                throw new DataValidException("请正确选择日期");
+        }
+        List<Map<String, String>> highIncidenceByInst = findHighIncidenceByInst(startTime, endTime);
         findHighIncidenceByClose(highIncidenceByInst);
         return highIncidenceByInst;
     }
 
     /* 大屏 高发问题 立案数 */
-    private List<Map<String, String>> findHighIncidenceByInst() {
-        return statisticsRepository.findHighIncidenceByInst();
+    private List<Map<String, String>> findHighIncidenceByInst(LocalDateTime startTime, LocalDateTime endTime) {
+        return statisticsRepository.findHighIncidenceByInst(startTime, endTime);
     }
 
     /* 大屏 高发问题 增加结案数 */

@@ -63,8 +63,8 @@ public class SupervisionCommandSubsystemController {
     }
 
     @GetMapping("/findHighIncidence")
-    public Result findHighIncidence() {
-        List<Map<String, String>> highIncidence = statisticsService.findHighIncidence();
+    public Result findHighIncidence(String time) {
+        List<Map<String, String>> highIncidence = statisticsService.findHighIncidence(time);
         return Result.success(highIncidence);
     }
 

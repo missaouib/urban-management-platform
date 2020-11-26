@@ -244,8 +244,8 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      *
      * @return list
      */
-    @Query(value = "SELECT count(s.id) as totalInst, et.name as name, et.id as id FROM Statistics s LEFT JOIN s.event e LEFT JOIN e.eventType et WHERE s.inst = 1 GROUP BY e.eventType")
-    List<Map<String, String>> findHighIncidenceByInst();
+    @Query(value = "SELECT count(s.id) as totalInst, et.name as name, et.id as id FROM Statistics s LEFT JOIN s.event e LEFT JOIN e.eventType et WHERE s.inst = 1 and e.createTime between ?1 and ?2 GROUP BY e.eventType")
+    List<Map<String, String>> findHighIncidenceByInst(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
      * 高发问题 立案
