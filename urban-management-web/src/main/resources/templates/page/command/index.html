@@ -305,12 +305,11 @@
         findHighIncidence();
         //高发区域
         findHighGrid();
-
-
-
+        //问题来源
+        getEventSource();
         //高发时段趋势分析
         getTrendAnalysis();
-        getEventSource();
+
 
 
 
@@ -646,6 +645,10 @@
         count();
         findHighIncidence();
         getTrendAnalysis();
+        //高发区域
+        findHighGrid();
+        //问题来源
+        getEventSource();
     }
 
     function count() {
