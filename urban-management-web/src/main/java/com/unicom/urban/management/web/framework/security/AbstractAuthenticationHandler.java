@@ -1,8 +1,8 @@
 package com.unicom.urban.management.web.framework.security;
 
 import cn.hutool.extra.servlet.ServletUtil;
-import com.unicom.urban.management.pojo.entity.LoginInfo;
-import com.unicom.urban.management.service.logininfo.LoginInfoService;
+import com.unicom.urban.management.pojo.entity.LoginLog;
+import com.unicom.urban.management.service.logininfo.LoginLogService;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 
 /**
  * @author liukai
@@ -17,7 +18,7 @@ import java.io.PrintWriter;
 public abstract class AbstractAuthenticationHandler {
 
     @Autowired
-    private LoginInfoService loginInfoService;
+    private LoginLogService loginLogService;
 
     /**
      * 返回给前台JSON
@@ -36,7 +37,7 @@ public abstract class AbstractAuthenticationHandler {
      *
      * @param message 是否登录成功
      */
-    protected void saveLoginInfo(HttpServletRequest request, HttpServletResponse response, String message) {
+    protected void loginLog(HttpServletRequest request, HttpServletResponse response, Integer message) {
         UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
         // 获取客户端操作系统
         String os = userAgent.getOperatingSystem().getName();
@@ -44,13 +45,14 @@ public abstract class AbstractAuthenticationHandler {
         String browser = userAgent.getBrowser().getName();
 
 
-        LoginInfo loginInfo = new LoginInfo();
-        loginInfo.setUsername(request.getParameter("username"));
-        loginInfo.setIp(getIpAddress(request));
-        loginInfo.setOs(os);
-        loginInfo.setBrowser(browser);
-        loginInfo.setMessage(message);
-        loginInfoService.save(loginInfo);
+        LoginLog loginLog = new LoginLog();
+        loginLog.setUsername(request.getParameter("username"));
+        loginLog.setIp(getIpAddress(request));
+        loginLog.setOs(os);
+        loginLog.setBrowser(browser);
+        loginLog.setMessage(message);
+        loginLog.setLoginTime(LocalDateTime.now());
+        loginLogService.save(loginLog);
 
     }
 

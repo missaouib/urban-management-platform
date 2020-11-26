@@ -29,7 +29,7 @@ public class ProcessRepositoryTest {
     @Transactional
     public void search() {
         List<Process> all = processRepository.findAll();
-        all.get(0).getNode().getId();
+//        all.get(0).getNode().getId();
     }
 
 

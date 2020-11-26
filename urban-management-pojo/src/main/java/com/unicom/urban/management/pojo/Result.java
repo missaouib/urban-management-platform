@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 public class Result {
 
     public static final String SUCCESSFUL_CODE = "0";
-    public static final String SUCCESSFUL_MESSAGE = "处理成功";
+    public static final String SUCCESSFUL_MESSAGE = "成功";
 
     /**
      * 处理结果code

@@ -33,11 +33,11 @@ public class KV implements Serializable {
 
     private String fieldName;
 
-    @Column(name = "key_")
-    private String key;
+    @Column(name = "key_", columnDefinition = "tinyint")
+    private Integer key;
 
     private String value;
 
-    @Column(columnDefinition = "TINYINT(1)")
+    @Column(columnDefinition = "TINYINT")
     private Integer sts;
 }
