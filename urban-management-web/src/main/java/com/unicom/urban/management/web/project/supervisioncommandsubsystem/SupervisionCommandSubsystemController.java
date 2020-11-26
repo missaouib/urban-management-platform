@@ -56,16 +56,39 @@ public class SupervisionCommandSubsystemController {
         return new ModelAndView(SystemConstant.PAGE + "/command/gridInformation");
     }
 
+    /**
+     * 大屏 趋势分析
+     *
+     * @param time 时间
+     * @return list
+     */
     @GetMapping("/getTrendAnalysis")
     public Result getTrendAnalysis(String time) {
         List<Map<String, Object>> trendAnalysis = statisticsService.getTrendAnalysis(time);
         return Result.success(trendAnalysis);
     }
 
+    /**
+     * 大屏 高发问题
+     *
+     * @param time 时间
+     * @return list
+     */
     @GetMapping("/findHighIncidence")
     public Result findHighIncidence(String time) {
         List<Map<String, String>> highIncidence = statisticsService.findHighIncidence(time);
         return Result.success(highIncidence);
+    }
+
+    /**
+     * 案件分析 标题
+     *
+     * @return list
+     */
+    @GetMapping("/getCaseAnalysisTitle")
+    public Result getCaseAnalysis() {
+        List<Map<String, Object>> caseAnalysis = statisticsService.getCaseAnalysis();
+        return Result.success(caseAnalysis);
     }
 
 
