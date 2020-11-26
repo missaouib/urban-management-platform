@@ -68,8 +68,8 @@ public class Grid extends BaseEntity {
     @JoinColumn
     private Dept dept;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "grid_id")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_grid", joinColumns = @JoinColumn(name = "grid_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> userList;
 
 }

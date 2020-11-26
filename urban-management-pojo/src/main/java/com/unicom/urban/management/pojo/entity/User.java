@@ -72,6 +72,10 @@ public class User extends BaseEntity {
     private List<Dept> deptList;
 
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_grid", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "grid_id"))
+    private List<Grid> gridList;
+
     public User() {
     }
 
