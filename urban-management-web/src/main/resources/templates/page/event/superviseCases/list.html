@@ -710,6 +710,7 @@
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
                     eventId = e.data.id;
                     getGridPolygon(eventId);
+                    getNodeName(eventId);
                     /*流程图*/
                     $("#eventImg").attr('src',img+e.data.processInstanceId);
                     /*详情*/

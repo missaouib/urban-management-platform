@@ -108,17 +108,18 @@ public class TaskProcessingService {
         statistics.setInstHuman(SecurityUtil.getUser().castToUser());
         statistics.setInstHumanName(SecurityUtil.getUser().castToUser());
         statistics.setInstRole(roleService.findOne(KvConstant.SHIFT_LEADER_ROLE));
-        if (KvConstant.SUPERVISOR.equals(statistics.getEvent().getEventSource().getId())) {
-            statistics.setValidPatrolReport(1);
-        } else {
-            statistics.setValidPublicReport(1);
-        }
-        statistics.setValidReport(1);
-        statisticsService.update(statistics);
+
 
         Event event = eventService.findOne(eventId);
         Statistics newStatistics = this.initStatistics(event);
         if ("立案".equals(buttonId.getButtonText())) {
+            if (KvConstant.SUPERVISOR.equals(statistics.getEvent().getEventSource().getId())) {
+                statistics.setValidPatrolReport(1);
+            } else {
+                statistics.setValidPublicReport(1);
+            }
+            statistics.setValidReport(1);
+            statisticsService.update(statistics);
             newStatistics.setSort(statistics.getSort() + 1);
             newStatistics.setToDispatch(1);
             newStatistics.setNeedDispatch(1);
@@ -130,6 +131,7 @@ public class TaskProcessingService {
             newStatistics.setSort(statistics.getSort() + 1);
 
         }
+        statisticsService.update(statistics);
         statisticsService.save(newStatistics);
     }
 

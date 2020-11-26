@@ -20,40 +20,40 @@
                 <i class="i_mirror"></i>
             </div>
         </div>
-        <div class="onceoption">
+        <div class="onceoption" id="caseAnalysisTitle">
             <div>
                 <span>上限</span>
-                <span>1,234</span>
+                <span>···</span>
             </div>
             <div>
                 <span>受理</span>
-                <span style="color: #00FF4E;">1,945</span>
+                <span style="color: #00FF4E;">···</span>
             </div>
             <div>
                 <span>立案</span>
-                <span style="color: #FF6600;">1,345</span>
+                <span style="color: #FF6600;">···</span>
             </div>
             <div>
                 <span>派遣</span>
-                <span style="color: #F600FF;">1,145</span>
+                <span style="color: #F600FF;">···</span>
             </div>
             <div>
                 <span>核查</span>
-                <span style="color: #5BFEE5;">1,167</span>
+                <span style="color: #5BFEE5;">···</span>
             </div>
             <div>
                 <span>处置</span>
-                <span style="color: #FFBF36;">1,145</span>
+                <span style="color: #FFBF36;">···</span>
             </div>
             <div>
                 <span>结案</span>
-                <span style="color: #FF4901;">1,145</span>
+                <span style="color: #FF4901;">···</span>
             </div>
         </div>
     </div>
     <div class="bottom">
         <div class="map" id="map" style="width: 100%;height: 100%"></div>
-        <div class="show_map">
+<!--        <div class="show_map">-->
             <div class="checkBox">
                 <div class="mapLayers">
                     <div class="clickLayer">
@@ -95,7 +95,7 @@
 
                 </div>
             </div>
-        </div>
+<!--        </div>-->
     </div>
 </div>
 </body>
@@ -124,7 +124,26 @@
         });
 
 
-        $("#map1").click(function() {})
+        $("#map1").click(function() {
+            let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
+            $.ajaxUtil.get(getGridUrl, function (e) {
+                var urlParam = e.data.split("?");
+                var url = urlParam[0];
+                var param = urlParam[1];
+                var ImageVector = new ol.layer.Tile({
+                    source: new ol.source.TileWMS({
+                        url: url,
+                        params: {
+                            'VERSION': '1.1.1',
+                            tiled: true,
+                            "LAYERS": param,
+                            "exceptions": ''
+                        }
+                    })
+                });
+                map.addLayer(ImageVector);
+            })
+        })
 
         $("#map2").click(function() {})
 
@@ -171,7 +190,33 @@
         });
         map.addLayer(layerMap);
 
-    })
+        getCaseAnalysisTitle();
+
+    });
+
+    var getCaseAnalysisTitleUrl = /*[[@{/commandSubsystem/getCaseAnalysisTitle}]]*/ "/commandSubsystem/getCaseAnalysisTitle";
+
+    function getCaseAnalysisTitle() {
+        $.ajaxUtil.get(getCaseAnalysisTitleUrl, function (e) {
+            console.log("e", e);
+            let data = e.data;
+            $("#caseAnalysisTitle").empty();
+            let html = "";
+            if (data.length > 0) {
+                for (let i = 0; i < data.length; i++) {
+                    html += "<div>"
+                    html += "<span>" + data[i].name + "</span>"
+                    html += "<span class='colorRandom'>" + data[i].data + "</span>"
+                    html += "</div>"
+                }
+            } else {
+                html += "<div>"
+                html += "<span>为获取数据</span>"
+                html += "</div>"
+            }
+            $("#caseAnalysisTitle").html(html);
+        });
+    }
 </script>
 </body>
 </html>

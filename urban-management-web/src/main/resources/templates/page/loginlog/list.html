@@ -42,7 +42,7 @@
 
 <script type="text/javascript" th:inline="javascript">
 
-    let url = /*[[@{/logininfo/search}]]*/ "/json/unit.json";
+    let url = /*[[@{/loginlog/search}]]*/ "/json/unit.json";
 
 
     $(function () {
@@ -51,7 +51,7 @@
     function query() {
         let options = {
             url: url,
-            sortName: "createTime",
+            sortName: "loginTime",
             sortOrder: "desc",
             columns: [
                 {
@@ -71,12 +71,12 @@
                     field: 'browser',
                 },
                 {
-                    title: "登录状态",
+                    title: "登录结果",
                     field: 'message',
                 },
                 {
                     title: '登录时间',
-                    field: 'createTime',
+                    field: 'loginTime',
                     sortable: true
                 }
             ]

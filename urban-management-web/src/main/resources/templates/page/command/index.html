@@ -15,7 +15,7 @@
     <div class="leftWarp">
         <div class="fullMap">
             <div class="map" id="map" style="width: 100%;height: 100%"></div>
-            <div class="fugai">
+<!--            <div class="fugai">-->
                 <div class="checkTime">
                     <div class="timeText">时间</div>
                     <div class="selectTime">
@@ -28,27 +28,27 @@
                 </div>
 
                 <div class="numBosen">
-                    <div class="bosenActive">
+                    <div class="bosenActive" id="reporting">
                         <span>上报</span>
-                        <span id="count">177</span>
+                        <span id="count">···</span>
                     </div>
-                    <div>
+                    <div id="register">
                         <span>立案</span>
-                        <span id="inst">165</span>
+                        <span id="inst">···</span>
                     </div>
-                    <div>
+                    <div id="caseclosed">
                         <span>结案</span>
-                        <span id="close">78</span>
+                        <span id="close">···</span>
                     </div>
-                    <div>
+                    <div id="onwer">
                         <span>人员</span>
                         <span>12</span>
                     </div>
-                    <div>
+                    <div id="cars">
                         <span>车辆</span>
                         <span>98</span>
                     </div>
-                    <div>
+                    <div id="videos">
                         <span>视频</span>
                         <span>6</span>
                     </div>
@@ -95,7 +95,7 @@
 
                     </div>
                 </div>
-            </div>
+<!--            </div>-->
 
 
         </div>
@@ -211,15 +211,94 @@
 
 
         $("#map1").click(function () {
+            let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
+            $.ajaxUtil.get(getGridUrl, function (e) {
+                var urlParam = e.data.split("?");
+                var url = urlParam[0];
+                var param = urlParam[1];
+                var ImageVector = new ol.layer.Tile({
+                    source: new ol.source.TileWMS({
+                        url: url,
+                        params: {
+                            'VERSION': '1.1.1',
+                            tiled: true,
+                            "LAYERS": param,
+                            "exceptions": ''
+                        }
+                    })
+                });
+                map.addLayer(ImageVector);
+            })
         })
 
         $("#map2").click(function () {
         })
 
         $("#map3").click(function () {
+            // map.removeLayer(ImageVector);
+        })
+
+        $("#reporting").click(function () {
+            layerMap.getSource().clear()
+            var data = [
+                {
+                    multiPolygon: "115.67894163084296 41.666084486014704",
+                },
+                {
+                    multiPolygon: "115.68201257812055 41.66582305456221",
+                },
+                {
+                    multiPolygon: "115.68010003736438 41.66413456207782",
+                },
+                {
+                    multiPolygon: "115.68436495924564 41.66598516056955",
+                },
+                {
+                    multiPolygon: "115.6807560470161 41.666199988747834",
+                },
+                {
+                    multiPolygon: "115.6832905249876 41.66311280808121",
+                }
+            ];
+            for (let i = 0; i < data.length; i++) {
+                setPoint(data[i].multiPolygon.split(" ")[0], data[i].multiPolygon.split(" ")[1]);
+            }
         })
 
 
+        $("#register").click(function () {
+            layerMap.getSource().clear()
+            var data = [
+                {
+                    multiPolygon: "115.68140241747918 41.66490561335057",
+                },
+                {
+                    multiPolygon: "115.68509359808834 41.66456405079633",
+                }
+            ];
+            for (let i = 0; i < data.length; i++) {
+                setPoint(data[i].multiPolygon.split(" ")[0], data[i].multiPolygon.split(" ")[1]);
+            }
+        })
+
+        $("#caseclosed").click(function () {
+            layerMap.getSource().clear()
+        })
+
+        function setPoint(x, y) {
+            let point = new ol.Feature({
+                geometry: new ol.geom.Point([x, y]),
+                data: {
+                    coordinate: x + "," + y
+                }
+            });
+            layerMap.getSource().addFeature(point);
+            point.setStyle(new ol.style.Style({
+                image: new ol.style.Icon({
+                    src: '../img/pointInMap.png'
+                })
+            }));
+        }
         //表格
 
         //高发问题
@@ -485,11 +564,16 @@
             source: new ol.source.Vector(),
         });
         map.addLayer(layerMap);
+        map.on("click", function(e) {
+            console.log(e.coordinate);
+        })
 
     });
 
     function timeQuery() {
         count();
+        findHighIncidence();
+        getTrendAnalysis();
     }
 
     function count() {
@@ -801,7 +885,7 @@
                 ],
                 grid: {
                     x2: 12,
-                    x: 150,
+                    x: 100,
                     y: 43,
                     y2: 24
                 }
@@ -1020,6 +1104,8 @@
         listDataArray.push(dataArray);
         return listDataArray;
     }
+
+
 
 </script>
 </body>

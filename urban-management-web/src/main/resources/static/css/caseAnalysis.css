@@ -32,6 +32,8 @@ body {
 	height: 85%;
 	position: relative;
 	background-color: #fff;
+	overflow: hidden;
+	border-radius: 10px;
 }
 
 .show_map {
@@ -217,4 +219,25 @@ body {
 .layerInfo img {
 	width: 100%;
 	height: 100%;
+}
+.onceoption div:nth-child(1) .colorRandom{
+	color: rgb(55, 149, 255) !important;
+}
+.onceoption div:nth-child(2) .colorRandom{
+	color: #00FF4E!important;
+}
+.onceoption div:nth-child(3) .colorRandom{
+	color: #FF6600!important;
+}
+.onceoption div:nth-child(4) .colorRandom{
+	color: #F600FF!important;
+}
+.onceoption div:nth-child(5) .colorRandom{
+	color: #5BFEE5!important;
+}
+.onceoption div:nth-child(6) .colorRandom{
+	color: #FFBF36!important;
+}
+.onceoption div:nth-child(7) .colorRandom{
+	color: #FF4901!important;
 }

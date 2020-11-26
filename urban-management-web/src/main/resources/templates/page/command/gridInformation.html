@@ -106,7 +106,7 @@
     </div>
     <div class="map_box">
         <div class="map" id="map" style="width: 100%;height: 100%"></div>
-        <div class="follMap"></div>
+<!--        <div class="follMap"></div>-->
     </div>
 </div>
 </body>
@@ -157,7 +157,10 @@
                 data: ["结案量", "立案量"],
                 x: "right",
                 orient: "horizontal",
-                y: "top"
+                y: "top",
+                textStyle:{
+                    color: '#ffffff'//字体颜色
+                }
             },
             title: {
                 x: "left"
@@ -208,6 +211,15 @@
                         }
                     },
                     axisLabel: {
+                        lineStyle:{
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 1, 0,
+                                [
+                                    {offset: 0, color: '#CE9FFC'},
+                                    {offset: 1, color: '#7367F0'}
+                                ]
+                            )
+                        },
                         interval: 0,
                         formatter:function(value)
                         {
@@ -230,7 +242,11 @@
                             else {
                                 return value;
                             }
-                        }
+                        },
+                        textStyle: {
+                            color: '#fff'
+                        },
+
                     }
                 }
             ],
@@ -239,6 +255,29 @@
                     type: "value",
                     splitLine: {
                         show: true
+                    },
+                    splitLine: {
+                        show: true,
+                        lineStyle:{
+                            color: ['#0396FF'],
+                            width: 1,
+                            type: 'solid'
+                        }
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        },
+                        lineStyle:{
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 1, 0,
+                                [
+                                    {offset: 0, color: '#CE9FFC'},
+                                    {offset: 1, color: '#7367F0'}
+                                ]
+                            )
+                        }
                     }
                 }
             ],
@@ -246,12 +285,35 @@
                 {
                     name: "立案量",
                     type: "bar",
-                    data: [20, 4.9, 30, 23.2, 120, 76.7, 76.7, 76.7, 76.7, 76.7]
+                    data: [20, 4.9, 30, 23.2, 120, 76.7, 76.7, 76.7, 76.7, 76.7],
+                    itemStyle:{
+                        normal:{
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 1, 0,
+                                [
+                                    {offset: 0, color: '#3977E6'},
+                                    {offset: 1, color: '#37BBF8'}
+
+                                ]
+                            )
+                        }
+                    }
                 },
                 {
                     name: "结案量",
                     type: "bar",
-                    data: [2.6, 5.9, 20, 26.4, 28.7, 70.7, 70.7, 70.7, 70.7, 200]
+                    data: [2.6, 5.9, 20, 26.4, 28.7, 70.7, 70.7, 70.7, 70.7, 200],
+                    itemStyle:{
+                        normal:{
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 1, 0,
+                                [
+                                    {offset: 0, color: '#CE9FFC'},
+                                    {offset: 1, color: '#7367F0'}
+                                ]
+                            )
+                        }
+                    }
                 }
             ],
             calculableColor: "rgba(255,165,0,0.6)",

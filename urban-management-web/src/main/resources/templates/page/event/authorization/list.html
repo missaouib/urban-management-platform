@@ -792,6 +792,7 @@
         getEventDetail(eventId);
         getButton(eventId);
         getGridPolygon(eventId);
+        getNodeName(eventId);
 
     }
 
@@ -1204,6 +1205,13 @@
             }
         });
         layerMap.getSource().addFeature(Polygon);
+    }
+    let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
+    /* 步骤图 */
+    function getNodeName(eventId) {
+        $.ajaxUtil.get(getNodeNameUrl + "?eventId=" + eventId, function (e) {
+            setConduct(e.data);
+        });
     }
 </script>
 </body>

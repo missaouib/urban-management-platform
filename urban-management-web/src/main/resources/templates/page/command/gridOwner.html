@@ -22,7 +22,7 @@
             <div class="myright">
                 <span>
                     <div class="chuangmy">姓名:</div>
-                    <i class="whoMy">南岗区第一</i>
+                    <i class="whoMy" id="am">南岗区第一</i>
                 </span>
                 <span>
                     <div class="chuangmy">工卡:</div>
@@ -122,7 +122,7 @@
 <!--                监督员-->
                 <div class="joberNameBox">
                     <div class="fenlei">
-                        <span>南岗区</span>
+                        <span>道外区</span>
                         <i></i>
                     </div>
                     <ul class="peopleMation">
@@ -130,19 +130,19 @@
                             <div class="header">
                                 <img th:src="@{/img/1.jpg}" alt="">
                             </div>
-                            <span class="name">张三</span>
+                            <span class="name">道外区北方大道472号南通北往第四井盖</span>
                         </li>
                         <li>
                             <div class="header">
                                 <img th:src="@{/img/2.jpg}" alt="">
                             </div>
-                            <span class="name">李四</span>
+                            <span class="name">马云</span>
                         </li>
                         <li>
                             <div class="header">
                                 <img th:src="@{/img/3.jpg}" alt="">
                             </div>
-                            <span class="name">王无</span>
+                            <span class="name">马化腾</span>
                         </li>
                         <li>
                             <div class="header">
@@ -180,7 +180,7 @@
 <!--               处理人员 -->
                 <div class="joberNameBox">
                     <div class="fenlei">
-                        <span>南岗区</span>
+                        <span>香坊区</span>
                         <i></i>
                     </div>
                     <ul class="peopleMation">
@@ -291,9 +291,9 @@
         </div>
     </div>
 
-    <div class="warpmap">
+<!--    <div class="warpmap">-->
 
-    </div>
+<!--    </div>-->
 </div>
 </body>
 
@@ -320,6 +320,7 @@
             $(".humenversion").css("right", "0")
             $(".directivity").css("display", "block")
             $(".myhead").html($(this).children(".header").html())
+            $("#am").html($(this).children(".name").html())
         });
 
         $(".directivity").click(function() {
@@ -358,7 +359,26 @@
         })
 
 
-        $("#map1").click(function() {})
+        $("#map1").click(function() {
+            let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
+            $.ajaxUtil.get(getGridUrl, function (e) {
+                var urlParam = e.data.split("?");
+                var url = urlParam[0];
+                var param = urlParam[1];
+                var ImageVector = new ol.layer.Tile({
+                    source: new ol.source.TileWMS({
+                        url: url,
+                        params: {
+                            'VERSION': '1.1.1',
+                            tiled: true,
+                            "LAYERS": param,
+                            "exceptions": ''
+                        }
+                    })
+                });
+                map.addLayer(ImageVector);
+            })
+        })
 
         $("#map2").click(function() {})
 

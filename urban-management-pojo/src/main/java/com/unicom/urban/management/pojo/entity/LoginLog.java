@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 
 /**
@@ -15,8 +16,8 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@Table(name = "sys_login_info")
-public class LoginInfo extends BaseEntity {
+@Table(name = "sys_login_log")
+public class LoginLog {
 
 
     @Id
@@ -34,7 +35,11 @@ public class LoginInfo extends BaseEntity {
 
     private String os;
 
-    private String message;
+    @Column(columnDefinition = "tinyint")
+    private Integer message;
+
+    @Column(nullable = false)
+    private LocalDateTime loginTime;
 
 
 }

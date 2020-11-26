@@ -1,0 +1,162 @@
+* {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+body {
+	width: 100vw;
+	height: 100vh;
+	background-color: #031636;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.warp {
+	width: 98%;
+	height: 98%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.leftwarp {
+	width: 40%;
+	height: 100%;
+	background: url("../img/tuqileft.png");
+	background-size: 100% 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.rightwarp {
+	width: 59%;
+	height: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.inner {
+	width: 95%;
+	height: 95%;
+}
+
+.group {
+	width: 100%;
+	height: 10%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.grouptitle {
+	width: 100%;
+	height: 50%;
+	font-size: 16px;
+	font-weight: 800;
+	display: flex;
+	align-items: center;
+	color: white;
+}
+
+.inputs {
+	width: 100%;
+	height: 49%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.dateIn {
+	width: 49.5%;
+	height: 80%;
+	display: flex;
+	align-items: center;
+}
+
+.tables {
+	width: 49.5%;
+	height: 49.5%;
+	background: url("../img/bar2.png");
+	background-size: 100% 100%;
+	position: relative;
+}
+
+.title {
+	height: 10%;
+	font-size: 18px;
+	font-family: Microsoft YaHei;
+	font-weight: 400;
+	color: #00E4FF;
+	display: flex;
+	align-items: center;
+	padding: 2% 0% 2% 5%;
+}
+
+.tablesInner {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.rellTable {
+	width: 95%;
+	height: 80%;
+	margin-top: 5%;
+	overflow: auto;
+}
+.form_datetime,.girdselect{
+	width: 100%;
+	height: 100%;
+	padding-left: 10px;
+	font-size: 12px;
+	border: 1px solid rgb(204, 204, 204);
+}
+.search{
+	width: 20%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 4px!important;
+	background-color: #354e85!important;
+	color: #fff!important;
+}
+.tablegroup{
+	width: 100%;
+	height: 78%;
+	overflow: auto;
+}
+tbody{
+	/*background-color: #fff!important;*/
+
+}
+.bootstrap-table{
+	padding: 0!important;
+}
+.table td {
+	padding: 0.5rem!important;
+	color: skyblue;!important;
+}
+th{
+	background-color: #292f54!important;
+	color: skyblue!important;
+	border: none!important;
+}
+thead th{
+	border: none!important;
+}
+.table-bordered td{
+	border: none!important;
+}
+.table-bordered{
+	border: none!important;
+}

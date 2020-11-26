@@ -435,9 +435,6 @@
 
         $(".ol-full-screen-false").html("全屏")
 
-        //步骤进行到
-        var bgmNum = 2;
-        setConduct(bgmNum)
 
         queryUserList();
         $(".tabTitle span").click(function() {
@@ -539,7 +536,7 @@
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
                     eventId = e.data.id;
                     getGridPolygon(eventId);
-
+                    getNodeName(eventId);
                     /*流程图*/
                     $("#eventImg").attr('src',img+e.data.processInstanceId);
                     /*详情*/
@@ -977,6 +974,15 @@
             }
         });
         layerMap.getSource().addFeature(Polygon);
+    }
+
+
+    let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
+    /* 步骤图 */
+    function getNodeName(eventId) {
+        $.ajaxUtil.get(getNodeNameUrl + "?eventId=" + eventId, function (e) {
+            setConduct(e.data);
+        });
     }
 </script>
 </body>
