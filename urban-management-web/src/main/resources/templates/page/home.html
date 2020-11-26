@@ -86,38 +86,8 @@
                                         <th>总数</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>公共设施</td>
-                                        <td>1</td>
-                                        <td>26</td>
-                                        <td>28</td>
-                                    </tr>
-                                    <tr>
-                                        <td>事件交通</td>
-                                        <td>5</td>
-                                        <td>30</td>
-                                        <td>35</td>
-                                    </tr>
-                                    <tr>
-                                        <td>市容环境</td>
-                                        <td>4</td>
-                                        <td>4</td>
-                                        <td>12</td>
-                                    </tr>
+                                    <tbody id="eventCount">
 
-                                    <tr>
-                                        <td>园林绿化</td>
-                                        <td>6</td>
-                                        <td>8</td>
-                                        <td>17</td>
-                                    </tr>
-                                    <tr>
-                                        <td>房屋土地</td>
-                                        <td>7</td>
-                                        <td>89</td>
-                                        <td>30</td>
-                                    </tr>
 
                                     </tbody>
                                 </table>
@@ -361,6 +331,7 @@
 
         getIndexValueByWeek();
         unitCount();
+        eventCount();
 
     });
 
@@ -388,6 +359,21 @@
             })
             $("#unitCount").empty();
             $("#unitCount").append(html);
+        });
+    }
+
+    let eventCountUrl = /*[[@{/home/eventCount}]]*/ "/home/eventCount";
+    function eventCount() {
+        $.ajaxUtil.get(eventCountUrl, function (e) {
+            var html = "";
+            $(e.data).each(function (index,value) {
+                html+="<tr> <td>"+value.typeName+"</td>" +
+                    "<td>"+value.weekCount+"</td>" +
+                    "<td>"+value.monthCount+"</td>" +
+                    "<td>"+value.count+"</td></tr>"
+            })
+            $("#eventCount").empty();
+            $("#eventCount").append(html);
         });
     }
 

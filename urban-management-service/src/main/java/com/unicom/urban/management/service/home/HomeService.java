@@ -23,15 +23,14 @@ public class HomeService {
     @Autowired
     private EventTypeRepository eventTypeRepository;
 
-
-    public List<Map<String,Object>> eventTypeCount(){
+    public List<Map<String,Object>> eventTypeCount(String type){
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime week = now.minusDays(now.getDayOfWeek().getValue() - 1);
         LocalDateTime month = now.with(TemporalAdjusters.firstDayOfMonth());
         List<Event> all = eventRepository.findAll();
         List<Event> weekList = all.stream().filter(e -> e.getCreateTime().isAfter(week.toLocalDate().atStartOfDay())).collect(Collectors.toList());
         List<Event> monthList = all.stream().filter(e -> e.getCreateTime().isAfter(month.toLocalDate().atStartOfDay())).collect(Collectors.toList());
-        List<EventType> unit = eventTypeRepository.findAllByLevelAndParent_Name("1", "部件");
+        List<EventType> unit = eventTypeRepository.findAllByLevelAndParent_Name("1", type);
         List<Map<String,Object>> list = new ArrayList<>();
         unit.forEach(u->{
             Map<String,Object> map = new ConcurrentHashMap<>();
