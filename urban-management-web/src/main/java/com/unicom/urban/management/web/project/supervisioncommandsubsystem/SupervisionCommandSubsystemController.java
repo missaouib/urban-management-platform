@@ -46,6 +46,11 @@ public class SupervisionCommandSubsystemController {
         return new ModelAndView(SystemConstant.PAGE + "/command/comprehensiveEvaluation");
     }
 
+    @GetMapping("/trajectory")
+    public ModelAndView trajectory() {
+        return new ModelAndView(SystemConstant.PAGE + "/command/trajectory");
+    }
+
     @GetMapping("/gridInformation")
     public ModelAndView gridInformation() {
         return new ModelAndView(SystemConstant.PAGE + "/command/gridInformation");
