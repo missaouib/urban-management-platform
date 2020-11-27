@@ -697,7 +697,7 @@
             modalName: "用户",
             // 点击每行进行函数的触发
             onClickRow: function (row, index, tr, flied,$element) {
-                getGridPolygon(eventId);
+                getGridPolygon(row.id);
                 $('.changeColor').removeClass('changeColor');
                 $($element).addClass('changeColor');
 
