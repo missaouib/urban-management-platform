@@ -107,7 +107,7 @@ public class WorkService {
         Statistics statistics1 = statisticsService.findByEventIdAndEndTimeIsNull(eventDTO.getId());
         activitiService.claim(statistics1.getTaskId(), SecurityUtil.getUserId());
         statistics1.setEndTime(LocalDateTime.now());
-        int[] map = taskProcessingService.betWeenTime(statistics1.getStartTime(), statistics1.getEndTime(), statistics1.getProcessTimeLimit().getTimeType().getId(), statistics1.getProcessTimeLimit().getTimeLimit());
+        int[] map = taskProcessingService.betWeenTime(statistics1.getStartTime(), statistics1.getEndTime(), statistics1.getProcessTimeLimit().getTimeType().getId(), statistics1.getProcessTimeLimit().getTimeLimit(), 0);
         if ("16".equals(eventDTO.getButton())) {
             /* 按时发核查 */
             statistics1.setInTimeSendCheck(map[0]);
@@ -265,7 +265,7 @@ public class WorkService {
         statistics.setEndTime(LocalDateTime.now());
         /* 受理数 */
         statistics.setOperate(1);
-        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit());
+        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit(), 0);
         /* 按时受理 */
         statistics.setInTimeOperate(map[0]);
         statistics.setSts(String.valueOf(map[1]));
@@ -322,7 +322,7 @@ public class WorkService {
         statistics.setToOperate(0);
         /* 不予受理 */
         statistics.setNotOperate(1);
-        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit());
+        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit(), 0);
         /* 按时受理 */
         statistics.setInTimeOperate(map[0]);
         statistics.setSts(String.valueOf(map[1]));
@@ -341,7 +341,7 @@ public class WorkService {
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         statistics.setEndTime(LocalDateTime.now());
         statistics.setInvalidEvent(1);
-        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit());
+        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit(), 0);
         statistics.setSts(String.valueOf(map[1]));
         setOpinionsAndEventFileList(statistics, eventDTO.getRepresent(), eventDTO.getEventFileList());
         statisticsService.update(statistics);
@@ -357,7 +357,7 @@ public class WorkService {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventDTO.getId());
         activitiService.claim(statistics.getTaskId(), SecurityUtil.getUserId());
         statistics.setEndTime(LocalDateTime.now());
-        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit());
+        int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit(), 0);
         statistics.setSts(String.valueOf(map[1]));
         setOpinionsAndEventFileList(statistics, eventDTO.getRepresent(), eventDTO.getEventFileList());
         statisticsService.update(statistics);

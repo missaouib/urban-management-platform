@@ -85,7 +85,7 @@ public class TaskProcessingService {
             this.onAccount(eventId, eventButton, statisticsDTO);
         } else if ("挂账恢复".equals(statistics.getTaskName())) {
             this.recovery(eventId, eventButton, statisticsDTO);
-        }else if("自处理案件结案".equals(statistics.getTaskName())){
+        } else if ("自处理案件结案".equals(statistics.getTaskName())) {
             this.meCloseTask(eventId, eventButton, statisticsDTO);
         }
 
@@ -101,7 +101,7 @@ public class TaskProcessingService {
         int[] ints = this.betWeenTime(statistics.getStartTime(),
                 statistics.getEndTime(),
                 statistics.getProcessTimeLimit().getTimeType().getId(),
-                statistics.getProcessTimeLimit().getTimeLimit());
+                statistics.getProcessTimeLimit().getTimeLimit(), 0);
         statistics.setInTimeInst(ints[0]);
         statistics.setSts(String.valueOf(ints[1]));
         statistics.setToInst(0);
@@ -150,15 +150,15 @@ public class TaskProcessingService {
 
         Statistics statistics = this.updateStatistics(statisticsDTO);
         List<Statistics> total = statisticsService.findByEventIdToList(eventId).stream().filter(s -> "专业部门".equals(s.getTaskName())).collect(Collectors.toList());
-        List<String> unitSize = total.stream().map(t->t.getDisposeUnitName().getId()).collect(Collectors.toList());
-        if(total.size()!= unitSize.stream().distinct().count()){
+        List<String> unitSize = total.stream().map(t -> t.getDisposeUnitName().getId()).collect(Collectors.toList());
+        if (total.size() != unitSize.stream().distinct().count()) {
             statistics.setRework(1);
         }
         statistics.setClose(1);
         int[] ints = this.betWeenTime(statistics.getStartTime(),
                 statistics.getEndTime(),
                 statistics.getProcessTimeLimit().getTimeType().getId(),
-                statistics.getProcessTimeLimit().getTimeLimit());
+                statistics.getProcessTimeLimit().getTimeLimit(), 0);
         statistics.setInTimeClose(ints[0]);
         statistics.setSts(String.valueOf(ints[1]));
         statistics.setToClose(0);
@@ -168,12 +168,13 @@ public class TaskProcessingService {
         statisticsService.update(statistics);
 
     }
+
     /**
      * 自处理案件结案
      */
-    private void meCloseTask(String eventId,EventButton eventButton, StatisticsDTO statisticsDTO) {
+    private void meCloseTask(String eventId, EventButton eventButton, StatisticsDTO statisticsDTO) {
 
-        if("结案存档".equals(eventButton.getButtonText())){
+        if ("结案存档".equals(eventButton.getButtonText())) {
             this.avtivitiHandle(eventId, null, eventButton.getId());
             Event one = eventService.findOne(eventId);
             KV kv = new KV();
@@ -186,7 +187,7 @@ public class TaskProcessingService {
             int[] ints = this.betWeenTime(statistics.getStartTime(),
                     statistics.getEndTime(),
                     statistics.getProcessTimeLimit().getTimeType().getId(),
-                    statistics.getProcessTimeLimit().getTimeLimit());
+                    statistics.getProcessTimeLimit().getTimeLimit(), 0);
             statistics.setInTimeClose(ints[0]);
             statistics.setSts(String.valueOf(ints[1]));
             statistics.setToClose(0);
@@ -194,7 +195,7 @@ public class TaskProcessingService {
             statistics.setCloseHumanName(SecurityUtil.getUser().castToUser());
             statistics.setCloseRole(roleService.findOne(KvConstant.SHIFT_LEADER_ROLE));
             statisticsService.update(statistics);
-        }else{
+        } else {
             List<String> users = this.getUsers(KvConstant.RECEPTIONIST_ROLE);
             this.avtivitiHandle(eventId, users, eventButton.getId());
             Statistics statistics = this.updateStatistics(statisticsDTO);
@@ -203,7 +204,6 @@ public class TaskProcessingService {
             Statistics newStatistics = this.initStatistics(event);
             statisticsService.save(newStatistics);
         }
-
 
 
     }
@@ -219,7 +219,7 @@ public class TaskProcessingService {
         int[] ints = this.betWeenTime(statistics.getStartTime(),
                 statistics.getEndTime(),
                 statistics.getProcessTimeLimit().getTimeType().getId(),
-                statistics.getProcessTimeLimit().getTimeLimit());
+                statistics.getProcessTimeLimit().getTimeLimit(), 0);
         statistics.setInTimeDispatch(ints[0]);
         statistics.setSts(String.valueOf(ints[1]));
         statistics.setDispatchHuman(SecurityUtil.getUser().castToUser());
@@ -292,10 +292,14 @@ public class TaskProcessingService {
                 statistics = this.updateStatistics(statisticsDTO);
                 statistics.setDispose(1);
                 statistics.setToDispose(0);
+                int hangDuration = 0;
+                if (statistics.getHangDuration() != null) {
+                    hangDuration += statistics.getHangDuration() * 60 * 60 * 1000;
+                }
                 int[] num = this.betWeenTime(statistics.getStartTime(),
                         statistics.getEndTime(),
                         statistics.getDeptTimeLimit().getTimeType().getId(),
-                        statistics.getDeptTimeLimit().getTimeLimit());
+                        statistics.getDeptTimeLimit().getTimeLimit(), hangDuration);
                 statistics.setInTimeDispose(num[0] == 1 ? 1 : 0);
                 statistics.setOvertimeDispose(num[0] == 1 ? 0 : 1);
                 statistics.setSts(String.valueOf(num[1]));
@@ -333,7 +337,7 @@ public class TaskProcessingService {
             newStatistics.setSpecialStartTime(statistics.getSpecialStartTime());
             newStatistics.setSpecialEndTime(statistics.getSpecialEndTime());
             newStatistics.setSort(statistics.getSort() + 1);
-            Duration duration = Duration.between(statistics.getStartTime(),statistics.getEndTime());
+            Duration duration = Duration.between(statistics.getStartTime(), statistics.getEndTime());
             newStatistics.setHangDuration((int) duration.toHours());
             statisticsService.save(newStatistics);
         }
@@ -558,24 +562,24 @@ public class TaskProcessingService {
         return statistics;
     }
 
-    public int[] betWeenTime(LocalDateTime startTime, LocalDateTime endTime, String timeType, int timeLimit) {
+    public int[] betWeenTime(LocalDateTime startTime, LocalDateTime endTime, String timeType, int timeLimit, int hangDuation) {
         Duration between = Duration.between(startTime, endTime);
         long millis = between.toMillis();
         switch (timeType) {
             case KvConstant.TASK_DAY:
-                timeLimit = timeLimit * 24 * 60 * 60 * 1000;
+                timeLimit = (timeLimit * 24 * 60 * 60 * 1000) + hangDuation;
                 break;
             case KvConstant.TASK_HOUR:
-                timeLimit = timeLimit * 60 * 60 * 1000;
+                timeLimit = (timeLimit * 60 * 60 * 1000) + hangDuation;
                 break;
             case KvConstant.TASK_MINUTE:
-                timeLimit = timeLimit * 60 * 1000;
+                timeLimit = (timeLimit * 60 * 1000) + hangDuation;
                 break;
             case KvConstant.DAY:
-                timeLimit = timeLimit * 24 * 60 * 60 * 1000;
+                timeLimit = (timeLimit * 24 * 60 * 60 * 1000) + hangDuation;
                 break;
             case KvConstant.HOUR:
-                timeLimit = timeLimit * 60 * 60 * 1000;
+                timeLimit = (timeLimit * 60 * 60 * 1000) + hangDuation;
                 break;
             default:
                 throw new DataValidException("Read time out");
