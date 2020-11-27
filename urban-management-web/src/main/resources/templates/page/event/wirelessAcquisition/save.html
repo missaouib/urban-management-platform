@@ -894,32 +894,18 @@
     setPoint()
     function setPoint() {
         let point = new ol.Feature({
-            geometry: new ol.geom.Point([115.62, 41.74]),
+            geometry: new ol.geom.Point([115.68192, 41.66462]),
             data: {
                 // id: data,
                 // name: name,
                 // coordinate: x + "," + y
             }
         });
-        let picture = "../img/1.png";
-        // let imgSize = [100,100]
-        point.setStyle(new ol.style.Style({
-            image: new ol.style.Icon({
-                src: picture,
-                // imgSize:imgSize
-            })
-        }));
+
         layerMap.getSource().addFeature(point);
         point.setStyle(new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 10,
-                fill: new ol.style.Fill({
-                    color: '#ff0000'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#ff0000',
-                    width: 3
-                })
+            image: new ol.style.Icon({
+                src: '../img/dwpoint3.png'
             })
         }));
     }
