@@ -314,7 +314,6 @@
         let time = $("#time").val();
         var myChart1 = echarts.init(document.getElementById('region'));
         $.ajaxUtil.get("/statistics/findHotGrid?time="+time, function (e) {
-            console.log("e===",e)
             if (e.code === "0") {
                 let gridNameArray=[];
                 let totalInstArray=[];
@@ -325,9 +324,6 @@
                     totalInstArray.push(datas[i].totalInst);
                     totalCloseArray.push(datas[i].totalClose);
                 }
-                console.log(gridNameArray)
-                console.log(totalInstArray)
-                console.log(totalCloseArray)
                 var option2 = {
                     title: {
                         x: "left"
@@ -595,7 +591,6 @@
         });
         map.addLayer(layerMap);
         map.on("click", function(e) {
-            console.log(e.coordinate);
         });
     function timeQuery() {
         count();
@@ -610,7 +605,6 @@
     function count() {
         var timeType = $("#time").val()
         $.ajaxUtil.get(countUrl + "?timeType=" + timeType, function (e) {
-            console.log(e.data);
             $("#count").text(e.data.count);
             $("#close").text(e.data.close);
             $("#inst").text(e.data.inst);
