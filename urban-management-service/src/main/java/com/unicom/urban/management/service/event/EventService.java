@@ -195,7 +195,7 @@ public class EventService {
                 }
                 LocalDateTime startTime = statistics.getStartTime();
                 Integer timeLimit = eventVO.getTimeLimit();
-                String timeType = eventVO.getTimeType();
+                String timeType = StringUtils.isNotBlank(eventVO.getTimeType()) ? eventVO.getTimeType() : "";
                 switch (timeType) {
                     case "工作日":
                     case "天":
