@@ -180,11 +180,15 @@ public class EventService {
                 eventVO.setTaskName(statistics.getTaskName());
                 String format = simpleDateFormat.format(statistics.getStartTime());
                 eventVO.setStartTime(format);
-                if("专业部门".equals(statistics.getTaskName())){
+                int hangDurationHours = 0;
+                if("专业部门".equals(statistics.getTaskName())) {
                     int timeLimit = statistics.getDeptTimeLimit().getTimeLimit();
                     eventVO.setTimeLimit(timeLimit);
                     String timeType = statistics.getDeptTimeLimit().getTimeType().getValue();
                     eventVO.setTimeType(timeType);
+                    if (statistics.getHangDuration() != null) {
+                        hangDurationHours += statistics.getHangDuration();
+                    }
                 } else {
                     if (Optional.ofNullable(statistics.getProcessTimeLimit()).isPresent()) {
                         int timeLimit = statistics.getProcessTimeLimit().getTimeLimit();
@@ -199,14 +203,14 @@ public class EventService {
                 switch (timeType) {
                     case "工作日":
                     case "天":
-                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusDays(timeLimit)));
+                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusDays(timeLimit).plusHours(hangDurationHours)));
                         break;
                     case "工作时":
                     case "小时":
-                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusHours(timeLimit)));
+                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusHours(timeLimit).plusHours(hangDurationHours)));
                         break;
                     case "分钟":
-                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusMinutes(timeLimit)));
+                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusMinutes(timeLimit).plusHours(hangDurationHours)));
                         break;
                     default:
                         eventVO.setEndTimeStr("暂无");
