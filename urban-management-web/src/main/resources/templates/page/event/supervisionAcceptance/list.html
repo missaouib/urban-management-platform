@@ -1123,15 +1123,8 @@
         });
         layerMap.getSource().addFeature(point);
         point.setStyle(new ol.style.Style({
-            image: new ol.style.Circle({
-                radius: 10,
-                fill: new ol.style.Fill({
-                    color: '#ff0000'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: '#ff0000',
-                    width: 3
-                })
+            image: new ol.style.Icon({
+                src: '../img/dwpoint3.png'
             })
         }));
     }
