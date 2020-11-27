@@ -1805,10 +1805,10 @@ width: 50px;
 .select2{
     width: 100% !important;
 }
-#imageList{
-    width: 130px;
-    height: 130px;
-}
+/*#imageList{*/
+/*    width: 130px;*/
+/*    height: 130px;*/
+/*}*/
 #imageList img{
     width: 100%;height: 100%;
 }
@@ -1817,4 +1817,10 @@ width: 50px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+.innerPic{
+    margin-left: 5px;
+}
+.innerPic:nth-child(1){
+    margin-left: 0px!important;
 }

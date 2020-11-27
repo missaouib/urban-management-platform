@@ -836,7 +836,9 @@
                 $("#imageList").empty();
                 let imageHtml = "";
                 for (let i = 0; i < file.length; i++) {
-                    imageHtml += "<img class='img-rounded' src='" + showUrl + file[i].url + "'>";
+                    imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                        "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
+                        "</div>";
                 }
                 $("#imageList").html(imageHtml);
             }
