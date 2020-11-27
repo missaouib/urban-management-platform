@@ -10,6 +10,7 @@ import com.unicom.urban.management.pojo.vo.CellGridRegionVO;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.pojo.vo.StatisticsVO;
 import com.unicom.urban.management.service.grid.GridService;
+import com.unicom.urban.management.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,6 +44,8 @@ public class StatisticsService {
     private StatisticsRepository statisticsRepository;
     @Autowired
     private GridService gridService;
+    @Autowired
+    private UserService userService;
 
     public Statistics save(Statistics statistics) {
         return statisticsRepository.save(statistics);
@@ -131,14 +134,18 @@ public class StatisticsService {
         return eventIdList;
     }
 
-    public StatisticsVO findById(String statisticsId) {
+    public StatisticsVO findNotOperatById(String statisticsId) {
         Statistics statistics = statisticsRepository.findById(statisticsId).orElse(new Statistics());
         StatisticsVO statisticsVO = new StatisticsVO();
         statisticsVO.setOpinions(statistics.getOpinions());
-        if (statistics.getUser() != null) {
-            statisticsVO.setUserName(statistics.getUser().getName());
-            statisticsVO.setDeptName("");
-        }
+        //TODO 等OperateHumanName有值时再测试
+//        if (statistics.getUser() != null) {
+//            statisticsVO.setUserName(statistics.getOperateHumanName().getName() == null ? "" : statistics.getOperateHumanName().getName());
+//            if (statistics.getOperateHumanName().getId() != null) {
+//                String userId = statistics.getOperateHumanName().getId();
+//                statisticsVO.setDeptName(userService.findOne(userId).getDeptList().get(0).getDeptName());
+//            }
+//        }
         return statisticsVO;
     }
 
