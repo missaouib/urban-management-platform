@@ -27,6 +27,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -184,16 +185,34 @@ public class EventService {
                     eventVO.setTimeLimit(timeLimit);
                     String timeType = statistics.getDeptTimeLimit().getTimeType().getValue();
                     eventVO.setTimeType(timeType);
-                }else{
-                    if(Optional.ofNullable(statistics.getProcessTimeLimit()).isPresent()){
+                } else {
+                    if (Optional.ofNullable(statistics.getProcessTimeLimit()).isPresent()) {
                         int timeLimit = statistics.getProcessTimeLimit().getTimeLimit();
                         eventVO.setTimeLimit(timeLimit);
                         String timeType = statistics.getProcessTimeLimit().getTimeType().getValue();
                         eventVO.setTimeType(timeType);
                     }
-
                 }
-
+                LocalDateTime startTime = statistics.getStartTime();
+                Integer timeLimit = eventVO.getTimeLimit();
+                String timeType = eventVO.getTimeType();
+                switch (timeType) {
+                    case "工作日":
+                    case "天":
+                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusDays(timeLimit)));
+                        break;
+                    case "工作时":
+                    case "小时":
+                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusHours(timeLimit)));
+                        break;
+                    case "分钟":
+                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusMinutes(timeLimit)));
+                        break;
+                    default:
+                        eventVO.setEndTimeStr("暂无");
+                        break;
+                }
+                eventVO.setTimeLimitStr(timeLimit + timeType);
                 eventVO.setDeptName(Optional.ofNullable(statistics.getDisposeUnit()).map(Dept::getDeptName).orElse(""));
             } else {
                 /*如果事件步骤没有endTime为null的  证明事件已经完成 获取结束时间最近的那条步骤 附加到vo信息*/
@@ -209,7 +228,6 @@ public class EventService {
                     String format = simpleDateFormat.format(collect.get(0).getStartTime());
                     eventVO.setStartTime(format);
                 }
-
             }
             List<Statistics> notOperateCollect = e.getStatisticsList();
             for (Statistics s : notOperateCollect){

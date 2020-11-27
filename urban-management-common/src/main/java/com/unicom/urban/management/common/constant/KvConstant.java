@@ -58,6 +58,16 @@ public class KvConstant {
     public static final int COMPONENT_TYPE = 1;
 
     /**
+     * 案件完结
+     */
+    public static final String CLOS_ETESK = "69132147-bc3c-451d-9336-5117e9adc0d6";
+
+    /**
+     * 案件作废
+     */
+    public static final String TO_VOID = "c960242b-3760-405b-9cc2-8bc1e2b36a1f";
+
+    /**
      * 工作时
      */
     public static final String HOUR = "6452b029-fd8d-41c2-a2cc-f286978a4cb7";
@@ -66,14 +76,6 @@ public class KvConstant {
      * 工作天
      */
     public static final String DAY = "8dc4d702-c043-4c18-8f81-a4ad84767b98";
-
-    /**
-     * 案件完结
-     */
-    public static final String CLOS_ETESK = "69132147-bc3c-451d-9336-5117e9adc0d6";/**
-     * 案件作废
-     */
-    public static final String TO_VOID = "c960242b-3760-405b-9cc2-8bc1e2b36a1f";
 
     /**
      * 环节时限-天

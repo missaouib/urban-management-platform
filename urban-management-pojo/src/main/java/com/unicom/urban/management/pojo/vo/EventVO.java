@@ -1,12 +1,10 @@
 package com.unicom.urban.management.pojo.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.unicom.urban.management.pojo.entity.EventFile;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * 事件VO
@@ -95,5 +93,15 @@ public class EventVO {
      * 部门
      */
     private String deptName;
+
+    /**
+     * 列表新增列 时限 例 7工作日
+     */
+    private String timeLimitStr;
+
+    /**
+     * 列表新增列 应结束时间 开始时间+时限
+     */
+    private String endTimeStr;
 
 }
