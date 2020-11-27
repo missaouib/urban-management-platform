@@ -701,4 +701,10 @@ public class Statistics {
     @Column(nullable = false, columnDefinition = "tinyint default 0")
     private Integer closeInTimeOperate = 0;
 
+    /**
+     * 挂账时长
+     */
+    @Column(columnDefinition = "tinyint")
+    private Integer hangDuration;
+
 }
