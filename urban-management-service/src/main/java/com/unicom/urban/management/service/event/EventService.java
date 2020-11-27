@@ -690,4 +690,8 @@ public class EventService {
         }
         eventDTO.setEventFileList(eventFileList);
     }
+
+    public void saveVerification(Event event) {
+        eventRepository.saveAndFlush(event);
+    }
 }

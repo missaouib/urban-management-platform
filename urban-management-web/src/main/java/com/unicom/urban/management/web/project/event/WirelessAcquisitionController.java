@@ -327,8 +327,10 @@ public class WirelessAcquisitionController {
     @PostMapping("/completeByVerification")
     public Result completeByVerification(StatisticsDTO statisticsDTO) {
         String eventId = statisticsDTO.getEventId();
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList());
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
         statistics.setOpinions(statisticsDTO.getOpinions());
+        statistics.setEventFileList(eventFileList);
         statisticsService.update(statistics);
         eventService.completeByVerification(statisticsDTO.getEventId(), statisticsDTO.getButtonText());
         return Result.success();
@@ -342,7 +344,9 @@ public class WirelessAcquisitionController {
     public Result completeByInspect(StatisticsDTO statisticsDTO) {
         String eventId = statisticsDTO.getEventId();
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList());
         statistics.setOpinions(statisticsDTO.getOpinions());
+        statistics.setEventFileList(eventFileList);
         statisticsService.update(statistics);
         eventService.completeByInspect(statisticsDTO.getEventId(), statisticsDTO.getButtonText());
         return Result.success();
