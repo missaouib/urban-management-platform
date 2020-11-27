@@ -134,7 +134,7 @@ public class StatisticsService {
         return eventIdList;
     }
 
-    public StatisticsVO findNotOperatById(String statisticsId) {
+    public StatisticsVO findById(String statisticsId) {
         Statistics statistics = statisticsRepository.findById(statisticsId).orElse(new Statistics());
         StatisticsVO statisticsVO = new StatisticsVO();
         statisticsVO.setOpinions(statistics.getOpinions());
