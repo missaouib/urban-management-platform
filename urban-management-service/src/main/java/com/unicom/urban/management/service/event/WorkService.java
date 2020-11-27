@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.constant.KvConstant;
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.*;
@@ -272,7 +273,14 @@ public class WorkService {
         statistics.setToOperate(0);
         setOpinionsAndEventFileList(statistics, eventDTO.getRepresent(), eventDTO.getEventFileList());
         statisticsService.update(statistics);
-        List<String> userList = taskProcessingService.getUsers(KvConstant.SHIFT_LEADER_ROLE);
+        List<String> userList;
+        if ("17".equals(eventDTO.getButton())) {
+            userList = taskProcessingService.getUsers(KvConstant.DISPATCHER_ROLE);
+        } else if ("3".equals(eventDTO.getButton()) || "10".equals(eventDTO.getButton())) {
+            userList = taskProcessingService.getUsers(KvConstant.SHIFT_LEADER_ROLE);
+        } else {
+            throw new DataValidException("此处步骤不合理");
+        }
         activitiService.complete(statistics.getTaskId(), userList, eventDTO.getButton());
         Statistics statistics1 = this.initStatistics(eventDTO.getId(), statistics.getSort());
         if ("10".equals(eventDTO.getButton())) {
