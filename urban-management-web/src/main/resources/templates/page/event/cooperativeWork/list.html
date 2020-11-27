@@ -516,6 +516,27 @@
             $("#pictureBoxDuc").fadeIn(300)
         });
 
+        //惯用语
+        $("#alwaysSay").click(function () {
+            $("#wordSays").stop().fadeToggle(300)
+        });
+
+        $("#wordSays").on("click", ".idioms", function () {
+            let idioms = $(this).html()
+            $("#opinions").html(idioms);
+            $("#wordSays").fadeOut(300)
+        });
+
+        $("#alwaysSay_tag").click(function () {
+            $("#wordSays_tag").stop().fadeToggle(300)
+        });
+
+        $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
+            let idioms = $(this).html()
+            $("#textIdioms_tag").html(idioms);
+            $("#wordSays_tag").fadeOut(300)
+        });
+
         //全屏
         $("#fullScreen").click(function () {
             $("#allTiel").addClass("allTielFont");
@@ -568,8 +589,9 @@
 
 
     function zTreeOnClick(event, treeId, treeNode) {
-        $("#doorer").val(treeNode.name);
+        $("#doorer").val(treeNode.menuName);
         $(".closemodal").click();
+        $("#checkMain").slideUp(300)
     }
 
     setModelName()
@@ -606,7 +628,7 @@
         $("#deptDiv").empty();
         if($(obj).text() === "申请延时"){
             var deptStr = " <span class=\"sendText\" style='float: left;width: 73px'><i>*</i>申请时限</span>\n" +
-                "<input type='text' class='find_input' id='delayedTime' oninput=\"value=value.replace(/[^\\d]/g,'')\"/>";
+                "<input type='text' class='find_input' id='delayedTime' style='margin-right: 5px' oninput=\"value=value.replace(/[^\\d]/g,'')\"/>"+ "小时";
             $("#deptDiv").append(deptStr);
         }else if ("派遣" === $(obj).text()) {
             $.ajaxUtil.get(deptUrl, function (o) {
@@ -637,9 +659,40 @@
                 $("#doorer").val(deptName)
                 $("#dept").val(deptId)
 
-                $.ajaxUtil.get(componentTypeUrl, function (e) {
-                    var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
-                })
+                var settingss = {
+                    callback: {
+                        onClick: zTreeOnClick
+                    },
+                    data: {
+                        simpleData: {
+                            enable: true,  //true 、 false 分别表示 使用 、 不使用 简单数据模式
+                            idKey: "id",  //节点数据中保存唯一标识的属性名称
+                            pIdKey: "parentId",    //节点数据中保存其父节点唯一标识的属性名称
+                            rootPId: -1  //用于修正根节点父节点数据，即 pIdKey 指定的属性值
+                        },
+                        key: {
+                            name: "menuName"  //zTree 节点数据保存节点名称的属性名称  默认值："name"
+                        }
+                    },
+                    check:{
+                        // enable:true,  //true 、 false 分别表示 显示 、不显示 复选框或单选框
+                        nocheckInherit:true  //当父节点设置 nocheck = true 时，设置子节点是否自动继承 nocheck = true
+                    }
+                };
+
+                //数据
+                var zNodes = [
+                    //注意，数据中的 menuName 必须与 settingss 中key 中定义的name一致，否则找不到
+                    {menuName:"专业部门", open:false, children:[
+                            {menuName:"处理部门"}, {menuName:"执法部门"}, {menuName:"综合部门"}]}
+                ];
+
+                zTreeObj = $.fn.zTree.init($("#treeDemo"), settingss, zNodes); //初始化树
+                zTreeObj.expandAll(false);    //true 节点全部展开、false节点收缩
+
+                // $.ajaxUtil.get(componentTypeUrl, function (e) {
+                //     var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+                // })
             })
         }
         buttonId = $(obj).attr("id");

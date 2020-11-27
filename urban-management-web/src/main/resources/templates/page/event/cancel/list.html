@@ -487,6 +487,26 @@
         $(".banner").on("click", ".innerPic", function() {
             $("#pictureBoxDuc").fadeIn(300)
         });
+//惯用语
+        $("#alwaysSay").click(function () {
+            $("#wordSays").stop().fadeToggle(300)
+        });
+
+        $("#wordSays").on("click", ".idioms", function () {
+            let idioms = $(this).html()
+            $("#alwaysSay").html(idioms);
+            $("#wordSays").fadeOut(300)
+        });
+
+        $("#alwaysSay_tag").click(function () {
+            $("#wordSays_tag").stop().fadeToggle(300)
+        });
+
+        $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
+            let idioms = $(this).html()
+            $("#textIdioms_tag").html(idioms);
+            $("#wordSays_tag").fadeOut(300)
+        });
 
         //全屏
         $("#fullScreen").click(function() {

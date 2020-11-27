@@ -524,6 +524,27 @@
             $("#pictureBoxDuc").fadeIn(300)
         });
 
+        //惯用语
+        $("#alwaysSay").click(function () {
+            $("#wordSays").stop().fadeToggle(300)
+        });
+
+        $("#wordSays").on("click", ".idioms", function () {
+            let idioms = $(this).html()
+            $("#alwaysSay").html(idioms);
+            $("#wordSays").fadeOut(300)
+        });
+
+        $("#alwaysSay_tag").click(function () {
+            $("#wordSays_tag").stop().fadeToggle(300)
+        });
+
+        $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
+            let idioms = $(this).html()
+            $("#textIdioms_tag").html(idioms);
+            $("#wordSays_tag").fadeOut(300)
+        });
+
         //全屏
         $("#fullScreen").click(function() {
             $("#allTiel").addClass("allTielFont");
@@ -743,11 +764,7 @@
                         return page.pageSize * (page.pageNumber - 1) + index + 1;
                     }
                 },
-                {
-                    title: '时限',
-                    field: '',
-                    formatter:setTimeLimit
-                },
+
                 {
                     title: '案件编号',
                     field: 'eventCode'
