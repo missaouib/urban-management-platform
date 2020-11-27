@@ -333,6 +333,8 @@ public class TaskProcessingService {
             newStatistics.setSpecialStartTime(statistics.getSpecialStartTime());
             newStatistics.setSpecialEndTime(statistics.getSpecialEndTime());
             newStatistics.setSort(statistics.getSort() + 1);
+            Duration duration = Duration.between(statistics.getStartTime(),statistics.getEndTime());
+            newStatistics.setHangDuration((int) duration.toHours());
             statisticsService.save(newStatistics);
         }
     }
