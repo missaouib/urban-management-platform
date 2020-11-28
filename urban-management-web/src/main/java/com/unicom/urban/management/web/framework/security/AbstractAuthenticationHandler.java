@@ -43,11 +43,16 @@ public abstract class AbstractAuthenticationHandler {
         String os = userAgent.getOperatingSystem().getName();
         // 获取客户端浏览器
         String browser = userAgent.getBrowser().getName();
+        String ip = getIpAddress(request);
 
 
         LoginLog loginLog = new LoginLog();
         loginLog.setUsername(request.getParameter("username"));
-        loginLog.setIp(getIpAddress(request));
+        loginLog.setIp(ip);
+        // IPv6本地地址
+        if ("0:0:0:0:0:0:0:1".equals(ip)) {
+            loginLog.setIp("127.0.0.1");
+        }
         loginLog.setOs(os);
         loginLog.setBrowser(browser);
         loginLog.setMessage(message);
