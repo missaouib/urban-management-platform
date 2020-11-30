@@ -90,6 +90,17 @@ $(".leftContent").on("mouseover",".problem",function () {
 	$(".problem").attr("title",problemTitle);
 })
 
+
+/*
+* 点击黑屏 关闭
+* */
+$(".duck_box").click(function () {
+	$(".duck_duck").fadeOut(300)
+})
+$(".duk_box").click(function () {
+	$(".duk_duck").fadeOut(300)
+})
+
 /**
  * 步骤进行到哪一步
  * @param bgmNum
