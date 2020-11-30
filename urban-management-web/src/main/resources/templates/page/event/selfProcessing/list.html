@@ -1159,6 +1159,15 @@
                         "</div>";
                 }
                 $("#imageList").html(imageHtml);
+
+                $("#pictureList").empty();
+                let pictureList = "";
+                for (let i = 0; i < file.length; i++) {
+                    pictureList += "<div class=\"swiper-slide\">" +
+                        "<img style='width: 100%;height: 100%' src='" + showUrl + file[i].url + "'>" +
+                        "</div>"
+                }
+                $("#pictureList").html(pictureList);
             }
             /* 坐标 */
             setPoint(e.data.x, e.data.y);

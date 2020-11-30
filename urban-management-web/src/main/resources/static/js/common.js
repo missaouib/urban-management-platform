@@ -168,6 +168,14 @@ $("#fullScreen").click(function(e) {
 $("#exitfullScreen").click(function(e) {
 	e.stopPropagation()
 })
+
+$(".swiper-button-next").click(function (e) {
+	e.stopPropagation()
+})
+
+$(".swiper-button-prev").click(function (e) {
+	e.stopPropagation()
+})
 //退出全屏
 function exitFullscreen() {
 	var element = document.getElementById("content-wrapper");
