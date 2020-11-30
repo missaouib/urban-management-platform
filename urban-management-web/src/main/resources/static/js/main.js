@@ -6,7 +6,7 @@ $(function() {
         $(this).children(".other").addClass("otherActive").parent(".circle").siblings('.circle').children(".other").removeClass("otherActive");
         console.log($(this).children(".identification").val())
         if ($(this).children(".identification").val() == 1){
-            // $(".noFlat").css("display","block")
+            $(".noFlat").css("display","block")
             $(".test").eq($(this).index(".circle")).html(`暂无此权限`).siblings(".test").removeClass("testActive");
             $(".test").eq($(this).index(".circle")).css({"line-height":"99px"})
         }else {
