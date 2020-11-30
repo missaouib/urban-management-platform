@@ -103,6 +103,24 @@ $(".duk_box").click(function () {
 $(".duck_close").html("×");
 $(".duk_close").html("×")
 
+
+
+/*
+* 左树
+* */
+$(".showMenu").click(function () {
+	$(".main-sidebar").css("width","13.5%");
+	$(".content-wrapper").css("width","86.5%")
+	$(this).addClass("menuActive")
+	$(".hideMenu").removeClass("menuActive")
+})
+$(".hideMenu").click(function () {
+	$(".main-sidebar").css("width","0%");
+	$(".content-wrapper").css("width","100%")
+	$(this).addClass("menuActive")
+	$(".showMenu").removeClass("menuActive")
+})
+
 /**
  * 步骤进行到哪一步
  * @param bgmNum
