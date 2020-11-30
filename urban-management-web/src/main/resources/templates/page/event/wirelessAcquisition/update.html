@@ -66,7 +66,7 @@
                                 <td><span>*</span>处理时限</td>
                                 <td>
                                     <input th:name="timeLimitId" th:value="${eventOneVO.timeLimitId}" type="hidden" id="deptTImeLimitId"/>
-                                    <input type="text" id="deptTImeLimit" th:value="${eventOneVO.timeLimitStr}" name="timeLimitStr"  readonly/>
+                                    <input type="text" id="deptTImeLimit" th:value="${eventOneVO.timeLimitStr}" name="timeLimitStr"  required readonly/>
 
                                 </td>
                             </tr>
@@ -185,7 +185,7 @@
                             <div class="sendImg warpPictures">
                                 <div class="sendText"><span>音频:</span></div>
                                 <div><input id="musicInput" class="musicInput" type="file" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="musicUrlList" name="videoUrlList" />
+                                <input type="hidden" id="musicUrlList" name="musicUrlList" />
                                 <div class="warpPictureBox">
                                     <div id="musicList" >
                                         <div class="innerPic" style="float:left;">
@@ -208,7 +208,7 @@
                             <div class="sendImg warpPictures">
                                 <div class="sendText"><span>视频:</span></div>
                                 <div><input id="videoInputAfter" type="file" class="videoInput" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="videoUrlListAfter" name="imageUrlListAfter"/>
+                                <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter"/>
                                 <div id="videoListAfter" class="warpPictureBox">
                                     <div class="innerPic" style="float:left;">
                                     </div>
@@ -217,7 +217,7 @@
                             <div class="sendImg warpPictures">
                                 <div class="sendText"><span>音频:</span></div>
                                 <div><input id="musicInputAfter" type="file" class="musicInput" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="musicUrlListAfter" name="imageUrlListAfter"/>
+                                <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter"/>
                                 <div id="musicListAfter" class="warpPictureBox">
                                     <div class="innerPic" style="float:left;">
                                     </div>
