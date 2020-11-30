@@ -992,34 +992,22 @@
         $("#latitude").val(t[1])
         $.ajaxUtil.get(localReverseGeocoding + "?x=" + t[0] + "&y=" + t[1], function (e) {
             $("#location").val(e.data.mongo);
-        })
-    });
-    setPoint()
-
-    function setPoint() {
-        let point = new ol.Feature({
-            geometry: new ol.geom.Point([115.62, 41.74]),
-            data: {
-                // id: data,
-                // name: name,
-                // coordinate: x + "," + y
-            }
         });
-        let picture = "../img/1.png";
-        let imgSize = [100, 100]
-        point.setStyle(new ol.style.Style({
-            image: new ol.style.Icon({
-                src: picture,
-                // imgSize:imgSize
-            })
-        }));
+        layerMap.getSource().clear()
+        setPoint(evt.coordinate)
+    });
+
+    function setPoint(newPoint) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point(newPoint),
+            data: {}
+        });
         layerMap.getSource().addFeature(point);
         point.setStyle(new ol.style.Style({
             image: new ol.style.Icon({
                 src: '../img/dwpoint3.png'
             })
         }));
-
     }
 
 
