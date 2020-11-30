@@ -114,6 +114,22 @@ public class EventDTO {
      * 处置后图片
      */
     private List<String> imageUrlListAfter;
+    /**
+     * 视频集合
+     */
+    private List<String> videoUrlList;
+    /**
+     * 处置后音频
+     */
+    private List<String> videoUrlListAfter;
+    /**
+     * 音频集合
+     */
+    private List<String> musicUrlList;
+    /**
+     * 处置后音频
+     */
+    private List<String> musicUrlListAfter;
 
     /**
      * 不予受理 受理员

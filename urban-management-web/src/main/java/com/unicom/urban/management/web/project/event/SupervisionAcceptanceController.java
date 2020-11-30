@@ -266,7 +266,7 @@ public class SupervisionAcceptanceController {
      */
     @PostMapping("/completeByReceptionistWithSendVerification")
     public Result completeByReceptionistWithSendVerification(EventDTO eventDTO) {
-        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList());
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(),1);
         eventDTO.setEventFileList(eventFileList);
         switch (eventDTO.getButton()) {
             /*
@@ -322,7 +322,7 @@ public class SupervisionAcceptanceController {
      */
     @PostMapping("/completeBySelfProcessingAudit")
     public Result completeBySelfProcessingAudit(EventDTO eventDTO) {
-        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList());
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(),1);
         eventDTO.setEventFileList(eventFileList);
         switch (eventDTO.getButton()) {
             case "20":

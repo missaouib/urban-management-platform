@@ -54,10 +54,10 @@ public class StatisticsController {
     public String[] personInfo(){
         Map<String,Object>  personMap = statisticsService.findPersonInfo();
         String[] arr = new String[4];
-        arr[0] = personMap.get("roleName").toString();
-        arr[1] = personMap.get("takeCase").toString();
-        arr[2] = personMap.get("instCase").toString();
-        arr[3] = personMap.get("closeCase").toString();
+        arr[0] = personMap.get("roleName") == null ? "0" : personMap.get("roleName").toString();
+        arr[1] = personMap.get("takeCase") == null ? "0" : personMap.get("takeCase").toString();
+        arr[2] = personMap.get("instCase") == null ? "0" : personMap.get("instCase").toString();
+        arr[3] = personMap.get("closeCase") == null ? "0" :personMap.get("closeCase").toString();
         return arr;
     }
     /**

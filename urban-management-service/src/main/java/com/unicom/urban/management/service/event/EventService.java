@@ -15,6 +15,7 @@ import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -314,7 +315,7 @@ public class EventService {
         Petitioner saveP = petitionerService.save(petitioner);
         event.setPetitioner(saveP);
 
-        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList());
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(),1);
         event.setEventFileList(eventFileList);
 
         Event save = eventRepository.save(event);
@@ -661,52 +662,102 @@ public class EventService {
         workService.completeForClosingAndFiling(eventDTO);
     }
 
+    /**
+     * 附件上传
+     * @param eventDTO
+     */
     public void uploadFiles(EventDTO eventDTO) {
         List<EventFile> eventFileList = new ArrayList<>();
-        if (eventDTO.getId() != null) {
+        if (eventDTO.getId() != null) {/*修改*/
+
+            //处置前的图片上传
+            if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlList())) {
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(),1);
+                for (EventFile eventFile : fileList) {
+                    eventFileList.add(eventFile);
+                }
+            }
+            //处置前的视频上传
+            if (CollectionUtils.isNotEmpty(eventDTO.getVideoUrlList())) {
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(),2);
+                for (EventFile eventFile : fileList) {
+                    eventFileList.add(eventFile);
+                }
+            }
+            //处置前的视频上传
+            if (CollectionUtils.isNotEmpty(eventDTO.getMusicUrlList())) {
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(),3);
+                for (EventFile eventFile : fileList) {
+                    eventFileList.add(eventFile);
+                }
+            }
+            //处置后的图片上传
+            if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlListAfter())) {
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getImageUrlListAfter(), 1);
+                for (EventFile e : eventFileListAfter) {
+                    eventFileList.add(e);
+                }
+            }//处置后的视频上传
+            if (CollectionUtils.isNotEmpty(eventDTO.getVideoUrlListAfter())) {
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getVideoUrlListAfter(), 2);
+                for (EventFile e : eventFileListAfter) {
+                    eventFileList.add(e);
+                }
+            }//处置后的音频上传
+            if (CollectionUtils.isNotEmpty(eventDTO.getMusicUrlListAfter())) {
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getMusicUrlListAfter(), 3);
+                for (EventFile e : eventFileListAfter) {
+                    eventFileList.add(e);
+                }
+            }
             Event event = eventRepository.findById(eventDTO.getId()).orElse(new Event());
             List<EventFile> files = event.getEventFileList();
+            if (CollectionUtils.isNotEmpty(files)) {
+                for (EventFile e : files) {
+                    eventFileList.add(e);
+                }
+            }
+        }else {/*新增*/
             //处置前的图片上传
-            if (eventDTO.getImageUrlList() != null && eventDTO.getImageUrlList().size() > 0) {
-                eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList());
-            } else {
-                if (files.size() > 0) {
-                    for (EventFile e : files) {
-                        if (e.getManagement().getValue().equals("处置前")) {
-                            eventFileList.add(e);
-                        }
-                    }
+            if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlList())) {
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);
+                for (EventFile eventFile : fileList) {
+                    eventFileList.add(eventFile);
+                }
+            }
+            //处置前的视频上传
+            if (CollectionUtils.isNotEmpty(eventDTO.getVideoUrlList())) {
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(), 2);
+                for (EventFile eventFile : fileList) {
+                    eventFileList.add(eventFile);
+                }
+            }
+            //处置前的音频上传
+            if (CollectionUtils.isNotEmpty(eventDTO.getMusicUrlList())) {
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(), 3);
+                for (EventFile eventFile : fileList) {
+                    eventFileList.add(eventFile);
                 }
             }
             //处置后的图片上传
-            if (eventDTO.getImageUrlListAfter() != null && (eventDTO.getImageUrlListAfter().size() > 0)) {
-                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getImageUrlListAfter());
-                if (eventFileListAfter.size() > 0) {
-                    for (EventFile e : eventFileListAfter) {
-                        eventFileList.add(e);
-                    }
-                }
-            } else {
-                if (files.size() > 0) {
-                    for (EventFile e : files) {
-                        if (e.getManagement().getValue().equals("处置后")) {
-                            eventFileList.add(e);
-                        }
-                    }
+            if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlListAfter())) {
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getImageUrlListAfter(), 1);
+                for (EventFile e : eventFileListAfter) {
+                    eventFileList.add(e);
                 }
             }
-        }else {
-            //处置前的图片上传
-            if (eventDTO.getImageUrlList() != null && eventDTO.getImageUrlList().size() > 0) {
-                eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList());
+            //处置后的视频上传
+            if (CollectionUtils.isNotEmpty(eventDTO.getVideoUrlListAfter())) {
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getVideoUrlListAfter(), 2);
+                for (EventFile e : eventFileListAfter) {
+                    eventFileList.add(e);
+                }
             }
-            //处置后的图片上传
-            if (eventDTO.getImageUrlListAfter() != null && (eventDTO.getImageUrlListAfter().size() > 0)) {
-                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getImageUrlListAfter());
-                if (eventFileListAfter.size() > 0) {
-                    for (EventFile e : eventFileListAfter) {
-                        eventFileList.add(e);
-                    }
+            //处置后的音频上传
+            if (CollectionUtils.isNotEmpty(eventDTO.getMusicUrlListAfter())) {
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getMusicUrlListAfter(), 3);
+                for (EventFile e : eventFileListAfter) {
+                    eventFileList.add(e);
                 }
             }
         }

@@ -1,8 +1,10 @@
 package com.unicom.urban.management.service.eventfile;
 
+import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.dao.eventfile.EventFileRepository;
 import com.unicom.urban.management.pojo.entity.EventFile;
 import com.unicom.urban.management.service.kv.KVService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,16 +34,29 @@ public class EventFileService {
         return eventFileRepository.saveAll(eventFileList);
     }
 
-    public List<EventFile> joinEventFileListToObjet(List<String> imageUrlList) {
+    public List<EventFile> joinEventFileListToObjet(List<String> fileUrlList,Integer fileType) {
         /* todo 此处应该是图片集合 音频集合 视频集合的总和 目前只有图片 */
-        List<EventFile> eventFileList = new ArrayList<>(imageUrlList.size());
-        if (imageUrlList.size() > 0) {
-            for (String s : imageUrlList) {
+        List<EventFile> eventFileList = new ArrayList<>(fileUrlList.size());
+        if (CollectionUtils.isNotEmpty(fileUrlList)) {
+            for (String s : fileUrlList) {
                 EventFile eventFile = new EventFile();
                 eventFile.setFilePath(s);
                 eventFile.setFileName(s.contains("/") ? s.split("/")[s.split("/").length - 1] : "");
                 eventFile.setManagement(kvService.findByTableNameAndFieldNameAndValue("eventFile", "management", "处置前").get(0));
-                eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "图片").get(0));
+                switch (fileType){
+                    case 1:
+                        eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "图片").get(0));
+                        break;
+                    case 2:
+                        eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "视频").get(0));
+                        break;
+                    case 3:
+                        eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "音频").get(0));
+                        break;
+                    default:
+                        break;
+                }
+
                 eventFileList.add(eventFile);
             }
         }
@@ -49,16 +64,27 @@ public class EventFileService {
         /* todo 视频 */
         return this.saveAll(eventFileList);
     }
-    public List<EventFile> joinEventFileListToObjetAfter(List<String> imageUrlListAfter) {
+    public List<EventFile> joinEventFileListToObjetAfter(List<String> fileUrlListUrlListAfter,Integer fileType) {
         /* todo 此处应该是图片集合 音频集合 视频集合的总和 目前只有图片 */
-        List<EventFile> eventFileList = new ArrayList<>(imageUrlListAfter.size());
-        if (imageUrlListAfter.size() > 0) {
-            for (String s : imageUrlListAfter) {
+        List<EventFile> eventFileList = new ArrayList<>(fileUrlListUrlListAfter.size());
+        if (CollectionUtils.isNotEmpty(fileUrlListUrlListAfter)) {
+            for (String s : fileUrlListUrlListAfter) {
                 EventFile eventFile = new EventFile();
                 eventFile.setFilePath(s);
                 eventFile.setFileName(s.contains("/") ? s.split("/")[s.split("/").length - 1] : "");
                 eventFile.setManagement(kvService.findByTableNameAndFieldNameAndValue("eventFile", "management", "处置后").get(0));
-                eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "图片").get(0));
+                switch (fileType){
+                    case 1:
+                        eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "图片").get(0));
+                        break;
+                    case 2:
+                        eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "视频").get(0));
+                        break;
+                    case 3:
+                        eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "音频").get(0));
+                        break;
+                    default:
+                }
                 eventFileList.add(eventFile);
             }
         }

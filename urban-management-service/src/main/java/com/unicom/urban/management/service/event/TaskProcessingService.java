@@ -552,7 +552,7 @@ public class TaskProcessingService {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(statisticsDTO.getEventId());
 
         if (statisticsDTO.getImageUrlList() != null) {
-            List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList());
+            List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList(),1);
             statistics.setEventFileList(eventFileList);
         }
         statistics.setUser(SecurityUtil.getUser().castToUser());

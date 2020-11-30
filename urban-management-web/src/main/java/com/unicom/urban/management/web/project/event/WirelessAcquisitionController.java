@@ -16,19 +16,17 @@ import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
+import io.micrometer.core.instrument.util.StringUtils;
+import org.locationtech.jts.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 无线采集子系统
@@ -304,7 +302,10 @@ public class WirelessAcquisitionController {
      */
     @RequestMapping("/createEventCode")
     public Result createEventCode(String eventTypeId) {
-        return Result.success(eventService.createCode(eventTypeId));
+        if (StringUtils.isNotEmpty(eventTypeId)) {
+            return Result.success(eventService.createCode(eventTypeId));
+        }
+        return Result.success();
 
     }
 
@@ -327,7 +328,7 @@ public class WirelessAcquisitionController {
     @PostMapping("/completeByVerification")
     public Result completeByVerification(StatisticsDTO statisticsDTO) {
         String eventId = statisticsDTO.getEventId();
-        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList());
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList(),1);
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
         statistics.setOpinions(statisticsDTO.getOpinions());
         statistics.setEventFileList(eventFileList);
@@ -344,7 +345,7 @@ public class WirelessAcquisitionController {
     public Result completeByInspect(StatisticsDTO statisticsDTO) {
         String eventId = statisticsDTO.getEventId();
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList());
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList(),1);
         statistics.setOpinions(statisticsDTO.getOpinions());
         statistics.setEventFileList(eventFileList);
         statisticsService.update(statistics);
