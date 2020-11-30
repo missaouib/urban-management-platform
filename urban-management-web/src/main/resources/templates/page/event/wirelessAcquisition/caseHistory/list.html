@@ -526,16 +526,18 @@
         });
 
         //全屏
-        $("#fullScreen").click(function() {
+        $("#fullScreen").click(function(e) {
             $("#allTiel").addClass("allTielFont");
             $("#exitfullScreen").css("display", "block");
             $(this).css("display", "none")
+            e.stopPropagation()
         });
 
-        $("#exitfullScreen").click(function() {
+        $("#exitfullScreen").click(function(e) {
             $("#allTiel").removeClass("allTielFont");
             $(this).css("display", "none");
             $("#fullScreen").css("display", "block");
+            e.stopPropagation()
         })
         var r = 0;
         $(".xiala").click(function() {
@@ -790,9 +792,10 @@
         $("#wordSays_tag").fadeOut(300)
     });
     //附件详情弹出
-    $(".duck_title span").click(function () {
+    $(".duck_title span").click(function (e) {
         $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
         $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
+        e.stopPropagation()
     });
 
     $(".duck_close").click(function () {

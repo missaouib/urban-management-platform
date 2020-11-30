@@ -53,7 +53,7 @@ a:hover,a:active,a:focus{outline:none;text-decoration:none;color:#72afd2}
 .main-header .logo,.main-header .navbar{width:100%;float:none}
 .main-header .navbar{margin:0}
 .main-header .navbar-custom-menu{float:right}}@media (max-width:991px){.navbar-collapse.pull-left{float:none !important}
-.navbar-collapse.pull-left+.navbar-custom-menu{display:block;position:absolute;top:0;right:40px}}.main-sidebar,.left-side{position:absolute;top:0;left:0;padding-top:50px;min-height:100%;width:230px;z-index:810;-webkit-transition:-webkit-transform .3s ease-in-out,width .3s ease-in-out;-moz-transition:-moz-transform .3s ease-in-out,width .3s ease-in-out;-o-transition:-o-transform .3s ease-in-out,width .3s ease-in-out;transition:transform .3s ease-in-out,width .3s ease-in-out}
+.navbar-collapse.pull-left+.navbar-custom-menu{display:block;position:absolute;top:0;right:40px}}.main-sidebar,.left-side{position:absolute;top:0;left:0;padding-top:50px;min-height:100%;z-index:810;-webkit-transition:-webkit-transform .3s ease-in-out,width .3s ease-in-out;-moz-transition:-moz-transform .3s ease-in-out,width .3s ease-in-out;-o-transition:-o-transform .3s ease-in-out,width .3s ease-in-out;transition:transform .3s ease-in-out,width .3s ease-in-out}
 @media (max-width:767px){.main-sidebar,.left-side{padding-top:100px}}@media (max-width:767px){.main-sidebar,.left-side{-webkit-transform:translate(-230px, 0);-ms-transform:translate(-230px, 0);-o-transform:translate(-230px, 0);transform:translate(-230px, 0)}}@media (min-width:768px){.sidebar-collapse .main-sidebar,.sidebar-collapse .left-side{-webkit-transform:translate(-230px, 0);-ms-transform:translate(-230px, 0);-o-transform:translate(-230px, 0);transform:translate(-230px, 0)}}@media (max-width:767px){.sidebar-open .main-sidebar,.sidebar-open .left-side{-webkit-transform:translate(0, 0);-ms-transform:translate(0, 0);-o-transform:translate(0, 0);transform:translate(0, 0)}}.sidebar{padding-bottom:10px}
 .sidebar-form input:focus{border-color: transparent;}
 .sidebar-form .input-group-btn {font-size:14px;}
@@ -110,15 +110,19 @@ a:hover,a:active,a:focus{outline:none;text-decoration:none;color:#72afd2}
 @media (max-width:991px){.navbar-nav>.user-menu>.dropdown-menu>.user-footer .btn-default:hover{background-color:#f9f9f9}}.navbar-nav>.user-menu .user-image{float:left;width:25px;height:25px;border-radius:50%;margin-right:10px;margin-top:-2px}
 @media (max-width:767px){.navbar-nav>.user-menu .user-image{float:none;margin-right:0;margin-top:-8px;line-height:10px}}.open:not(.dropup)>.animated-dropdown-menu{backface-visibility:visible !important;-webkit-animation:flipInX .7s both;-o-animation:flipInX .7s both;animation:flipInX .7s both}
 
-.content-wrapper {margin-left: 230px;}
+.content-wrapper {
+    width: 86.5%;
+    float: right;
+    transition: all 0.3s;
+}
 .content-wrapper .content-tabs{position:relative;height:41px;line-height:39.5px;background:#fafafa;border-bottom:solid 2px #222d32;font-size:12px;}
 .content-wrapper .content-tabs .roll-nav,.page-tabs-list{position:absolute;width:40px;height:39.5px;text-align:center;color:#475059;z-index:2;top:0}
-.content-wrapper .content-tabs .roll-left{left:0;border-right:solid 1px #ddd}
+.content-wrapper .content-tabs .roll-left{left:40px;border-right:solid 1px #ddd}
 .content-wrapper .content-tabs .roll-right{right:0;border-left:solid 1px #ddd}
 .content-wrapper .content-tabs button{background:#fff;border:0;height:39px;line-height:39px;width:40px;outline:0}
 .content-wrapper .content-tabs button:hover{background:#fafafa}
 .content-wrapper .content-tabs button i{color: #999;}
-.content-wrapper .content-tabs nav.page-tabs{margin-left:40px;width:100000px;height:40px;overflow:hidden}
+.content-wrapper .content-tabs nav.page-tabs{margin-left:80px;width:100000px;height:40px;overflow:hidden}
 .content-wrapper .content-tabs nav.page-tabs .page-tabs-content{float:left}
 .content-wrapper .content-tabs .page-tabs a{color:#1C60F7!important;display:block;float:left;border-right:solid 0px #ddd;padding:0 15px;padding-right:8px;text-decoration:none;color:#475059;}
 .content-wrapper .content-tabs .page-tabs a:first-child{padding-right:15px;}
@@ -476,4 +480,14 @@ font-size: 20px;
 }
 .treeview a{
     font-size: 15px!important;
+}
+.main-sidebar{
+    width: 13.5%;
+}
+.menuLeftContral{
+    left: 0!important;
+}
+
+.menuActive{
+    display: none;
 }

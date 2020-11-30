@@ -90,6 +90,37 @@ $(".leftContent").on("mouseover",".problem",function () {
 	$(".problem").attr("title",problemTitle);
 })
 
+
+/*
+* 点击黑屏 关闭
+* */
+$(".duck_box").click(function () {
+	$(".duck_duck").fadeOut(300)
+})
+$(".duk_box").click(function () {
+	$(".duk_duck").fadeOut(300)
+})
+$(".duck_close").html("×");
+$(".duk_close").html("×")
+
+
+
+/*
+* 左树
+* */
+$(".showMenu").click(function () {
+	$(".main-sidebar").css("width","13.5%");
+	$(".content-wrapper").css("width","86.5%")
+	$(this).addClass("menuActive")
+	$(".hideMenu").removeClass("menuActive")
+})
+$(".hideMenu").click(function () {
+	$(".main-sidebar").css("width","0%");
+	$(".content-wrapper").css("width","100%")
+	$(this).addClass("menuActive")
+	$(".showMenu").removeClass("menuActive")
+})
+
 /**
  * 步骤进行到哪一步
  * @param bgmNum
@@ -129,7 +160,22 @@ function fullScreen() {
 		element.webkitRequestFullscreen();
 	}
 }
+//全屏
+$("#fullScreen").click(function(e) {
+	e.stopPropagation()
+});
 
+$("#exitfullScreen").click(function(e) {
+	e.stopPropagation()
+})
+
+$(".swiper-button-next").click(function (e) {
+	e.stopPropagation()
+})
+
+$(".swiper-button-prev").click(function (e) {
+	e.stopPropagation()
+})
 //退出全屏
 function exitFullscreen() {
 	var element = document.getElementById("content-wrapper");

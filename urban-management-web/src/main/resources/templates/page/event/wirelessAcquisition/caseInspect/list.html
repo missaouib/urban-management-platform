@@ -500,9 +500,10 @@
             $("#wordSays_tag").fadeOut(300)
         });
         //附件详情弹出
-        $(".duck_title span").click(function () {
+        $(".duck_title span").click(function (e) {
             $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
             $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
+            e.stopPropagation()
         });
 
         $(".duck_close").click(function () {
@@ -1043,6 +1044,15 @@
                             "</div>";
                     }
                     $("#imageList").html(imageHtml);
+
+                    $("#pictureList").empty();
+                    let pictureList = "";
+                    for (let i = 0; i < file.length; i++) {
+                        pictureList += "<div class=\"swiper-slide\">" +
+                            "<img style='width: 100%;height: 100%' src='" + showUrl + file[i].url + "'>" +
+                            "</div>"
+                    }
+                    $("#pictureList").html(pictureList);
                 }
                 /*流程图*/
                 $("#eventImg").attr('src', img + e.data.processInstanceId);
