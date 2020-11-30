@@ -526,16 +526,18 @@
         });
 
         //全屏
-        $("#fullScreen").click(function() {
+        $("#fullScreen").click(function(e) {
             $("#allTiel").addClass("allTielFont");
             $("#exitfullScreen").css("display", "block");
             $(this).css("display", "none")
+            e.stopPropagation()
         });
 
-        $("#exitfullScreen").click(function() {
+        $("#exitfullScreen").click(function(e) {
             $("#allTiel").removeClass("allTielFont");
             $(this).css("display", "none");
             $("#fullScreen").css("display", "block");
+            e.stopPropagation()
         })
         var r = 0;
         $(".xiala").click(function() {

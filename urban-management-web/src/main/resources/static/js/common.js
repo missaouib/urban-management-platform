@@ -160,7 +160,14 @@ function fullScreen() {
 		element.webkitRequestFullscreen();
 	}
 }
+//全屏
+$("#fullScreen").click(function(e) {
+	e.stopPropagation()
+});
 
+$("#exitfullScreen").click(function(e) {
+	e.stopPropagation()
+})
 //退出全屏
 function exitFullscreen() {
 	var element = document.getElementById("content-wrapper");
