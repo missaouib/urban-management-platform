@@ -691,6 +691,7 @@
 
     let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
+    let showUrl = [[${@fastProperties.nginxUrl}]];
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
     let searchUrl = /*[[@{/event/supervisionAcceptanceList}]]*/ "/event/supervisionAcceptanceList";
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
@@ -949,10 +950,23 @@
             $("#recTypeStr").val(e.data.recTypeStr);
             /*流程图*/
             $("#eventImg").attr('src', img + e.data.processInstanceId);
+            /* 附件图片回显 */
+            /*$("#imageList").attr('src', showUrl + e.data.processInstanceId); <img class="img-rounded" src="">*/
+            let file = e.data.file;
+            console.log("data", e.data);
+            console.log("file", file);
+            if (file.length > 0) {
+                $("#imageList").empty();
+                let imageHtml = "";
+                for (let i = 0; i < file.length; i++) {
+                    imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                        "<img class='img-rounded' src='" + showUrl + file[i].url + "'>" +
+                        "</div>";
+                }
+                $("#imageList").html(imageHtml);
+            }
             /* 坐标 */
             setPoint(e.data.x, e.data.y);
-
-            setPolygon();
         });
     }
 
