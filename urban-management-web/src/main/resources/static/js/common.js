@@ -100,6 +100,8 @@ $(".duck_box").click(function () {
 $(".duk_box").click(function () {
 	$(".duk_duck").fadeOut(300)
 })
+$(".duck_close").html("×");
+$(".duk_close").html("×")
 
 /**
  * 步骤进行到哪一步

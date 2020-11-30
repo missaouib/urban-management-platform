@@ -475,9 +475,10 @@
         $(".ol-full-screen-false").html("全屏")
 
         //附件详情弹出
-        $(".duck_title span").click(function () {
+        $(".duck_title span").click(function (event) {
             $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
             $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
+            event.stopPropagation();
         });
 
         $(".duck_close").click(function () {

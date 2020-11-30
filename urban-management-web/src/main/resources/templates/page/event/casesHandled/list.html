@@ -438,9 +438,10 @@
         })
 
         //附件详情弹出
-        $(".duck_title span").click(function () {
+        $(".duck_title span").click(function (e) {
             $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
             $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
+            e.stopPropagation()
         });
 
         $(".duck_close").click(function () {
