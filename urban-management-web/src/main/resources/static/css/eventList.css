@@ -214,3 +214,14 @@
     background-color: rgba(0, 60, 136, .5) !important;
     border: none!important;
 }
+#videoList .innerPic{
+    width: 200px!important;
+    max-height: 180px!important;
+}
+#videoList .innerPic video{
+    width: 100%;
+    height: 100%;
+}
+.warpPictureBox{
+    padding-left: 0px!important;
+}
