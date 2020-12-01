@@ -369,5 +369,14 @@ public class WirelessAcquisitionController {
 
     }
 
+    /**
+     * 获取地图上的位置坐标
+     * @return
+     */
+    @GetMapping("getPoint")
+    public Result getShowPoint(String eventId){
+        EventVO vo = eventService.getShowPoint(eventId);
+        return Result.success(vo);
+    }
 
 }

@@ -767,4 +767,10 @@ public class EventService {
     public void saveVerification(Event event) {
         eventRepository.saveAndFlush(event);
     }
+
+    public EventVO getShowPoint(String eventId) {
+        Event event = this.findOne(eventId);
+        EventVO eventVO = EventMapper.INSTANCE.eventToEventVO(event);
+        return eventVO;
+    }
 }

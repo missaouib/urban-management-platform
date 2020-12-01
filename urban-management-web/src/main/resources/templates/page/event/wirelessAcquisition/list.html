@@ -196,7 +196,7 @@
             sortOrder: "desc",
             modalName: "案件",
             onClickRow: function (row,index) {
-                setPoint(115.68129236309053,41.66355248081208)
+                setPoint(row.id)
             },
             columns: [
                 {
@@ -284,21 +284,26 @@
 
 
 
-    function setPoint(x, y) {
-        let point = new ol.Feature({
-            geometry: new ol.geom.Point([x, y]),
-            data: {
-                // id: data,
-                // name: name,
-                coordinate: x + "," + y
-            }
+    function setPoint(eventId) {
+        let getPointUrl = /*[[@{/event/getPoint}]]*/ "/event/getPoint";
+        $.ajaxUtil.get(getPointUrl+"?eventId="+eventId, function (e) {
+            let x = e.data.x;
+            let y = e.data.y;
+            let point = new ol.Feature({
+                geometry: new ol.geom.Point([x, y]),
+                data: {
+                    // id: data,
+                    // name: name,
+                    coordinate: x + "," + y
+                }
+            });
+            layerMap.getSource().addFeature(point);
+            point.setStyle(new ol.style.Style({
+                image: new ol.style.Icon({
+                    src: '../img/dwpoint3.png'
+                })
+            }));
         });
-        layerMap.getSource().addFeature(point);
-        point.setStyle(new ol.style.Style({
-            image: new ol.style.Icon({
-                src: '../img/dwpoint3.png'
-            })
-        }));
     }
 
 </script>
