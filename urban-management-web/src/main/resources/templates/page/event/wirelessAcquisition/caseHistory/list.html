@@ -258,8 +258,7 @@
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
                                     <div>
-                                        <!--                                        <input class="videoInput" type="file" name="file" multiple="multiple">-->
-                                        <div class="innerPic">
+                                        <div id="videoList" class="innerPic">
                                             无
                                         </div>
                                     </div>
@@ -267,19 +266,39 @@
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
                                     <div>
-                                        <!--                                        <input class="musicInput" type="file" name="file" multiple="multiple">-->
-                                        <div class="innerPic">
+                                        <div id="musicList" class="innerPic">
                                             无
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
-
+                            <div class="send" id="after" style="display:none;">
+                                <div><span>处置后</span></div>
+                                <div class="sendImg warpPictures">
+                                    <div class="sendText"><span>图片:</span></div>
+                                    <div id="imageListAfter" class="warpPictureBox">
+                                        <div class="innerPic" style="float:left;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="sendImg warpPictures">
+                                    <div class="sendText"><span>视频:</span></div>
+                                    <div id="videoListAfter" class="warpPictureBox">
+                                        <div class="innerPic" style="float:left;">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="sendImg warpPictures">
+                                    <div class="sendText"><span>音频:</span></div>
+                                    <div id="musicListAfter" class="warpPictureBox">
+                                        <div class="innerPic" style="float:left;">
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-
+                    </div>
                 </form>
             </div>
             <div class="banner">
@@ -290,6 +309,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         <div class="banner">
             <div class="conduct">
                 <div class="rootBox">
@@ -341,9 +361,7 @@
                 </div>
             </div>
         </div>
-
         <div class="banner"><img id="eventImg"></div>
-        </div>
     </div>
     <!--    附件详情弹出的窗口-->
     <div class="duck_duck">
@@ -361,8 +379,7 @@
                 <div class="duck_info">
                     <div class="info_chance blockActive">
                         <div class="swiper-container sw1">
-                            <div class="swiper-wrapper" id="modelImageList">
-                            </div>
+                            <div class="swiper-wrapper" id="modelImageList">                            </div>
                             <!-- Add Pagination -->
                             <div class="swiper-pagination pg1"></div>
                             <!-- Add Arrows -->
@@ -371,9 +388,11 @@
                         </div>
                     </div>
                     <div class="info_chance">视频
-                        <video style="width: 100%;height: 100%"></video>
+                        <div class="swiper-wrapper" id="modelVideoList">
+                        </div>
                     </div>
                     <div class="info_chance">音频</div>
+                    <div class="swiper-wrapper" id="modelMsuicList"></div>
                 </div>
             </div>
         </div>
@@ -809,13 +828,29 @@
         let value = $.parseJSON(data.value);
         if (value.length > 0) {
             $("#modelImageList").empty();
+            $("#modelVideoList").empty();
+            $("#modelMusicList").empty();
             let imageHtml = "";
-            for (let i = 0; i < value.length; i++) {
-                imageHtml += "<div class=\"swiper-slide\">" +
-                    "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>" +
-                    "</div>"
+            let videoHtml = "";
+            let musicHtml = "";
+            for (let i = 0; i < file.length; i++) {
+                if (file[i].type=== '图片'){
+                    imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                        "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
+                        "</div>";
+                } else if (file[i].type=== '视频') {
+                    videoHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                        "<video controls src='" + showUrl + file[i].url + "'>" +
+                        "</div>";
+                } else if (file[i].type=== '音频') {
+                    musicHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                        "<audio controls src='" + showUrl + file[i].url + "'>" +
+                        "</div>";
+                }
             }
             $("#modelImageList").html(imageHtml);
+            $("#modelVideoList").html(videoHtml);
+            $("#modelMusicList").html(musicHtml);
         }
     }
     function getEventDetail(eventId) {
@@ -847,14 +882,58 @@
             if (file.length > 0) {
                 let showUrl = [[${@fastProperties.nginxUrl}]];
                 $("#imageList").empty();
+                $("#videoList").empty();
+                $("#musicList").empty();
+                $("#imageListAfter").empty();
+                $("#videoListAfter").empty();
+                $("#musicListAfter").empty();
                 let imageHtml = "";
+                let videoHtml = "";
+                let musicHtml = "";
+                let imageHtmlAfter = "";
+                let videoHtmlAfter = "";
+                let musicHtmlAfter = "";
                 for (let i = 0; i < file.length; i++) {
-                    imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
-                                    "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
-                                    "</div>";
+                    console.log("filei",file[i])
+                    if (file[i].management ==="处置前"){
+                        if (file[i].type=== '图片'){
+                            imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                                "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
+                                "</div>";
+                        } else if (file[i].type=== '视频') {
+                            videoHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                                "<video controls src='" + showUrl + file[i].url + "'>" +
+                                "</div>";
+                        } else if (file[i].type=== '音频') {
+                            musicHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                                "<audio controls src='" + showUrl + file[i].url + "'>" +
+                                "</div>";
+                        }
+                    }else {
+                        $("#after").css("display","block");
+                        if (file[i].type=== '图片'){
+                            imageHtmlAfter += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                                "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
+                                "</div>";
+                        } else if (file[i].type=== '视频') {
+                            videoHtmlAfter += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                                "<video controls src='" + showUrl + file[i].url + "'>" +
+                                "</div>";
+                        } else if (file[i].type=== '音频') {
+                            musicHtmlAfter += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                                "<audio controls src='" + showUrl + file[i].url + "'>" +
+                                "</div>";
+                        }
+                    }
                 }
                 $("#imageList").html(imageHtml);
+                $("#videoList").html(videoHtml);
+                $("#musicList").html(musicHtml);
+                $("#imageListAfter").html(imageHtmlAfter);
+                $("#videoListAfter").html(videoHtmlAfter);
+                $("#musicListAfter").html(musicHtmlAfter);
             }
+
             /*流程图*/
             $("#eventImg").attr('src', img + e.data.processInstanceId);
             /* 坐标 */
