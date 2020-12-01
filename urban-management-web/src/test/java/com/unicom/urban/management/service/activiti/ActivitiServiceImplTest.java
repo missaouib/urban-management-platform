@@ -118,7 +118,7 @@ public class ActivitiServiceImplTest {
      */
     @Test
     public void queryMyTask() {
-        List<String> taskList = activitiService.queryTaskByAssignee("1");
+        List<String> taskList = activitiService.queryTask("1");
     }
 
     /**

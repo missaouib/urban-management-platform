@@ -138,21 +138,21 @@ public class ActivitiServiceImpl implements ActivitiService {
         return taskService.createTaskQuery().taskId(taskId).singleResult();
     }
 
+//    @Override
+//    public List<String> queryTaskByAssignee(String userId, Pageable pageable) {
+//        long startTime = System.currentTimeMillis();
+//        List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).listPage(pageable.getPageNumber(), pageable.getPageSize());
+//
+//        List<String> eventIdList = queryTask(taskList);
+//        log.debug("----------------------activiti查询花费时间: {}ms--------------------------------------", System.currentTimeMillis() - startTime);
+//        return eventIdList;
+//
+//    }
+
     @Override
-    public List<String> queryTaskByAssignee(String userId, Pageable pageable) {
+    public List<String> queryTask(String userId) {
         long startTime = System.currentTimeMillis();
-        List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).listPage(pageable.getPageNumber(), pageable.getPageSize());
-
-        List<String> eventIdList = queryTask(taskList);
-        log.debug("----------------------activiti查询花费时间: {}ms--------------------------------------", System.currentTimeMillis() - startTime);
-        return eventIdList;
-
-    }
-
-    @Override
-    public List<String> queryTaskByAssignee(String userId) {
-        long startTime = System.currentTimeMillis();
-        List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).list();
+        List<Task> taskList = taskService.createTaskQuery().taskCandidateOrAssigned(userId).list();
         List<String> eventIdList = queryTask(taskList);
         log.debug("----------------------activiti查询花费时间: {}ms--------------------------------------", System.currentTimeMillis() - startTime);
         return eventIdList;
