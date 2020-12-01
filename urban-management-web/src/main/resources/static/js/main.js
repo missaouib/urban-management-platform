@@ -2,6 +2,7 @@ $(function() {
     $(".circle").click(function() {
         $(this).addClass("active").siblings(".circle").removeClass("active");
         $(".test").eq($(this).index(".circle")).addClass("testActive").siblings(".test").removeClass("testActive");
+        $(".intoBtn").eq($(this).index(".circle")).addClass("testActive").siblings(".intoBtn").removeClass("testActive");
         $(".work").eq($(this).index(".circle")).addClass("workActive").siblings(".work").removeClass("workActive");
         $(this).children(".other").addClass("otherActive").parent(".circle").siblings('.circle').children(".other").removeClass("otherActive");
         console.log($(this).children(".identification").val())
@@ -17,7 +18,7 @@ $(function() {
     $(".quit").click(function () {
         window.location.href = logoutUrl;
     })
-    $(".intoBtn").click(function () {
+    $(".temporary").click(function () {
         window.location.href = indexUrl;
     })
     window.onload = function () {
