@@ -195,6 +195,9 @@
             sortName: "updateTime",
             sortOrder: "desc",
             modalName: "案件",
+            onClickRow: function (row,index) {
+                setPoint(115.68129236309053,41.66355248081208)
+            },
             columns: [
                 {
                     field: 'index',
@@ -240,8 +243,6 @@
         $.table.init(options);
     }
 
-
-    var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
     // 沽源地图
     var center = [115.68192, 41.66462];
     var projection = new ol.proj.Projection({
@@ -280,6 +281,26 @@
         source: new ol.source.Vector(),
     });
     map.addLayer(layerMap);
+
+
+
+    function setPoint(x, y) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                // id: data,
+                // name: name,
+                coordinate: x + "," + y
+            }
+        });
+        layerMap.getSource().addFeature(point);
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                src: '../img/dwpoint3.png'
+            })
+        }));
+    }
+
 </script>
 </body>
 </html>
