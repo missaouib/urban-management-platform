@@ -671,9 +671,6 @@
             theme: 'fa',
             uploadUrl: uploadUrl,
             uploadAsync: false,                                       //关闭异步上传，改为同步上传。
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
             allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
             maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
@@ -726,9 +723,7 @@
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
+            uploadAsync: false, //关闭异步上传，改为同步上传。
             allowedFileExtensions: ['avi','mov','rmvb','rm','flv','mp4','3gp','','asf'],       // 接收的文件后缀
             maxFileCount: 2,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
@@ -740,9 +735,19 @@
             dropZoneEnabled: false,                             // 是否显示拖拽区域
             // browseClass: "btn btn-primary",                     // 按钮样式
 
+        }).on('change', function (event) {
+            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
+        }).on('fileselect', function (event, numFiles, label) {
+            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
+        }).on("filebatchselected", function (event, files) {
+            $(this).fileinput("upload");
+        }).on("fileuploaded", function (event, data) {
+
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            console.log("musicdataAfter",data)
             if (data.response.code === web_status.SUCCESS) {
+                console.log(data.response.data);
                 let videoUrlList = data.response.data.url;
                 $("#videoUrlList").val(videoUrlList);
                 $.modal.alertSuccess('上传成功');
@@ -772,9 +777,7 @@
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
             allowedFileExtensions: ['mp3','mpeg','wma','acc','m4a'],       // 接收的文件后缀
             maxFileCount: 2,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
@@ -830,9 +833,6 @@
             theme: 'fa',
             uploadUrl: uploadUrl,
             uploadAsync: false,                                       //关闭异步上传，改为同步上传。
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
             allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
             maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
@@ -842,8 +842,6 @@
             showUpload: false,                                  // 是否显示上传按钮
             showRemove: true,                                   // 显示移除按钮
             dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
         }).on('change', function (event) {
             console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
         }).on('fileselect', function (event, numFiles, label) {
@@ -885,9 +883,7 @@
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
             allowedFileExtensions: ['avi','mov','rmvb','rm','flv','mp4','3gp','','asf'],       // 接收的文件后缀
             maxFileCount: 2,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
@@ -940,9 +936,7 @@
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
             allowedFileExtensions: ['mp3','mpeg','wma','acc','m4a'],       // 接收的文件后缀
             maxFileCount: 2,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
