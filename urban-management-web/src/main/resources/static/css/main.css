@@ -60,6 +60,7 @@ body {
     font-family: Microsoft YaHei;
     font-weight: bold;
     color: #FFFFFF;
+    display: none;
 }
 .robot{
     width: 57px;
@@ -382,4 +383,8 @@ img {
 .active .inner2,
 .active .inner3{
     margin-top: 10px;
+}
+.intoBtn a{
+    text-decoration: none!important;
+    color: white!important;
 }
