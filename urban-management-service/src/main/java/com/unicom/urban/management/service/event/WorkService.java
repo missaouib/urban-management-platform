@@ -46,7 +46,7 @@ public class WorkService {
     private DeptTimeLimitService deptTimeLimitService;
 
     public List<String> queryTaskByAssignee() {
-        return activitiService.queryTaskByAssignee(SecurityUtil.getUserId());
+        return activitiService.queryTask(SecurityUtil.getUserId());
     }
 
     public List<String> queryTaskByAssigneeAndTaskName(List<String> taskName) {
