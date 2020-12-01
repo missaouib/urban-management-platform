@@ -678,6 +678,7 @@
             modalName: "用户",
             onClickRow: function (row,index) {
                 layerMap.getSource().clear()
+                $("#after").css("display","none");
                 getTimeAxis(row.id);
                 getEventDetail(row.id);
                 getNodeName(row.id);
