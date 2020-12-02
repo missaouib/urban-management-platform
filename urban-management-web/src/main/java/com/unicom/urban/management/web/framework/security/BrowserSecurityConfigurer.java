@@ -4,7 +4,6 @@ package com.unicom.urban.management.web.framework.security;
 import com.unicom.urban.management.web.framework.security.xss.XssFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,9 +37,6 @@ public class BrowserSecurityConfigurer extends SecurityConfigurerAdapter<Default
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired
-    private StringRedisTemplate redisTemplate;
-
     @Override
     public void configure(HttpSecurity http) {
         UsernamePasswordCaptchaAuthenticationFilter usernamePasswordCaptchaAuthenticationFilter = new UsernamePasswordCaptchaAuthenticationFilter();
@@ -57,7 +53,6 @@ public class BrowserSecurityConfigurer extends SecurityConfigurerAdapter<Default
         UserDetailsAuthenticationProvider authenticationProvider = new UserDetailsAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder);
-        authenticationProvider.setRedisTemplate(redisTemplate);
         return authenticationProvider;
     }
 
