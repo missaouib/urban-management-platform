@@ -6,9 +6,9 @@ import com.unicom.urban.management.common.constant.CaptchaConstant;
 import com.unicom.urban.management.common.exception.authentication.BadCaptchaException;
 import com.unicom.urban.management.common.exception.authentication.CaptchaExpiredException;
 import com.unicom.urban.management.common.util.RSAUtil;
-import com.unicom.urban.management.web.framework.security.captcha.Captcha;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -18,10 +18,6 @@ import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author liukai
@@ -35,6 +31,9 @@ public class UserDetailsAuthenticationProvider implements AuthenticationProvider
 
     @Setter
     private PasswordEncoder passwordEncoder;
+
+    @Setter
+    private StringRedisTemplate redisTemplate;
 
     private final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
@@ -110,17 +109,14 @@ public class UserDetailsAuthenticationProvider implements AuthenticationProvider
      * 校验验证码
      */
     private void checkCaptcha(Authentication authentication) {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-
-        String captcha = ((UsernamePasswordCaptchaAuthenticationToken) authentication).getCaptcha();
-
-        Captcha captchaInSession = (Captcha) request.getSession().getAttribute(CaptchaConstant.CAPTCHA_SESSION_KEY);
-
-        if (captchaInSession == null || captchaInSession.isExpired()) {
+        String codeFromRequest = ((UsernamePasswordCaptchaAuthenticationToken) authentication).getCaptcha();
+        String codeInRedis = redisTemplate.opsForValue().get(CaptchaConstant.CAPTCHA_SESSION_KEY);
+        redisTemplate.delete(CaptchaConstant.CAPTCHA_SESSION_KEY);
+        if (codeInRedis == null) {
             throw new CaptchaExpiredException("验证码已经过期");
         }
 
-        if (!captcha.equalsIgnoreCase(captchaInSession.getCode())) {
+        if (!codeFromRequest.equalsIgnoreCase(codeInRedis)) {
             throw new BadCaptchaException("验证码错误");
         }
 

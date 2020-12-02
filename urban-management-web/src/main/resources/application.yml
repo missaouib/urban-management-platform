@@ -43,6 +43,13 @@ spring:
       max-file-size: 30MB
       # 设置总上传的文件大小
       max-request-size: 40MB
+  redis:
+    database: 0
+    host: 192.168.23.107
+    port: 31085
+    password: testing
+  session:
+    store-type: redis
 
 fdfs:
   nginx-url: http://192.168.24.203:8090/
