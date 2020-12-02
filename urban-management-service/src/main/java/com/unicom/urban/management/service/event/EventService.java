@@ -118,6 +118,17 @@ public class EventService {
                 list.add(in);
             }
 
+            if (StringUtils.isNotBlank(eventDTO.getUserId())) {
+                /* 查询当前登陆人所拥有的任务 */
+                CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
+                List<String> type = activitiService.queryTask(eventDTO.getUserId());
+                if (type.size() == 0) {
+                    type = Collections.singletonList("");
+                }
+                type.forEach(in::value);
+                list.add(in);
+            }
+
             if (StringUtils.isNotBlank(eventDTO.getMe())) {
                 List<String> eventIdByMe = statisticsService.getEventIdByMe();
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));

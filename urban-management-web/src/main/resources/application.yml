@@ -1,3 +1,8 @@
+server:
+  servlet:
+    session:
+      cookie:
+        name: urban_management_platform_session_id
 spring:
   application:
     name: 城市综合管理服务平台
