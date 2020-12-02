@@ -21,16 +21,12 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "            g.grid_name as gridOnwer, \n" +
             "            #监督员上报数：监督员巡查上报的部件和事件问题数\n" +
             "            sum(patrol_report) as patrolReport,\n" +
-            "            #监督员有效上报数：监督员上报数中，经监督中心审核立案的案件数\n" +
-            "            sum(valid_patrol_report) as validPatrolReport,\n" +
-            "            #监督员有效上报率：监督员有效上报数/监督员上报数×100%。\n" +
-            "            (sum(valid_patrol_report)/sum(report)) as reportVaildNumRate,\n" +
             "            #按时核实数：监督员在规定的工作时限内完成核实的问题数。\n" +
             "            sum(in_time_verify) as inTimeVerify,\n" +
             "            #应核实数：监督举报数中，应核实的部件和事件问题数\n" +
             "            sum(need_verify) as needVerify, \n" +
             "            #按时核实率：按时核实数/应核实数×100%\n" +
-            "            (sum(in_time_verify)/sum(need_verify)) as inTimeVerifyRate,\n" +
+            "            IFNULL((sum(in_time_verify)/sum(need_verify)),0) as inTimeVerifyRate,\n" +
             "            #按时核查数：监督员在规定的工作时限内完成核查并回复的次数\n" +
             "            sum(in_time_check) as inTimeCheck,\n" +
             "            #漏报数：经确认的监督员应上报而未上报的问题数\n" +
@@ -38,9 +34,8 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "            #立案数：经审核后符合立案条件，确定立案并应派遣给专业部门处置的案件数\n" +
             "            (sum(st.verify)+sum(st.patrol_report))as inst,\n" +
             "            #漏报率：漏报数/立案数×100%\n" +
-            "            (sum(st.verify)/(sum(st.verify)+sum(st.patrol_report))) as publicReportRate,\n" +
-            "            #综合指标值=监督员有效上报率分值×40%+漏报率分值×20%+按时核实率分值×20%+按时核查率分值×20%\n" +
-            "            ((sum(valid_patrol_report)*100*0.4+(1-(sum(public_report)/sum(inst)))*100*0.2+(sum(in_time_verify)/sum(need_verify))*100*0.2)+ (sum(in_time_check)/sum(need_send_check))*100*0.2) as aggregativeIndicator\n" +
+            "            IFNULL((sum(st.verify)/(sum(st.verify)+sum(st.patrol_report))),0) as publicReportRate,\n" +
+            "            sum(need_send_check) as needSendCheck \n" +
             "            from grid g,statistics st,`event` ev,sys_user su where  \n" +
             "            (su.id=st.report_patrol_name_id or su.id=st.check_patrol_id or su.id=st.verify_patrol_name_id) and\n" +
             "            g.id=ev.grid_id and ev.id=st.event_id  and ev.create_time between ?1 and ?2 GROUP BY su.`name`,g.id \n", nativeQuery = true)
@@ -111,4 +106,13 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             " (sum(to_dispatch)*0.2+(sum(in_time_dispatch)/sum(need_dispatch))*100*0.4+(sum(need_dispatch)-ifnull(sum(rework),0))/sum(need_dispatch)*100*0.4) as aggregativeIndicator\n" +
             "from  statistics st,sys_user su,`event` ev where dispatch is not null and st.dispatch_human_name_id=su.id and st.event_id=ev.id and ev.create_time between ?1 and ?2 GROUP BY su.name", nativeQuery = true)
     List<Map<String, Object>> findDispatcherEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
+
+    /**
+     * 查询监督员有效上报数
+     * @param startTime
+     * @param endTime
+     * @return
+     */
+    @Query(value ="select su.`name` as userName,g.grid_name as gridName,sum(st.valid_patrol_report)  as validPatrolReport FROM statistics st,`event` ev,grid g ,sys_user su WHERE st.event_id=ev.id and ev.grid_id=g.id and st.valid_patrol_report=1 and ev.user_id=su.id GROUP BY ev.user_id,g.id",nativeQuery = true)
+    List<Map<String, Object>> findValidPatrolReportByCondition(LocalDateTime startTime, LocalDateTime endTime);
 }

@@ -40,15 +40,36 @@ public class PositionService {
         LocalDateTime startTime = getTimeForBetween(time1, time2).get("startTime");
         LocalDateTime endTime = getTimeForBetween(time1, time2).get("endTime");
         List<Map<String, Object>> mapList = positionRepository.findSupervisorEvaluateByCondition(startTime, endTime);
+        List<Map<String, Object>> validPatrolReportList = positionRepository.findValidPatrolReportByCondition(startTime,endTime);
         List<SupervisorEvaluateVO> list = new ArrayList<>();
         if (mapList != null && mapList.size() > 0) {
             for (Map<String, Object> map : mapList) {
                 SupervisorEvaluateVO sVO = new SupervisorEvaluateVO();
                 sVO.setSupervisorName(map.get("supervisorName").toString());
-                sVO.setGridOnwer(map.get("gridOnwer") == null ? "" : (map.get("gridOnwer").toString()));
                 sVO.setPatrolReport(map.get("patrolReport") == null ? 0 : (Integer.parseInt(map.get("patrolReport").toString())));
-                sVO.setValidPatrolReport(map.get("validPatrolReport") == null ? 0 : (Integer.parseInt(map.get("validPatrolReport").toString())));
-                sVO.setReportVaildNumRate(map.get("reportVaildNumRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("reportVaildNumRate").toString())* 100).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
+                sVO.setGridOnwer(map.get("gridOnwer") == null ? "" : (map.get("gridOnwer").toString()));
+                //监督员有效上报数
+                Integer validPatrolReport=0;
+                String SupervisorName = sVO.getSupervisorName();
+                String gridOnwer =sVO.getGridOnwer();
+                for (Map<String, Object> stringObjectMap : validPatrolReportList) {
+                    String userName = stringObjectMap.get("userName").toString();
+                    String gridName = stringObjectMap.get("gridName").toString();
+                    if (SupervisorName.equals(userName) && gridOnwer.equals(gridName)){
+                        validPatrolReport = Integer.parseInt(stringObjectMap.get("validPatrolReport").toString());
+                    }
+                }
+
+                if (validPatrolReport == 0){
+                    sVO.setValidPatrolReport(validPatrolReport);
+                    sVO.setReportVaildNumRate("0.0%");
+                }else {
+                    sVO.setValidPatrolReport(validPatrolReport);
+                    //监督员有效上报率：监督员有效上报数/监督员上报数×100%。
+                    BigDecimal temp = new BigDecimal(validPatrolReport).divide(new BigDecimal(sVO.getPatrolReport()),2,BigDecimal.ROUND_HALF_DOWN);
+                    sVO.setReportVaildNumRate(temp.doubleValue()*100 + "%");
+                }
+
                 sVO.setIntimeVerify(map.get("intimeVerify") == null ? 0 : (Integer.parseInt(map.get("intimeVerify").toString())));
                 sVO.setNeedVerify(map.get("needVerify") == null ? 0 : (Integer.parseInt(map.get("needVerify").toString())));
                 sVO.setInTimeVerifyRate(map.get("inTimeVerifyRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("inTimeVerifyRate").toString()) * 100).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
@@ -56,8 +77,17 @@ public class PositionService {
                 sVO.setPublicReport(map.get("publicReport") == null ? 0 : (Integer.parseInt(map.get("publicReport").toString())));
                 sVO.setInst(map.get("inst") == null ? 0 : Integer.parseInt(map.get("inst").toString()) );
                 sVO.setPublicReportRate(map.get("publicReportRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("publicReportRate").toString())* 100).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue()) ) + "%");
-                sVO.setAggregativeIndicator(map.get("aggregativeIndicator") == null ? "0" : (int)((Float.parseFloat(map.get("aggregativeIndicator").toString())) * 100) + "");
-                sVO.setRatingLevel(getRatingLevel(Integer.parseInt(sVO.getAggregativeIndicator())));
+                //综合指标值=监督员有效上报率分值×40%+漏报率分值×20%+按时核实率分值×20%+按时核查率分值×20%
+                double validPatrolReportRate = sVO.getValidPatrolReport()*100*0.4;
+                double publicReportRate = Float.parseFloat((map.get("publicReportRate") == null ? 0 :map.get("publicReportRate")).toString())*100*0.2;
+                double inTimeVerifyRate = Float.parseFloat((map.get("inTimeVerifyRate") == null ? 0 : map.get("inTimeVerifyRate")).toString())*100*0.2;
+                double checkRate = 0;
+                if (!"0".equals(map.get("needSendCheck").toString())){
+                    checkRate = new BigDecimal(sVO.getInTimeCheck()).divide(new BigDecimal(Float.parseFloat(map.get("needSendCheck").toString())), 2, BigDecimal.ROUND_HALF_DOWN).doubleValue() * 100 * 0.2;
+                }
+                Double aggregativeIndicator =  validPatrolReportRate+publicReportRate+inTimeVerifyRate+ checkRate;
+                sVO.setAggregativeIndicator(String.valueOf(aggregativeIndicator.intValue()));
+                sVO.setRatingLevel(getRatingLevel(aggregativeIndicator.intValue()));
                 list.add(sVO);
             }
         }
