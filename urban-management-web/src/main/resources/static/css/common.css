@@ -1851,3 +1851,9 @@ label.error {
     background: #7086c4;
     color: white;
 }
+.bee{
+   padding: 0.2rem 0.75rem!important;
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
