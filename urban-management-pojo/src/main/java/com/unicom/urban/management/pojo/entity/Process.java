@@ -39,5 +39,10 @@ public class Process extends BaseEntity {
     @JoinColumn(name = "parent_id")
     private Process parent;
 
+    /**
+     * 为首页进行对应待办跳转
+     */
+    private String url;
+
 
 }
