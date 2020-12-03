@@ -1847,3 +1847,7 @@ label.error {
     padding-left: 87px;margin-top: 10px;
     overflow: hidden;
 }
+.tabTitle span:hover{
+    background: #7086c4;
+    color: white;
+}

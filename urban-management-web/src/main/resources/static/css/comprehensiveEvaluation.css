@@ -140,18 +140,26 @@ body {
 .controls div {
     width: 30px;
     height: 30px;
-    background: url("../img/start.png");
-    background-size: 100% 100%;
     cursor: pointer;
 }
+.animationStart{
+    background: url("../img/start.png");
+    background-size: 100% 100%;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;left: 0;
+    margin: 0!important;
+    z-index: 3;
+}
 
-.controls div:nth-child(2) {
+.controls .stop {
     margin: 0 10px;
     background: url("../img/stop.png");
     background-size: 100% 100%;
 }
 
-.controls div:nth-child(3) {
+.controls .write {
     background: url("../img/wait.png");
     background-size: 100% 100%;
 }
@@ -247,4 +255,21 @@ body {
     position: absolute;
     top: -26px;
     right: -46px;
+}
+.start{
+    position: relative;
+
+}
+.rameloss{
+    width: 100%!important;
+    height: 100%!important;
+    background-color: rgba(0,0,0,0.5) !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 8;
+    border-radius: 50%;
+}
+.noneActive{
+    display: none;
 }
