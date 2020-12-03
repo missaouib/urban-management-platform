@@ -414,7 +414,9 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row, index) {
-                console.log("点击事件")
+                console.log(row.url)
+                layerMap.getSource().clear()
+                checkRow(row.id);
             },
             columns: [
                 {
