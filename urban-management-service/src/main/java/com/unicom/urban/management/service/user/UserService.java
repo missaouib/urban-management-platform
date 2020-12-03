@@ -39,7 +39,7 @@ public class UserService {
     private PasswordService passwordService;
 
     public Page<UserVO> search(UserDTO userDTO, Pageable pageable) {
-        Page<User> page = userRepository.findAll((Specification<User>) (root, query, criteriaBuilder) -> {
+        Specification<User> specification = (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
             if (StringUtils.isNotEmpty(userDTO.getName())) {
                 list.add(criteriaBuilder.equal(root.get("name").as(String.class), userDTO.getName()));
@@ -47,10 +47,10 @@ public class UserService {
             if (StringUtils.isNotEmpty(userDTO.getUsername())) {
                 list.add(criteriaBuilder.equal(root.get("username").as(String.class), userDTO.getUsername()));
             }
-
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
-        }, pageable);
+        };
+        Page<User> page = userRepository.findAll(specification, pageable);
 
         List<UserVO> userVOList = UserMapper.INSTANCE.userListToUserVOList(page.getContent());
 
