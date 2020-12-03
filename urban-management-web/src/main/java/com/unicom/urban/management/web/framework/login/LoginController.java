@@ -1,4 +1,4 @@
-package com.unicom.urban.management.web.framework.logininfo.web;
+package com.unicom.urban.management.web.framework.login;
 
 import cn.hutool.captcha.ICaptcha;
 import com.unicom.urban.management.common.constant.CaptchaConstant;
