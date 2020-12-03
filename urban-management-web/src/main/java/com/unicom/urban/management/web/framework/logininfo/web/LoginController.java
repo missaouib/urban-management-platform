@@ -1,9 +1,9 @@
 package com.unicom.urban.management.web.framework.logininfo.web;
 
+import cn.hutool.captcha.ICaptcha;
 import com.unicom.urban.management.common.constant.CaptchaConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.util.RSAUtil;
-import com.unicom.urban.management.web.framework.security.captcha.Captcha;
 import com.unicom.urban.management.web.framework.security.captcha.CaptchaGenerator;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -46,12 +45,11 @@ public class LoginController {
         return !(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken);
     }
 
-    @GetMapping("/captcha.jpeg")
+    @GetMapping(value = "/captcha.jpeg", produces = MediaType.IMAGE_JPEG_VALUE)
     public void getCaptcha(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Captcha captcha = CaptchaGenerator.generate(CaptchaConstant.CAPTCHA_LENGTH, CaptchaConstant.CAPTCHA_EXPIRE_TIME);
+        ICaptcha captcha = CaptchaGenerator.generate(200, 100, CaptchaConstant.CAPTCHA_LENGTH, CaptchaConstant.CAPTCHA_EXPIRE_TIME);
         request.getSession().setAttribute(CaptchaConstant.CAPTCHA_SESSION_KEY, captcha);
-        response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-        ImageIO.write(captcha.getBufferedImage(), "JPEG", response.getOutputStream());
+        captcha.write(response.getOutputStream());
     }
 
 
