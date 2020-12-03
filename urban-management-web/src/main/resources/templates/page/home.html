@@ -415,7 +415,8 @@
             modalName: "用户",
             onClickRow: function (row, index) {
                 console.log(row.url)
-                layerMap.getSource().clear()
+                //跳转
+                // window.location.href = row.url
                 checkRow(row.id);
             },
             columns: [
