@@ -61,5 +61,9 @@ public class ProcessService {
         return index;
     }
 
+    public List<Process> findAll(){
+        return processRepository.findAll();
+    }
+
 
 }

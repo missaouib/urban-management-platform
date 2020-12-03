@@ -8,12 +8,14 @@ import com.unicom.urban.management.mapper.EventConditionMapper;
 import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.*;
+import com.unicom.urban.management.pojo.entity.Process;
 import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.kv.KVService;
+import com.unicom.urban.management.service.process.ProcessService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -62,6 +64,9 @@ public class EventService {
     private KVService kvService;
     @Autowired
     private EventFileService eventFileService;
+
+    @Autowired
+    private ProcessService processService;
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
@@ -244,6 +249,11 @@ public class EventService {
                     String format = simpleDateFormat.format(collect.get(0).getStartTime());
                     eventVO.setStartTime(format);
                 }
+            }
+            List<Process> processes = processService.findAll();
+            List<String> urls = processes.stream().filter(p -> eventVO.getTaskName().equals(p.getNodeName())).map(Process::getUrl).collect(Collectors.toList());
+            if(urls.size()>0){
+                eventVO.setUrl(urls.get(0));
             }
             List<Statistics> notOperateCollect = e.getStatisticsList();
             for (Statistics s : notOperateCollect){

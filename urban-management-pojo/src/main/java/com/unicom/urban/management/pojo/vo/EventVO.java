@@ -104,4 +104,7 @@ public class EventVO {
      */
     private String endTimeStr;
 
+
+    private String url;
+
 }
