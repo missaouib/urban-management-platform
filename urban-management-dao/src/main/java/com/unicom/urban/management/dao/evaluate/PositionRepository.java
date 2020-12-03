@@ -113,6 +113,6 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
      * @param endTime
      * @return
      */
-    @Query(value ="select su.`name` as userName,g.grid_name as gridName,sum(st.valid_patrol_report)  as validPatrolReport FROM statistics st,`event` ev,grid g ,sys_user su WHERE st.event_id=ev.id and ev.grid_id=g.id and st.valid_patrol_report=1 and ev.user_id=su.id GROUP BY ev.user_id,g.id",nativeQuery = true)
+    @Query(value ="select su.`name` as userName,g.grid_name as gridName,sum(st.valid_patrol_report)  as validPatrolReport FROM statistics st,`event` ev,grid g ,sys_user su WHERE st.event_id=ev.id and ev.grid_id=g.id and st.valid_patrol_report=1 and ev.user_id=su.id and ev.create_time between ?1 and ?2 GROUP BY ev.user_id,g.id",nativeQuery = true)
     List<Map<String, Object>> findValidPatrolReportByCondition(LocalDateTime startTime, LocalDateTime endTime);
 }
