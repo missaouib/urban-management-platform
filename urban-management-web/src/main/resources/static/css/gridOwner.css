@@ -292,7 +292,11 @@ body {
 	background: url("../img/selectballdown.png");
 	background-size: 100% 100%;
 }
-
+.silodMenu{
+	display: none;
+	width: 100%;
+	background-color: #024B83;
+}
 .peopleMation {
 	width: 100%;
 	display: flex;
