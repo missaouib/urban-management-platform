@@ -414,10 +414,11 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row, index) {
-                console.log(row.url)
+                console.log(row,index)
                 //跳转
-                window.location.href = row.url
-                checkRow(row.id);
+                window.parent.$.learuntab.myAddTab('代办事件', row.url, 'data_id')
+                // window.location.href = row.url
+                // checkRow(row.id);
             },
             columns: [
                 {
