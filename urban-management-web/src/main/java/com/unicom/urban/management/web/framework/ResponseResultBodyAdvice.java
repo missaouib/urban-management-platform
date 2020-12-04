@@ -67,17 +67,12 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @ExceptionHandler(RuntimeException.class)
     public Object runtimeException(RuntimeException exception, HttpServletRequest request, HttpServletResponse response) {
-        if (isAjax(request)) {
-            log.error("系统发生异常", exception);
+        log.error("系统发生异常", exception);
+        if (isAjaxRequest(request)) {
             return Result.fail("500", ExceptionUtils.getStackTrace(exception));
         }
         return new ModelAndView(SystemConstant.PAGE + "/error/500");
     }
-
-    private boolean isAjax(HttpServletRequest request) {
-        return false;
-    }
-
 
     /**
      * 系统业务异常
@@ -106,5 +101,50 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
         return Result.fail("400", e.getMessage());
     }
 
+
+    public static boolean isAjaxRequest(HttpServletRequest request) {
+        String accept = request.getHeader("accept");
+        if (accept != null && accept.indexOf("application/json") != -1) {
+            return true;
+        }
+
+        String xRequestedWith = request.getHeader("X-Requested-With");
+        if (xRequestedWith != null && xRequestedWith.indexOf("XMLHttpRequest") != -1) {
+            return true;
+        }
+
+        String uri = request.getRequestURI();
+        if (inStringIgnoreCase(uri, ".json", ".xml")) {
+            return true;
+        }
+
+        String ajax = request.getParameter("__ajax");
+        if (inStringIgnoreCase(ajax, "json", "xml")) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 是否包含字符串
+     *
+     * @param str  验证字符串
+     * @param strs 字符串组
+     * @return 包含返回true
+     */
+    public static boolean inStringIgnoreCase(String str, String... strs) {
+        if (str != null && strs != null) {
+            for (String s : strs) {
+                if (str.equalsIgnoreCase(trim(s))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static String trim(String str) {
+        return (str == null ? "" : str.trim());
+    }
 
 }
