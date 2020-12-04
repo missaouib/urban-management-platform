@@ -82,5 +82,10 @@ public class UserController {
         userService.changePassword(changePasswordDTO);
     }
 
+    @GetMapping("/user_error")
+    public ModelAndView userError() {
+        throw new RuntimeException();
+    }
+
 
 }

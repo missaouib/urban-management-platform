@@ -1,6 +1,7 @@
 package com.unicom.urban.management.web.framework;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.pojo.Result;
@@ -15,8 +16,11 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.annotation.Annotation;
 
 /**
@@ -62,9 +66,16 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
      * 运行时异常
      */
     @ExceptionHandler(RuntimeException.class)
-    public Result runtimeException(RuntimeException exception) {
-        log.error("系统发生异常", exception);
-        return Result.fail("500", ExceptionUtils.getStackTrace(exception));
+    public Object runtimeException(RuntimeException exception, HttpServletRequest request, HttpServletResponse response) {
+        if (isAjax(request)) {
+            log.error("系统发生异常", exception);
+            return Result.fail("500", ExceptionUtils.getStackTrace(exception));
+        }
+        return new ModelAndView(SystemConstant.PAGE + "/error/500");
+    }
+
+    private boolean isAjax(HttpServletRequest request) {
+        return false;
     }
 
 
