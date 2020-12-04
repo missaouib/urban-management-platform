@@ -250,10 +250,12 @@ public class EventService {
                     eventVO.setStartTime(format);
                 }
             }
-            List<Process> processes = processService.findAll();
-            List<String> urls = processes.stream().filter(p -> eventVO.getTaskName().equals(p.getNodeName())).map(Process::getUrl).collect(Collectors.toList());
-            if(urls.size()>0){
-                eventVO.setUrl(urls.get(0));
+            if (eventVO.getTaskName() != null) {
+                List<Process> processes = processService.findAll();
+                List<String> urls = processes.stream().filter(p -> eventVO.getTaskName().equals(p.getNodeName())).map(Process::getUrl).collect(Collectors.toList());
+                if (urls.size() > 0) {
+                    eventVO.setUrl(urls.get(0));
+                }
             }
             List<Statistics> notOperateCollect = e.getStatisticsList();
             for (Statistics s : notOperateCollect){
