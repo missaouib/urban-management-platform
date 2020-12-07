@@ -225,3 +225,18 @@
 .warpPictureBox{
     padding-left: 0px!important;
 }
+.treesmenu{
+    display: flex;
+    justify-content: space-between;
+}
+.treesmenu .menusTree{
+    width: 33.3%;
+    height: 100%;
+}
+.treesTitle{
+    width: 100%;height: 60px;
+    line-height: 60px;
+    font-size: 18px;
+    font-weight: 500;
+    padding-left: 10px;
+}
