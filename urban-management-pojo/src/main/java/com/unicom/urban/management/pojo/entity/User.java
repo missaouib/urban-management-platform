@@ -8,6 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -48,13 +49,28 @@ public class User extends BaseEntity {
      * 手机号码
      */
     @Column(nullable = false, columnDefinition = "char(11)")
-    private String mobileNumber;
+    private String phone;
+
+    private String officePhone;
 
     /**
      * 邮箱
      */
     @Column(columnDefinition = "varchar(50)")
-    private String mail;
+    private String email;
+
+    @Column(columnDefinition = "char(1)")
+    private String sex;
+
+    /**
+     * 职务
+     */
+    private String post;
+
+    /**
+     * 出生日期
+     */
+    private LocalDate birth;
 
     /**
      * 头像图片URL
@@ -67,9 +83,9 @@ public class User extends BaseEntity {
     private List<Role> roleList;
 
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_dept", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "dept_id"))
-    private List<Dept> deptList;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dept_id")
+    private Dept dept;
 
 
     @ManyToMany(fetch = FetchType.LAZY)

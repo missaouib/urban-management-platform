@@ -80,7 +80,7 @@ public class UserService {
         User user = new User();
         user.setName(userDTO.getName());
         user.setUsername(userDTO.getUsername());
-        user.setMobileNumber(userDTO.getMobileNumber());
+        user.setPhone(userDTO.getMobileNumber());
         user.setProfilePhotoUrl("http://www.baidu.com/");
 //        user.setDept(dept);
         initPassword(user);
@@ -95,7 +95,7 @@ public class UserService {
 
         userFormDatabase.setName(user.getName());
 
-        userFormDatabase.setMobileNumber(user.getMobileNumber());
+        userFormDatabase.setPhone(user.getPhone());
 
         userRepository.save(userFormDatabase);
 

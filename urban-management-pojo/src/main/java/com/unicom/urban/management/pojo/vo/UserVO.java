@@ -14,7 +14,7 @@ public class UserVO {
 
     private String username;
 
-    private String mobileNumber;
+    private String phone;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
