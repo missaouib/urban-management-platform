@@ -19,6 +19,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
         <!--        <dependency>-->
         <!--            <groupId>cn.unicom.hlj.snr.firebird</groupId>-->
         <!--            <artifactId>firebirds-pinions-web-aop-starter</artifactId>-->

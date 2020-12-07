@@ -1,4 +1,4 @@
-package com.unicom.urban.management.dao.logininfo;
+package com.unicom.urban.management.dao.log;
 
 import com.unicom.urban.management.dao.CustomizeRepository;
 import com.unicom.urban.management.pojo.entity.LoginLog;

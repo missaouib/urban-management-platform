@@ -1,10 +1,11 @@
 package com.unicom.urban.management.web.framework.security;
 
-import cn.hutool.extra.servlet.ServletUtil;
+import com.unicom.urban.management.common.util.IPUtil;
+import com.unicom.urban.management.common.util.UserAgentUtil;
 import com.unicom.urban.management.pojo.entity.LoginLog;
-import com.unicom.urban.management.service.logininfo.LoginLogService;
-import eu.bitwalker.useragentutils.UserAgent;
+import com.unicom.urban.management.service.log.LoginLogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +26,7 @@ public abstract class AbstractAuthenticationHandler {
      */
     protected void handleResponse(HttpServletRequest request, HttpServletResponse response, String responseBody) throws IOException {
         response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json;charset=UTF-8");
+        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         PrintWriter writer = response.getWriter();
         writer.write(responseBody);
         writer.close();
@@ -38,21 +39,13 @@ public abstract class AbstractAuthenticationHandler {
      * @param message 是否登录成功
      */
     protected void loginLog(HttpServletRequest request, HttpServletResponse response, Integer message) {
-        UserAgent userAgent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
-        // 获取客户端操作系统
-        String os = userAgent.getOperatingSystem().getName();
-        // 获取客户端浏览器
-        String browser = userAgent.getBrowser().getName();
-        String ip = getIpAddress(request);
-
+        String os = UserAgentUtil.getOperatingSystem(request);
+        String browser = UserAgentUtil.getBrowser(request);
+        String ip = IPUtil.getIpAddress(request);
 
         LoginLog loginLog = new LoginLog();
         loginLog.setUsername(request.getParameter("username"));
         loginLog.setIp(ip);
-        // IPv6本地地址
-        if ("0:0:0:0:0:0:0:1".equals(ip)) {
-            loginLog.setIp("127.0.0.1");
-        }
         loginLog.setOs(os);
         loginLog.setBrowser(browser);
         loginLog.setMessage(message);
@@ -61,9 +54,5 @@ public abstract class AbstractAuthenticationHandler {
 
     }
 
-
-    private String getIpAddress(HttpServletRequest request) {
-        return ServletUtil.getClientIP(request);
-    }
 
 }

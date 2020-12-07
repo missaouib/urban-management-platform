@@ -58,7 +58,7 @@ public class UserService {
     }
 
 
-    @Log(logType = "", operationType = "save", logSubType = "操作日志", details = "保存用户")
+    @Log(name = "新增管理-新增")
     public void saveUser(UserDTO userDTO) {
 
         if (usernameAlreadyExists(userDTO.getUsername())) {

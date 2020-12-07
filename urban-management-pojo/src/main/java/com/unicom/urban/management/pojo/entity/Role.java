@@ -36,12 +36,24 @@ public class Role extends BaseEntity {
      */
     private String name;
 
+    /**
+     * 描述
+     */
+    private String describes;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> userList;
 
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "sys_role_menu", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
+    private List<Menu> menuList;
+
     @Column(columnDefinition = "TINYINT(1)")
     private Integer sts;
+
+    private Integer sort;
 
 
     public Role() {
