@@ -3,23 +3,72 @@ title 城管类图
 class User <<用户实体类>>{
     -id: String
     -name : String
-    -sts : int
+    -sts : String           //激活、未激活    Kv 里的Key
+    -login : String         //帐号
+    -passWord : String      //密码
+    -phone : String         //联系方式
+    -officePhone: String    //办公联系方式
+    -email : String         //邮箱
+    -sex : int              //性别           Kv 里的Key   男、女
+    -post : String          //职务
+    -birth : Date           //出生日期
+    -dept  : Dept           //所属组织
+    -sort  ：int            //排序
+}
+
+class Idioms<<惯用语实体类>>{
+    -id : String 
+    -user : User 
+    -idiomsValue : String  // 惯用语内容 
 }
 
 class Role <<角色实体类>>{
     -id: String
     -name : String
-    -user : User
+    -roleDescribe : String      //描述
     -sts : int
+    -sort : int   //排序
+    -userList : User[*]
+    -menuList : Menu[*]
 }
 
 class Dept<<责任部门实体类>>{
     -id: String
-    -deptName : String
+    -deptName : String      //部门名称
+    -deptDescribe : String      //描述
+    -deptPhone : String     //办公电话  
+    -deptAddress : String   //部门地址
+    -grid : Grid            //所属区域       到第三级  区、街道、社区
     -sts : int
     -level : String
     -parent : Dept
-    -userList : User[*]
+    -roleList : Role[*]
+}
+
+class Menu<<菜单实体类>>{
+    -id : String  
+    -name : String
+    -sort : int //排序
+    -parent : String    //父Id
+    -url   :  String  
+    -icon  : String     //图标地址
+    -menuType : MenuType  //权限分类
+    -purpose ： String     //用途    Kv 里的Key    PC  、 App
+}
+
+class MenuType<<权限分类实体类>>{
+    -id : String
+    -name : String 
+    -sort : int //排序
+}
+
+class Logs<<日志管理实体类>>{
+    -id : String    
+    -login : String                   //帐号
+    -loginAddress : String            //登录地址
+    -operatingSystem : String         //操作系统
+    -browser : String                 //浏览器
+    -loginResult : String             //登录状态
 }
 
 class Grid<<网格实体类>>{
@@ -28,17 +77,18 @@ class Grid<<网格实体类>>{
     -gridName : String   
     -remark : String
     -parent : String    
-    -level : int   
+    -level : Kv    //层级   
     -area : String
     -initialDate : date
     -terminationDate : date
     -sts : int
     -dept : Dept
-    -user : User[*]
+    -user : User[*]       //监督员
     -publish : Publish
     -record : Record
     -publish : Publish
 }
+
 
 class Component<<部件实体类>>{
     -id: String
@@ -90,9 +140,10 @@ class Record<<编辑实体类>>{
 
 class Kv<<Kv实体类>>{
     -id : String
-    -tableName : String
-    -fieldName : String
-    -value : String
+    -tableName : String   记录表
+    -fieldName : String  sex
+    -key : String 
+    -value : String     男
     -sts : int
 }
 
@@ -110,11 +161,13 @@ class Event<<案件实体类>>{
     -y : double
     -processInstanceId : String  //流程实例id
     -recTypeId : Kv      //案件类型    日常  、转向普查、其他
-    -eventSate : Kv      // 案件状态
+    -eventSate : Kv      // 案件状态   
+    -doBySelf : boolean  // 自处理标识
     -eptTimeLimit : DeptTimeLimit
     -eventCondition : EventCondition
     -petitioner : Petitioner
-
+    -eventFile     : EventFile[*] //附件
+    
 }
 
 class Petitioner<<诉求人>>{
@@ -139,10 +192,11 @@ class EventFile<<事件附件实体类>>{
     -fileName : String
     -fileType ：int
     -management : Kv    //  记录 处置前  处置后  标识
+    
 }
 class EventCondition<<条件实体类>>{
     -id : String
-    -region : String   // 区域     不同区域立案条件不同 
+    -region : String   // 区域     不同区域立案条件不同     需要确定该字段是否为网格表里的区域
     -parent : String
     -conditionValue : String
     -eventTypeId : EventType
@@ -160,18 +214,43 @@ class DeptTimeLimit<<专业部门时限实体类>>{
 class ProcessTimeLimit<<流程时限实体类>>{
     -id : String
     -node : Kv     //环节
-    -level : Kv
+    -level : Kv   //都有 ABC三类
     -timeLimit : int     //时限
+    -timeType : Kv    // 时间类别  小时 天  分
+}
+
+
+class Process<<流程实体类>>{
+    -id : String 
+    -nodeName : String  //七步环节名称
+    -node : Kv          //子环节名称
+    -parentId : String  //父id
+    -url  :  String     //为首页进行对应待办跳转
 }
 
 class nodeInfo<<环节信息实体类>>{
     id : String 
-    node : kv               // 环节
+    taskName : String               // 环节
     role : Role             // 环节涉及角色
-    button : String         // 按钮id
-    buttonName : String     // 按钮名称
-    nodeVariable : String   // 流程变量
 }
+
+class eventButten<<按钮实体>>{
+    taskName : Kv  //环节
+    sort : int  // 排序
+    buttonText : String  //按钮名 
+    class
+}
+
+class supervise<<督办实体类>>{
+    id : String 
+    event : Event
+    user :  User           //督办人
+    dept :  Dept           //督办部门
+    opinion : String       //督办意见
+    replayOpinion : String //回复意见
+    sts   :   Kv           //督办状态     已督办  未督办
+}
+
 class Statistics<<流转统计实体类>>{
     -id                   : String
     -event                : Event
@@ -183,15 +262,16 @@ class Statistics<<流转统计实体类>>{
     -processTimeLimit  :  ProcessTimeLimit
     -sts      : int        //当前环节是否超时
     -user     : User
+    -sort     : int      //排序
     -opinions             : String    //处理意见
     -eventFile            : EventFile[*] //附件    
     -patrolReport	      : int       //监督员上报  
-    -publicReport	      : int       //公众举报    = 漏报数
+    -publicReport	      : int       //公众举报    =      漏报数   //如何判断重复事件  例如监督员报了  公众也上报了  //相似事件判断   类型相同 时间（一般是半小时）  距离（0.5-1米） 该功能可放到受理员处
     -report			      : int       //上报
     -reportPatrol	      : User      //上报监督员标识
     -reportPatrolName	  : User      //上报监督员
     -validPatrolReport    : int       //监督员有效上报     立案+作废
-    -validPublicReport    : int       //公众举报有效上报
+    -validPublicReport    : int       //公众举报有效上报   
     -validReport		  : int       //有效上报
 
     -needVerify             : int           //应核实         监督员   应核实 = 受理员发给该监督员的核实的案件
@@ -204,11 +284,18 @@ class Statistics<<流转统计实体类>>{
     -toOperate        : int     //待受理   未批转值班长
     -intimeOperate    : int     //按时受理  
     -operate          : int     //受理    批转值班长 触发
+    -closingFiling    : int     //结案存档（自处理被判定有效案件）
+    -invalidEvent     ：int     //无效案件（自处理被判定无效案件）
+
+    -toCloseEvent      : int   // 待结案受理
+    -CloseOperate      : int //结案受理
+    -CloseIntimeOperate: int //按时结案受理
+
     -operateHuman     : User    //受理人标识
     -operateHumanName : User    //受理人
     -operateRole      : Role     //受理人岗位标识
 
-    -needSendVerify       : int     //应发核实     受理员   按时完成的核实  = 待发核实 + 已发核实              
+    -needSendVerify       : int     //应发核实     受理员   待发核实 + 已发核实              
     -sendVerify           : int     //发核实       受理员   只要派出去就算
     -intimeSendVerify     : int     //按时发核实   受理员   按时下发核实
     -sendVerifyHumanName  : User    //发核实人姓名
@@ -218,8 +305,8 @@ class Statistics<<流转统计实体类>>{
 
     -sendCheck             : int      //发核查             受理员
     -needSendCheck         : int      //应发核查           受理员 
-    -sendCheckHuman        : int      //发核查人标识       受理员
-    -sendCheckHumanName    : int      //发核查人          
+    -sendCheckHuman        : User      //发核查人标识       受理员
+    -sendCheckHumanName    : User     //发核查人          
     -sendCheckHumanRole    : Role      //发核查人岗位标识  
 
 
@@ -228,7 +315,7 @@ class Statistics<<流转统计实体类>>{
     -toInst         :  int      //待立案     值班长  未立案的数
     -instHuman      :  User     //立案人标识
     -instHumanName  :  User     //立案人
-    -instRole       :  Role     //立案人岗位标识
+    -instRole       :  Role     //立案人岗` 位标识
 
     -close          :  int      //结案
     -inTimeClose    :  int      //按时结案
@@ -237,14 +324,12 @@ class Statistics<<流转统计实体类>>{
     -closeHumanName :  User     //结案人
     -closeRole      :  Role     //结案人岗位标识
 
-
-
-    -dispatch             : int      //派遣        派遣员   已派遣     
+    -dispatch             : int      //派遣        派遣员   已派遣     派遣数   所有 专业  应处置
     -toDispatch           : int      //待派遣      派遣员  
     -needDispatch         : int      //应派遣      派遣员   应派遣= 已派遣 + 未派遣    
     -intimeDispatch       : int      //按时派遣    派遣员   = 未超时的派遣 
     -accuracyDispatch     : int      //准确派遣数   未出现重新派的其他专业部门   结案触发
-    -errorDispatch        : int      //错误派遣     出现派遣2个或者以上的专业部门   结案触发     例如  第一派遣A  第二次派遣 A B 两个部门
+    -errorDispatch        : int      //错误派遣     出现派遣2个或者以上的专业部门   结案触发     例如  第一派遣A  第二次派遣 B 
     -dispatchHuman        : User     //派遣员标识     
     -dispatchHumanName    : User     //派遣员         
     -dispatchHumanRole    : Role     //派遣员岗位标识 
@@ -252,33 +337,50 @@ class Statistics<<流转统计实体类>>{
     -dispose              : int      //处置         //专业部门
     -needDispose          : int      //应处置  
     -toDispose            : int      //待处置                                      
-    -intimeDispose        : int      //按时处置   
+    -intimeDispose        : int      //按时处置    
     -overtimeToDispose    : int      //超时未处置   
     -overtimeDispose      : int      //超时处置          
-    -disposeUnit          : int      //处置部门标识   
-    -disposeUnitName      : String   //处置部门   
+    -disposeUnit          : Dept      //处置部门标识   
+    -disposeUnitName      : Dept     //处置部门   
 
-
+    
+    -checkNum              : int      //核查数
     -needCheck             : int      //应核查          //监督员  
-    -intimeCheck           : int      //按时核查         
-    -intimeSendCheck       : int      //按时发核查      
-    -checkTrans            : int      //核查批转        
-    -checkPatrolId         : int      //核查监督员标识    
-    -checkPatrolName       : String   //核查监督员        
-    -checkTransHuman       : int      //核查受理员标识    
-    -checkTransHumanName   : String   //核查受理员        
+    -intimeCheck           : int      //按时核查  
+    -checkPatrolId         : Role      //核查监督员标识    
+    -checkPatrolName       : User      //核查监督员          
+
+
+    -sendCheckNum          ：int      //发核查
+    -intimeSendCheck       : int      //按时发核查      //受理员
+    -checkTrans            : int      //核查批转       
+    -checkTransHuman       : User     //核查受理员标识    
+    -checkTransHumanName   : User     //核查受理员        
     -checkTransHumanRole   : Role     //核查受理员岗位标识
     -checkTransTime        : date     //核查批转时间   
-  
+
 
     -cancel         :  int       //作废   
-    -cancelDate     :  date      //作废时间 
+    -cancelDate     :  date      //作废时间    申请作废时间
     -hang           :  int       //挂账  
-    -hangDate       ： date      //挂账时间             
+    -hangDate       ： date      //挂账时间    申请挂账的时间
+    -hangDuration   :  int       //挂账时长
+    -delayedState   :  int        //延时
+    -delayedDate    :  date       //延时       申请延时的时间
+    -backOff        : int        //回退 
+    -backOffDate    : date       //回退        申请回退的时间
+    -delayedHours   : int        //延时多久
+    -specialStartTime ： date    //特殊环节开始时间   例如同意挂账的时间  同意延时的开始时间   同意作废时间   同意回退的时间
+    -specialEndTime  : date      //特殊环节结束时间   例如挂账的恢复时间  延时的结束时间       同意作废时间   同意回退的时间
     -rework         :  int       //返工             二次或者多次派遣同一个专业部门   经历核查阶段  结案触发     
     -displayStyleId :  int       //显示类型标识 
     -shuffle        :  int       //推诿         
 }
+
+
+2020年12月7日 13:09:49  
+
+
 
 Dept --> User
 Role --> User
@@ -303,87 +405,4 @@ Statistics --> ProcessTimeLimit
 Statistics --> EventFile
 Statistics --> User
 Statistics --> Role
-
-
-
-' class ComponentController<<部件界面类>>{
-'     -ComponentService
-'     -ComponentInfoService
-'     +ComponentList(component):Component[*]         // 查询部件集合
-'     +saveComponentList(Component[*]):boolean       // 保存部件
-'     +componentImport():boolean
-'     +objState() : Kv[*]
-'     +dataSource() : Kv[*]
-'     +grid() : Grid[*]
-'     +record(ComponentType): Record[*]
-'     +componentByRecordId(record) : Component[*]
-' }
-
-' class ComponentService<<部件业务类>>{
-'     -ComponentInfoService
-'     +getComponentList(component):Component[*]      // 查询部件集合
-'     +getComponent(component) :component
-'     +saveComponentList(component[*]): boolean
-'     +saveComponent(component) : boolean
-'     +savePublish(publis) : boolean
-'     +saveRecord(record,publish) : boolean
-'     +getComponentByRecordId(record) : Component[*]
-'     +deleteComponent(component) : boolean
-' }
-' class ComponentTypeService<<部件分类业务类>>{
-'     +getComponentTypeList():ComponentType[*]       // 获取部件分类集合
-'     +getComponentType(component):ComponentType     // 获取部件分类
-' }
-
-' class PublisheController<<发布界面类>>{
-'     +getPublishList() : Publish[*]
-'     +getPublishOne() : Publish
-'     +layerPublish(publish) : boolean
-' }
-' class PublisheService<<发布业务类>>{
-'     +getPublishList() : Publish[*]
-'     +getPublishOne() : Publish
-'     +layerPublish(publish) : boolean
-' }
-
-' class RecordService<<编辑业务类>>{
-'     +save(record) : boolean
-'     +update(record) : boolean
-'     +findAllByPublishId() : Record[*]
-' }
-' class ImportController<<导入界面类>>{
-'     +componentImport(layerName,layerSettingType,shpType) : String
-'     +gridImport(layerName,layerSettingType,shpType) : String
-'     +checkPublish(): boolean
-' }
-' class ImportService<<导入业务类>>{
-'     +componentImport(layerName,layerSettingType,shpType) : String
-'     +gridImport(layerName,layerSettingType,shpType) : String
-'     +checkPublish(): boolean
-' }
-
-' class GridController<<网格界面类>>{
-'     +getGridList() :  Grid[*]
-'     +gridSave(grid) : boolean
-'     +gridUpdate(grid) : boolean
-'     +getGridOne(grid) : Grid
-'     +gridDelete(grid) : boolean
-' }
-
-' class GridService<<网格业务类>>{
-'     +search(grid) : Grid[*]
-'     +delete(grid) : boolean
-'     +update(grid) : boolean
-
-' }
-
-
-
-
-
-
-
-
-
-
 @enduml
