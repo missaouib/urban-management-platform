@@ -23,7 +23,7 @@ public class NodeInfo {
 
     private String taskName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
 

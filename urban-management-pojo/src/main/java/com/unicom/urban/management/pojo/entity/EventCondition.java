@@ -21,7 +21,7 @@ public class EventCondition {
 
     private String region;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private EventCondition parent;
 
     @ManyToOne(fetch = FetchType.LAZY)

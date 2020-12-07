@@ -8,10 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
@@ -77,13 +74,13 @@ public class ComponentInfo extends BaseEntity {
     /**
      * 所在单元网格
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Grid bgid;
 
     /**
      * 部件状态
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private KV objState;
 
     /**
@@ -103,7 +100,7 @@ public class ComponentInfo extends BaseEntity {
     /**
      * 数据来源
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private KV dataSource;
 
     /**

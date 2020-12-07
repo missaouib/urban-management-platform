@@ -2,7 +2,6 @@ package com.unicom.urban.management.pojo.vo;
 
 import lombok.Data;
 
-import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 
 /**
@@ -61,7 +60,6 @@ public class ComponentVO {
     /**
      * 所在单元网格
      */
-    @ManyToOne
     private String bgid;
     private String bgname;
 

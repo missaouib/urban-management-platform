@@ -25,7 +25,7 @@ public class ProcessTimeLimit {
     @JoinColumn
     private KV level;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private KV timeType;
 
     /**

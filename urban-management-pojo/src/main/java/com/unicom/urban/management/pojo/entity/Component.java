@@ -28,7 +28,7 @@ public class Component extends BaseEntity {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private EventType eventType;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -37,7 +37,7 @@ public class Component extends BaseEntity {
     @Column(columnDefinition = "TINYINT(1)")
     private Integer sts;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Publish publish;
 
     @OneToOne
