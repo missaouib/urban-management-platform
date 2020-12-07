@@ -95,6 +95,8 @@ public class User extends BaseEntity {
     @JoinTable(name = "user_grid", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "grid_id"))
     private List<Grid> gridList;
 
+    private Integer sort;
+
     public User() {
     }
 

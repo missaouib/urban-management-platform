@@ -74,6 +74,8 @@ public class Dept extends BaseEntity {
     @JoinColumn(name = "grid_id")
     private Grid grid;
 
+    private Integer sort;
+
     public Dept() {
     }
 

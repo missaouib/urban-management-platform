@@ -45,5 +45,7 @@ public class Menu extends BaseEntity {
     @JoinColumn(name = "menu_type_id")
     private MenuType menuType;
 
+    private Integer sort;
+
 
 }
