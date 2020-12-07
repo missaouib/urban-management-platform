@@ -491,3 +491,6 @@ font-size: 20px;
 .menuActive{
     display: none;
 }
+.showMenu,.hideMenu{
+    border-right: 1px solid #ddd!important;
+}
