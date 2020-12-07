@@ -18,4 +18,6 @@ public class DeptVO {
     private String id;
 
     private String deptName;
+
+    private String pId;
 }

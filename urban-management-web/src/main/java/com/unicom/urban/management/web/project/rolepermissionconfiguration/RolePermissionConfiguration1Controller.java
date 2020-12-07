@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @ResponseResultBody
 @RequestMapping("/rolePermissionConfiguration")
-public class RolePermissionConfigurationController {
+public class RolePermissionConfiguration1Controller {
 
     @Autowired
     private MenuService menuService;

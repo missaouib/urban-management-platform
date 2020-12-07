@@ -4,10 +4,12 @@ import com.unicom.urban.management.dao.role.RoleRepository;
 import com.unicom.urban.management.mapper.RoleMapper;
 import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.dto.RoleDTO;
+import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.Role;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.RoleVO;
 import com.unicom.urban.management.pojo.vo.UserVO;
+import com.unicom.urban.management.service.dept.DeptService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,6 +34,8 @@ public class RoleService {
 
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private DeptService deptService;
 
     public Page<RoleVO> search(RoleDTO roleDTO, Pageable pageable) {
         Page<Role> page = roleRepository.findAll((Specification<Role>) (root, query, criteriaBuilder) -> {
@@ -74,6 +78,22 @@ public class RoleService {
     public List<UserVO> findUserListByRoleId(String id) {
         List<User> userList = roleRepository.getOne(id).getUserList();
         return UserMapper.INSTANCE.userListToUserVOList(userList);
+    }
+
+    /**
+     * 角色配置新增
+     *
+     * @param roleDTO 数据
+     */
+    public void saveRoleByDeptId(RoleDTO roleDTO) {
+        Role role = new Role();
+        role.setName(roleDTO.getName());
+        role.setDescribes(roleDTO.getDescribes());
+        role.setSort(deptService.getRoleSortByDeptId(roleDTO.getDeptId()));
+        Role saveRole = roleRepository.save(role);
+        Dept dept = deptService.findOne(roleDTO.getDeptId());
+        dept.getRoleList().add(saveRole);
+        deptService.updateDeptForRoleSetup(dept);
     }
 
 }

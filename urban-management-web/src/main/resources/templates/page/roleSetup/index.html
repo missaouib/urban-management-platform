@@ -33,7 +33,7 @@
 
     </div>
     <div class="rightContent">
-        <form class="details">
+        <form class="details" id="roleForm">
             <div class="top table2_top">
                 <div class="top_out">
                     <table class="table">
@@ -41,19 +41,18 @@
                         <tr>
                             <td><span></span>角色名称</td>
                             <td>
-                                <input id="eventCode" placeholder="" class="" type="text" readonly="readonly"
-                                       required>
+                                <input id="name" name="name" placeholder="" class="" type="text">
                             </td>
                             <td><span></span>角色描述</td>
                             <td>
-                                <input id="eventTypeStr" type="text" maxlength="30" required
-                                       readonly="readonly">
+                                <input id="describes" name="describes" type="text" maxlength="30">
                             </td>
                         </tr>
-                        <tr>
+                        <tr style="display: block" id="timeAndSort">
                             <td><span></span>创建时间</td>
                             <td>
-                                <input size="16" class="form_datetime" id="initialDate" name="initialDate" type="text" value="" readonly>
+                                <input size="16" class="form_datetime" id="initialDate" name="initialDate" type="text"
+                                       value="" readonly required>
                                 <span class="add-on"><i class="icon-remove"></i></span>
                                 <span class="add-on"><i class="icon-th"></i></span>
                             </td>
@@ -66,8 +65,8 @@
                             <td><span></span>所属部门</td>
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                 <input type="text" readonly="readonly" id="girdStr" class="find_input"/>
-                                <input type="hidden" readonly="readonly" id="girdId" name="eventTypeId"
-                                       class="find_input"/>
+                                <input type="hidden" readonly="readonly" id="deptId" name="deptId"
+                                       class="find_input" value="1"/>
                                 <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                     +
                                 </button>
@@ -78,7 +77,8 @@
                 </div>
                 <div class="notice_bot">
                     <div class="r_right but_p girdBtnGroup" id="eventButton">
-                        <button class="but_save" type="button" style="margin-right: 10px">新增</button>
+                        <button class="but_save" type="button" style="margin-right: 10px" onclick="saveRole()">新增
+                        </button>
                         <button class="but_save" type="button" style="margin-right: 10px">保存</button>
                         <button class="but_save" type="button" style="margin-right: 10px">删除</button>
                         <button class="but_save" type="button" style="width: 100px"
@@ -102,10 +102,12 @@
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
-    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
+    let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+    let saveRoleUrl = /*[[@{/roleSetup/saveRole}]]*/ "/roleSetup/saveRole";
 
     $(function () {
-        $.ajaxUtil.get(componentTypeUrl, function (e) {
+        $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
+            console.log("e.data", e.data);
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
 
@@ -122,10 +124,10 @@
                 simpleData: {
                     enable: true,
                     idKey: 'id',
-                    pIdKey: 'parent'
+                    pIdKey: 'pid'
                 },
                 key: {
-                    name: "name"
+                    name: "deptName"
                 }
             }
         };
@@ -183,6 +185,12 @@
             }
         });
     }
+
+    function saveRole() {
+        let data = $('#roleForm').serialize();
+        $.operate.saveAndReload(saveRoleUrl, data);
+    }
+
 </script>
 </body>
 </html>

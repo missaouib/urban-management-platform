@@ -12,6 +12,7 @@ import com.unicom.urban.management.pojo.dto.UserDTO;
 import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.UserVO;
+import com.unicom.urban.management.service.dept.DeptService;
 import com.unicom.urban.management.service.password.PasswordService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,10 @@ import java.util.List;
 @Transactional(rollbackOn = Exception.class)
 public class UserService {
 
-
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private DeptService deptService;
     @Autowired
     private PasswordService passwordService;
 
@@ -166,6 +167,22 @@ public class UserService {
 
     public boolean usernameAlreadyExists(String username) {
         return userRepository.existsByUsername(username);
+    }
+
+    /**
+     * 人员配置新增
+     * 新增一个带有部门的默认人员
+     *
+     * @param deptId 部门id
+     */
+    public void saveUserByDeptId(String deptId) {
+        User user = new User();
+        user.setName("默认人员");
+        initPassword(user);
+        User save = userRepository.save(user);
+        Dept dept = deptService.findOne(deptId);
+        dept.getUserList().add(save);
+        deptService.updateDeptForRoleSetup(dept);
     }
 
 }
