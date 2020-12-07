@@ -58,4 +58,16 @@ public class MenuService {
         menuRepository.save(menu);
     }
 
+    public List<MenuVO> getMenuByMenuType(String menuTypeId) {
+      List<Menu>  menuList = menuRepository.findMenuByMenuType_Id(menuTypeId);
+      List<MenuVO> menuVOList = new ArrayList<>();
+      for (Menu m : menuList){
+          MenuVO vo = new MenuVO();
+          vo.setId(m.getId());
+          vo.setParentId(m.getParent() == null ? "" : m.getParent().getId());
+          vo.setName(m.getName());
+          menuVOList.add(vo);
+      }
+       return menuVOList;
+    }
 }

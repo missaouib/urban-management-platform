@@ -78,21 +78,25 @@
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
-    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
+    let getDeptAndRoleTreeUrl = /*[[@{/rolePermissionConfiguration/getDeptAndRoleTree}]]*/ "/rolePermissionConfiguration/getDeptAndRoleTree";
+    let getMenuByMenuTypeUrl = /*[[@{/rolePermissionConfiguration/getMenuByMenuType}]]*/ "/rolePermissionConfiguration/getMenuByMenuType";
 
     $(function () {
-        $.ajaxUtil.get(componentTypeUrl, function (e) {
+        $.ajaxUtil.get(getDeptAndRoleTreeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
 
-        $.ajaxUtil.get(componentTypeUrl, function (e) {
-            var zTreeObj = $.fn.zTree.init($("#treeDemo1"), setting, e.data);
+        $.ajaxUtil.get(getMenuByMenuTypeUrl+"?menuTypeId="+1, function (e) {
+            console.log("setting1",e.data)
+            var zTreeObj = $.fn.zTree.init($("#treeDemo1"), setting1, e.data);
         })
-        $.ajaxUtil.get(componentTypeUrl, function (e) {
-            var zTreeObj = $.fn.zTree.init($("#treeDemo2"), setting, e.data);
+        $.ajaxUtil.get(getMenuByMenuTypeUrl+"?menuTypeId="+2, function (e) {
+            console.log("setting2",e.data)
+            var zTreeObj = $.fn.zTree.init($("#treeDemo2"), setting2, e.data);
         })
-        $.ajaxUtil.get(componentTypeUrl, function (e) {
-            var zTreeObj = $.fn.zTree.init($("#treeDemo3"), setting, e.data);
+        $.ajaxUtil.get(getMenuByMenuTypeUrl+"?menuTypeId="+3, function (e) {
+            console.log("setting3",e.data)
+            var zTreeObj = $.fn.zTree.init($("#treeDemo3"), setting3, e.data);
         })
 
         var setting = {
@@ -107,14 +111,79 @@
                 simpleData: {
                     enable: true,
                     idKey: 'id',
-                    pIdKey: 'parent'
+                    pIdKey: 'parentId'
+                },
+                key: {
+                    name: "deptName"
+                }
+            }
+        };
+        var setting1 = {
+            check: {
+                enable: true
+            },
+            callback: {
+                onClick: zTreeOnClick1
+            },
+            data: {//数据加载
+                keep: {
+                    parent: true,
+                    leaf: true
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: 'id',
+                    pIdKey: 'parentId'
                 },
                 key: {
                     name: "name"
                 }
             }
         };
-
+        var setting2 = {
+            check: {
+                enable: true
+            },
+            callback: {
+                onClick: zTreeOnClick2
+            },
+            data: {//数据加载
+                keep: {
+                    parent: true,
+                    leaf: true
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: 'id',
+                    pIdKey: 'parentId'
+                },
+                key: {
+                    id: "id"
+                }
+            }
+        };
+        var setting3 = {
+            check: {
+                enable: true
+            },
+            callback: {
+                onClick: zTreeOnClick3
+            },
+            data: {//数据加载
+                keep: {
+                    parent: true,
+                    leaf: true
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: 'id',
+                    pIdKey: 'parentId'
+                },
+                key: {
+                    id: "id"
+                }
+            }
+        };
         $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose:true, todayBtn: true, startView:4, minView:3});
         ////日期插件
         $('.form_datetime').datetimepicker({
@@ -131,6 +200,15 @@
     })
 
     function zTreeOnClick(event, treeId, treeNode) {
+        console.log(event,treeId,treeNode)
+    }
+    function zTreeOnClick1(event, treeId, treeNode) {
+        console.log(event,treeId,treeNode)
+    }
+    function zTreeOnClick2(event, treeId, treeNode) {
+        console.log(event,treeId,treeNode)
+    }
+    function zTreeOnClick3(event, treeId, treeNode) {
         console.log(event,treeId,treeNode)
     }
 
