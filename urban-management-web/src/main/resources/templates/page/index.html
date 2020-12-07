@@ -2,12 +2,12 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>城市综合管理服务平台</title>
-    <link rel="icon" href="../../static/favicon.ico" th:href="@{/favicon.ico}" type="image/x-icon"/>
-    <link rel="stylesheet" href="../../static/js/bootstrap/css/bootstrap.min.css" th:href="@{/js/bootstrap/css/bootstrap.min.css}">
-    <link rel="stylesheet" href="../../static/css/font-awesome.min.css" th:href="@{/css/font-awesome.min.css}">
-    <link rel="stylesheet" href="../../static/plugins/jquery-contextmenu/dist/jquery.contextMenu.min.css" th:href="@{/plugins/jquery-contextmenu/dist/jquery.contextMenu.min.css}">
-    <link rel="stylesheet" href="../../static/css/index.css" th:href="@{/css/index.css}">
-    <link rel="stylesheet" href="../../static/css/skins/_all-skins.css" th:href="@{/css/skins/_all-skins.css}">
+    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon"/>
+    <link rel="stylesheet" th:href="@{/js/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/plugins/jquery-contextmenu/dist/jquery.contextMenu.min.css}">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/skins/_all-skins.css}">
 </head>
 <body class="hold-transition skin-blue sidebar-mini" style="overflow:hidden;">
 <div id="ajax-loader" style="cursor: progress; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: #fff; z-index: 10000; overflow: hidden;">
@@ -125,12 +125,12 @@
     </div>
 </div>
 <!--  index.html的jquery版本不要修改  -->
-<script src="../../static/js/jquery/jQuery-2.2.0.min.js" th:src="@{/js/jquery/jQuery-2.2.0.min.js}"></script>
-<script src="../../static/js/bootstrap/js/bootstrap.min.js" th:src="@{/js/bootstrap/js/bootstrap.min.js}"></script>
-<script src="../../static/plugins/jquery-contextmenu/dist/jquery.ui.position.min.js" th:src="@{/plugins/jquery-contextmenu/dist/jquery.ui.position.min.js}"></script>
-<script src="../../static/plugins/jquery-contextmenu/dist/jquery.contextMenu.min.js" th:src="@{/plugins/jquery-contextmenu/dist/jquery.contextMenu.min.js}"></script>
-<script src="../../static/js/common.js" th:src="@{/js/common.js}"></script>
-<script src="../../static/js/index.js" th:src="@{/js/index.js}"></script>
+<script th:src="@{/js/jquery/jQuery-2.2.0.min.js}"></script>
+<script th:src="@{/js/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/plugins/jquery-contextmenu/dist/jquery.ui.position.min.js}"></script>
+<script th:src="@{/plugins/jquery-contextmenu/dist/jquery.contextMenu.min.js}"></script>
+<script th:src="@{/js/common.js}"></script>
+<script th:src="@{/js/index.js}"></script>
 <script type="text/javascript" th:inline="javascript">
 
     let logoutUrl = /*[[@{/logout}]]*/ "/logout";
