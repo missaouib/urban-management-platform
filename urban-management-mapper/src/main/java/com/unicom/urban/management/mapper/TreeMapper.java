@@ -1,5 +1,6 @@
 package com.unicom.urban.management.mapper;
 
+import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.vo.TreeVO;
 import org.mapstruct.Mapper;
@@ -18,5 +19,12 @@ public interface TreeMapper {
 
     @Mapping(source = "parent.id", target = "parentId")
     TreeVO eventTypeToTreeVO(EventType eventType);
+
+
+    List<TreeVO> deptListToTreeVOList(List<Dept> deptList);
+
+    @Mapping(source = "deptName", target = "name")
+    @Mapping(source = "parent.id", target = "parentId")
+    TreeVO deptToTreeVO(Dept dept);
 
 }

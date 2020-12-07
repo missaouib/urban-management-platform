@@ -3,6 +3,7 @@ package com.unicom.urban.management.web.project.tree;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.vo.TreeVO;
+import com.unicom.urban.management.service.dept.DeptService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -24,12 +25,22 @@ public class TreeController {
     @Autowired
     private EventTypeService eventTypeService;
 
+    @Autowired
+    private DeptService deptService;
+
 
     @GetMapping("/eventtype")
-    public ModelAndView add(Model model) {
+    public ModelAndView eventTypeTree(Model model) {
         List<TreeVO> tree = eventTypeService.searchTree();
         model.addAttribute("tree", tree);
         return new ModelAndView(SystemConstant.PAGE + "/tree/eventtype");
+    }
+
+    @GetMapping("/dept")
+    public ModelAndView deptTree(Model model) {
+        List<TreeVO> tree = deptService.searchTree();
+        model.addAttribute("tree", tree);
+        return new ModelAndView(SystemConstant.PAGE + "/tree/dept");
     }
 
 

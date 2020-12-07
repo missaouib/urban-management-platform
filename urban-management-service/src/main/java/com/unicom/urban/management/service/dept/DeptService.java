@@ -1,12 +1,14 @@
 package com.unicom.urban.management.service.dept;
 
 import com.unicom.urban.management.dao.dept.DeptRepository;
+import com.unicom.urban.management.mapper.TreeMapper;
 import com.unicom.urban.management.pojo.dto.DeptDTO;
 import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.Grid;
 import com.unicom.urban.management.pojo.entity.Role;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.DeptVO;
+import com.unicom.urban.management.pojo.vo.TreeVO;
 import com.unicom.urban.management.service.grid.GridService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -193,6 +195,11 @@ public class DeptService {
 
     public void updateDeptForRoleSetup(Dept dept) {
         deptRepository.saveAndFlush(dept);
+    }
+
+    public List<TreeVO> searchTree() {
+        List<Dept> deptList = deptRepository.findAll();
+        return TreeMapper.INSTANCE.deptListToTreeVOList(deptList);
     }
 
 }
