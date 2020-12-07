@@ -4,12 +4,12 @@ class User <<用户实体类>>{
     -id: String
     -name : String
     -sts : String           //激活、未激活    Kv 里的Key
-    -login : String         //帐号
-    -passWord : String      //密码
+    -userName : String         //帐号
+    -password : String      //密码
     -phone : String         //联系方式
     -officePhone: String    //办公联系方式
     -email : String         //邮箱
-    -sex : int              //性别           Kv 里的Key   男、女
+    -sex : Stromg              //性别           
     -post : String          //职务
     -birth : Date           //出生日期
     -dept  : Dept           //所属组织
