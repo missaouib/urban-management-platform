@@ -15,9 +15,10 @@ import java.util.List;
  * @author jiangwen
  */
 @Data
-@SQLDelete(sql = "update dept set deleted = " + Delete.DELETE + " where id = ?")
+@SQLDelete(sql = "update sys_dept set deleted = " + Delete.DELETE + " where id = ?")
 @Where(clause = "deleted = " + Delete.NORMAL)
 @Entity
+@Table(name = "sys_dept")
 public class Dept extends BaseEntity {
 
     @Id
@@ -25,12 +26,26 @@ public class Dept extends BaseEntity {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
+    /**
+     * 部门名称
+     */
     private String deptName;
 
     @Column(columnDefinition = "TINYINT(1)")
     private Integer sts;
 
     private String level;
+
+    /**
+     * 办公电话
+     */
+    private String deptPhone;
+
+
+    /**
+     * 部门地址
+     */
+    private String deptAddress;
 
     /**
      * 部门父节点
@@ -46,6 +61,18 @@ public class Dept extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id")
     private List<Role> roleList;
+
+    /**
+     * 描述
+     */
+    private String describes;
+
+    /**
+     * 所属区域       到第三级  区、街道、社区
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "grid_id")
+    private Grid grid;
 
     public Dept() {
     }
