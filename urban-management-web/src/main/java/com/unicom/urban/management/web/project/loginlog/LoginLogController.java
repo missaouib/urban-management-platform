@@ -4,7 +4,7 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.dto.LoginLogDTO;
 import com.unicom.urban.management.pojo.vo.LoginLogVO;
-import com.unicom.urban.management.service.logininfo.LoginLogService;
+import com.unicom.urban.management.service.log.LoginLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

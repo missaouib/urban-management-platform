@@ -1,6 +1,6 @@
-package com.unicom.urban.management.service.logininfo;
+package com.unicom.urban.management.service.log;
 
-import com.unicom.urban.management.dao.logininfo.LoginLogRepository;
+import com.unicom.urban.management.dao.log.LoginLogRepository;
 import com.unicom.urban.management.mapper.LoginLogMapper;
 import com.unicom.urban.management.pojo.entity.LoginLog;
 import com.unicom.urban.management.pojo.dto.LoginLogDTO;
