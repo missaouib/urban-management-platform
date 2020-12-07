@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * 诉求人
@@ -14,6 +15,7 @@ import javax.persistence.Id;
  */
 @Data
 @Entity
+@Table(name = "event_petitioner")
 public class Petitioner {
 
     @Id
