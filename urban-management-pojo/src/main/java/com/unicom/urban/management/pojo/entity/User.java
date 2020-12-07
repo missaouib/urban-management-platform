@@ -72,6 +72,9 @@ public class User extends BaseEntity {
      */
     private LocalDate birth;
 
+    @Column(columnDefinition = "tinyint")
+    private Integer sts;
+
     /**
      * 头像图片URL
      */
