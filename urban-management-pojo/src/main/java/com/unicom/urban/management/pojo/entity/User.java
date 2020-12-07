@@ -92,7 +92,7 @@ public class User extends BaseEntity {
 
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "user_grid", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "grid_id"))
+    @JoinTable(name = "sys_user_grid", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "grid_id"))
     private List<Grid> gridList;
 
     private Integer sort;
