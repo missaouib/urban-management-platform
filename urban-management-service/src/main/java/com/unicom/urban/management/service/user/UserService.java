@@ -27,6 +27,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -69,6 +70,35 @@ public class UserService {
         persistUser(userDTO);
 
     }
+
+    /**
+     * 初始化密码
+     */
+    public void initialization(String userId){
+        Optional<User> ifUser = userRepository.findById(userId);
+        if(ifUser.isPresent()){
+            User user = ifUser.get();
+            this.initPassword(user);
+            userRepository.saveAndFlush(user);
+        }else{
+            throw new RuntimeException("用户不存在");
+        }
+    }
+
+    /**
+     * 激活
+     */
+    public void activation(String userId,int sts){
+        Optional<User> ifUser = userRepository.findById(userId);
+        if(ifUser.isPresent()){
+            User user = ifUser.get();
+            user.setSts(sts);
+            userRepository.saveAndFlush(user);
+        }else{
+            throw new RuntimeException("用户不存在");
+        }
+    }
+
 
     /**
      * 持久化user对象
