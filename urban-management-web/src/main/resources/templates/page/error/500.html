@@ -2,7 +2,7 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>500错误页面</title>
+    <title>城市综合管理服务平台</title>
     <link th:href="@{/css/notfound.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -15,12 +15,7 @@
             <div class="cloud cloud3"></div>
         </div>
         <div class="text">
-            <div class="title">页面丢失了!</div>
-            <div class="adminSay">网站管理员说您无法进入此页面...</div>
-            <div class="look">请检查您输入的URL是否正确，或单击下面的按钮返回首页。</div>
-            <div>
-                <div class="back">返回上一页</div>
-            </div>
+            <div class="title">后台程序出现异常 请联系管理员!</div>
         </div>
     </div>
 </div>
@@ -36,10 +31,6 @@
             $(".cloud3").addClass("cloud3acive")
             $(".cloud4").addClass("cloud4acive")
         }, 1000);
-
-        $(".back").click(function () {
-            window.history.back();
-        })
     })
 
 </script>
