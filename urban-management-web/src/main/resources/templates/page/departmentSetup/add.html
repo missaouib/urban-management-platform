@@ -1,10 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>案件处理</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <th:block th:include="page/fragments/common :: swiper_css"/>
+    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
-<body>
-departmentSetup add
+<body style="border-radius: 8px;">
+<div class="contents">
+
+        <div class="selectPoint" style="display: block">
+            <form id="userForm">
+                <div class="top table2_top">
+                    <!--        <div>-->
+                    <div class="top_out">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td>当前部门<span></span></td>
+                                <td>
+                                    <input type="text" class="datepicker" name="represent">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>姓名<span></span></td>
+                                <td>
+                                    <input id="userName" type="text" maxlength="30" required readonly="readonly">
+                                </td>
+                                <td>所属区域<span></span></td>
+                                <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                    <input type="text" readonly="readonly" id="gird" class="find_input"/>
+                                    <input type="hidden" readonly="readonly" id="girdId" name="eventTypeId"
+                                           class="find_input"/>
+                                    <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                        +
+                                    </button>
+                                </td>
+                                <td>所属部门<span></span></td>
+                                <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                    <input type="text" readonly="readonly" id="depoment" class="find_input"/>
+                                    <input type="hidden" readonly="readonly" id="depomentid" name="eventTypeId"
+                                           class="find_input"/>
+                                    <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                        +
+                                    </button>
+                                </td>
+                                <td>所属角色<span></span></td>
+                                <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                    <input type="text" readonly="readonly" id="role" class="find_input"/>
+                                    <input type="hidden" readonly="readonly" id="roleId" name="eventTypeId"
+                                           class="find_input"/>
+                                    <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                        +
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!--    </div>-->
+            </form>
+            <div class="notice_check">
+                <form id="search-form">
+                    <p style="display: flex;justify-content: flex-end">
+                        <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
+                        <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">
+                        <input type="button" class="check_btn2 button_ground" style="width: 80px;margin-left: 10px!important;" value="批量配置">
+                    </p>
+                </form>
+            </div>
+
+        </div>
+
+
+        <table id="bootstrap-table" class="table_style" style="margin: 0 auto;"></table>
+
+</div>
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+
+        var r;
+        $(".xiala").click(function () {
+            r += 180;
+            $(".selectPoint").slideToggle(300);
+            $(".selectmenu").css('transform', 'rotate(' + r + 'deg)');
+        })
+
+
+
+        queryUserList()
+    })
+
+
+    let searchUrl = /*[[@{/event/wirelessAcquisitionList}]]*/ "/event/wirelessAcquisitionList";
+
+    function queryUserList() {
+        var options = {
+            url: searchUrl,
+            uniqueId: "id",
+            showRefresh: false,
+            showColumns: false,
+            showToggle: false,
+            sortName: "updateTime",
+            sortOrder: "desc",
+            modalName: "案件",
+            onClickRow: function (row,index) {
+
+            },
+            //点击全选框时触发的操作
+            onCheckAll: function (rows) {
+
+            },
+            //点击每一个单选框时触发的操作
+            onCheck: function (row) {
+
+            },
+            //取消每一个单选框时对应的操作；
+            onUncheck: function (row, tr, flied) {
+
+            },
+
+            ////取消所有
+            onUncheckAll: function (row) {
+
+            },
+            columns: [
+                {
+                    checkbox: true,
+                    title: '编辑',
+                    class: "check"
+                },
+                {
+                    field: 'index',
+                    title: '序号',
+                    formatter : function (value, row, index){
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '登录账号',
+                    field: 'username',
+                    class:"problem"
+                },
+                {
+                    title: '手机号码',
+                    field: 'phoneNumber'
+                },
+                {
+                    title: '所属区域',
+                    field: 'eventTypeGird'
+                },
+                {
+                    title: '所属部门',
+                    field: 'owener',
+                    sortable: true,
+                },
+                {
+                    title: '所属角色',
+                    field: 'eventTypeUser'
+                },
+            ]
+        };
+        $.table.init(options);
+    }
+
+    function selectEventTypeTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择事件类型',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+
+
+        layer.close(index);
+    }
+</script>
 </body>
 </html>
