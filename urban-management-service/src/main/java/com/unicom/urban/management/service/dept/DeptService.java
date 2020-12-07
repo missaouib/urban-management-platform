@@ -63,11 +63,17 @@ public class DeptService {
         List<Dept> deptList = deptRepository.findAll();
         List<DeptVO> deptVOList = new ArrayList<>();
         for (Dept dept : deptList) {
-            DeptVO deptVO = new DeptVO(dept.getId(), dept.getDeptName(), dept.getParent() != null ? dept.getParent().getId() : "");
+            DeptVO deptVO = new DeptVO();
+            deptVO.setId(dept.getId());
+            deptVO.setDeptName(dept.getDeptName());
+            deptVO.setParentId(dept.getParent() != null ? dept.getParent().getId() : "");
             List<Role> roleList = dept.getRoleList();
             if (roleList.size() > 0) {
                 for (Role role : roleList) {
-                    DeptVO roleVO = new DeptVO(role.getId(), role.getName(), dept.getId());
+                    DeptVO roleVO = new DeptVO();
+                    roleVO.setId(role.getId());
+                    roleVO.setDeptName(role.getName());
+                    roleVO.setParentId(dept.getId());
                     deptVOList.add(roleVO);
                 }
             }
@@ -75,6 +81,7 @@ public class DeptService {
         }
         return deptVOList;
     }
+
     public DeptVO findOneVO(String deptId) {
         Dept one = this.findOne(deptId);
         DeptVO deptVO = new DeptVO();
@@ -87,10 +94,8 @@ public class DeptService {
             deptVO.setGridId(one.getGrid().getId());
             deptVO.setGridName(one.getGrid().getGridName());
         }
-
         return deptVO;
     }
-
 
     /**
      * 新增
@@ -144,16 +149,16 @@ public class DeptService {
             DeptVO deptVO = new DeptVO();
             deptVO.setId(dept.getId());
             deptVO.setDeptName(dept.getDeptName());
-            deptVO.setParentId(dept.getParent().getId());
+            deptVO.setParentId(dept.getParent() != null ? dept.getParent().getId() : "");
             List<User> userList = dept.getUserList();
             if (userList.size() > 0) {
-                userList.forEach(user -> {
+                for (User user : userList) {
                     DeptVO userVO = new DeptVO();
                     userVO.setId(user.getId());
                     userVO.setDeptName(user.getName());
                     userVO.setParentId(dept.getId());
                     deptVOList.add(userVO);
-                });
+                }
             }
             deptVOList.add(deptVO);
         });
