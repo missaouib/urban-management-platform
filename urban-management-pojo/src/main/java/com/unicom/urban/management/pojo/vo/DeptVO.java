@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * @author 顾志杰
  * @date 2020/11/10-18:00
@@ -19,5 +21,20 @@ public class DeptVO {
 
     private String deptName;
 
-    private String pId;
+
+    private String describes;
+
+    private String deptAddress;
+
+    private String deptPhone;
+
+    private String parentId;
+
+    private String parentName;
+
+    private String gridId;
+
+    private String gridName;
+
+    private Integer sort;
 }
