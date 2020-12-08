@@ -80,18 +80,6 @@
         </form>
     </div>
 
-<!--    <div class="notice_check">-->
-<!--        <form id="search-form">-->
-<!--            <p>-->
-<!--                <label class="">账号：</label>-->
-<!--                <input type="text" class="find_input" name="username">-->
-<!--                <label class="">姓名：</label>-->
-<!--                <input type="text" class="find_input" name="name">-->
-<!--                <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">-->
-<!--                <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">-->
-<!--            </p>-->
-<!--        </form>-->
-<!--    </div>-->
 
     <div class="clear"></div>
 
@@ -100,20 +88,7 @@
         <a class="btn btn-success" onclick="$.operate.addTab()">
             <i class="fa fa-plus"></i> 新增
         </a>
-<!--        <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">-->
-<!--            <i class="fa fa-edit"></i> 修改-->
-<!--        </a>-->
-<!--        <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">-->
-<!--            <i class="fa fa-remove"></i> 删除-->
-<!--        </a>-->
 
-
-        <!--    <a class="btn btn-info" onclick="$.table.importExcel()">-->
-        <!--        <i class="fa fa-upload"></i> 导入-->
-        <!--    </a>-->
-        <!--    <a class="btn btn-warning" onclick="$.table.exportExcel()">-->
-        <!--        <i class="fa fa-download"></i> 导出-->
-        <!--    </a>-->
     </div>
 
 
@@ -166,17 +141,11 @@
             createUrl: addUrl,
             updateUrl: editUrl,
             removeUrl: removeUrl,
-            // exportUrl: prefix + "/export",
-            // importUrl: prefix + "/importData",
-            // importTemplateUrl: prefix + "/importTemplate",
             uniqueId: "id",
             sortName: "updateTime",
             sortOrder: "desc",
             modalName: "用户",
             columns: [
-                // {
-                //     checkbox: true
-                // },
                 {
                     field: 'index',
                     title: '序号',
@@ -200,12 +169,12 @@
                 },
                 {
                     title: '所属部门',
-                    field: 'createTime',
+                    field: 'deptName',
                     sortable: true,
                 },
                 {
                     title: '所属角色',
-                    field: 'updateTime',
+                    field: 'roles',
                     sortable: true,
 
                 },
@@ -214,14 +183,13 @@
                     field: '',
                     class:'radios',
                     formatter: function (value, row) {
-                        // var e = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
                         var e =
                             '<label class="toggle-switch switch-solid" style="margin: 0 5px">\n' +
                             '<input type="checkbox" id="status" checked>\n' +
                             '<span></span>\n' +
                             '</label>' +
                             '<a href="#" title="" style="margin-right: 5px">修改</a>' +
-                            '<a href="#" title="" style="margin-right: 5px">注释</a>' +
+                            '<a href="#" title="" style="margin-right: 5px">注销</a>' +
                             '<a href="#" title="">重置密码</a>'
                         return e;
                     }

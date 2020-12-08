@@ -10,6 +10,7 @@ import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.dto.ChangePasswordDTO;
 import com.unicom.urban.management.pojo.dto.UserDTO;
 import com.unicom.urban.management.pojo.entity.Dept;
+import com.unicom.urban.management.pojo.entity.Role;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.dept.DeptService;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
@@ -54,8 +56,16 @@ public class UserService {
         };
         Page<User> page = userRepository.findAll(specification, pageable);
 
-        List<UserVO> userVOList = UserMapper.INSTANCE.userListToUserVOList(page.getContent());
-
+        List<User> content = page.getContent();
+        List<UserVO> userVOList = UserMapper.INSTANCE.userListToUserVOList(content);
+        userVOList.forEach(v -> {
+            User user = content.stream().filter(c -> c.getId().equals(v.getId())).collect(Collectors.toList()).get(0);
+            StringBuilder roles = new StringBuilder();
+            for (Role role : user.getRoleList()) {
+                roles.append(",").append(role.getName());
+            }
+            v.setRoles(roles.toString().length()>0?roles.toString().substring(1):"");
+        });
         return new PageImpl<>(userVOList, page.getPageable(), page.getTotalElements());
     }
 
@@ -74,13 +84,13 @@ public class UserService {
     /**
      * 初始化密码
      */
-    public void initialization(String userId){
+    public void initialization(String userId) {
         Optional<User> ifUser = userRepository.findById(userId);
-        if(ifUser.isPresent()){
+        if (ifUser.isPresent()) {
             User user = ifUser.get();
             this.initPassword(user);
             userRepository.saveAndFlush(user);
-        }else{
+        } else {
             throw new RuntimeException("用户不存在");
         }
     }
@@ -88,13 +98,13 @@ public class UserService {
     /**
      * 激活
      */
-    public void activation(String userId,int sts){
+    public void activation(String userId, int sts) {
         Optional<User> ifUser = userRepository.findById(userId);
-        if(ifUser.isPresent()){
+        if (ifUser.isPresent()) {
             User user = ifUser.get();
             user.setSts(sts);
             userRepository.saveAndFlush(user);
-        }else{
+        } else {
             throw new RuntimeException("用户不存在");
         }
     }
