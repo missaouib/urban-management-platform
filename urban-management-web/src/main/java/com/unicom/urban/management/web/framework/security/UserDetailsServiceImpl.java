@@ -42,7 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         userBean.setId(user.getId());
 
-        userBean.setUsername(user.getName());
+        userBean.setUsername(user.getUsername());
 
         userBean.setPassword(user.getPassword());
 
