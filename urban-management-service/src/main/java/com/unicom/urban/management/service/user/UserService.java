@@ -25,17 +25,13 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackOn = Exception.class)
 public class UserService {
 
-    private static final String SYSTEM= "1";
 
     @Autowired
     private UserRepository userRepository;
@@ -66,8 +62,8 @@ public class UserService {
             for (Role role : user.getRoleList()) {
                 roles.append(",").append(role.getName());
             }
-            v.setRoles(roles.toString().length()>0?roles.toString().substring(1):"");
-            if(user.getId().equals(SYSTEM)){
+            v.setRoles(roles.toString().length() > 0 ? roles.toString().substring(1) : "");
+            if (user.getId().equals(SystemConstant.ADMIN_USER_ID)) {
                 v.setSystem("1");
             }
             v.setSts(user.getSts());
@@ -108,7 +104,7 @@ public class UserService {
         Optional<User> ifUser = userRepository.findById(userId);
         if (ifUser.isPresent()) {
             User user = ifUser.get();
-            user.setSts((null==user.getSts()||user.getSts()==0)?1:0);
+            user.setSts((null == user.getSts() || user.getSts() == 0) ? 1 : 0);
             userRepository.saveAndFlush(user);
         } else {
             throw new RuntimeException("用户不存在");
@@ -179,32 +175,21 @@ public class UserService {
     }
 
     @Log(name = "用户管理-删除")
-    public void removeUser(String ids) {
-        List<String> idList = Arrays.asList(ids.split(","));
-
-        if (checkUser(idList)) {
-
-        }
-
-//        userRepository.deleteUserWithIds(idList);
-
-        for (String id : idList) {
-            userRepository.deleteById(id);
-        }
-
+    public void removeUser(String id) {
+        List<String> idList = Collections.singletonList(id);
+        checkUser(idList);
+        userRepository.deleteById(id);
     }
 
     /**
      * 检查用户是否可以被删除
      */
-    private boolean checkUser(List<String> ids) {
+    private void checkUser(List<String> ids) {
         for (String id : ids) {
             if (isAdmin(id)) {
                 throw new DataValidException("超级管理员角色不能删除");
             }
-
         }
-        return true;
     }
 
     private boolean isAdmin(String id) {
