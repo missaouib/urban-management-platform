@@ -98,6 +98,7 @@
                 <div class="notice_bot">
                     <div class="r_right but_p girdBtnGroup" id="eventButton">
                         <button class="but_save" type="button" style="margin-right: 10px" onclick="dept()">保存</button>
+                        <button class="but_save" type="button" style="margin-right: 10px" onclick="restore()">清空</button>
                         <button class="but_save" type="button" style="margin-right: 10px" onclick="del()">删除</button>
                     </div>
                 </div>
@@ -229,6 +230,13 @@
     function del() {
         let data = $('#deptForm').serialize();
         $.operate.saveAndReload(delUrl, data);
+    }
+
+    function restore() {
+        $('#deptForm')[0].reset();
+        $("#deptId").val("");
+        $("#gridId").val("");
+        $("#parentId").val("");
     }
 
 </script>
