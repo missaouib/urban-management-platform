@@ -82,4 +82,14 @@ public class UserController {
         userService.changePassword(changePasswordDTO);
     }
 
+    @GetMapping("/activation")
+    public void activation(String id){
+        userService.activation(id);
+    }
+
+    @GetMapping("/initialization")
+    public void initialization(String id){
+        userService.initialization(id);
+    }
+
 }

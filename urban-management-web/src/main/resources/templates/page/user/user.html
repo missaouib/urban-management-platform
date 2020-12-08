@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
     <title>用户管理</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
 
 </head>
-<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
 <div class="notice_main ">
     <h6>用户管理</h6>
     <div style="border-bottom: 1px #ccc solid;padding-bottom: 8px">
-        <p style="line-height: 24px;font-size: 14px;padding: 4px 0 0 36px ;color:#bb8940;background-image: url(img/ts_03.png);background-repeat: no-repeat;background-position: 10px 8px;font-weight: bold">温馨提示</p>
+        <p style="line-height: 24px;font-size: 14px;padding: 4px 0 0 36px ;color:#bb8940;background-image: url(img/ts_03.png);background-repeat: no-repeat;background-position: 10px 8px;font-weight: bold">
+            温馨提示</p>
         <ul class="ts">
             <li><span>*</span>该页面主要显示的是用户信息查询界面。</li>
         </ul>
@@ -84,7 +85,7 @@
     <div class="clear"></div>
 
 
-    <div class="btn-group-sm" id="toolbar" >
+    <div class="btn-group-sm" id="toolbar">
         <a class="btn btn-success" onclick="$.operate.addTab()">
             <i class="fa fa-plus"></i> 新增
         </a>
@@ -92,10 +93,8 @@
     </div>
 
 
-    <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
 </div>
-
-
 
 
 <th:block th:include="page/fragments/common :: common_js"/>
@@ -135,6 +134,10 @@
 
     let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
 
+    let activationUrl = /*[[@{/user/activation}]]*/ "/user/activation";
+
+    let initializationUrl = /*[[@{/user/initialization}]]*/ "/user/initialization";
+
     function queryUserList() {
         var options = {
             url: searchUrl,
@@ -149,7 +152,7 @@
                 {
                     field: 'index',
                     title: '序号',
-                    formatter : function (value, row, index){
+                    formatter: function (value, row, index) {
                         var page = $('#bootstrap-table').bootstrapTable("getPage");
                         return page.pageSize * (page.pageNumber - 1) + index + 1;
                     }
@@ -181,22 +184,43 @@
                 {
                     title: '操作',
                     field: '',
-                    class:'radios',
+                    class: 'radios',
                     formatter: function (value, row) {
-                        var e =
-                            '<label class="toggle-switch switch-solid" style="margin: 0 5px">\n' +
-                            '<input type="checkbox" id="status" checked>\n' +
-                            '<span></span>\n' +
-                            '</label>' +
-                            '<a href="#" title="" style="margin-right: 5px">修改</a>' +
-                            '<a href="#" title="" style="margin-right: 5px">注销</a>' +
-                            '<a href="#" title="">重置密码</a>'
+                        var e = "<label class='toggle-switch switch-solid' style='margin: 0 5px'>\n";
+                        if (row.sts === 0) {
+                            e += "<input type='checkbox' id='status' checked onclick='activation(\"" + row.id + "\")'>\n"
+                        } else {
+                            e += "<input type='checkbox' id='status'  onclick='activation(\"" + row.id + "\")'>\n"
+                        }
+                        e += "<span></span>\n</label>";
+                        if (row.system !== "1") {
+                            e += "<a href='#' title='' style='margin-right: 5px'>修改</a>";
+                        }
+                        e += "<a href='' title='' style='margin-right: 5px' >注销</a>" +
+                            "<a href='' title='' onclick='initialization(\"" + row.id + "\")'>重置密码</a>"
                         return e;
                     }
                 }
             ]
         };
         $.table.init(options);
+    }
+
+    function activation(obj) {
+        $.ajax({
+            type: "GET",
+            url: activationUrl + "?id=" + obj
+        });
+    }
+
+    function initialization(obj) {
+        $.ajax({
+            type: "GET",
+            url: initializationUrl + "?id=" + obj,
+            success: function (result) {
+               console.log(result)
+            }
+        });
     }
 
 

@@ -35,6 +35,8 @@ import java.util.stream.Collectors;
 @Transactional(rollbackOn = Exception.class)
 public class UserService {
 
+    private static final String SYSTEM= "1";
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -65,6 +67,10 @@ public class UserService {
                 roles.append(",").append(role.getName());
             }
             v.setRoles(roles.toString().length()>0?roles.toString().substring(1):"");
+            if(user.getId().equals(SYSTEM)){
+                v.setSystem("1");
+            }
+            v.setSts(user.getSts());
         });
         return new PageImpl<>(userVOList, page.getPageable(), page.getTotalElements());
     }
@@ -98,11 +104,11 @@ public class UserService {
     /**
      * 激活
      */
-    public void activation(String userId, int sts) {
+    public void activation(String userId) {
         Optional<User> ifUser = userRepository.findById(userId);
         if (ifUser.isPresent()) {
             User user = ifUser.get();
-            user.setSts(sts);
+            user.setSts((null==user.getSts()||user.getSts()==0)?1:0);
             userRepository.saveAndFlush(user);
         } else {
             throw new RuntimeException("用户不存在");

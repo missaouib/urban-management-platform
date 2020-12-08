@@ -26,4 +26,8 @@ public class UserVO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
+    private String system;
+
+    private Integer sts;
+
 }
