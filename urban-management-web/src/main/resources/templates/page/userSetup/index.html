@@ -185,7 +185,7 @@
     function getUserTree() {
         let settingForUser = {
             callback: {
-                onClick: zTreeOnClickForUser
+
             },
             data: {
                 keep: {
@@ -218,16 +218,26 @@
 
 
     }
+    var treeArr = [];
+    function zTreeOnCheck(event, treeId, treeNode){
 
-    function zTreeOnClickForUser(event, treeId, treeNode) {
+        if (treeNode.checked == true){
+            treeArr.push(treeNode)
+            console.log("true",treeArr)
+        }else {
+            treeArr.pop(treeNode)
+            console.log("false",treeArr)
+        }
+    }
+    function onTreeClick(event, treeId, treeNode, clickFlag){
 
     }
 
     function getDeptAndRoleTree() {
         let settingForRole = {
             callback: {
-                onClick: zTreeOnClickForRole,
-                beforeCheck: roleCheckBox
+                onCheck: zTreeOnCheck,
+                onClick: onTreeClick
             },
             check: {
                 enable: true
@@ -254,13 +264,6 @@
         });
     }
 
-    function zTreeOnClickForRole(event, treeId, treeNode) {
-
-    }
-
-    function roleCheckBox(treeId, treeNode) {
-
-    }
 
     function setCheckNode() {
         let treeObj = $.fn.zTree.getZTreeObj("roleTree");
