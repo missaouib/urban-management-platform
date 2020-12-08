@@ -1,9 +1,12 @@
 package com.unicom.urban.management.service.menu;
 
+import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.menu.MenuRepository;
+import com.unicom.urban.management.dao.role.RoleRepository;
 import com.unicom.urban.management.mapper.MenuMapper;
 import com.unicom.urban.management.pojo.dto.MenuDTO;
 import com.unicom.urban.management.pojo.entity.Menu;
+import com.unicom.urban.management.pojo.entity.Role;
 import com.unicom.urban.management.pojo.vo.MenuVO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@javax.transaction.Transactional(rollbackOn = Exception.class)
 public class MenuService {
 
     @Autowired
     private MenuRepository menuRepository;
-
+    @Autowired
+    private RoleRepository roleRepository;
 
     public Page<MenuVO> search(MenuDTO menuDTO, Pageable pageable) {
         Page<Menu> page = menuRepository.findAll((Specification<Menu>) (root, query, criteriaBuilder) -> {
@@ -69,5 +74,27 @@ public class MenuService {
           menuVOList.add(vo);
       }
        return menuVOList;
+    }
+
+    public List<MenuVO> findAll() {
+        List<Menu> menuList = null;
+        List<MenuVO> menuVOList = new ArrayList<>();
+        String roleId = SecurityUtil.getRoleId().get(0);
+        if (roleId.equals("1")){
+            menuList = menuRepository.findAll();
+        }else {
+            Role role = roleRepository.findById(roleId).orElse(new Role());
+            menuList = role.getMenuList();
+        }
+        for (Menu m : menuList){
+            MenuVO vo = new MenuVO();
+            vo.setId(m.getId());
+            vo.setParentId(m.getParent() == null ? "" : m.getParent().getId());
+            vo.setIcon(m.getIcon() == null ? "" : m.getIcon());
+            vo.setName(m.getName());
+            vo.setPath(m.getPath());
+            menuVOList.add(vo);
+        }
+        return menuVOList;
     }
 }
