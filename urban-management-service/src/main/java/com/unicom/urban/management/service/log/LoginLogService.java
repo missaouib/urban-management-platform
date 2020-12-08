@@ -1,7 +1,7 @@
 package com.unicom.urban.management.service.log;
 
 import com.unicom.urban.management.dao.log.LoginLogRepository;
-import com.unicom.urban.management.mapper.LoginLogMapper;
+import com.unicom.urban.management.mapper.LogMapper;
 import com.unicom.urban.management.pojo.entity.LoginLog;
 import com.unicom.urban.management.pojo.dto.LoginLogDTO;
 import com.unicom.urban.management.pojo.vo.LoginLogVO;
@@ -39,7 +39,7 @@ public class LoginLogService {
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
-        List<LoginLogVO> list = LoginLogMapper.INSTANCE.loginLogListToLoginLogVOList(page.getContent());
+        List<LoginLogVO> list = LogMapper.INSTANCE.loginLogListToLoginLogVOList(page.getContent());
         return new PageImpl<>(list, page.getPageable(), page.getTotalElements());
     }
 

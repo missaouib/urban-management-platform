@@ -60,14 +60,14 @@ public class UserService {
     }
 
 
-    @Log(name = "新增管理-新增")
+    @Log(name = "用户管理-新增")
     public void saveUser(UserDTO userDTO) {
 
-        if (usernameAlreadyExists(userDTO.getUsername())) {
-            throw new DataValidException("账号已经存在");
-        }
-
-        persistUser(userDTO);
+//        if (usernameAlreadyExists(userDTO.getUsername())) {
+//            throw new DataValidException("账号已经存在");
+//        }
+//
+//        persistUser(userDTO);
 
     }
 
