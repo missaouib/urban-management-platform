@@ -3,6 +3,7 @@ package com.unicom.urban.management.pojo.dto;
 import com.unicom.urban.management.pojo.entity.EventFile;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -31,6 +32,7 @@ public class EventDTO {
 
     private String userName;
 
+    @NotBlank(message = "网格不能为空")
     private String gridId;
 
     private Integer sts;
@@ -42,6 +44,7 @@ public class EventDTO {
      */
     private String eventTypeId;
 
+    @NotBlank(message = "请选择立案时限")
     private String timeLimitId;
 
     /**
