@@ -1,9 +1,13 @@
 package com.unicom.urban.management.web.framework.security;
 
+import com.unicom.urban.management.common.exception.authentication.NotDeptException;
 import com.unicom.urban.management.dao.user.UserRepository;
+import com.unicom.urban.management.pojo.SecurityDeptBean;
 import com.unicom.urban.management.pojo.SecurityRoleBean;
 import com.unicom.urban.management.pojo.SecurityUserBean;
+import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,6 +17,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.stream.Collectors;
 
+/**
+ * 登录时查询用户
+ *
+ * @author liukai
+ */
+@Slf4j
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -20,7 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
 
@@ -43,10 +53,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return securityUserBean;
         }).collect(Collectors.toSet()));
 
-//        userBean.setDeptId(user.getDept().getId());
-
-//        userBean.setDeptName(user.getDept().getDeptName());
-
+        SecurityDeptBean deptBean = new SecurityDeptBean();
+        Dept dept = user.getDept();
+        if (dept == null) {
+            throw new NotDeptException("该用户没有配置部门");
+        }
+        deptBean.setId(dept.getId());
+        deptBean.setDeptName(dept.getDeptName());
+        userBean.setDept(deptBean);
         return userBean;
 
     }

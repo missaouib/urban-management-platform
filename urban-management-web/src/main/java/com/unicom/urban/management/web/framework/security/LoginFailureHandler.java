@@ -3,6 +3,7 @@ package com.unicom.urban.management.web.framework.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unicom.urban.management.common.exception.authentication.BadCaptchaException;
 import com.unicom.urban.management.common.exception.authentication.CaptchaExpiredException;
+import com.unicom.urban.management.common.exception.authentication.NotDeptException;
 import com.unicom.urban.management.pojo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,10 @@ public class LoginFailureHandler extends AbstractAuthenticationHandler implement
         if (exception instanceof CaptchaExpiredException) {
             message = 4;
             result = Result.fail("302", "验证码已过期，情重新输入");
+        }
+        if (exception instanceof NotDeptException) {
+            message = 5;
+            result = Result.fail("302", "没有配置部门,请联系超级管理员");
         }
         try {
             loginLog(request, response, message);

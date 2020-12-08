@@ -1,6 +1,5 @@
 package com.unicom.urban.management.common.util;
 
-import com.unicom.urban.management.pojo.SecurityDeptBean;
 import com.unicom.urban.management.pojo.SecurityRoleBean;
 import com.unicom.urban.management.pojo.SecurityUserBean;
 import org.springframework.security.core.Authentication;
@@ -42,8 +41,8 @@ public abstract class SecurityUtil {
      *
      * @return 部门ID集合
      */
-    public static List<String> getDeptId() {
-        return getUser().getDeptList().stream().map(SecurityDeptBean::getId).collect(Collectors.toList());
+    public static String getDeptId() {
+        return getUser().getDept().getId();
     }
 
 
@@ -52,8 +51,8 @@ public abstract class SecurityUtil {
      *
      * @return 部门名称集合
      */
-    public static List<String> getDeptName() {
-        return getUser().getDeptList().stream().map(SecurityDeptBean::getDeptName).collect(Collectors.toList());
+    public static String getDeptName() {
+        return getUser().getDept().getDeptName();
     }
 
     /**
