@@ -5,7 +5,6 @@
         async: false,
         url: "/menu/findAllMenu",
         success: function (result) {
-            console.log(result.data)
             var data = result.data;
             for (var i=0; i< data.length; i++){
                 menuArray[i] = data[i];
@@ -378,11 +377,9 @@
         },
         loadMenu: function (id) {
             var data=getMenus();
-            console.log("data",data)
             var _html = "";
             $.each(data, function (i) {
                 var row = data[i];
-                console.log("row",row)
                 if (row.parentId == "") {
                     if (i == 0) {
                         // _html += '<li class="treeview active">';
@@ -426,7 +423,6 @@
                     _html += '</li>'
                 }
             });
-            console.log(_html)
             $("#sidebar-menu").append(_html);
             $("#sidebar-menu li a").click(function () {
 
