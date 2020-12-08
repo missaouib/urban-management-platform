@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -137,7 +138,7 @@ public class SupervisionAcceptanceController {
      * @return Result
      */
     @PostMapping("/receive")
-    public Result receive(EventDTO eventDTO) {
+    public Result receive(@Valid EventDTO eventDTO) {
         eventDTO.setInitSts(2);
         eventService.save(eventDTO);
         return Result.success();
@@ -149,7 +150,7 @@ public class SupervisionAcceptanceController {
      * @return Result
      */
     @PostMapping("/dispatch")
-    public Result dispatch(EventDTO eventDTO) {
+    public Result dispatch(@Valid EventDTO eventDTO) {
         eventDTO.setInitSts(3);
         eventService.save(eventDTO);
         return Result.success();
@@ -266,7 +267,7 @@ public class SupervisionAcceptanceController {
      */
     @PostMapping("/completeByReceptionistWithSendVerification")
     public Result completeByReceptionistWithSendVerification(EventDTO eventDTO) {
-        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(),1);
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);
         eventDTO.setEventFileList(eventFileList);
         switch (eventDTO.getButton()) {
             /*
@@ -322,7 +323,7 @@ public class SupervisionAcceptanceController {
      */
     @PostMapping("/completeBySelfProcessingAudit")
     public Result completeBySelfProcessingAudit(EventDTO eventDTO) {
-        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(),1);
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);
         eventDTO.setEventFileList(eventFileList);
         switch (eventDTO.getButton()) {
             case "20":
