@@ -13,13 +13,12 @@ import com.unicom.urban.management.service.grid.GridService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -62,25 +61,33 @@ public class DeptService {
      * @return 树结构数据
      */
     public List<DeptVO> getAllAndRoleForTree() {
-        List<Dept> deptList = deptRepository.findAll();
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        List<Dept> deptList = deptRepository.findAll(Sort.by(Sort.Order.asc("sort")));
         List<DeptVO> deptVOList = new ArrayList<>();
         for (Dept dept : deptList) {
             DeptVO deptVO = new DeptVO();
             deptVO.setId(dept.getId());
             deptVO.setDeptName(dept.getDeptName());
             deptVO.setParentId(dept.getParent() != null ? dept.getParent().getId() : "");
+            deptVO.setSort(dept.getSort() != null ? dept.getSort() : 0);
             List<Role> roleList = dept.getRoleList();
             if (roleList.size() > 0) {
                 for (Role role : roleList) {
                     DeptVO roleVO = new DeptVO();
                     roleVO.setId(role.getId());
                     roleVO.setDeptName(role.getName());
+                    roleVO.setDescribes(role.getDescribes());
+                    roleVO.setCreateTime(df.format(role.getCreateTime()));
                     roleVO.setParentId(dept.getId());
+                    roleVO.setParentName(dept.getDeptName());
+                    roleVO.setSort(role.getSort() != null ? role.getSort() : 0);
+                    roleVO.setLevelOrNot("role");
                     deptVOList.add(roleVO);
                 }
             }
             deptVOList.add(deptVO);
         }
+        deptVOList.sort(Comparator.comparingInt(DeptVO::getSort));
         return deptVOList;
     }
 
@@ -129,16 +136,24 @@ public class DeptService {
         deptRepository.save(dept);
     }
 
+    /**
+     * 角色新增的排序字段
+     *
+     * @param deptId 部门id
+     * @return 排序值
+     */
     public Integer getRoleSortByDeptId(String deptId) {
         Dept one = deptRepository.getOne(deptId);
         List<Role> roleList = one.getRoleList();
         if (roleList.size() > 0) {
-            List<Integer> numList = roleList.stream().map(Role::getSort).collect(Collectors.toList());
-            return Collections.max(numList) + 10;
+            List<Integer> numList = roleList.stream().map(Role::getSort).distinct().collect(Collectors.toList());
+            Integer max = Collections.max(numList);
+            return (max != null ? max : 0) + 10;
         } else {
             return 10;
         }
     }
+
     /**
      * 人员配置结构树
      *

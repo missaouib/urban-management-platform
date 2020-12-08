@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.role;
 
+import com.unicom.urban.management.common.annotations.Log;
 import com.unicom.urban.management.dao.role.RoleRepository;
 import com.unicom.urban.management.mapper.RoleMapper;
 import com.unicom.urban.management.mapper.UserMapper;
@@ -85,6 +86,7 @@ public class RoleService {
      *
      * @param roleDTO 数据
      */
+    @Log(name = "角色管理-新增")
     public void saveRoleByDeptId(RoleDTO roleDTO) {
         Role role = new Role();
         role.setName(roleDTO.getName());
@@ -94,6 +96,26 @@ public class RoleService {
         Dept dept = deptService.findOne(roleDTO.getDeptId());
         dept.getRoleList().add(saveRole);
         deptService.updateDeptForRoleSetup(dept);
+    }
+
+    /**
+     * 角色配置修改
+     *
+     * @param roleDTO 数据
+     */
+    @Log(name = "角色管理-修改")
+    public void updateRoleByDeptId(RoleDTO roleDTO) {
+        Role one = roleRepository.getOne(roleDTO.getId());
+        one.setName(roleDTO.getName());
+        one.setDescribes(roleDTO.getDescribes());
+        Dept dept = deptService.findOne(roleDTO.getDeptId());
+        one.setDept(dept);
+        roleRepository.saveAndFlush(one);
+    }
+
+    @Log(name = "角色管理-删除")
+    public void deleteRoleById(String id) {
+        roleRepository.deleteById(id);
     }
 
 }

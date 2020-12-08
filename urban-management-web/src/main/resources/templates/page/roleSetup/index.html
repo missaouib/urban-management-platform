@@ -38,6 +38,7 @@
                 <div class="top_out">
                     <table class="table">
                         <tbody>
+                        <input type="hidden" id="id" name="id" value="">
                         <tr>
                             <td><span></span>角色名称</td>
                             <td>
@@ -51,20 +52,19 @@
                         <tr class="roleBox" id="timeAndSort">
                             <td><span></span>创建时间</td>
                             <td>
-                                <input size="16" class="form_datetime" id="initialDate" name="initialDate" type="text"
-                                       value="" readonly required>
+                                <input size="16" id="createTime" type="text" readonly required>
                                 <span class="add-on"><i class="icon-remove"></i></span>
                                 <span class="add-on"><i class="icon-th"></i></span>
                             </td>
                             <td><span></span>排序</td>
                             <td>
-                                <input id="timeLimitStr" type="text" readonly required>
+                                <input id="sort" type="text" readonly required>
                             </td>
                         </tr>
                         <tr class="col-12">
                             <td><span></span>所属部门</td>
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                <input type="text" readonly="readonly" id="girdStr" class="find_input"/>
+                                <input type="text" readonly="readonly" id="deptName" class="find_input"/>
                                 <input type="hidden" readonly="readonly" id="deptId" name="deptId"
                                        class="find_input" value="1"/>
                                 <button type="button" class="addBtn" onclick="selectEventTypeTree()">
@@ -77,12 +77,19 @@
                 </div>
                 <div class="notice_bot">
                     <div class="r_right but_p girdBtnGroup" id="eventButton">
-                        <button class="but_save" type="button" style="margin-right: 10px" onclick="saveRole()">新增
+                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="saveRoleBtn"
+                                onclick="saveRole()">新增
                         </button>
-                        <button class="but_save" type="button" style="margin-right: 10px">保存</button>
-                        <button class="but_save" type="button" style="margin-right: 10px">删除</button>
+                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="updateRoleBtn"
+                                onclick="updateRole()">修改
+                        </button>
+                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="deleteRoleBtn"
+                                onclick="deleteRole()">删除
+                        </button>
                         <button class="but_save" type="button" style="width: 100px"
-                                onclick="window.parent.$.learuntab.myAddTab('角色批量添加人员', '/roleSetup/add', 'data_id')">批量添加人员</button>
+                                onclick="window.parent.$.learuntab.myAddTab('角色批量添加人员', '/roleSetup/add', 'data_id')">
+                            批量添加人员
+                        </button>
                     </div>
                 </div>
             </div>
@@ -104,11 +111,14 @@
 
     let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
     let saveRoleUrl = /*[[@{/roleSetup/saveRole}]]*/ "/roleSetup/saveRole";
+    let updateRoleUrl = /*[[@{/roleSetup/updateRole}]]*/ "/roleSetup/updateRole";
+    let deleteRoleUrl = /*[[@{/roleSetup/deleteRole}]]*/ "/roleSetup/deleteRole";
 
     $(function () {
 
         //取消隐藏
-        $("#timeAndSort").removeClass("roleBox")
+        $("#timeAndSort").removeClass("roleBox");
+        $("#timeAndSort").addClass("roleBox");
 
         $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
             console.log("e.data", e.data);
@@ -149,18 +159,51 @@
             showMeridian: 1,
             format: "yyyy-mm-dd hh:ii:ss"
         });
-    })
+    });
+
+    function removeClassForTimeAndSort() {
+        $("#timeAndSort").removeClass("roleBox");
+        $("#saveRoleBtn").addClass("roleBox");
+        $("#updateRoleBtn").removeClass("roleBox");
+        $("#deleteRoleBtn").removeClass("roleBox");
+    }
+
+    function addClassForTimeAndSort() {
+        $("#timeAndSort").addClass("roleBox");
+        $("#saveRoleBtn").removeClass("roleBox");
+        $("#updateRoleBtn").addClass("roleBox");
+        $("#deleteRoleBtn").addClass("roleBox");
+    }
 
     function zTreeOnClick(event, treeId, treeNode) {
-        console.log(event,treeId,treeNode)
+        if (treeNode.levelOrNot === "role") {
+            removeClassForTimeAndSort();
+            $("#id").val(treeNode.id);
+            $("#name").val(treeNode.deptName);
+            $("#describes").val(treeNode.describes);
+            $("#createTime").val(treeNode.createTime);
+            $("#sort").val(treeNode.sort);
+            $("#deptId").val(treeNode.parentId);
+            $("#deptName").val(treeNode.parentName);
+        } else {
+            addClassForTimeAndSort();
+            $("#id").val("");
+            $("#name").val("");
+            $("#describes").val("");
+            $("#createTime").val("");
+            $("#sort").val("");
+            $("#deptId").val(treeNode.id);
+            $("#deptName").val(treeNode.deptName);
+        }
+
     }
 
     function selectEventTypeTree() {
         var treeId = $("#treeId").val();
         var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var url = /*[[@{/tree/dept}]]*/ "/tree/dept";
         var options = {
-            title: '选择事件类型',
+            title: '选择部门',
             width: "380",
             url: url,
             callBack: doSubmit
@@ -169,8 +212,10 @@
     }
 
     function doSubmit(index, layero) {
-        var body = layer.getChildFrame('body', index);
-        $("#typeStr").val(body.find('#treeName').val());
+        let body = layer.getChildFrame('body', index);
+        console.log("body", body);
+        $("#deptId").val(body.find('#treeId').val());
+        $("#deptName").val(body.find('#treeName').val());
 
         layer.close(index);
     }
@@ -193,6 +238,16 @@
     function saveRole() {
         let data = $('#roleForm').serialize();
         $.operate.saveAndReload(saveRoleUrl, data);
+    }
+
+    function updateRole() {
+        let data = $('#roleForm').serialize();
+        $.operate.saveAndReload(updateRoleUrl, data);
+    }
+
+    function deleteRole() {
+        let data = $('#roleForm').serialize();
+        $.operate.saveAndReload(deleteRoleUrl, data);
     }
 
 </script>

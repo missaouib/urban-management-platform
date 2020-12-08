@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -42,7 +43,7 @@ public class RoleSetupController {
     }
 
     @PostMapping("/saveRole")
-    public Result saveRole(RoleDTO roleDTO) {
+    public Result saveRole(@Valid RoleDTO roleDTO) {
         roleService.saveRoleByDeptId(roleDTO);
         return Result.success("新增成功");
     }
@@ -51,6 +52,18 @@ public class RoleSetupController {
     public Result getAllAndRoleForTree() {
         List<DeptVO> allAndRoleForTree = deptService.getAllAndRoleForTree();
         return Result.success(allAndRoleForTree);
+    }
+
+    @PostMapping("/updateRole")
+    public Result updateRoleUrl(@Valid RoleDTO roleDTO) {
+        roleService.updateRoleByDeptId(roleDTO);
+        return Result.success("修改成功");
+    }
+
+    @PostMapping("/deleteRole")
+    public Result deleteRoleUrl(@Valid String id) {
+        roleService.deleteRoleById(id);
+        return Result.success("删除成功");
     }
 
 }
