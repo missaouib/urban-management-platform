@@ -161,7 +161,6 @@
 
         getUserTree();
         getDeptAndRoleTree();
-        search()
         $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose: true, todayBtn: true, startView: 4, minView: 3});
         ////日期插件
         $('.form_datetime').datetimepicker({
@@ -174,6 +173,12 @@
             forceParse: 0,
             showMeridian: 1,
             format: "yyyy-mm-dd hh:ii:ss"
+        });
+
+        $("#userTree").click(function () {
+            if ($("#key").val() == 0){
+                $.fn.zTree.getZTreeObj("userTree").expandAll(false);
+            }
         });
     });
 
@@ -210,11 +215,8 @@
                 fuzzySearch("userTree", '#key', null, true);
             }
         });
-        if ($("#key").val() == 0){
-            $("#userTree").click(function () {
-                $.fn.zTree.getZTreeObj("userTree").expandAll(false);
-            });
-        }
+
+
     }
 
     function zTreeOnClickForUser(event, treeId, treeNode) {
