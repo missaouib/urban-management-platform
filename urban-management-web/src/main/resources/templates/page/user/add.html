@@ -5,81 +5,254 @@
     <title>用户新增</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: select2_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
 <!--    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">-->
 </head>
 <body style="border-radius: 8px;width: 680px">
 
-<form id="userForm">
-    <div class="top table2_top">
-<!--        <div>-->
+<div class="selectPoint" style="display: block">
+    <form id="userForm">
+        <div class="top table2_top">
             <div class="top_out">
                 <table class="table">
                     <tbody>
                     <tr>
-                        <td>姓名<span>*</span></td>
+                        <td>姓名<span></span></td>
                         <td>
-                            <input type="text" id="name" name="name"/>
+                            <input type="text" id="name" name="name" class="find_input"/>
                         </td>
-                        <td>登录账号<span>*</span></td>
+                        <td>登录账号<span></span></td>
                         <td>
-                            <input type="text" id="username" name="username"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>手机号码<span>*</span></td>
-                        <td>
-                           <input type="text" id="mobileNumber" name="mobileNumber"/>
-                        </td>
-                    </tr>
-                        <td>选择角色<span>*</span></td>
-                        <td>
-                            <select multiple="multiple" id="role"></select>
+                            <input type="text" id="username" name="username" class="find_input"/>
                         </td>
                     </tr>
                     <tr>
-                        <td>部门<span>*</span></td>
+                        <td>手机号码<span></span></td>
                         <td>
-                            <input name="deptId" type="hidden" id="treeId"/>
-                            <input type="text" id="dept" name="dept" onclick="selectDeptTree()" placeholder="请选择部门"/>
+                            <input type="text" id="mobileNumber" name="" class="find_input"/>
+                        </td>
+                        <td>办公电话<span></span></td>
+                        <td>
+                            <input type="text"  name="" />
                         </td>
                     </tr>
                     <tr>
-                        <td></td>
-<!--                        <td><input type="submit" id="smtBtn" value="保存"></td>-->
+                        <td>邮箱<span></span></td>
+                        <td>
+                            <input type="text" name="" class="find_input"/>
+                        </td>
+                        <td>性别<span></span></td>
+                        <td>
+                            <select id="eventTerm" >
+                                <option value="">--请选择--</option>
+                                <option value="">男</option>
+                                <option value="">女</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>职务<span></span></td>
+                        <td>
+                            <input type="text" name="" class="find_input" />
+                        </td>
+                        <td>出生日期<span></span></td>
+                        <td>
+                            <input size="16" class="form_date find_input" name="initialDate" id="initialDate" type="text">
+                        </td>
+                    </tr>
+                    <tr class="col-12">
+                        <td><span></span>所属区域</td>
+                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                            <input type="text" readonly="readonly" id="girdStr" class="find_input"/>
+                            <input type="hidden" readonly="readonly" id="deptId" name="deptId"
+                                   class="find_input" value="1"/>
+                            <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                +
+                            </button>
+                        </td>
+                        <td><span></span>所属组织</td>
+                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                            <input type="text" readonly="readonly" class="find_input"/>
+                            <input type="hidden" readonly="readonly" name="deptId"
+                                   class="find_input" value="1"/>
+                            <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                +
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>所属角色<span></span></td>
+                        <td class="role_tree">
+                            <div class="treeDemo">
+                                <ul id="treeDemo" class="ztree"></ul>
+                            </div>
+                        </td>
+                        <td>排序<span></span></td>
+                        <td>
+                            <input type="text" name="" class="find_input"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>用户状态<span></span></td>
+                        <td style="text-align: left">
+                            <label class="toggle-switch switch-solid">
+                                <input type="checkbox" id="status" checked>
+                                <span></span>
+                            </label>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-
-<!--    </div>-->
-</form>
-<div class="notice_bot">
-    <div class="r_right but_p" style="display: flex;justify-content: flex-end">
-        <button class="but_save" type="submit" id="smtBtn" onclick="submit()">保存</button>
-        <button class="but_close" onclick="$.modal.closeTab();">关闭</button>
+    </form>
+    <div class="notice_bot">
+        <div class="r_right but_p" style="display: flex;justify-content: flex-end">
+            <button class="but_save" type="submit" id="smtBtn" onclick="submit()">保存</button>
+            <button class="but_close" onclick="$.modal.closeTab();">关闭</button>
+        </div>
     </div>
 </div>
+<!--<form id="userForm">-->
+<!--    <div class="top table2_top">-->
+<!--&lt;!&ndash;        <div>&ndash;&gt;-->
+<!--            <div class="top_out">-->
+<!--                <table class="table">-->
+<!--                    <tbody>-->
+<!--                    <tr>-->
+<!--                        <td>姓名<span>*</span></td>-->
+<!--                        <td>-->
+<!--                            <input type="text" id="name" name="name"/>-->
+<!--                        </td>-->
+<!--                        <td>登录账号<span>*</span></td>-->
+<!--                        <td>-->
+<!--                            <input type="text" id="username" name="username"/>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <td>手机号码<span>*</span></td>-->
+<!--                        <td>-->
+<!--                           <input type="text" id="mobileNumber" name="mobileNumber"/>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                        <td>选择角色<span>*</span></td>-->
+<!--                        <td>-->
+<!--                            <select multiple="multiple" id="role"></select>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <td>部门<span>*</span></td>-->
+<!--                        <td>-->
+<!--                            <input name="deptId" type="hidden" id="treeId"/>-->
+<!--                            <input type="text" id="dept" name="dept" onclick="selectDeptTree()" placeholder="请选择部门"/>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <td></td>-->
+<!--&lt;!&ndash;                        <td><input type="submit" id="smtBtn" value="保存"></td>&ndash;&gt;-->
+<!--                    </tr>-->
+<!--                    </tbody>-->
+<!--                </table>-->
+<!--            </div>-->
+<!--        </div>-->
+
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--</form>-->
+
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: select2_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
 
 <script type="text/javascript" th:inline="javascript">
 
-    $(function (){
-
-
-
-    })
-
+    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
     $(function () {
+
+        $.ajaxUtil.get(componentTypeUrl, function (e) {
+            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+
+        });
+
+        $(".treeDemo").on('click','.level1',function () {
+            $(".level2 .chk").css('display','inline-block')
+        })
+
+
+        var setting = {
+            callback: {
+                onClick: zTreeOnClick
+            },
+            check: {
+                enable: true ,//显示复选框
+                chkStyle : "checkbox"
+            },
+            data: {//数据加载
+                keep: {
+                    parent: true,
+                    leaf: true
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: 'id',
+                    pIdKey: 'parent'
+                },
+                key: {
+                    name: "name"
+                }
+            }
+        };
+
         $("#role").select2({
             language: "es"
         });
+
+        ////日期插件
+        $('.form_date').datetimepicker({
+            language: 'fr',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0,
+            language: 'zh-CN', //语言
+            format: "yyyy-mm-dd"
+        });
+
     })
 
+    function zTreeOnClick(event, treeId, treeNode) {
+        console.log(event,treeId,treeNode)
+    }
 
 
+    function selectEventTypeTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择事件类型',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#typeStr").val(body.find('#treeName').val());
+
+        layer.close(index);
+    }
 
      // 更改error文字
     jQuery.extend(jQuery.validator.messages, {
