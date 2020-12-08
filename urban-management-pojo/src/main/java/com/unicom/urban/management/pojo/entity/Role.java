@@ -54,9 +54,6 @@ public class Role extends BaseEntity {
     @JoinTable(name = "sys_role_menu", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
     private List<Menu> menuList;
 
-    @Column(columnDefinition = "TINYINT(1)")
-    private Integer sts;
-
     private Integer sort;
 
 
