@@ -66,7 +66,7 @@
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                 <input type="text" readonly="readonly" id="deptName" class="find_input"/>
                                 <input type="hidden" readonly="readonly" id="deptId" name="deptId"
-                                       class="find_input" value="1"/>
+                                       class="find_input"/>
                                 <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                     +
                                 </button>
@@ -121,10 +121,8 @@
         $("#timeAndSort").addClass("roleBox");
 
         $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
-            console.log("e.data", e.data);
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
-
 
         var setting = {
             callback: {
@@ -199,10 +197,10 @@
     }
 
     function selectEventTypeTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/dept}]]*/ "/tree/dept";
-        var options = {
+        let treeId = $("#treeId").val();
+        let deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        let url = /*[[@{/tree/dept}]]*/ "/tree/dept";
+        let options = {
             title: '选择部门',
             width: "380",
             url: url,
@@ -213,10 +211,8 @@
 
     function doSubmit(index, layero) {
         let body = layer.getChildFrame('body', index);
-        console.log("body", body);
         $("#deptId").val(body.find('#treeId').val());
         $("#deptName").val(body.find('#treeName').val());
-
         layer.close(index);
     }
 

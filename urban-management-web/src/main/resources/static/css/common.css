@@ -1936,5 +1936,5 @@ label.error {
     color: black!important;
 }
 .ztree li span.button.chk.checkbox_false_full{
-    display: none;
+    /*display: none;*/
 }

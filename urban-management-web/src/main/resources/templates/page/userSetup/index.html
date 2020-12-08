@@ -25,7 +25,7 @@
             </form>
             <div class="tree">
                 <div class="treeDemo">
-                    <ul id="treeDemo" class="ztree"></ul>
+                    <ul id="userTree" class="ztree"></ul>
                 </div>
             </div>
         </div>
@@ -95,8 +95,8 @@
                         <tr class="col-12">
                             <td><span></span>所属部门</td>
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                <input type="text" readonly="readonly" id="girdStr" class="find_input"/>
-                                <input type="hidden" readonly="readonly" id="girdId" name="eventTypeId"
+                                <input type="text" readonly="readonly" id="deptName" class="find_input"/>
+                                <input type="hidden" readonly="readonly" id="deptId" name="deptId"
                                        class="find_input"/>
                                 <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                     +
@@ -121,10 +121,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">title</h4>
+                    <h4 class="modal-title">选择角色</h4>
                 </div>
                 <div class="modal-body">
-                    body
+                    <div class="tree">
+                        <div class="treeDemo">
+                            <ul id="roleTree" class="ztree"></ul>
+                        </div>
+                    </div>
                 </div>
                 <input type="hidden" id="imageUrlList" value="">
                 <div class="modal-footer justify-content-between"
@@ -149,35 +153,15 @@
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
-    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
+    let getAllAndUserForTreeUrl = /*[[@{/userSetup/getAllAndUserForTree}]]*/ "/userSetup/getAllAndUserForTree";
+    let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
 
     $(function () {
-        $.ajaxUtil.get(componentTypeUrl, function (e) {
-            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
-        })
 
+        getUserTree();
+        getDeptAndRoleTree();
 
-        var setting = {
-            callback: {
-                onClick: zTreeOnClick
-            },
-            data: {//数据加载
-                keep: {
-                    parent: true,
-                    leaf: true
-                },
-                simpleData: {
-                    enable: true,
-                    idKey: 'id',
-                    pIdKey: 'parent'
-                },
-                key: {
-                    name: "name"
-                }
-            }
-        };
-
-        $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose:true, todayBtn: true, startView:4, minView:3});
+        $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose: true, todayBtn: true, startView: 4, minView: 3});
         ////日期插件
         $('.form_datetime').datetimepicker({
             language: 'zh-CN',
@@ -190,18 +174,95 @@
             showMeridian: 1,
             format: "yyyy-mm-dd hh:ii:ss"
         });
-    })
+    });
 
-    function zTreeOnClick(event, treeId, treeNode) {
-        console.log(event,treeId,treeNode)
+    function getUserTree() {
+        let settingForUser = {
+            callback: {
+                onClick: zTreeOnClickForUser
+            },
+            data: {
+                keep: {
+                    parent: true,
+                    leaf: true
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: 'id',
+                    pIdKey: 'parentId'
+                },
+                key: {
+                    name: "deptName"
+                }
+            }
+        };
+
+        $.ajaxUtil.get(getAllAndUserForTreeUrl, function (e) {
+            $.fn.zTree.init($("#userTree"), settingForUser, e.data);
+        });
+    }
+
+    function zTreeOnClickForUser(event, treeId, treeNode) {
+
+    }
+
+    function getDeptAndRoleTree() {
+        let settingForRole = {
+            callback: {
+                onClick: zTreeOnClickForRole,
+                beforeCheck: roleCheckBox
+            },
+            check: {
+                enable: true
+            },
+            data: {
+                keep: {
+                    parent: true,
+                    leaf: true
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: 'id',
+                    pIdKey: 'parentId'
+                },
+                key: {
+                    name: "deptName"
+                }
+            }
+        };
+
+        $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
+            $.fn.zTree.init($("#roleTree"), settingForRole, e.data);
+            setCheckNode();
+        });
+    }
+
+    function zTreeOnClickForRole(event, treeId, treeNode) {
+
+    }
+
+    function roleCheckBox(treeId, treeNode) {
+
+    }
+
+    function setCheckNode() {
+        let treeObj = $.fn.zTree.getZTreeObj("roleTree");
+        let nodes = treeObj.transformToArray(treeObj.getNodes());
+        for (let i = 0; i < nodes.length; i++) {
+            if (nodes[i].levelOrNot === "role") {
+                nodes[i].nocheck = false;
+            } else {
+                nodes[i].nocheck = true;
+            }
+        }
     }
 
     function selectEventTypeTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
-        var options = {
-            title: '选择事件类型',
+        let treeId = $("#treeId").val();
+        let deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        let url = /*[[@{/tree/dept}]]*/ "/tree/dept";
+        let options = {
+            title: '选择部门',
             width: "380",
             url: url,
             callBack: doSubmit
@@ -210,15 +271,11 @@
     }
 
     function doSubmit(index, layero) {
-        var body = layer.getChildFrame('body', index);
-        $("#typeStr").val(body.find('#treeName').val());
-
+        let body = layer.getChildFrame('body', index);
+        $("#deptId").val(body.find('#treeId').val());
+        $("#deptName").val(body.find('#treeName').val());
         layer.close(index);
     }
-
-
-    /* tree查询 */
-    // let searchUrl = /*[[@{/layerSetting/search}]]*/ "/layerSetting/search";
 
     function search() {
         $.ajax({
@@ -230,6 +287,7 @@
             }
         });
     }
+
 </script>
 </body>
 </html>
