@@ -177,6 +177,12 @@
     var publishId;
 
     function zTreeOnClick(event, treeId, treeNode) {
+        //删除上一个底图
+        var mation = map.getLayerGroup().getLayers().a;
+        if (mation.length > 4) {
+            mation.splice(1, 1);
+            source.clear();
+        }
         $("#componentId").val("");
         $("#mongoId").val("");
         publish = "";
@@ -191,6 +197,7 @@
             $.ajaxUtil.get(publishUrl + "?typeId=" + treeNode.id, function (e) {
                 $(e.data).each(function (index, value) {
                     console.log(e.data)
+
                     $("#publish").val(value.name);
                     $("#publishId").val(value.id);
                     publish = value.name;
@@ -214,12 +221,7 @@
                         });
                         var layersArray = map.getLayers();
                         layersArray.insertAt(1, ImageVector);
-                        //删除上一个底图
-                        var mation = map.getLayerGroup().getLayers().a;
-                        if (mation.length > 4) {
-                            mation.splice(1, 1);
-                            source.clear();
-                        }
+
                         $("#layerId").val(value.layerId == null ? "" : value.layerId);
                         //获取地图数据s
                         map.on('singleclick', function (evt) {

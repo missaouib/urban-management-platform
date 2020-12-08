@@ -43,30 +43,20 @@
                             <input type="text" readonly="readonly" id="girdStr" class="find_input"/>
                             <input type="hidden" readonly="readonly" id="girdId" name="eventTypeId"
                                    class="find_input"/>
-                            <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                            <button type="button" class="addBtn" onclick="selectDeptTree()">
                                 +
                             </button>
                         </td>
-                        <td>所属区域<span></span></td>
-                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                            <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
-                            <input type="hidden" readonly="readonly" id="eventTypeId" name="eventTypeId"
-                                   class="find_input"/>
-                            <button type="button" class="addBtn" onclick="selectEventTypeTree()">
-                                +
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
                         <td>状态<span></span></td>
                         <td>
-                            <select>
+                            <select name="sts">
                                 <option>--请选择--</option>
-                                <option>1</option>
-                                <option>2</option>
+                                <option value="0">激活</option>
+                                <option value="1">未激活</option>
                             </select>
                         </td>
                     </tr>
+
                     </tbody>
                 </table>
             </div>
@@ -107,21 +97,21 @@
         queryUserList();
     })
 
-    function selectEventTypeTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+    function selectDeptTree() {
+        var url = /*[[@{/tree/dept}]]*/ "/tree/dept";
         var options = {
-            title: '选择事件类型',
+            title: '请选择部门',
             width: "380",
             url: url,
-            callBack: doSubmit
+            callBack: deptDoSubmit
         };
         $.modal.openOptions(options);
     }
 
-    function doSubmit(index, layero) {
+    function deptDoSubmit(index, layero) {
         var body = layer.getChildFrame('body', index);
+        $("#parentId").val(body.find('#treeId').val());
+        $("#parentName").val(body.find('#treeName').val());
 
         layer.close(index);
     }

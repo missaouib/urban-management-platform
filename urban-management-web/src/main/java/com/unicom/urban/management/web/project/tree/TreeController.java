@@ -2,6 +2,7 @@ package com.unicom.urban.management.web.project.tree;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.pojo.vo.DeptVO;
 import com.unicom.urban.management.pojo.vo.TreeVO;
 import com.unicom.urban.management.service.dept.DeptService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,6 +52,23 @@ public class TreeController {
     @GetMapping("/grid")
     public ModelAndView gridTree(Model model) {
         List<TreeVO> tree = gridService.searchTree();
+        model.addAttribute("tree", tree);
+        return new ModelAndView(SystemConstant.PAGE + "/tree/grid");
+    }
+
+    @GetMapping("/deptRole")
+    public ModelAndView deptRole(Model model) {
+        List<DeptVO> allAndRoleForTree = deptService.getAllAndRoleForTree();
+        List<TreeVO> tree = new ArrayList<>();
+        allAndRoleForTree.forEach(d->{
+            TreeVO treeVO = new TreeVO();
+            treeVO.setId(d.getId());
+            treeVO.setName(d.getDeptName());
+            treeVO.setParentId(d.getParentId());
+            treeVO.setLevelOrNot(d.getLevelOrNot());
+            tree.add(treeVO);
+        });
+
         model.addAttribute("tree", tree);
         return new ModelAndView(SystemConstant.PAGE + "/tree/grid");
     }
