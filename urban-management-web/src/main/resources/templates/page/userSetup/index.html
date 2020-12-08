@@ -87,7 +87,7 @@
                                 <input type="text" readonly="readonly" id="userStr" class="find_input"/>
                                 <input type="hidden" readonly="readonly" id="userId" name="eventTypeId"
                                        class="find_input"/>
-                                <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                <button type="button" class="addBtn" data-toggle='modal' data-target='#modal-default'>
                                     +
                                 </button>
                             </td>
@@ -115,6 +115,25 @@
                 </div>
             </div>
         </form>
+    </div>
+
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">title</h4>
+                </div>
+                <div class="modal-body">
+                    body
+                </div>
+                <input type="hidden" id="imageUrlList" value="">
+                <div class="modal-footer justify-content-between"
+                     style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary" onclick="" id="underBtn" data-dismiss="modal">完成</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
