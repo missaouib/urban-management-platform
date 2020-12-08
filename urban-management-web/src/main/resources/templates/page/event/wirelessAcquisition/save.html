@@ -72,7 +72,7 @@
 
                                 <td><span></span>部件编码</td>
                                 <td>
-                                    <input type="text" disabled>
+                                    <input type="text" readonly id="objId">
                                 </td>
                                 <td><span></span>案件类型</td>
                                 <td>
@@ -281,7 +281,6 @@
         getGridPublishUrl()
     })
 
-
     let url = /*[[@{/event/register}]]*/ "/event/register";
     let receiveUrl = /*[[@{/event/receive}]]*/ "/event/receive";
     let dispatchUrl = /*[[@{/event/dispatch}]]*/ "/event/dispatch";
@@ -289,10 +288,13 @@
     let componentTypeUrl = /*[[@{/allEventType}]]*/ "/allEventType";
     let createEventCodeUrl = /*[[@{/event/createEventCode}]]*/ "/event/createEventCode";
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+    let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
     let getDeptTimeLimitByLevelUrl = /*[[@{/event/getDeptTimeLimitByLevel}]]*/ "/event/getDeptTimeLimitByLevel";
     let findAllByKvIdUrl = /*[[@{/event/findAllByKvId}]]*/ "/event/findAllByKvId";
     let saveUrl = /*[[@{/event/saveTemp}]]*/ "/event/saveTemp";
     let preReportUrl = /*[[@{/event/preReport}]]*/ "/event/preReport";
+    let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
+
     var setting = {
         callback: {
             onClick: zTreeOnClick
@@ -316,14 +318,12 @@
 
     function getGridPublishUrl() {
         $.ajaxUtil.get(getGridUrl, function (e) {
-            // console.log("e", e);
             /*
             * 初始渲染底图g
             * */
             var urlParam = e.data.split("?");
             var url = urlParam[0];
             var param = urlParam[1];
-            // console.log(url+","+param)
             var ImageVector = new ol.layer.Tile({
                 source: new ol.source.TileWMS({
                     url: url,
@@ -391,6 +391,7 @@
         var data = $('#userForm').serialize();
         $.operate.saveTab(preReportUrl, data);
     }
+
     /**
      * 后台自动生成案卷号
      * @param eventTypeId
@@ -408,10 +409,76 @@
     }
 
     /**
+     * 获取部件的发布图层
+     */
+    function findUrlListByEventTypeId(eventTypeId) {
+        $.ajaxUtil.get(publishUrl + "?typeId=" + eventTypeId, function (e) {
+            $(e.data).each(function (index, value) {
+                $("#publish").val(value.name);
+                $("#publishId").val(value.id);
+                publish = value.name;
+                publishId = value.id;
+                if (value.url != null) {
+                    var urlParam = value.url.split("?");
+                    var url = urlParam[0];
+                    var param = urlParam[1];
+
+                    var ImageVector = new ol.layer.Tile({
+                        source: new ol.source.TileWMS({
+                            url: url,
+                            params: {
+                                'VERSION': '1.1.1',
+                                tiled: true,
+                                "LAYERS": param,
+                                "exceptions": ''
+                            }
+                        })
+                    });
+                    var layersArray = map.getLayers();
+                    layersArray.insertAt(1, ImageVector);
+                    //删除上一个底图
+                    var mation = map.getLayerGroup().getLayers().a;
+                    if (mation.length > 4) {
+                        mation.splice(1, 1);
+                        source.clear();
+                    }
+                    $("#layerId").val(value.layerId == null ? "" : value.layerId);
+                    //获取地图数据s
+                    map.on('singleclick', function (evt) {
+                        var viewResolution = map.getView().getResolution();
+                        var url = ImageVector.getSource().getGetFeatureInfoUrl(
+                            evt.coordinate, viewResolution, 'EPSG:4326', {
+                                'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
+                                'FEATURE_COUNT': 50 //点击查询能返回的数量上限
+                            });
+                        $.ajax({
+                            type: 'GET',
+                            url: url,
+                            dataType: 'jsonp',
+                            jsonp: 'format_options',
+                            jsonpCallback: "callback:success_jsonpCallback1"
+                        });
+                    });
+
+                }
+            })
+        })
+    }
+
+    function success_jsonpCallback1(res) {
+        var features = geojsonFormat.readFeatures(res);
+        if (undefined !== features[0]) {
+            $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function (e) {
+                $("#objId").val(e.data.objId);
+            });
+        }
+    }
+
+    /**
      * 获取立案区域
      */
-    function findEventConditionByEventType(eventTypeId){
-        let url = findEventConditionByEventTypeUrl +"?eventTypeId="+ eventTypeId;
+    function findEventConditionByEventType(eventTypeId) {
+        let url = findEventConditionByEventTypeUrl + "?eventTypeId=" + eventTypeId;
         $.ajaxUtil.get(url, function (e) {
             let option = "<option>--请选择--</option>";
             if (e.code === "0") {
@@ -539,7 +606,7 @@
         $.modal.openOptions(options);
     }
 
-    function doSubmit(index, layero){
+    function doSubmit(index, layero) {
         var tree = layero.find("iframe")[0].contentWindow.$._tree;
         var body = layer.getChildFrame('body', index);
         $("#eventTypeId").val(body.find('#treeId').val());
@@ -547,7 +614,9 @@
         let eventTypeId = $("#eventTypeId").val();
         createEventCode(eventTypeId);
         //获取立案区域
-        findEventConditionByEventType(eventTypeId)
+        findEventConditionByEventType(eventTypeId);
+        //部件获取
+        findUrlListByEventTypeId(eventTypeId);
         layer.close(index);
     }
 
@@ -880,7 +949,6 @@
     })
     function save() {
         var data = $('#userForm').serialize();
-        console.log("1111data",data);
         $.operate.saveTab(url, data);
     }
 
@@ -1098,10 +1166,8 @@
         $("#longitude").val(t[0])
         $("#latitude").val(t[1])
         $.ajaxUtil.get(localReverseGeocoding + "?x=" + t[0] + "&y=" + t[1], function (e) {
-            // console.log(e)
             $("#location").val(e.data.mongo);
         });
-        console.log(evt.coordinate)
         layerMap.getSource().clear()
         setPoint(evt.coordinate)
     });
@@ -1128,7 +1194,6 @@
         if(features.length != 0){
             let mongodbId = features[0].H.mongodb_id;
             $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
-                console.log("e", e);
                 let data = e.data;
                 for (let i = 0; i < data.length; i++) {
                     switch (data[i].level) {
