@@ -25,6 +25,8 @@ public interface GridRepository extends CustomizeRepository<Grid, String> {
 
     List<Grid> findAllByParentIsNull();
 
+    List<Grid> findAllByLevelIn(List<Integer> levels);
+
     /**
      * 根据网格code查询数据
      *

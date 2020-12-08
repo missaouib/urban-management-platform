@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,6 +30,11 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(rollbackOn = Exception.class)
 public class DeptService {
+    private final static DateTimeFormatter df;
+
+    static {
+        df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    }
 
     @Autowired
     private DeptRepository deptRepository;
@@ -36,11 +42,12 @@ public class DeptService {
     private GridService gridService;
 
     public List<DeptVO> getAll() {
-        List<Dept> all = deptRepository.findAll();
+        List<Dept> all = deptRepository.findAllByOrderBySortDesc();
         List<DeptVO> deptVOS = new ArrayList<>();
         all.forEach(d -> {
             DeptVO deptVO = DeptVO.builder()
                     .id(d.getId())
+                    .parentId(d.getParent() != null ? d.getParent().getId() : null)
                     .deptName(d.getDeptName()).build();
             deptVOS.add(deptVO);
         });
@@ -61,7 +68,6 @@ public class DeptService {
      * @return 树结构数据
      */
     public List<DeptVO> getAllAndRoleForTree() {
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         List<Dept> deptList = deptRepository.findAll(Sort.by(Sort.Order.asc("sort")));
         List<DeptVO> deptVOList = new ArrayList<>();
         for (Dept dept : deptList) {
@@ -103,11 +109,14 @@ public class DeptService {
             deptVO.setGridId(one.getGrid().getId());
             deptVO.setGridName(one.getGrid().getGridName());
         }
+        deptVO.setCreateTime(df.format(one.getCreateTime()));
+
         return deptVO;
     }
 
     /**
      * 新增
+     *
      * @param deptDTO
      */
     public void save(DeptDTO deptDTO) {
@@ -115,6 +124,9 @@ public class DeptService {
         BeanUtils.copyProperties(deptDTO, dept);
         Grid grid = gridService.findOne(deptDTO.getGridId());
         dept.setGrid(grid);
+        if(StringUtils.isNotBlank(deptDTO.getCdate())){
+            dept.setCreateTime(LocalDateTime.parse(deptDTO.getCdate(),df));
+        }
         if (StringUtils.isNotBlank(deptDTO.getParentId())) {
             Optional<Dept> ifParentDept = deptRepository.findById(deptDTO.getParentId());
             if (ifParentDept.isPresent()) {
@@ -123,11 +135,13 @@ public class DeptService {
                 if (deptDTO.getSort() == null) {
                     List<Dept> depts = deptRepository.findAllByParent_Id(parent.getId());
                     if (depts.size() != 0) {
-
+                        Integer sort = depts.stream().map(Dept::getSort).max(Integer::compareTo).get();
+                        dept.setSort(sort + 10);
                     } else {
-
-
+                        dept.setSort(10);
                     }
+                }else{
+                    dept.setSort(10);
                 }
             } else {
                 throw new RuntimeException("所属部门不存在");
@@ -185,6 +199,7 @@ public class DeptService {
 
     /**
      * 删除
+     *
      * @param id
      */
     public void del(String id) {
@@ -213,7 +228,7 @@ public class DeptService {
     }
 
     public List<TreeVO> searchTree() {
-        List<Dept> deptList = deptRepository.findAll();
+        List<Dept> deptList = deptRepository.findAllByOrderBySortDesc();
         return TreeMapper.INSTANCE.deptListToTreeVOList(deptList);
     }
 

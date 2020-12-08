@@ -6,9 +6,11 @@ import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.grid.GridRepository;
 import com.unicom.urban.management.mapper.GridMapper;
+import com.unicom.urban.management.mapper.TreeMapper;
 import com.unicom.urban.management.pojo.dto.GridDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.GridVO;
+import com.unicom.urban.management.pojo.vo.TreeVO;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.publish.PublishService;
@@ -27,10 +29,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 网格
@@ -280,6 +279,12 @@ public class GridService {
     public String getGridPolygon(String eventId) {
         Event one = eventService.findOne(eventId);
         return one.getGrid().getRecord().getCoordinate();
+    }
+
+    public List<TreeVO> searchTree() {
+        List<Integer> levels = Arrays.asList(1,2,3);
+        List<Grid> grids = gridRepository.findAllByLevelIn(levels);
+        return TreeMapper.INSTANCE.gridListToTreeVOList(grids);
     }
 
 }

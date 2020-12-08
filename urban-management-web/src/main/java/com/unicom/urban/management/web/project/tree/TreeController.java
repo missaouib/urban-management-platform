@@ -5,6 +5,7 @@ import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.vo.TreeVO;
 import com.unicom.urban.management.service.dept.DeptService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
+import com.unicom.urban.management.service.grid.GridService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,9 @@ public class TreeController {
     @Autowired
     private DeptService deptService;
 
+    @Autowired
+    private GridService gridService;
+
 
     @GetMapping("/eventtype")
     public ModelAndView eventTypeTree(Model model) {
@@ -41,6 +45,13 @@ public class TreeController {
         List<TreeVO> tree = deptService.searchTree();
         model.addAttribute("tree", tree);
         return new ModelAndView(SystemConstant.PAGE + "/tree/dept");
+    }
+
+    @GetMapping("/grid")
+    public ModelAndView gridTree(Model model) {
+        List<TreeVO> tree = gridService.searchTree();
+        model.addAttribute("tree", tree);
+        return new ModelAndView(SystemConstant.PAGE + "/tree/grid");
     }
 
 

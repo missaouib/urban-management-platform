@@ -8,4 +8,6 @@ import java.util.List;
 public interface DeptRepository extends CustomizeRepository<Dept, String> {
 
     List<Dept> findAllByParent_Id(String parentId);
+
+    List<Dept> findAllByOrderBySortDesc();
 }

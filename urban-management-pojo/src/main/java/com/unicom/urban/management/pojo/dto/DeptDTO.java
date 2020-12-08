@@ -24,6 +24,8 @@ public class DeptDTO {
 
     private String parentId;
 
+    private String cdate;
+
     @NotBlank(message = "所属区域不能为空")
     private String gridId;
 
