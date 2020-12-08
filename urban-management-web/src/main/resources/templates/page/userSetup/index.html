@@ -15,12 +15,13 @@
     <div class="leftContent">
         <div class="notice_check">
             <form id="search-form">
+                <h5 style="padding-left: 5px">搜索</h5>
                 <p>
                     <label class=""></label>
-                    <input type="text" class="find_input" id="eventTypeName" readonly="readonly">
+                    <input type="search" class="find_input" id="key">
                     <input type="hidden" th:name="eventTypeId" id="eventTypeId">
-                    <input type="button" class="check_btn button_ground" onclick="search()" value="查询">
-                    <input type="button" class="check_btn1 button_ground" value="重置">
+<!--                    <input type="button" class="check_btn button_ground" onclick="search()" value="查询">-->
+<!--                    <input type="button" class="check_btn1 button_ground" value="重置">-->
                 </p>
             </form>
             <div class="tree">
@@ -160,7 +161,7 @@
 
         getUserTree();
         getDeptAndRoleTree();
-
+        search()
         $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose: true, todayBtn: true, startView: 4, minView: 3});
         ////日期插件
         $('.form_datetime').datetimepicker({
@@ -200,6 +201,20 @@
         $.ajaxUtil.get(getAllAndUserForTreeUrl, function (e) {
             $.fn.zTree.init($("#userTree"), settingForUser, e.data);
         });
+
+        $.ajax({
+            type: "GET",
+            url: getAllAndUserForTreeUrl,
+            success: function (result) {
+                $.fn.zTree.init($("#userTree"), settingForUser, result.data);
+                fuzzySearch("userTree", '#key', null, true);
+            }
+        });
+        if ($("#key").val() == 0){
+            $("#userTree").click(function () {
+                $.fn.zTree.getZTreeObj("userTree").expandAll(false);
+            });
+        }
     }
 
     function zTreeOnClickForUser(event, treeId, treeNode) {
@@ -277,16 +292,7 @@
         layer.close(index);
     }
 
-    function search() {
-        $.ajax({
-            type: "GET",
-            // url: searchUrl,
-            success: function (result) {
-                $.fn.zTree.init($("#treeDemo"), setting, result.data);
-                fuzzySearch("treeDemo", '#key', null, true);
-            }
-        });
-    }
+
 
 </script>
 </body>

@@ -16,12 +16,13 @@
     <div class="leftContent">
         <div class="notice_check">
             <form id="search-form">
+                <h5 style="padding-left: 5px">搜索</h5>
                 <p>
                     <label class=""></label>
-                    <input type="text" class="find_input" id="eventTypeName">
+                    <input type="search" class="find_input" id="key">
                     <input type="hidden" th:name="eventTypeId" id="eventTypeId">
-                    <input type="button" class="check_btn button_ground" onclick="search()" value="查询">
-                    <input type="button" class="check_btn1 button_ground" value="重置">
+<!--                    <input type="button" class="check_btn button_ground" onclick="search()" value="查询">-->
+<!--                    <input type="button" class="check_btn1 button_ground" value="重置">-->
                 </p>
             </form>
             <div class="tree">
@@ -122,29 +123,28 @@
         $.ajaxUtil.get(searchUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
-
-
-        var setting = {
-            callback: {
-                onClick: zTreeOnClick
-            },
-            data: {//数据加载
-                keep: {
-                    parent: true,
-                    leaf: true
-                },
-                simpleData: {
-                    enable: true,
-                    idKey: 'id',
-                    pIdKey: 'parentId'
-                },
-                key: {
-                    name: "deptName"
-                }
-            }
-        };
-
+        search()
     })
+
+    var setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parentId'
+            },
+            key: {
+                name: "deptName"
+            }
+        }
+    };
 
     function zTreeOnClick(event, treeId, treeNode) {
         one(treeNode.id)
@@ -203,6 +203,11 @@
                 fuzzySearch("treeDemo", '#key', null, true);
             }
         });
+        if ($("#key").val() == 0){
+            $("#treeDemo").click(function () {
+                $.fn.zTree.getZTreeObj("treeDemo").expandAll(false);
+            });
+        }
     }
 
     function one(id) {

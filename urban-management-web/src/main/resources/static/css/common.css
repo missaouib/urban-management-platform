@@ -1938,3 +1938,14 @@ label.error {
 .ztree li span.button.chk.checkbox_false_full{
     /*display: none;*/
 }
+
+div.zTreeDemoBackground {
+    width: 600px;
+    height: 450px;
+    text-align: left;
+}
+
+span.search_highlight {
+    color: whitesmoke;
+    background-color: darkred;
+}
