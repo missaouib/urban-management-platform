@@ -119,7 +119,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    @Log(name = "新增管理-修改")
+    @Log(name = "用户管理-修改")
     public void updateUser(User user) {
 
         User userFormDatabase = userRepository.getOne(user.getId());
@@ -162,7 +162,7 @@ public class UserService {
         user.setPassword(passwordService.getDefaultPassword());
     }
 
-    @Log(name = "新增管理-删除")
+    @Log(name = "用户管理-删除")
     public void removeUser(String ids) {
         List<String> idList = Arrays.asList(ids.split(","));
 

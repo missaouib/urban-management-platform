@@ -15,6 +15,9 @@ public class IndexController {
     @Autowired
     private MenuService menuService;
 
+//    @Autowired
+//    private IndexService indexService;
+
     @GetMapping("/index")
     public String index() {
         return SystemConstant.PAGE + "/index";
