@@ -215,6 +215,8 @@ public class DeptService {
             if (userList.size() > 0) {
                 for (User user : userList) {
                     DeptVO userVO = new DeptVO();
+
+
                     userVO.setId(user.getId());
                     userVO.setDeptName(user.getName());
                     userVO.setParentId(dept.getId());
@@ -222,6 +224,9 @@ public class DeptService {
                     userVO.setSort(user.getSort());
                     userVO.setLevelOrNot("user");
                     UserVO newUserVO = new UserVO();
+                    newUserVO.setPost(user.getPost());
+                    newUserVO.setOfficePhone(user.getOfficePhone());
+                    newUserVO.setEmail(user.getEmail());
                     newUserVO.setId(user.getId());
                     newUserVO.setName(user.getName());
                     newUserVO.setUsername(user.getUsername());

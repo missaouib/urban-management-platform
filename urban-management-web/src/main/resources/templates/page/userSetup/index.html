@@ -91,10 +91,11 @@
                                     +
                                 </button>
                             </td>
-                            <td class="hideGroup hideSort roleBox"><span></span>排序</td>
-                            <td class="hideGroup hideSort roleBox">
-                                <input id="sort" type="text" name="sort" maxlength="30">
+                            <td>邮箱<span></span></td>
+                            <td>
+                                <input type="text" id="email" name="email" class="find_input"/>
                             </td>
+
                         </tr>
                         <tr class="hideGroup roleBox">
                             <td><span></span>创建时间</td>
@@ -106,6 +107,22 @@
                             <td>
                                 <input id="sts" placeholder="" class="" type="text" readonly="readonly"
                                        required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>职务<span></span></td>
+                            <td>
+                                <input type="text" id="post" name="post" class="find_input"/>
+                            </td>
+                            <td>办公电话<span></span></td>
+                            <td>
+                                <input type="text" id="officePhone" name="officePhone"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="hideGroup hideSort roleBox"><span></span>排序</td>
+                            <td class="hideGroup hideSort roleBox">
+                                <input id="sort" type="text" name="sort" maxlength="30">
                             </td>
                         </tr>
                         </tbody>
@@ -261,6 +278,7 @@
         roleNameList = [];
         let userVO = treeNode.userVO;
         if (treeNode.levelOrNot === "user") {
+            console.log(userVO)
             $(".hideGroup").removeClass("roleBox");
             $("#id").val(userVO.id);
             $("#name").val(userVO.name);
@@ -283,6 +301,11 @@
             } else {
                 $("#sts").val("");
             }
+            $("#email").val(userVO.email);
+            $("#officePhone").val(userVO.officePhone);
+            $("#post").val(userVO.post);
+
+
             updateCheckNode(userVO.roleIdList);
         }
     }
