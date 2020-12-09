@@ -69,6 +69,10 @@ public class Event extends BaseEntity {
 
     private String phone;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "component_id")
+    private Component component;
+
     /**
      * 问题来源
      */
