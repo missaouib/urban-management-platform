@@ -513,7 +513,7 @@
 
         $("#wordSays").on("click", ".idioms", function () {
             let idioms = $(this).html()
-            $("#textIdioms").html(idioms);
+            $("#textIdioms").val($("#textIdioms").val() + idioms);
             $("#wordSays").fadeOut(300)
         });
 
