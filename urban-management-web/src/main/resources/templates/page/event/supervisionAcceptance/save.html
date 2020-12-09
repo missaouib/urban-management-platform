@@ -495,7 +495,6 @@
         if(features.length != 0){
             let mongodbId = features[0].H.mongodb_id;
             $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
-                console.log("e", e);
                 let codePopup = e.data[0].name;
                 let data = e.data;
                 for (let i = 0; i < data.length; i++) {

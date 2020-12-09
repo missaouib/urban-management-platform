@@ -339,7 +339,6 @@
 
     function getIndexValueByWeek() {
         $.ajaxUtil.get(getIndexValueByWeekUrl, function (e) {
-            console.log("e", e);
             $("#report").text(e.data.report);
             $("#inst").text(e.data.inst);
             $("#dispatch").text(e.data.dispatch);
