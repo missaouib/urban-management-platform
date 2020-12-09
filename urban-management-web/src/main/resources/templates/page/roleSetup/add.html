@@ -19,7 +19,7 @@
                 <p>
                     <label class=""></label>
                     <input type="search" class="find_input" id="key">
-                    <input type="hidden" th:name="eventTypeId" id="eventTypeId">
+
                     <!--                    <input type="button" class="check_btn button_ground" onclick="search()" value="查询">-->
                     <!--                    <input type="button" class="check_btn1 button_ground" value="重置">-->
                 </p>
@@ -37,18 +37,10 @@
         <form class="details" id="roleForm">
             <div class="top table2_top">
                 <h5 style="padding: 16px 10px 0">人员列表</h5>
-                <div class="top_out personneList">
-                    <div class="role">
-                        <input type="checkbox" class="roleCheckBox"><span class="roleName">京东</span>
-                    </div>
-                    <div class="role">
-                        <input type="checkbox" class="roleCheckBox"><span class="roleName">淘宝</span>
-                    </div>
-                    <div class="role">
-                        <input type="checkbox" class="roleCheckBox"><span class="roleName">天猫</span>
-                    </div>
+                    <input type="hidden" name="roleId" id="roleId" />
+                    <input type="hidden" name="userIdList" id="userIdList" />
+                <div class="top_out personneList" id="showUser"></div>
 
-                </div>
                 <div class="notice_bot">
                     <div class="r_right but_p girdBtnGroup" id="eventButton">
                         <button class="but_save" type="button" style="margin-right: 10px" id="saveRoleBtn"
@@ -56,10 +48,10 @@
                         </button>
                         <button class="but_save roleBox" type="button" id="lessCheck" style="margin-right: 10px">取消全选
                         </button>
-                        <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn"
-                                >保存
+                        <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn" onclick="save()"  >保存
                         </button>
                 </div>
+
             </div>
             </div>
         </form>
@@ -79,6 +71,8 @@
 <script type="text/javascript" th:inline="javascript">
 
     let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+    let findUserByRoleUrl = /*[[@{/roleSetup/findUserByRole}]]*/ "/roleSetup/findUserByRole";
+    let saveUserAndRoleURL = /*[[@{/roleSetup/saveUserAndRole}]]*/ "/roleSetup/saveUserAndRole";
 
     $(function () {
 
@@ -100,7 +94,7 @@
 
         var setting = {
             callback: {
-
+                onClick: zTreeOnClick
             },
             data: {//数据加载
                 keep: {
@@ -139,7 +133,66 @@
 
     });
 
+    function save() {
+        let array = [];
+        let userDTO = {};
+        let userIdListDTO = {};
+        let roleId = $("#roleId").val()
+        let isChecked = $("input[type='checkbox']");
+        $(isChecked).each(function(){
+            if(isChecked.is(':checked')){ // 选中返回true,未选中返回false
+                userDTO.checkbox = 1;
+            }else{
+                userDTO.checkbox = 0;
+            }
+            userDTO.id=$(this).val();
+            userDTO.roleId = roleId;
+            array.push(userDTO);
+        });
+        userIdListDTO.roleId = roleId;
+        userIdListDTO.userIdList = array;
+        // $("#userIdList").val(array);
+        // let data = $('#roleForm').serialize();
+        console.log("data",JSON.stringify(userIdListDTO))
+        $.operate.saveAndReload(saveUserAndRoleURL,JSON.stringify(userIdListDTO))
+        // $.ajax({
+        //     type: "POST",
+        //     url: saveUserAndRoleURL,
+        //     data: userIdListDTO,
+        //     //traditional:true,
+        //     async: false,
+        //     dataType:"json",
+        //     beforeSend: function () {
+        //         $.modal.loading("正在处理中，请稍后...");
+        //     },
+        //     success: function(data){
+        //         $.modal.alertSuccess('保存成功');
+        //     },
+        //     error: function(){
+        //     }
+        // });
+    }
+    function zTreeOnClick(event, treeId, treeNode) {
+        $("#roleId").val(treeNode.id)
+        findUserByRole(treeNode.id)
+    }
 
+    function findUserByRole(roleId) {
+        $.ajaxUtil.get(findUserByRoleUrl + "?roleId=" + roleId, function (e) {
+            let data =e.data;
+            if (data != undefined && data.length > 0){
+                let html = "";
+                $(data).each(function (index,value) {
+                    if (value.checkbox === 1){
+                        html+="<div class='role'><input type='checkbox' class='roleCheckBox' value='"+value.id+"' checked><span class='roleName'>"+value.name+"</span></div>";
+                    }else{
+                        html+="<div class='role'><input type='checkbox' class='roleCheckBox' value='"+value.id+"'><span class='roleName'>"+value.name+"</span></div>";
+                    }
+                });
+                $("#showUser").html(html);
+            }
+        });
+    }
 </script>
 </body>
 </html>
