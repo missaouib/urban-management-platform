@@ -122,7 +122,7 @@ public class KvConstant {
     /**
      * 派遣员
      */
-    public static final String DISPATCHER_ROLE = "79bbf2f0-ab61-4bc5-a2f1-cf1ec701662b";
+    public static final String DISPATCHER_ROLE = "6";
 
     /**
      * 受理员
