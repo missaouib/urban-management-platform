@@ -5,12 +5,15 @@ import com.unicom.urban.management.dao.role.RoleRepository;
 import com.unicom.urban.management.mapper.RoleMapper;
 import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.dto.RoleDTO;
+import com.unicom.urban.management.pojo.dto.RoleMenuDTO;
 import com.unicom.urban.management.pojo.entity.Dept;
+import com.unicom.urban.management.pojo.entity.Menu;
 import com.unicom.urban.management.pojo.entity.Role;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.RoleVO;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.dept.DeptService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -118,4 +121,22 @@ public class RoleService {
         roleRepository.deleteById(id);
     }
 
+    /**
+     * 保存角色和菜单关系
+     * @param roleMenuDTO
+     */
+    public void saveRoleAndMenu(RoleMenuDTO roleMenuDTO) {
+        Role one = this.findOne(roleMenuDTO.getId());
+        String[] menuIdList = roleMenuDTO.getMenuIdList();
+        List<Menu> menuList = new ArrayList<>();
+        if (menuIdList != null && menuIdList.length>0) {
+            for (String s : menuIdList) {
+                Menu m = new Menu();
+                m.setId(s);
+                menuList.add(m);
+            }
+        }
+        one.setMenuList(menuList);
+        roleRepository.saveAndFlush(one);
+    }
 }

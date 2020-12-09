@@ -45,7 +45,14 @@ public class Menu extends BaseEntity {
     @JoinColumn(name = "menu_type_id")
     private MenuType menuType;
 
-    private Integer sort;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "sys_role_menu", joinColumns = @JoinColumn(name = "menu_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<Role> roleList;
 
+    public Menu() {
+    }
 
+    public Menu(String id) {
+        this.id = id;
+    }
 }

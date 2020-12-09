@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
@@ -14,16 +14,16 @@
 <div class="content">
     <div class="leftContent">
         <div class="notice_check">
-            <form id="search-form">
-                <h5 style="padding-left: 5px">搜索</h5>
-                <p>
-                    <label class=""></label>
-                    <input type="search" class="find_input" id="key">
-                    <input type="hidden" th:name="eventTypeId" id="eventTypeId">
+<!--            <form id="search-form">-->
+<!--                <h5 style="padding-left: 5px">搜索</h5>-->
+<!--                <p>-->
+<!--                    <label class=""></label>-->
+<!--                    <input type="search" class="find_input" id="key" />-->
+<!--&lt;!&ndash;                    <input type="hidden" th:name="eventTypeId" id="eventTypeId">&ndash;&gt;-->
 <!--                    <input type="button" class="check_btn button_ground" onclick="search()" value="查询">-->
 <!--                    <input type="button" class="check_btn1 button_ground" value="重置">-->
-                </p>
-            </form>
+<!--                </p>-->
+<!--            </form>-->
             <div class="tree">
                 <div class="treeDemo">
                     <ul id="treeDemo" class="ztree"></ul>
@@ -59,15 +59,14 @@
 
                 <div class="notice_bot">
                     <div class="r_right but_p girdBtnGroup" id="eventButton">
-                        <button class="but_save" type="button" style="margin-right: 10px">保存</button>
+                        <input type="hidden" name="roleId" id="roleId" />
+                        <button class="but_save" id="saveButton" onclick="save()" type="button" style="margin-right: 10px" >保存</button>
                     </div>
                 </div>
             </div>
         </form>
     </div>
 </div>
-
-
 
 
 <th:block th:include="page/fragments/common :: common_js"/>
@@ -81,30 +80,46 @@
 
     let getDeptAndRoleTreeUrl = /*[[@{/rolePermissionConfiguration/getDeptAndRoleTree}]]*/ "/rolePermissionConfiguration/getDeptAndRoleTree";
     let getMenuByMenuTypeUrl = /*[[@{/rolePermissionConfiguration/getMenuByMenuType}]]*/ "/rolePermissionConfiguration/getMenuByMenuType";
-
+    let url = /*[[@{/rolePermissionConfiguration/save}]]*/ "/rolePermissionConfiguration/save";
     $(function () {
         $.ajaxUtil.get(getDeptAndRoleTreeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
-
-        search()
-
-        $.ajaxUtil.get(getMenuByMenuTypeUrl+"?menuTypeId="+1, function (e) {
-            console.log("setting1",e.data)
+        $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 1, function (e) {
+            console.log("setting1", e.data)
             var zTreeObj = $.fn.zTree.init($("#treeDemo1"), setting1, e.data);
         })
-        $.ajaxUtil.get(getMenuByMenuTypeUrl+"?menuTypeId="+2, function (e) {
-            console.log("setting2",e.data)
+        $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 2, function (e) {
+            console.log("setting2", e.data)
             var zTreeObj = $.fn.zTree.init($("#treeDemo2"), setting2, e.data);
         })
-        $.ajaxUtil.get(getMenuByMenuTypeUrl+"?menuTypeId="+3, function (e) {
-            console.log("setting3",e.data)
+        $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 3, function (e) {
+            console.log("setting3", e.data)
             var zTreeObj = $.fn.zTree.init($("#treeDemo3"), setting3, e.data);
         })
-
+        var setting = {
+            callback: {
+                onClick: zTreeOnClick
+            },
+            data: {//数据加载
+                keep: {
+                    parent: true,
+                    leaf: true
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: 'id',
+                    pIdKey: 'parentId'
+                },
+                key: {
+                    name: "deptName"
+                }
+            }
+        };
         var setting1 = {
             check: {
-                enable: true
+                enable: true,
+                chkStyle: "checkbox"
             },
             callback: {
                 onClick: zTreeOnClick1
@@ -126,7 +141,8 @@
         };
         var setting2 = {
             check: {
-                enable: true
+                enable: true,
+                chkStyle: "checkbox"
             },
             callback: {
                 onClick: zTreeOnClick2
@@ -142,13 +158,14 @@
                     pIdKey: 'parentId'
                 },
                 key: {
-                    id: "id"
+                    name: "name"
                 }
             }
         };
         var setting3 = {
             check: {
-                enable: true
+                enable: true,
+                chkStyle: "checkbox"
             },
             callback: {
                 onClick: zTreeOnClick3
@@ -164,96 +181,113 @@
                     pIdKey: 'parentId'
                 },
                 key: {
-                    id: "id"
+                    name: "name"
                 }
             }
         };
-        $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose:true, todayBtn: true, startView:4, minView:3});
-        ////日期插件
-        $('.form_datetime').datetimepicker({
-            language: 'zh-CN',
-            weekStart: 1,
-            todayBtn: 1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
-            showMeridian: 1,
-            format: "yyyy-mm-dd hh:ii:ss"
-        });
-    })
+    });
+        // function search() {
+        //     $.ajax({
+        //         type: "GET",
+        //         url: getDeptAndRoleTreeUrl,
+        //         success: function (result) {
+        //             $.fn.zTree.init($("#treeDemo"), setting, result.data);
+        //             fuzzySearch("treeDemo", '#key', null, true);
+        //         }
+        //     });
+        //     if ($("#key").val() == 0) {
+        //         $("#treeDemo").click(function () {
+        //             $.fn.zTree.getZTreeObj("treeDemo").expandAll(false);
+        //         });
+        //     }
+        // };
 
-    var setting = {
-        callback: {
-            onClick: zTreeOnClick
-        },
-        data: {//数据加载
-            keep: {
-                parent: true,
-                leaf: true
-            },
-            simpleData: {
-                enable: true,
-                idKey: 'id',
-                pIdKey: 'parentId'
-            },
-            key: {
-                name: "deptName"
+        function setCheckEnable(flag) {
+            var treeObj1 = $.fn.zTree.getZTreeObj("treeDemo1");
+            var nodes = treeObj1.transformToArray(treeObj1.getNodes());
+            for (let i = 0; i < nodes.length; i++) {
+                treeObj1.setChkDisabled(nodes[i], flag);
+            }
+            var treeObj2 = $.fn.zTree.getZTreeObj("treeDemo2");
+            var nodes = treeObj2.transformToArray(treeObj2.getNodes());
+            for (let i = 0; i < nodes.length; i++) {
+                treeObj2.setChkDisabled(nodes[i], flag);
+            }
+            var treeObj3 = $.fn.zTree.getZTreeObj("treeDemo3");
+            var nodes = treeObj3.transformToArray(treeObj3.getNodes());
+            for (let i = 0; i < nodes.length; i++) {
+                treeObj3.setChkDisabled(nodes[i], flag);
             }
         }
-    };
 
-    function search() {
-        $.ajax({
-            type: "GET",
-            url: getDeptAndRoleTreeUrl,
-            success: function (result) {
-                $.fn.zTree.init($("#treeDemo"), setting, result.data);
-                fuzzySearch("treeDemo", '#key', null, true);
+        function zTreeOnClick(event, treeId, treeNode) {
+            //判断当前节点是否有子节点
+            var zTree = $.fn.zTree.getZTreeObj(treeId);
+            var nodes = zTree.getSelectedNodes();
+            var node = nodes[0];
+            if (node.isParent) {
+                setCheckEnable(true);
+                $("#saveButton").attr("disabled", "disabled");
+            } else {
+                setCheckEnable(false);
+                $("#saveButton").removeAttr("disabled");
+                $("#roleId").val(treeNode.id)
             }
-        });
-        if ($("#key").val() == 0){
-            $("#treeDemo").click(function () {
-                $.fn.zTree.getZTreeObj("treeDemo").expandAll(false);
+        }
+
+        function zTreeOnClick1(event, treeId, treeNode) {
+            console.log(event, treeId, treeNode)
+        }
+
+        function zTreeOnClick2(event, treeId, treeNode) {
+            console.log(event, treeId, treeNode)
+        }
+
+        function zTreeOnClick3(event, treeId, treeNode) {
+            console.log(event, treeId, treeNode)
+        }
+        function save() {
+            var roleId = $('#roleId').val();
+            if (roleId === undefined || roleId === '') {
+                $.modal.alertWarning("请选择部门！");
+                return false;
+            }
+            var menuIdList = [];
+            var treeObj1 = $.fn.zTree.getZTreeObj("treeDemo1");
+            var treeObj2 = $.fn.zTree.getZTreeObj("treeDemo2");
+            var treeObj3 = $.fn.zTree.getZTreeObj("treeDemo3");
+            var nodes1 = treeObj1.transformToArray(treeObj1.getNodes());
+            var nodes2 = treeObj2.transformToArray(treeObj2.getNodes());
+            var nodes3 = treeObj3.transformToArray(treeObj3.getNodes());
+            for (let i = 0; i < nodes1.length; i++) {
+                if (nodes1[i].checked === true) {
+                    menuIdList.push(nodes1[i].id);
+                }
+            }
+            for (let i = 0; i < nodes2.length; i++) {
+                if (nodes2[i].checked === true) {
+                    menuIdList.push(nodes2[i].id);
+                }
+            }
+            for (let i = 0; i < nodes3.length; i++) {
+                if (nodes3[i].checked === true) {
+                    menuIdList.push(nodes3[i].id);
+                }
+            }
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {"id":roleId,"menuIdList":menuIdList},
+                traditional:true,
+                async: false,
+                dataType:"json",
+                success: function(data){
+                    $.modal.alertSuccess('保存成功');
+                },
+                error: function(){
+                }
             });
         }
-    };
-
-    function zTreeOnClick(event, treeId, treeNode) {
-        console.log(event,treeId,treeNode)
-    }
-    function zTreeOnClick1(event, treeId, treeNode) {
-        console.log(event,treeId,treeNode)
-    }
-    function zTreeOnClick2(event, treeId, treeNode) {
-        console.log(event,treeId,treeNode)
-    }
-    function zTreeOnClick3(event, treeId, treeNode) {
-        console.log(event,treeId,treeNode)
-    }
-
-    function selectEventTypeTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
-        var options = {
-            title: '选择事件类型',
-            width: "380",
-            url: url,
-            callBack: doSubmit
-        };
-        $.modal.openOptions(options);
-    }
-
-    function doSubmit(index, layero) {
-        var body = layer.getChildFrame('body', index);
-        $("#typeStr").val(body.find('#treeName').val());
-
-        layer.close(index);
-    }
-
-
-
 </script>
 </body>
 </html>
