@@ -107,7 +107,7 @@ public class KvConstant {
     /**
      * 专业部门
      */
-    public static final String PROFESSIONAL_DEPARTMENTS_ROLE = "0d90a8c6-30ce-4d03-ad5a-1691706fc9db";
+    public static final String PROFESSIONAL_DEPARTMENTS_ROLE = "5";
 
     /**
      * 监督员
