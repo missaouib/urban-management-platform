@@ -30,7 +30,7 @@
                                 <td><span>*</span>问题类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                     <input type="text" readonly="readonly" id="typeStr" name="typeStr" th:value="${eventOneVO.eventTypeStr}" class="find_input"/>
-                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId" th:value="${eventOneVO.eventTypeId}" class="find_input" />
+                                    <input type="hidden" id="eventTypeId" th:name="eventTypeId" th:value="${eventOneVO.eventTypeId}" class="find_input" />
                                     <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                         +
                                     </button>

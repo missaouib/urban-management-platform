@@ -482,7 +482,7 @@ public class EventService {
         Event one = eventRepository.findById(eventId).orElse(new Event());
         EventOneVO eventOneVO = EventMapper.INSTANCE.eventToEventOneVO(one);
         eventOneVO.setId(eventId);
-        eventOneVO.setEventTypeId(one.getEventType().getParent().getParent().getId());
+        eventOneVO.setEventTypeId(one.getEventType().getId());
         eventOneVO.setEventTypeStr(one.getEventType().getParent().getParent().getName() + "-" + one.getEventType().getParent().getName() + "-" + one.getEventType().getName());
         eventOneVO.setTimeLimitId(one.getTimeLimit().getId());
         eventOneVO.setTimeLimitStr(one.getTimeLimit().getTimeLimit() + one.getTimeLimit().getTimeType().getValue());
