@@ -3,14 +3,15 @@ package com.unicom.urban.management.service.statistics;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.statistics.StatisticsRepository;
+import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.Grid;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.CellGridRegionVO;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.pojo.vo.StatisticsVO;
+import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.grid.GridService;
-import com.unicom.urban.management.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -45,7 +45,7 @@ public class StatisticsService {
     @Autowired
     private GridService gridService;
     @Autowired
-    private UserService userService;
+    private EventService eventService;
 
     public Statistics save(Statistics statistics) {
         return statisticsRepository.save(statistics);
@@ -100,6 +100,23 @@ public class StatisticsService {
                     .build();
             statisticsVOList.add(statisticsVO);
         });
+        /*增加上报时候的环节*/
+        StatisticsVO firstStatisticsVO = new StatisticsVO();
+        Event event = eventService.findOne(eventId);
+        firstStatisticsVO.setStarTime(dateTimeFormatter.format(event.getCreateTime()));
+        firstStatisticsVO.setUser(Optional.ofNullable(event.getUser()).map(User::getUsername).orElse(""));
+        firstStatisticsVO.setOpinions(event.getRepresent());
+        firstStatisticsVO.setLink(event.getEventSource().getValue());
+        List<Map<String, Object>> mapArrayList = new ArrayList<>();
+        event.getEventFileList().forEach(eventFile -> {
+            Map<String, Object> map = new HashMap<>(3);
+            map.put("url", eventFile.getFilePath());
+            map.put("type", eventFile.getFileType().getValue());
+            map.put("management", eventFile.getManagement().getValue());
+            mapArrayList.add(map);
+        });
+        firstStatisticsVO.setFileName(mapArrayList);
+        statisticsVOList.add(firstStatisticsVO);
         return statisticsVOList;
     }
 

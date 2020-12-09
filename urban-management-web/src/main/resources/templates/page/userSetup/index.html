@@ -279,7 +279,7 @@
         let userVO = treeNode.userVO;
         if (treeNode.levelOrNot === "user") {
             console.log(userVO)
-            $(".hideGroup").removeClass("roleBox");
+            removeClassForTimeAndSort();
             $("#id").val(userVO.id);
             $("#name").val(userVO.name);
             $("#sex").val(userVO.sex);
@@ -307,6 +307,22 @@
 
 
             updateCheckNode(userVO.roleIdList);
+        } else {
+            addClassForTimeAndSort();
+            $("#id").val("");
+            $("#name").val("");
+            $("#sex").val("男");
+            $("#username").val("");
+            $("#burnDate").val("");
+            $("#mobileNumber").val("");
+            $("#deptId").val(treeNode.deptId);
+            $("#deptName").val(treeNode.deptName);
+            $("#roleIdList").val("");
+            $("#roleNameList").val("");
+            $("#sort").val("");
+            $("#createTime").val("");
+            $("#sts").val("");
+            deleteCheckNode();
         }
     }
 
@@ -321,6 +337,29 @@
             }
             treeObj.updateNode(nodes[i]);
         }
+    }
+
+    function deleteCheckNode() {
+        let treeObj = $.fn.zTree.getZTreeObj("roleTree");
+        let nodes = treeObj.transformToArray(treeObj.getNodes());
+        for (let i = 0; i < nodes.length; i++) {
+            nodes[i].checked = false;
+            treeObj.updateNode(nodes[i]);
+        }
+    }
+
+    function removeClassForTimeAndSort() {
+        $(".hideGroup").removeClass("roleBox");
+        $("#saveUserBtn").addClass("roleBox");
+        $("#updateUserBtn").removeClass("roleBox");
+        $("#deleteUserBtn").removeClass("roleBox");
+    }
+
+    function addClassForTimeAndSort() {
+        $(".hideGroup").addClass("roleBox");
+        $("#saveUserBtn").removeClass("roleBox");
+        $("#updateUserBtn").addClass("roleBox");
+        $("#deleteUserBtn").addClass("roleBox");
     }
 
     function getDeptAndRoleTree() {
