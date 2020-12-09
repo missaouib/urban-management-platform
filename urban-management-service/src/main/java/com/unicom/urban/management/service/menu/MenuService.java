@@ -13,10 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +43,8 @@ public class MenuService {
 //            if (StringUtils.isNotEmpty(menuDTO.getUsername())) {
 //                list.add(criteriaBuilder.equal(root.get("username").as(String.class), menuDTO.getUsername()));
 //            }
+            Join<Menu,Role> join = root.join("roleList", JoinType.LEFT);
+            list.add(criteriaBuilder.equal(join.get("id").as(String.class),SecurityUtil.getRoleId().get(0)));
 
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));

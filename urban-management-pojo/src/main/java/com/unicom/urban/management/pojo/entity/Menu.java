@@ -49,6 +49,8 @@ public class Menu extends BaseEntity {
     @JoinTable(name = "sys_role_menu", joinColumns = @JoinColumn(name = "menu_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private List<Role> roleList;
 
+    private Integer sort;
+
     public Menu() {
     }
 
