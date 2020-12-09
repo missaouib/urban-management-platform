@@ -232,20 +232,27 @@ public class UserService {
         user.setName(userDTO.getName());
         user.setUsername(userDTO.getUsername());
         user.setSex(userDTO.getSex());
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate birth = LocalDate.parse(userDTO.getBirth(), fmt);
-        user.setBirth(birth);
+        if (StringUtils.isNotBlank(userDTO.getBirth())) {
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate birth = LocalDate.parse(userDTO.getBirth(), fmt);
+            user.setBirth(birth);
+        }
         user.setPhone(userDTO.getMobileNumber());
         user.setSts(0);
         user.setProfilePhotoUrl("http://www.baidu.com/");
-        Dept dept = deptService.findOne(userDTO.getDeptId());
-        user.setDept(dept);
-        List<Role> roleList = new ArrayList<>(userDTO.getRoleList().size());
-        for (String s : userDTO.getRoleList()) {
-            Role role = new Role(s);
-            roleList.add(role);
+        if (StringUtils.isNotBlank(userDTO.getDeptId())) {
+            user.setSort(deptService.getUserSortByDeptId(userDTO.getDeptId()));
+            Dept dept = deptService.findOne(userDTO.getDeptId());
+            user.setDept(dept);
         }
-        user.setRoleList(roleList);
+        if (userDTO.getRoleList().size() > 0) {
+            List<Role> roleList = new ArrayList<>(userDTO.getRoleList().size());
+            for (String s : userDTO.getRoleList()) {
+                Role role = new Role(s);
+                roleList.add(role);
+            }
+            user.setRoleList(roleList);
+        }
         userRepository.save(user);
     }
 

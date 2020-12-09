@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class UserVO {
@@ -18,7 +19,13 @@ public class UserVO {
 
     private String deptName;
 
+    private String deptId;
+
     private String roles;
+
+    private List<String> roleIdList;
+
+    private List<String> roleNameList;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
@@ -29,5 +36,9 @@ public class UserVO {
     private String system;
 
     private Integer sts;
+
+    private String sex;
+
+    private String birth;
 
 }

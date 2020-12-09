@@ -9,6 +9,7 @@ import com.unicom.urban.management.pojo.entity.Role;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.DeptVO;
 import com.unicom.urban.management.pojo.vo.TreeVO;
+import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.grid.GridService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -31,9 +32,11 @@ import java.util.stream.Collectors;
 @Transactional(rollbackOn = Exception.class)
 public class DeptService {
     private final static DateTimeFormatter df;
+    private final static DateTimeFormatter fmt;
 
     static {
         df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     }
 
     @Autowired
@@ -169,6 +172,24 @@ public class DeptService {
     }
 
     /**
+     * 人员新增的排序字段
+     *
+     * @param deptId 部门id
+     * @return 排序值
+     */
+    public Integer getUserSortByDeptId(String deptId) {
+        Dept one = deptRepository.getOne(deptId);
+        List<User> userList = one.getUserList();
+        if (userList.size() > 0) {
+            List<Integer> numList = userList.stream().map(User::getSort).distinct().collect(Collectors.toList());
+            Integer max = Collections.max(numList);
+            return (max != null ? max : 0) + 10;
+        } else {
+            return 10;
+        }
+    }
+
+    /**
      * 人员配置结构树
      *
      * @return 树结构数据
@@ -188,6 +209,34 @@ public class DeptService {
                     userVO.setId(user.getId());
                     userVO.setDeptName(user.getName());
                     userVO.setParentId(dept.getId());
+                    userVO.setCreateTime(df.format(user.getCreateTime()));
+                    userVO.setSort(user.getSort());
+                    userVO.setLevelOrNot("user");
+                    UserVO newUserVO = new UserVO();
+                    newUserVO.setId(user.getId());
+                    newUserVO.setName(user.getName());
+                    newUserVO.setUsername(user.getUsername());
+                    newUserVO.setSex(user.getSex());
+                    newUserVO.setSts(user.getSts());
+                    newUserVO.setPhone(user.getPhone());
+                    if (user.getBirth() != null) {
+                        newUserVO.setBirth(user.getBirth().format(fmt));
+                    }
+                    if (user.getDept() != null) {
+                        newUserVO.setDeptId(user.getDept().getId());
+                        newUserVO.setDeptName(user.getDept().getDeptName());
+                    }
+                    if (user.getRoleList().size() > 0) {
+                        List<String> roleIdList = new ArrayList<>(user.getRoleList().size());
+                        List<String> roleNameList = new ArrayList<>(user.getRoleList().size());
+                        for (Role role : user.getRoleList()) {
+                            roleIdList.add(role.getId());
+                            roleNameList.add(role.getName());
+                        }
+                        newUserVO.setRoleIdList(roleIdList);
+                        newUserVO.setRoleNameList(roleNameList);
+                    }
+                    userVO.setUserVO(newUserVO);
                     deptVOList.add(userVO);
                 }
             }

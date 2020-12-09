@@ -38,4 +38,6 @@ public class DeptVO {
 
     private String levelOrNot;
 
+    private UserVO userVO;
+
 }

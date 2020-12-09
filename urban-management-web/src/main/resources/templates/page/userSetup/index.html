@@ -202,7 +202,9 @@
 
     function getUserTree() {
         let settingForUser = {
-            callback: {},
+            callback: {
+                onClick: onTreeClick
+            },
             data: {
                 keep: {
                     parent: true,
@@ -254,7 +256,7 @@
         $("#roleNameList").val(roleNameList);
     }
 
-    function onTreeClick(event, treeId, treeNode, clickFlag) {
+    function onTreeClick(event, treeId, treeNode) {
 
     }
 

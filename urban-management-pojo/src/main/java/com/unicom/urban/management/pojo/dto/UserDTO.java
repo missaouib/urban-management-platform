@@ -14,6 +14,7 @@ public class UserDTO {
     @NotBlank(message = "姓名不能为空")
     private String name;
 
+    @NotBlank(message = "帐号不能为空")
     private String username;
 
     @MobileNumber
