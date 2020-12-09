@@ -23,7 +23,7 @@
                         <td>姓名<span></span></td>
                         <td>
                             <input type="text" id="name" name="name" class="find_input"/>
-                            <input type="hidden" id="roleIdList" name="roleIdList" class="find_input"/>
+                            <input type="hidden" id="roleIdList" name="roleList" class="find_input"/>
                         </td>
                         <td>登录账号<span></span></td>
                         <td>
@@ -48,8 +48,8 @@
                         <td>性别<span></span></td>
                         <td>
                             <select id="sex" name="sex">
-                                <option value="">男</option>
-                                <option value="">女</option>
+                                <option value="男">男</option>
+                                <option value="女">女</option>
                             </select>
                         </td>
                     </tr>
@@ -67,7 +67,7 @@
                         <td><span></span>所属组织</td>
                         <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                             <input type="text" id="dept" readonly="readonly" class="find_input"/>
-                            <input type="hidden" readonly="readonly" name="deptId"
+                            <input type="hidden" readonly="readonly" name="deptId" id="deptId"
                                    class="find_input"/>
                             <button type="button" class="addBtn" onclick="selectDeptTree()">
                                 +
@@ -197,7 +197,7 @@
     }
     var roleIdList = [];
     function zTreeOnCheck(event, treeId, treeNode) {
-        $("#roleIdList").val("");
+        roleIdList=[];
 
         var treeObj = $.fn.zTree.getZTreeObj("roleTree")
         var nodes = treeObj.getCheckedNodes(true)
@@ -264,7 +264,7 @@
         let body = layer.getChildFrame('body', index);
         let deptId = body.find('#treeId').val();
         $("#deptId").val(body.find('#treeId').val());
-        $("#deptName").val(body.find('#treeName').val());
+        $("#dept").val(body.find('#treeName').val());
         $.ajaxUtil.get(getUserSortByDeptIdUrl + "?deptId=" + deptId, function (e) {
             $(".hideSort").removeClass("roleBox");
             $("#sort").val(e.data);

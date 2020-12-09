@@ -235,6 +235,10 @@ public class UserService {
                 user.setSort(Integer.valueOf(userDTO.getSort()));
             }
         }
+        user.setEmail(userDTO.getEmail());
+        user.setOfficePhone(userDTO.getOfficePhone());
+        user.setOfficePhone(userDTO.getOfficePhone());
+        user.setPost(userDTO.getPost());
         initPassword(user);
         user.setName(userDTO.getName());
         user.setUsername(userDTO.getUsername());
@@ -253,7 +257,7 @@ public class UserService {
         }
         if (userDTO.getRoleList().size() > 0) {
             List<Role> roleList = new ArrayList<>(userDTO.getRoleList().size());
-            for (String s : userDTO.getRoleList()) {
+            for (String s : userDTO.getRoleList().stream().distinct().collect(Collectors.toList())) {
                 Role role = new Role(s);
                 roleList.add(role);
             }

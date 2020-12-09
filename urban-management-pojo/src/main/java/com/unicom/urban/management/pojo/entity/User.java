@@ -72,6 +72,9 @@ public class User extends BaseEntity {
      */
     private LocalDate birth;
 
+    /**
+     * 激活状态 0激活 1未激活
+     */
     @Column(columnDefinition = "tinyint")
     private Integer sts;
 
