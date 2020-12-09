@@ -45,20 +45,10 @@ public class LogAspect {
 
     @AfterReturning("logPointCut()")
     public void saveLog(JoinPoint joinPoint) throws JsonProcessingException {
-        //从切面织入点处通过反射机制获取织入点处的方法
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        //获取切入点所在的方法
         Method method = signature.getMethod();
 
-        //获取操作
-        Log log = method.getAnnotation(Log.class);
-
-
-        //获取请求的类名
-//        String className = joinPoint.getTarget().getClass().getName();
-        //获取请求的方法名
-//        String methodName = method.getName();
-//        sysLog.setMethod(className + "." + methodName);
+        Log annotationLog = method.getAnnotation(Log.class);
 
         Object[] args = joinPoint.getArgs();
         String params = objectMapper.writeValueAsString(args);
@@ -68,8 +58,8 @@ public class LogAspect {
         String browser = UserAgentUtil.getBrowser(request);
 
         OperateLog operateLog = new OperateLog();
-        if (log != null) {
-            String name = log.name();
+        if (annotationLog != null) {
+            String name = annotationLog.name();
             operateLog.setOperateName(name);
         }
         operateLog.setUsername(SecurityUtil.getUsername());
@@ -78,7 +68,11 @@ public class LogAspect {
         operateLog.setOs(os);
         operateLog.setBrowser(browser);
         operateLog.setParams(params);
-        operateLogService.save(operateLog);
+        try {
+            operateLogService.save(operateLog);
+        } catch (Exception e) {
+            log.error("记录操作日志出现异常:", e);
+        }
     }
 
 
