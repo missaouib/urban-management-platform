@@ -70,7 +70,7 @@ public class TreeController {
         });
 
         model.addAttribute("tree", tree);
-        return new ModelAndView(SystemConstant.PAGE + "/tree/grid");
+        return new ModelAndView(SystemConstant.PAGE + "/tree/deptRole");
     }
 
 

@@ -27,4 +27,8 @@ public class UserDTO {
 
     private List<String> roleList;
 
+    private String roleId;
+
+    private Integer sts;
+
 }
