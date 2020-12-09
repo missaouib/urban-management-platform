@@ -198,7 +198,6 @@
 
     function getCaseAnalysisTitle() {
         $.ajaxUtil.get(getCaseAnalysisTitleUrl, function (e) {
-            console.log("e", e);
             let data = e.data;
             $("#caseAnalysisTitle").empty();
             let html = "";
