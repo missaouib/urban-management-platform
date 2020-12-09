@@ -3,7 +3,7 @@ title 城管类图
 class User <<用户实体类>>{
     -id: String
     -name : String
-    -sts : String           //激活、未激活    Kv 里的Key
+    -sts : int           //激活、未激活    Kv 里的Key
     -userName : String         //帐号
     -password : String      //密码
     -phone : String         //联系方式
@@ -26,7 +26,6 @@ class Role <<角色实体类>>{
     -id: String
     -name : String
     -roleDescribe : String      //描述
-    -sts : int
     -sort : int   //排序
     -userList : User[*]
     -menuList : Menu[*]
@@ -39,7 +38,6 @@ class Dept<<责任部门实体类>>{
     -deptPhone : String     //办公电话  
     -deptAddress : String   //部门地址
     -grid : Grid            //所属区域       到第三级  区、街道、社区
-    -sts : int
     -level : String
     -parent : Dept
     -roleList : Role[*]
@@ -53,7 +51,7 @@ class Menu<<菜单实体类>>{
     -url   :  String  
     -icon  : String     //图标地址
     -menuType : MenuType  //权限分类
-    -purpose ： String     //用途    Kv 里的Key    PC  、 App
+    -purpose ： int     //用途    Kv 里的Key    PC  、 App
 }
 
 class MenuType<<权限分类实体类>>{
