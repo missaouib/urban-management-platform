@@ -248,6 +248,10 @@
                                         <input type="hidden" id="eventId" value="">
                                         <input type="hidden" id="button" value="">
                                     </td>
+                                    <td class="partCodes">部件编码<span></span></td>
+                                    <td class="partCodes">
+                                        <input type="text" class="find_input" id="objId">
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -863,6 +867,12 @@
             $("#petitionerName").val(e.data.petitionerName);
             $("#userName").val(e.data.userName);
             $("#recTypeStr").val(e.data.recTypeStr);
+            $("#objId").val(e.data.objId);
+            if (e.data.objId == null) {
+                $(".partCodes").addClass('roleBox')
+            } else {
+                $(".partCodes").removeClass('roleBox')
+            }
             /*流程图*/
             $("#eventImg").attr('src', img + e.data.processInstanceId);
             /* 坐标 */

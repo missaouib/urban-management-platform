@@ -240,6 +240,12 @@
                                         <input id="y" type="text" class="find_input" readonly="readonly" value="纬度">
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td class="partCodes">部件编码<span></span></td>
+                                    <td class="partCodes">
+                                        <input type="text" class="find_input" id="objId">
+                                    </td>
+                                </tr>
                                 <input type="hidden" id="eventId" value="">
                                 <input type="hidden" id="button" value="">
                                 </tbody>
@@ -926,7 +932,12 @@
             $("#dept2").val(e.data.taskDeptName);
             $("#opinions1").val(e.data.opinions);
             $("#opinions2").val(e.data.opinions);
-
+            $("#objId").val(e.data.objId);
+            if (e.data.objId == null) {
+                $(".partCodes").addClass('roleBox')
+            } else {
+                $(".partCodes").removeClass('roleBox')
+            }
             if (e.data.delayedHours != null && "" !== e.data.delayedHours) {
                 $("#delayedHours").empty();
                 var str = "<div class=\"sendText\" style=\"width: 100px!important;\">申请时限</div>\n" +

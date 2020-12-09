@@ -1,32 +1,206 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>热线上报</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>惯用语维护</title>
     <th:block th:include="page/fragments/common :: common_css"/>
-    <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
-    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
-    <th:block th:include="page/fragments/common :: ztree_css"/>
-    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
-</head>
-<body style="border-radius: 8px;">
-<div class="content">
 
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<div class="notice_main ">
+
+
+
+    <form id="userForm">
+        <div class="top table2_top">
+            <div class="top_out">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>姓名<span></span></td>
+                        <td>
+                            <input type="text" class="find_input" name="name">
+                        </td>
+                        <td><span></span></td>
+                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <div class="notice_check">
+        <form id="search-form">
+            <p style="display: flex;justify-content: flex-end">
+                <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
+                <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">
+            </p>
+        </form>
+    </div>
+
+
+    <div class="clear"></div>
+
+
+    <div class="btn-group-sm" id="toolbar">
+        <a class="btn btn-success" onclick="$.operate.addTab()">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+
+    </div>
+
+
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
 </div>
 
 
-
-
 <th:block th:include="page/fragments/common :: common_js"/>
-<th:block th:include="page/fragments/common :: jquery_validation_js"/>
-<th:block th:include="page/fragments/common :: fileUpload_js"/>
-<th:block th:include="page/fragments/common :: map_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
-<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
-<th:block th:include="page/fragments/common :: ztree_js"/>
+
 <script type="text/javascript" th:inline="javascript">
 
+    $(function () {
+
+        queryUserList();
+    })
+
+    function selectDeptTree() {
+        var url = /*[[@{/tree/dept}]]*/ "/tree/dept";
+        var options = {
+            title: '请选择部门',
+            width: "380",
+            url: url,
+            callBack: deptDoSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function deptDoSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#deptId").val(body.find('#treeId').val());
+        $("#dept").val(body.find('#treeName').val());
+
+        layer.close(index);
+    }
+
+    function selectDeptRoleTree() {
+        var url = /*[[@{/tree/deptRole}]]*/ "/tree/deptRole";
+        var options = {
+            title: '请选择部门',
+            width: "380",
+            url: url,
+            callBack: deptRoleDoSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function deptRoleDoSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#roleId").val(body.find('#treeId').val());
+        $("#role").val(body.find('#treeName').val());
+
+        layer.close(index);
+    }
+
+    let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
+
+    let addUrl = /*[[@{/user/add}]]*/ "/user/add";
+
+    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
+
+    let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
+
+    let activationUrl = /*[[@{/user/activation}]]*/ "/user/activation";
+
+    let initializationUrl = /*[[@{/user/initialization}]]*/ "/user/initialization";
+
+    function queryUserList() {
+        var options = {
+            url: searchUrl,
+            createUrl: addUrl,
+            updateUrl: editUrl,
+            removeUrl: removeUrl,
+            uniqueId: "id",
+            sortName: "updateTime",
+            sortOrder: "desc",
+            modalName: "用户",
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '姓名',
+                    field: 'name'
+                },
+                {
+                    title: '账号',
+                    field: 'username'
+                },
+
+                {
+                    title: '手机号码',
+                    field: 'phone'
+                },
+                {
+                    title: '所属部门',
+                    field: 'deptName',
+                    sortable: true,
+                },
+                {
+                    title: '所属角色',
+                    field: 'roles',
+                    sortable: true,
+
+                },
+                {
+                    title: '操作',
+                    field: '',
+                    class: 'radios',
+                    formatter: function (value, row) {
+                        var e = "<label class='toggle-switch switch-solid' style='margin: 0 5px'>\n";
+                        if (row.sts === 0) {
+                            e += "<input type='checkbox' id='status' checked onclick='activation(\"" + row.id + "\")'>\n"
+                        } else {
+                            e += "<input type='checkbox' id='status'  onclick='activation(\"" + row.id + "\")'>\n"
+                        }
+                        e += "<span></span>\n</label>";
+                        e +=  "<a href='#' title='' style='margin-right: 5px'>修改</a>";
+                        if (row.system !== "1") {
+                            e +="<a href='' title='' style='margin-right: 5px' onclick='$.operate.remove(\"" + row.id + "\")' >注销</a>";
+                        }
+                        e += "<a href='' title='' onclick='initialization(\"" + row.id + "\")'>重置密码</a>"
+                        return e;
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    }
+
+    function activation(obj) {
+        $.ajax({
+            type: "GET",
+            url: activationUrl + "?id=" + obj
+        });
+    }
+
+    function initialization(obj) {
+        $.ajax({
+            type: "GET",
+            url: initializationUrl + "?id=" + obj,
+            success: function (result) {
+                console.log(result)
+            }
+        });
+    }
 
 
 
