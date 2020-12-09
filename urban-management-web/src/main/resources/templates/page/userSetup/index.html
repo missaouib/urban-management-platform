@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
@@ -20,8 +20,8 @@
                     <label class=""></label>
                     <input type="search" class="find_input" id="key">
                     <input type="hidden" th:name="eventTypeId" id="eventTypeId">
-<!--                    <input type="button" class="check_btn button_ground" onclick="search()" value="查询">-->
-<!--                    <input type="button" class="check_btn1 button_ground" value="重置">-->
+                    <!--                    <input type="button" class="check_btn button_ground" onclick="search()" value="查询">-->
+                    <!--                    <input type="button" class="check_btn1 button_ground" value="重置">-->
                 </p>
             </form>
             <div class="tree">
@@ -54,10 +54,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><span></span>人员性别</td>
+                            <td><span></span>人员帐号</td>
                             <td>
-                                <input id="eventTypeStr" type="text" maxlength="30" required
-                                       readonly="readonly">
+                                <input id="username" name="username" placeholder="" class="" type="text">
                             </td>
                             <td><span></span>出生日期</td>
                             <td>
@@ -70,8 +69,7 @@
                         <tr>
                             <td><span></span>联系方式</td>
                             <td>
-                                <input id="contact" placeholder="" class="" type="text" readonly="readonly"
-                                       required>
+                                <input id="mobileNumber" name="mobileNumber" placeholder="" class="" type="text">
                             </td>
                             <td><span></span>人员角色</td>
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
@@ -93,15 +91,17 @@
                                     +
                                 </button>
                             </td>
-                            <td><span></span></td>
-                            <td>
-
+                            <td class="hideGrounp roleBox"><span></span>账号状态</td>
+                            <td class="hideGrounp roleBox">
+                                <input id="sts" placeholder="" class="" type="text" readonly="readonly"
+                                       required>
                             </td>
                         </tr>
-                        <tr class="hidegrounp roleBox">
+                        <tr class="hideGrounp roleBox">
                             <td><span></span>创建时间</td>
                             <td>
-                                <input size="16" class="" id="initialDate" name="initialDate" type="text" value="" readonly>
+                                <input size="16" class="" id="createTime" type="text" value="" required
+                                       readonly="readonly">
                             </td>
                             <td><span></span>排序</td>
                             <td>
@@ -109,17 +109,7 @@
                                        readonly="readonly">
                             </td>
                         </tr>
-                        <tr class="hidegrounp roleBox">
-                            <td><span></span>账号状态</td>
-                            <td>
-                                <input id="account" placeholder="" class="" type="text" readonly="readonly"
-                                       required>
-                            </td>
-                            <td><span></span></td>
-                            <td>
 
-                            </td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -167,8 +157,6 @@
 </div>
 
 
-
-
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
 <th:block th:include="page/fragments/common :: fileUpload_js"/>
@@ -187,7 +175,8 @@
     $(function () {
 
         //时间  状态 排序 显示
-        // $(".hidegrounp").removeClass("roleBox");
+        $(".hideGrounp").removeClass("roleBox");
+        $(".hideGrounp").addClass("roleBox");
 
         getUserTree();
         getDeptAndRoleTree();
@@ -205,7 +194,7 @@
         });
 
         $("#userTree").click(function () {
-            if ($("#key").val() == 0){
+            if ($("#key").val() == 0) {
                 $.fn.zTree.getZTreeObj("userTree").expandAll(false);
             }
         });
@@ -213,9 +202,7 @@
 
     function getUserTree() {
         let settingForUser = {
-            callback: {
-
-            },
+            callback: {},
             data: {
                 keep: {
                     parent: true,

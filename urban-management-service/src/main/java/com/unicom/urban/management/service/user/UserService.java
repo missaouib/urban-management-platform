@@ -23,6 +23,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
@@ -54,6 +56,18 @@ public class UserService {
             if (StringUtils.isNotEmpty(userDTO.getUsername())) {
                 list.add(criteriaBuilder.equal(root.get("username").as(String.class), userDTO.getUsername()));
             }
+            if(userDTO.getSts()!=3){
+               list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class),userDTO.getSts()));
+            }
+            if(StringUtils.isNotBlank(userDTO.getDeptId())){
+                list.add(criteriaBuilder.equal(root.get("dept").get("id").as(String.class),userDTO.getDeptId()));
+            }
+            if(StringUtils.isNotBlank(userDTO.getRoleId())){
+                Join<Object, Object> roleList = root.join("roleList", JoinType.LEFT);
+                list.add(criteriaBuilder.equal(roleList.get("id").as(String.class),userDTO.getRoleId()));
+            }
+
+
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         };
@@ -216,12 +230,14 @@ public class UserService {
         User user = new User();
         initPassword(user);
         user.setName(userDTO.getName());
+        user.setUsername(userDTO.getUsername());
         user.setSex(userDTO.getSex());
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate birth = LocalDate.parse(userDTO.getBirth(), fmt);
         user.setBirth(birth);
         user.setPhone(userDTO.getMobileNumber());
         user.setSts(0);
+        user.setProfilePhotoUrl("http://www.baidu.com/");
         Dept dept = deptService.findOne(userDTO.getDeptId());
         user.setDept(dept);
         List<Role> roleList = new ArrayList<>(userDTO.getRoleList().size());

@@ -30,18 +30,20 @@
                             <input type="text" class="find_input" name="name">
                         </td>
                         <td>角色<span></span></td>
-                        <td>
-                            <select>
-                                <option>1</option>
-                                <option>2</option>
-                            </select>
+                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                            <input type="text" readonly="readonly" id="role" class="find_input"/>
+                            <input type="hidden" readonly="readonly" id="roleId" name="roleId"
+                                   class="find_input"/>
+                            <button type="button" class="addBtn" onclick="selectDeptRoleTree()">
+                                +
+                            </button>
                         </td>
                     </tr>
                     <tr>
                         <td>所属组织<span></span></td>
                         <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                            <input type="text" readonly="readonly" id="girdStr" class="find_input"/>
-                            <input type="hidden" readonly="readonly" id="girdId" name="eventTypeId"
+                            <input type="text" readonly="readonly" id="dept" class="find_input"/>
+                            <input type="hidden" readonly="readonly" id="deptId" name="deptId"
                                    class="find_input"/>
                             <button type="button" class="addBtn" onclick="selectDeptTree()">
                                 +
@@ -50,7 +52,7 @@
                         <td>状态<span></span></td>
                         <td>
                             <select name="sts">
-                                <option>--请选择--</option>
+                                <option value="3">--请选择--</option>
                                 <option value="0">激活</option>
                                 <option value="1">未激活</option>
                             </select>
@@ -110,8 +112,27 @@
 
     function deptDoSubmit(index, layero) {
         var body = layer.getChildFrame('body', index);
-        $("#parentId").val(body.find('#treeId').val());
-        $("#parentName").val(body.find('#treeName').val());
+        $("#deptId").val(body.find('#treeId').val());
+        $("#dept").val(body.find('#treeName').val());
+
+        layer.close(index);
+    }
+
+    function selectDeptRoleTree() {
+        var url = /*[[@{/tree/deptRole}]]*/ "/tree/deptRole";
+        var options = {
+            title: '请选择部门',
+            width: "380",
+            url: url,
+            callBack: deptRoleDoSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function deptRoleDoSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#roleId").val(body.find('#treeId').val());
+        $("#role").val(body.find('#treeName').val());
 
         layer.close(index);
     }
