@@ -186,7 +186,12 @@ public class DeptService {
         List<User> userList = one.getUserList();
         if (userList.size() > 0) {
             List<Integer> numList = userList.stream().map(User::getSort).filter(Objects::nonNull).distinct().collect(Collectors.toList());
-            Integer max = Collections.max(numList);
+            Integer max;
+            if (numList.size() == 0) {
+                max = 0;
+            } else {
+                max = Collections.max(numList);
+            }
             return (max != null ? max : 0) + 10;
         } else {
             return 10;
