@@ -204,7 +204,7 @@
                             e += "<input type='checkbox' id='status'  onclick='activation(\"" + row.id + "\")'>\n"
                         }
                         e += "<span></span>\n</label>";
-                        e +=  "<a href='#' title='' style='margin-right: 5px'>修改</a>";
+                        e +=  "<a href='#' title='' style='margin-right: 5px' onclick='$.operate.editTab(\"" + row.id + "\")'>修改</a>";
                         if (row.system !== "1") {
                             e +="<a href='' title='' style='margin-right: 5px' onclick='$.operate.remove(\"" + row.id + "\")' >注销</a>";
                         }

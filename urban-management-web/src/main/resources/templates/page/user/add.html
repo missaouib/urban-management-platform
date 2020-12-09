@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>用户新增</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: select2_css"/>
@@ -9,7 +9,7 @@
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
     <th:block th:include="page/fragments/common :: ztree_css"/>
-<!--    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">-->
+    <!--    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">-->
 </head>
 <body style="border-radius: 8px;width: 680px">
 
@@ -23,6 +23,7 @@
                         <td>姓名<span></span></td>
                         <td>
                             <input type="text" id="name" name="name" class="find_input"/>
+                            <input type="hidden" id="roleIdList" name="roleIdList" class="find_input"/>
                         </td>
                         <td>登录账号<span></span></td>
                         <td>
@@ -32,22 +33,21 @@
                     <tr>
                         <td>手机号码<span></span></td>
                         <td>
-                            <input type="text" id="mobileNumber" name="" class="find_input"/>
+                            <input type="text" id="mobileNumber" name="mobileNumber" class="find_input"/>
                         </td>
                         <td>办公电话<span></span></td>
                         <td>
-                            <input type="text"  name="" />
+                            <input type="text" name="officePhone"/>
                         </td>
                     </tr>
                     <tr>
                         <td>邮箱<span></span></td>
                         <td>
-                            <input type="text" name="" class="find_input"/>
+                            <input type="text" name="email" class="find_input"/>
                         </td>
                         <td>性别<span></span></td>
                         <td>
-                            <select id="eventTerm" >
-                                <option value="">--请选择--</option>
+                            <select id="sex" name="sex">
                                 <option value="">男</option>
                                 <option value="">女</option>
                             </select>
@@ -56,50 +56,43 @@
                     <tr>
                         <td>职务<span></span></td>
                         <td>
-                            <input type="text" name="" class="find_input" />
+                            <input type="text" name="post" class="find_input"/>
                         </td>
                         <td>出生日期<span></span></td>
                         <td>
-                            <input size="16" class="form_date find_input" name="initialDate" id="initialDate" type="text">
+                            <input size="16" class="form_date find_input" name="birth" id="initialDate" type="text">
                         </td>
                     </tr>
                     <tr class="col-12">
-                        <td><span></span>所属区域</td>
+                        <td><span></span>所属组织</td>
                         <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                            <input type="text" readonly="readonly" id="girdStr" class="find_input"/>
-                            <input type="hidden" readonly="readonly" id="deptId" name="deptId"
-                                   class="find_input" value="1"/>
-                            <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                            <input type="text" id="dept" readonly="readonly" class="find_input"/>
+                            <input type="hidden" readonly="readonly" name="deptId"
+                                   class="find_input"/>
+                            <button type="button" class="addBtn" onclick="selectDeptTree()">
                                 +
                             </button>
                         </td>
-                        <td><span></span>所属组织</td>
-                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                            <input type="text" readonly="readonly" class="find_input"/>
-                            <input type="hidden" readonly="readonly" name="deptId"
-                                   class="find_input" value="1"/>
-                            <button type="button" class="addBtn" onclick="selectEventTypeTree()">
-                                +
-                            </button>
+                        <td class="hideGroup hideSort roleBox"><span></span>排序</td>
+                        <td class="hideGroup hideSort roleBox">
+                            <input id="sort" type="text" name="sort" maxlength="30">
                         </td>
                     </tr>
                     <tr>
                         <td>所属角色<span></span></td>
                         <td class="role_tree">
                             <div class="treeDemo">
-                                <ul id="treeDemo" class="ztree"></ul>
+                                <ul id="roleTree" class="ztree"></ul>
                             </div>
                         </td>
-                        <td>排序<span></span></td>
-                        <td>
-                            <input type="text" name="" class="find_input"/>
-                        </td>
+
                     </tr>
                     <tr>
                         <td>用户状态<span></span></td>
                         <td style="text-align: left">
                             <label class="toggle-switch switch-solid">
-                                <input type="checkbox" id="status" checked>
+                                <input type="checkbox" id="status" checked onclick="stsStatus()">
+                                <input type="hidden" id="sts" name="sts" value="0">
                                 <span></span>
                             </label>
                         </td>
@@ -116,51 +109,6 @@
         </div>
     </div>
 </div>
-<!--<form id="userForm">-->
-<!--    <div class="top table2_top">-->
-<!--&lt;!&ndash;        <div>&ndash;&gt;-->
-<!--            <div class="top_out">-->
-<!--                <table class="table">-->
-<!--                    <tbody>-->
-<!--                    <tr>-->
-<!--                        <td>姓名<span>*</span></td>-->
-<!--                        <td>-->
-<!--                            <input type="text" id="name" name="name"/>-->
-<!--                        </td>-->
-<!--                        <td>登录账号<span>*</span></td>-->
-<!--                        <td>-->
-<!--                            <input type="text" id="username" name="username"/>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <td>手机号码<span>*</span></td>-->
-<!--                        <td>-->
-<!--                           <input type="text" id="mobileNumber" name="mobileNumber"/>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                        <td>选择角色<span>*</span></td>-->
-<!--                        <td>-->
-<!--                            <select multiple="multiple" id="role"></select>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <td>部门<span>*</span></td>-->
-<!--                        <td>-->
-<!--                            <input name="deptId" type="hidden" id="treeId"/>-->
-<!--                            <input type="text" id="dept" name="dept" onclick="selectDeptTree()" placeholder="请选择部门"/>-->
-<!--                        </td>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <td></td>-->
-<!--&lt;!&ndash;                        <td><input type="submit" id="smtBtn" value="保存"></td>&ndash;&gt;-->
-<!--                    </tr>-->
-<!--                    </tbody>-->
-<!--                </table>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--</form>-->
 
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: select2_js"/>
@@ -172,42 +120,29 @@
 
 <script type="text/javascript" th:inline="javascript">
 
-    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
+    let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+    let saveUserUrl = /*[[@{/userSetup/saveUser}]]*/ "/userSetup/saveUser";
+    let getUserSortByDeptIdUrl = /*[[@{/userSetup/getUserSortByDeptId}]]*/ "/userSetup/getUserSortByDeptId";
+
+
+    function stsStatus() {
+        if ($("#sts").val() === 0) {
+            $("#sts").val(1);
+        } else {
+            $("#sts").val(1);
+        }
+    }
+
     $(function () {
+        //时间  状态 排序 显示
+        $(".hideGroup").removeClass("roleBox");
+        $(".hideGroup").addClass("roleBox");
+        getDeptAndRoleTree();
 
-        $.ajaxUtil.get(componentTypeUrl, function (e) {
-            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
-
-        });
-
-        $(".treeDemo").on('click','.level1',function () {
-            $(".level2 .chk").css('display','inline-block')
+        $(".treeDemo").on('click', '.level1', function () {
+            $(".level2 .chk").css('display', 'inline-block')
         })
 
-
-        var setting = {
-            callback: {
-                onClick: zTreeOnClick
-            },
-            check: {
-                enable: true ,//显示复选框
-                chkStyle : "checkbox"
-            },
-            data: {//数据加载
-                keep: {
-                    parent: true,
-                    leaf: true
-                },
-                simpleData: {
-                    enable: true,
-                    idKey: 'id',
-                    pIdKey: 'parent'
-                },
-                key: {
-                    name: "name"
-                }
-            }
-        };
 
         $("#role").select2({
             language: "es"
@@ -229,32 +164,65 @@
 
     })
 
-    function zTreeOnClick(event, treeId, treeNode) {
-        console.log(event,treeId,treeNode)
-    }
-
-
-    function selectEventTypeTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
-        var options = {
-            title: '选择事件类型',
-            width: "380",
-            url: url,
-            callBack: doSubmit
+    function getDeptAndRoleTree() {
+        let settingForRole = {
+            callback: {
+                onCheck: zTreeOnCheck
+            },
+            check: {
+                enable: true
+            },
+            data: {
+                keep: {
+                    parent: true,
+                    leaf: true
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: 'id',
+                    pIdKey: 'parentId'
+                },
+                key: {
+                    name: "deptName"
+                }
+            }
         };
-        $.modal.openOptions(options);
+
+        $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
+            $.fn.zTree.init($("#roleTree"), settingForRole, e.data);
+            setCheckNode();
+        });
+    }
+    var roleIdList = [];
+    function zTreeOnCheck(event, treeId, treeNode) {
+        $("#roleIdList").val("");
+
+        var treeObj = $.fn.zTree.getZTreeObj("roleTree")
+        var nodes = treeObj.getCheckedNodes(true)
+        var v="";
+        var o="";
+        for(var i=0;i<nodes.length;i++) {
+            roleIdList.push(nodes[i].id);
+        }
+
+        $("#roleIdList").val(roleIdList);
+
     }
 
-    function doSubmit(index, layero) {
-        var body = layer.getChildFrame('body', index);
-        $("#typeStr").val(body.find('#treeName').val());
-
-        layer.close(index);
+    function setCheckNode() {
+        let treeObj = $.fn.zTree.getZTreeObj("roleTree");
+        let nodes = treeObj.transformToArray(treeObj.getNodes());
+        for (let i = 0; i < nodes.length; i++) {
+            if (nodes[i].levelOrNot === "role") {
+                nodes[i].nocheck = false;
+            } else {
+                nodes[i].nocheck = true;
+            }
+            treeObj.updateNode(nodes[i]);
+        }
     }
 
-     // 更改error文字
+    // 更改error文字
     jQuery.extend(jQuery.validator.messages, {
         required: "必填",
         mobileNumber: "必填",
@@ -276,33 +244,45 @@
         min: jQuery.validator.format("请输入一个最小为{0} 的值")
     });
 
-     /* 用户管理-新增-选择部门树 */
-     function selectDeptTree() {
-         var treeId = $("#treeId").val();
-         var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-         var url = ctx + "system/dept/selectDeptTree/" + deptId;
-         var options = {
-             title: '选择部门',
-             width: "380",
-             url: url,
-             callBack: doSubmit
-         };
-         $.modal.openOptions(options);
-     }
+    /* 用户管理-新增-选择部门树 */
+    function selectDeptTree() {
+        let treeId = $("#treeId").val();
+        let deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        let url = /*[[@{/tree/dept}]]*/ "/tree/dept";
+        let options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        let body = layer.getChildFrame('body', index);
+        let deptId = body.find('#treeId').val();
+        $("#deptId").val(body.find('#treeId').val());
+        $("#deptName").val(body.find('#treeName').val());
+        $.ajaxUtil.get(getUserSortByDeptIdUrl + "?deptId=" + deptId, function (e) {
+            $(".hideSort").removeClass("roleBox");
+            $("#sort").val(e.data);
+        });
+        layer.close(index);
+    }
 
     $("#userForm").validate({
         debug: true,
-        ignore:"",
-        submitHandler:function(form){
+        ignore: "",
+        submitHandler: function (form) {
             var params = $(form).serialize(); //串行化表单参数
-            $.post("user",params,function(result){
+            $.post("user", params, function (result) {
                 if (result.ok) {//注册成功
                     location.href = "register_ok.html";
-                }else{//注册失败
+                } else {//注册失败
                     alert(result.msg);
                     $("#checkImg").click();
                 }
-            },"json");
+            }, "json");
         },
         rules: {
             name: {
@@ -380,22 +360,17 @@
         return reg.test(value);
     }, "mobileNumber error");
 
-    let url = /*[[@{/user/save}]]*/ "/json/unit.json";
-
-    function save(){
-        var data = $('#userForm').serialize();
-        $.operate.saveTab(url, data);
-    }
-    function submit(){
-    //先校验
+    function submit() {
+        //先校验
         if (!$("form").valid()) {
             return;
 
         }
         var data = $('#userForm').serialize();
-        $.operate.saveTab(url, data);
-    //然后才提交
+        $.operate.saveTab(saveUserUrl, data);
+        //然后才提交
     }
+
 </script>
 </body>
 </html>
