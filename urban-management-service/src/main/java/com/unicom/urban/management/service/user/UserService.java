@@ -16,6 +16,7 @@ import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.dept.DeptService;
 import com.unicom.urban.management.service.password.PasswordService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,7 +39,13 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(rollbackOn = Exception.class)
 public class UserService {
+    private final static DateTimeFormatter df;
+    private final static DateTimeFormatter fmt;
 
+    static {
+        df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    }
 
     @Autowired
     private UserRepository userRepository;
@@ -182,7 +189,20 @@ public class UserService {
 
     public UserVO findById(String id) {
         User user = userRepository.getOne(id);
-        return UserMapper.INSTANCE.userToUserVO(user);
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user,userVO);
+        if(Optional.ofNullable(user.getDept()).isPresent()){
+            userVO.setDeptName(user.getDept().getDeptName());
+            userVO.setDeptId(user.getDept().getId());
+        }
+        List<String> roleList = new ArrayList<>();
+        user.getRoleList().forEach(r->roleList.add(r.getId()));
+        userVO.setRoleIdList(roleList);
+        if(Optional.ofNullable(user.getBirth()).isPresent()){
+            userVO.setBirth(fmt.format(user.getBirth()));
+        }
+
+        return userVO;
     }
 
     public User findOne(String id) {
@@ -236,7 +256,7 @@ public class UserService {
             }
         }
         user.setEmail(userDTO.getEmail());
-        user.setOfficePhone(userDTO.getOfficePhone());
+        user.setPhone(userDTO.getMobileNumber());
         user.setOfficePhone(userDTO.getOfficePhone());
         user.setPost(userDTO.getPost());
         initPassword(user);
@@ -296,6 +316,11 @@ public class UserService {
             }
             user.setRoleList(roleList);
         }
+        user.setEmail(userDTO.getEmail());
+        user.setOfficePhone(userDTO.getOfficePhone());
+        user.setPost(userDTO.getPost());
+
+
         userRepository.saveAndFlush(user);
     }
 
