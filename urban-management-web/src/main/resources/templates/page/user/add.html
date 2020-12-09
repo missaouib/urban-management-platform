@@ -73,8 +73,8 @@
                                 +
                             </button>
                         </td>
-                        <td class="hideGroup hideSort roleBox"><span></span>排序</td>
-                        <td class="hideGroup hideSort roleBox">
+                        <td class="hideSort roleBox"><span></span>排序</td>
+                        <td class="hideSort roleBox">
                             <input id="sort" type="text" name="sort" maxlength="30">
                         </td>
                     </tr>
@@ -134,9 +134,11 @@
     }
 
     $(function () {
-        //时间  状态 排序 显示
-        $(".hideGroup").removeClass("roleBox");
-        $(".hideGroup").addClass("roleBox");
+
+        //显示隐藏
+        $(".hideSort").removeClass("roleBox")
+        $(".hideSort").addClass("roleBox")
+
         getDeptAndRoleTree();
 
         $(".treeDemo").on('click', '.level1', function () {

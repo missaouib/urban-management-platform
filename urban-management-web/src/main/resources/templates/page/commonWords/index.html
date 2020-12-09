@@ -15,15 +15,15 @@
     <form id="userForm">
         <div class="top table2_top">
             <div class="top_out">
-                <table class="table">
+                <table class="table col-6" >
                     <tbody>
                     <tr>
-                        <td>姓名<span></span></td>
+                        <td>批示常用语<span></span></td>
                         <td>
                             <input type="text" class="find_input" name="name">
                         </td>
                         <td><span></span></td>
-                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                        <td>
 
                         </td>
                     </tr>
@@ -64,65 +64,17 @@
 
     $(function () {
 
-        queryUserList();
+        queryUserList()
     })
 
-    function selectDeptTree() {
-        var url = /*[[@{/tree/dept}]]*/ "/tree/dept";
-        var options = {
-            title: '请选择部门',
-            width: "380",
-            url: url,
-            callBack: deptDoSubmit
-        };
-        $.modal.openOptions(options);
-    }
 
-    function deptDoSubmit(index, layero) {
-        var body = layer.getChildFrame('body', index);
-        $("#deptId").val(body.find('#treeId').val());
-        $("#dept").val(body.find('#treeName').val());
-
-        layer.close(index);
-    }
-
-    function selectDeptRoleTree() {
-        var url = /*[[@{/tree/deptRole}]]*/ "/tree/deptRole";
-        var options = {
-            title: '请选择部门',
-            width: "380",
-            url: url,
-            callBack: deptRoleDoSubmit
-        };
-        $.modal.openOptions(options);
-    }
-
-    function deptRoleDoSubmit(index, layero) {
-        var body = layer.getChildFrame('body', index);
-        $("#roleId").val(body.find('#treeId').val());
-        $("#role").val(body.find('#treeName').val());
-
-        layer.close(index);
-    }
-
-    let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
-
-    let addUrl = /*[[@{/user/add}]]*/ "/user/add";
-
-    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
-
-    let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
-
-    let activationUrl = /*[[@{/user/activation}]]*/ "/user/activation";
-
-    let initializationUrl = /*[[@{/user/initialization}]]*/ "/user/initialization";
 
     function queryUserList() {
         var options = {
-            url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
+            // url: searchUrl,
+            // createUrl: addUrl,
+            // updateUrl: editUrl,
+            // removeUrl: removeUrl,
             uniqueId: "id",
             sortName: "updateTime",
             sortOrder: "desc",
@@ -137,46 +89,20 @@
                     }
                 },
                 {
-                    title: '姓名',
+                    title: '提示常用语',
                     field: 'name'
                 },
                 {
-                    title: '账号',
+                    title: '创建时间',
                     field: 'username'
-                },
-
-                {
-                    title: '手机号码',
-                    field: 'phone'
-                },
-                {
-                    title: '所属部门',
-                    field: 'deptName',
-                    sortable: true,
-                },
-                {
-                    title: '所属角色',
-                    field: 'roles',
-                    sortable: true,
-
                 },
                 {
                     title: '操作',
                     field: '',
                     class: 'radios',
                     formatter: function (value, row) {
-                        var e = "<label class='toggle-switch switch-solid' style='margin: 0 5px'>\n";
-                        if (row.sts === 0) {
-                            e += "<input type='checkbox' id='status' checked onclick='activation(\"" + row.id + "\")'>\n"
-                        } else {
-                            e += "<input type='checkbox' id='status'  onclick='activation(\"" + row.id + "\")'>\n"
-                        }
-                        e += "<span></span>\n</label>";
-                        e +=  "<a href='#' title='' style='margin-right: 5px'>修改</a>";
-                        if (row.system !== "1") {
-                            e +="<a href='' title='' style='margin-right: 5px' onclick='$.operate.remove(\"" + row.id + "\")' >注销</a>";
-                        }
-                        e += "<a href='' title='' onclick='initialization(\"" + row.id + "\")'>重置密码</a>"
+                        var e = "<a href='' title='' style='margin-right: 5px'>修改</a>" +
+                            "<a href='' title='' style='margin-right: 5px'>删除</a>"
                         return e;
                     }
                 }
