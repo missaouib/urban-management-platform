@@ -25,7 +25,12 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -204,16 +209,28 @@ public class UserService {
      * 人员配置新增
      * 新增一个带有部门的默认人员
      *
-     * @param deptId 部门id
+     * @param userDTO 数据
      */
-    public void saveUserByDeptId(String deptId) {
+    @Log(name = "人员管理-新增")
+    public void saveUserByDeptId(UserDTO userDTO) {
         User user = new User();
-        user.setName("默认人员");
         initPassword(user);
-        User save = userRepository.save(user);
-        Dept dept = deptService.findOne(deptId);
-        dept.getUserList().add(save);
-        deptService.updateDeptForRoleSetup(dept);
+        user.setName(userDTO.getName());
+        user.setSex(userDTO.getSex());
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate birth = LocalDate.parse(userDTO.getBirth(), fmt);
+        user.setBirth(birth);
+        user.setPhone(userDTO.getMobileNumber());
+        user.setSts(0);
+        Dept dept = deptService.findOne(userDTO.getDeptId());
+        user.setDept(dept);
+        List<Role> roleList = new ArrayList<>(userDTO.getRoleList().size());
+        for (String s : userDTO.getRoleList()) {
+            Role role = new Role(s);
+            roleList.add(role);
+        }
+        user.setRoleList(roleList);
+        userRepository.save(user);
     }
 
 }
