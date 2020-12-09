@@ -34,21 +34,23 @@
 
     </div>
     <div class="rightContent">
-        <form class="details">
+        <form class="details" id="userForm">
             <div class="top table2_top">
                 <div class="top_out">
                     <table class="table">
                         <tbody>
+                        <input type="text" id="id" name="id" value="">
                         <tr>
                             <td><span></span>人员姓名</td>
                             <td>
-                                <input id="eventCode" placeholder="" class="" type="text" readonly="readonly"
-                                       required>
+                                <input id="name" name="name" placeholder="" class="" type="text">
                             </td>
-                            <td><span></span>人员姓名</td>
+                            <td><span></span>人员性别</td>
                             <td>
-                                <input id="" placeholder="" class="" type="text" readonly="readonly"
-                                       required>
+                                <select name="sex" required>
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                </select>
                             </td>
                         </tr>
                         <tr>
@@ -59,7 +61,8 @@
                             </td>
                             <td><span></span>出生日期</td>
                             <td>
-                                <input size="16" class="form_datetime" id="burnDate" name="initialDate" type="text" value="" readonly>
+                                <input size="16" class="form_date" id="burnDate" name="birth" type="text" value=""
+                                       readonly>
                                 <span class="add-on"><i class="icon-remove"></i></span>
                                 <span class="add-on"><i class="icon-th"></i></span>
                             </td>
@@ -72,15 +75,15 @@
                             </td>
                             <td><span></span>人员角色</td>
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                <input type="text" readonly="readonly" id="userStr" class="find_input"/>
-                                <input type="hidden" readonly="readonly" id="userId" name="eventTypeId"
+                                <input type="text" readonly="readonly" id="roleNameList" class="find_input"/>
+                                <input type="hidden" readonly="readonly" id="roleIdList" name="roleList"
                                        class="find_input"/>
                                 <button type="button" class="addBtn" data-toggle='modal' data-target='#modal-default'>
                                     +
                                 </button>
                             </td>
                         </tr>
-                        <tr class="col-12">
+                        <tr>
                             <td><span></span>所属部门</td>
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                 <input type="text" readonly="readonly" id="deptName" class="find_input"/>
@@ -89,6 +92,10 @@
                                 <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                     +
                                 </button>
+                            </td>
+                            <td><span></span></td>
+                            <td>
+
                             </td>
                         </tr>
                         <tr class="hidegrounp roleBox">
@@ -118,9 +125,15 @@
                 </div>
                 <div class="notice_bot">
                     <div class="r_right but_p girdBtnGroup" id="eventButton">
-                        <button class="but_save" type="button" style="margin-right: 10px">新增</button>
-                        <button class="but_save" type="button" style="margin-right: 10px">保存</button>
-                        <button class="but_save" type="button" style="margin-right: 10px">删除</button>
+                        <button class="but_save" type="button" style="margin-right: 10px" id="saveUserBtn"
+                                onclick="saveUser()">新增
+                        </button>
+                        <button class="but_save" type="button" style="margin-right: 10px" id="updateUserBtn"
+                                onclick="updateUser()">保存
+                        </button>
+                        <button class="but_save" type="button" style="margin-right: 10px" id="deleteUserBtn"
+                                onclick="deleteUser()">删除
+                        </button>
                     </div>
                 </div>
             </div>
@@ -143,7 +156,9 @@
                 <input type="hidden" id="imageUrlList" value="">
                 <div class="modal-footer justify-content-between"
                      style="display: flex;justify-content: flex-end!important;">
-                    <button type="button" class="btn btn-primary" onclick="" id="underBtn" data-dismiss="modal">完成</button>
+                    <button type="button" class="btn btn-primary" onclick="setRoleIdList()" id="underBtn"
+                            data-dismiss="modal">完成
+                    </button>
                     <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
                 </div>
             </div>
@@ -165,6 +180,9 @@
 
     let getAllAndUserForTreeUrl = /*[[@{/userSetup/getAllAndUserForTree}]]*/ "/userSetup/getAllAndUserForTree";
     let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+    let saveUserUrl = /*[[@{/userSetup/saveUser}]]*/ "/userSetup/saveUser";
+    let updateUserUrl = /*[[@{/roleSetup/updateRole}]]*/ "/roleSetup/updateRole";
+    let deleteUserUrl = /*[[@{/roleSetup/deleteRole}]]*/ "/roleSetup/deleteRole";
 
     $(function () {
 
@@ -173,18 +191,17 @@
 
         getUserTree();
         getDeptAndRoleTree();
-        $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose: true, todayBtn: true, startView: 4, minView: 3});
-        ////日期插件
-        $('.form_datetime').datetimepicker({
-            language: 'zh-CN',
+        $('.form_date').datetimepicker({
+            language: 'fr',
             weekStart: 1,
             todayBtn: 1,
             autoclose: 1,
             todayHighlight: 1,
             startView: 2,
+            minView: 2,
             forceParse: 0,
-            showMeridian: 1,
-            format: "yyyy-mm-dd hh:ii:ss"
+            language: 'zh-CN', //语言
+            format: "yyyy-mm-dd"
         });
 
         $("#userTree").click(function () {
@@ -230,18 +247,27 @@
 
 
     }
-    var treeArr = [];
-    function zTreeOnCheck(event, treeId, treeNode){
 
-        if (treeNode.checked == true){
-            treeArr.push(treeNode)
-            console.log("true",treeArr)
-        }else {
-            treeArr.pop(treeNode)
-            console.log("false",treeArr)
+    var roleIdList = [];
+    var roleNameList = [];
+
+    function zTreeOnCheck(event, treeId, treeNode) {
+
+        if (treeNode.checked == true) {
+            roleIdList.push(treeNode.id);
+            roleNameList.push(treeNode.deptName);
+        } else {
+            roleIdList.pop(treeNode.id);
+            roleNameList.pop(treeNode.deptName);
         }
     }
-    function onTreeClick(event, treeId, treeNode, clickFlag){
+
+    function setRoleIdList() {
+        $("#roleIdList").val(roleIdList);
+        $("#roleNameList").val(roleNameList);
+    }
+
+    function onTreeClick(event, treeId, treeNode, clickFlag) {
 
     }
 
@@ -310,7 +336,20 @@
         layer.close(index);
     }
 
+    function saveUser() {
+        let data = $('#userForm').serialize();
+        $.operate.saveAndReload(saveUserUrl, data);
+    }
 
+    function updateUser() {
+        let data = $('#userForm').serialize();
+        $.operate.saveAndReload(updateUserUrl, data);
+    }
+
+    function deleteUser() {
+        let data = $('#userForm').serialize();
+        $.operate.saveAndReload(deleteUserUrl, data);
+    }
 
 </script>
 </body>
