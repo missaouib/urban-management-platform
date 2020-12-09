@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Collections;
+import java.util.List;
 
 public interface UserRepository extends CustomizeRepository<User, String> {
 
@@ -16,5 +17,7 @@ public interface UserRepository extends CustomizeRepository<User, String> {
     Boolean existsByUsername(String username);
 
     void deleteByIdIn(Collections ids);
+
+    List<User> findAllByDept_IdAndSort(String deptId,Integer sort);
 
 }

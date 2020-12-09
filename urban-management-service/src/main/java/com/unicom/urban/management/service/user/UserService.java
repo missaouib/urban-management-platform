@@ -256,4 +256,18 @@ public class UserService {
         userRepository.save(user);
     }
 
+
+    private boolean ifSort(String deptId,Integer sort,String userId){
+        List<User> users = userRepository.findAllByDept_IdAndSort(deptId, sort);
+        if(StringUtils.isNotBlank(userId)){
+            return users.size()==0;
+        }else{
+            if(users.size()==0){
+                return true;
+            }else{
+                return users.size() == 1 && userId.equals(users.get(0).getId());
+            }
+        }
+    }
+
 }
