@@ -117,7 +117,7 @@ public class KvConstant {
     /**
      * 值班长
      */
-    public static final String SHIFT_LEADER_ROLE = "322ae62d-d951-4050-a19f-2bc295bd64b1";
+    public static final String SHIFT_LEADER_ROLE = "4";
 
     /**
      * 派遣员
