@@ -12,29 +12,12 @@
 
 
 
-    <form id="userForm">
-        <div class="top table2_top">
-            <div class="top_out">
-                <table class="table col-6" >
-                    <tbody>
-                    <tr>
-                        <td>批示常用语<span></span></td>
-                        <td>
-                            <input type="text" class="find_input" name="name">
-                        </td>
-                        <td><span></span></td>
-                        <td>
-
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </form>
     <div class="notice_check">
         <form id="search-form">
-            <p style="display: flex;justify-content: flex-end">
+            <p>
+                <label class="">批示常用语</label>
+                <input type="text" class="find_input" style="width: 400px!important;" id="eventTypeName" onclick="" readonly="readonly">
+                <input type="hidden" th:name="eventTypeId" id="eventTypeId">
                 <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
                 <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">
             </p>
@@ -46,14 +29,39 @@
 
 
     <div class="btn-group-sm" id="toolbar">
-        <a class="btn btn-success" onclick="$.operate.addTab()">
+        <a class="btn btn-success addWords" onclick="" data-toggle='modal' data-target='#modal-default'>
             <i class="fa fa-plus"></i> 新增
         </a>
 
     </div>
 
-
     <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <P style="display: flex;align-items:center;justify-content:center;margin: 5px 0">
+                        <span class="sendText" style="width: 20%"><i style="color: red!important;"></i>提示常用语</span>
+                        <input style="width: 80%" type="text" class="find_input">
+                    </P>
+                    <P style="display: flex;align-items:center;justify-content:center">
+                        <span class="sendText" style="width: 20%"><i style="color: red!important;"></i>排序</span>
+                        <input style="width: 80%" type="text" class="find_input">
+                    </P>
+                </div>
+                <input type="hidden" id="imageUrlList" value="">
+                <div class="modal-footer justify-content-between"
+                     style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary" onclick="" id="underBtn">完成</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -64,6 +72,15 @@
 
     $(function () {
 
+
+        $(".enentTest").click(function () {
+            $(".modal-title").html($(this).html())
+            $("#underBtn").html($(this).html())
+        })
+$(".addWords").click(function () {
+    $(".modal-title").html("新增")
+    $("#underBtn").html("新增")
+})
         queryUserList()
     })
 
@@ -101,7 +118,7 @@
                     field: '',
                     class: 'radios',
                     formatter: function (value, row) {
-                        var e = "<a href='' title='' style='margin-right: 5px'>修改</a>" +
+                        var e = "<a href='' title='' style='margin-right: 5px' class='enentTest' data-toggle='modal' data-target='#modal-default'>修改</a>" +
                             "<a href='' title='' style='margin-right: 5px'>删除</a>"
                         return e;
                     }
