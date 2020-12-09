@@ -43,13 +43,13 @@
                             </tr>
                             <tr>
 
-                                <td><span></span>立案区域</td>
+                                <td><span>*</span>立案区域</td>
                                 <td>
                                     <select id="eventCondition" onchange="getEventCondition()" required>
 
                                     </select>
                                 </td>
-                                <td><span></span>立案条件</td>
+                                <td><span>*</span>立案条件</td>
                                 <td>
                                     <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
 
@@ -72,7 +72,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span></span>诉求人</td>
+                                <td><span>*</span>诉求人</td>
                                 <td>
                                     <input name="peopleName" type="text" class="" required>
                                 </td>
@@ -85,7 +85,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span></span>联系方式</td>
+                                <td><span>*</span>联系方式</td>
                                 <td>
                                     <input name="petitionerPhone" type="text" class="" required/>
                                 </td>
@@ -121,7 +121,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span></span>所在区域</td>
+                                <td><span>*</span>所在区域</td>
                                 <td>
                                     <select name="required" class="form-control" id="grid1" onchange="getStreetList()" required>
                                         <option>--请选择--</option>
@@ -129,19 +129,19 @@
                                                 th:text="${as.gridName}"></option>
                                     </select>
                                 </td>
-                                <td><span></span>所属街道</td>
+                                <td><span>*</span>所属街道</td>
                                 <td>
                                     <select name="phone" class="form-control" id="grid2" onchange="getCommunityList()" required>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
-                                <td><span></span>所属社区</td>
+                                <td><span>*</span>所属社区</td>
                                 <td>
                                     <select name="petitonerPhone" class="form-control" id="grid3" onchange="getGridList()" required>
                                     </select>
                                 </td>
-                                <td><span></span>所属网格</td>
+                                <td><span>*</span>所属网格</td>
                                 <td>
                                     <select th:name="gridId" id="grid4" onchange="getGridCenter(this)" required>
                                     </select>
@@ -171,14 +171,14 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><span></span>案件地址</td>
+                                <td><span>*</span>案件地址</td>
                                 <td colspan="8">
                                     <input onmouseover="this.title=this.value" id="location" th:name="location"
                                            type="text" class="overInput" required>
                                 </td>
                             </tr>
                             <tr>
-                                <td><span></span>问题描述</td>
+                                <td><span>*</span>问题描述</td>
                                 <td colspan="8">
                                     <input onmouseover="this.title=this.value" id="problemescription"
                                            th:name="represent" type="text" class="overInput" required>
