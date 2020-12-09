@@ -110,6 +110,11 @@ public class EventDTO {
     private String cancel;
 
     /**
+     * 部件编码
+     */
+    private String objId;
+
+    /**
      * 图片集合
      */
     private List<String> imageUrlList;

@@ -154,4 +154,9 @@ public class EventOneVO {
      */
     private String opinions;
 
+    /**
+     * 部件编码
+     */
+    private String objId;
+
 }

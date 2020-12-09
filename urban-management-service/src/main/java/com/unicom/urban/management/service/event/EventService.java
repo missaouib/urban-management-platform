@@ -7,8 +7,8 @@ import com.unicom.urban.management.mapper.EventButtonMapper;
 import com.unicom.urban.management.mapper.EventConditionMapper;
 import com.unicom.urban.management.mapper.EventMapper;
 import com.unicom.urban.management.pojo.dto.EventDTO;
-import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.entity.Process;
+import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
@@ -329,6 +329,11 @@ public class EventService {
      */
     public void save(EventDTO eventDTO) {
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
+        if (StringUtils.isNotBlank(eventDTO.getObjId())) {
+            Component component = new Component();
+            component.setId(eventDTO.getObjId());
+            event.setComponent(component);
+        }
         event.setUser(SecurityUtil.getUser().castToUser());
 
         Petitioner petitioner = new Petitioner();
@@ -338,7 +343,7 @@ public class EventService {
         Petitioner saveP = petitionerService.save(petitioner);
         event.setPetitioner(saveP);
 
-        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(),1);
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);
         event.setEventFileList(eventFileList);
 
         Event save = eventRepository.save(event);
@@ -490,6 +495,11 @@ public class EventService {
         eventOneVO.setRecTypeStr(one.getRecType().getValue());
         eventOneVO.setUserId(Optional.ofNullable(one.getUser()).map(User::getId).orElse(""));
         eventOneVO.setUserName(Optional.ofNullable(one.getUser()).map(User::getName).orElse(""));
+        if (one.getComponent() != null) {
+            if (one.getComponent().getComponentInfo() != null) {
+                eventOneVO.setObjId(one.getComponent().getComponentInfo().getObjId());
+            }
+        }
         Optional<Petitioner> petitioner = Optional.ofNullable(one.getPetitioner());
         eventOneVO.setPetitionerName(petitioner.map(Petitioner::getName).orElse(""));
         eventOneVO.setPetitionerPhone(petitioner.map(Petitioner::getPhone).orElse(""));

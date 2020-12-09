@@ -91,13 +91,13 @@
                                     +
                                 </button>
                             </td>
-                            <td class="hideGrounp roleBox"><span></span>账号状态</td>
-                            <td class="hideGrounp roleBox">
+                            <td class="hideGroup roleBox"><span></span>账号状态</td>
+                            <td class="hideGroup roleBox">
                                 <input id="sts" placeholder="" class="" type="text" readonly="readonly"
                                        required>
                             </td>
                         </tr>
-                        <tr class="hideGrounp roleBox">
+                        <tr class="hideGroup roleBox">
                             <td><span></span>创建时间</td>
                             <td>
                                 <input size="16" class="" id="createTime" type="text" value="" required
@@ -175,8 +175,8 @@
     $(function () {
 
         //时间  状态 排序 显示
-        $(".hideGrounp").removeClass("roleBox");
-        $(".hideGrounp").addClass("roleBox");
+        $(".hideGroup").removeClass("roleBox");
+        $(".hideGroup").addClass("roleBox");
 
         getUserTree();
         getDeptAndRoleTree();
@@ -241,7 +241,6 @@
     var roleNameList = [];
 
     function zTreeOnCheck(event, treeId, treeNode) {
-
         if (treeNode.checked == true) {
             roleIdList.push(treeNode.id);
             roleNameList.push(treeNode.deptName);
@@ -249,6 +248,8 @@
             roleIdList.pop(treeNode.id);
             roleNameList.pop(treeNode.deptName);
         }
+        console.log("roleIdList", roleIdList);
+        console.log("roleNameList", roleNameList);
     }
 
     function setRoleIdList() {
@@ -257,14 +258,53 @@
     }
 
     function onTreeClick(event, treeId, treeNode) {
+        roleIdList = [];
+        roleNameList = [];
+        let userVO = treeNode.userVO;
+        if (treeNode.levelOrNot === "user") {
+            $(".hideGroup").removeClass("roleBox");
+            $("#id").val(userVO.id);
+            $("#name").val(userVO.name);
+            $("#sex").val(userVO.sex);
+            $("#username").val(userVO.username);
+            $("#burnDate").val(userVO.birth);
+            $("#mobileNumber").val(userVO.phone);
+            $("#deptId").val(userVO.deptId);
+            $("#deptName").val(userVO.deptName);
+            $("#roleIdList").val(userVO.roleIdList);
+            $("#roleNameList").val(userVO.roleNameList);
+            roleIdList = userVO.roleIdList;
+            roleNameList = userVO.roleNameList;
+            $("#sort").val(treeNode.sort);
+            $("#createTime").val(treeNode.createTime);
+            if (userVO.sts === 0) {
+                $("#sts").val("未启用");
+            } else if (userVO.sts === 1) {
+                $("#sts").val("启用");
+            } else {
+                $("#sts").val("");
+            }
+            updateCheckNode(userVO.roleIdList);
+        }
+    }
 
+    function updateCheckNode(roleIdList) {
+        let treeObj = $.fn.zTree.getZTreeObj("roleTree");
+        let nodes = treeObj.transformToArray(treeObj.getNodes());
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = 0; j < roleIdList.length; j++) {
+                if (roleIdList[j] === nodes[i].id) {
+                    nodes[i].checked = true;
+                }
+            }
+            treeObj.updateNode(nodes[i]);
+        }
     }
 
     function getDeptAndRoleTree() {
         let settingForRole = {
             callback: {
-                onCheck: zTreeOnCheck,
-                onClick: onTreeClick
+                onCheck: zTreeOnCheck
             },
             check: {
                 enable: true
@@ -290,7 +330,6 @@
             setCheckNode();
         });
     }
-
 
     function setCheckNode() {
         let treeObj = $.fn.zTree.getZTreeObj("roleTree");

@@ -101,6 +101,7 @@
                                 <td><span></span>部件编码</td>
                                 <td>
                                     <input type="text" id="objId" readonly="readonly">
+                                    <input type="hidden" id="objId1" name="objId" readonly="readonly">
                                 </td>
                                 <td><span></span>案件类型</td>
                                 <td>
@@ -665,7 +666,9 @@
         var features = geojsonFormat.readFeatures(res);
         if (undefined !== features[0]) {
             $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function (e) {
+                console.log("data", e.data);
                 $("#objId").val(e.data.objId);
+                $("#objId1").val(e.data.id);
             });
         }
     }

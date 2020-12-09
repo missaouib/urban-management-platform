@@ -58,7 +58,6 @@ public interface EventMapper {
     @Mapping(source = "peopleName", target = "petitioner.name")
     @Mapping(source = "sex", target = "petitioner.sex")
     @Mapping(source = "petitionerPhone", target = "petitioner.phone")
-//    @Mapping(source = "condition", target = "eventCondition.id")
     Event eventDTOToEvent(EventDTO eventDTO);
 
 
