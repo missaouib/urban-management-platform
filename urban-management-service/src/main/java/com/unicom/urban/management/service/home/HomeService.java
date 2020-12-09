@@ -10,7 +10,10 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
@@ -36,8 +39,8 @@ public class HomeService {
             Map<String,Object> map = new ConcurrentHashMap<>();
             map.put("typeName",u.getName());
             map.put("weekCount",weekList.stream().filter(w-> Optional.ofNullable(w.getEventType().getParent()).isPresent()).filter(w->w.getEventType().getParent().getName().equals(u.getName())).count());
-            map.put("monthCount",monthList.stream().filter(w-> Optional.ofNullable(w.getEventType().getParent()).isPresent()).filter(w->w.getEventType().getParent().getName().equals(u.getName())).count());
-            map.put("count",all.stream().filter(w->w.getEventType().getParent().getName().equals(u.getName())).count());
+            map.put("monthCount", monthList.stream().filter(w -> Optional.ofNullable(w.getEventType().getParent()).isPresent()).filter(w -> w.getEventType().getParent().getName().equals(u.getName())).count());
+            map.put("count", all.stream().filter(w -> Optional.ofNullable(w.getEventType().getParent()).isPresent()).filter(w -> w.getEventType().getParent().getName().equals(u.getName())).count());
             list.add(map);
         });
         return list;

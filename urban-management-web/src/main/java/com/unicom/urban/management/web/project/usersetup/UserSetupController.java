@@ -51,6 +51,18 @@ public class UserSetupController {
         return Result.success("新增成功");
     }
 
+    @PostMapping("/updateUser")
+    public Result updateUser(@Valid UserDTO userDTO) {
+        userService.updateUserByDeptId(userDTO);
+        return Result.success("修改成功");
+    }
+
+    @PostMapping("/deleteUser")
+    public Result deleteUser(String id) {
+        userService.deleteUserByDeptId(id);
+        return Result.success("删除成功");
+    }
+
     @GetMapping("/getUserSortByDeptId")
     public Result getUserSortByDeptId(String deptId) {
         if (StringUtils.isBlank(deptId)) {

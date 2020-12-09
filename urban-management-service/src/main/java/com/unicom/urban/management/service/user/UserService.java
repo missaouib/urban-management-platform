@@ -266,15 +266,52 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Log(name = "人员管理-修改")
+    public void updateUserByDeptId(UserDTO userDTO) {
+        User user = findOne(userDTO.getId());
+        if (StringUtils.isNotBlank(userDTO.getSort())) {
+            if (!this.ifSort(userDTO.getDeptId(), Integer.valueOf(userDTO.getSort()), user.getId())) {
+                throw new DataValidException("排序不能重复");
+            } else {
+                user.setSort(Integer.valueOf(userDTO.getSort()));
+            }
+        }
+        user.setSex(userDTO.getSex());
+        user.setName(userDTO.getName());
+        if (StringUtils.isNotBlank(userDTO.getBirth())) {
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate birth = LocalDate.parse(userDTO.getBirth(), fmt);
+            user.setBirth(birth);
+        }
+        user.setPhone(userDTO.getMobileNumber());
+        if (StringUtils.isNotBlank(userDTO.getDeptId())) {
+            Dept dept = deptService.findOne(userDTO.getDeptId());
+            user.setDept(dept);
+        }
+        if (userDTO.getRoleList().size() > 0) {
+            List<Role> roleList = new ArrayList<>(userDTO.getRoleList().size());
+            for (String s : userDTO.getRoleList()) {
+                Role role = new Role(s);
+                roleList.add(role);
+            }
+            user.setRoleList(roleList);
+        }
+        userRepository.saveAndFlush(user);
+    }
 
-    private boolean ifSort(String deptId,Integer sort,String userId){
+    @Log(name = "人员管理-删除")
+    public void deleteUserByDeptId(String id) {
+        userRepository.deleteById(id);
+    }
+
+    private boolean ifSort(String deptId, Integer sort, String userId) {
         List<User> users = userRepository.findAllByDept_IdAndSort(deptId, sort);
-        if(StringUtils.isNotBlank(userId)){
-            return users.size()==0;
-        }else{
-            if(users.size()==0){
+        if (StringUtils.isNotBlank(userId)) {
+            return users.size() == 0;
+        } else {
+            if (users.size() == 0) {
                 return true;
-            }else{
+            } else {
                 return users.size() == 1 && userId.equals(users.get(0).getId());
             }
         }
