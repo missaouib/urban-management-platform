@@ -230,12 +230,14 @@ public class UserService {
         User user = new User();
         initPassword(user);
         user.setName(userDTO.getName());
+        user.setUsername(userDTO.getUsername());
         user.setSex(userDTO.getSex());
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate birth = LocalDate.parse(userDTO.getBirth(), fmt);
         user.setBirth(birth);
         user.setPhone(userDTO.getMobileNumber());
         user.setSts(0);
+        user.setProfilePhotoUrl("http://www.baidu.com/");
         Dept dept = deptService.findOne(userDTO.getDeptId());
         user.setDept(dept);
         List<Role> roleList = new ArrayList<>(userDTO.getRoleList().size());
