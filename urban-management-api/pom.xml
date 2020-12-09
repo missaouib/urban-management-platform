@@ -17,7 +17,7 @@
         <dependency>
             <groupId>com.unicom</groupId>
             <artifactId>urban-management-service</artifactId>
-            <version>0.0.1</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
