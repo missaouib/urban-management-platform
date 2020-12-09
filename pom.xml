@@ -18,7 +18,7 @@
         <spring-boot.version>2.1.13.RELEASE</spring-boot.version>
         <spring-security-oauth2-authorization-server.version>0.0.3</spring-security-oauth2-authorization-server.version>
         <UserAgentUtils.version>1.21</UserAgentUtils.version>
-        <org.mapstruct.version>1.4.0.Final</org.mapstruct.version>
+        <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
         <fastdfs-client.version>1.27.2</fastdfs-client.version>
         <activiti.version>5.22.0</activiti.version>
         <hutool-all.version>5.4.3</hutool-all.version>
