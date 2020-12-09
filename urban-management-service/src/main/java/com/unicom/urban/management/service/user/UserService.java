@@ -228,6 +228,13 @@ public class UserService {
     @Log(name = "人员管理-新增")
     public void saveUserByDeptId(UserDTO userDTO) {
         User user = new User();
+        if (StringUtils.isNotBlank(userDTO.getSort())) {
+            if (!this.ifSort(userDTO.getDeptId(), Integer.valueOf(userDTO.getSort()), null)) {
+                throw new DataValidException("排序不能重复");
+            } else {
+                user.setSort(Integer.valueOf(userDTO.getSort()));
+            }
+        }
         initPassword(user);
         user.setName(userDTO.getName());
         user.setUsername(userDTO.getUsername());
@@ -241,7 +248,6 @@ public class UserService {
         user.setSts(0);
         user.setProfilePhotoUrl("http://www.baidu.com/");
         if (StringUtils.isNotBlank(userDTO.getDeptId())) {
-            user.setSort(deptService.getUserSortByDeptId(userDTO.getDeptId()));
             Dept dept = deptService.findOne(userDTO.getDeptId());
             user.setDept(dept);
         }

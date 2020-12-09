@@ -905,7 +905,6 @@
     function getEventDetail(eventId) {
         $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
             eventId = e.data.id;
-            console.log(e.data)
             /*详情*/
             $("#eventCode").val(e.data.eventCode);
             $("#eventTypeStr").val(e.data.eventTypeStr);

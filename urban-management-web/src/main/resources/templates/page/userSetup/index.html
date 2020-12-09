@@ -91,10 +91,9 @@
                                     +
                                 </button>
                             </td>
-                            <td class="hideGroup roleBox"><span></span>账号状态</td>
-                            <td class="hideGroup roleBox">
-                                <input id="sts" placeholder="" class="" type="text" readonly="readonly"
-                                       required>
+                            <td class="hideGroup hideSort roleBox"><span></span>排序</td>
+                            <td class="hideGroup hideSort roleBox">
+                                <input id="sort" type="text" name="sort" maxlength="30">
                             </td>
                         </tr>
                         <tr class="hideGroup roleBox">
@@ -103,13 +102,12 @@
                                 <input size="16" class="" id="createTime" type="text" value="" required
                                        readonly="readonly">
                             </td>
-                            <td><span></span>排序</td>
+                            <td><span></span>账号状态</td>
                             <td>
-                                <input id="sort" type="text" maxlength="30" required
-                                       readonly="readonly">
+                                <input id="sts" placeholder="" class="" type="text" readonly="readonly"
+                                       required>
                             </td>
                         </tr>
-
                         </tbody>
                     </table>
                 </div>
@@ -168,6 +166,7 @@
 
     let getAllAndUserForTreeUrl = /*[[@{/userSetup/getAllAndUserForTree}]]*/ "/userSetup/getAllAndUserForTree";
     let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+    let getUserSortByDeptIdUrl = /*[[@{/userSetup/getUserSortByDeptId}]]*/ "/userSetup/getUserSortByDeptId";
     let saveUserUrl = /*[[@{/userSetup/saveUser}]]*/ "/userSetup/saveUser";
     let updateUserUrl = /*[[@{/roleSetup/updateRole}]]*/ "/roleSetup/updateRole";
     let deleteUserUrl = /*[[@{/roleSetup/deleteRole}]]*/ "/roleSetup/deleteRole";
@@ -359,8 +358,13 @@
 
     function doSubmit(index, layero) {
         let body = layer.getChildFrame('body', index);
-        $("#deptId").val(body.find('#treeId').val());
+        let deptId = body.find('#treeId').val();
+        $("#deptId").val(deptId);
         $("#deptName").val(body.find('#treeName').val());
+        $.ajaxUtil.get(getUserSortByDeptIdUrl + "?deptId=" + deptId, function (e) {
+            $(".hideSort").removeClass("roleBox");
+            $("#sort").val(e.data);
+        });
         layer.close(index);
     }
 

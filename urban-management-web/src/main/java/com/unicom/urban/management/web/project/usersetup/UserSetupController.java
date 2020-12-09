@@ -2,11 +2,13 @@ package com.unicom.urban.management.web.project.usersetup;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.UserDTO;
 import com.unicom.urban.management.pojo.vo.DeptVO;
 import com.unicom.urban.management.service.dept.DeptService;
 import com.unicom.urban.management.service.user.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +49,15 @@ public class UserSetupController {
     public Result saveRole(@Valid UserDTO userDTO) {
         userService.saveUserByDeptId(userDTO);
         return Result.success("新增成功");
+    }
+
+    @GetMapping("/getUserSortByDeptId")
+    public Result getUserSortByDeptId(String deptId) {
+        if (StringUtils.isBlank(deptId)) {
+            throw new DataValidException("请选择正确的部门");
+        }
+        Integer userSortByDeptId = deptService.getUserSortByDeptId(deptId);
+        return Result.success(userSortByDeptId);
     }
 
 }

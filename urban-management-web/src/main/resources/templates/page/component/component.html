@@ -174,8 +174,6 @@
         onUncheck: function (row, tr, flied) {
             console.log("取消每一个单选框时对应的操作",row)
             let input = tr[0].parentNode.parentNode;
-            console.log(row)
-            // console.log(input)
             function sibling(elem) {
                 var r = [];
                 var n = elem.parentNode.firstChild;
@@ -199,7 +197,6 @@
         onUncheckAll: function (row) {
             $(".componentTable").attr('disabled', 'disabled');
             $(".componentSelect").attr('disabled', 'disabled');
-            console.log("取消所有",row)
         },
         columns: [
             {

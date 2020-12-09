@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.dept;
 
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.dept.DeptRepository;
 import com.unicom.urban.management.mapper.TreeMapper;
 import com.unicom.urban.management.pojo.dto.DeptDTO;
@@ -179,9 +180,12 @@ public class DeptService {
      */
     public Integer getUserSortByDeptId(String deptId) {
         Dept one = deptRepository.getOne(deptId);
+        if (one == null) {
+            throw new DataValidException("请选择正确的部门");
+        }
         List<User> userList = one.getUserList();
         if (userList.size() > 0) {
-            List<Integer> numList = userList.stream().map(User::getSort).distinct().collect(Collectors.toList());
+            List<Integer> numList = userList.stream().map(User::getSort).filter(Objects::nonNull).distinct().collect(Collectors.toList());
             Integer max = Collections.max(numList);
             return (max != null ? max : 0) + 10;
         } else {
