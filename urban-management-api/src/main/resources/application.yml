@@ -9,25 +9,27 @@ spring:
     password: Root@123
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
-      maximum-pool-size: 30              # 最大连接数
-      minimum-idle: 10                   # 最小空闲连接
+      maximum-pool-size: 99              # 最大连接数
+      minimum-idle: 30                   # 最小空闲连接
       connection-test-query: SELECT 1    # 连接测试查询
       connection-timeout: 60000          # 连接超时时间 毫秒
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
     open-in-view: false
     properties:
       hibernate:
-        format_sql: true                 # 格式化SQL
+        format_sql: true                  # 格式化SQL
+        use_sql_comments: false           # 显示JPQL语句
+        generate_statistics: false        # 显示SQL性能分析日志
 
   activiti:
     history-level: full
     check-process-definitions: false
     db-history-used: true
-    db-identity-used: false
+    db-identity-used: true
     job-executor-activate: false
     async-executor-enabled: false
 
@@ -39,27 +41,24 @@ spring:
       max-request-size: 40MB
 
 fdfs:
-  so-timeout: 1501                      # 上传的超时时间
-  connect-timeout: 601                  # 连接超时时间
-  thumb-image:                          # 缩略图生成参数
-    width: 150
-    height: 150
-  tracker-list:                         # TrackerList参数,支持多个
+  nginx-url: http://192.168.24.203:8090/
+  #  so-timeout: 5000                         # 读取时间   毫秒
+  connect-timeout: 10000                   # 连接超时时间 socket的connectTimeout事件 毫秒
+  #  thumb-image:                             # 缩略图生成参数
+  #    width: 150
+  #    height: 150
+  tracker-list:                           # TrackerList参数,支持多个
     - 192.168.24.203:22122
-#  pool:
-#    #从池中借出的对象的最大数目（配置为-1表示不限制）
-#    max-total: -1
-#    #获取连接时的最大等待毫秒数(默认配置为5秒)
-#    max-wait-millis: 5*1000
-#    #每个key最大连接数
-#    max-total-per-key: 50
-#    #每个key对应的连接池最大空闲连接数
-#    max-idle-per-key: 10
-#    #每个key对应的连接池最小空闲连接数
-#    max_idle_per_key: 5
+  pool:
+    max-total: 100                        # 从池中借出的对象的最大数目
+    max-total-per-key: 50                 # 每个tracker地址的最大连接数
+    max-wait-millis: 5000                 # 连接耗尽时等待获取连接的最大毫秒数
+
 logging:
   level:
-    com.unicom: debug
-    org.springframework: warn
+    com.unicom: info
+    org.springframework: info
     org.activiti.engine: info
-    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    com.github.tobato: info
+    com.github.tobato.fastdfs.domain.proto: info
+    org.hibernate.type.descriptor.sql.BasicBinder: info
