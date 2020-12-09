@@ -52,6 +52,7 @@ public class Role extends BaseEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "sys_role_menu", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
+    @OrderBy("sort ASC ")
     private List<Menu> menuList;
 
     private Integer sort;

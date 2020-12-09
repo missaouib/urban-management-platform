@@ -30,7 +30,7 @@
                                 <td><span>*</span>问题类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                     <input type="text" readonly="readonly" id="typeStr" name="typeStr" th:value="${eventOneVO.eventTypeStr}" class="find_input"/>
-                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId" class="find_input" />
+                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId" th:value="${eventOneVO.eventTypeId}" class="find_input" />
                                     <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                         +
                                     </button>
@@ -74,7 +74,8 @@
 
                                 <td><span></span>部件编码</td>
                                 <td>
-                                    <input type="text" disabled>
+                                    <input type="text" readonly id="objId"  th:value="${eventOneVO.objId}"/>
+                                    <input type="hidden" id="objId1" name="objId" />
                                 </td>
                                 <td><span>*</span>案件类型</td>
                                 <td>
@@ -502,6 +503,8 @@
         createEventCode(eventTypeId);
         //获取立案区域
         findEventConditionByEventType(eventTypeId)
+        //部件获取
+        findUrlListByEventTypeId(eventTypeId);
         layer.close(index);
     }
     function setPoint() {
@@ -572,7 +575,73 @@
             });
         })
     }
+    /**
+     * 获取部件的发布图层
+     */
+    let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
+    function findUrlListByEventTypeId(eventTypeId) {
+        $.ajaxUtil.get(publishUrl + "?typeId=" + eventTypeId, function (e) {
+            $(e.data).each(function (index, value) {
+                $("#publish").val(value.name);
+                $("#publishId").val(value.id);
+                publish = value.name;
+                publishId = value.id;
+                if (value.url != null) {
+                    var urlParam = value.url.split("?");
+                    var url = urlParam[0];
+                    var param = urlParam[1];
 
+                    var ImageVector = new ol.layer.Tile({
+                        source: new ol.source.TileWMS({
+                            url: url,
+                            params: {
+                                'VERSION': '1.1.1',
+                                tiled: true,
+                                "LAYERS": param,
+                                "exceptions": ''
+                            }
+                        })
+                    });
+                    var layersArray = map.getLayers();
+                    layersArray.insertAt(1, ImageVector);
+                    //删除上一个底图
+                    var mation = map.getLayerGroup().getLayers().a;
+                    if (mation.length > 4) {
+                        mation.splice(1, 1);
+                        source.clear();
+                    }
+                    $("#layerId").val(value.layerId == null ? "" : value.layerId);
+                    //获取地图数据s
+                    map.on('singleclick', function (evt) {
+                        var viewResolution = map.getView().getResolution();
+                        var url = ImageVector.getSource().getGetFeatureInfoUrl(
+                            evt.coordinate, viewResolution, 'EPSG:4326', {
+                                'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
+                                'FEATURE_COUNT': 50 //点击查询能返回的数量上限
+                            });
+                        $.ajax({
+                            type: 'GET',
+                            url: url,
+                            dataType: 'jsonp',
+                            jsonp: 'format_options',
+                            jsonpCallback: "callback:success_jsonpCallback1"
+                        });
+                    });
+
+                }
+            })
+        })
+    }
+    let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
+    function success_jsonpCallback1(res) {
+        var features = geojsonFormat.readFeatures(res);
+        if (undefined !== features[0]) {
+            $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function (e) {
+                $("#objId").val(e.data.objId);
+                $("#objId1").val(e.data.id);
+            });
+        }
+    }
     //回调函数接收查询结果
     var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
 
@@ -636,12 +705,14 @@
         $(".ol-full-screen-false").html("全屏")
 
         var doBySelf = [[${eventOneVO.doBySelf}]];
+        var eventTypeId = [[${eventOneVO.eventTypeId}]];
+        console.log("eventTypeId",eventTypeId)
         if (doBySelf){
             $("#after").css('display','block');
         }else {
             $("#after").css('display','none');
         }
-
+        findUrlListByEventTypeId(eventTypeId);
         showImage();
         getGridPublishUrl()
 

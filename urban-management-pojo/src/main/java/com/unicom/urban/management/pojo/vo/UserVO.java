@@ -41,4 +41,6 @@ public class UserVO {
 
     private String birth;
 
+    private Integer checkbox;
+
 }

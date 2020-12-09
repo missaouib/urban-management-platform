@@ -13,6 +13,7 @@ import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.RoleVO;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.dept.DeptService;
+import com.unicom.urban.management.service.user.UserService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,8 @@ public class RoleService {
     private RoleRepository roleRepository;
     @Autowired
     private DeptService deptService;
-
+    @Autowired
+    private UserService userService;
     public Page<RoleVO> search(RoleDTO roleDTO, Pageable pageable) {
         Page<Role> page = roleRepository.findAll((Specification<Role>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
@@ -138,5 +140,25 @@ public class RoleService {
         }
         one.setMenuList(menuList);
         roleRepository.saveAndFlush(one);
+    }
+
+    public List<UserVO> findUserByRole(String roleId) {
+        List<UserVO> userListByRoleId = this.findUserListByRoleId(roleId);
+        List<User> userList = userService.findAll();
+        List<UserVO> list = new ArrayList<>();
+        for (User user : userList){
+            UserVO vo = new UserVO();
+            for (UserVO userVO : userListByRoleId){
+                if (user.getId().equals(userVO.getId())){
+                    vo.setCheckbox(1);
+                }else{
+                    vo.setCheckbox(0);
+                }
+            }
+            vo.setId(user.getId());
+            vo.setName(user.getName());
+            list.add(vo);
+        }
+        return list;
     }
 }

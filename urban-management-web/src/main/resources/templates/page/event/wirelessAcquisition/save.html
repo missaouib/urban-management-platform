@@ -72,7 +72,8 @@
 
                                 <td><span></span>部件编码</td>
                                 <td>
-                                    <input type="text" readonly id="objId">
+                                    <input type="text" readonly id="objId" />
+                                    <input type="hidden" readonly id="objId1" name="objId" />
                                 </td>
                                 <td><span></span>案件类型</td>
                                 <td>
@@ -470,6 +471,7 @@
         if (undefined !== features[0]) {
             $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function (e) {
                 $("#objId").val(e.data.objId);
+                $("#objId1").val(e.data.id);
             });
         }
     }

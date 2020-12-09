@@ -319,6 +319,11 @@ public class EventService {
         eventDTO.setSts(0);
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
+        if (StringUtils.isNotBlank(eventDTO.getObjId())) {
+            Component component = new Component();
+            component.setId(eventDTO.getObjId());
+            event.setComponent(component);
+        }
         eventRepository.save(event);
     }
 
@@ -556,6 +561,11 @@ public class EventService {
     public Event updateTemp(EventDTO eventDTO) {
         eventDTO.setSts(0);
         Event event = EventDTOtoEvent(eventDTO);
+        if (StringUtils.isNotBlank(eventDTO.getObjId())) {
+            Component component = new Component();
+            component.setId(eventDTO.getObjId());
+            event.setComponent(component);
+        }
         return this.update(event);
     }
 
@@ -647,6 +657,11 @@ public class EventService {
     public void saveAutoReport(EventDTO eventDTO) {
         Event event = this.EventDTOtoEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
+        if (StringUtils.isNotBlank(eventDTO.getObjId())) {
+            Component component = new Component();
+            component.setId(eventDTO.getObjId());
+            event.setComponent(component);
+        }
         Event saved = eventRepository.save(event);
         workService.saveAutoReport(saved.getId());
     }
@@ -658,6 +673,11 @@ public class EventService {
         eventDTO.setSts(null);
         Event event = this.EventDTOtoEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
+        if (StringUtils.isNotBlank(eventDTO.getObjId())) {
+            Component component = new Component();
+            component.setId(eventDTO.getObjId());
+            event.setComponent(component);
+        }
         Event saved = eventRepository.save(event);
         workService.superviseReporting(saved.getId());
     }
