@@ -94,7 +94,7 @@
                             <tr>
                                 <td><span></span>所在区域</td>
                                 <td>
-                                    <select class="form-control" id="grid1" onchange="getStreetList()" required>
+                                    <select name="required" class="form-control" id="grid1" onchange="getStreetList()" required>
                                         <option>--请选择--</option>
                                         <option th:each="as:${gridList}" th:value="${as.id}"
                                                 th:text="${as.gridName}"></option>
@@ -102,14 +102,14 @@
                                 </td>
                                 <td><span></span>所属街道</td>
                                 <td>
-                                    <select class="form-control" id="grid2" onchange="getCommunityList()" required>
+                                    <select name="petitonerPhone" class="form-control" id="grid2" onchange="getCommunityList()" required>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span></span>所属社区</td>
                                 <td>
-                                    <select class="form-control" id="grid3" onchange="getGridList()" required>
+                                    <select name="phone" class="form-control" id="grid3" onchange="getGridList()" required>
                                     </select>
                                 </td>
                                 <td><span></span>所属网格</td>
