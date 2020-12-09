@@ -40,6 +40,6 @@ public class UserDTO {
 
     private String post;
 
-    private Integer sort;
+    private String sort;
 
 }
