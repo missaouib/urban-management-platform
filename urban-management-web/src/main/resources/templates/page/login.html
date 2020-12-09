@@ -32,7 +32,7 @@
         <div class="inpBox">
             <div class="icon icon3"></div>
             <img id="captchaImg" th:src="@{/captcha.jpeg}" class="canvas" alt="验证码" title="点击图片刷新验证码" onclick="changeCaptcha()">
-            <input name="input-val" class="input-val" placeholder="请输入验证码" id="captcha" type="text" maxlength="4" >
+            <input name="input-val" autocomplete="off" class="input-val" placeholder="请输入验证码" id="captcha" type="text" maxlength="4" >
         </div>
 
         <hr class="hr20">
