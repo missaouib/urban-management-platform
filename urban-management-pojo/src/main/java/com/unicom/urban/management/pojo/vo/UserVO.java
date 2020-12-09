@@ -43,4 +43,11 @@ public class UserVO {
 
     private Integer checkbox;
 
+    private String officePhone;
+
+    private String email;
+
+    private String post;
+
+    private Integer sort;
 }

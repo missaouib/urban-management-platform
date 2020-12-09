@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>修改</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>用户修改</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: select2_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
@@ -22,84 +22,82 @@
                     <tr>
                         <td>姓名<span></span></td>
                         <td>
-                            <input class="find_input" type="text" name="name" th:value="${user.name}">
+                            <input type="text" id="name" name="name" th:value="${user.name}" class="find_input"/>
+                            <input type="hidden" id="userId" name="id" th:value="${user.id}" class="find_input"/>
+                            <input type="hidden" id="roleIdList" name="roleList" th:value="${user.roleIdList}" class="find_input"/>
                         </td>
                         <td>登录账号<span></span></td>
                         <td>
-                            <input class="find_input" type="text" th:value="${user.username}" readonly="readonly">
+                            <input type="text" id="username" th:value="${user.username}" name="username" readonly
+                                   class="find_input"/>
                         </td>
                     </tr>
                     <tr>
                         <td>手机号码<span></span></td>
                         <td>
-                            <input class="find_input" type="text" name="mobileNumber" th:value="${user.mobileNumber}">
+                            <input type="text" id="mobileNumber" th:value="${user.phone}" name="mobileNumber"
+                                   class="find_input"/>
                         </td>
                         <td>办公电话<span></span></td>
                         <td>
-                            <input type="text"  name="" />
+                            <input type="text" th:value="${user.officePhone}" name="officePhone"/>
                         </td>
                     </tr>
                     <tr>
                         <td>邮箱<span></span></td>
                         <td>
-                            <input type="text" name="" class="find_input"/>
+                            <input type="text" name="email" th:value="${user.email}" class="find_input"/>
                         </td>
                         <td>性别<span></span></td>
                         <td>
-                            <select id="eventTerm" >
-                                <option value="">--请选择--</option>
-                                <option value="">男</option>
-                                <option value="">女</option>
+                            <select id="sex" name="sex">
+                                <option th:selected="${user.sex == '男'}" value="男">男</option>
+                                <option th:selected="${user.sex == '女'}" value="女">女</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
                         <td>职务<span></span></td>
                         <td>
-                            <input type="text" name="" class="find_input" />
+                            <input type="text" name="post" th:value="${user.post}" class="find_input"/>
                         </td>
                         <td>出生日期<span></span></td>
                         <td>
-                            <input size="16" class="form_date find_input" name="initialDate" id="initialDate" type="text">
+                            <input size="16" th:value="${user.birth}" class="form_date find_input" name="birth"
+                                   id="initialDate" type="text">
                         </td>
                     </tr>
                     <tr class="col-12">
-                        <td><span></span>所属区域</td>
+                        <td><span></span>所属组织</td>
                         <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                            <input type="text" readonly="readonly" id="girdStr" class="find_input"/>
-                            <input type="hidden" readonly="readonly" id="deptId" name="deptId"
-                                   class="find_input" value="1"/>
-                            <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                            <input type="text" id="dept" th:value="${user.deptName}" readonly="readonly"
+                                   class="find_input"/>
+                            <input type="hidden" readonly="readonly" th:value="${user.deptId}" name="deptId" id="deptId"
+                                   class="find_input"/>
+                            <button type="button" class="addBtn" onclick="selectDeptTree()">
                                 +
                             </button>
                         </td>
-                        <td><span></span>所属组织</td>
-                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                            <input type="text" readonly="readonly" class="find_input"/>
-                            <input type="hidden" readonly="readonly" name="deptId"
-                                   class="find_input" value="1"/>
-                            <button type="button" class="addBtn" onclick="selectEventTypeTree()">
-                                +
-                            </button>
+                        <td class="hideSort roleBox"><span></span>排序</td>
+                        <td class="hideSort roleBox">
+                            <input id="sort" th:value="${user.sort}" type="text" name="sort" maxlength="30">
                         </td>
                     </tr>
                     <tr>
                         <td>所属角色<span></span></td>
                         <td class="role_tree">
                             <div class="treeDemo">
-                                <ul id="treeDemo" class="ztree"></ul>
+                                <ul id="roleTree" class="ztree"></ul>
                             </div>
                         </td>
-                        <td>排序<span></span></td>
-                        <td>
-                            <input type="text" name="" class="find_input"/>
-                        </td>
+
                     </tr>
                     <tr>
                         <td>用户状态<span></span></td>
                         <td style="text-align: left">
                             <label class="toggle-switch switch-solid">
-                                <input type="checkbox" id="status" checked>
+                                <input type="checkbox" id="status" th:checked="${user.sts==0}" onclick="stsStatus()">
+                                <input type="hidden" th:value="${user.sts}" id="sts" name="sts">
                                 <span></span>
                             </label>
                         </td>
@@ -111,11 +109,11 @@
     </form>
     <div class="notice_bot">
         <div class="r_right but_p" style="display: flex;justify-content: flex-end">
-            <button class="but_save" type="button" onclick="save()">保存</button>
-            <button class="but_close" onclick="$.modal.closeTab()">关闭</button>
+            <button class="but_save" type="submit" id="smtBtn" onclick="submit()">保存</button>
+            <button class="but_close" onclick="$.modal.closeTab();">关闭</button>
+        </div>
     </div>
 </div>
-
 
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: select2_js"/>
@@ -127,43 +125,38 @@
 
 <script type="text/javascript" th:inline="javascript">
 
-    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
+    let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+    let updateUserUrl = /*[[@{/userSetup/updateUser}]]*/ "/userSetup/updateRole";
+    let getUserSortByDeptIdUrl = /*[[@{/userSetup/getUserSortByDeptId}]]*/ "/userSetup/getUserSortByDeptId";
+
+    var user = [[${user}]]
+
+    function stsStatus() {
+        if ($("#sts").val() === 0) {
+            $("#sts").val(1);
+        } else {
+            $("#sts").val(1);
+        }
+    }
+
     $(function () {
 
-        $.ajaxUtil.get(componentTypeUrl, function (e) {
-            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
 
-        });
 
-        //控制树的多选框
-        $(".treeDemo").on('click','.level1',function () {
-            $(".level2 .chk").css('display','inline-block')
+        //显示隐藏
+        $(".hideSort").removeClass("roleBox")
+        $(".hideSort").addClass("roleBox")
+
+        if (user.deptId != null || user.deptId != "") {
+            $(".hideSort").removeClass("roleBox");
+        }
+
+        getDeptAndRoleTree();
+
+        $(".treeDemo").on('click', '.level1', function () {
+            $(".level2 .chk").css('display', 'inline-block')
         })
 
-
-        var setting = {
-            callback: {
-                onClick: zTreeOnClick
-            },
-            check: {
-                enable: true ,//显示复选框
-                chkStyle : "checkbox"
-            },
-            data: {//数据加载
-                keep: {
-                    parent: true,
-                    leaf: true
-                },
-                simpleData: {
-                    enable: true,
-                    idKey: 'id',
-                    pIdKey: 'parent'
-                },
-                key: {
-                    name: "name"
-                }
-            }
-        };
 
         $("#role").select2({
             language: "es"
@@ -182,41 +175,105 @@
             language: 'zh-CN', //语言
             format: "yyyy-mm-dd"
         });
-
     })
 
-    function zTreeOnClick(event, treeId, treeNode) {
-        console.log(event,treeId,treeNode)
-    }
-
-
-    function selectEventTypeTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
-        var options = {
-            title: '选择事件类型',
-            width: "380",
-            url: url,
-            callBack: doSubmit
+    function getDeptAndRoleTree() {
+        let settingForRole = {
+            callback: {
+                onCheck: zTreeOnCheck
+            },
+            check: {
+                enable: true
+            },
+            data: {
+                keep: {
+                    parent: true,
+                    leaf: true
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: 'id',
+                    pIdKey: 'parentId'
+                },
+                key: {
+                    name: "deptName"
+                }
+            }
         };
-        $.modal.openOptions(options);
+
+        $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
+            $.fn.zTree.init($("#roleTree"), settingForRole, e.data);
+            setCheckNode();
+        });
     }
 
-    function doSubmit(index, layero) {
-        var body = layer.getChildFrame('body', index);
-        $("#typeStr").val(body.find('#treeName').val());
+    var roleIdList = [];
 
-        layer.close(index);
+    function zTreeOnCheck(event, treeId, treeNode) {
+        roleIdList = [];
+
+        var treeObj = $.fn.zTree.getZTreeObj("roleTree")
+        var nodes = treeObj.getCheckedNodes(true)
+        for (var i = 0; i < nodes.length; i++) {
+            roleIdList.push(nodes[i].id);
+        }
+
+        $("#roleIdList").val(roleIdList);
+
     }
 
+    function setCheckNode() {
+        let treeObj = $.fn.zTree.getZTreeObj("roleTree");
+        let nodes = treeObj.transformToArray(treeObj.getNodes());
+        for (let i = 0; i < nodes.length; i++) {
+            if (nodes[i].levelOrNot === "role") {
+                nodes[i].nocheck = false;
+            } else {
+                nodes[i].nocheck = true;
+            }
+            treeObj.updateNode(nodes[i]);
+        }
+
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = 0; j < user.roleIdList.length; j++) {
+                if (user.roleIdList[j] === nodes[i].id) {
+                    nodes[i].checked = true;
+                }
+            }
+            treeObj.updateNode(nodes[i]);
+        }
+
+
+    }
+
+    // 更改error文字
+    jQuery.extend(jQuery.validator.messages, {
+        required: "必填",
+        mobileNumber: "必填",
+        remote: "请修正该字段",
+        email: "请输入正确格式的电子邮件",
+        url: "请输入合法的网址",
+        date: "请输入合法的日期",
+        dateISO: "请输入合法的日期 (ISO).",
+        number: "请输入合法的数字",
+        digits: "只能输入整数",
+        creditcard: "请输入合法的信用卡号",
+        equalTo: "请再次输入相同的值",
+        accept: "请输入拥有合法后缀名的字符串",
+        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
+        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
+        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
+        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
+        min: jQuery.validator.format("请输入一个最小为{0} 的值")
+    });
 
     /* 用户管理-新增-选择部门树 */
     function selectDeptTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = ctx + "system/dept/selectDeptTree/" + deptId;
-        var options = {
+        let treeId = $("#treeId").val();
+        let deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        let url = /*[[@{/tree/dept}]]*/ "/tree/dept";
+        let options = {
             title: '选择部门',
             width: "380",
             url: url,
@@ -225,30 +282,120 @@
         $.modal.openOptions(options);
     }
 
-
-    let url = /*[[@{/user/save}]]*/ "/json/unit.json";
-
-    function save(){
-        var data = $('#userForm').serialize();
-        $.operate.saveTab(url, data);
+    function doSubmit(index, layero) {
+        let body = layer.getChildFrame('body', index);
+        let deptId = body.find('#treeId').val();
+        $("#deptId").val(body.find('#treeId').val());
+        $("#dept").val(body.find('#treeName').val());
+        $.ajaxUtil.get(getUserSortByDeptIdUrl + "?deptId=" + deptId, function (e) {
+            $(".hideSort").removeClass("roleBox");
+            $("#sort").val(e.data);
+        });
+        layer.close(index);
     }
-    function submit(){
+
+    $("#userForm").validate({
+        debug: true,
+        ignore: "",
+        submitHandler: function (form) {
+            var params = $(form).serialize(); //串行化表单参数
+            $.post("user", params, function (result) {
+                if (result.ok) {//注册成功
+                    location.href = "register_ok.html";
+                } else {//注册失败
+                    alert(result.msg);
+                    $("#checkImg").click();
+                }
+            }, "json");
+        },
+        rules: {
+            name: {
+                required: true
+            },
+            username: {
+                required: true,
+                // rangelength: [5, 8]
+            },
+            // pwd: {
+            //     required: true,
+            //     rangelength: [6, 12]
+            // },
+            // pwd2: {
+            //     required: true,
+            //     rangelength: [6, 12],
+            //     /*重复密码需要与原密码相同的要求*/
+            //     equalTo: "#pwd"
+            // },
+            // sex: {
+            //     required: true
+            // },
+            // age: {
+            //     required: true,
+            //     range: [26, 50]
+            // },
+            // email: {
+            //     email: true
+            // },
+            // idcard: {
+            //     card: true
+            // },
+            mobileNumber: {
+                mobileNumber: true
+            }
+        },
+        messages: {
+            // name: {
+            //     required: "真实姓名不能为空"
+            // },
+            // username: {
+            //     required: "登录名不能为空",
+            //     rangelength: "登录名长度要在5-8位之间"
+            // },
+            // pwd: {
+            //     required: "密码不能为空",
+            //     rangelength: "密码长度在6-12位之间"
+            // },
+            // pwd2: {
+            //     required: "重复密码不能为空",
+            //     rangelength: "重复密码长度在6-12位之间",
+            //     equalTo: "重复密码与密码不一致"
+            // },
+            // sex: {
+            //     required: "请选择性别"
+            // },
+            // age: {
+            //     required: "年龄不能为空",
+            //     range: "年龄必须在26-50岁之间"
+            // },
+            // email: {
+            //     email: "请输入有效邮箱"
+            // },
+            // idcard: {
+            //     card: "请输入有效身份证号"
+            // },
+            mobileNumber: {
+                mobileNumber: "必填"
+            }
+        }
+    });
+    /*手机号格式验证*/
+    $.validator.addMethod("mobileNumber", function (value, element, params) {
+        var reg = /^1[34578]\d{9}$/;
+        return reg.test(value);
+    }, "mobileNumber error");
+
+    function submit() {
         //先校验
         if (!$("form").valid()) {
             return;
 
         }
         var data = $('#userForm').serialize();
-        $.operate.saveTab(url, data);
+        $.operate.saveTab(updateUserUrl, data);
         //然后才提交
     }
 
-    let url = /*[[@{/user/update}]]*/ "/json/unit.json";
 
-    function save() {
-        var data = $('#userForm').serialize();
-        $.operate.saveTab(url, data);
-    }
 </script>
 </body>
 </html>
