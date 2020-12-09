@@ -93,9 +93,10 @@
                                     +
                                 </button>
                             </td>
-                            <td><span></span></td>
-                            <td>
-
+                            <td class="hidegrounp roleBox"><span></span>账号状态</td>
+                            <td class="hidegrounp roleBox">
+                                <input id="account" placeholder="" class="" type="text" readonly="readonly"
+                                       required>
                             </td>
                         </tr>
                         <tr class="hidegrounp roleBox">
@@ -109,17 +110,7 @@
                                        readonly="readonly">
                             </td>
                         </tr>
-                        <tr class="hidegrounp roleBox">
-                            <td><span></span>账号状态</td>
-                            <td>
-                                <input id="account" placeholder="" class="" type="text" readonly="readonly"
-                                       required>
-                            </td>
-                            <td><span></span></td>
-                            <td>
 
-                            </td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -187,7 +178,7 @@
     $(function () {
 
         //时间  状态 排序 显示
-        // $(".hidegrounp").removeClass("roleBox");
+        $(".hidegrounp").removeClass("roleBox");
 
         getUserTree();
         getDeptAndRoleTree();
