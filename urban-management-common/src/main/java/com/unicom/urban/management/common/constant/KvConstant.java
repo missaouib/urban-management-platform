@@ -112,7 +112,7 @@ public class KvConstant {
     /**
      * 监督员
      */
-    public static final String SUPERVISOR_ROLE = "2d62b759-50ff-4b72-863f-9129cd2d9c4d";
+    public static final String SUPERVISOR_ROLE = "3";
 
     /**
      * 值班长
