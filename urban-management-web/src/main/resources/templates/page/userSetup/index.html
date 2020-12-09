@@ -45,18 +45,17 @@
                                 <input id="eventCode" placeholder="" class="" type="text" readonly="readonly"
                                        required>
                             </td>
+                            <td><span></span>人员姓名</td>
+                            <td>
+                                <input id="" placeholder="" class="" type="text" readonly="readonly"
+                                       required>
+                            </td>
+                        </tr>
+                        <tr>
                             <td><span></span>人员性别</td>
                             <td>
                                 <input id="eventTypeStr" type="text" maxlength="30" required
                                        readonly="readonly">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span></span>创建时间</td>
-                            <td>
-                                <input size="16" class="form_datetime" id="initialDate" name="initialDate" type="text" value="" readonly>
-                                <span class="add-on"><i class="icon-remove"></i></span>
-                                <span class="add-on"><i class="icon-th"></i></span>
                             </td>
                             <td><span></span>出生日期</td>
                             <td>
@@ -70,18 +69,6 @@
                             <td>
                                 <input id="contact" placeholder="" class="" type="text" readonly="readonly"
                                        required>
-                            </td>
-                            <td><span></span>排序</td>
-                            <td>
-                                <input id="sort" type="text" maxlength="30" required
-                                       readonly="readonly">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span></span>账号状态</td>
-                            <td>
-                                <input id="account" placeholder="" class="" type="text" readonly="readonly"
-                                       required disabled>
                             </td>
                             <td><span></span>人员角色</td>
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
@@ -102,6 +89,28 @@
                                 <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                     +
                                 </button>
+                            </td>
+                        </tr>
+                        <tr class="hidegrounp roleBox">
+                            <td><span></span>创建时间</td>
+                            <td>
+                                <input size="16" class="" id="initialDate" name="initialDate" type="text" value="" readonly>
+                            </td>
+                            <td><span></span>排序</td>
+                            <td>
+                                <input id="sort" type="text" maxlength="30" required
+                                       readonly="readonly">
+                            </td>
+                        </tr>
+                        <tr class="hidegrounp roleBox">
+                            <td><span></span>账号状态</td>
+                            <td>
+                                <input id="account" placeholder="" class="" type="text" readonly="readonly"
+                                       required>
+                            </td>
+                            <td><span></span></td>
+                            <td>
+
                             </td>
                         </tr>
                         </tbody>
@@ -158,6 +167,9 @@
     let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
 
     $(function () {
+
+        //时间  状态 排序 显示
+        // $(".hidegrounp").removeClass("roleBox");
 
         getUserTree();
         getDeptAndRoleTree();
