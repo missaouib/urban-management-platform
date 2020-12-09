@@ -3,6 +3,7 @@ package com.unicom.urban.management.pojo.dto;
 import com.unicom.urban.management.pojo.annotations.validation.MobileNumber;
 import lombok.Data;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class UserDTO {
     @MobileNumber
     private String mobileNumber;
 
+    private String officePhone;
+
     private String deptId;
 
     private String sex;
@@ -28,8 +31,15 @@ public class UserDTO {
 
     private List<String> roleList;
 
+    @Email
+    private String email;
+
     private String roleId;
 
     private Integer sts;
+
+    private String post;
+
+    private Integer sort;
 
 }
