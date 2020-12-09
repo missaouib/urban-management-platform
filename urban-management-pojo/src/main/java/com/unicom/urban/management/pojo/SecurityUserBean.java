@@ -22,6 +22,8 @@ public class SecurityUserBean implements UserDetails {
 
     private String id;
 
+    private String name;
+
     private String username;
 
     private String password;

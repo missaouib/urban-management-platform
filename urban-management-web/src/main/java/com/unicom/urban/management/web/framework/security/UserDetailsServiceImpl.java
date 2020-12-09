@@ -41,11 +41,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         SecurityUserBean userBean = new SecurityUserBean();
 
         userBean.setId(user.getId());
-
+        userBean.setName(user.getName());
         userBean.setUsername(user.getUsername());
-
         userBean.setPassword(user.getPassword());
-
         userBean.setRoleList(user.getRoleList().stream().map(role -> {
             SecurityRoleBean securityUserBean = new SecurityRoleBean();
             securityUserBean.setId(role.getId());

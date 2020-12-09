@@ -20,7 +20,7 @@
         <div class="head">
             <img th:src="@{/img/logo.png}" alt="">
         </div>
-        <div class="username" th:sec:authentication="principal.username"></div>
+        <div class="username" th:sec:authentication="principal.name"></div>
     </div>
     <div class="quit">
         <img th:src="@{/img/out.png}" alt="">

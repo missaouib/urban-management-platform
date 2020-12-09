@@ -31,7 +31,7 @@
                 <div class="Day" id="Day" th:text="${#dates.dayOfWeekName(new java.util.Date().getTime())}"></div>
                 <div class="daily" id="daily" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy年MM月dd日')}"></div>
             </div>
-            <div class="userNameTop username" id="userNameTop" th:sec:authentication="principal.username">
+            <div class="userNameTop username" id="userNameTop" th:sec:authentication="principal.name">
 
             </div>
             <div class="bell">
@@ -51,7 +51,7 @@
         <!--                        <li class="dropdown user user-menu" style="margin:46px 20px 0 0">-->
 
         <!--                            <div class="dropdown-toggle" data-toggle="dropdown" style="width: 162px;height:36px !important;background-image: url(img/password.png);line-height: 36px !important;font-size: 12px;text-align: center">-->
-        <!--                                <span style="margin-bottom: 50px" th:sec:authentication="principal.username">Administrator</span>-->
+        <!--                                <span style="margin-bottom: 50px" th:sec:authentication="principal.name">Administrator</span>-->
         <!--                            </div>-->
         <!--                            <ul class="dropdown-menu pull-right">-->
         <!--                                <li><a class="menuItem" data-id="userInfo" href=""><i class="fa fa-user"></i>个人信息</a></li>-->
