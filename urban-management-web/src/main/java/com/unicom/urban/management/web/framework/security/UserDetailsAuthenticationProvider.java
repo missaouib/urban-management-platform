@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
@@ -75,7 +76,9 @@ public class UserDetailsAuthenticationProvider implements AuthenticationProvider
      * 校验用户是否被锁定 或禁用等功能
      */
     private void preAuthenticationChecks(UserDetails user) {
-
+        if (!user.isEnabled()) {
+            throw new DisabledException("账户未激活");
+        }
     }
 
 
