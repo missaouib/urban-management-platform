@@ -24,7 +24,7 @@
                         <td>
                             <input type="text" id="name" name="name" th:value="${user.name}" class="find_input"/>
                             <input type="hidden" id="userId" name="id" th:value="${user.id}" class="find_input"/>
-                            <input type="hidden" id="roleIdList" name="roleList" th:value="${user.roleIdList}" class="find_input"/>
+                            <input type="hidden" id="roleIdList" name="roleList"  class="find_input"/>
                         </td>
                         <td>登录账号<span></span></td>
                         <td>
@@ -141,6 +141,10 @@
 
     $(function () {
 
+        if(user.roleIdList!=null){
+            roleIdList = user.roleIdList;
+            $("#roleIdList").val(roleIdList);
+        }
 
 
         //显示隐藏

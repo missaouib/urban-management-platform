@@ -20,18 +20,18 @@
                 <table class="table">
                     <tbody>
                     <tr>
-                        <td>姓名<span></span></td>
+                        <td><span>*</span>姓名</td>
                         <td>
                             <input type="text" id="name" name="name" class="find_input"/>
                             <input type="hidden" id="roleIdList" name="roleList" class="find_input"/>
                         </td>
-                        <td>登录账号<span></span></td>
+                        <td><span>*</span>登录账号</td>
                         <td>
                             <input type="text" id="username" name="username" class="find_input"/>
                         </td>
                     </tr>
                     <tr>
-                        <td>手机号码<span></span></td>
+                        <td><span>*</span>手机号码</td>
                         <td>
                             <input type="text" id="mobileNumber" name="mobileNumber" class="find_input"/>
                         </td>
@@ -227,7 +227,7 @@
     // 更改error文字
     jQuery.extend(jQuery.validator.messages, {
         required: "必填",
-        mobileNumber: "必填",
+        mobileNumber: "手机号格式不正确",
         remote: "请修正该字段",
         email: "请输入正确格式的电子邮件",
         url: "请输入合法的网址",
@@ -352,7 +352,7 @@
             //     card: "请输入有效身份证号"
             // },
             mobileNumber: {
-                mobileNumber: "必填"
+                mobileNumber: "手机号格式不正确"
             }
         }
     });

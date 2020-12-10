@@ -330,7 +330,7 @@ public class UserService {
 
     private boolean ifSort(String deptId, Integer sort, String userId) {
         List<User> users = userRepository.findAllByDept_IdAndSort(deptId, sort);
-        if (StringUtils.isNotBlank(userId)) {
+        if (StringUtils.isBlank(userId)) {
             return users.size() == 0;
         } else {
             if (users.size() == 0) {
