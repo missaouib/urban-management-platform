@@ -286,7 +286,7 @@ public class UserService {
         user.setSts(0);
         user.setProfilePhotoUrl("http://www.baidu.com/");
         if (StringUtils.isNotBlank(userDTO.getDeptId())) {
-            Dept dept = deptService.findOne(userDTO.getDeptId());
+            Dept dept = new Dept(userDTO.getDeptId());
             user.setDept(dept);
         }
         if (userDTO.getRoleList().size() > 0) {
