@@ -8,7 +8,6 @@ import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.dto.ChangePasswordDTO;
-import com.unicom.urban.management.pojo.dto.RoleDTO;
 import com.unicom.urban.management.pojo.dto.UserDTO;
 import com.unicom.urban.management.pojo.dto.UserIdListDTO;
 import com.unicom.urban.management.pojo.entity.Dept;
@@ -17,14 +16,12 @@ import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.dept.DeptService;
 import com.unicom.urban.management.service.password.PasswordService;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -241,15 +238,7 @@ public class UserService {
     }
 
     private boolean findAllByUsername(String username) {
-        List<User> userList = userRepository.findAllByUsernameAndDeleted(username, 0);
-        if (userList.size() == 0) {
-            return false;
-        } else {
-            if (userList.size() > 1) {
-                System.out.println("有多个再用账号登录名重复，登录名为：" + username);
-            }
-            return true;
-        }
+        return userRepository.existsByUsernameAndDeleted(username, "0");
     }
 
     /**
