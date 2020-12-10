@@ -52,13 +52,16 @@ function fuzzySearch(zTreeId, searchField, isHighLight, isExpand){
 						//add escape character before meta characters
 						return '\\' + matchStr;
 					});
+					// console.log("newKeywords",newKeywords)
 					node.oldname = node[nameKey]; //store the old name
 					var rexGlobal = new RegExp(newKeywords, 'gi');//'g' for global,'i' for ignore case
+					// console.log("rexGlobal",rexGlobal)
 					//use replace(RegExp,replacement) since replace(/substr/g,replacement) cannot be used here
 					node[nameKey] = node.oldname.replace(rexGlobal, function(originalText){
+						// console.log("originalText",originalText)
 						//highlight the matching words in node name
 						var highLightText =
-							'<span style="color: whitesmoke;background-color: darkred;">'
+							'<span class="highShow">'
 							+ originalText
 							+'</span>';
 						return 	highLightText;

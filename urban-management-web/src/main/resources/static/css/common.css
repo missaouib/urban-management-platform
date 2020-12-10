@@ -1956,3 +1956,6 @@ span.search_highlight {
 .roleName{
     cursor: pointer;
 }
+.highShow{
+    color: whitesmoke;background-color: darkred;
+}

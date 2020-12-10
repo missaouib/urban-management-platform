@@ -175,7 +175,7 @@
         });
         if ($("#key").val() == 0) {
             $("#treeDemo").click(function () {
-                $.fn.zTree.getZTreeObj("treeDemo").expandAll(false);
+                // $.fn.zTree.getZTreeObj("treeDemo").expandAll(false);
             });
         }
     }
@@ -198,6 +198,7 @@
         console.log("treeNode", treeNode);
         if (treeNode.levelOrNot === "role") {
             removeClassForTimeAndSort();
+            // $(".highShow").remove()
             $("#id").val(treeNode.id);
             $("#name").val(treeNode.deptName);
             $("#describes").val(treeNode.describes);
@@ -207,6 +208,7 @@
             $("#deptName").val(treeNode.parentName);
         } else {
             addClassForTimeAndSort();
+            // $(".highShow").remove()
             $("#id").val("");
             $("#name").val("");
             $("#describes").val("");
