@@ -15,7 +15,7 @@
         <java.version>8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring-boot.version>2.1.13.RELEASE</spring-boot.version>
+        <spring-boot.version>2.3.6.RELEASE</spring-boot.version>
         <spring-security-oauth2-authorization-server.version>0.0.3</spring-security-oauth2-authorization-server.version>
         <UserAgentUtils.version>1.21</UserAgentUtils.version>
         <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>

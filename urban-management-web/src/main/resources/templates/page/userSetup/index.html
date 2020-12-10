@@ -274,9 +274,12 @@
     function onTreeClick(event, treeId, treeNode) {
         roleIdList = [];
         roleNameList = [];
+        $("#deptId").val("");
+        $("#deptName").val("");
+        $("#roleIdList").val("");
+        $("#roleNameList").val("");
         let userVO = treeNode.userVO;
         if (treeNode.levelOrNot === "user") {
-            console.log(userVO)
             removeClassForTimeAndSort();
             $("#id").val(userVO.id);
             $("#name").val(userVO.name);
@@ -302,8 +305,6 @@
             $("#email").val(userVO.email);
             $("#officePhone").val(userVO.officePhone);
             $("#post").val(userVO.post);
-
-
             updateCheckNode(userVO.roleIdList);
         } else {
             addClassForTimeAndSort();
