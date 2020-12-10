@@ -239,6 +239,18 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
+    private boolean findAllByUsername(String username) {
+        List<User> userList = userRepository.findAllByUsernameAndDeleted(username, 0);
+        if (userList.size() == 0) {
+            return false;
+        } else {
+            if (userList.size() > 1) {
+                System.out.println("有多个再用账号登录名重复，登录名为：" + username);
+            }
+            return true;
+        }
+    }
+
     /**
      * 人员配置新增
      * 新增一个带有部门的默认人员
@@ -255,7 +267,7 @@ public class UserService {
                 user.setSort(Integer.valueOf(userDTO.getSort()));
             }
         }
-        if (usernameAlreadyExists(userDTO.getUsername())) {
+        if (findAllByUsername(userDTO.getUsername())) {
             throw new DataValidException("登录名不能重复");
         }
         user.setEmail(userDTO.getEmail());
