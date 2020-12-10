@@ -237,8 +237,8 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
-    private boolean findAllByUsername(String username) {
-        return userRepository.existsByUsernameAndDeleted(username, "0");
+    private boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 
     /**
@@ -257,7 +257,7 @@ public class UserService {
                 user.setSort(Integer.valueOf(userDTO.getSort()));
             }
         }
-        if (findAllByUsername(userDTO.getUsername())) {
+        if (existsByUsername(userDTO.getUsername())) {
             throw new DataValidException("登录名不能重复");
         }
         user.setEmail(userDTO.getEmail());
