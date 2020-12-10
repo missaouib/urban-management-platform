@@ -255,6 +255,9 @@ public class UserService {
                 user.setSort(Integer.valueOf(userDTO.getSort()));
             }
         }
+        if (usernameAlreadyExists(userDTO.getUsername())) {
+            throw new DataValidException("登录名不能重复");
+        }
         user.setEmail(userDTO.getEmail());
         user.setPhone(userDTO.getMobileNumber());
         user.setOfficePhone(userDTO.getOfficePhone());
@@ -264,7 +267,6 @@ public class UserService {
         user.setUsername(userDTO.getUsername());
         user.setSex(userDTO.getSex());
         if (StringUtils.isNotBlank(userDTO.getBirth())) {
-            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate birth = LocalDate.parse(userDTO.getBirth(), fmt);
             user.setBirth(birth);
         }
@@ -299,7 +301,6 @@ public class UserService {
         user.setSex(userDTO.getSex());
         user.setName(userDTO.getName());
         if (StringUtils.isNotBlank(userDTO.getBirth())) {
-            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate birth = LocalDate.parse(userDTO.getBirth(), fmt);
             user.setBirth(birth);
         }
