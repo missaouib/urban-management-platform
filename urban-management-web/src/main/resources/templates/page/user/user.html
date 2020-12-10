@@ -229,7 +229,9 @@
             type: "GET",
             url: initializationUrl + "?id=" + obj,
             success: function (result) {
-               console.log(result)
+               if(result.message==="成功"){
+                   $.modal.alertSuccess("重置密码成功")
+               }
             }
         });
     }
