@@ -83,7 +83,6 @@ public class WorkService {
      */
     public void caseAcceptanceByReceive(EventDTO eventDTO) {
         this.acceptanceReportingByReceptionist(eventDTO.getId());
-        /*this.claimByReceptionist(eventDTO.getId());*/
         eventDTO.setButton("11");
         this.completeByReceptionist(eventDTO);
     }
@@ -95,7 +94,6 @@ public class WorkService {
      */
     public void caseAcceptanceByDispatch(String eventId) {
         this.acceptanceReportingByReceptionist(eventId);
-        this.claimByReceptionist(eventId);
     }
 
     /**
