@@ -1,4 +1,4 @@
-package com.unicom.urban.management.web.framework.security;
+package com.unicom.urban.management.api.framework.security;
 
 import com.unicom.urban.management.common.exception.authentication.NotDeptException;
 import com.unicom.urban.management.dao.user.UserRepository;
@@ -44,7 +44,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userBean.setName(user.getName());
         userBean.setUsername(user.getUsername());
         userBean.setPassword(user.getPassword());
-        userBean.setSts(user.getSts());
         userBean.setRoleList(user.getRoleList().stream().map(role -> {
             SecurityRoleBean securityUserBean = new SecurityRoleBean();
             securityUserBean.setId(role.getId());

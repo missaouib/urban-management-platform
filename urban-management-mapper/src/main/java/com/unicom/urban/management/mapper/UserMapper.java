@@ -15,7 +15,7 @@ public interface UserMapper {
 
     List<UserVO> userListToUserVOList(List<User> userList);
 
-    @Mapping(source = "dept.id", target = "deptName")
+    @Mapping(source = "dept.deptName", target = "deptName")
     UserVO userToUserVO(User user);
 
 }

@@ -15,7 +15,9 @@ public interface UserRepository extends CustomizeRepository<User, String> {
 
     Boolean existsByUsername(String username);
 
-    List<User> findAllByDept_IdAndSort(String deptId,Integer sort);
+    List<User> findAllByDept_IdAndSort(String deptId, Integer sort);
+
+    List<User> findAllByUsernameAndDeleted(String username, Integer delete);
 
     List<User> findAllByDept_Id(String deptId);
 }

@@ -17,9 +17,9 @@ public class SystemConstant {
 
 
     /**
-     * 123456
+     * Fe,scLoJ07e=DJxo
      */
-    public final static String DEFAULT_PASSWORD = "123456";
+    public final static String DEFAULT_PASSWORD = "Fe,scLoJ07e=DJxo";
 
     /**
      * 超级管理员的ID

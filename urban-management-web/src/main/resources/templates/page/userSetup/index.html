@@ -190,6 +190,9 @@
 
     $(function () {
 
+        $("#updateUserBtn").addClass("roleBox");
+        $("#deleteUserBtn").addClass("roleBox");
+
         //时间  状态 排序 显示
         $(".hideGroup").removeClass("roleBox");
         $(".hideGroup").addClass("roleBox");
@@ -314,7 +317,7 @@
             $("#username").val("");
             $("#burnDate").val("");
             $("#mobileNumber").val("");
-            $("#deptId").val(treeNode.deptId);
+            $("#deptId").val(treeNode.id);
             $("#deptName").val(treeNode.deptName);
             $("#roleIdList").val("");
             $("#roleNameList").val("");
@@ -352,6 +355,7 @@
         $("#saveUserBtn").addClass("roleBox");
         $("#updateUserBtn").removeClass("roleBox");
         $("#deleteUserBtn").removeClass("roleBox");
+        $("#username").attr("readonly", true);
     }
 
     function addClassForTimeAndSort() {
@@ -359,6 +363,7 @@
         $("#saveUserBtn").removeClass("roleBox");
         $("#updateUserBtn").addClass("roleBox");
         $("#deleteUserBtn").addClass("roleBox");
+        $("#username").attr("readonly", false);
     }
 
     function getDeptAndRoleTree() {

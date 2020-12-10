@@ -30,6 +30,8 @@ public class SecurityUserBean implements UserDetails {
 
     private Set<SecurityRoleBean> roleList;
 
+    private Integer sts;
+
     public SecurityUserBean() {
 
     }
@@ -77,7 +79,7 @@ public class SecurityUserBean implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return sts == 0;
     }
 
 

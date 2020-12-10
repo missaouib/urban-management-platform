@@ -37,11 +37,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService);
-        auth.inMemoryAuthentication()
-                .withUser("admin").password("{noop}admin").authorities("ROLE_USER")
-                .and()
-                .withUser("user").password("{noop}user").authorities("ROLE_USER");
+        auth.userDetailsService(userDetailsService);
     }
 
 
@@ -51,10 +47,10 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     }
 
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
 }

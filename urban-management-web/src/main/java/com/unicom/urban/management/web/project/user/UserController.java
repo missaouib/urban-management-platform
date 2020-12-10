@@ -70,8 +70,8 @@ public class UserController {
     }
 
     @PostMapping("/remove")
-    public void deleteUser(String id) {
-        userService.removeUser(id);
+    public void deleteUser(String ids) {
+        userService.removeUser(ids);
     }
 
     @PostMapping("/existsByUsername")

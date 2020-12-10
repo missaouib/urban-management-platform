@@ -240,6 +240,18 @@ public class UserService {
         return userRepository.existsByUsername(username);
     }
 
+    private boolean findAllByUsername(String username) {
+        List<User> userList = userRepository.findAllByUsernameAndDeleted(username, 0);
+        if (userList.size() == 0) {
+            return false;
+        } else {
+            if (userList.size() > 1) {
+                System.out.println("有多个再用账号登录名重复，登录名为：" + username);
+            }
+            return true;
+        }
+    }
+
     /**
      * 人员配置新增
      * 新增一个带有部门的默认人员
@@ -256,6 +268,9 @@ public class UserService {
                 user.setSort(Integer.valueOf(userDTO.getSort()));
             }
         }
+        if (findAllByUsername(userDTO.getUsername())) {
+            throw new DataValidException("登录名不能重复");
+        }
         user.setEmail(userDTO.getEmail());
         user.setPhone(userDTO.getMobileNumber());
         user.setOfficePhone(userDTO.getOfficePhone());
@@ -265,7 +280,6 @@ public class UserService {
         user.setUsername(userDTO.getUsername());
         user.setSex(userDTO.getSex());
         if (StringUtils.isNotBlank(userDTO.getBirth())) {
-            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate birth = LocalDate.parse(userDTO.getBirth(), fmt);
             user.setBirth(birth);
         }
@@ -273,7 +287,7 @@ public class UserService {
         user.setSts(0);
         user.setProfilePhotoUrl("http://www.baidu.com/");
         if (StringUtils.isNotBlank(userDTO.getDeptId())) {
-            Dept dept = deptService.findOne(userDTO.getDeptId());
+            Dept dept = new Dept(userDTO.getDeptId());
             user.setDept(dept);
         }
         if (userDTO.getRoleList().size() > 0) {
@@ -300,7 +314,6 @@ public class UserService {
         user.setSex(userDTO.getSex());
         user.setName(userDTO.getName());
         if (StringUtils.isNotBlank(userDTO.getBirth())) {
-            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate birth = LocalDate.parse(userDTO.getBirth(), fmt);
             user.setBirth(birth);
         }

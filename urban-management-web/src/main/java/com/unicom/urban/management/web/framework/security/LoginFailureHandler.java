@@ -8,6 +8,7 @@ import com.unicom.urban.management.pojo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -53,6 +54,10 @@ public class LoginFailureHandler extends AbstractAuthenticationHandler implement
         if (exception instanceof NotDeptException) {
             message = 5;
             result = Result.fail("302", "没有配置部门,请联系超级管理员");
+        }
+        if (exception instanceof DisabledException) {
+            message = 6;
+            result = Result.fail("302", "账户未激活,请联系超级管理员");
         }
         try {
             loginLog(request, response, message);
