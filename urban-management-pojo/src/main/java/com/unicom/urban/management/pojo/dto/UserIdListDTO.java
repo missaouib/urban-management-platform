@@ -10,7 +10,8 @@ import java.util.Map;
 
 @Data
 public class UserIdListDTO {
-private String roleId;
+    private String userId;
+    private String roleId;
+    private Integer checkbox;
     private List<Map<String,Object>> userIdList;
-
 }

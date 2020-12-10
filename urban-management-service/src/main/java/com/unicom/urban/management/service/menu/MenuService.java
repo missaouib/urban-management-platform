@@ -86,7 +86,7 @@ public class MenuService {
         List<Menu> menuList = null;
         List<MenuVO> menuVOList = new ArrayList<>();
         String roleId = SecurityUtil.getRoleId().get(0);
-        if (roleId.equals("1")){
+        if (SecurityUtil.getRoleId().contains("1")){
             menuList = menuRepository.findAll(new Sort(Sort.Direction.ASC,"sort"));
         }else {
             Role role = roleRepository.findById(roleId).orElse(new Role());

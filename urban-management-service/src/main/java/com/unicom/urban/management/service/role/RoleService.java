@@ -27,6 +27,7 @@ import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 角色
@@ -160,5 +161,23 @@ public class RoleService {
             list.add(vo);
         }
         return list;
+    }
+
+    public void saveUserByRole(String roleId,List<Map<String, Object>> mapList) {
+        if (CollectionUtils.isNotEmpty(mapList)) {
+            Role role = this.findOne(roleId);
+            List<User> userList = new ArrayList<>();
+            for (Map<String, Object> map : mapList) {
+                String userId = map.get("id").toString();
+                Integer checkbox = Integer.parseInt(map.get("checkbox").toString());
+                if (checkbox == 1) {
+                    User user = new User();
+                    user.setId(userId);
+                    userList.add(user);
+                }
+            }
+            role.setUserList(userList);
+            roleRepository.saveAndFlush(role);
+        }
     }
 }

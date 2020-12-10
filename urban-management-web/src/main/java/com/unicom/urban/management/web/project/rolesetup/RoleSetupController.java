@@ -11,6 +11,7 @@ import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.dept.DeptService;
 import com.unicom.urban.management.service.role.RoleService;
 import com.unicom.urban.management.service.user.UserService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,8 +34,6 @@ public class RoleSetupController {
     private RoleService roleService;
     @Autowired
     private DeptService deptService;
-    @Autowired
-    private UserService userService;
 
 
     @GetMapping("/index")
@@ -85,7 +84,9 @@ public class RoleSetupController {
      */
     @PostMapping("/saveUserAndRole")
     public Result saveUserByRole(@Valid UserIdListDTO userIdListDTO){
-        userService.saveUserByRole();
+        List<Map<String,Object>> mapList = userIdListDTO.getUserIdList();
+
+        roleService.saveUserByRole(userIdListDTO.getRoleId(),mapList);
         return Result.success();
     }
 }
