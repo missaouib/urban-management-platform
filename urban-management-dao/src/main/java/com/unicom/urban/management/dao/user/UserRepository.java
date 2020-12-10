@@ -17,4 +17,5 @@ public interface UserRepository extends CustomizeRepository<User, String> {
 
     List<User> findAllByDept_IdAndSort(String deptId,Integer sort);
 
+    List<User> findAllByDept_Id(String deptId);
 }

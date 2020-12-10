@@ -2,7 +2,9 @@ package com.unicom.urban.management.web.project.dept;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.DeptDTO;
+import com.unicom.urban.management.pojo.dto.UserIdListDTO;
 import com.unicom.urban.management.pojo.vo.DeptVO;
 import com.unicom.urban.management.service.dept.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 部门管理
@@ -62,5 +67,11 @@ public class DeptController {
     public DeptVO deptOne(String id){
         return deptService.findOneVO(id);
     }
-
+    /**
+     * 获取机构树
+     */
+    @GetMapping("/deptTree")
+    public List<DeptVO> deptTree(){
+        return deptService.getAll();
+    }
 }

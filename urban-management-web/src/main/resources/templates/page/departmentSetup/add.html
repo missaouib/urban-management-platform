@@ -37,30 +37,29 @@
         <form class="details" id="roleForm">
             <div class="top table2_top">
                 <h5 style="padding: 16px 10px 0">人员列表</h5>
-                <div class="top_out personneList">
-                    <div class="role">
-                        <input type="checkbox" class="roleCheckBox"><span class="roleName"  data-toggle='modal' data-target='#modal-default'>京东</span>
-                    </div>
-                    <div class="role">
-                        <input type="checkbox" class="roleCheckBox"><span class="roleName"  data-toggle='modal' data-target='#modal-default'>淘宝</span>
-                    </div>
-                    <div class="role">
-                        <input type="checkbox" class="roleCheckBox"><span class="roleName"  data-toggle='modal' data-target='#modal-default'>天猫</span>
-                    </div>
+                <div class="top_out personneList" id="showUser">
+<!--                    <div class="role">-->
+<!--                        <input type="checkbox" class="roleCheckBox"><span class="roleName"  data-toggle='modal' data-target='#modal-default'>京东</span>-->
+<!--                    </div>-->
+<!--                    <div class="role">-->
+<!--                        <input type="checkbox" class="roleCheckBox"><span class="roleName"  data-toggle='modal' data-target='#modal-default'>淘宝</span>-->
+<!--                    </div>-->
+<!--                    <div class="role">-->
+<!--                        <input type="checkbox" class="roleCheckBox"><span class="roleName"  data-toggle='modal' data-target='#modal-default'>天猫</span>-->
+<!--                    </div>-->
 
                 </div>
                 <div class="notice_bot">
                     <div class="r_right but_p girdBtnGroup" id="eventButton">
+                        <input type="hidden" id="deptId" name="deptId" />
                         <button class="but_save" type="button" style="margin-right: 10px" id="saveRoleBtn"
                         >全选
                         </button>
                         <button class="but_save roleBox" type="button" id="lessCheck" style="margin-right: 10px">取消全选
                         </button>
-                        <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn"
-                        >保存
+                        <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn" onclick="saveBatch()"  >保存
                         </button>
                     </div>
-                </div>
             </div>
         </form>
     </div>
@@ -92,7 +91,7 @@
                                     <tr>
                                         <td><span></span>出生日期</td>
                                         <td>
-                                            <input size="16" class="form_date" id="burnDate" name="birth" type="text" value=""
+                                            <input size="16" class="form_date" id="birth" name="birth" type="text" value=""
                                                    readonly>
                                             <span class="add-on"><i class="icon-remove"></i></span>
                                             <span class="add-on"><i class="icon-th"></i></span>
@@ -106,21 +105,21 @@
                                     <tr>
                                         <td><span></span>联系方式</td>
                                         <td>
-                                            <input id="mobileNumber" readonly name="mobileNumber" placeholder="" class="" type="text">
+                                            <input id="phone" readonly name="phone" placeholder="" class="" type="text">
                                         </td>
                                         <td><span></span>邮箱</td>
                                         <td>
-                                            <input type="text" readonly="readonly" id="roleNameList" class="find_input"/>
+                                            <input type="text" readonly="readonly" id="email" class="find_input"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td><span></span>职务</td>
                                         <td>
-                                            <input type="text" readonly="readonly" id="deptName" class="find_input"/>
+                                            <input type="text" readonly="readonly" id="post" class="find_input"/>
                                         </td>
                                         <td>排序<span></span></td>
                                         <td>
-                                            <input type="text" id="email" readonly name="email" class="find_input"/>
+                                            <input type="text" id="sort" readonly name="sort" class="find_input"/>
                                         </td>
 
                                     </tr>
@@ -132,13 +131,13 @@
                                         </td>
                                         <td>人员角色<span></span></td>
                                         <td>
-                                            <input type="text" id="post" name="post" class="find_input"/>
+                                            <input type="text" id="roleNameList" name="roleName" class="find_input"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>所属部门<span></span></td>
                                         <td>
-                                            <input type="text" id="officePhone" readonly name="officePhone"/>
+                                            <input type="text" id="deptName" readonly name="deptName"/>
                                         </td>
                                     </tr>
                                     </tbody>
@@ -147,10 +146,9 @@
                         </div>
                     </form>
                 </div>
-                <input type="hidden" id="imageUrlList" value="">
+
                 <div class="modal-footer justify-content-between"
                      style="display: flex;justify-content: flex-end!important;">
-                    <button type="button" class="btn btn-primary" onclick="" id="underBtn">完成</button>
                     <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
                 </div>
             </div>
@@ -171,7 +169,10 @@
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
-    let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+    let getDeptTreeUrl = /*[[@{/dept/deptTree}]]*/ "/dept/deptTree";
+    let saveBatchUrl = /*[[@{/user/saveBatch}]]*/ "/user/saveBatch";
+    let findOneUrl = /*[[@{/user/findOne}]]*/ "/user/findOne";
+    let findUserByDeptUrl = /*[[@{/user/findUserByDept}]]*/ "/user/findUserByDept";
 
     $(function () {
 
@@ -187,13 +188,13 @@
             $(".roleCheckBox").prop("checked","checked")
         })
 
-        $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
+        $.ajaxUtil.get(getDeptTreeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
 
         var setting = {
             callback: {
-
+                onClick: zTreeOnClick
             },
             data: {//数据加载
                 keep: {
@@ -214,16 +215,16 @@
         function search() {
             $.ajax({
                 type: "GET",
-                url: getAllAndRoleForTreeUrl,
+                url: getDeptTreeUrl,
                 success: function (result) {
                     $.fn.zTree.init($("#treeDemo"), setting, result.data);
                     fuzzySearch("treeDemo", '#key', null, true);
                 }
             });
             if ($("#key").val() == 0){
-                $("#treeDemo").click(function () {
-                    $.fn.zTree.getZTreeObj("treeDemo").expandAll(false);
-                });
+                // $("#treeDemo").click(function () {
+                //     $.fn.zTree.getZTreeObj("treeDemo").expandAll(false);
+                // });
             }
         }
 
@@ -231,8 +232,59 @@
 
 
     });
+    function zTreeOnClick(event, treeId, treeNode) {
 
-
+        $("#deptId").val(treeNode.id)
+        findUsers(treeNode.id)
+    }
+    function findUsers(deptId) {
+        $.ajaxUtil.get(findUserByDeptUrl + "?deptId=" + deptId, function (e) {
+            let data =e.data;
+            if (data != undefined && data.length > 0){
+                let html = "";
+                $(data).each(function (index,value) {
+                    if (value.checkbox === 1){
+                        html+="<div class='role'><input name='roleCheckBox' type='checkbox' class='roleCheckBox' value='"+value.id+"' checked><span class='roleName' data-toggle='modal' data-target='#modal-default' onclick=\"fineOne('"+value.id+"')\">"+value.name+"</a></span></div>";
+                    }else{
+                        html+="<div class='role'><input name='roleCheckBox' type='checkbox' class='roleCheckBox' value='"+value.id+"'><span class='roleName' data-toggle='modal' data-target='#modal-default' onclick=\"fineOne('"+value.id+"')\">"+value.name+"</span></div>";
+                    }
+                });
+                $("#showUser").html(html);
+            }
+        });
+    }
+    function fineOne(userId){
+        $.ajaxUtil.get(findOneUrl+"?userId="+userId, function (e) {
+            let data = e.data;
+            $("#name").val(data.name);
+            $("#sex").val(data.sex);
+            $("#birth").val(data.birth);
+            $("#createTime").val(data.createTime);
+            $("#mobileNumber").val(data.mobileNumber);
+            $("#email").val(data.email);
+            $("#deptName").val(data.deptName);
+            $("#post").val(data.post);
+            $("#sort").val(data.sort);
+            $("#roleNameList").val(data.roleNameList);
+            $("#phone").val(data.phone);
+        });
+    }
+    function saveBatch(){
+        let deptId = $("#deptId").val();
+        let userIdList = [];
+        if (deptId === null){
+            $.modal.alertWarning("请选择部门");
+            return false;
+        }
+        $("input[type ='checkbox']").each(function(index,value){
+            let map = {};
+            if($(value).prop("checked") === true){
+                map.id=$(value).val();
+                userIdList.push(map);
+            }
+        });
+        $.operate.saveAndReload(saveBatchUrl, {"deptId": deptId,"userIdList" : userIdList})
+    }
 </script>
 </body>
 </html>

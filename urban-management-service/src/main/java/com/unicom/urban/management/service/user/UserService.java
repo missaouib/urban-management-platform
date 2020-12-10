@@ -10,6 +10,7 @@ import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.dto.ChangePasswordDTO;
 import com.unicom.urban.management.pojo.dto.RoleDTO;
 import com.unicom.urban.management.pojo.dto.UserDTO;
+import com.unicom.urban.management.pojo.dto.UserIdListDTO;
 import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.Role;
 import com.unicom.urban.management.pojo.entity.User;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -343,5 +345,36 @@ public class UserService {
 
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public void saveBatchUser(UserIdListDTO userIdListDTO) {
+        String deptId = userIdListDTO.getDeptId();
+        List<Map<String,Object>>  mapList = userIdListDTO.getUserIdList();
+        for (Map<String,Object> map : mapList){
+            String userId = map.get("id").toString();
+            User user = this.findOne(userId);
+            Dept dept = new Dept();
+            dept.setId(deptId);
+            user.setDept(dept);
+            userRepository.saveAndFlush(user);
+        }
+    }
+
+    public List<UserVO> findUserByDept(String deptId) {
+        List<User> userList = this.findAll();
+        List<UserVO> list = new ArrayList<>();
+        for (User user : userList){
+            UserVO vo = new UserVO();
+            if (user.getDept() != null && user.getDept().getId().equals(deptId)){
+                vo.setCheckbox(1);
+            }else {
+                vo.setCheckbox(0);
+            }
+            vo.setId(user.getId());
+            vo.setName(user.getName());
+            list.add(vo);
+
+        }
+        return list;
     }
 }

@@ -2,8 +2,10 @@ package com.unicom.urban.management.web.project.user;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.ChangePasswordDTO;
 import com.unicom.urban.management.pojo.dto.UserDTO;
+import com.unicom.urban.management.pojo.dto.UserIdListDTO;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.user.UserService;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 用户管理controller
@@ -92,4 +95,20 @@ public class UserController {
         userService.initialization(id);
     }
 
+    @PostMapping("/saveBatch")
+    public Result saveBatch(@Valid UserIdListDTO userIdListDTO) {
+        userService.saveBatchUser(userIdListDTO);
+        return Result.success();
+    }
+
+    @GetMapping("/findOne")
+    public Result findOne(String userId) {
+        UserVO userVO = userService.findById(userId);
+        return Result.success(userVO);
+    }
+    @GetMapping("/findUserByDept")
+    public Result findUserByDept(String deptId){
+        List<UserVO> list = userService.findUserByDept(deptId);
+        return Result.success(list);
+    }
 }

@@ -13,5 +13,6 @@ public class UserIdListDTO {
     private String userId;
     private String roleId;
     private Integer checkbox;
+    private String deptId;
     private List<Map<String,Object>> userIdList;
 }
