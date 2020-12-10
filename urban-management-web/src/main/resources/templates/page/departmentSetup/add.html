@@ -39,13 +39,13 @@
                 <h5 style="padding: 16px 10px 0">人员列表</h5>
                 <div class="top_out personneList">
                     <div class="role">
-                        <input type="checkbox" class="roleCheckBox"><span class="roleName">京东</span>
+                        <input type="checkbox" class="roleCheckBox"><span class="roleName"  data-toggle='modal' data-target='#modal-default'>京东</span>
                     </div>
                     <div class="role">
-                        <input type="checkbox" class="roleCheckBox"><span class="roleName">淘宝</span>
+                        <input type="checkbox" class="roleCheckBox"><span class="roleName"  data-toggle='modal' data-target='#modal-default'>淘宝</span>
                     </div>
                     <div class="role">
-                        <input type="checkbox" class="roleCheckBox"><span class="roleName">天猫</span>
+                        <input type="checkbox" class="roleCheckBox"><span class="roleName"  data-toggle='modal' data-target='#modal-default'>天猫</span>
                     </div>
 
                 </div>
@@ -61,8 +61,102 @@
                         </button>
                     </div>
                 </div>
+            </div>
         </form>
     </div>
+
+
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">人员详情信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="details" id="userForm">
+                        <div class="top table2_top">
+                            <div class="top_out">
+                                <table class="table">
+                                    <tbody>
+                                    <input type="hidden" id="id" name="id" value="">
+                                    <tr>
+                                        <td><span></span>人员姓名</td>
+                                        <td>
+                                            <input id="name" name="name" placeholder="" class="" type="text" readonly>
+                                        </td>
+                                        <td><span></span>人员性别</td>
+                                        <td>
+                                            <input id="sex" name="name" placeholder="" class="" type="text" readonly>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span></span>出生日期</td>
+                                        <td>
+                                            <input size="16" class="form_date" id="burnDate" name="birth" type="text" value=""
+                                                   readonly>
+                                            <span class="add-on"><i class="icon-remove"></i></span>
+                                            <span class="add-on"><i class="icon-th"></i></span>
+                                        </td>
+                                        <td><span></span>创建时间</td>
+                                        <td>
+                                            <input size="16" class="" id="createTime" type="text" value="" required
+                                                   readonly="readonly">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span></span>联系方式</td>
+                                        <td>
+                                            <input id="mobileNumber" readonly name="mobileNumber" placeholder="" class="" type="text">
+                                        </td>
+                                        <td><span></span>邮箱</td>
+                                        <td>
+                                            <input type="text" readonly="readonly" id="roleNameList" class="find_input"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span></span>职务</td>
+                                        <td>
+                                            <input type="text" readonly="readonly" id="deptName" class="find_input"/>
+                                        </td>
+                                        <td>排序<span></span></td>
+                                        <td>
+                                            <input type="text" id="email" readonly name="email" class="find_input"/>
+                                        </td>
+
+                                    </tr>
+                                    <tr class="hideGroup roleBox">
+                                        <td><span></span>账号状态</td>
+                                        <td>
+                                            <input id="sts" placeholder="" class="" type="text" readonly="readonly"
+                                                   required>
+                                        </td>
+                                        <td>人员角色<span></span></td>
+                                        <td>
+                                            <input type="text" id="post" name="post" class="find_input"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>所属部门<span></span></td>
+                                        <td>
+                                            <input type="text" id="officePhone" readonly name="officePhone"/>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <input type="hidden" id="imageUrlList" value="">
+                <div class="modal-footer justify-content-between"
+                     style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary" onclick="" id="underBtn">完成</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 

@@ -1953,3 +1953,6 @@ span.search_highlight {
 .roleBox{
     display: none;
 }
+.roleName{
+    cursor: pointer;
+}
