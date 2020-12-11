@@ -130,14 +130,12 @@ public class RoleService {
      */
     public void saveRoleAndMenu(RoleMenuDTO roleMenuDTO) {
         Role one = this.findOne(roleMenuDTO.getId());
-        String[] menuIdList = roleMenuDTO.getMenuIdList();
+        List<String> menuIdList = roleMenuDTO.getMenuIdList();
         List<Menu> menuList = new ArrayList<>();
-        if (menuIdList != null && menuIdList.length>0) {
-            for (String s : menuIdList) {
-                Menu m = new Menu();
-                m.setId(s);
-                menuList.add(m);
-            }
+        for (String s : menuIdList) {
+            Menu m = new Menu();
+            m.setId(s);
+            menuList.add(m);
         }
         one.setMenuList(menuList);
         roleRepository.saveAndFlush(one);
@@ -177,12 +175,15 @@ public class RoleService {
             List<User> userList = new ArrayList<>();
             for (Map<String, Object> map : mapList) {
                 String userId = map.get("id").toString();
+                User user = new User();
                 Integer checkbox = Integer.parseInt(map.get("checkbox").toString());
                 if (checkbox == 1) {
-                    User user = new User();
                     user.setId(userId);
-                    userList.add(user);
                 }
+//                else {
+//                    user.setId(null);
+//                }
+                userList.add(user);
             }
             role.setUserList(userList);
             roleRepository.saveAndFlush(role);

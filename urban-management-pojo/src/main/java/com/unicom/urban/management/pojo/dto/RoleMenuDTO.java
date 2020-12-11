@@ -17,6 +17,6 @@ public class RoleMenuDTO {
     /**
      * 菜单id集合
      */
-    private String[] menuIdList;
+    private List<String> menuIdList;
 
 }

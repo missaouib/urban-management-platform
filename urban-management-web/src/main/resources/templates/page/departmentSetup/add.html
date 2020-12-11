@@ -233,7 +233,10 @@
 
     });
     function zTreeOnClick(event, treeId, treeNode) {
-
+        if(treeNode.isParent){
+            $("#showUser").html('');
+            return false;
+        }
         $("#deptId").val(treeNode.id)
         findUsers(treeNode.id)
     }
@@ -279,9 +282,12 @@
         $("input[type ='checkbox']").each(function(index,value){
             let map = {};
             if($(value).prop("checked") === true){
-                map.id=$(value).val();
-                userIdList.push(map);
+                map.checkbox = 1;
+            }else {
+                map.checkbox = 0;
             }
+            map.id=$(value).val();
+            userIdList.push(map);
         });
         $.operate.saveAndReload(saveBatchUrl, {"deptId": deptId,"userIdList" : userIdList})
     }
