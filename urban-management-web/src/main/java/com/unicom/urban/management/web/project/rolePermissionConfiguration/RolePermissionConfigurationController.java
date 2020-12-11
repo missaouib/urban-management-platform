@@ -52,19 +52,16 @@ public class RolePermissionConfigurationController {
      * @return
      */
     @GetMapping("/getMenuByMenuType")
-    public Result getMenuByMenuType(String menuTypeId){
-        List<MenuVO> menuVOList = menuService.getMenuByMenuType(menuTypeId);
+    public Result getMenuByMenuType(String menuTypeId,String roleId){
+        List<MenuVO> menuVOList = menuService.getMenuByMenuType(menuTypeId,roleId);
         return Result.success(menuVOList);
     }
     /**
      * 保存角色菜单关系
      * @return
      */
-    @PostMapping("save")
-    public Result saveRoleAndMenu(String id,String[] menuIdList){
-        RoleMenuDTO roleMenuDTO = new RoleMenuDTO();
-        roleMenuDTO.setId(id);
-        roleMenuDTO.setMenuIdList(menuIdList);
+    @PostMapping("/save")
+    public Result saveRoleAndMenu(@Valid RoleMenuDTO roleMenuDTO){
         roleService.saveRoleAndMenu(roleMenuDTO);
         return Result.success();
     }
