@@ -51,6 +51,11 @@ public class Menu extends BaseEntity {
 
     private Integer sort;
 
+    /**
+     * 用途   PC  、 App
+     */
+    private Integer purpose;
+
     public Menu() {
     }
 

@@ -36,6 +36,19 @@
     <div class="rightContent">
         <form class="details" id="userForm">
             <div class="top table2_top">
+                <div class="notice_bot">
+                    <div class="r_right but_p girdBtnGroup" id="eventButton">
+                        <button class="but_save" type="button" style="margin-right: 10px" id="saveUserBtn"
+                                onclick="saveUser()">新增
+                        </button>
+                        <button class="but_save" type="button" style="margin-right: 10px" id="updateUserBtn"
+                                onclick="updateUser()">保存
+                        </button>
+                        <button class="but_save" type="button" style="margin-right: 10px" id="deleteUserBtn"
+                                onclick="deleteUser()">删除
+                        </button>
+                    </div>
+                </div>
                 <div class="top_out">
                     <table class="table">
                         <tbody>
@@ -84,7 +97,7 @@
                         <tr>
                             <td><span></span>所属部门</td>
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                <input type="text" readonly="readonly" id="deptName" class="find_input"/>
+                                <input type="text" readonly="readonly" id="deptName" value="" class="find_input"/>
                                 <input type="hidden" readonly="readonly" id="deptId" name="deptId"
                                        class="find_input"/>
                                 <button type="button" class="addBtn" onclick="selectEventTypeTree()">
@@ -128,19 +141,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="notice_bot">
-                    <div class="r_right but_p girdBtnGroup" id="eventButton">
-                        <button class="but_save" type="button" style="margin-right: 10px" id="saveUserBtn"
-                                onclick="saveUser()">新增
-                        </button>
-                        <button class="but_save" type="button" style="margin-right: 10px" id="updateUserBtn"
-                                onclick="updateUser()">保存
-                        </button>
-                        <button class="but_save" type="button" style="margin-right: 10px" id="deleteUserBtn"
-                                onclick="deleteUser()">删除
-                        </button>
-                    </div>
-                </div>
+
             </div>
         </form>
     </div>
@@ -253,7 +254,18 @@
             }
         });
 
-
+        //搜索之后更改树title
+        $("#userTree").on('mouseover','a',function () {
+            $(this).prop("title",$(this).text())
+        });
+        //搜索之后更改树回显框的值
+        $("#userTree").on('click','.level1 .node_name',function () {
+            $("#deptName").val($(this).text())
+        });
+        $("#userTree").on('click','.level0 .node_name',function () {
+            console.log("shezhi 22222",$(this).text())
+            $("#deptName").val($(this).text())
+        })
     }
 
     var roleIdList = [];
@@ -278,7 +290,7 @@
         roleIdList = [];
         roleNameList = [];
         $("#deptId").val("");
-        $("#deptName").val("");
+        // $("#deptName").val("");
         $("#roleIdList").val("");
         $("#roleNameList").val("");
         let userVO = treeNode.userVO;
@@ -318,7 +330,7 @@
             $("#burnDate").val("");
             $("#mobileNumber").val("");
             $("#deptId").val(treeNode.id);
-            $("#deptName").val(treeNode.deptName);
+            // $("#deptName").val(treeNode.deptName);
             $("#roleIdList").val("");
             $("#roleNameList").val("");
             $("#sort").val("");

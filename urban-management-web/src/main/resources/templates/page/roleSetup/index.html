@@ -36,6 +36,23 @@
     <div class="rightContent">
         <form class="details" id="roleForm">
             <div class="top table2_top">
+                <div class="notice_bot">
+                    <div class="r_right but_p girdBtnGroup" id="eventButton">
+                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="saveRoleBtn"
+                                onclick="saveRole()">新增
+                        </button>
+                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="updateRoleBtn"
+                                onclick="updateRole()">修改
+                        </button>
+                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="deleteRoleBtn"
+                                onclick="deleteRole()">删除
+                        </button>
+                        <button class="but_save" type="button" style="width: 100px"
+                                onclick="window.parent.$.learuntab.myAddTab('角色批量添加人员', '/roleSetup/add', 'data_id')">
+                            批量添加人员
+                        </button>
+                    </div>
+                </div>
                 <div class="top_out">
                     <table class="table">
                         <tbody>
@@ -75,23 +92,6 @@
                         </tr>
                         </tbody>
                     </table>
-                </div>
-                <div class="notice_bot">
-                    <div class="r_right but_p girdBtnGroup" id="eventButton">
-                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="saveRoleBtn"
-                                onclick="saveRole()">新增
-                        </button>
-                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="updateRoleBtn"
-                                onclick="updateRole()">修改
-                        </button>
-                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="deleteRoleBtn"
-                                onclick="deleteRole()">删除
-                        </button>
-                        <button class="but_save" type="button" style="width: 100px"
-                                onclick="window.parent.$.learuntab.myAddTab('角色批量添加人员', '/roleSetup/add', 'data_id')">
-                            批量添加人员
-                        </button>
-                    </div>
                 </div>
             </div>
         </form>
@@ -156,6 +156,15 @@
             showMeridian: 1,
             format: "yyyy-mm-dd hh:ii:ss"
         });
+
+        //搜索之后更改树title
+        $("#treeDemo").on('mouseover','a',function () {
+            $(this).prop("title",$(this).text())
+        });
+        //搜索之后更改树回显框的值
+        $("#treeDemo").on('click','a',function () {
+            $("#deptName").val($(this).text());
+        })
     });
 
     function setRoleTree() {
@@ -198,7 +207,6 @@
         console.log("treeNode", treeNode);
         if (treeNode.levelOrNot === "role") {
             removeClassForTimeAndSort();
-            // $(".highShow").remove()
             $("#id").val(treeNode.id);
             $("#name").val(treeNode.deptName);
             $("#describes").val(treeNode.describes);
@@ -208,17 +216,16 @@
             $("#deptName").val(treeNode.parentName);
         } else {
             addClassForTimeAndSort();
-            // $(".highShow").remove()
             $("#id").val("");
             $("#name").val("");
             $("#describes").val("");
             $("#createTime").val("");
             $("#sort").val("");
             $("#deptId").val(treeNode.id);
-            $("#deptName").val(treeNode.deptName);
+            // $("#deptName").val(treeNode.deptName);
         }
-
     }
+
 
     function selectEventTypeTree() {
         let treeId = $("#treeId").val();
