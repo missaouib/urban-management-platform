@@ -74,25 +74,25 @@
                     title: "登录结果",
                     field: 'message',
                     formatter: function (value, row, index) {
-                        if (value === '0') {
+                        if (value === 0) {
                             return '登录成功';
                         }
-                        if (value === '1') {
+                        if (value === 1) {
                             return '账号不存在';
                         }
-                        if (value === '2') {
+                        if (value === 2) {
                             return '密码输入错误';
                         }
-                        if (value === '3') {
+                        if (value === 3) {
                             return '验证码输入错误';
                         }
-                        if (value === '4') {
+                        if (value === 4) {
                             return '验证码已经过期';
                         }
-                        if (value === '5') {
+                        if (value === 5) {
                             return '未配置部门';
                         }
-                        if (value === '6') {
+                        if (value === 6) {
                             return '账号未激活';
                         }
                     }

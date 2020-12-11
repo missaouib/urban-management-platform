@@ -27,7 +27,7 @@
                     <tr>
                         <td>姓名<span></span></td>
                         <td>
-                            <input type="text" class="find_input" name="name">
+                            <input type="text" class="find_input" name="name" autocomplete="off">
                         </td>
                         <td>角色<span></span></td>
                         <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
@@ -187,8 +187,7 @@
                 },
                 {
                     title: '所属角色',
-                    field: 'roles',
-                    sortable: true,
+                    field: 'roles'
 
                 },
                 {
@@ -228,7 +227,7 @@
             type: "GET",
             url: initializationUrl + "?id=" + obj,
             success: function (result) {
-               if(result.message==="成功"){
+               if(result.code === 0){
                    $.modal.alertSuccess("重置密码成功")
                }
             }

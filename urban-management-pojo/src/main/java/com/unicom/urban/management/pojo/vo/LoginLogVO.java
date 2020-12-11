@@ -23,7 +23,7 @@ public class LoginLogVO {
 
     private String os;
 
-    private String message;
+    private Integer message;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime loginTime;
