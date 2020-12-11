@@ -37,6 +37,13 @@
     <div class="rightContent">
         <form class="details" id="deptForm">
             <div class="top table2_top">
+                <div class="notice_bot">
+                    <div class="r_right but_p girdBtnGroup" id="eventButton">
+                        <button class="but_save" type="button" style="margin-right: 10px" onclick="dept()">保存</button>
+                        <button class="but_save" type="button" style="margin-right: 10px" onclick="restore()">清空</button>
+                        <button class="but_save" type="button" style="margin-right: 10px" onclick="del()">删除</button>
+                    </div>
+                </div>
                 <div class="top_out">
                     <table class="table">
                         <tbody>
@@ -96,13 +103,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="notice_bot">
-                    <div class="r_right but_p girdBtnGroup" id="eventButton">
-                        <button class="but_save" type="button" style="margin-right: 10px" onclick="dept()">保存</button>
-                        <button class="but_save" type="button" style="margin-right: 10px" onclick="restore()">清空</button>
-                        <button class="but_save" type="button" style="margin-right: 10px" onclick="del()">删除</button>
-                    </div>
-                </div>
+
             </div>
         </form>
     </div>
@@ -124,6 +125,11 @@
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
         search()
+
+        //搜索之后更改树title
+        $("#treeDemo").on('mouseover','a',function () {
+            $(this).prop("title",$(this).text())
+        });
     })
 
     var setting = {
