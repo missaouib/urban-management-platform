@@ -27,50 +27,52 @@
 
             </div>
             <div class="rightContent">
-                <h5 style="padding: 16px 10px 10px">当前功能节点[<span>无线采集子系统</span>]</h5>
+                <h5 style="padding: 16px 10px 10px">当前功能节点[<span id="parent"></span>]</h5>
                 <form class="details" id="roleForm">
                     <div class="top table2_top">
                         <div class="top_out">
                             <table class="table">
                                 <tbody>
                                     <input type="hidden" id="id" name="id" value="">
+                                    <input type="hidden" id="parentId" name="parentId" value="">
                                     <tr>
                                         <td><span>*</span>菜单名称</td>
                                         <td>
-                                            <input id="name" name="name" placeholder="" class="" type="text" required>
+                                            <input id="name" name="name" placeholder="" class="" type="text">
                                         </td>
                                     </tr>
                                     <tr class="" id="timeAndSort">
                                         <td><span>*</span>URL</td>
                                         <td>
-                                            <input size="16" id="createTime" name="username" type="text" readonly required>
+                                            <input size="16" id="path" name="path" type="text">
                                         </td>
                                     </tr>
                                     <tr class="col-12">
                                         <td><span></span>图标</td>
                                         <td>
-                                            <input type="text" name="icon" readonly="readonly" id="deptName" class="find_input"/>
+                                            <input type="text" name="icon" id="icon" class="find_input"/>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td><span></span>排序</td>
                                         <td>
-                                            <input id="" name="name" placeholder="" class="" type="text" required>
+                                            <input id="sort" name="sort" placeholder="" class="" type="text" required>
                                         </td>
                                     </tr>
-                                    <tr class="" id="">
+                                    <tr class="">
                                         <td><span></span>应用于</td>
                                         <td>
-                                            <select name="use">
-                                                <option>1</option>
+                                            <select name="purpose" id="purpose">
+                                                <option value="0">pc</option>
+                                                <option value="1">app</option>
                                             </select>
                                         </td>
                                     </tr>
                                     <tr class="col-12">
                                         <td><span>*</span>菜单属性</td>
                                         <td>
-                                            <select name="menu" required>
-                                                <option>1</option>
+                                            <select name="menuType" id="menuType"  >
+                                                <option th:each="menuType:${menuType}" th:value="${menuType.id}" th:text="${menuType.name}">1</option>
                                             </select>
                                         </td>
                                     </tr>
@@ -121,28 +123,14 @@
                         pIdKey: 'parentId'
                     },
                     key: {
-                        name: "deptName"
+                        name: "name"
                     }
                 }
             };
 
             $(function () {
 
-                $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose: true, todayBtn: true, startView: 4, minView: 3});
-                ////日期插件
-                $('.form_datetime').datetimepicker({
-                    language: 'zh-CN',
-                    weekStart: 1,
-                    todayBtn: 1,
-                    autoclose: 1,
-                    todayHighlight: 1,
-                    startView: 2,
-                    forceParse: 0,
-                    showMeridian: 1,
-                    format: "yyyy-mm-dd hh:ii:ss"
-                });
-
-                let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+                let getAllAndRoleForTreeUrl = /*[[@{/menu/tree}]]*/ "/menu/tree";
                 $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
                     $.fn.zTree.init($("#treeDemo"), setting, e.data);
                 });
@@ -152,6 +140,14 @@
 
             function zTreeOnClick(event, treeId, treeNode) {
                 console.log("treeNode", treeNode);
+                $("#parent").text(treeNode.name);
+                $("#parentId").val(treeNode.parentId);
+                $("#id").val(treeNode.id);
+                $("#name").val(treeNode.name);
+                $("#path").val(treeNode.path);
+                $("#icon").val(treeNode.icon);
+                $("#menuType").val(treeNode.menuTypeId);
+                $("#checkbox").val(treeNode.checkbox);
 
             }
 

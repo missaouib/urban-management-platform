@@ -15,5 +15,13 @@ public class MenuDTO {
 
     private String parentId;
 
+    private String icon;
+
+    private Integer sort;
+
+    private Integer purpose;
+
+    private String menuTypeId;
+
 
 }

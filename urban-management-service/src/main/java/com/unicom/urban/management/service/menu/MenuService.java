@@ -2,14 +2,17 @@ package com.unicom.urban.management.service.menu;
 
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.menu.MenuRepository;
+import com.unicom.urban.management.dao.menu.MenuTypeRepository;
 import com.unicom.urban.management.dao.role.RoleRepository;
 import com.unicom.urban.management.mapper.MenuMapper;
 import com.unicom.urban.management.pojo.dto.MenuDTO;
 import com.unicom.urban.management.pojo.entity.Menu;
+import com.unicom.urban.management.pojo.entity.MenuType;
 import com.unicom.urban.management.pojo.entity.Role;
 import com.unicom.urban.management.pojo.vo.MenuVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,10 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @javax.transaction.Transactional(rollbackOn = Exception.class)
@@ -34,6 +37,8 @@ public class MenuService {
     private MenuRepository menuRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private MenuTypeRepository menuTypeRepository;
 
     public Page<MenuVO> search(MenuDTO menuDTO, Pageable pageable) {
         Page<Menu> page = menuRepository.findAll((Specification<Menu>) (root, query, criteriaBuilder) -> {
@@ -100,6 +105,21 @@ public class MenuService {
       }
        return menuVOList;
     }
+    public  List<MenuVO> getTree(){
+        List<Menu>  menuList = menuRepository.findAll();
+        return toVO(menuList);
+    }
+    private List<MenuVO> toVO(List<Menu> menuList){
+        List<MenuVO> menuVOList = new ArrayList<>();
+        for (Menu m : menuList){
+            MenuVO vo = new MenuVO();
+            BeanUtils.copyProperties(m,vo);
+            vo.setParentId(Optional.ofNullable(m.getParent()).map(Menu::getId).orElse(""));
+            vo.setMenuTypeId(Optional.ofNullable(m.getMenuType()).map(MenuType::getId).orElse(""));
+            menuVOList.add(vo);
+        }
+        return menuVOList;
+    }
 
     public List<MenuVO> findAll() {
         List<Menu> menuList = null;
@@ -121,5 +141,11 @@ public class MenuService {
             menuVOList.add(vo);
         }
         return menuVOList;
+    }
+
+
+
+    public List<MenuType> menuType(){
+        return menuTypeRepository.findAll();
     }
 }

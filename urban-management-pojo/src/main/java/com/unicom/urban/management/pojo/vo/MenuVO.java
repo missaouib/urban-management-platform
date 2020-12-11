@@ -18,6 +18,8 @@ public class MenuVO {
 
     private String parentId;
 
+    private String menuTypeId;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
