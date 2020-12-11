@@ -614,3 +614,39 @@ textarea {
     text-align: center;
     z-index: 99;
 }
+.onmer_box{
+    width: 100%;
+    max-height: 90%;
+    overflow: auto;
+}
+.onmer_box p{
+    padding-left: 10px;
+}
+.map_masion{
+    width: 300px;
+    height: 80px;
+    display: flex;
+    align-items: inherit;
+    justify-content: space-between;
+    flex-direction: column;
+    border: 1px solid rgb(242, 243, 245);
+    box-shadow: rgba(228, 228, 228, 0.5) 1px 1px 6px 0px;
+    position: absolute;
+    bottom: 10%;
+    left: 20px;
+    background-color: whitesmoke;
+    z-index: 99;
+    font-weight: 400;
+}
+.map_masion p{
+    height: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.map_masion p span{
+    width: 25%;
+}
+.span2{
+    color: red;
+}

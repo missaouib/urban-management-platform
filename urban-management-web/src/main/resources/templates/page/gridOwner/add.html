@@ -1,10 +1,226 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
-<body>
-移动终端配置
+
+<body style="border-radius: 8px;">
+<div class="col-md-12" style="height: 100%">
+    <div class="content">
+        <div class="leftBox">
+            <h5>监督员</h5>
+            <div class="onmer_box">
+                <p>
+                    <input name="onwer" type="checkbox">
+                    <span>元芳</span>
+                </p>
+                <p>
+                    <input name="onwer" type="checkbox">
+                    <span>王朝</span>
+                </p>
+                <p>
+                    <input name="onwer" type="checkbox">
+                    <span>马汉</span>
+                </p>
+            </div>
+            <div class="notice_bot">
+                <div class="r_right but_p girdBtnGroup" id="eventButton">
+                    <button class="but_save" type="button">
+                        保存
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="rightBox" style="position: relative">
+            <div class="map_masion">
+                <p>
+                    <span class="span1">所属区域</span><span class="span2">南岗区</span>
+                    <span class="span1">所属街道</span><span class="span2">南岗街道</span>
+                </p>
+                <p>
+                    <span class="span1">所属社区</span><span class="span2">南岗社区</span>
+                    <span class="span1">所属网格</span><span class="span2">南岗网格</span>
+                </p>
+            </div>
+            <div class="map" id="map"></div>
+<!--            <div id="popup" class="ol-popup">-->
+<!--                <div class="closePopup">×</div>-->
+<!--                <a href="#" id="popup-closer" class="ol-popup-closer"></a>-->
+<!--                <div id="popup-content"></div>-->
+<!--            </div>-->
+        </div>
+    </div>
+</div>
+<div id="pictureDiv" style="display: none">
+
+</div>
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+
+        $(".ol-full-screen-false").html("全屏")
+
+
+
+        getGridPublishUrl();
+
+
+    });
+
+
+
+    let url = /*[[@{/event/register}]]*/ "/event/register";
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+    let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
+
+    function getGridPublishUrl() {
+        $.ajaxUtil.get(getGridUrl, function (e) {
+            // console.log("e", e);
+            /*
+            * 初始渲染底图g
+            * */
+            var urlParam = e.data.split("?");
+            var url = urlParam[0];
+            var param = urlParam[1];
+            // console.log(url+","+param)
+            var ImageVector = new ol.layer.Tile({
+                source: new ol.source.TileWMS({
+                    url: url,
+                    params: {
+                        'VERSION': '1.1.1',
+                        tiled: true,
+                        "LAYERS": param,
+                        "exceptions": ''
+                    }
+                })
+            });
+            var layersArray = map.getLayers();
+            layersArray.insertAt(1, ImageVector);
+            //获取地图数据s
+            map.on('singleclick', function (evt) {
+                var viewResolution = map.getView().getResolution();
+                var url = ImageVector.getSource().getGetFeatureInfoUrl(
+                    evt.coordinate, viewResolution, 'EPSG:4326', {
+                        'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
+                        'FEATURE_COUNT': 50 //点击查询能返回的数量上限
+                    });
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    dataType: 'jsonp',
+                    jsonp: 'format_options',
+                    jsonpCallback: "callback:success_jsonpCallback"
+                });
+            });
+        })
+    }
+
+    //回调函数接收查询结果
+    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
+
+    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
+
+    var codePopup;
+
+    /* 点击网格列表赋值 */
+    function success_jsonpCallback(res) {
+        var features = geojsonFormat.readFeatures(res);
+        console.log(features)
+
+    }
+
+    var container = document.getElementById('popup');
+    var content = document.getElementById('popup-content');
+    var closer = document.getElementById('popup-closer');
+    var overlay = new ol.Overlay({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    });
+    // 沽源地图
+    var center = [115.68192, 41.66462];
+    var projection = new ol.proj.Projection({
+        code: 'EPSG:4326',
+        units: 'degrees',
+        axisOrientation: 'neu',
+        global: true
+    });
+    var untiled = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+            ratio: 1,
+            url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
+            params: {
+                'VERSION': '1.1.1',
+                "LAYERS": 'guyuan20201010:guyuan',
+                "exceptions": 'application/vnd.ogc.se_inimage',
+            }
+        })
+    });
+
+    var source = new ol.source.Vector({wrapX: false});
+    var fullScreenControl = new ol.control.FullScreen();
+    var map = new ol.Map({
+        target: 'map',
+        overlays: [overlay],
+        layers: [
+            untiled
+        ],
+        view: new ol.View({
+            // projection: projection,
+            center: center,
+            zoom: 17,
+            projection: projection
+        })
+    });
+    map.addOverlay(overlay);
+    map.addControl(fullScreenControl)
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
+
+
+    let localReverseGeocoding = /*[[@{/event/localReverseGeocoding}]]*/ "/event/localReverseGeocoding";
+
+
+    map.on('singleclick', function (evt) {
+        let t = evt.coordinate;
+        layerMap.getSource().clear()
+        setPoint(evt.coordinate)
+    });
+
+    function setPoint(newPoint) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point(newPoint),
+            data: {}
+        });
+        layerMap.getSource().addFeature(point);
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                src: '../img/dwpoint3.png'
+            })
+        }));
+    }
+
+
+</script>
 </body>
 </html>
