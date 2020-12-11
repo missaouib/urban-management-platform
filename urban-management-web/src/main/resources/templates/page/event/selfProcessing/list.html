@@ -855,7 +855,7 @@
         let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
         $.ajaxUtil.get(url, function (e) {
             let option = "<option value=''>--请选择--</option>";
-            if (e.code === "0") {
+            if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.region + "</option>"
                 });
@@ -873,7 +873,7 @@
         $.ajaxUtil.get(url, function (e) {
             $("#eventTerm").empty();
             let option = "<option value=''>--请选择--</option>";
-            if (e.code === "0") {
+            if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
                 });
@@ -891,7 +891,7 @@
         $.ajaxUtil.get(url, function (e) {
             $("#timeType").empty();
             let option = "<option value=''>--请选择--</option>";
-            if (e.code === "0") {
+            if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.level + "</option>"
                 });
@@ -1228,7 +1228,7 @@
             $("#selectUser").empty();
             let userList = e.data;
             let userHtml = "";
-            if (e.code === "0") {
+            if (e.code === 0) {
                 userHtml += "<option selected value=''>--请选择--</option>"
                 $(userList).each(function (index, value) {
                     userHtml += "<option value='" + value.id + "'>" + value.name + "</option>"

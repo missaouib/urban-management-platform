@@ -11,7 +11,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 /**
  * @author liukai
  */
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
