@@ -144,21 +144,29 @@ public class RoleService {
     }
 
     public List<UserVO> findUserByRole(String roleId) {
-        List<UserVO> userListByRoleId = this.findUserListByRoleId(roleId);
         List<User> userList = userService.findAll();
         List<UserVO> list = new ArrayList<>();
-        for (User user : userList){
-            UserVO vo = new UserVO();
-            for (UserVO userVO : userListByRoleId){
-                if (user.getId().equals(userVO.getId())){
+        if (CollectionUtils.isNotEmpty(userList)) {
+            for (int i = 0; i < userList.size(); i++) {
+                boolean flag = false;
+                UserVO vo = new UserVO();
+                if (CollectionUtils.isNotEmpty(userList.get(i).getRoleList())) {
+                    for (Role role : userList.get(i).getRoleList()){
+                        if (role.getId().equals(roleId)) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+                if (flag){
                     vo.setCheckbox(1);
-                }else{
+                }else {
                     vo.setCheckbox(0);
                 }
+                vo.setId(userList.get(i).getId());
+                vo.setName(userList.get(i).getName());
+                list.add(vo);
             }
-            vo.setId(user.getId());
-            vo.setName(user.getName());
-            list.add(vo);
         }
         return list;
     }
