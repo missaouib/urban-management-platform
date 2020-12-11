@@ -33,11 +33,11 @@
                     <tr>
                         <td><span>*</span>手机号码</td>
                         <td>
-                            <input type="text" id="mobileNumber" name="mobileNumber" class="find_input"/>
+                            <input type="text" id="mobileNumber" name="mobileNumber" class="find_input"  onkeyup="value=value.replace(/[^\d]/g,'')" maxlength=11/>
                         </td>
                         <td>办公电话<span></span></td>
                         <td>
-                            <input type="text" name="officePhone"/>
+                            <input type="text" name="officePhone"  onkeyup="value=value.replace(/[^\d\-\d]/g,'')" maxlength=20/>
                         </td>
                     </tr>
                     <tr>

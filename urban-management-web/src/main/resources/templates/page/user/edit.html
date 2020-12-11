@@ -28,19 +28,19 @@
                         </td>
                         <td>登录账号<span></span></td>
                         <td>
-                            <input type="text" id="username" th:value="${user.username}" name="username" readonly
-                                   class="find_input"/>
+                            <input type="text" id="username" th:value="${user.username}" name="username"
+                                   class="find_input" onKeyUp="value=value.replace(/[\W]/g,'')"/>
                         </td>
                     </tr>
                     <tr>
                         <td>手机号码<span></span></td>
                         <td>
                             <input type="text" id="mobileNumber" th:value="${user.phone}" name="mobileNumber"
-                                   class="find_input"/>
+                                   class="find_input" onkeyup="value=value.replace(/[^\d]/g,'')" maxlength=11/>
                         </td>
                         <td>办公电话<span></span></td>
                         <td>
-                            <input type="text" th:value="${user.officePhone}" name="officePhone"/>
+                            <input type="text" th:value="${user.officePhone}" name="officePhone" onkeyup="this.value=this.value.replace(/\D/g,'')"/>
                         </td>
                     </tr>
                     <tr>
@@ -378,7 +378,7 @@
             //     card: "请输入有效身份证号"
             // },
             mobileNumber: {
-                mobileNumber: "必填"
+                mobileNumber: "手机号格式不正确"
             }
         }
     });
