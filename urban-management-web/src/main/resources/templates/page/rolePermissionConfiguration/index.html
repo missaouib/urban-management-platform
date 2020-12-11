@@ -100,93 +100,89 @@
             }
         }
     };
+    var setting1 = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox"
+        },
+        callback: {
+            onClick: zTreeOnClick1
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parentId'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+    var setting2 = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox"
+        },
+        callback: {
+            onClick: zTreeOnClick2
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parentId'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+    var setting3 = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox"
+        },
+        callback: {
+            onClick: zTreeOnClick3
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parentId'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
     $(function () {
-
         $.ajaxUtil.get(getDeptAndRoleTreeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
-        $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 1, function (e) {
-            console.log("setting1", e.data)
+        let roleId = '';
+        $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 1+"&roleId="+roleId, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo1"), setting1, e.data);
         })
-        $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 2, function (e) {
-            console.log("setting2", e.data)
+        $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 2+"&roleId="+roleId, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo2"), setting2, e.data);
         })
-        $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 3, function (e) {
-            console.log("setting3", e.data)
+        $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 3+"&roleId="+roleId, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo3"), setting3, e.data);
         })
-
-        var setting1 = {
-            check: {
-                enable: true,
-                chkStyle: "checkbox"
-            },
-            callback: {
-                onClick: zTreeOnClick1
-            },
-            data: {//数据加载
-                keep: {
-                    parent: true,
-                    leaf: true
-                },
-                simpleData: {
-                    enable: true,
-                    idKey: 'id',
-                    pIdKey: 'parentId'
-                },
-                key: {
-                    name: "name"
-                }
-            }
-        };
-        var setting2 = {
-            check: {
-                enable: true,
-                chkStyle: "checkbox"
-            },
-            callback: {
-                onClick: zTreeOnClick2
-            },
-            data: {//数据加载
-                keep: {
-                    parent: true,
-                    leaf: true
-                },
-                simpleData: {
-                    enable: true,
-                    idKey: 'id',
-                    pIdKey: 'parentId'
-                },
-                key: {
-                    name: "name"
-                }
-            }
-        };
-        var setting3 = {
-            check: {
-                enable: true,
-                chkStyle: "checkbox"
-            },
-            callback: {
-                onClick: zTreeOnClick3
-            },
-            data: {//数据加载
-                keep: {
-                    parent: true,
-                    leaf: true
-                },
-                simpleData: {
-                    enable: true,
-                    idKey: 'id',
-                    pIdKey: 'parentId'
-                },
-                key: {
-                    name: "name"
-                }
-            }
-        };
         search();
     });
         function search() {
@@ -198,11 +194,11 @@
                     fuzzySearch("treeDemo", '#key', null, true);
                 }
             });
-            if ($("#key").val() == 0) {
-                $("#treeDemo").click(function () {
-                    $.fn.zTree.getZTreeObj("treeDemo").expandAll(false);
-                });
-            }
+            // if ($("#key").val() == 0) {
+            //     $("#treeDemo").click(function () {
+            //         $.fn.zTree.getZTreeObj("treeDemo").expandAll(false);
+            //     });
+            // }
         };
 
         function setCheckEnable(flag) {
@@ -223,7 +219,7 @@
             }
         }
 
-        function zTreeOnClick(event, treeId, treeNode) {
+    function zTreeOnClick(event, treeId, treeNode) {
             //判断当前节点是否有子节点
             var zTree = $.fn.zTree.getZTreeObj(treeId);
             var nodes = zTree.getSelectedNodes();
@@ -234,7 +230,17 @@
             } else {
                 setCheckEnable(false);
                 $("#saveButton").removeAttr("disabled");
-                $("#roleId").val(treeNode.id)
+                let roleId = treeNode.id;
+                $("#roleId").val(roleId);
+                $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 1+"&roleId="+roleId, function (e) {
+                    var zTreeObj = $.fn.zTree.init($("#treeDemo1"), setting1, e.data);
+                })
+                $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 2+"&roleId="+roleId, function (e) {
+                    var zTreeObj = $.fn.zTree.init($("#treeDemo2"), setting2, e.data);
+                })
+                $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 3+"&roleId="+roleId, function (e) {
+                    var zTreeObj = $.fn.zTree.init($("#treeDemo3"), setting3, e.data);
+                })
             }
         }
 
@@ -255,41 +261,47 @@
                 $.modal.alertWarning("请选择部门！");
                 return false;
             }
-            var menuIdList = [];
-            var treeObj1 = $.fn.zTree.getZTreeObj("treeDemo1");
-            var treeObj2 = $.fn.zTree.getZTreeObj("treeDemo2");
-            var treeObj3 = $.fn.zTree.getZTreeObj("treeDemo3");
-            var nodes1 = treeObj1.transformToArray(treeObj1.getNodes());
-            var nodes2 = treeObj2.transformToArray(treeObj2.getNodes());
-            var nodes3 = treeObj3.transformToArray(treeObj3.getNodes());
+            let menuIdList = [];
+            let map = {};
+            let treeObj1 = $.fn.zTree.getZTreeObj("treeDemo1");
+            let treeObj2 = $.fn.zTree.getZTreeObj("treeDemo2");
+            let treeObj3 = $.fn.zTree.getZTreeObj("treeDemo3");
+            let nodes1 = treeObj1.transformToArray(treeObj1.getNodes());
+            let nodes2 = treeObj2.transformToArray(treeObj2.getNodes());
+            let nodes3 = treeObj3.transformToArray(treeObj3.getNodes());
             for (let i = 0; i < nodes1.length; i++) {
                 if (nodes1[i].checked === true) {
-                    menuIdList.push(nodes1[i].id);
+                    map.checkbox = 1;
+                }else {
+                    map.checkbox = 0;
                 }
+                map.id = nodes1[i].id
+                menuIdList.push(map);
             }
             for (let i = 0; i < nodes2.length; i++) {
                 if (nodes2[i].checked === true) {
-                    menuIdList.push(nodes2[i].id);
+                    map.checkbox = 1;
+                }else {
+                    map.checkbox = 0;
                 }
+                map.id = nodes2[i].id
+                menuIdList.push(map);
             }
             for (let i = 0; i < nodes3.length; i++) {
                 if (nodes3[i].checked === true) {
-                    menuIdList.push(nodes3[i].id);
+                    map.checkbox = 1;
+                }else {
+                    map.checkbox = 0;
                 }
+                map.id = nodes3[i].id
+                menuIdList.push(map);
             }
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: {"id":roleId,"menuIdList":menuIdList},
-                traditional:true,
-                async: false,
-                dataType:"json",
-                success: function(data){
-                    $.modal.alertSuccess('保存成功');
-                },
-                error: function(){
-                }
-            });
+            if (menuIdList == null){
+                $.modal.alertWarning("请选择菜单");
+                return false;
+            }
+            console.log(menuIdList)
+            $.operate.saveAndReload(url, {"id": roleId,"menuIdList" : menuIdList})
         }
 </script>
 </body>

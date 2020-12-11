@@ -8,6 +8,7 @@ import com.unicom.urban.management.pojo.dto.MenuDTO;
 import com.unicom.urban.management.pojo.entity.Menu;
 import com.unicom.urban.management.pojo.entity.Role;
 import com.unicom.urban.management.pojo.vo.MenuVO;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -69,15 +70,33 @@ public class MenuService {
         menuRepository.save(menu);
     }
 
-    public List<MenuVO> getMenuByMenuType(String menuTypeId) {
+    public List<MenuVO> getMenuByMenuType(String menuTypeId,String roleId) {
       List<Menu>  menuList = menuRepository.findMenuByMenuType_Id(menuTypeId);
       List<MenuVO> menuVOList = new ArrayList<>();
       for (Menu m : menuList){
           MenuVO vo = new MenuVO();
-          vo.setId(m.getId());
-          vo.setParentId(m.getParent() == null ? "" : m.getParent().getId());
-          vo.setName(m.getName());
-          menuVOList.add(vo);
+          boolean flag = false;
+          if(CollectionUtils.isNotEmpty(m.getRoleList())) {
+              if (StringUtils.isEmpty(roleId)){
+                  flag = false;
+              }else {
+                  for (Role role : m.getRoleList()) {
+                      if (role.getId().equals(roleId)) {
+                          flag = true;
+                          break;
+                      }
+                  }
+              }
+              if (flag){
+                  vo.setCheckbox(1);
+              }else {
+                  vo.setCheckbox(0);
+              }
+              vo.setId(m.getId());
+              vo.setParentId(m.getParent() == null ? "" : m.getParent().getId());
+              vo.setName(m.getName());
+              menuVOList.add(vo);
+          }
       }
        return menuVOList;
     }

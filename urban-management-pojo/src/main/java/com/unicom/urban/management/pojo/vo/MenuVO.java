@@ -24,4 +24,6 @@ public class MenuVO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime updateTime;
 
+    private Integer checkbox;
+
 }
