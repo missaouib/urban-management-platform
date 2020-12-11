@@ -37,27 +37,27 @@ public class LoginFailureHandler extends AbstractAuthenticationHandler implement
         Result result = null;
         if (exception instanceof UsernameNotFoundException) {
             message = 1;
-            result = Result.fail("302", "账号或密码错误");
+            result = Result.fail(302, "账号或密码错误");
         }
         if (exception instanceof BadCredentialsException) {
             message = 2;
-            result = Result.fail("302", "账号或密码错误");
+            result = Result.fail(302, "账号或密码错误");
         }
         if (exception instanceof BadCaptchaException) {
             message = 3;
-            result = Result.fail("302", "验证码错误！请重新输入");
+            result = Result.fail(302, "验证码错误！请重新输入");
         }
         if (exception instanceof CaptchaExpiredException) {
             message = 4;
-            result = Result.fail("302", "验证码已过期，情重新输入");
+            result = Result.fail(302, "验证码已过期，情重新输入");
         }
         if (exception instanceof NotDeptException) {
             message = 5;
-            result = Result.fail("302", "没有配置部门,请联系超级管理员");
+            result = Result.fail(302, "没有配置部门,请联系超级管理员");
         }
         if (exception instanceof DisabledException) {
             message = 6;
-            result = Result.fail("302", "账户未激活,请联系超级管理员");
+            result = Result.fail(302, "账户未激活,请联系超级管理员");
         }
         try {
             loginLog(request, response, message);

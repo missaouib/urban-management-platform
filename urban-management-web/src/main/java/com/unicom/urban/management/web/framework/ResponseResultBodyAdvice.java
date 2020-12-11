@@ -58,7 +58,7 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(Exception.class)
     public Result exception(Exception exception) {
         log.error("exception", exception);
-        return Result.fail("500", ExceptionUtils.getStackTrace(exception));
+        return Result.fail(500, ExceptionUtils.getStackTrace(exception));
     }
 
 
@@ -69,7 +69,7 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
     public Object runtimeException(RuntimeException exception, HttpServletRequest request, HttpServletResponse response) {
         log.error("系统发生异常", exception);
         if (isAjaxRequest(request)) {
-            return Result.fail("500", ExceptionUtils.getStackTrace(exception));
+            return Result.fail(500, ExceptionUtils.getStackTrace(exception));
         }
         return new ModelAndView(SystemConstant.PAGE + "/error/500");
     }
@@ -79,7 +79,7 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @ExceptionHandler(BusinessException.class)
     public Result businessException(BusinessException exception) {
-        return Result.fail("500", ExceptionUtils.getStackTrace(exception));
+        return Result.fail(500, ExceptionUtils.getStackTrace(exception));
     }
 
 
@@ -89,7 +89,7 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(BindException.class)
     public Result validatedBindException(BindException e) {
         String message = e.getAllErrors().get(0).getDefaultMessage();
-        return Result.fail("400", message);
+        return Result.fail(400, message);
     }
 
 
@@ -98,7 +98,7 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @ExceptionHandler(DataValidException.class)
     public Result dataValidException(DataValidException e) {
-        return Result.fail("400", e.getMessage());
+        return Result.fail(400, e.getMessage());
     }
 
 

@@ -207,13 +207,13 @@ function getSelectedRow() {
     	alert("请选择一条记录");
     	return ;
     }
-    
+
     var selectedIDs = grid.getGridParam("selarrrow");
     if(selectedIDs.length > 1){
     	alert("只能选择一条记录");
     	return ;
     }
-    
+
     return selectedIDs[0];
 }
 
@@ -527,10 +527,16 @@ var table = {
 						}
 						return {rows: result.data.content, total: result.data.totalElements};
 					}
-				} else {
-					$.modal.alertWarning(result.message);
-					return { rows: [], total: 0 };
 				}
+				if (result.code === web_status.NEED_LOGIN){
+					window.location.href = loginUrl;
+				}
+
+				if (result.code === web_status.FAIL){
+                    $.modal.alertWarning(result.message);
+                    return { rows: [], total: 0 };
+                }
+
 			},
 
 			// 搜索-默认第一个form
@@ -1121,9 +1127,10 @@ modal_status = {
 };
 /** 消息状态码 */
 web_status = {
-	SUCCESS: "0",
+	SUCCESS: 0,
 	FAIL: 500,
-	WARNING: 301
+	WARNING: 301,
+	NEED_LOGIN: 403
 };
 
 /** 表格类型 */

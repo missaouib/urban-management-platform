@@ -20,13 +20,13 @@ import java.time.LocalDateTime;
 @Getter
 public class Result {
 
-    public static final String SUCCESSFUL_CODE = "0";
+    public static final Integer SUCCESSFUL_CODE = 0;
     public static final String SUCCESSFUL_MESSAGE = "成功";
 
     /**
      * 处理结果code
      */
-    private String code;
+    private Integer code;
 
     /**
      * 处理结果描述信息
@@ -67,7 +67,7 @@ public class Result {
      * @param message
      * @param data
      */
-    private Result(String code, String message, Object data) {
+    private Result(Integer code, String message, Object data) {
         this.code = code;
         this.message = message;
         this.data = data;
@@ -80,7 +80,7 @@ public class Result {
      * @param code
      * @param message
      */
-    public Result(String code, String message) {
+    public Result(Integer code, String message) {
         this.code = code;
         this.message = message;
         this.time = LocalDateTime.now();
@@ -144,8 +144,7 @@ public class Result {
 //    public static Result fail(ErrorType errorType, String message) {
 //        return new Result(errorType, message);
 //    }
-
-    public static Result fail(String code, String message) {
+    public static Result fail(Integer code, String message) {
         return new Result(code, message);
     }
 
