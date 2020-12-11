@@ -124,16 +124,13 @@
 
     </div>
 </div>
+<th:block th:include="page/fragments/common :: common_js"/>
 <!--  index.html的jquery版本不要修改  -->
 <script th:src="@{/js/jquery/jQuery-2.2.0.min.js}"></script>
-<script th:src="@{/js/bootstrap/js/bootstrap.min.js}"></script>
 <script th:src="@{/plugins/jquery-contextmenu/dist/jquery.ui.position.min.js}"></script>
 <script th:src="@{/plugins/jquery-contextmenu/dist/jquery.contextMenu.min.js}"></script>
-<script th:src="@{/js/common.js}"></script>
 <script th:src="@{/js/index.js}"></script>
 <script type="text/javascript" th:inline="javascript">
-
-    let logoutUrl = /*[[@{/logout}]]*/ "/logout";
 
     let mainUrl = /*[[@{/main}]]*/ "/main";
 
