@@ -273,7 +273,9 @@ public class UserService {
             user.setBirth(birth);
         }
         user.setPhone(userDTO.getMobileNumber());
-        user.setSts(0);
+        if(userDTO.getSts()==null){
+            user.setSts(0);
+        }
         user.setProfilePhotoUrl("http://www.baidu.com/");
         if (StringUtils.isNotBlank(userDTO.getDeptId())) {
             Dept dept = new Dept(userDTO.getDeptId());
