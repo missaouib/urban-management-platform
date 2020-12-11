@@ -892,6 +892,7 @@ var table = {
 					url: url,
 					type: 'post',
 					dataType: 'json',
+					traditional: true,
 					data: data,
 					beforeSend: function () {
 						$.modal.loading("正在处理中，请稍后...");

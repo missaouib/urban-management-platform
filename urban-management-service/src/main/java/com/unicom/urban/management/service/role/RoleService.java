@@ -130,13 +130,13 @@ public class RoleService {
      */
     public void saveRoleAndMenu(RoleMenuDTO roleMenuDTO) {
         Role one = this.findOne(roleMenuDTO.getId());
-        List<Map<String,Object>> menuIdList = roleMenuDTO.getMenuIdList();
+        List<String> menuIdList = roleMenuDTO.getMenuIdList();
         List<Menu> menuList = new ArrayList<>();
-//        for (String s : menuIdList) {
-//            Menu m = new Menu();
-//            m.setId(s);
-//            menuList.add(m);
-//        }
+        for (String s : menuIdList) {
+            Menu m = new Menu();
+            m.setId(s);
+            menuList.add(m);
+        }
         one.setMenuList(menuList);
         roleRepository.saveAndFlush(one);
     }

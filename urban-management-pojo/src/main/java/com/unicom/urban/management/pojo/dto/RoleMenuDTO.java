@@ -18,8 +18,6 @@ public class RoleMenuDTO {
     /**
      * 菜单id集合
      */
-    private List<Map<String,Object>> menuIdList;
-
-    private Integer checkbox;
+    private List<String> menuIdList;
 
 }

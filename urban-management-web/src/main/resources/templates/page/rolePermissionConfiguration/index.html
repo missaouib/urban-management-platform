@@ -14,7 +14,6 @@
 <div class="content">
     <div class="leftContent">
         <div class="notice_check">
-            <form id="search-form">
                 <h5 style="padding-left: 5px">搜索</h5>
                 <p>
                     <label class=""></label>
@@ -23,7 +22,6 @@
 <!--                    <input type="button" class="check_btn button_ground" onclick="search()" value="查询">-->
 <!--                    <input type="button" class="check_btn1 button_ground" value="重置">-->
                 </p>
-            </form>
             <div class="tree">
                 <div class="treeDemo">
                     <ul id="treeDemo" class="ztree"></ul>
@@ -59,8 +57,11 @@
 
                 <div class="notice_bot">
                     <div class="r_right but_p girdBtnGroup" id="eventButton">
-                        <input type="hidden" name="roleId" id="roleId" />
-                        <button class="but_save" id="saveButton" onclick="save()" type="button" style="margin-right: 10px" >保存</button>
+                        <form id="saveForm">
+                            <input type="hidden" name="id" id="roleId"/>
+                            <input type="hidden" name="menuIdList" id="menuIdList"/>
+                        </form>
+                        <button class="but_save" id="saveButton" onclick="save1111()" type="button" style="margin-right: 10px" >保存</button>
                     </div>
                 </div>
             </div>
@@ -194,11 +195,6 @@
                     fuzzySearch("treeDemo", '#key', null, true);
                 }
             });
-            // if ($("#key").val() == 0) {
-            //     $("#treeDemo").click(function () {
-            //         $.fn.zTree.getZTreeObj("treeDemo").expandAll(false);
-            //     });
-            // }
         };
 
         function setCheckEnable(flag) {
@@ -233,36 +229,67 @@
                 let roleId = treeNode.id;
                 $("#roleId").val(roleId);
                 $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 1+"&roleId="+roleId, function (e) {
-                    var zTreeObj = $.fn.zTree.init($("#treeDemo1"), setting1, e.data);
+                    let data = e.data;
+                    let treeObj1 = $.fn.zTree.getZTreeObj("treeDemo1");
+                    let nodes1 = treeObj1.transformToArray(treeObj1.getNodes());
+                    for (let i = 0; i < nodes1.length; i++) {
+                        $(data).each(function (index, value) {
+                            if (value.id === nodes1[i].id && value.checkbox === 1) {
+                                nodes1[i].checked = true;
+                                treeObj1.updateNode(nodes1[i]);
+                                return false;
+                            }
+                        });
+
+                    }
                 })
                 $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 2+"&roleId="+roleId, function (e) {
-                    var zTreeObj = $.fn.zTree.init($("#treeDemo2"), setting2, e.data);
+                    let data = e.data;
+                    let treeObj2 = $.fn.zTree.getZTreeObj("treeDemo2");
+                    let nodes2 = treeObj2.transformToArray(treeObj2.getNodes());
+                    for (let i = 0; i < nodes2.length; i++) {
+                        $(data).each(function (index, value) {
+                            if (value.id === nodes2[i].id && value.checkbox === 1) {
+                                nodes2[i].checked = true;
+                                treeObj2.updateNode(nodes2[i]);
+                                return false;
+                            }
+                        });
+
+                    }
                 })
                 $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 3+"&roleId="+roleId, function (e) {
-                    var zTreeObj = $.fn.zTree.init($("#treeDemo3"), setting3, e.data);
+                    let data = e.data;
+                    let treeObj3 = $.fn.zTree.getZTreeObj("treeDemo3");
+                    let nodes3 = treeObj3.transformToArray(treeObj3.getNodes());
+                    for (let i = 0; i < nodes3.length; i++) {
+                        $(data).each(function (index, value) {
+                            if (value.id === nodes3[i].id && value.checkbox === 1) {
+                                nodes3[i].checked = true;
+                                treeObj3.updateNode(nodes3[i]);
+                                return false;
+                            }
+                        });
+                    }
                 })
             }
         }
 
         function zTreeOnClick1(event, treeId, treeNode) {
-            console.log(event, treeId, treeNode)
         }
 
         function zTreeOnClick2(event, treeId, treeNode) {
-            console.log(event, treeId, treeNode)
         }
 
         function zTreeOnClick3(event, treeId, treeNode) {
-            console.log(event, treeId, treeNode)
         }
-        function save() {
+        function save1111() {
             var roleId = $('#roleId').val();
             if (roleId === undefined || roleId === '') {
                 $.modal.alertWarning("请选择部门！");
                 return false;
             }
-            let menuIdList = [];
-            let map = {};
+            let menuIdList = new Array();
             let treeObj1 = $.fn.zTree.getZTreeObj("treeDemo1");
             let treeObj2 = $.fn.zTree.getZTreeObj("treeDemo2");
             let treeObj3 = $.fn.zTree.getZTreeObj("treeDemo3");
@@ -271,37 +298,25 @@
             let nodes3 = treeObj3.transformToArray(treeObj3.getNodes());
             for (let i = 0; i < nodes1.length; i++) {
                 if (nodes1[i].checked === true) {
-                    map.checkbox = 1;
-                }else {
-                    map.checkbox = 0;
+                    menuIdList.push(nodes1[i].id);
                 }
-                map.id = nodes1[i].id
-                menuIdList.push(map);
             }
             for (let i = 0; i < nodes2.length; i++) {
                 if (nodes2[i].checked === true) {
-                    map.checkbox = 1;
-                }else {
-                    map.checkbox = 0;
+                    menuIdList.push(nodes2[i].id);
                 }
-                map.id = nodes2[i].id
-                menuIdList.push(map);
             }
             for (let i = 0; i < nodes3.length; i++) {
                 if (nodes3[i].checked === true) {
-                    map.checkbox = 1;
-                }else {
-                    map.checkbox = 0;
+                    menuIdList.push(nodes3[i].id);
                 }
-                map.id = nodes3[i].id
-                menuIdList.push(map);
             }
             if (menuIdList == null){
                 $.modal.alertWarning("请选择菜单");
                 return false;
             }
-            console.log(menuIdList)
-            $.operate.saveAndReload(url, {"id": roleId,"menuIdList" : menuIdList})
+            $('#menuIdList').val(menuIdList);
+            $.operate.saveAndReload(url, {"id": roleId,"menuIdList":menuIdList});
         }
 </script>
 </body>
