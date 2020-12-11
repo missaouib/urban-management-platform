@@ -692,7 +692,7 @@
         let url = "/event/findAllByParentId?parentId="+parentId;
         $.ajaxUtil.get(url, function (e) {
             let option="<option>--请选择--</option>";
-            if (e.code === "0") {
+            if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });

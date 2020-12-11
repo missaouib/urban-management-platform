@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>用户管理</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<div class="notice_main ">
+
+
+
+    <form id="userForm">
+        <div class="top table2_top">
+            <div class="top_out">
+                <table class="table">
+                    <tbody>
+                    <tr style="display: flex;justify-content: center;align-items: center">
+                        <td style="width: 20%">网格名称<span></span></td>
+                        <td style="width: 40%">
+                            <input type="text" class="find_input" name="name" autocomplete="off">
+                        </td>
+                        <td style="width: 20%">所属区域<span></span></td>
+                        <td style="width: 40%">
+                            <select name="sts">
+                                <option value="3">--请选择--</option>
+                                <option value="0">大区域</option>
+                                <option value="1">小区域</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr style="display: flex;justify-content: center;align-items: center">
+                        <td style="width: 20%">所属街道<span></span></td>
+                        <td style="width: 40%">
+                            <select name="sts">
+                                <option value="3">--请选择--</option>
+                                <option value="0">大成街</option>
+                                <option value="1">十字街</option>
+                            </select>
+                        </td>
+                        <td style="width: 20%">所属社区<span></span></td>
+                        <td style="width: 40%">
+                            <select name="sts">
+                                <option value="3">--请选择--</option>
+                                <option value="0">激活</option>
+                                <option value="1">未激活</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <div class="notice_check">
+        <form id="search-form">
+            <p style="display: flex;justify-content: flex-end">
+                <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
+            </p>
+        </form>
+    </div>
+
+
+    <div class="clear"></div>
+
+
+    <div class="btn-group-sm" id="toolbar">
+    </div>
+
+
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        queryUserList();
+    });
+
+    let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
+    let toInsertUrl = /*[[@{/gridOwner/toInsert}]]*/ "/gridOwner/toInsert";
+
+    function queryUserList() {
+        var options = {
+            url: searchUrl,
+            uniqueId: "id",
+            sortName: "updateTime",
+            sortOrder: "desc",
+            modalName: "用户",
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '网格名称',
+                    field: 'name'
+                },
+                {
+                    title: '所在区域',
+                    field: 'username'
+                },
+
+                {
+                    title: '所属街道',
+                    field: 'phone'
+                },
+                {
+                    title: '所属社区',
+                    field: 'deptName'
+                },
+                {
+                    title: '操作',
+                    field: '',
+                    class: 'radios',
+                    formatter: function (value, row) {
+                        return "<a href='' onclick=\"window.parent.$.learuntab.myAddTab('移动终端配置', toInsertUrl, 'data_id')\">配置</a>";
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    }
+
+
+
+
+</script>
+</body>
+</html>

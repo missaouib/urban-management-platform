@@ -7,6 +7,8 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class MenuDTO {
 
+    private String id;
+
     @NotBlank(message = "菜单名称不能为空")
     private String name;
 
@@ -14,6 +16,14 @@ public class MenuDTO {
     private String path;
 
     private String parentId;
+
+    private String icon;
+
+    private Integer sort;
+
+    private Integer purpose;
+
+    private String menuTypeId;
 
 
 }

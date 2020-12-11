@@ -2,14 +2,17 @@ package com.unicom.urban.management.service.menu;
 
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.menu.MenuRepository;
+import com.unicom.urban.management.dao.menu.MenuTypeRepository;
 import com.unicom.urban.management.dao.role.RoleRepository;
 import com.unicom.urban.management.mapper.MenuMapper;
 import com.unicom.urban.management.pojo.dto.MenuDTO;
 import com.unicom.urban.management.pojo.entity.Menu;
+import com.unicom.urban.management.pojo.entity.MenuType;
 import com.unicom.urban.management.pojo.entity.Role;
 import com.unicom.urban.management.pojo.vo.MenuVO;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,10 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @javax.transaction.Transactional(rollbackOn = Exception.class)
@@ -34,6 +37,8 @@ public class MenuService {
     private MenuRepository menuRepository;
     @Autowired
     private RoleRepository roleRepository;
+    @Autowired
+    private MenuTypeRepository menuTypeRepository;
 
     public Page<MenuVO> search(MenuDTO menuDTO, Pageable pageable) {
         Page<Menu> page = menuRepository.findAll((Specification<Menu>) (root, query, criteriaBuilder) -> {
@@ -58,16 +63,48 @@ public class MenuService {
 
     @Transactional(rollbackFor = Exception.class)
     public void save(MenuDTO menuDTO) {
+        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), null)) throw new RuntimeException("菜单名重复");
         Menu menu = new Menu();
-        menu.setName(menuDTO.getName());
-        menu.setPath(menuDTO.getPath());
-
-        if (StringUtils.isNotEmpty(menuDTO.getParentId())) {
-            Menu parentMenu = new Menu();
-            parentMenu.setId(menuDTO.getParentId());
-            menu.setParent(parentMenu);
+        BeanUtils.copyProperties(menuDTO,menu);
+        menuTypeRepository.findById(menuDTO.getMenuTypeId()).ifPresent(menu::setMenuType);
+        menuRepository.findById(menuDTO.getParentId()).ifPresent(menu::setParent);
+        if(menu.getParent()!=null){
+            if(!menu.getParent().getPurpose().equals(menu.getPurpose())) throw new RuntimeException("应用类型与上级菜单不符");
         }
         menuRepository.save(menu);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void update(MenuDTO menuDTO) {
+        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), menuDTO.getId())) throw new RuntimeException("菜单名重复");
+        Optional<Menu> ifmenu = menuRepository.findById(menuDTO.getId());
+        if(!ifmenu.isPresent()){
+            throw new RuntimeException("菜单不存在");
+        }
+        Menu menu = ifmenu.get();
+        menu.setName(menuDTO.getName());
+        menu.setIcon(menuDTO.getIcon());
+        menu.setSort(menuDTO.getSort());
+        menuTypeRepository.findById(menuDTO.getMenuTypeId()).ifPresent(menu::setMenuType);
+        if(menu.getParent()!=null){
+           menu.setPurpose(menu.getParent().getPurpose());
+        }
+        menu.getChild().forEach(m->{
+            if(!m.getPurpose().equals(menu.getPurpose())){
+                m.setPurpose(menu.getPurpose());
+                menuRepository.saveAndFlush(menu);
+            }
+        });
+        menuRepository.saveAndFlush(menu);
+    }
+
+    private boolean ifMenu(String pid,String name,String id){
+        List<Menu> menus = menuRepository.findAllByParent_IdAndName(pid, name);
+        if(StringUtils.isBlank(id)){
+            return menus.size() != 0;
+        }else{
+           return menus.size() != 0 && (menus.size() != 1 || !id.equals(menus.get(0).getId()));
+        }
     }
 
     public List<MenuVO> getMenuByMenuType(String menuTypeId,String roleId) {
@@ -100,6 +137,21 @@ public class MenuService {
       }
        return menuVOList;
     }
+    public  List<MenuVO> getTree(){
+        List<Menu>  menuList = menuRepository.findAll();
+        return toVO(menuList);
+    }
+    private List<MenuVO> toVO(List<Menu> menuList){
+        List<MenuVO> menuVOList = new ArrayList<>();
+        for (Menu m : menuList){
+            MenuVO vo = new MenuVO();
+            BeanUtils.copyProperties(m,vo);
+            vo.setParentId(Optional.ofNullable(m.getParent()).map(Menu::getId).orElse(""));
+            vo.setMenuTypeId(Optional.ofNullable(m.getMenuType()).map(MenuType::getId).orElse(""));
+            menuVOList.add(vo);
+        }
+        return menuVOList;
+    }
 
     public List<MenuVO> findAll() {
         List<Menu> menuList = null;
@@ -121,5 +173,23 @@ public class MenuService {
             menuVOList.add(vo);
         }
         return menuVOList;
+    }
+
+    public void del(MenuDTO menuDTO){
+        Optional<Menu> ifmenu = menuRepository.findById(menuDTO.getId());
+        if(ifmenu.isPresent()){
+            Menu menu = ifmenu.get();
+            if(menu.getChild().size()>0){
+                throw new RuntimeException("菜单下有子菜单不能删除");
+            }
+            menuRepository.delete(menu);
+        }else{
+            throw new RuntimeException("菜单不存在");
+        }
+    }
+
+
+    public List<MenuType> menuType(){
+        return menuTypeRepository.findAll();
     }
 }

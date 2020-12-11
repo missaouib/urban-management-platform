@@ -353,7 +353,7 @@
         if (eventTypeId !== undefined && eventTypeId !== ''){
             var url = createEventCodeUrl+"?eventTypeId="+eventTypeId
             $.ajaxUtil.get(url, function (e) {
-                if (e.code === "0") {
+                if (e.code === 0) {
                         let eventCode = e.data
                         $("#eventCode").val(eventCode);
                 }
@@ -369,7 +369,7 @@
         let url = findEventConditionByEventTypeUrl +"?eventTypeId="+ eventTypeId;
         $.ajaxUtil.get(url, function (e) {
             let option = "<option>--请选择--</option>";
-            if (e.code === "0") {
+            if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.region + "</option>"
                 });
@@ -387,7 +387,7 @@
         $.ajaxUtil.get(url, function (e) {
             $("#eventTerm").empty();
             let option = "<option>--请选择--</option>";
-            if (e.code === "0") {
+            if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
                 });
@@ -405,7 +405,7 @@
         $.ajaxUtil.get(url, function (e) {
             $("#timeType").empty();
             let option = "<option>--请选择--</option>";
-            if (e.code === "0") {
+            if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.level + "</option>"
                 });
@@ -421,7 +421,7 @@
         let deptTimeLimitId = $("#timeType").val();
         let url = "/event/findDeptTimeLimit?deptTimeLimitId=" + deptTimeLimitId;
         $.ajaxUtil.get(url, function (e) {
-            if (e.code === "0") {
+            if (e.code === 0) {
                 let data = e.data;
                 $("#deptTImeLimitId").val(data.id);
                 $("#deptTImeLimit").val(data.timeLimit + data.timeType);
@@ -437,7 +437,7 @@
         let url = "/event/findAllByParentId?parentId="+parentId;
         $.ajaxUtil.get(url, function (e) {
             let option="<option>--请选择--</option>";
-            if (e.code === "0") {
+            if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
@@ -454,7 +454,7 @@
         let url = "/event/findAllByParentId?parentId="+parentId;
         $.ajaxUtil.get(url, function (e) {
             let option="<option>--请选择--</option>";
-            if (e.code === "0") {
+            if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
@@ -471,7 +471,7 @@
         let url = "/event/findAllByParentId?parentId="+parentId;
         $.ajaxUtil.get(url, function (e) {
             let option="<option>--请选择--</option>";
-            if (e.code === "0") {
+            if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
