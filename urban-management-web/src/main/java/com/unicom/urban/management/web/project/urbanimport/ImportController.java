@@ -91,7 +91,7 @@ public class ImportController {
         shpType = "";
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
         if (!this.validImport(multiRequest)) {
-            Result.fail("99", "");
+            Result.fail(99, "");
         }
         // 创建集合接受文件
         HttpClient httpclient = new DefaultHttpClient();
@@ -122,7 +122,7 @@ public class ImportController {
             }
         }
         if (layerId.equals("00")) {
-            return Result.fail("00", "");
+            return Result.fail(00, "");
         }
 
         /*新增发布*/
@@ -149,7 +149,7 @@ public class ImportController {
         shpType = "";
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
         if (!validImport(multiRequest)) {
-            return Result.fail("99", "格式错误，请选择正确文件格式！");
+            return Result.fail(99, "格式错误，请选择正确文件格式！");
         }
         // 创建集合接受文件
         HttpClient httpclient = new DefaultHttpClient();

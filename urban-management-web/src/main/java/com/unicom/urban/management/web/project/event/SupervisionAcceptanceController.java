@@ -310,7 +310,7 @@ public class SupervisionAcceptanceController {
                 eventService.completeByReceptionistForDo(eventDTO);
                 break;
             default:
-                return Result.fail("500", "未检测到应有的步骤");
+                return Result.fail(500, "未检测到应有的步骤");
         }
         return Result.success();
     }
@@ -333,7 +333,7 @@ public class SupervisionAcceptanceController {
                 eventService.completeForClosingAndFiling(eventDTO);
                 break;
             default:
-                return Result.fail("500", "未检测到应有的步骤");
+                return Result.fail(500, "未检测到应有的步骤");
         }
         return Result.success();
     }

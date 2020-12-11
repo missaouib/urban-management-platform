@@ -20,6 +20,10 @@
     <script th:src="@{/plugins/layer/layer.js}"></script>
     <script th:src="@{/js/common.js}"></script>
     <script th:src="@{/js/ajaxUtil.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+        var loginUrl = /*[[@{/login}]]*/ "/login";
+        var logoutUrl = /*[[@{/logout}]]*/ "/logout";
+    </script>
 </div>
 
 
