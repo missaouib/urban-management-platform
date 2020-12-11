@@ -85,7 +85,6 @@ public class RoleSetupController {
     @PostMapping("/saveUserAndRole")
     public Result saveUserByRole(@Valid UserIdListDTO userIdListDTO){
         List<Map<String,Object>> mapList = userIdListDTO.getUserIdList();
-
         roleService.saveUserByRole(userIdListDTO.getRoleId(),mapList);
         return Result.success();
     }

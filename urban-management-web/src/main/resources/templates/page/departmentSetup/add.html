@@ -37,6 +37,18 @@
         <form class="details" id="roleForm">
             <div class="top table2_top">
                 <h5 style="padding: 16px 10px 0">人员列表</h5>
+                <div class="head_buttons_group">
+                        <div class="r_right but_p girdBtnGroup" id="eventButton">
+                            <input type="hidden" id="deptId" name="deptId" />
+                            <button class="but_save" type="button" style="margin-right: 10px" id="saveRoleBtn"
+                            >全选
+                            </button>
+                            <button class="but_save roleBox" type="button" id="lessCheck" style="margin-right: 10px">取消全选
+                            </button>
+                            <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn" onclick="saveBatch()"  >保存
+                            </button>
+                        </div>
+                </div>
                 <div class="top_out personneList" id="showUser">
 <!--                    <div class="role">-->
 <!--                        <input type="checkbox" class="roleCheckBox"><span class="roleName"  data-toggle='modal' data-target='#modal-default'>京东</span>-->
@@ -49,17 +61,7 @@
 <!--                    </div>-->
 
                 </div>
-                <div class="notice_bot">
-                    <div class="r_right but_p girdBtnGroup" id="eventButton">
-                        <input type="hidden" id="deptId" name="deptId" />
-                        <button class="but_save" type="button" style="margin-right: 10px" id="saveRoleBtn"
-                        >全选
-                        </button>
-                        <button class="but_save roleBox" type="button" id="lessCheck" style="margin-right: 10px">取消全选
-                        </button>
-                        <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn" onclick="saveBatch()"  >保存
-                        </button>
-                    </div>
+
             </div>
         </form>
     </div>
@@ -185,7 +187,7 @@
         $("#lessCheck").click(function () {
             $(this).addClass("roleBox");
             $("#saveRoleBtn").removeClass("roleBox");
-            $(".roleCheckBox").prop("checked","checked")
+            $(".roleCheckBox").prop("checked",false)
         })
 
         $.ajaxUtil.get(getDeptTreeUrl, function (e) {
@@ -230,10 +232,17 @@
 
         search()
 
+        //搜索之后更改树title
+        $("#treeDemo").on('mouseover','a',function () {
+            $(this).prop("title",$(this).text())
+        });
 
     });
     function zTreeOnClick(event, treeId, treeNode) {
-
+        if(treeNode.isParent){
+            $("#showUser").html('');
+            return false;
+        }
         $("#deptId").val(treeNode.id)
         findUsers(treeNode.id)
     }
@@ -279,9 +288,12 @@
         $("input[type ='checkbox']").each(function(index,value){
             let map = {};
             if($(value).prop("checked") === true){
-                map.id=$(value).val();
-                userIdList.push(map);
+                map.checkbox = 1;
+            }else {
+                map.checkbox = 0;
             }
+            map.id=$(value).val();
+            userIdList.push(map);
         });
         $.operate.saveAndReload(saveBatchUrl, {"deptId": deptId,"userIdList" : userIdList})
     }

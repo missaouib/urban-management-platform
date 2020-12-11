@@ -353,13 +353,19 @@ public class UserService {
 
     public void saveBatchUser(UserIdListDTO userIdListDTO) {
         String deptId = userIdListDTO.getDeptId();
-        List<Map<String,Object>>  mapList = userIdListDTO.getUserIdList();
-        for (Map<String,Object> map : mapList){
+        List<Map<String,Object>>  userIdList = userIdListDTO.getUserIdList();
+        for (Map<String,Object> map : userIdList){
             String userId = map.get("id").toString();
+            Integer checkbox = Integer.valueOf(map.get("checkbox").toString());
             User user = this.findOne(userId);
             Dept dept = new Dept();
-            dept.setId(deptId);
-            user.setDept(dept);
+            if (checkbox == 1){
+                dept.setId(deptId);
+                user.setDept(dept);
+            }else {
+                user.setDept(null);
+            }
+
             userRepository.saveAndFlush(user);
         }
     }

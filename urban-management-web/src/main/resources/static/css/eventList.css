@@ -254,3 +254,6 @@
 .roleName{
     margin-left: 10px;
 }
+.head_buttons_group{
+    width: 100%;display: flex;justify-content: flex-end;align-items: center;font-size: 12px
+}
