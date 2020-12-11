@@ -63,16 +63,48 @@ public class MenuService {
 
     @Transactional(rollbackFor = Exception.class)
     public void save(MenuDTO menuDTO) {
+        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), null)) throw new RuntimeException("菜单名重复");
         Menu menu = new Menu();
-        menu.setName(menuDTO.getName());
-        menu.setPath(menuDTO.getPath());
-
-        if (StringUtils.isNotEmpty(menuDTO.getParentId())) {
-            Menu parentMenu = new Menu();
-            parentMenu.setId(menuDTO.getParentId());
-            menu.setParent(parentMenu);
+        BeanUtils.copyProperties(menuDTO,menu);
+        menuTypeRepository.findById(menuDTO.getMenuTypeId()).ifPresent(menu::setMenuType);
+        menuRepository.findById(menuDTO.getParentId()).ifPresent(menu::setParent);
+        if(menu.getParent()!=null){
+            if(!menu.getParent().getPurpose().equals(menu.getPurpose())) throw new RuntimeException("应用类型与上级菜单不符");
         }
         menuRepository.save(menu);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void update(MenuDTO menuDTO) {
+        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), menuDTO.getId())) throw new RuntimeException("菜单名重复");
+        Optional<Menu> ifmenu = menuRepository.findById(menuDTO.getId());
+        if(!ifmenu.isPresent()){
+            throw new RuntimeException("菜单不存在");
+        }
+        Menu menu = ifmenu.get();
+        menu.setName(menuDTO.getName());
+        menu.setIcon(menuDTO.getIcon());
+        menu.setSort(menuDTO.getSort());
+        menuTypeRepository.findById(menuDTO.getMenuTypeId()).ifPresent(menu::setMenuType);
+        if(menu.getParent()!=null){
+           menu.setPurpose(menu.getParent().getPurpose());
+        }
+        menu.getChild().forEach(m->{
+            if(!m.getPurpose().equals(menu.getPurpose())){
+                m.setPurpose(menu.getPurpose());
+                menuRepository.saveAndFlush(menu);
+            }
+        });
+        menuRepository.saveAndFlush(menu);
+    }
+
+    private boolean ifMenu(String pid,String name,String id){
+        List<Menu> menus = menuRepository.findAllByParent_IdAndName(pid, name);
+        if(StringUtils.isBlank(id)){
+            return menus.size() != 0;
+        }else{
+           return menus.size() != 0 && (menus.size() != 1 || !id.equals(menus.get(0).getId()));
+        }
     }
 
     public List<MenuVO> getMenuByMenuType(String menuTypeId,String roleId) {
@@ -143,6 +175,18 @@ public class MenuService {
         return menuVOList;
     }
 
+    public void del(MenuDTO menuDTO){
+        Optional<Menu> ifmenu = menuRepository.findById(menuDTO.getId());
+        if(ifmenu.isPresent()){
+            Menu menu = ifmenu.get();
+            if(menu.getChild().size()>0){
+                throw new RuntimeException("菜单下有子菜单不能删除");
+            }
+            menuRepository.delete(menu);
+        }else{
+            throw new RuntimeException("菜单不存在");
+        }
+    }
 
 
     public List<MenuType> menuType(){

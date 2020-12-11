@@ -28,4 +28,9 @@ public class MenuVO {
 
     private Integer checkbox;
 
+    /**
+     * 用途   PC  、 App
+     */
+    private Integer purpose;
+
 }

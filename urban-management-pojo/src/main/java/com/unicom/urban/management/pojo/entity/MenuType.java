@@ -20,6 +20,13 @@ import javax.persistence.Table;
 @Table(name = "sys_menu_type")
 public class MenuType {
 
+    public MenuType(){
+
+    }
+    public MenuType(String id){
+        this.id = id;
+    }
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
@@ -28,4 +35,5 @@ public class MenuType {
     private String name;
 
     private Integer sort;
+
 }

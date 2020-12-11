@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface MenuRepository extends CustomizeRepository<Menu, String> {
     List<Menu> findMenuByMenuType_Id(String menuTypeId);
+
+    List<Menu> findAllByParent_IdAndName(String parentId,String name);
 }
