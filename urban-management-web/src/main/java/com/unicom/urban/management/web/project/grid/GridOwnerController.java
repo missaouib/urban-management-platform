@@ -22,12 +22,12 @@ public class GridOwnerController {
     @Autowired
     private GridService gridService;
 
-    @GetMapping("/list")
+    @GetMapping("/toList")
     public ModelAndView list() {
         return new ModelAndView(SystemConstant.PAGE + "/gridOwner/list");
     }
 
-    @GetMapping("/add")
+    @GetMapping("/toInsert")
     public ModelAndView add() {
         return new ModelAndView(SystemConstant.PAGE + "/gridOwner/add");
     }

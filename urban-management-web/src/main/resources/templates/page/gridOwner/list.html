@@ -81,29 +81,15 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
-
         queryUserList();
-    })
-
+    });
 
     let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
-
-    let addUrl = /*[[@{/user/add}]]*/ "/user/add";
-
-    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
-
-    let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
-
-    let activationUrl = /*[[@{/user/activation}]]*/ "/user/activation";
-
-    let initializationUrl = /*[[@{/user/initialization}]]*/ "/user/initialization";
+    let toInsertUrl = /*[[@{/gridOwner/toInsert}]]*/ "/gridOwner/toInsert";
 
     function queryUserList() {
         var options = {
             url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
             uniqueId: "id",
             sortName: "updateTime",
             sortOrder: "desc",
@@ -139,8 +125,7 @@
                     field: '',
                     class: 'radios',
                     formatter: function (value, row) {
-                        var e = "<a href='' onclick=\"window.parent.$.learuntab.myAddTab('移动终端配置', '/gridOwner/add', 'data_id')\">配置</a>"
-                        return e;
+                        return "<a href='' onclick=\"window.parent.$.learuntab.myAddTab('移动终端配置', toInsertUrl, 'data_id')\">配置</a>";
                     }
                 }
             ]
