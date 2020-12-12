@@ -34,6 +34,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
@@ -71,11 +76,6 @@
         <dependency>
             <groupId>org.activiti</groupId>
             <artifactId>activiti-spring-boot-starter-basic</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.activiti</groupId>
-            <artifactId>activiti-spring-boot-starter-jpa</artifactId>
         </dependency>
 
         <dependency>
