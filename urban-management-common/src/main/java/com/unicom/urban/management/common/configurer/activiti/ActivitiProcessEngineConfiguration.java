@@ -1,15 +1,17 @@
 package com.unicom.urban.management.common.configurer.activiti;
 
 import lombok.extern.slf4j.Slf4j;
-import org.activiti.engine.ProcessEngineConfiguration;
-import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.activiti.engine.impl.persistence.StrongUuidGenerator;
+import org.activiti.engine.cfg.ProcessEngineConfigurator;
+import org.activiti.spring.SpringAsyncExecutor;
+import org.activiti.spring.SpringProcessEngineConfiguration;
+import org.activiti.spring.boot.AbstractProcessEngineAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.PlatformTransactionManager;
 
-import java.awt.*;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Activiti流程引擎配置类
@@ -18,37 +20,25 @@ import java.io.InputStream;
  */
 @Slf4j
 @Configuration
-public class ActivitiProcessEngineConfiguration {
+public class ActivitiProcessEngineConfiguration extends AbstractProcessEngineAutoConfiguration {
 
-    private static final String FONT_PATH_WQY = "fonts/Arial Unicode.ttf";
 
     @Bean
-    public ProcessEngineConfiguration processEngineConfiguration(ProcessEngineConfigurationImpl processEngineConfiguration) {
-        StrongUuidGenerator uuidGenerator = new StrongUuidGenerator();
-        processEngineConfiguration.setIdGenerator(uuidGenerator);
-        processEngineConfiguration.getDbSqlSessionFactory().setIdGenerator(uuidGenerator);
+    public SpringProcessEngineConfiguration springProcessEngineConfiguration(DataSource dataSource,
+                                                                             EntityManagerFactory entityManagerFactory,
+                                                                             PlatformTransactionManager transactionManager,
+                                                                             SpringAsyncExecutor springAsyncExecutor,
+                                                                             ProcessEngineConfigurator activitiFontConfigurator,
+                                                                             ProcessEngineConfigurator activitiIdConfigurator) throws IOException {
 
-        /**
-         * 为解决diagram中文乱码问题
-         */
-        Font font = null;
-        try (InputStream resourceAsStream = getClass().getClassLoader().getResourceAsStream(FONT_PATH_WQY)) {
-            assert resourceAsStream != null;
-            font = Font.createFont(Font.TRUETYPE_FONT, resourceAsStream);
-        } catch (IOException | FontFormatException e) {
-            e.printStackTrace();
-        }
-        assert font != null;
+        SpringProcessEngineConfiguration config = this.baseSpringProcessEngineConfiguration(dataSource, transactionManager, springAsyncExecutor);
+        config.setJpaEntityManagerFactory(entityManagerFactory);
+        config.setTransactionManager(transactionManager);
+        config.setJpaHandleTransaction(false);
+        config.setJpaCloseEntityManager(false);
+        config.addConfigurator(activitiFontConfigurator).addConfigurator(activitiIdConfigurator);
 
 
-        GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
-
-        String fontName = font.getFontName();
-
-        processEngineConfiguration.setLabelFontName(fontName);
-        processEngineConfiguration.setActivityFontName(fontName);
-        processEngineConfiguration.setAnnotationFontName(fontName);
-        return processEngineConfiguration;
+        return config;
     }
-
 }
