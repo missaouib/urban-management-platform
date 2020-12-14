@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class EventType {
+public class EventType extends BaseEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")
