@@ -18,8 +18,13 @@ import org.springframework.web.servlet.ModelAndView;
 public class CategoryConfigurationController {
 
     @GetMapping("/toList")
-    public ModelAndView grid() {
+    public ModelAndView toList() {
         return new ModelAndView(SystemConstant.PAGE + "/categoryConfiguration/list");
+    }
+
+    @GetMapping("/toInsert")
+    public ModelAndView toInsert() {
+        return new ModelAndView(SystemConstant.PAGE + "/categoryConfiguration/insert");
     }
 
 }
