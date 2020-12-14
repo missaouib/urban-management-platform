@@ -1215,3 +1215,21 @@ function closeItem(dataId) {
 		});
 	}
 }
+
+/**
+ * 保存惯用语
+ * @param data
+ * @returns {boolean}
+ */
+function saveIdioms(data){
+	let url = "/idioms/saveIdioms";
+	let idiomsValue = $(data).val();
+	if (idiomsValue === undefined || idiomsValue === ''){
+		return false;
+	}
+	table.set();
+	$.modal.confirm("确定保存该条惯用语吗？", function() {
+		$.operate.submit(url, "post", "json", {"idiomsValue":idiomsValue});
+	});
+
+}

@@ -12,6 +12,8 @@ public class IdiomsVO {
     private String id;
 
     private String userId;
+
+    private String userName;
     /**
      * 惯用语内容
      */
