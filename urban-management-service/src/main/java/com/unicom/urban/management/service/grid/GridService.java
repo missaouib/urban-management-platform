@@ -7,6 +7,7 @@ import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.grid.GridRepository;
 import com.unicom.urban.management.mapper.GridMapper;
 import com.unicom.urban.management.mapper.TreeMapper;
+import com.unicom.urban.management.pojo.dto.AreaDTO;
 import com.unicom.urban.management.pojo.dto.GridDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.GridVO;
@@ -16,6 +17,7 @@ import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.record.RecordService;
 import com.unicom.urban.management.service.user.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -58,6 +60,12 @@ public class GridService {
     public Page<GridVO> search(GridDTO gridDTO, Pageable pageable) {
         Page<Grid> page = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
+            if (StringUtils.isNotBlank(gridDTO.getRecordStart())) {
+                list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), 3));
+            }
+            if (StringUtils.isNotBlank(gridDTO.getGridName())) {
+                list.add(criteriaBuilder.equal(root.get("gridName").as(String.class), gridDTO.getGridName()));
+            }
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
@@ -150,6 +158,69 @@ public class GridService {
         record.setCoordinate(gridDTO.getCoordinate());
         recordService.update(record);
 
+    }
+
+    public void saveArea(AreaDTO areaDTO) {
+        if (ifAreaName(areaDTO.getPid(), areaDTO.getGridName(), null)) {
+            throw new RuntimeException("区域名称重复");
+        }
+        Grid grid = new Grid();
+        grid.setGridName(areaDTO.getGridName());
+        if (StringUtils.isNotBlank(areaDTO.getPid())) {
+            grid.setParent(gridRepository.findById(areaDTO.getPid()).orElse(null));
+        }
+        grid.setLevel(areaDTO.getLevel());
+        gridRepository.save(grid);
+
+    }
+
+    public void updateArea(AreaDTO areaDTO) {
+        if (ifAreaName(areaDTO.getPid(), areaDTO.getGridName(), areaDTO.getId())) {
+            throw new RuntimeException("区域名称重复");
+        }
+        Optional<Grid> ifGrid = gridRepository.findById(areaDTO.getId());
+        if (ifGrid.isPresent()) {
+            Grid grid = ifGrid.get();
+            grid.setGridName(areaDTO.getGridName());
+            if (StringUtils.isNotBlank(areaDTO.getPid())) {
+                grid.setParent(gridRepository.findById(areaDTO.getPid()).orElse(null));
+            }
+            grid.setLevel(areaDTO.getLevel());
+            gridRepository.save(grid);
+        }
+    }
+
+    public void collocation(AreaDTO areaDTO) {
+        Optional<Grid> ifParentGrid = gridRepository.findById(areaDTO.getId());
+        if (ifParentGrid.isPresent()) {
+            Grid area = ifParentGrid.get();
+            areaDTO.getGridIds().forEach(g -> {
+                Optional<Grid> ifGrid = gridRepository.findById(g);
+                if (ifGrid.isPresent()) {
+                    Grid grid = ifGrid.get();
+                    if (!grid.getParent().getId().equals(g)) {
+                        grid.setParent(area);
+                        gridRepository.saveAndFlush(grid);
+                    }
+                }
+            });
+        }
+    }
+    public void deleteArea(String id) {
+        List<Grid> ifGrid = gridRepository.findAllByParentId(id);
+        if(ifGrid.size()>0){
+            throw new RuntimeException("区域下有子节点，不能删除");
+        }
+        this.delete(id);
+    }
+
+    private boolean ifAreaName(String pid, String gridName, String id) {
+        List<Grid> grids = gridRepository.findAllByParent_IdAndGridName(pid, gridName);
+        if (StringUtils.isNotBlank(id)) {
+            return grids.size() != 0;
+        } else {
+            return grids.size() != 0 && (grids.size() != 1 || !id.equals(grids.get(0).getId()));
+        }
     }
 
     public List<Grid> findAllByPublishIdAndRecordSts(String publishId) {
@@ -281,10 +352,11 @@ public class GridService {
         return one.getGrid().getRecord().getCoordinate();
     }
 
-    public List<TreeVO> searchTree() {
-        List<Integer> levels = Arrays.asList(1,2,3);
+    public List<TreeVO> searchTree(List<Integer> levels) {
+
         List<Grid> grids = gridRepository.findAllByLevelIn(levels);
         return TreeMapper.INSTANCE.gridListToTreeVOList(grids);
     }
+
 
 }

@@ -46,4 +46,9 @@ public class GridDTO {
     @NotBlank(message = "请绘制网格")
     private String coordinate;
 
+
+    private String recordStart;
+
+
+
 }

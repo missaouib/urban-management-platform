@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -64,6 +65,11 @@ public class GridController {
     @GetMapping("/getGridCenter")
     public Result getGridCenter(String gridId) {
         return Result.success(gridService.getGridCenter(gridId));
+    }
+
+    @GetMapping("/getGridTree")
+    public Result getGridTree(String gridId) {
+        return Result.success(gridService.searchTree(Arrays.asList(1,2,3)));
     }
 
 }
