@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.user;
 
 import com.unicom.urban.management.common.annotations.Log;
+import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.exception.BadPasswordException;
 import com.unicom.urban.management.common.exception.DataValidException;
@@ -11,10 +12,12 @@ import com.unicom.urban.management.pojo.dto.ChangePasswordDTO;
 import com.unicom.urban.management.pojo.dto.UserDTO;
 import com.unicom.urban.management.pojo.dto.UserIdListDTO;
 import com.unicom.urban.management.pojo.entity.Dept;
+import com.unicom.urban.management.pojo.entity.Grid;
 import com.unicom.urban.management.pojo.entity.Role;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.dept.DeptService;
+import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.password.PasswordService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -51,6 +54,8 @@ public class UserService {
     private DeptService deptService;
     @Autowired
     private PasswordService passwordService;
+    @Autowired
+    private GridService gridService;
 
     public Page<UserVO> search(UserDTO userDTO, Pageable pageable) {
         Specification<User> specification = (root, query, criteriaBuilder) -> {
@@ -377,7 +382,7 @@ public class UserService {
             UserVO vo = new UserVO();
             if (user.getDept() != null && user.getDept().getId().equals(deptId)){
                 vo.setCheckbox(1);
-            }else {
+            } else {
                 vo.setCheckbox(0);
             }
             vo.setId(user.getId());
@@ -387,4 +392,31 @@ public class UserService {
         }
         return list;
     }
+
+    public List<UserVO> getSupervisorUserList(String gridId) {
+        Grid one = gridService.findOne(gridId);
+        List<User> userList = this.findAll();
+        List<UserVO> list = new ArrayList<>();
+        for (User user : userList) {
+            if (user.getRoleList() != null) {
+                for (Role role : user.getRoleList()) {
+                    if (KvConstant.SUPERVISOR_ROLE.equals(role.getId())) {
+                        UserVO userVO = new UserVO();
+                        userVO.setId(user.getId());
+                        userVO.setName(user.getName());
+                        if (user.getGridList() != null) {
+                            if (user.getGridList().contains(one)) {
+                                userVO.setSts(1);
+                            } else {
+                                userVO.setSts(0);
+                            }
+                        }
+                        list.add(userVO);
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
 }

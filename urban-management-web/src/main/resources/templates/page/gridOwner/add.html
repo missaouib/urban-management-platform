@@ -16,23 +16,23 @@
     <div class="content">
         <div class="leftBox">
             <h5>监督员</h5>
-            <div class="onmer_box">
+            <div class="onmer_box" id="userList">
                 <p>
-                    <input name="onwer" type="checkbox">
+                    <input name="owner" type="checkbox">
                     <span>元芳</span>
                 </p>
                 <p>
-                    <input name="onwer" type="checkbox">
+                    <input name="owner" type="checkbox">
                     <span>王朝</span>
                 </p>
                 <p>
-                    <input name="onwer" type="checkbox">
+                    <input name="owner" type="checkbox">
                     <span>马汉</span>
                 </p>
             </div>
             <div class="notice_bot">
                 <div class="r_right but_p girdBtnGroup" id="eventButton">
-                    <button class="but_save" type="button">
+                    <button class="but_save" type="button" id="saveGridOwner" onclick="saveGridOwner()">
                         保存
                     </button>
                 </div>
@@ -41,20 +41,15 @@
         <div class="rightBox" style="position: relative">
             <div class="map_masion">
                 <p>
-                    <span class="span1">所属区域</span><span class="span2">南岗区</span>
-                    <span class="span1">所属街道</span><span class="span2">南岗街道</span>
+                    <span class="span1">所属区域</span><span class="span2" id="region">南岗区</span>
+                    <span class="span1">所属街道</span><span class="span2" id="street">南岗街道</span>
                 </p>
                 <p>
-                    <span class="span1">所属社区</span><span class="span2">南岗社区</span>
-                    <span class="span1">所属网格</span><span class="span2">南岗网格</span>
+                    <span class="span1">所属社区</span><span class="span2" id="community">南岗社区</span>
+                    <span class="span1">所属网格</span><span class="span2" id="remark">南岗网格</span>
                 </p>
             </div>
             <div class="map" id="map"></div>
-<!--            <div id="popup" class="ol-popup">-->
-<!--                <div class="closePopup">×</div>-->
-<!--                <a href="#" id="popup-closer" class="ol-popup-closer"></a>-->
-<!--                <div id="popup-content"></div>-->
-<!--            </div>-->
         </div>
     </div>
 </div>
@@ -72,98 +67,43 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
-
         $(".ol-full-screen-false").html("全屏")
 
-
-
-        getGridPublishUrl();
-
-
+        getSupervisorUserList();
+        getGridData();
     });
 
-
+    let gridId = [[${gridId}]];
 
     let url = /*[[@{/event/register}]]*/ "/event/register";
     let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
     let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
-
-    function getGridPublishUrl() {
-        $.ajaxUtil.get(getGridUrl, function (e) {
-            // console.log("e", e);
-            /*
-            * 初始渲染底图g
-            * */
-            var urlParam = e.data.split("?");
-            var url = urlParam[0];
-            var param = urlParam[1];
-            // console.log(url+","+param)
-            var ImageVector = new ol.layer.Tile({
-                source: new ol.source.TileWMS({
-                    url: url,
-                    params: {
-                        'VERSION': '1.1.1',
-                        tiled: true,
-                        "LAYERS": param,
-                        "exceptions": ''
-                    }
-                })
-            });
-            var layersArray = map.getLayers();
-            layersArray.insertAt(1, ImageVector);
-            //获取地图数据s
-            map.on('singleclick', function (evt) {
-                var viewResolution = map.getView().getResolution();
-                var url = ImageVector.getSource().getGetFeatureInfoUrl(
-                    evt.coordinate, viewResolution, 'EPSG:4326', {
-                        'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
-                        'FEATURE_COUNT': 50 //点击查询能返回的数量上限
-                    });
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    dataType: 'jsonp',
-                    jsonp: 'format_options',
-                    jsonpCallback: "callback:success_jsonpCallback"
-                });
-            });
-        })
-    }
+    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
+    let getGridDataUrl = /*[[@{/gridOwner/getGridData}]]*/ "/gridOwner/getGridData";
+    let getSupervisorUserListUrl = /*[[@{/gridOwner/getSupervisorUserList}]]*/ "/gridOwner/getSupervisorUserList";
+    let saveUrl = /*[[@{/gridOwner/save}]]*/ "/gridOwner/save";
 
     //回调函数接收查询结果
-    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
-
-    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
-
-    var codePopup;
-
-    /* 点击网格列表赋值 */
-    function success_jsonpCallback(res) {
-        var features = geojsonFormat.readFeatures(res);
-        console.log(features)
-
-    }
-
-    var container = document.getElementById('popup');
-    var content = document.getElementById('popup-content');
-    var closer = document.getElementById('popup-closer');
-    var overlay = new ol.Overlay({
+    let geoJsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
+    let container = document.getElementById('popup');
+    let content = document.getElementById('popup-content');
+    let closer = document.getElementById('popup-closer');
+    let center = [115.68192, 41.66462];
+    let overlay = new ol.Overlay({
         element: container,
         autoPan: true,
         autoPanAnimation: {
             duration: 250
         }
     });
-    // 沽源地图
-    var center = [115.68192, 41.66462];
-    var projection = new ol.proj.Projection({
+    let projection = new ol.proj.Projection({
         code: 'EPSG:4326',
         units: 'degrees',
         axisOrientation: 'neu',
         global: true
     });
-    var untiled = new ol.layer.Image({
+    let untiled = new ol.layer.Image({
         source: new ol.source.ImageWMS({
             ratio: 1,
             url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
@@ -174,52 +114,109 @@
             }
         })
     });
-
-    var source = new ol.source.Vector({wrapX: false});
-    var fullScreenControl = new ol.control.FullScreen();
-    var map = new ol.Map({
+    let source = new ol.source.Vector({wrapX: false});
+    let fullScreenControl = new ol.control.FullScreen();
+    let layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    let map = new ol.Map({
         target: 'map',
         overlays: [overlay],
         layers: [
             untiled
         ],
         view: new ol.View({
-            // projection: projection,
             center: center,
             zoom: 17,
             projection: projection
         })
     });
+
     map.addOverlay(overlay);
     map.addControl(fullScreenControl)
-    var layerMap = new ol.layer.Vector({
-        source: new ol.source.Vector(),
-    });
     map.addLayer(layerMap);
-
-
-    let localReverseGeocoding = /*[[@{/event/localReverseGeocoding}]]*/ "/event/localReverseGeocoding";
-
-
     map.on('singleclick', function (evt) {
-        let t = evt.coordinate;
         layerMap.getSource().clear()
-        setPoint(evt.coordinate)
     });
 
-    function setPoint(newPoint) {
-        let point = new ol.Feature({
-            geometry: new ol.geom.Point(newPoint),
-            data: {}
+    function getSupervisorUserList() {
+        $.ajaxUtil.get(getSupervisorUserListUrl + "?gridId=" + gridId, function (e) {
+            let data = e.data;
+            console.log(data)
+            let html = "";
+            $("#userList").empty();
+            if (data.length > 0) {
+                for (let i = 0; i < data.length; i++) {
+                    html += "<p>"
+                    if (data[i].sts === 1) {
+                        html += "<input name='owner' type='checkbox' checked id='" + data[i].id + "' onclick='getUserList()'>"
+                    } else {
+                        html += "<input name='owner' type='checkbox' id='" + data[i].id + "' onclick='getUserList()'>"
+                    }
+                    html += "<span>" + data[i].name + "</span>"
+                    html += "</p>"
+                }
+            } else {
+                html += "<p>"
+                html += "<span>暂无人员</span>"
+                html += "</p>"
+            }
+            $("#userList").html(html);
+            getUserList();
         });
-        layerMap.getSource().addFeature(point);
-        point.setStyle(new ol.style.Style({
-            image: new ol.style.Icon({
-                src: '../img/dwpoint3.png'
-            })
-        }));
     }
 
+    var userList = [];
+
+    function getUserList() {
+        userList = [];
+        $.each($('input[name*="owner"]:checked'), function (k, v) {
+            userList.push(v.id);
+        });
+        if (userList.length > 0) {
+            $("#saveGridOwner").removeAttr("disabled", "disabled");
+        } else {
+            $("#saveGridOwner").attr("disabled", "disabled");
+        }
+        console.log("userList", userList);
+    }
+
+    function getGridData() {
+        $.ajaxUtil.get(getGridDataUrl + "?gridId=" + gridId, function (e) {
+            let data = e.data;
+            $("#community").text(data.community);
+            $("#region").text(data.region);
+            $("#remark").text(data.remark);
+            $("#street").text(data.street);
+            /* 网格渲染 */
+            let split = data.coordinate.split("-");
+            let polygonArray = [];
+            let polygonArrayEnd = [];
+            for (let j = 0; j < split.length; j++) {
+                let pointArray = [];
+                pointArray.push(split[j].split(",")[0]);
+                pointArray.push(split[j].split(",")[1]);
+                polygonArray.push(pointArray);
+                polygonArrayEnd.push(polygonArray);
+            }
+            setPolygon(polygonArrayEnd);
+        });
+    }
+
+    function setPolygon(coordinates) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(coordinates),
+            data: {
+                coordinate: coordinates
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
+    }
+
+    function saveGridOwner() {
+        // let data = $('#userForm').serialize();
+        $.operate.saveAndReload(saveUrl, {gridId: gridId, userList: userList});
+    }
 
 </script>
 </body>

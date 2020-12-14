@@ -27,6 +27,21 @@ public class GridVO {
 
     private String area;
 
+    /**
+     * 所属区域
+     */
+    private String region;
+
+    /**
+     * 所属街道
+     */
+    private String street;
+
+    /**
+     * 所属社区
+     */
+    private String community;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime initialDate;
 

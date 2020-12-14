@@ -60,12 +60,19 @@ public class GridService {
     public Page<GridVO> search(GridDTO gridDTO, Pageable pageable) {
         Page<Grid> page = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
-            if (StringUtils.isNotBlank(gridDTO.getRecordStart())) {
-                list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), 3));
+            if (StringUtils.isNotEmpty(gridDTO.getGridName())) {
+                list.add(criteriaBuilder.like(root.get("gridName").as(String.class), "%" + gridDTO.getGridName() + "%"));
             }
-            if (StringUtils.isNotBlank(gridDTO.getGridName())) {
-                list.add(criteriaBuilder.equal(root.get("gridName").as(String.class), gridDTO.getGridName()));
+            if (StringUtils.isNotEmpty(gridDTO.getCommunity())) {
+                list.add(criteriaBuilder.equal(root.get("parent").get("id").as(String.class), gridDTO.getCommunity()));
             }
+            if (StringUtils.isNotEmpty(gridDTO.getStreet())) {
+                list.add(criteriaBuilder.equal(root.get("parent").get("parent").get("id").as(String.class), gridDTO.getStreet()));
+            }
+            if (StringUtils.isNotEmpty(gridDTO.getRegion())) {
+                list.add(criteriaBuilder.equal(root.get("parent").get("parent").get("parent").get("id").as(String.class), gridDTO.getRegion()));
+            }
+            list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.RELEASE));
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
@@ -358,5 +365,21 @@ public class GridService {
         return TreeMapper.INSTANCE.gridListToTreeVOList(grids);
     }
 
+    /**
+     * 修改指定网格中的人员
+     *
+     * @param gridId   网格id
+     * @param userList 人员id集合
+     */
+    public void save(String gridId, List<String> userList) {
+        Grid grid = findOne(gridId);
+        List<User> users = new ArrayList<>(userList.size());
+        for (String s : userList) {
+            User user = new User(s);
+            users.add(user);
+        }
+        grid.setUserList(users);
+        gridRepository.saveAndFlush(grid);
+    }
 
 }
