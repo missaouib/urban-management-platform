@@ -48,12 +48,12 @@ public class Grid extends BaseEntity {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
+    @Column
     private LocalDateTime initialDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
+    @Column
     private LocalDateTime terminationDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
