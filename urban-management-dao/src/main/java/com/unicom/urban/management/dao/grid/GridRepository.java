@@ -45,4 +45,8 @@ public interface GridRepository extends CustomizeRepository<Grid, String> {
      */
     List<Grid> findAllByLevelAndRecord_Sts(int level, int sts);
 
+
+
+    List<Grid> findAllByParent_IdAndGridName(String pId,String gridName);
+
 }

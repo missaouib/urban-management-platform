@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -50,8 +51,13 @@ public class TreeController {
     }
 
     @GetMapping("/grid")
-    public ModelAndView gridTree(Model model) {
-        List<TreeVO> tree = gridService.searchTree();
+    public ModelAndView gridTree(Model model,String num) {
+        List<TreeVO> tree;
+        if("three".equals(num)){
+            tree = gridService.searchTree(Arrays.asList(1,2,3));
+        }else{
+            tree = gridService.searchTree(Arrays.asList(1,2));
+        }
         model.addAttribute("tree", tree);
         return new ModelAndView(SystemConstant.PAGE + "/tree/grid");
     }

@@ -39,11 +39,31 @@ public class GridDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime terminationDate;
 
+    /**
+     * 所属区域
+     */
+    private String region;
+
+    /**
+     * 所属街道
+     */
+    private String street;
+
+    /**
+     * 所属社区
+     */
+    private String community;
+
     /* -Record----------------------------------- */
     /**
      * 坐标
      */
     @NotBlank(message = "请绘制网格")
     private String coordinate;
+
+
+    private String recordStart;
+
+
 
 }

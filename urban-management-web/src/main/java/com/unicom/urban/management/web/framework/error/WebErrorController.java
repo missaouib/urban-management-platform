@@ -1,4 +1,4 @@
-package com.unicom.urban.management.common.error;
+package com.unicom.urban.management.web.framework.error;
 
 import com.unicom.urban.management.common.constant.SystemConstant;
 import lombok.extern.slf4j.Slf4j;
@@ -19,10 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @Controller
 @RequestMapping("${server.error.path:${error.path:/error}}")
-public class CustomizeErrorController extends AbstractErrorController {
+public class WebErrorController extends AbstractErrorController {
 
 
-    public CustomizeErrorController(ErrorAttributes errorAttributes) {
+    public WebErrorController(ErrorAttributes errorAttributes) {
         super(errorAttributes);
     }
 
