@@ -27,11 +27,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login").permitAll()
-                .and()
-                .headers().frameOptions().sameOrigin()
-                .and()
                 .csrf().disable();
     }
 
