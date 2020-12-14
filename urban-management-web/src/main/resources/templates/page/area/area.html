@@ -1,234 +1,165 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>热线上报</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
-    <link th:href="@{/css/gird.css}" rel="stylesheet" type="text/css">
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;">
-<div class="notice_check">
-    <form id="search-form">
-        <p>
-            <label class="">网格图层名称</label>
-            <input type="text" class="find_input" name="username">
-            <label class="">所属责任部门</label>
-            <select class="find_input" id="">
-                <option value="">--请选择--</option>
-                <option th:value="1">1</option>
-                <option th:value="2">2</option>
-            </select>
-<!--            <input type="button" class="check_btn" onclick="" value="新增">-->
-            <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
-            <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">
-        </p>
+<div class="content">
+    <div class="leftContent">
+        <div class="notice_check">
+            <form id="search-form">
 
-    </form>
-
-</div>
-<div class="btn-group-sm" id="toolbar" style="padding: 10px">
-    <a class="btn btn-success"  data-toggle="modal" data-target="#modal-default" onclick="$.operate.addTab()">
-        <i class="fa fa-plus"></i> 新增
-    </a>
-</div>
-<div class="mannertable" >
-    <table class="table">
-        <thead>
-        <tr>
-            <th>事件</th>
-            <th>本周</th>
-            <th>本月</th>
-            <th>总数</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>市容环境</td>
-            <td>1</td>
-            <td>26</td>
-            <td>28</td>
-        </tr>
-        <tr>
-            <td>宣传广告</td>
-            <td>5</td>
-            <td>30</td>
-            <td>35</td>
-        </tr>
-        <tr>
-            <td>施工管理</td>
-            <td>4</td>
-            <td>4</td>
-            <td>12</td>
-        </tr>
-
-        <tr>
-            <td>突发事件</td>
-            <td>6</td>
-            <td>8</td>
-            <td>17</td>
-        </tr>
-        <tr>
-            <td>街面秩序</td>
-            <td>7</td>
-            <td>89</td>
-            <td>30</td>
-        </tr>
-        <tr>
-            <td>其他设施</td>
-            <td>1</td>
-            <td>26</td>
-            <td>28</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<!-- /.col -->
-</div>
-
-
-<div class="modal fade" id="modal-default">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">默认窗口</h4>
-            </div>
-            <div class="modal-body">
-                <div class="notice_check">
-                    <form >
-                        <p>
-                            <div>
-                                <label class="modelTitle">网格图层名称</label>
-                                <input type="text" class="find_input" name="username">
-                             </div>
-                        <div>
-                            <label class="modelTitle">创建日期</label>
-                            <input type="text" class="find_input" name="username">
-                        </div>
-                            <div>
-                                <label class="modelTitle">所属责任部门</label>
-                                <select class="find_input">
-                                    <option value="">--请选择--</option>
-                                    <option th:value="1">1</option>
-                                    <option th:value="2">2</option>
-                                </select>
-                            </div>
-                        <div>
-                            <label class="modelTitle">备注</label>
-                            <input type="text" class="find_input" name="username">
-                        </div>
-
-                            <!--            <input type="button" class="check_btn" onclick="" value="新增">-->
-
-                        </p>
-
-                    </form>
-
+            </form>
+            <div class="tree">
+                <div class="treeDemo">
+                    <ul id="treeDemo" class="ztree"></ul>
                 </div>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">确认</button>
-            </div>
         </div>
+
+
+    </div>
+    <div class="rightContent">
+        <form class="details" id="roleForm">
+            <div class="top table2_top">
+
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <input type="hidden" id="id" name="id" value="">
+                        <tr>
+                            <td><span></span>名称</td>
+                            <td>
+                                <input id="name" name="name" placeholder="" class="" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span></span>父节点</td>
+                            <td>
+                                <select>
+                                    <option>1</option>
+                                    <option>2</option>
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="notice_bot">
+                    <div class="r_right but_p girdBtnGroup" id="eventButton">
+                        <button class="but_save" type="button" style="margin-right: 10px" id="saveRoleBtn"
+                                onclick="window.parent.$.learuntab.myAddTab('配置网格', '/grid/toCollocation', 'data_id')">配置
+                        </button>
+                        <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn"
+                                onclick="updateRole()">清空
+                        </button>
+                        <button class="but_save" type="button" style="margin-right: 10px" id="deleteRoleBtn"
+                                onclick="deleteRole()">删除
+                        </button>
+                        <button class="but_save" type="button">
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
-<div id="pictureDiv" style="display: none">
-
-
-</div>
 
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
 <th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
-    $(function() {
-        $(".name").click(function() {
-            $(this).addClass("active").siblings(".name").removeClass("active");
-            $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
-        })
-        $(".enclosure").click(function () {
-            alert("附件详情")
-        })
-    })
+    let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
 
-
-    let url = /*[[@{/user/save}]]*/ "/json/unit.json";
-
-    let uploadUrl = /*[[@{/common/upload}]]*/ "/json/unit.json";
-
+    let setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parentId'
+            },
+            key: {
+                name: "deptName"
+            }
+        }
+    };
 
     $(function () {
-        $("#input-id").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
 
-        }).on('change', function (event) {
-            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        }).on('fileselect', function (event, numFiles, label) {
-            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        }).on("filebatchselected", function (event, files) {
-            $(this).fileinput("upload");
-        }).on("fileuploaded", function (event, data) {
-            console.log('fileuploaded()      ');
+        setRoleTree();
 
-            if (data.response.code === web_status.FAIL) {
-                console.log("上传文件失败");
-            }
-            console.log(data);
-        }).on('filedeleted', function(event, key) {
-            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            console.log(id);
-        }).on('fileclear', function (event) {
-            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-            console.log(event);
-        }).on('filecleared', function (event) {
-            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-            console.log(event);
-        }).on('filepredelete', function(event, key) {
-            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function(event, id) {
-            console.log('filesuccessremove()   ')
-            console.log(id);
+        $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose: true, todayBtn: true, startView: 4, minView: 3});
+        ////日期插件
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
         });
 
-    })
+    });
 
-    function Cancel() {
-        $.modal.closeLoading();
-    }
-    function save(){
-        var data = $('#userForm').serialize();
-        $.operate.saveTab(url, data);
-    }
-
-    function addPicture() {
-        // $.modal.open();
-
+    function setRoleTree() {
+        $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
+            $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        });
     }
 
 
+    function removeClassForTimeAndSort() {
+
+    }
+
+    function addClassForTimeAndSort() {
+
+    }
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        console.log("treeNode", treeNode);
+
+    }
+
+
+
+
+    function saveRole() {
+
+    }
+
+    function updateRole() {
+
+    }
+
+    function deleteRole() {
+
+    }
 
 </script>
 </body>

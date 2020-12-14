@@ -1,10 +1,165 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
-<body>
-categoryConfiguration categoryConfiguration categoryConfiguration
+<body style="border-radius: 8px;">
+<div class="content">
+    <div class="leftContent">
+        <div class="notice_check">
+
+                <div class=" but_p girdBtnGroup" id="" style="margin-bottom: 20px">
+                    <button class="but_save" type="button" style="margin-right: 10px" id="saveRoleBtn"
+                            onclick="saveRole()">新增
+                    </button>
+                    <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn"
+                            onclick="updateRole()">删除
+                    </button>
+                    <button class="but_save" type="button" style="margin-right: 10px" id="deleteRoleBtn"
+                            onclick="deleteRole()">区域维护
+                    </button>
+                    <button class="but_save" type="button" onclick="window.parent.$.learuntab.myAddTab('配置页面', '/categoryConfiguration/toInsert', 'data_id')">
+                        配置
+                    </button>
+                </div>
+
+            <div class="tree">
+                <div class="treeDemo">
+                    <ul id="treeDemo" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="rightContent">
+        <form class="details" id="roleForm">
+            <div class="top table2_top">
+
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <input type="hidden" id="id" name="id" value="">
+                        <tr>
+                            <td><span></span>类别名称</td>
+                            <td>
+                                <input id="name" name="name" placeholder="" class="" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span></span>类别编码</td>
+                            <td>
+                                <input id="" name="name" placeholder="" class="" type="text">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="notice_bot">
+                    <div class="r_right but_p girdBtnGroup" id="eventButton">
+                        <button class="but_save" type="button">保存</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+
+    let setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parentId'
+            },
+            key: {
+                name: "deptName"
+            }
+        }
+    };
+
+    $(function () {
+
+        setRoleTree();
+
+        $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose: true, todayBtn: true, startView: 4, minView: 3});
+        ////日期插件
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+
+    });
+
+    function setRoleTree() {
+        $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
+            $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        });
+    }
+
+
+    function removeClassForTimeAndSort() {
+
+    }
+
+    function addClassForTimeAndSort() {
+
+    }
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        console.log("treeNode", treeNode);
+
+    }
+
+
+
+
+    function saveRole() {
+
+    }
+
+    function updateRole() {
+
+    }
+
+    function deleteRole() {
+
+    }
+
+</script>
 </body>
 </html>

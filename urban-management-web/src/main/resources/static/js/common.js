@@ -407,7 +407,7 @@ var table = {
 					var rows = $.common.equals("uncheck-all", e.type) ? rowsBefore : rowsAfter;
 					var rowIds = $.table.affectedRowIds(rows);
 					console.log(rows);
-					console.log(rowIds);
+					// console.log(rowIds);
 					if ($.common.isNotEmpty(table.options.rememberSelected) && table.options.rememberSelected) {
 						func = $.inArray(e.type, ['check', 'check-all']) > -1 ? 'union' : 'difference';
 						var selectedIds = table.rememberSelectedIds[table.options.id];
