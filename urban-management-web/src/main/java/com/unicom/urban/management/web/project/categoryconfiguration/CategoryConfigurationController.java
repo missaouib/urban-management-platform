@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/categoryConfiguration")
 public class CategoryConfigurationController {
 
-    @GetMapping("/list")
+    @GetMapping("/toList")
     public ModelAndView grid() {
         return new ModelAndView(SystemConstant.PAGE + "/categoryConfiguration/list");
     }
