@@ -37,6 +37,16 @@ public class GridController {
         return new ModelAndView(SystemConstant.PAGE + "/grid/gridSave");
     }
 
+    @GetMapping("/toArea")
+    public ModelAndView toArea() {
+        return new ModelAndView(SystemConstant.PAGE + "/area/area");
+    }
+
+    @GetMapping("/toCollocation")
+    public ModelAndView toCollocation() {
+        return new ModelAndView(SystemConstant.PAGE + "/area/collocation");
+    }
+
     @GetMapping("/getGridList")
     public List<GridVO> getGridList() {
         return gridService.search();
