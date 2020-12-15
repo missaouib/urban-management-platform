@@ -106,4 +106,14 @@ public class EventConditionService {
     public EventCondition findOne(String id){
         return eventConditionRepository.findById(id).orElse(new EventCondition());
     }
+
+    public void save(EventConditionDTO eventConditionDTO) {
+        EventCondition eventCondition = new EventCondition();
+        EventType eventType = new EventType();
+        eventType.setId(eventConditionDTO.getEventTypeId());
+        eventCondition.setEventType(eventType);
+        eventCondition.setRegion(eventCondition.getRegion());
+        eventCondition.setType(1);
+        eventConditionRepository.save(eventCondition);
+    }
 }

@@ -1237,11 +1237,6 @@ function saveIdioms(data){
 
 		$.ajaxUtil.get(url, function (e) {
 			let html='';
-			// <ul>
-			// 	<li class="idioms">请快速处理</li>
-			// 	<li class="idioms">请认真处理</li>
-			// 	<li class="idioms">请根据实际情况酌情处置</li>
-			// </ul>
 			$(e.data).each(function (index, value) {
 				html+="<ul><li class='idioms'>"+value+"</li></ul>"
 			});

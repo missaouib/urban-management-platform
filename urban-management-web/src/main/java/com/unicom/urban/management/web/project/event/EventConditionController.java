@@ -54,6 +54,7 @@ public class EventConditionController {
      */
     @PostMapping("/save")
     public Result save(EventConditionDTO eventConditionDTO){
+        eventConditionService.save(eventConditionDTO);
         return Result.success();
     }
 
