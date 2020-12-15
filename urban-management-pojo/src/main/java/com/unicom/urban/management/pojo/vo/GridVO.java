@@ -48,4 +48,6 @@ public class GridVO {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime terminationDate;
 
+    private String initialDateStr;
+
 }

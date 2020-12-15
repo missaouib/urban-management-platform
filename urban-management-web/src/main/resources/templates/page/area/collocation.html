@@ -49,6 +49,7 @@
     </form>
     <div class="notice_check">
         <form id="search-form">
+            <input type="text" th:value="${id}">
             <p style="display: flex;justify-content: flex-end">
                 <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
                 <input type="button" class="check_btn1 button_ground" id="sureOne" value="保存">
@@ -74,12 +75,10 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
-
+        queryUserList();
     });
 
     let searchUrl = /*[[@{/gridOwner/getGridList}]]*/ "/gridOwner/getGridList";
-    let toInsertUrl = /*[[@{/gridOwner/toInsert/?id={id}}]]*/ "/gridOwner/toInsert";
-
 
     $('#table').bootstrapTable({
         //点击全选框时触发的操作
@@ -138,15 +137,6 @@
             }
         ]
     });
-    function priceForm(value, row, index) {
-        var i = "<input value='2' class='' type='text' style='width: 50px!important;margin-right: 10px;text-align: center'/>" +
-            "<select class=''>" +
-            "<option>时</option>" +
-            "<option>分</option>" +
-            "<option>秒</option>" +
-            "</select>";
-        return i;
-    }
     var rows
     $("#sureOne").click(function () {
         var rows = $('#table_common').bootstrapTable('getSelections');

@@ -38,6 +38,7 @@ public interface GridMapper {
     @Mapping(source = "parent.parent.parent.gridName", target = "region")
     @Mapping(source = "parent.parent.gridName", target = "street")
     @Mapping(source = "parent.gridName", target = "community")
+    @Mapping(source = "initialDate", target = "initialDateStr", dateFormat = "yyyy-MM-dd")
     GridVO gridToGridVO(Grid grid);
 
     /**

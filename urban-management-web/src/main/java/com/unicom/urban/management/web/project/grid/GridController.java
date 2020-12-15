@@ -48,6 +48,8 @@ public class GridController {
     @GetMapping("/toCollocation")
     public ModelAndView toCollocation(Model model, String id) {
         model.addAttribute("id", id);
+        //所在区域
+        model.addAttribute("gridList", gridService.findAllByParentIsNull());
         return new ModelAndView(SystemConstant.PAGE + "/area/collocation");
     }
 

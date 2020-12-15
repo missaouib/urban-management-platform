@@ -2,9 +2,7 @@ package com.unicom.urban.management.web.project.dept;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
-import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.DeptDTO;
-import com.unicom.urban.management.pojo.dto.UserIdListDTO;
 import com.unicom.urban.management.pojo.vo.DeptVO;
 import com.unicom.urban.management.service.dept.DeptService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +46,7 @@ public class DeptController {
      * 新增
      */
     @PostMapping("/dept")
-    public void dept(DeptDTO deptDTO){
+    public void dept(@Valid DeptDTO deptDTO){
         deptService.save(deptDTO);
     }
 
