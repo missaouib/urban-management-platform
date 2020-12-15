@@ -75,7 +75,8 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
-        queryUserList();
+
+
     });
 
     let searchUrl = /*[[@{/gridOwner/getGridList}]]*/ "/gridOwner/getGridList";
@@ -104,6 +105,11 @@
         onUncheckAll: function(row) {
             console.log("取消所有",row);
         },
+        pagination: true,
+        paginationLoop: true,
+        pageSize: 10,
+        pageNumber: 1,
+        pageList: [10],
         columns: [
             {
                 field: 'id',
@@ -112,7 +118,8 @@
             {
                 checkbox: true,
                 title: '编辑',
-                class: "check"
+                class: "check",
+                formatter : stateFormatter
             },
             {
                 title: '网格名称',
@@ -143,6 +150,15 @@
         console.log(rows)
         console.log(JSON.stringify(rows));
     })
+    //复选框判断是否选中
+    function stateFormatter(value, row, index) {
+        if (row.state == true)
+            return {
+                // disabled : true,//设置是否可用
+                checked : true//设置选中
+            };
+        return value;
+    }
 
     /**
      * 获取街道

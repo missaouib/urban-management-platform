@@ -1083,7 +1083,7 @@ var table = {
 			},
 
 			// 修改信息，以tab页展现
-			editTab: function(id) {
+			editTab: function(f) {
 				table.set();
 				$.modal.openTab("修改" + table.options.modalName, $.operate.editUrl(id));
 			},
