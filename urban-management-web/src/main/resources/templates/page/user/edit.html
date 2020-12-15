@@ -28,7 +28,7 @@
                         </td>
                         <td>登录账号<span></span></td>
                         <td>
-                            <input type="text" id="username" th:value="${user.username}" name="username"
+                            <input type="text" readonly id="username" th:value="${user.username}" name="username"
                                    class="find_input" onKeyUp="value=value.replace(/[\W]/g,'')"/>
                         </td>
                     </tr>
@@ -132,11 +132,12 @@
     var user = [[${user}]]
 
     function stsStatus() {
-        if ($("#sts").val() === 0) {
-            $("#sts").val(1);
-        } else {
+        if($('#status').is(':checked')) {
+            $("#sts").val(0);
+        }else{
             $("#sts").val(1);
         }
+
     }
 
     $(function () {

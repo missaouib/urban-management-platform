@@ -91,8 +91,8 @@
                         <td>用户状态<span></span></td>
                         <td style="text-align: left">
                             <label class="toggle-switch switch-solid">
-                                <input type="checkbox" id="status" checked onclick="stsStatus()">
-                                <input type="hidden" id="sts" name="sts" value="0">
+                                <input type="checkbox" id="status" onclick="stsStatus()">
+                                <input type="hidden" id="sts" name="sts" value="1">
                                 <span></span>
                             </label>
                         </td>
@@ -126,9 +126,9 @@
 
 
     function stsStatus() {
-        if ($("#sts").val() === 0) {
-            $("#sts").val(1);
-        } else {
+        if($('#status').is(':checked')) {
+            $("#sts").val(0);
+        }else{
             $("#sts").val(1);
         }
     }
