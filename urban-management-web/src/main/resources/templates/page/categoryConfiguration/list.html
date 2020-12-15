@@ -6,7 +6,6 @@
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
-    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
     <th:block th:include="page/fragments/common :: ztree_css"/>
     <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
@@ -15,25 +14,23 @@
     <div class="leftContent">
         <div class="notice_check">
 
-                <div class=" but_p girdBtnGroup" id="" style="margin-bottom: 20px">
-                    <button class="but_save" type="button" style="margin-right: 10px" id="saveRoleBtn"
-                            onclick="saveRole()">新增
-                    </button>
-                    <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn"
-                            onclick="updateRole()">删除
-                    </button>
-                    <button class="but_save" type="button" style="margin-right: 10px" id="deleteRoleBtn"
-                            onclick="addTab()">区域维护
-
-                    </button>
-                    <button class="but_save" type="button" onclick="window.parent.$.learuntab.myAddTab('配置页面', '/categoryConfiguration/toInsert', 'data_id')">
-                        配置
-                    </button>
-                </div>
+            <div class=" but_p girdBtnGroup" style="margin-bottom: 20px">
+                <button class="but_save" type="button" style="margin-right: 10px" id="addEventTypeBtn"
+                        onclick="addEventType()">新增
+                </button>
+                <button class="but_save" type="button" style="margin-right: 10px" id="deleteEventTypeBtn"
+                        onclick="deleteEventType()">删除
+                </button>
+                <button class="but_save" type="button" style="margin-right: 10px" id="areaMaintenanceBtn"
+                        onclick="addTab()">区域维护
+                </button>
+                <button class="but_save" type="button" id="categoryConfigurationBtn" onclick="toInsert()">
+                    配置
+                </button>
+            </div>
 
             <div class="tree">
                 <div class="treeDemo">
-                    <input type="hidden" id="eventTypeId" />
                     <ul id="treeDemo" class="ztree"></ul>
                 </div>
             </div>
@@ -42,13 +39,13 @@
 
     </div>
     <div class="rightContent">
-        <form class="details" id="roleForm">
+        <form class="details" id="eventTypeForm">
             <div class="top table2_top">
 
                 <div class="top_out">
                     <table class="table">
                         <tbody>
-                        <input type="hidden" id="id" name="id" value="">
+                        <input type="hidden" id="id" name="id" value="" text="id">
                         <tr>
                             <td><span></span>类别名称</td>
                             <td>
@@ -58,7 +55,7 @@
                         <tr>
                             <td><span></span>类别编码</td>
                             <td>
-                                <input id="" name="name" placeholder="" class="" type="text">
+                                <input id="code" name="code" placeholder="" class="" type="text">
                             </td>
                         </tr>
                         </tbody>
@@ -66,8 +63,11 @@
                 </div>
 
                 <div class="notice_bot">
-                    <div class="r_right but_p girdBtnGroup" id="eventButton">
-                        <button class="but_save" type="button">保存</button>
+                    <div class="r_right but_p girdBtnGroup">
+                        <button class="but_save" type="button" id="saveEventTypeBtn" onclick="saveEventType()">保存
+                        </button>
+                        <button class="but_save" type="button" id="updateEventTypeBtn" onclick="updateEventType()">修改
+                        </button>
                     </div>
                 </div>
             </div>
@@ -81,11 +81,13 @@
 <th:block th:include="page/fragments/common :: fileUpload_js"/>
 <th:block th:include="page/fragments/common :: map_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
-<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
-    let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+    let getEventTypeTreeUrl = /*[[@{/categoryConfiguration/getEventTypeTree}]]*/ "/categoryConfiguration/getEventTypeTree";
+    let saveEventTypeUrl = /*[[@{/categoryConfiguration/saveEventType}]]*/ "/categoryConfiguration/saveEventType";
+    let updateEventTypeUrl = /*[[@{/categoryConfiguration/updateEventType}]]*/ "/categoryConfiguration/updateEventType";
+    let deleteEventTypeUrl = /*[[@{/categoryConfiguration/deleteEventType}]]*/ "/categoryConfiguration/deleteEventType";
 
     let setting = {
         callback: {
@@ -99,73 +101,99 @@
             simpleData: {
                 enable: true,
                 idKey: 'id',
-                pIdKey: 'parentId'
+                pIdKey: 'parent'
             },
             key: {
-                name: "deptName"
+                name: "name"
             }
         }
     };
 
     $(function () {
-
-        setRoleTree();
-
-        $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose: true, todayBtn: true, startView: 4, minView: 3});
-        ////日期插件
-        $('.form_datetime').datetimepicker({
-            language: 'zh-CN',
-            weekStart: 1,
-            todayBtn: 1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
-            showMeridian: 1,
-            format: "yyyy-mm-dd hh:ii:ss"
-        });
-
+        allButton();
+        setEventTypeTree();
     });
 
-    function addTab() {
-        var eventTypeId = $("#eventTypeId").val()
-        window.parent.$.learuntab.myAddTab('区域维护', '/eventCondition/toEventConditionList?=eventTypeId'+eventTypeId, 'data_id')
-    }
-
-    function setRoleTree() {
-        $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
+    function setEventTypeTree() {
+        $.ajaxUtil.get(getEventTypeTreeUrl, function (e) {
             $.fn.zTree.init($("#treeDemo"), setting, e.data);
         });
     }
 
-
-    function removeClassForTimeAndSort() {
-
-    }
-
-    function addClassForTimeAndSort() {
-
-    }
-
     function zTreeOnClick(event, treeId, treeNode) {
-        console.log("treeNode", treeNode);
         $("#eventTypeId").val(treeNode.id);
-
+        $("#id").val(treeNode.id);
+        $("#name").val(treeNode.name);
+        $("#code").val(treeNode.code);
+        if (treeNode.isParent) {
+            if (treeNode.level === 1) {
+                parentNode();
+            }
+        } else {
+            sonNode();
+        }
     }
 
-
-
-
-    function saveRole() {
-
+    function allButton() {
+        $("#addEventTypeBtn").addClass("roleBox");
+        $("#deleteEventTypeBtn").addClass("roleBox");
+        $("#areaMaintenanceBtn").addClass("roleBox");
+        $("#categoryConfigurationBtn").addClass("roleBox");
+        $("#areaMaintenanceBtn").addClass("roleBox");
+        $("#saveEventTypeBtn").addClass("roleBox");
+        $("#updateEventTypeBtn").addClass("roleBox");
     }
 
-    function updateRole() {
-
+    function sonNode() {
+        $("#addEventTypeBtn").addClass("roleBox");
+        $("#deleteEventTypeBtn").removeClass("roleBox");
+        $("#areaMaintenanceBtn").addClass("roleBox");
+        $("#categoryConfigurationBtn").removeClass("roleBox");
+        $("#areaMaintenanceBtn").removeClass("roleBox");
+        $("#saveEventTypeBtn").addClass("roleBox");
+        $("#updateEventTypeBtn").removeClass("roleBox");
     }
 
-    function deleteRole() {
+    function parentNode() {
+        $("#addEventTypeBtn").removeClass("roleBox");
+        $("#deleteEventTypeBtn").addClass("roleBox");
+        $("#areaMaintenanceBtn").addClass("roleBox");
+        $("#categoryConfigurationBtn").addClass("roleBox");
+        $("#areaMaintenanceBtn").addClass("roleBox");
+        $("#saveEventTypeBtn").addClass("roleBox");
+        $("#updateEventTypeBtn").removeClass("roleBox");
+    }
 
+    function saveEventType() {
+        let data = $('#eventTypeForm').serialize();
+        $.operate.saveAndReload(saveEventTypeUrl, data);
+    }
+
+    function updateEventType() {
+        let data = $('#eventTypeForm').serialize();
+        $.operate.saveAndReload(updateEventTypeUrl, data);
+    }
+
+    function deleteEventType() {
+        let data = $('#eventTypeForm').serialize();
+        $.modal.confirm("是否删除", function () {
+            $.operate.saveAndReload(deleteEventTypeUrl, data);
+        });
+    }
+
+    function addEventType() {
+        $("#name").val("");
+        $("#code").val("");
+        $("#saveEventTypeBtn").removeClass("roleBox");
+        $("#updateEventTypeBtn").addClass("roleBox");
+    }
+
+    function toInsert() {
+        window.parent.$.learuntab.myAddTab('配置页面', '/categoryConfiguration/toInsert?id=' + $("#id").val(), 'data_id')
+    }
+
+    function addTab() {
+        window.parent.$.learuntab.myAddTab('区域维护', '/eventCondition/toEventConditionList?eventTypeId=' + $("#id").val(), 'data_id')
     }
 
 </script>

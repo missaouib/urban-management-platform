@@ -1,11 +1,13 @@
 package com.unicom.urban.management.service.eventtype;
 
+import com.unicom.urban.management.common.annotations.Log;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.eventtype.EventTypeRepository;
 import com.unicom.urban.management.mapper.EventTypeMapper;
 import com.unicom.urban.management.mapper.TreeMapper;
 import com.unicom.urban.management.pojo.dto.ComponentTypeDTO;
+import com.unicom.urban.management.pojo.dto.EventTypeDTO;
 import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.vo.EventTypeVO;
 import com.unicom.urban.management.pojo.vo.TreeVO;
@@ -62,11 +64,11 @@ public class EventTypeService {
     }
 
     public List<String> getComponentTypeIds(String id) {
-        Optional<EventType> ifnull = eventTypeRepository.findById(id);
+        Optional<EventType> ifNull = eventTypeRepository.findById(id);
         List<String> ids = new ArrayList<>();
-        if (ifnull.isPresent()) {
+        if (ifNull.isPresent()) {
             ids.add(id);
-            this.getIds(ids, ifnull.get());
+            this.getIds(ids, ifNull.get());
         }
         return ids;
     }
@@ -85,4 +87,39 @@ public class EventTypeService {
         List<EventType> eventTypeList = eventTypeRepository.findAll();
         return TreeMapper.INSTANCE.eventTypeListToTreeVOList(eventTypeList);
     }
+
+    @Log(name = "类别配置-新增")
+    public void saveEventType(EventTypeDTO eventTypeDTO) {
+        EventType eventType = new EventType();
+        eventType.setLevel("2");
+        eventType.setCode(eventTypeDTO.getCode());
+        eventType.setName(eventTypeDTO.getName());
+        EventType one = eventTypeRepository.getOne(eventTypeDTO.getId());
+        eventType.setParent(one);
+        eventType.setType(one.getType());
+        eventTypeRepository.save(eventType);
+    }
+
+    @Log(name = "类别配置-修改")
+    public void updateEventType(EventTypeDTO eventTypeDTO) {
+        EventType one = eventTypeRepository.getOne(eventTypeDTO.getId());
+        one.setCode(eventTypeDTO.getCode());
+        one.setName(eventTypeDTO.getName());
+        eventTypeRepository.saveAndFlush(one);
+    }
+
+    @Log(name = "类别配置-删除")
+    public void deleteEventType(String id) {
+        eventTypeRepository.deleteById(id);
+    }
+
+    public List<EventTypeVO> getEventTypeTree() {
+        List<EventType> eventTypeList = eventTypeRepository.findAll();
+        return EventTypeMapper.INSTANCE.eventTypeVOToEventTypeVOList(eventTypeList);
+    }
+
+    public EventType findOne(String id) {
+        return eventTypeRepository.getOne(id);
+    }
+
 }

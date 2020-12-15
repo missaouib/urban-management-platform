@@ -12,12 +12,12 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class EventTypeDTO {
 
+    @NotBlank(message = "请选择分类")
     private String id;
 
     @NotBlank(message = "类别名称不能为空")
     private String name;
 
-    @NotBlank(message = "请选择父级分类")
     private String parent;
 
     @NotBlank(message = "类别编码不能为空")
