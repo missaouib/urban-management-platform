@@ -11,6 +11,13 @@ import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import com.unicom.urban.management.pojo.vo.IdiomsVO;
 import com.unicom.urban.management.service.event.EventService;
 import org.apache.commons.lang3.StringUtils;
+import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
+import com.unicom.urban.management.mapper.EventConditionMapper;
+import com.unicom.urban.management.pojo.dto.EventConditionDTO;
+import com.unicom.urban.management.pojo.entity.EventCondition;
+import com.unicom.urban.management.pojo.entity.EventType;
+import com.unicom.urban.management.pojo.vo.EventConditionVO;
+import com.unicom.urban.management.service.eventtype.EventTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -31,10 +38,36 @@ import java.util.List;
 @Service
 @Transactional(rollbackOn = Exception.class)
 public class EventConditionService {
+
     @Autowired
     private EventConditionRepository eventConditionRepository;
     @Autowired
+    private EventTypeService eventTypeService;
+    @Autowired
     private EventService eventService;
+    public List<EventConditionVO> allByEventTypeIdAndRegionIsNotNull(String eventTypeId) {
+        List<EventCondition> eventConditionList = eventConditionRepository.findAllByEventType_IdAndRegionIsNotNull(eventTypeId);
+        return EventConditionMapper.INSTANCE.eventConditionListToEventConditionVOList(eventConditionList);
+    }
+
+    public Page<EventConditionVO> search(EventConditionDTO eventConditionDTO, Pageable pageable) {
+        Page<EventCondition> page = eventConditionRepository.findAll((Specification<EventCondition>) (root, query, criteriaBuilder) -> {
+            List<Predicate> list = new ArrayList<>();
+            list.add(criteriaBuilder.equal(root.get("eventType").get("id").as(String.class), eventConditionDTO.getEventTypeId()));
+            list.add(criteriaBuilder.isNotNull(root.get("region").as(String.class)));
+            Predicate[] p = new Predicate[list.size()];
+            return criteriaBuilder.and(list.toArray(p));
+        }, pageable);
+        List<EventConditionVO> eventConditionVOList = EventConditionMapper.INSTANCE.eventConditionListToEventConditionVOList(page.getContent());
+        EventType one = eventTypeService.findOne(eventConditionDTO.getEventTypeId());
+        for (EventConditionVO eventConditionVO : eventConditionVOList) {
+            eventConditionVO.setCategoryName(one.getParent().getName());
+            eventConditionVO.setSubclassName(one.getName());
+        }
+        return new PageImpl<>(eventConditionVOList, page.getPageable(), page.getTotalElements());
+    }
+
+
 
     public Page<EventConditionVO> search(EventConditionVO eventConditionVO, Pageable pageable) {
         Page<EventCondition> page = eventConditionRepository.findAll((Specification<EventCondition>) (root, query, criteriaBuilder) -> {

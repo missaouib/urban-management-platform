@@ -17,7 +17,18 @@ public class EventConditionVO {
     private String eventTypeName;
 
     private String eventTypeParentName;
+    private String conditionValue;
 
     private String region;
+
+    /**
+     * 小类名称
+     */
+    private String subclassName;
+
+    /**
+     * 大类名称
+     */
+    private String categoryName;
 
 }

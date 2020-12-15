@@ -14,6 +14,7 @@
     <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
     <div class="notice_check">
         <form id="search-form">
+            <input type="hidden" th:value="${eventTypeId}" name="eventTypeId">
             <p style="display: flex;justify-content: flex-end">
                 <input type="button" class="check_btn button_ground" onclick="" value="保存">
             </p>
@@ -80,50 +81,44 @@
 
     $(function () {
         queryUserList();
-    })
+    });
 
+    let eventTypeId = [[${eventTypeId}]];
 
-    let searchUrl = /*[[@{/event/caseInvalidList}]]*/ "/event/caseInvalidList";
+    let searchUrl = /*[[@{/categoryConfiguration/eventConditionParentList}]]*/ "/categoryConfiguration/eventConditionParentList";
     function queryUserList() {
-        var options = {
+        let options = {
             url: searchUrl,
-            // createUrl: addUrl,
-            // updateUrl: editUrl,
-            // removeUrl: removeUrl,
-            uniqueId: "id",
-            // sortName: "updateTime",
-            sortOrder: "desc",
-            modalName: "用户",
             columns: [
                 {
                     field: 'index',
                     title: '序号',
                     formatter: function (value, row, index) {
-                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        let page = $('#bootstrap-table').bootstrapTable("getPage");
                         return page.pageSize * (page.pageNumber - 1) + index + 1;
                     }
                 },
                 {
                     title: '大类名称',
-                    field: 'name'
+                    field: 'categoryName'
                 },
                 {
                     title: '小类名称',
-                    field: 'username'
+                    field: 'subclassName'
                 },
 
                 {
                     title: '立案区域',
-                    field: 'phone'
+                    field: 'region'
                 },
                 {
                     title: '配置条件',
                     field: '',
                     class: 'radios',
                     formatter: function (value, row) {
-                        var e = "<a href='' data-toggle=\"modal\" data-target=\"#modal-default1\">立案条件</a>" +
-                            "<a href='' data-toggle=\"modal\" data-target=\"#modal-default2\">结案条件</a>"
-                        return e;
+                        console.log("row", row);
+                        return "<a href='' data-toggle=\"modal\" data-target=\"#modal-default1\">立案条件</a>" +
+                            "<a href='' data-toggle=\"modal\" data-target=\"#modal-default2\">结案条件</a>";
                     }
                 }
             ]
@@ -210,13 +205,12 @@
         ]
     });
     function priceForm(value, row, index) {
-        var i = "<input value='2' class='' type='text' style='width: 50px!important;margin-right: 10px;text-align: center'/>" +
+        return "<input value='2' class='' type='text' style='width: 50px!important;margin-right: 10px;text-align: center'/>" +
             "<select class=''>" +
             "<option>时</option>" +
             "<option>分</option>" +
             "<option>秒</option>" +
             "</select>";
-        return i;
     }
     var rows
     $("#sureOne").click(function () {
