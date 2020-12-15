@@ -139,6 +139,10 @@ public class GridService {
     }
 
     public void delete(String id) {
+        List<Grid> ifGrid = gridRepository.findAllByParentId(id);
+        if(ifGrid.size()>0){
+            throw new DataValidException("区域下有子节点，不能删除");
+        }
         gridRepository.deleteById(id);
     }
 
@@ -169,7 +173,7 @@ public class GridService {
 
     public void saveArea(AreaDTO areaDTO) {
         if (ifAreaName(areaDTO.getPid(), areaDTO.getGridName(), null)) {
-            throw new RuntimeException("区域名称重复");
+            throw new DataValidException("区域名称重复");
         }
         Grid grid = new Grid();
         grid.setGridName(areaDTO.getGridName());
@@ -183,7 +187,7 @@ public class GridService {
 
     public void updateArea(AreaDTO areaDTO) {
         if (ifAreaName(areaDTO.getPid(), areaDTO.getGridName(), areaDTO.getId())) {
-            throw new RuntimeException("区域名称重复");
+            throw new DataValidException("区域名称重复");
         }
         Optional<Grid> ifGrid = gridRepository.findById(areaDTO.getId());
         if (ifGrid.isPresent()) {
@@ -212,13 +216,6 @@ public class GridService {
                 }
             });
         }
-    }
-    public void deleteArea(String id) {
-        List<Grid> ifGrid = gridRepository.findAllByParentId(id);
-        if(ifGrid.size()>0){
-            throw new RuntimeException("区域下有子节点，不能删除");
-        }
-        this.delete(id);
     }
 
     private boolean ifAreaName(String pid, String gridName, String id) {

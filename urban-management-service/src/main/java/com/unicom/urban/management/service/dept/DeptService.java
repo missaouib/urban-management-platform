@@ -63,7 +63,7 @@ public class DeptService {
         if (dept.isPresent()) {
             return dept.get();
         }
-        throw new RuntimeException("部门不存在");
+        throw new DataValidException("部门不存在");
     }
 
     /**
@@ -148,7 +148,7 @@ public class DeptService {
                     dept.setSort(10);
                 }
             } else {
-                throw new RuntimeException("所属部门不存在");
+                throw new DataValidException("所属部门不存在");
             }
         }
         deptRepository.save(dept);
@@ -270,19 +270,19 @@ public class DeptService {
         if (dept.isPresent()) {
             Dept entity = dept.get();
             if (entity.getUserList().size() > 0) {
-                throw new RuntimeException("部门中有人员，请删除后再执行操作");
+                throw new DataValidException("部门中有人员，请删除后再执行操作");
             }
             if (entity.getRoleList().size() > 0) {
-                throw new RuntimeException("部门中有角色，请删除后再执行操作");
+                throw new DataValidException("部门中有角色，请删除后再执行操作");
             }
             List<Dept> depts = deptRepository.findAllByParent_Id(entity.getId());
             if (depts.size() > 0) {
-                throw new RuntimeException("部门下有子部门，请删除后再执行操作");
+                throw new DataValidException("部门下有子部门，请删除后再执行操作");
             }
 
             deptRepository.delete(entity);
         } else {
-            throw new RuntimeException("部门不存在");
+            throw new DataValidException("部门不存在");
         }
     }
 

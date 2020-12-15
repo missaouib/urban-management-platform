@@ -2,6 +2,8 @@ package com.unicom.urban.management.pojo.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -15,8 +17,10 @@ public class AreaDTO {
 
     private String pid;
 
+    @NotBlank(message = "区域名称不能为空")
     private String gridName;
 
+    @NotNull(message = "区域等级不能为空")
     private Integer level;
 
     private List<String> gridIds;

@@ -3,6 +3,7 @@ package com.unicom.urban.management.service.component;
 import cn.hutool.json.JSONObject;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.StsConstant;
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.properties.GisServiceProperties;
 import com.unicom.urban.management.common.util.RestTemplateUtil;
 import com.unicom.urban.management.dao.component.ComponentRepository;
@@ -141,7 +142,7 @@ public class ComponentService {
             Component form = byId.orElse(new Component());
             return ComponentMapper.INSTANCE.componentToComponentVO(form);
         }
-        throw new RuntimeException("部件不存在");
+        throw new DataValidException("部件不存在");
     }
 
     /**

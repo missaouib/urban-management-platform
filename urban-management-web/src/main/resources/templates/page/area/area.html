@@ -27,26 +27,28 @@
 
     </div>
     <div class="rightContent">
-        <form class="details" id="roleForm">
+        <form class="details" id="areaForm">
             <div class="top table2_top">
 
                 <div class="top_out">
                     <table class="table">
                         <tbody>
-                        <input type="hidden" id="id" name="id" value="">
                         <tr>
                             <td><span></span>名称</td>
                             <td>
-                                <input id="name" name="name" placeholder="" class="" type="text">
+                                <input id="gridName" name="gridName" placeholder="" class="" type="text">
+                                <input id="id" name="id" placeholder="" class="" type="hidden">
+                                <input id="level" name="level" placeholder="" class="" type="hidden" value="1">
                             </td>
                         </tr>
                         <tr>
                             <td><span></span>父节点</td>
-                            <td>
-                                <select>
-                                    <option>1</option>
-                                    <option>2</option>
-                                </select>
+                            <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                <input type="text" id="parentName" readonly="readonly" class="find_input"/>
+                                <input name="pid" type="hidden" readonly="readonly" id="pid" class="find_input"/>
+                                <button type="button" class="addBtn" onclick="selectGridTree()">
+                                    +
+                                </button>
                             </td>
                         </tr>
                         </tbody>
@@ -58,15 +60,9 @@
                         <button class="but_save" type="button" style="margin-right: 10px" id="saveRoleBtn"
                                 onclick="window.parent.$.learuntab.myAddTab('配置网格', '/grid/toCollocation', 'data_id')">配置
                         </button>
-                        <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn"
-                                onclick="updateRole()">清空
-                        </button>
-                        <button class="but_save" type="button" style="margin-right: 10px" id="deleteRoleBtn"
-                                onclick="deleteRole()">删除
-                        </button>
-                        <button class="but_save" type="button">
-                            保存
-                        </button>
+                        <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn">清空</button>
+                        <button class="but_save" type="button" style="margin-right: 10px" id="deleteRoleBtn" onclick="deleteRole()">删除</button>
+                        <button class="but_save" type="button" onclick="area()">保存</button>
                     </div>
                 </div>
             </div>
@@ -84,7 +80,9 @@
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
-    let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+    let gridTreeUrl = /*[[@{/grid/getGridTree}]]*/ "/gird/getGridTree";
+    let areaUrl = /*[[@{/grid/area}]]*/ "/gird/area";
+    let delUrl = /*[[@{/grid/gridDelete}]]*/ "/gird/gridDelete";
 
     let setting = {
         callback: {
@@ -101,14 +99,34 @@
                 pIdKey: 'parentId'
             },
             key: {
-                name: "deptName"
+                name: "name"
             }
         }
     };
 
+    function selectGridTree() {
+        var url = /*[[@{/tree/grid?num=two}]]*/ "/tree/grid?num=two";
+        var options = {
+            title: '请选择区域',
+            width: "380",
+            url: url,
+            callBack: gridDoSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function gridDoSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#pid").val(body.find('#treeId').val());
+        $("#parentName").val(body.find('#treeName').val());
+        $("#level").val(body.find('#treeLevel').val());
+
+        layer.close(index);
+    }
+
     $(function () {
 
-        setRoleTree();
+        gridTree();
 
         $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose: true, todayBtn: true, startView: 4, minView: 3});
         ////日期插件
@@ -126,8 +144,8 @@
 
     });
 
-    function setRoleTree() {
-        $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
+    function gridTree() {
+        $.ajaxUtil.get(gridTreeUrl, function (e) {
             $.fn.zTree.init($("#treeDemo"), setting, e.data);
         });
     }
@@ -142,23 +160,34 @@
     }
 
     function zTreeOnClick(event, treeId, treeNode) {
-        console.log("treeNode", treeNode);
+        console.log("treeNode", treeNode.getParentNode());
+        $("#id").val(treeNode.id);
+        $("#level").val(treeNode.level+1);
+        $("#gridName").val(treeNode.name);
+        if(treeNode.getParentNode()!==null){
+            $("#parentName").val(treeNode.getParentNode().name);
+            $("#parentId").val(treeNode.getParentNode().id);
+        }else{
+            $("#parentName").val("");
+            $("#parentId").val("");
+        }
+
+
 
     }
 
 
 
 
-    function saveRole() {
-
+    function area() {
+        let data = $('#areaForm').serialize();
+        $.operate.saveAndReload(areaUrl, data);
     }
 
-    function updateRole() {
-
-    }
 
     function deleteRole() {
-
+        let data = $('#areaForm').serialize();
+        $.operate.saveAndReload(delUrl, data);
     }
 
 </script>

@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.menu;
 
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.menu.MenuRepository;
 import com.unicom.urban.management.dao.menu.MenuTypeRepository;
@@ -63,23 +64,23 @@ public class MenuService {
 
     @Transactional(rollbackFor = Exception.class)
     public void save(MenuDTO menuDTO) {
-        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), null)) throw new RuntimeException("菜单名重复");
+        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), null)) throw new DataValidException("菜单名重复");
         Menu menu = new Menu();
         BeanUtils.copyProperties(menuDTO,menu);
         menuTypeRepository.findById(menuDTO.getMenuTypeId()).ifPresent(menu::setMenuType);
         menuRepository.findById(menuDTO.getParentId()).ifPresent(menu::setParent);
         if(menu.getParent()!=null){
-            if(!menu.getParent().getPurpose().equals(menu.getPurpose())) throw new RuntimeException("应用类型与上级菜单不符");
+            if(!menu.getParent().getPurpose().equals(menu.getPurpose())) throw new DataValidException("应用类型与上级菜单不符");
         }
         menuRepository.save(menu);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void update(MenuDTO menuDTO) {
-        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), menuDTO.getId())) throw new RuntimeException("菜单名重复");
+        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), menuDTO.getId())) throw new DataValidException("菜单名重复");
         Optional<Menu> ifmenu = menuRepository.findById(menuDTO.getId());
         if(!ifmenu.isPresent()){
-            throw new RuntimeException("菜单不存在");
+            throw new DataValidException("菜单不存在");
         }
         Menu menu = ifmenu.get();
         menu.setName(menuDTO.getName());
@@ -180,11 +181,11 @@ public class MenuService {
         if(ifmenu.isPresent()){
             Menu menu = ifmenu.get();
             if(menu.getChild().size()>0){
-                throw new RuntimeException("菜单下有子菜单不能删除");
+                throw new DataValidException("菜单下有子菜单不能删除");
             }
             menuRepository.delete(menu);
         }else{
-            throw new RuntimeException("菜单不存在");
+            throw new DataValidException("菜单不存在");
         }
     }
 

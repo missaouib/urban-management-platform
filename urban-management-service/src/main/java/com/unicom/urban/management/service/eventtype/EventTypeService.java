@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.eventtype;
 
 import com.unicom.urban.management.common.constant.KvConstant;
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.eventtype.EventTypeRepository;
 import com.unicom.urban.management.mapper.EventTypeMapper;
 import com.unicom.urban.management.mapper.TreeMapper;
@@ -53,7 +54,7 @@ public class EventTypeService {
             EventType eventType = ifnull.get();
             return EventTypeMapper.INSTANCE.EventTypeToEventTypeVO(eventType);
         }
-        throw new RuntimeException("没有该分类");
+        throw new DataValidException("没有该分类");
     }
 
     public EventType getEventType(String id) {

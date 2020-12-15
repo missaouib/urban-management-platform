@@ -122,7 +122,7 @@ public class UserService {
             this.initPassword(user);
             userRepository.saveAndFlush(user);
         } else {
-            throw new RuntimeException("用户不存在");
+            throw new DataValidException("用户不存在");
         }
     }
 
@@ -136,7 +136,7 @@ public class UserService {
             user.setSts((null == user.getSts() || user.getSts() == 0) ? 1 : 0);
             userRepository.saveAndFlush(user);
         } else {
-            throw new RuntimeException("用户不存在");
+            throw new DataValidException("用户不存在");
         }
     }
 
