@@ -394,7 +394,6 @@ public class UserService {
     }
 
     public List<UserVO> getSupervisorUserList(String gridId) {
-        Grid one = gridService.findOne(gridId);
         List<User> userList = this.findAll();
         List<UserVO> list = new ArrayList<>();
         for (User user : userList) {
@@ -405,7 +404,7 @@ public class UserService {
                         userVO.setId(user.getId());
                         userVO.setName(user.getName());
                         if (user.getGridList() != null) {
-                            if (user.getGridList().contains(one)) {
+                            if (listIndexOfObject(user.getGridList(), gridId)) {
                                 userVO.setSts(1);
                             } else {
                                 userVO.setSts(0);
@@ -417,6 +416,15 @@ public class UserService {
             }
         }
         return list;
+    }
+
+    private boolean listIndexOfObject(List<Grid> gridList, String id) {
+        for (Grid grid : gridList) {
+            if (grid.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
