@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>用户管理</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<div class="notice_main ">
+    <form id="userForm">
+        <div class="top table2_top">
+            <div class="top_out">
+                <table class="table">
+                    <tbody>
+                    <tr style="display: flex;justify-content: center;align-items: center">
+                        <td style="width: 20%">网格名称<span></span></td>
+                        <td style="width: 40%">
+                            <input type="text" class="find_input" name="gridName" autocomplete="off">
+                        </td>
+                        <td style="width: 20%"><span>*</span>所在区域</td>
+                        <td style="width: 40%">
+                            <select name="region" class="form-control" id="grid1" onchange="getStreetList()" required>
+                                <option value="">--请选择--</option>
+                                <option th:each="as:${gridList}" th:value="${as.id}"
+                                        th:text="${as.gridName}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr style="display: flex;justify-content: center;align-items: center">
+                        <td style="width: 20%"><span>*</span>所属街道</td>
+                        <td style="width: 40%">
+                            <select name="street" class="form-control" id="grid2" onchange="getCommunityList()"
+                                    required>
+                            </select>
+                        </td>
+                        <td style="width: 20%"><span>*</span>所属社区</td>
+                        <td style="width: 40%">
+                            <select name="community" class="form-control" id="grid3" required>
+                            </select>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <div class="notice_check">
+        <form id="search-form">
+            <p style="display: flex;justify-content: flex-end">
+                <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
+                <input type="button" class="check_btn1 button_ground" id="sureOne" value="保存">
+            </p>
+        </form>
+    </div>
+
+
+    <div class="clear"></div>
+
+
+    <div class="btn-group-sm" id="toolbar">
+    </div>
+
+
+    <table id="table" class="table_style" style="margin: 0 auto"></table>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+
+    });
+
+    let searchUrl = /*[[@{/gridOwner/getGridList}]]*/ "/gridOwner/getGridList";
+    let toInsertUrl = /*[[@{/gridOwner/toInsert/?id={id}}]]*/ "/gridOwner/toInsert";
+
+
+    $('#table').bootstrapTable({
+        //点击全选框时触发的操作
+        onCheckAll: function(rows) {
+            console.log("点击全选框时触发的操作",rows);
+        },
+        //  点击每行进行函数的触发
+        // onClickRow: function(row, tr, flied) {
+        //
+        //
+        // },
+        //点每一个单选框时触发的操作
+        onCheck: function(row) {
+            console.log("点每一个单选框时触发的操作",row);
+        },
+
+        //取消每一个单选框时对应的操作；
+        onUncheck: function(row) {
+            console.log("取消每一个单选框时对应的操作",row);
+        },
+
+        ////取消所有
+        onUncheckAll: function(row) {
+            console.log("取消所有",row);
+        },
+        columns: [
+            {
+                field: 'id',
+                title: '序号',
+            },
+            {
+                checkbox: true,
+                title: '编辑',
+                class: "check"
+            },
+            {
+                title: '网格名称',
+                field: 'name'
+            },
+            {
+                title: '所属区域',
+                field: 'username'
+            },
+
+            {
+                title: '所属社区',
+                field: 'phone'
+            },
+            {
+                title: '所属街道',
+                field: 'one',
+            },
+            {
+                title: '创建时间',
+                field: 'two',
+            }
+        ]
+    });
+    function priceForm(value, row, index) {
+        var i = "<input value='2' class='' type='text' style='width: 50px!important;margin-right: 10px;text-align: center'/>" +
+            "<select class=''>" +
+            "<option>时</option>" +
+            "<option>分</option>" +
+            "<option>秒</option>" +
+            "</select>";
+        return i;
+    }
+    var rows
+    $("#sureOne").click(function () {
+        var rows = $('#table_common').bootstrapTable('getSelections');
+        console.log(rows)
+        console.log(JSON.stringify(rows));
+    })
+
+    /**
+     * 获取街道
+     */
+    function getStreetList() {
+        let parentId = $("#grid1 option:selected").val();
+        let url = "/event/findAllByParentId/?parentId=" + parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid2").html(option);
+            }
+        });
+    }
+
+    /**
+     * 获取社区
+     */
+    function getCommunityList() {
+        let parentId = $("#grid2 option:selected").val();
+        let url = "/event/findAllByParentId/?parentId=" + parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid3").html(option);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>
