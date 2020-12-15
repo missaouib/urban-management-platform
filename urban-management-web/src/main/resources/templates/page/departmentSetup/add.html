@@ -295,7 +295,39 @@
             map.id=$(value).val();
             userIdList.push(map);
         });
-        $.operate.saveAndReload(saveBatchUrl, {"deptId": deptId,"userIdList" : userIdList})
+        saveAndReload(saveBatchUrl, {"deptId": deptId,"userIdList" : userIdList})
+    }
+    // 保存提交当前表单数据 然后刷新当前选项卡页面
+    function saveAndReload(url, data) {
+        let config = {
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            // traditional: true,
+            data: data,
+            beforeSend: function () {
+                $.modal.loading("正在处理中，请稍后...");
+            },
+            success: function (result) {
+                if (result.code === web_status.SUCCESS) {
+                    $.modal.msgSuccess(result.message);
+                    setTimeout("window.location.reload()", 2000);
+                    return;
+                } else if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTreeTable) {
+                    $.modal.msgSuccess(result.message);
+                } else if (result.code === web_status.SUCCESS && $.common.isEmpty(table.options.type)) {
+                    $.modal.msgSuccess(result.message)
+                } else if (result.code === web_status.WARNING) {
+                    $.modal.alertWarning(result.message)
+                } else {
+                    $.modal.alertError(result.message);
+                    return;
+                }
+                $.modal.closeLoading();
+            }
+        };
+        $.ajax(config)
+
     }
 </script>
 </body>

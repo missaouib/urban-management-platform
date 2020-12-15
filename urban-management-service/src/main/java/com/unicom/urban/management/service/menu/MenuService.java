@@ -156,12 +156,12 @@ public class MenuService {
         List<Menu> menuList = null;
         List<MenuVO> menuVOList = new ArrayList<>();
         String roleId = SecurityUtil.getRoleId().get(0);
-        if (SecurityUtil.getRoleId().contains("1")){
-            menuList = menuRepository.findAll(Sort.by(Sort.Direction.ASC,"sort"));
-        }else {
+//        if (SecurityUtil.getRoleId().contains("1")){
+//            menuList = menuRepository.findAll(Sort.by(Sort.Direction.ASC,"sort"));
+//        }else {
             Role role = roleRepository.findById(roleId).orElse(new Role());
             menuList = role.getMenuList();
-        }
+//        }
         for (Menu m : menuList){
             MenuVO vo = new MenuVO();
             vo.setId(m.getId());
