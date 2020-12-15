@@ -12,9 +12,11 @@ public class EventConditionVO {
 
     private String id;
 
-    //private EventTypeVO eventType;
+    private String eventTypeId;
 
-    private String conditionValue;
+    private String eventTypeName;
+
+    private String eventTypeParentName;
 
     private String region;
 

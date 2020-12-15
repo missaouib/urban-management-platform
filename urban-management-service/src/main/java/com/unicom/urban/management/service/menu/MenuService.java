@@ -109,32 +109,30 @@ public class MenuService {
     }
 
     public List<MenuVO> getMenuByMenuType(String menuTypeId,String roleId) {
-      List<Menu>  menuList = menuRepository.findMenuByMenuType_Id(menuTypeId);
+      List<Menu>  menuList = menuRepository.findAllByMenuType_Id(menuTypeId);
       List<MenuVO> menuVOList = new ArrayList<>();
       for (Menu m : menuList){
           MenuVO vo = new MenuVO();
           boolean flag = false;
-          if(CollectionUtils.isNotEmpty(m.getRoleList())) {
-              if (StringUtils.isEmpty(roleId)){
-                  flag = false;
-              }else {
-                  for (Role role : m.getRoleList()) {
-                      if (role.getId().equals(roleId)) {
-                          flag = true;
-                          break;
-                      }
+          if (StringUtils.isEmpty(roleId)) {
+              flag = false;
+          } else {
+              for (Role role : m.getRoleList()) {
+                  if (roleId.equals(role.getId())) {
+                      flag = true;
                   }
+                  continue;
               }
-              if (flag){
-                  vo.setCheckbox(1);
-              }else {
-                  vo.setCheckbox(0);
-              }
-              vo.setId(m.getId());
-              vo.setParentId(m.getParent() == null ? "" : m.getParent().getId());
-              vo.setName(m.getName());
-              menuVOList.add(vo);
           }
+          if (flag) {
+              vo.setCheckbox(1);
+          } else {
+              vo.setCheckbox(0);
+          }
+          vo.setId(m.getId());
+          vo.setParentId(m.getParent() == null ? "" : m.getParent().getId());
+          vo.setName(m.getName());
+          menuVOList.add(vo);
       }
        return menuVOList;
     }

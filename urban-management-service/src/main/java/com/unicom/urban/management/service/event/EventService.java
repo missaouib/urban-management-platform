@@ -826,4 +826,8 @@ public class EventService {
         EventVO eventVO = EventMapper.INSTANCE.eventToEventVO(event);
         return eventVO;
     }
+
+    public long findAllByConditionId(String id) {
+        return eventRepository.countEventByConditionId(id);
+    }
 }

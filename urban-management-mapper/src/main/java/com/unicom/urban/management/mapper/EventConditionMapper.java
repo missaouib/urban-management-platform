@@ -30,6 +30,7 @@ public interface EventConditionMapper {
      * @param eventCondition from
      * @return class
      */
-
+    @Mapping(source = "eventType.name", target = "eventTypeName")
+    @Mapping(source = "eventType.parent.name", target = "eventTypeParentName")
     EventConditionVO EventConditionToEventConditionVO(EventCondition eventCondition);
 }

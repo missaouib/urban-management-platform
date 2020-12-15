@@ -2,7 +2,7 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
-    <title>用户管理</title>
+    <title>区域维护</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
 </head>
@@ -40,25 +40,54 @@
             <div class="modal-header">
                 <h4 class="modal-title"></h4>
             </div>
-            <div class="modal-body">
-                <div class="addModel">
-                    <span id="changeName">案件</span><input value="" class="find_input" type="text">
+            <form id="myFormAdd">
+                <div class="modal-body">
+                    <div class="addModel">
+                        <input type="hidden" id="eventTypeId" name="eventTypeId"/>
+                        <span>区域名称</span><input name="region" value="" class="find_input" type="text"/>
+                    </div>
                 </div>
-            </div>
-            <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
-                <button type="button" class="btn btn-primary" id="sureOne">确认</button>
-                <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
-            </div>
+                <div class="modal-footer justify-content-between"
+                     style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary" id="sureOne">确认</button>
+                    <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
+<div class="modal fade" id="modal-update">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+            </div>
+            <form id="myFormUpdate">
+                <div class="modal-body">
+                    <div class="addModel">
+                        <input type="hidden" id="eventConditionId" name="id"/>
+                        <span>区域名称</span><input name="region" value="" class="find_input" type="text"/>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between"
+                     style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary" id="sureTwo" >确认</button>
+                    <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 
 <script type="text/javascript" th:inline="javascript">
-
+    let searchUrl = /*[[@{/eventCondition/search}]]*/ "/eventCondition/search";
+    let addUrl = /*[[@{/eventCondition/add}]]*/ "/eventCondition/add";
+    let editUrl = /*[[@{/eventCondition/update}]]*/ "/eventCondition/update";
+    let removeUrl = /*[[@{/eventCondition/del}]]*/ "/eventCondition/del";
     $(function () {
         queryUserList();
 
@@ -66,20 +95,28 @@
             $(".modal-title").html($(this).text());
             $("#changeName").html($(this).text()+"案件")
         })
-
+        $("sureOne").on('click', function () {
+            var data = $('#myFormAdd').serialize();
+            $.operate.saveAndReload(addUrl, data);
+        })
+        $("sureTwo").on('click', function () {
+            var data = $('#myFormUpdate').serialize();
+            $.operate.saveAndReload(editUrl, data);
+        })
     });
 
-    let searchUrl = /*[[@{/gridOwner/getGridList}]]*/ "/gridOwner/getGridList";
-    let toInsertUrl = /*[[@{/gridOwner/toInsert/?id={id}}]]*/ "/gridOwner/toInsert";
+
 
     function queryUserList() {
         let options = {
             url: searchUrl,
-            updateUrl: toInsertUrl,
+            // createUrl: addUrl,
+            // updateUrl: editUrl,
+            removeUrl: removeUrl,
             uniqueId: "id",
-            sortName: "updateTime",
-            sortOrder: "desc",
-            modalName: "移动终端配置",
+            // sortName: "",
+            // sortOrder: "desc",
+            // modalName: "用户",
             columns: [
                 {
                     field: 'index',
@@ -91,24 +128,26 @@
                 },
                 {
                     title: '大类名称',
-                    field: 'gridName'
+                    field: 'eventTypeParentName'
                 },
                 {
                     title: '小类名称',
-                    field: 'region'
+                    field: 'eventTypeName'
                 },
 
                 {
                     title: '立案区域',
-                    field: 'street'
+                    field: 'region'
                 },
                 {
-                    title: '配置条件',
+                    title: '操作',
                     field: '',
                     class: 'radios',
                     formatter: function (value, row) {
-                        return "<a href='javascript:void(0)' class='modelName' id='update' data-toggle=\"modal\" data-target=\"#modal-default\">修改</a>" +
-                            "<a href='javascript:void(0)' style='margin-left: 10px'>删除</a>";
+                        var actions = [];
+                        actions.push('<a href="javascript:void(0)" class="modelName" id="update" data-toggle="modal" data-target="#modal-update">修改</a> ');
+                        actions.push('<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ');
+                        return actions.join('');
                     }
                 }
             ]
