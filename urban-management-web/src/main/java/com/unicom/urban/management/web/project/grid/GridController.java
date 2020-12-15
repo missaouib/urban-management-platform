@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,7 +50,10 @@ public class GridController {
     public ModelAndView toCollocation(Model model, String id) {
         model.addAttribute("id", id);
         //所在区域
-        model.addAttribute("gridList", gridService.findAllByParentIsNull());
+        List<GridVO> gridVOS = gridService.findAllByParentId(id);
+        List<String> gridIds = new ArrayList<>();
+        gridVOS.forEach(g->gridIds.add(g.getId()));
+        model.addAttribute("gridIds", gridIds);
         return new ModelAndView(SystemConstant.PAGE + "/area/collocation");
     }
 
@@ -96,6 +100,11 @@ public class GridController {
         } else {
             gridService.saveArea(areaDTO);
         }
+    }
+
+    @PostMapping("/coolocation")
+    public void coolocation(AreaDTO areaDTO) {
+      gridService.collocation(areaDTO);
     }
 
 }

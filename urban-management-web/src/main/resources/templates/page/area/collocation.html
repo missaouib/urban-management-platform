@@ -17,11 +17,11 @@
                     <tr style="display: flex;justify-content: center;align-items: center">
                         <td style="width: 20%">网格名称<span></span></td>
                         <td style="width: 40%">
-                            <input type="text" class="find_input" name="gridName" autocomplete="off">
+                            <input type="text" class="find_input" name="gridName" id="gridName" autocomplete="off">
                         </td>
                         <td style="width: 20%"><span>*</span>所在区域</td>
                         <td style="width: 40%">
-                            <select name="region" class="form-control" id="grid1" onchange="getStreetList()" required>
+                            <select name="region" class="form-control" id="region" onchange="getStreetList()" required>
                                 <option value="">--请选择--</option>
                                 <option th:each="as:${gridList}" th:value="${as.id}"
                                         th:text="${as.gridName}"></option>
@@ -31,13 +31,13 @@
                     <tr style="display: flex;justify-content: center;align-items: center">
                         <td style="width: 20%"><span>*</span>所属街道</td>
                         <td style="width: 40%">
-                            <select name="street" class="form-control" id="grid2" onchange="getCommunityList()"
+                            <select name="street" class="form-control" id="street" onchange="getCommunityList()"
                                     required>
                             </select>
                         </td>
                         <td style="width: 20%"><span>*</span>所属社区</td>
                         <td style="width: 40%">
-                            <select name="community" class="form-control" id="grid3" required>
+                            <select name="community" class="form-control" id="community" required>
                             </select>
                         </td>
                     </tr>
@@ -48,11 +48,12 @@
         </div>
     </form>
     <div class="notice_check">
-        <form id="search-form">
-            <input type="text" th:value="${id}">
+        <form id="collocationForm">
+            <input type="hidden" name="pid" th:value="${id}">
+            <input type="hidden" id="gridIds" name="gridIds" th:value="${gridIds}">
             <p style="display: flex;justify-content: flex-end">
-                <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
-                <input type="button" class="check_btn1 button_ground" id="sureOne" value="保存">
+                <input type="button" class="check_btn button_ground" onclick="search()" value="查询">
+                <input type="button" class="check_btn1 button_ground" onclick="collocation()" value="保存">
             </p>
         </form>
     </div>
@@ -73,37 +74,72 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 
 <script type="text/javascript" th:inline="javascript">
-
+    var id=[[${id}]]
     $(function () {
-
-
+        search();
     });
 
     let searchUrl = /*[[@{/gridOwner/getGridList}]]*/ "/gridOwner/getGridList";
+    let collocationUrl = /*[[@{/grid/coolocation}]]*/ "/gridOwner/coolocation";
+
+    function search() {
+        $('#table').bootstrapTable('removeAll');
+        var count = $('#table').bootstrapTable('getData').length;
+        var param = "?1=1";
+        if ($("#gridName").val() !== "" && $("#gridName").val() !== null) {
+            param += "&gridName=" + $("#gridName").val();
+        }
+        if ($("#region").val() !== "" && $("#region").val() !== null) {
+            param += "&region=" + $("#region").val();
+        }
+        if ($("#street").val() !== "" && $("#street").val() !== null) {
+            param += "&street=" + $("#street").val();
+        }
+        if ($("#community").val() !== "" && $("#community").val() !== null) {
+            param += "&community=" + $("#community").val();
+        }
+
+        $.ajaxUtil.get(searchUrl + param, function (e) {
+            $(e.data.content).each(function (index, value) {
+                $('#table').bootstrapTable('insertRow', {
+                    index: index,
+                    row: {
+                        index: index + 1,
+                        id: value.id,
+                        gridName: value.gridName,
+                        region: value.region,
+                        street: value.street,
+                        community: value.community,
+                        initialDateStr: value.initialDateStr,
+                        parentId:value.parentId
+                    }
+                });
+            })
+
+        })
+
+    }
+
+    var gridIds = [];
 
     $('#table').bootstrapTable({
         //点击全选框时触发的操作
-        onCheckAll: function(rows) {
-            console.log("点击全选框时触发的操作",rows);
+        onCheckAll: function (rows) {
+            checked()
         },
-        //  点击每行进行函数的触发
-        // onClickRow: function(row, tr, flied) {
-        //
-        //
-        // },
         //点每一个单选框时触发的操作
-        onCheck: function(row) {
-            console.log("点每一个单选框时触发的操作",row);
+        onCheck: function (row) {
+            checked()
         },
 
         //取消每一个单选框时对应的操作；
-        onUncheck: function(row) {
-            console.log("取消每一个单选框时对应的操作",row);
+        onUncheck: function (row) {
+            checked()
         },
 
         ////取消所有
-        onUncheckAll: function(row) {
-            console.log("取消所有",row);
+        onUncheckAll: function (row) {
+            checked()
         },
         pagination: true,
         paginationLoop: true,
@@ -112,50 +148,58 @@
         pageList: [10],
         columns: [
             {
-                field: 'id',
+                field: 'index',
                 title: '序号',
             },
             {
                 checkbox: true,
                 title: '编辑',
                 class: "check",
-                formatter : stateFormatter
+                formatter: stateFormatter
             },
             {
                 title: '网格名称',
-                field: 'name'
+                field: 'gridName'
             },
             {
                 title: '所属区域',
-                field: 'username'
+                field: 'region'
             },
 
             {
                 title: '所属社区',
-                field: 'phone'
+                field: 'community'
             },
             {
                 title: '所属街道',
-                field: 'one',
+                field: 'street',
             },
             {
                 title: '创建时间',
-                field: 'two',
+                field: 'initialDateStr',
             }
         ]
     });
     var rows
     $("#sureOne").click(function () {
-        var rows = $('#table_common').bootstrapTable('getSelections');
-        console.log(rows)
-        console.log(JSON.stringify(rows));
+
     })
+    
+    function checked() {
+        var rows = $('#table').bootstrapTable('getSelections');
+        gridIds = [];
+        for (var i = 0; i < rows.length; i++) {
+            gridIds.push(rows[i].id);
+        }
+        $("#gridIds").val(gridIds)
+    }
+
     //复选框判断是否选中
     function stateFormatter(value, row, index) {
-        if (row.state == true)
+        if (row.parentId === id)
             return {
                 // disabled : true,//设置是否可用
-                checked : true//设置选中
+                checked: true//设置选中
             };
         return value;
     }
@@ -164,7 +208,7 @@
      * 获取街道
      */
     function getStreetList() {
-        let parentId = $("#grid1 option:selected").val();
+        let parentId = $("#region option:selected").val();
         let url = "/event/findAllByParentId/?parentId=" + parentId;
         $.ajaxUtil.get(url, function (e) {
             let option = "<option>--请选择--</option>";
@@ -172,7 +216,7 @@
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
-                $("#grid2").html(option);
+                $("#street").html(option);
             }
         });
     }
@@ -181,7 +225,7 @@
      * 获取社区
      */
     function getCommunityList() {
-        let parentId = $("#grid2 option:selected").val();
+        let parentId = $("#street option:selected").val();
         let url = "/event/findAllByParentId/?parentId=" + parentId;
         $.ajaxUtil.get(url, function (e) {
             let option = "<option>--请选择--</option>";
@@ -189,9 +233,14 @@
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
-                $("#grid3").html(option);
+                $("#community").html(option);
             }
         });
+    }
+
+    function collocation() {
+        let data = $('#collocationForm').serialize();
+        $.operate.saveAndReload(collocationUrl, data);
     }
 
 </script>

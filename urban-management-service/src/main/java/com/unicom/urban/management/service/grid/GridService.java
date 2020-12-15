@@ -202,7 +202,7 @@ public class GridService {
     }
 
     public void collocation(AreaDTO areaDTO) {
-        Optional<Grid> ifParentGrid = gridRepository.findById(areaDTO.getGridId());
+        Optional<Grid> ifParentGrid = gridRepository.findById(areaDTO.getPid());
         if (ifParentGrid.isPresent()) {
             Grid area = ifParentGrid.get();
             areaDTO.getGridIds().forEach(g -> {
