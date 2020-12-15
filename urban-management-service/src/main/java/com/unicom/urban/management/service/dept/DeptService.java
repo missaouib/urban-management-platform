@@ -153,7 +153,7 @@ public class DeptService {
                         Integer sort = depts.stream().map(Dept::getSort).max(Integer::compareTo).get();
                         dept.setSort(sort + 10);
                     } else {
-                        dept.setSort(deptDTO.getSort());
+                        dept.setSort(10);
                     }
                 }else{
                     dept.setSort(deptDTO.getSort());
