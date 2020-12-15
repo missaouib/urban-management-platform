@@ -20,55 +20,24 @@
             </p>
         </form>
     </div>
-</div>
-<div class="modal fade" id="modal-default1">
-    <div class="modal-dialog"  style="width: 80%!important;max-width: 80%!important;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">默认窗口</h4>
-            </div>
-            <div class="modal-body">
-                    <div class="notice_bot" style="padding-left: 10px">
-                        <div class="r_right but_p girdBtnGroup" id="eventButton" style="justify-content: start!important;">
-                            <button class="but_save" type="button" style="margin-right: 10px" onclick="add()">新增</button>
-                            <button class="but_save" type="button">删除</button>
-                        </div>
-
-                    </div>
-                <table id="table" class="component"></table>
-
-            </div>
-            <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
-                <button type="button" class="btn btn-primary" id="sureOne">确认</button>
-                <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
+    <div class="lian roleBox">
+        <div class="notice_bot" style="padding-left: 10px">
+            <div class="r_right but_p girdBtnGroup" id="eventButton" style="justify-content: start!important;">
+                <button class="but_save" type="button" style="margin-right: 10px" onclick="add()">新增</button>
+                <button class="but_save" type="button" id="sureOne">删除</button>
             </div>
         </div>
+        <table id="addTable" class="component"></table>
     </div>
-</div>
 
-
-<div class="modal fade" id="modal-default2">
-    <div class="modal-dialog"  style="width: 80%!important;max-width: 80%!important;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">默认窗口</h4>
-            </div>
-            <div class="modal-body">
-                <div class="notice_bot" style="padding-left: 10px">
-                    <div class="r_right but_p girdBtnGroup" id="" style="justify-content: start!important;">
-                        <button class="but_save" type="button" style="margin-right: 10px" onclick="tableCommon()">新增</button>
-                        <button class="but_save" type="button">删除</button>
-                    </div>
-
-                </div>
-                <table id="table_common" class="component"></table>
-
-            </div>
-            <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
-                <button type="button" class="btn btn-primary" id="sureTwo">确认</button>
-                <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
+    <div class="jiean roleBox">
+        <div class="notice_bot" style="padding-left: 10px">
+            <div class="r_right but_p girdBtnGroup" id="" style="justify-content: start!important;">
+                <button class="but_save" type="button" style="margin-right: 10px" onclick="tableCommon()">新增</button>
+                <button class="but_save" type="button" id="sureTwo">删除</button>
             </div>
         </div>
+        <table id="tableCommon" class="component"></table>
     </div>
 </div>
 
@@ -81,6 +50,18 @@
 
     $(function () {
         queryUserList();
+
+        $(document).on("click",".less_table",function(){
+            // console.log(row)
+        });
+
+        $(document).on("click","#lian",function(){
+            $(".lian").removeClass("roleBox")
+        });
+
+        $(document).on("click","#jiean",function(){
+            $(".jiean").removeClass("roleBox")
+        });
     });
 
     let eventTypeId = [[${eventTypeId}]];
@@ -117,8 +98,8 @@
                     class: 'radios',
                     formatter: function (value, row) {
                         console.log("row", row);
-                        return "<a href='' data-toggle=\"modal\" data-target=\"#modal-default1\">立案条件</a>" +
-                            "<a href='' data-toggle=\"modal\" data-target=\"#modal-default2\">结案条件</a>";
+                        return "<a id='lian' style='margin-right: 10px'>立案条件</a>" +
+                            "<a id='jiean'>结案条件</a>";
                     }
                 }
             ]
@@ -128,8 +109,8 @@
 
 
     function add() {
-        var count = $('#table').bootstrapTable('getData').length;
-        $('#table').bootstrapTable('insertRow', {
+        let count = $("#addTable").bootstrapTable('getData').length;
+        $("#addTable").bootstrapTable('insertRow', {
             index: count,
             row: {
                 id: count + 1,
@@ -140,7 +121,7 @@
         });
     }
 
-    $('#table').bootstrapTable({
+    $('#addTable').bootstrapTable({
         //点击全选框时触发的操作
         onCheckAll: function(rows) {
             console.log("点击全选框时触发的操作",rows);
@@ -185,7 +166,10 @@
 
             {
                 title: '立案条件',
-                field: 'phone'
+                field: 'phone',
+                formatter:function (value,row,index) {
+                    return "<input type='text' >"
+                }
             },
             {
                 title: '1类',
@@ -202,6 +186,14 @@
                 field: 'three',
                 formatter: priceForm,
             },
+            {
+                title: '操作',
+                field: 'lesstable',
+                formatter: function (value, row)  {
+                    let a = "<a class='less_table' id='"+ row.id +"' onclick='delDetail(this)'><img src='../img/lessTable.png'></a>";
+                    return a;
+                },
+            },
         ]
     });
     function priceForm(value, row, index) {
@@ -212,30 +204,36 @@
             "<option>秒</option>" +
             "</select>";
     }
-    var rows
+
     $("#sureOne").click(function () {
-        var rows = $('#table_common').bootstrapTable('getSelections');
-        console.log(rows)
+        let rows = $('#tableCommon').bootstrapTable('getSelections');
+        alert(rows)
         console.log(JSON.stringify(rows));
     })
-
+    function delDetail(index) {
+        console.log((index));
+        $('#table').bootstrapTable('remove', {
+            field: "id",
+            values: (index).id
+        });
+    }
 
 
 
     function tableCommon() {
-        var count = $('#table_common').bootstrapTable('getData').length;
-        $('#table_common').bootstrapTable('insertRow', {
-            index: count,
+        let counts = $("#tableCommon").bootstrapTable('getData').length;
+        $("#tableCommon").bootstrapTable('insertRow', {
+            index: counts,
             row: {
-                id: count + 1,
-                name: 'test',
-                username: '2',
-                phone:'第一'
+                ids: counts + 1,
+                names: 'test',
+                usernames: '2',
+                phones:'第一'
             }
         });
     }
 
-    $('#table_common').bootstrapTable({
+    $('#tableCommon').bootstrapTable({
         //点击全选框时触发的操作
         onCheckAll: function(rows) {
             console.log("点击全选框时触发的操作",rows);
@@ -261,7 +259,7 @@
         },
         columns: [
             {
-                field: 'id',
+                field: 'ids',
                 title: '序号',
             },
             {
@@ -271,24 +269,23 @@
             },
             {
                 title: '类别名称',
-                field: 'name'
+                field: 'names'
             },
             {
                 title: '立案区域',
-                field: 'username'
+                field: 'usernames'
             },
 
             {
                 title: '立案条件',
-                field: 'phone'
+                field: 'phones'
             }
         ]
     });
 
-    var num;
     $("#sureTwo").click(function () {
-        var num = $('#table_common').bootstrapTable('getSelections');
-        console.log(num)
+        let num = $('#tableCommon').bootstrapTable('getSelections');
+        alert(num)
         console.log(JSON.stringify(num));
     })
 
