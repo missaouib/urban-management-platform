@@ -1959,3 +1959,8 @@ span.search_highlight {
 .highShow{
     color: whitesmoke;background-color: darkred;
 }
+.less_table{
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+}

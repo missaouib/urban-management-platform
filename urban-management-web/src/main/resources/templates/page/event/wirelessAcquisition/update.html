@@ -507,23 +507,15 @@
         findUrlListByEventTypeId(eventTypeId);
         layer.close(index);
     }
-    function setPoint() {
+    function setPoint(x,y) {
         let point = new ol.Feature({
-            geometry: new ol.geom.Point([115.62, 41.74]),
+            geometry: new ol.geom.Point([x, y]),
             data: {
                 // id: data,
                 // name: name,
-                // coordinate: x + "," + y
+                coordinate: x + "," + y
             }
         });
-        let picture = "../img/1.png";
-        // let imgSize = [100,100]
-        point.setStyle(new ol.style.Style({
-            image: new ol.style.Icon({
-                src: picture,
-                // imgSize:imgSize
-            })
-        }));
         layerMap.getSource().addFeature(point);
         point.setStyle(new ol.style.Style({
             image: new ol.style.Icon({
@@ -717,6 +709,7 @@
         getGridPublishUrl()
 
         let eventOneVO = [[${eventOneVO}]];
+        console.log(eventOneVO.x,eventOneVO.y)
         setPoint(eventOneVO.x,eventOneVO.y);
 
         $("#doBySelf").on('click',function (){
@@ -1284,26 +1277,7 @@
         $("#longitude").val(t[0])
         $("#latitude").val(t[1])
     });
-    setPoint()
-    function setPoint() {
-        let point = new ol.Feature({
-            geometry: new ol.geom.Point([115.62, 41.74]),
-            data: {
-                // id: data,
-                // name: name,
-                // coordinate: x + "," + y
-            }
-        });
-        let picture = "../img/1.png";
-        // let imgSize = [100,100]
-        point.setStyle(new ol.style.Style({
-            image: new ol.style.Icon({
-                src: picture,
-                // imgSize:imgSize
-            })
-        }));
-        layerMap.getSource().addFeature(point);
-    }
+
 
     /**
      * 获取网格的中心点
