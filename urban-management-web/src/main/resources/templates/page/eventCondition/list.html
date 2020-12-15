@@ -87,7 +87,7 @@
     let searchUrl = /*[[@{/eventCondition/search}]]*/ "/eventCondition/search";
     let addUrl = /*[[@{/eventCondition/save}]]*/ "/eventCondition/save";
     let editUrl = /*[[@{/eventCondition/update}]]*/ "/eventCondition/update";
-    let removeUrl = /*[[@{/eventCondition/del}]]*/ "/eventCondition/del";
+    let removeUrl = /*[[@{/eventCondition/del/{id}}]]*/ "/eventCondition/del/{id}";
 
 
     $(function () {
@@ -124,7 +124,7 @@
             uniqueId: "id",
             // sortName: "",
             // sortOrder: "desc",
-            // modalName: "用户",
+            modalName: "区域",
             columns: [
                 {
                     field: 'index',
