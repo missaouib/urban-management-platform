@@ -66,8 +66,8 @@
             <form id="myFormUpdate">
                 <div class="modal-body">
                     <div class="addModel">
-                        <input type="hidden" id="eventConditionId" name="id"/>
-                        <span>区域名称</span><input name="region" value="" class="find_input" type="text"/>
+                        <input type="hidden" id="eventConditionIdUpdate" name="id"/>
+                        <span>区域名称</span><input name="region" id="regionUpdate" value="" class="find_input" type="text"/>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between"
@@ -88,19 +88,27 @@
     let addUrl = /*[[@{/eventCondition/add}]]*/ "/eventCondition/add";
     let editUrl = /*[[@{/eventCondition/update}]]*/ "/eventCondition/update";
     let removeUrl = /*[[@{/eventCondition/del}]]*/ "/eventCondition/del";
+
+
     $(function () {
+
+        let eventTypeId = [[${eventTypeId}]];
+        $("#eventTypeId").val(eventTypeId);
+
         queryUserList();
 
         $(document).on('click',".modelName",function () {
             $(".modal-title").html($(this).text());
             $("#changeName").html($(this).text()+"案件")
         })
-        $("sureOne").on('click', function () {
+        $("#sureOne").on('click', function () {
             var data = $('#myFormAdd').serialize();
+            console.log("sureOne",data)
             $.operate.saveAndReload(addUrl, data);
         })
-        $("sureTwo").on('click', function () {
+        $("#sureTwo").on('click', function () {
             var data = $('#myFormUpdate').serialize();
+            console.log("sureTwo",data)
             $.operate.saveAndReload(editUrl, data);
         })
     });
@@ -145,7 +153,7 @@
                     class: 'radios',
                     formatter: function (value, row) {
                         var actions = [];
-                        actions.push('<a href="javascript:void(0)" class="modelName" id="update" data-toggle="modal" data-target="#modal-update">修改</a> ');
+                        actions.push('<a href="javascript:void(0)" id="'+row.id+'" name="'+row.region+'" class="modelName" data-toggle="modal" data-target="#modal-update" onclick="updateEventCondition(this)">修改</a> ');
                         actions.push('<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ');
                         return actions.join('');
                     }
@@ -154,7 +162,10 @@
         };
         $.table.init(options);
     }
-
+function updateEventCondition(data){
+    $("#eventConditionIdUpdate").val(data.id);
+    $("#regionUpdate").val(data.name);
+}
     /**
      * 获取街道
      */

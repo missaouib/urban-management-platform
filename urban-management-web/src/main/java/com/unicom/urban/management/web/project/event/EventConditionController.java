@@ -29,9 +29,10 @@ public class EventConditionController {
     private EventConditionService eventConditionService;
 
     @GetMapping("/toEventConditionList")
-    public ModelAndView toEventConditionList() {
-
-        return new ModelAndView(SystemConstant.PAGE + "/eventCondition/list");
+    public ModelAndView toEventConditionList(String eventTypeId) {
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/eventCondition/list");
+        modelAndView.addObject("eventTypeId",eventTypeId);
+        return modelAndView;
     }
     @GetMapping("/toAdd")
     public ModelAndView toAdd() {
