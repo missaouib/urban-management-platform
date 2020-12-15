@@ -23,7 +23,8 @@
                             onclick="updateRole()">删除
                     </button>
                     <button class="but_save" type="button" style="margin-right: 10px" id="deleteRoleBtn"
-                            onclick="window.parent.$.learuntab.myAddTab('区域维护', '/eventCondition/toEventConditionList', 'data_id')">区域维护
+                            onclick="addTab()">区域维护
+
                     </button>
                     <button class="but_save" type="button" onclick="window.parent.$.learuntab.myAddTab('配置页面', '/categoryConfiguration/toInsert', 'data_id')">
                         配置
@@ -32,6 +33,7 @@
 
             <div class="tree">
                 <div class="treeDemo">
+                    <input type="hidden" id="eventTypeId" />
                     <ul id="treeDemo" class="ztree"></ul>
                 </div>
             </div>
@@ -125,6 +127,11 @@
 
     });
 
+    function addTab() {
+        var eventTypeId = $("#eventTypeId").val()
+        window.parent.$.learuntab.myAddTab('区域维护', '/eventCondition/toEventConditionList?=eventTypeId'+eventTypeId, 'data_id')
+    }
+
     function setRoleTree() {
         $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
             $.fn.zTree.init($("#treeDemo"), setting, e.data);
@@ -142,6 +149,7 @@
 
     function zTreeOnClick(event, treeId, treeNode) {
         console.log("treeNode", treeNode);
+        $("#eventTypeId").val(treeNode.id);
 
     }
 

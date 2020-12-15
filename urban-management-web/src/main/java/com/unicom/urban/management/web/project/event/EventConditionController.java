@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class EventConditionController {
     @GetMapping("/toEventConditionList")
     public ModelAndView toEventConditionList() {
+
         return new ModelAndView(SystemConstant.PAGE + "/eventCondition/list");
     }
     @GetMapping("/toAdd")
