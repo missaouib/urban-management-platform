@@ -125,8 +125,19 @@ public class DeptService {
      */
     public void save(DeptDTO deptDTO) {
         Dept dept = new Dept();
-        BeanUtils.copyProperties(deptDTO, dept);
         Grid grid = gridService.findOne(deptDTO.getGridId());
+        if(StringUtils.isNotBlank(deptDTO.getId())){
+            Optional<Dept> ifDept = deptRepository.findById(deptDTO.getId());
+            if(ifDept.isPresent()){
+                dept = ifDept.get();
+                dept.setDeptName(deptDTO.getDeptName());
+                dept.setDeptPhone(deptDTO.getDeptPhone());
+                dept.setDeptAddress(deptDTO.getDeptAddress());
+                dept.setDescribes(deptDTO.getDescribes());
+            }
+        }else{
+            BeanUtils.copyProperties(deptDTO, dept);
+        }
         dept.setGrid(grid);
         if(StringUtils.isNotBlank(deptDTO.getCdate())){
             dept.setCreateTime(LocalDateTime.parse(deptDTO.getCdate(),df));
@@ -142,7 +153,7 @@ public class DeptService {
                         Integer sort = depts.stream().map(Dept::getSort).max(Integer::compareTo).get();
                         dept.setSort(sort + 10);
                     } else {
-                        dept.setSort(10);
+                        dept.setSort(deptDTO.getSort());
                     }
                 }else{
                     dept.setSort(deptDTO.getSort());
@@ -151,7 +162,7 @@ public class DeptService {
                 throw new DataValidException("所属部门不存在");
             }
         }
-        deptRepository.save(dept);
+        deptRepository.saveAndFlush(dept);
     }
 
     /**
