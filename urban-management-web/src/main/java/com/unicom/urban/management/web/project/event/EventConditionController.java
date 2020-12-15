@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * 立案区域Controller
+ * 区域维护Controller
  * @author liubozhi
  */
 @RestController
@@ -17,6 +17,14 @@ import org.springframework.web.servlet.ModelAndView;
 public class EventConditionController {
     @GetMapping("/toEventConditionList")
     public ModelAndView toEventConditionList() {
-        return new ModelAndView(SystemConstant.PAGE + "/eventCondition/area/area");
+        return new ModelAndView(SystemConstant.PAGE + "/eventCondition/list");
+    }
+    @GetMapping("/toAdd")
+    public ModelAndView toAdd() {
+        return new ModelAndView(SystemConstant.PAGE + "/eventCondition/add");
+    }
+    @GetMapping("/toUpdate")
+    public ModelAndView toUpdate() {
+        return new ModelAndView(SystemConstant.PAGE + "/eventCondition/update");
     }
 }
