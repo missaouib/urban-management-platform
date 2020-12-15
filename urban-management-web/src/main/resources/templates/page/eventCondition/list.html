@@ -1,10 +1,155 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>区域维护</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>用户管理</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
 </head>
-<body>
+<style>
+    .addModel{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .addModel span{
+        width: 20%;
+    }
+    .addModel input{
+        width: 80%;
+    }
 
+</style>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<div class="notice_main ">
+    <div class="clear"></div>
+
+
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+    <div class="btn-group-sm" id="toolbar"  data-toggle="modal" data-target="#modal-default">
+        <a class="btn btn-success modelName">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+    </div>
+</div>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="addModel">
+                    <span id="changeName">案件</span><input value="" class="find_input" type="text">
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
+                <button type="button" class="btn btn-primary" id="sureOne">确认</button>
+                <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        queryUserList();
+
+        $(document).on('click',".modelName",function () {
+            $(".modal-title").html($(this).text());
+            $("#changeName").html($(this).text()+"案件")
+        })
+
+    });
+
+    let searchUrl = /*[[@{/gridOwner/getGridList}]]*/ "/gridOwner/getGridList";
+    let toInsertUrl = /*[[@{/gridOwner/toInsert/?id={id}}]]*/ "/gridOwner/toInsert";
+
+    function queryUserList() {
+        let options = {
+            url: searchUrl,
+            updateUrl: toInsertUrl,
+            uniqueId: "id",
+            sortName: "updateTime",
+            sortOrder: "desc",
+            modalName: "移动终端配置",
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    formatter: function (value, row, index) {
+                        let page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '大类名称',
+                    field: 'gridName'
+                },
+                {
+                    title: '小类名称',
+                    field: 'region'
+                },
+
+                {
+                    title: '立案区域',
+                    field: 'street'
+                },
+                {
+                    title: '配置条件',
+                    field: '',
+                    class: 'radios',
+                    formatter: function (value, row) {
+                        return "<a href='javascript:void(0)' class='modelName' id='update' data-toggle=\"modal\" data-target=\"#modal-default\">修改</a>" +
+                            "<a href='javascript:void(0)' style='margin-left: 10px'>删除</a>";
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    }
+
+    /**
+     * 获取街道
+     */
+    function getStreetList() {
+        let parentId = $("#grid1 option:selected").val();
+        let url = "/event/findAllByParentId/?parentId=" + parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid2").html(option);
+            }
+        });
+    }
+
+    /**
+     * 获取社区
+     */
+    function getCommunityList() {
+        let parentId = $("#grid2 option:selected").val();
+        let url = "/event/findAllByParentId/?parentId=" + parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid3").html(option);
+            }
+        });
+    }
+
+</script>
 </body>
 </html>
