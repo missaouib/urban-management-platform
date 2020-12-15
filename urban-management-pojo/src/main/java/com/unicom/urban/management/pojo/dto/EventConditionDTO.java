@@ -2,6 +2,8 @@ package com.unicom.urban.management.pojo.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+
 /**
  * 区域维护
  *

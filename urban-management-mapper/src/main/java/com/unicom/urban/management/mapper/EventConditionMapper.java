@@ -3,6 +3,7 @@ package com.unicom.urban.management.mapper;
 import com.unicom.urban.management.pojo.entity.EventCondition;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
