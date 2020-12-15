@@ -4,7 +4,7 @@ import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.idioms.IdiomsRepository;
 import com.unicom.urban.management.mapper.IdiomsMapper;
-import com.unicom.urban.management.pojo.entity.*;
+import com.unicom.urban.management.pojo.entity.Idioms;
 import com.unicom.urban.management.pojo.vo.IdiomsVO;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class IdiomsService {
         String idiomsValue = idiomsVO.getIdiomsValue().trim();
         Idioms idiomsOld = idiomsRepository.findAllByIdiomsValue(idiomsValue);
         if (ObjectUtils.isNotEmpty(idiomsOld)){
-            throw new DataValidException("次惯用语已存在无需保存");
+            throw new DataValidException("此惯用语已存在无需保存");
         }
         Idioms idioms = new Idioms();
         idioms.setIdiomsValue(idiomsValue);

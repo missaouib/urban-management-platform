@@ -145,7 +145,7 @@ public class DeptService {
                         dept.setSort(10);
                     }
                 }else{
-                    dept.setSort(10);
+                    dept.setSort(deptDTO.getSort());
                 }
             } else {
                 throw new DataValidException("所属部门不存在");
