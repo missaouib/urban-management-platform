@@ -9,6 +9,7 @@ import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.service.grid.GridService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -45,7 +46,8 @@ public class GridController {
     }
 
     @GetMapping("/toCollocation")
-    public ModelAndView toCollocation() {
+    public ModelAndView toCollocation(Model model, String id) {
+        model.addAttribute("id", id);
         return new ModelAndView(SystemConstant.PAGE + "/area/collocation");
     }
 
@@ -87,7 +89,7 @@ public class GridController {
 
     @PostMapping("/area")
     public void area(@Valid AreaDTO areaDTO) {
-        if (StringUtils.isNotBlank(areaDTO.getId())) {
+        if (StringUtils.isNotBlank(areaDTO.getGridId())) {
             gridService.updateArea(areaDTO);
         } else {
             gridService.saveArea(areaDTO);

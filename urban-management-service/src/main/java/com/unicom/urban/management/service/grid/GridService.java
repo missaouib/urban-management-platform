@@ -186,10 +186,10 @@ public class GridService {
     }
 
     public void updateArea(AreaDTO areaDTO) {
-        if (ifAreaName(areaDTO.getPid(), areaDTO.getGridName(), areaDTO.getId())) {
+        if (ifAreaName(areaDTO.getPid(), areaDTO.getGridName(), areaDTO.getGridId())) {
             throw new DataValidException("区域名称重复");
         }
-        Optional<Grid> ifGrid = gridRepository.findById(areaDTO.getId());
+        Optional<Grid> ifGrid = gridRepository.findById(areaDTO.getGridId());
         if (ifGrid.isPresent()) {
             Grid grid = ifGrid.get();
             grid.setGridName(areaDTO.getGridName());
@@ -202,7 +202,7 @@ public class GridService {
     }
 
     public void collocation(AreaDTO areaDTO) {
-        Optional<Grid> ifParentGrid = gridRepository.findById(areaDTO.getId());
+        Optional<Grid> ifParentGrid = gridRepository.findById(areaDTO.getGridId());
         if (ifParentGrid.isPresent()) {
             Grid area = ifParentGrid.get();
             areaDTO.getGridIds().forEach(g -> {

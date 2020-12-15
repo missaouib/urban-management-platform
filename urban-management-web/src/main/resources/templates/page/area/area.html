@@ -37,7 +37,7 @@
                             <td><span></span>名称</td>
                             <td>
                                 <input id="gridName" name="gridName" placeholder="" class="" type="text">
-                                <input id="id" name="id" placeholder="" class="" type="hidden">
+                                <input id="id" name="gridId" placeholder="" class="" type="hidden">
                                 <input id="level" name="level" placeholder="" class="" type="hidden" value="1">
                             </td>
                         </tr>
@@ -57,11 +57,16 @@
 
                 <div class="notice_bot">
                     <div class="r_right but_p girdBtnGroup" id="eventButton">
-                        <button class="but_save" type="button" style="margin-right: 10px" id="saveRoleBtn"
-                                onclick="window.parent.$.learuntab.myAddTab('配置网格', '/grid/toCollocation', 'data_id')">配置
+                        <button class="but_save" id="collocation" type="button" style="margin-right: 10px;display: none"
+                                onclick="toCollocation()">
+                            配置
                         </button>
-                        <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn">清空</button>
-                        <button class="but_save" type="button" style="margin-right: 10px" id="deleteRoleBtn" onclick="deleteRole()">删除</button>
+                        <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn"
+                                onclick="formReset()">清空
+                        </button>
+                        <button class="but_save" type="button" style="margin-right: 10px" id="deleteRoleBtn"
+                                onclick="deleteRole()">删除
+                        </button>
                         <button class="but_save" type="button" onclick="area()">保存</button>
                     </div>
                 </div>
@@ -151,32 +156,36 @@
     }
 
 
-    function removeClassForTimeAndSort() {
-
-    }
-
-    function addClassForTimeAndSort() {
-
+    function toCollocation() {
+        var id = $("#id").val();
+        window.parent.$.learuntab.myAddTab('配置网格', '/grid/toCollocation?id='+id, 'data_id')
     }
 
     function zTreeOnClick(event, treeId, treeNode) {
-        console.log("treeNode", treeNode.getParentNode());
-        $("#id").val(treeNode.id);
-        $("#level").val(treeNode.level+1);
-        $("#gridName").val(treeNode.name);
-        if(treeNode.getParentNode()!==null){
-            $("#parentName").val(treeNode.getParentNode().name);
-            $("#parentId").val(treeNode.getParentNode().id);
-        }else{
-            $("#parentName").val("");
-            $("#parentId").val("");
+        if (treeNode.level === 2) {
+            $("#collocation").css("display", "block")
         }
-
+        $("#id").val(treeNode.id);
+        $("#level").val(treeNode.level + 1);
+        $("#gridName").val(treeNode.name);
+        if (treeNode.getParentNode() !== null) {
+            $("#parentName").val(treeNode.getParentNode().name);
+            $("#pid").val(treeNode.getParentNode().id);
+        } else {
+            $("#parentName").val("");
+            $("#pid").val("");
+        }
 
 
     }
 
-
+    function formReset() {
+        $("#id").val("");
+        $("#level").val(1);
+        $("#gridName").val("");
+        $("#parentName").val("");
+        $("#pid").val("");
+    }
 
 
     function area() {

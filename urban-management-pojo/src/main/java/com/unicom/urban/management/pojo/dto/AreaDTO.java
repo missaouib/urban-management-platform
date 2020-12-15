@@ -13,7 +13,7 @@ import java.util.List;
 @Data
 public class AreaDTO {
 
-    private String id;
+    private String gridId;
 
     private String pid;
 
