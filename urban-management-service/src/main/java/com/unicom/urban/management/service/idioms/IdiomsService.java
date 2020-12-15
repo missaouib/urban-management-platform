@@ -6,6 +6,7 @@ import com.unicom.urban.management.dao.idioms.IdiomsRepository;
 import com.unicom.urban.management.mapper.IdiomsMapper;
 import com.unicom.urban.management.pojo.entity.Idioms;
 import com.unicom.urban.management.pojo.vo.IdiomsVO;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,5 +50,16 @@ public class IdiomsService {
         }, pageable);
         List<IdiomsVO> idiomsVOList = IdiomsMapper.INSTANCE.idiomsListToIdiomsVOList(page.getContent());
         return new PageImpl<>(idiomsVOList, page.getPageable(), page.getTotalElements());
+    }
+
+    public List<String> findAllIdiomsValue() {
+        List<Idioms> list = idiomsRepository.findAll();
+        List<String> idiomsValueList = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(list)){
+            for (Idioms idioms : list) {
+                idiomsValueList.add(idioms.getIdiomsValue());
+            }
+        }
+        return idiomsValueList;
     }
 }
