@@ -154,6 +154,9 @@ public class GridService {
     public Grid findOne(String id) {
         return gridRepository.getOne(id);
     }
+    public Integer getLevel(String id) {
+        return findOne(id).getLevel();
+    }
 
     public void update(GridDTO gridDTO) {
         Grid grid = findOne(gridDTO.getId());
@@ -356,9 +359,9 @@ public class GridService {
         return one.getGrid().getRecord().getCoordinate();
     }
 
-    public List<TreeVO> searchTree(List<Integer> levels) {
+    public List<TreeVO> searchTree(Integer level) {
 
-        List<Grid> grids = gridRepository.findAllByLevelIn(levels);
+        List<Grid> grids = gridRepository.findAllByLevelLessThan(level);
         return TreeMapper.INSTANCE.gridListToTreeVOList(grids);
     }
 

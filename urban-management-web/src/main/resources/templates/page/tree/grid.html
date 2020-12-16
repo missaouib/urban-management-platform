@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>选择事件类型</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: ztree_css"/>
@@ -18,18 +18,18 @@
         <input id="treeId" name="treeId" type="hidden"/>
         <input id="treeName" name="treeName" type="hidden"/>
         <input id="treeLevel" name="treeLevel" type="hidden"/>
-<!--        <div id="search" style="display: flex; justify-content: space-between;">-->
-<!--            <label for="keyword">关键字：</label>-->
-<!--            <input type="text" class="find_input" id="keyword">-->
-<!--            <input type="button" class="check_btn" value="搜索" onclick="$.tree.searchNode()">-->
-<!--        </div>-->
+        <!--        <div id="search" style="display: flex; justify-content: space-between;">-->
+        <!--            <label for="keyword">关键字：</label>-->
+        <!--            <input type="text" class="find_input" id="keyword">-->
+        <!--            <input type="button" class="check_btn" value="搜索" onclick="$.tree.searchNode()">-->
+        <!--        </div>-->
         <div class="treeDemo">
             <ul id="tree" class="ztree"></ul>
         </div>
     </div>
 </div>
 
-    <!--    </div>-->
+<!--    </div>-->
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
 
@@ -42,26 +42,21 @@
         var options = {
             expandLevel: 2,
             datas: tree,
-            onClick : zTreeOnClick
+            onClick: zTreeOnClick
         };
         $.tree.init(options);
     })
 
     function zTreeOnClick(event, treeId, treeNode) {
-        var treeId = "";
-        var treeName = ""
-        var treeLevel = 0;
-        if (treeNode.children === undefined) {
-            treeId = treeNode.id;
-            treeName = treeNode.name;
-            treeLevel = treeNode.level+1;
-        }
+
+        var treeId = treeNode.id;
+        var treeName = treeNode.name;
+        var treeLevel = treeNode.level + 1;
         $("#treeId").val(treeId);
         $("#treeName").val(treeName);
         $("#treeLevel").val(treeLevel);
 
     }
-
 
 
 </script>
