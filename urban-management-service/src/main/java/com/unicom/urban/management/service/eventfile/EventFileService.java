@@ -1,6 +1,5 @@
 package com.unicom.urban.management.service.eventfile;
 
-import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.dao.eventfile.EventFileRepository;
 import com.unicom.urban.management.pojo.entity.EventFile;
 import com.unicom.urban.management.service.kv.KVService;
@@ -35,7 +34,6 @@ public class EventFileService {
     }
 
     public List<EventFile> joinEventFileListToObjet(List<String> fileUrlList,Integer fileType) {
-        /* todo 此处应该是图片集合 音频集合 视频集合的总和 目前只有图片 */
         List<EventFile> eventFileList = new ArrayList<>(fileUrlList.size());
         if (CollectionUtils.isNotEmpty(fileUrlList)) {
             for (String s : fileUrlList) {
@@ -56,16 +54,12 @@ public class EventFileService {
                     default:
                         break;
                 }
-
                 eventFileList.add(eventFile);
             }
         }
-        /* todo 音频 */
-        /* todo 视频 */
         return this.saveAll(eventFileList);
     }
     public List<EventFile> joinEventFileListToObjetAfter(List<String> fileUrlListUrlListAfter,Integer fileType) {
-        /* todo 此处应该是图片集合 音频集合 视频集合的总和 目前只有图片 */
         List<EventFile> eventFileList = new ArrayList<>(fileUrlListUrlListAfter.size());
         if (CollectionUtils.isNotEmpty(fileUrlListUrlListAfter)) {
             for (String s : fileUrlListUrlListAfter) {
@@ -88,8 +82,6 @@ public class EventFileService {
                 eventFileList.add(eventFile);
             }
         }
-        /* todo 音频 */
-        /* todo 视频 */
         return this.saveAll(eventFileList);
     }
 }
