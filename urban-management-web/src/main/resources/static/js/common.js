@@ -1232,15 +1232,18 @@ function saveIdioms(data){
 		$.operate.submit(url, "post", "json", {"idiomsValue":idiomsValue});
 		getIdioms();
 	});
-	function getIdioms(){
-		let url = "/idioms/getIdioms";
+}
+/**
+ * 获取惯用语
+ */
+function getIdioms(){
+	let url = "/idioms/getIdioms";
 
-		$.ajaxUtil.get(url, function (e) {
-			let html='';
-			$(e.data).each(function (index, value) {
-				html+="<ul><li class='idioms'>"+value+"</li></ul>"
-			});
-			$("#wordSays").html(html)
+	$.ajaxUtil.get(url, function (e) {
+		let html='';
+		$(e.data).each(function (index, value) {
+			html+="<ul><li class='idioms'>"+value+"</li></ul>"
 		});
-	}
+		$("#wordSays").html(html)
+	});
 }

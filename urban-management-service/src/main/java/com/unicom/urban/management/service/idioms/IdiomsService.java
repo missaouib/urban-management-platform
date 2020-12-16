@@ -30,17 +30,18 @@ public class IdiomsService {
     @Autowired
     private IdiomsRepository idiomsRepository;
     public void saveIdioms(IdiomsVO idiomsVO){
-        String idiomsValue = idiomsVO.getIdiomsValue().trim();
-        char[] c = idiomsValue.toCharArray();
-        StringBuilder value = new StringBuilder();
+        String  value = idiomsVO.getIdiomsValue().trim();
+        char[] c = value.toCharArray();
+        StringBuilder stringBuilder = new StringBuilder();
         //去除数字字母汉字以外的字符。
         for (int i = 0; i < c.length; i++) {
             if (String.valueOf(c[i]).matches("[0-9a-zA-Z\u4e00-\u9fa5]")){
-                value.append(c[i]);
+                stringBuilder.append(c[i]);
             }
 
         }
-        Idioms idiomsOld = idiomsRepository.findAllByIdiomsValue(value.toString());
+        String idiomsValue = stringBuilder.toString();
+        Idioms idiomsOld = idiomsRepository.findAllByIdiomsValue(idiomsValue);
         if (ObjectUtils.isNotEmpty(idiomsOld)){
             throw new DataValidException("此惯用语已存在无需保存");
         }
