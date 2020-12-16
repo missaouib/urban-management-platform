@@ -257,3 +257,7 @@
 .head_buttons_group{
     width: 100%;display: flex;justify-content: flex-end;align-items: center;font-size: 12px
 }
+.withAdd label.error{
+    right: 36px!important;
+    margin-top: -10px!important;
+}

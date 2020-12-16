@@ -38,7 +38,7 @@
             <div class="top table2_top">
                 <div class="notice_bot">
                     <div class="r_right but_p girdBtnGroup" id="eventButton">
-                        <button class="but_save" type="button" style="margin-right: 10px" id="saveUserBtn"
+                        <button class="but_save" type="submit" style="margin-right: 10px" id="saveUserBtn"
                                 onclick="saveUser()">新增
                         </button>
                         <button class="but_save" type="button" style="margin-right: 10px" id="updateUserBtn"
@@ -54,22 +54,22 @@
                         <tbody>
                         <input type="hidden" id="id" name="id" value="">
                         <tr>
-                            <td><span></span>人员姓名</td>
+                            <td><span>*</span>人员姓名</td>
                             <td>
-                                <input id="name" name="name" placeholder="" class="" type="text">
+                                <input id="name" name="remote" placeholder="" class="" type="text" required>
                             </td>
                             <td><span></span>人员性别</td>
                             <td>
-                                <select name="sex" required>
+                                <select name="sex">
                                     <option value="男">男</option>
                                     <option value="女">女</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td><span></span>人员帐号</td>
+                            <td><span>*</span>人员帐号</td>
                             <td>
-                                <input id="username" name="username" placeholder="" class="" type="text">
+                                <input id="username" name="required" placeholder="" class="" type="text" required>
                             </td>
                             <td><span></span>出生日期</td>
                             <td>
@@ -80,9 +80,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td><span></span>联系方式</td>
+                            <td><span>*</span>联系方式</td>
                             <td>
-                                <input id="mobileNumber" name="mobileNumber" placeholder="" class="" type="text">
+                                <input id="mobileNumber" name="phone" placeholder="" class="" type="text" required>
                             </td>
                             <td><span></span>人员角色</td>
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
@@ -113,13 +113,13 @@
                         <tr class="hideGroup roleBox">
                             <td><span></span>创建时间</td>
                             <td>
-                                <input size="16" class="" id="createTime" type="text" value="" required
+                                <input size="16" class="" id="createTime" type="text" value=""
                                        readonly="readonly">
                             </td>
                             <td><span></span>账号状态</td>
                             <td>
                                 <input id="sts" placeholder="" class="" type="text" readonly="readonly"
-                                       required>
+                                       >
                             </td>
                         </tr>
                         <tr>
@@ -460,6 +460,96 @@
         let data = $('#userForm').serialize();
         $.operate.saveAndReload(deleteUserUrl, data);
     }
+
+    jQuery.extend(jQuery.validator.messages, {
+        required: "必填",
+        phone: "手机号格式不正确",
+        remote: "必填",
+        email: "请输入正确格式的电子邮件",
+        url: "请输入合法的网址",
+        date: "请输入合法的日期",
+        dateISO: "请输入合法的日期 (ISO).",
+        number: "请输入合法的数字",
+        digits: "只能输入整数",
+        creditcard: "请输入合法的信用卡号",
+        equalTo: "请再次输入相同的值",
+        accept: "请输入拥有合法后缀名的字符串",
+        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
+        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
+        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
+        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
+        min: jQuery.validator.format("请输入一个最小为{0} 的值")
+    });
+
+    $("#userForm").validate({
+        debug: true,
+        ignore: "",
+        submitHandler: function (form) {
+            var params = $(form).serialize(); //串行化表单参数
+            $.post("user", params, function (result) {
+                if (result.ok) {//注册成功
+                    location.href = "register_ok.html";
+                } else {//注册失败
+                    alert(result.msg);
+                    $("#checkImg").click();
+                }
+            }, "json");
+        },
+        rules: {
+            userName: {
+                required: true
+            },
+            loginName: {
+                required: true,
+                // rangelength: [5, 8]
+            },
+            phonenumber: {
+                required: true,
+                // rangelength: [6, 12]
+            },
+            problemescription: {
+                required: true,
+                // rangelength: [6, 12],
+                /*重复密码需要与原密码相同的要求*/
+                // equalTo: "#pwd"
+            },
+            safeLevel: {
+                required: true
+            },
+            findTime: {
+                required: true,
+                // range: [26, 50]
+            },
+            enterprise: {
+                required: true
+            },
+            department: {
+                required: true
+            },
+            handleTime: {
+                required: true
+            }, charge: {
+                required: true
+            },
+            question: {
+                required: true
+            },
+            closeTime: {
+                required: true,
+                // email: true
+            },
+            // idcard: {
+            //     card: true
+            // },
+            // phone: {
+            //     phone: true
+            // }
+        },
+        messages: {
+
+        }
+    });
 
 </script>
 </body>
