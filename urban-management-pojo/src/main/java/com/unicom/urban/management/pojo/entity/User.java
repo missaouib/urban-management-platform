@@ -107,4 +107,8 @@ public class User extends BaseEntity {
         this.id = id;
     }
 
+    public static final Integer ENABLE = 0;
+
+    public static final Integer DISABLED = 1;
+
 }
