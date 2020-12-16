@@ -1,6 +1,5 @@
 package com.unicom.urban.management.pojo.dto;
 
-import com.unicom.urban.management.pojo.entity.EventFile;
 import lombok.Data;
 
 import java.util.List;
@@ -26,6 +25,14 @@ public class StatisticsDTO {
      * 图片集合
      */
     private List<String> imageUrlList;
+    /**
+     * 音频集合
+     */
+    private List<String> musicUrlList;
+    /**
+     * 视频集合
+     */
+    private List<String> videoUrlList;
     /**
      * 处理人
      */

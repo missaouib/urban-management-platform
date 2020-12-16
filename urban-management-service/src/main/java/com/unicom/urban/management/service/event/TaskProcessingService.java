@@ -552,7 +552,13 @@ public class TaskProcessingService {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(statisticsDTO.getEventId());
 
         if (statisticsDTO.getImageUrlList() != null) {
-            List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList(),1);
+            List<EventFile> eventFileList = new ArrayList<>();
+            List<EventFile> eventFileListImage = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList(), 1);
+            List<EventFile> eventFileListVideo = eventFileService.joinEventFileListToObjet(statisticsDTO.getVideoUrlList(), 2);
+            List<EventFile> eventFileListMusic = eventFileService.joinEventFileListToObjet(statisticsDTO.getMusicUrlList(), 3);
+            eventFileList.addAll(eventFileListImage);
+            eventFileList.addAll(eventFileListVideo);
+            eventFileList.addAll(eventFileListMusic);
             statistics.setEventFileList(eventFileList);
         }
         statistics.setUser(SecurityUtil.getUser().castToUser());
