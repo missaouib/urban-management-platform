@@ -130,7 +130,7 @@
         var body = layer.getChildFrame('body', index);
         if ($("#ifLevel").val() !== null && $("#ifLevel").val() !== "") {
             if ((body.find('#treeLevel').val()) !== $("#ifLevel").val()) {
-                layer.close(index);
+                $.modal.alertWarning("请选择同级节点");
                 return;
             }
         }
