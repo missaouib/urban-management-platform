@@ -1238,7 +1238,7 @@ function saveIdioms(data){
  */
 function getIdioms(){
 	let url = "/idioms/getIdioms";
-
+	$("#wordSays").empty();
 	$.ajaxUtil.get(url, function (e) {
 		let html='';
 		$(e.data).each(function (index, value) {
