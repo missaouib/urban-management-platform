@@ -1187,6 +1187,7 @@
 
     /* 完成任务 派核实 监督员 */
     function setValueForCompleteEvent(data) {
+        $("#textIdioms").val('');
         $("#eventId").val(data.value);
         let id = data.id;
         $("#button").val(id);
