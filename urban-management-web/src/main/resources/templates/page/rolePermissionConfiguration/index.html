@@ -234,13 +234,15 @@
                     let nodes1 = treeObj1.transformToArray(treeObj1.getNodes());
                     for (let i = 0; i < nodes1.length; i++) {
                         $(data).each(function (index, value) {
-                            if (value.id === nodes1[i].id && value.checkbox === 1) {
-                                nodes1[i].checked = true;
+                            if (value.id === nodes1[i].id) {
+                                if (value.checkbox === 1) {
+                                    nodes1[i].checked = true;
+                                }else {
+                                    nodes1[i].checked = false;
+                                }
                                 treeObj1.updateNode(nodes1[i]);
-                                return false;
                             }
                         });
-
                     }
                 })
                 $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 2+"&roleId="+roleId, function (e) {
@@ -249,13 +251,15 @@
                     let nodes2 = treeObj2.transformToArray(treeObj2.getNodes());
                     for (let i = 0; i < nodes2.length; i++) {
                         $(data).each(function (index, value) {
-                            if (value.id === nodes2[i].id && value.checkbox === 1) {
-                                nodes2[i].checked = true;
+                            if (value.id === nodes2[i].id ) {
+                                if (value.checkbox === 1) {
+                                    nodes2[i].checked = true;
+                                }else {
+                                    nodes2[i].checked = false;
+                                }
                                 treeObj2.updateNode(nodes2[i]);
-                                return false;
                             }
                         });
-
                     }
                 })
                 $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 3+"&roleId="+roleId, function (e) {
@@ -264,10 +268,13 @@
                     let nodes3 = treeObj3.transformToArray(treeObj3.getNodes());
                     for (let i = 0; i < nodes3.length; i++) {
                         $(data).each(function (index, value) {
-                            if (value.id === nodes3[i].id && value.checkbox === 1) {
-                                nodes3[i].checked = true;
+                            if (value.id === nodes3[i].id ) {
+                                if (value.checkbox === 1) {
+                                    nodes3[i].checked = true;
+                                }else {
+                                    nodes3[i].checked = false;
+                                }
                                 treeObj3.updateNode(nodes3[i]);
-                                return false;
                             }
                         });
                     }

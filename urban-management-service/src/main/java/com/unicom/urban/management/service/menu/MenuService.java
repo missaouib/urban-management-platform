@@ -153,23 +153,37 @@ public class MenuService {
     }
 
     public List<MenuVO> findAll() {
-        List<Menu> menuList = null;
+        List<Menu> menuList;
         List<MenuVO> menuVOList = new ArrayList<>();
-        String roleId = SecurityUtil.getRoleId().get(0);
-//        if (SecurityUtil.getRoleId().contains("1")){
-//            menuList = menuRepository.findAll(Sort.by(Sort.Direction.ASC,"sort"));
-//        }else {
+        List<String> roleIdList = SecurityUtil.getRoleId();
+        boolean flag = false;
+        for (String roleId : roleIdList) {
             Role role = roleRepository.findById(roleId).orElse(new Role());
             menuList = role.getMenuList();
-//        }
-        for (Menu m : menuList){
-            MenuVO vo = new MenuVO();
-            vo.setId(m.getId());
-            vo.setParentId(m.getParent() == null ? "" : m.getParent().getId());
-            vo.setIcon(m.getIcon() == null ? "" : m.getIcon());
-            vo.setName(m.getName());
-            vo.setPath(m.getPath());
-            menuVOList.add(vo);
+            for (Menu m : menuList) {
+                if (CollectionUtils.isNotEmpty(menuVOList)) {
+                    for (MenuVO menuVO : menuVOList) {
+                        //一个用户多个角色去除重复菜单
+                        if (menuVO.getId().equals(m.getId())) {
+                            flag = false;
+                            break;
+                        }else {
+                            flag = true;
+                        }
+                    }
+                }else {
+                    flag = true;
+                }
+                if (flag){
+                    MenuVO vo = new MenuVO();
+                    vo.setId(m.getId());
+                    vo.setParentId(m.getParent() == null ? "" : m.getParent().getId());
+                    vo.setIcon(m.getIcon() == null ? "" : m.getIcon());
+                    vo.setName(m.getName());
+                    vo.setPath(m.getPath());
+                    menuVOList.add(vo);
+                }
+            }
         }
         return menuVOList;
     }
