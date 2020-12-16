@@ -33,7 +33,7 @@ public class IdiomsService {
         String idiomsValue = idiomsVO.getIdiomsValue().trim();
         char[] c = idiomsValue.toCharArray();
         StringBuilder value = new StringBuilder();
-        //去除数字字母汉子以外的字符。
+        //去除数字字母汉字以外的字符。
         for (int i = 0; i < c.length; i++) {
             if (String.valueOf(c[i]).matches("[0-9a-zA-Z\u4e00-\u9fa5]")){
                 value.append(c[i]);
