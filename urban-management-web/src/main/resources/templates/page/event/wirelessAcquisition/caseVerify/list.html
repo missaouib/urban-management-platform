@@ -383,14 +383,9 @@
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
                             <span class="sendText" id="btnOpinion"><i>*</i>意见</span>
-                            <textarea type="text" id="opinions" name="opinions"></textarea>
+                            <textarea type="text" id="textIdioms" onmouseout="saveIdioms(this)"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays" style="background-color:#fff;">
-                                <ul>
-                                    <li class="idioms">请快速处理</li>
-                                    <li class="idioms">请认真处理</li>
-                                    <li class="idioms">请根据实际情况酌情处置</li>
-                                </ul>
                             </div>
                         </div>
                         <div class="send">
@@ -490,26 +485,7 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: swiper_js"/>
 <script type="text/javascript" th:inline="javascript">
-    //惯用语
-    $("#alwaysSay").click(function () {
-        $("#wordSays").stop().fadeToggle(300)
-    });
 
-    $("#wordSays").on("click", ".idioms", function () {
-        let idioms = $(this).html()
-        $("#textIdioms").val($("#textIdioms").val() + idioms);
-        $("#wordSays").fadeOut(300)
-    });
-
-    $("#alwaysSay_tag").click(function () {
-        $("#wordSays_tag").stop().fadeToggle(300)
-    });
-
-    $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
-        let idioms = $(this).html()
-        $("#textIdioms_tag").html(idioms);
-        $("#wordSays_tag").fadeOut(300)
-    });
     //附件详情弹出
     $(".duck_title span").click(function (e) {
         $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
@@ -558,6 +534,8 @@
             $("#textIdioms_tag").html(idioms);
             $("#wordSays_tag").fadeOut(300)
         });
+
+        getIdioms();
 
         getGridPublishUrl()
 
@@ -628,14 +606,12 @@
 
     function getGridPublishUrl() {
         $.ajaxUtil.get(getGridUrl, function (e) {
-            // console.log("e", e);
             /*
             * 初始渲染底图g
             * */
             var urlParam = e.data.split("?");
             var url = urlParam[0];
             var param = urlParam[1];
-            // console.log(url+","+param)
             var ImageVector = new ol.layer.Tile({
                 source: new ol.source.TileWMS({
                     url: url,
@@ -853,16 +829,30 @@
             if (file.length > 0) {
 
                 $("#imageList").empty();
+                $("#videoList").empty();
+                $("#musicList").empty();
                 let imageHtml = "";
-                for (let i = 0; i < file.length; i++) {
+                let videoHtml = "";
+                let musicHtml = "";
+                if (file[i].type=== '图片'){
                     imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
                         "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
                         "</div>";
+                } else if (file[i].type=== '视频') {
+                    videoHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                        "<video controls src='" + showUrl + file[i].url + "'>" +
+                        "</div>";
+                } else if (file[i].type=== '音频') {
+                    musicHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                        "<audio controls src='" + showUrl + file[i].url + "'>" +
+                        "</div>";
                 }
+
                 $("#imageList").html(imageHtml);
+                $("#videoList").html(videoHtml);
+                $("#musicList").html(musicHtml);
             }
             /*流程图*/
-            console.log("eventImg",e.data.processInstanceId)
             $("#eventImg").attr('src', img + e.data.processInstanceId);
             /* 坐标 */
             setPoint(e.data.x, e.data.y);
@@ -1018,7 +1008,7 @@
     let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
     //上传 照片视频音频
     $(function () {
-
+        getIdioms();
         $(".input-id").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
