@@ -278,9 +278,9 @@ public class UserService {
             user.setBirth(birth);
         }
         user.setPhone(userDTO.getMobileNumber());
-        if(userDTO.getSts()==null){
-            user.setSts(1);
-        }else{
+        if (userDTO.getSts() == null) {
+            user.setSts(User.DISABLED);
+        } else {
             user.setSts(userDTO.getSts());
         }
         user.setProfilePhotoUrl("http://www.baidu.com/");
@@ -309,9 +309,9 @@ public class UserService {
                 user.setSort(Integer.valueOf(userDTO.getSort()));
             }
         }
-        if(userDTO.getSts()==null){
-            user.setSts(1);
-        }else{
+        if (userDTO.getSts() == null) {
+            user.setSts(User.DISABLED);
+        } else {
             user.setSts(userDTO.getSts());
         }
         user.setSex(userDTO.getSex());
