@@ -5,10 +5,12 @@ import cn.hutool.crypto.CryptoException;
 import com.unicom.urban.management.common.constant.CaptchaConstant;
 import com.unicom.urban.management.common.exception.authentication.BadCaptchaException;
 import com.unicom.urban.management.common.exception.authentication.CaptchaExpiredException;
+import com.unicom.urban.management.common.exception.authentication.UsernameMoreThanOneException;
 import com.unicom.urban.management.common.util.RSAUtil;
 import com.unicom.urban.management.web.framework.security.captcha.Captcha;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -53,6 +55,9 @@ public class UserDetailsAuthenticationProvider implements AuthenticationProvider
             user = userDetailsService.loadUserByUsername(username);
             preAuthenticationChecks(user);
             additionalAuthenticationChecks(user, (UsernamePasswordCaptchaAuthenticationToken) authentication);
+        } catch (IncorrectResultSizeDataAccessException exception) {
+            log.error("用户名重复了", exception);
+            throw new UsernameMoreThanOneException("用户名重复");
         } catch (AuthenticationException exception) {
             throw exception;
         } catch (CryptoException exception) {

@@ -2,6 +2,7 @@ package com.unicom.urban.management.web.framework.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.common.exception.authentication.UsernameMoreThanOneException;
 import com.unicom.urban.management.pojo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,19 @@ public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoin
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         boolean ajaxRequest = isAjaxRequest(request);
         if (ajaxRequest) {
-            Result responseBody = Result.fail(403, "认证已失效,需要重新登录");
             response.setCharacterEncoding("UTF-8");
             response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+            response.setStatus(HttpServletResponse.SC_OK);
             PrintWriter writer = response.getWriter();
+            if (authException instanceof UsernameMoreThanOneException) {
+                Result responseBody = Result.fail(500, "用户数据出现异常,请联系管理员");
+                writer.write(objectMapper.writeValueAsString(responseBody));
+                writer.close();
+                return;
+            }
+
+            Result responseBody = Result.fail(403, "认证已失效,需要重新登录");
+
             writer.write(objectMapper.writeValueAsString(responseBody));
             writer.close();
         } else {

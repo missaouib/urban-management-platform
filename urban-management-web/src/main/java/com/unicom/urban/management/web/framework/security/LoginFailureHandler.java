@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unicom.urban.management.common.exception.authentication.BadCaptchaException;
 import com.unicom.urban.management.common.exception.authentication.CaptchaExpiredException;
 import com.unicom.urban.management.common.exception.authentication.NotDeptException;
+import com.unicom.urban.management.common.exception.authentication.UsernameMoreThanOneException;
 import com.unicom.urban.management.pojo.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,10 @@ public class LoginFailureHandler extends AbstractAuthenticationHandler implement
         if (exception instanceof DisabledException) {
             message = 6;
             result = Result.fail(302, "账户未激活,请联系超级管理员");
+        }
+        if (exception instanceof UsernameMoreThanOneException) {
+            message = 7;
+            result = Result.fail(302, "用户数据出现错误,请联系超级管理员");
         }
         try {
             loginLog(request, response, message);
