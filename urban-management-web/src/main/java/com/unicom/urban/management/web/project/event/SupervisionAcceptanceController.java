@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -267,7 +268,13 @@ public class SupervisionAcceptanceController {
      */
     @PostMapping("/completeByReceptionistWithSendVerification")
     public Result completeByReceptionistWithSendVerification(EventDTO eventDTO) {
-        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);
+        List<EventFile> eventFileList = new ArrayList<>();
+        List<EventFile> eventFileListImage = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);
+        List<EventFile> eventFileListVideo = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(), 2);
+        List<EventFile> eventFileListMusic = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(), 3);
+        eventFileList.addAll(eventFileListImage);
+        eventFileList.addAll(eventFileListVideo);
+        eventFileList.addAll(eventFileListMusic);
         eventDTO.setEventFileList(eventFileList);
         switch (eventDTO.getButton()) {
             /*

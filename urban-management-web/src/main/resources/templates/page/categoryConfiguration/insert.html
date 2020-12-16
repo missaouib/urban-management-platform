@@ -123,13 +123,13 @@
 
     function add() {
         let count = $("#addTable").bootstrapTable('getData').length;
-        $("#addTable").bootstrapTable('insertRow', {
+        let data = $("#addTable").bootstrapTable('insertRow', {
             index: count,
             row: {
                 id: count + 1,
                 name: 'test',
                 username: '2',
-                phone:'第一'
+                phone: '第一'
             }
         });
     }
@@ -238,13 +238,13 @@
 
     function tableCommon() {
         let counts = $("#tableCommon").bootstrapTable('getData').length;
-        $("#tableCommon").bootstrapTable('insertRow', {
+        let data = $("#tableCommon").bootstrapTable('insertRow', {
             index: counts,
             row: {
                 ids: counts + 1,
                 names: 'test',
                 usernames: '2',
-                phones:'第一'
+                phones: '第一'
             }
         });
     }
