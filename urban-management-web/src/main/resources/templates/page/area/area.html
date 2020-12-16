@@ -36,9 +36,10 @@
                         <tr>
                             <td><span>*</span>名称</td>
                             <td>
-                                <input id="gridName" name="required" placeholder="" class="" type="text" required>
+                                <input id="gridName" name="gridName" placeholder="" class="" type="text">
                                 <input id="id" name="gridId" placeholder="" class="" type="hidden">
                                 <input id="level" name="level" placeholder="" class="" type="hidden" value="1">
+                                <input type="hidden" id="ifLevel">
                             </td>
                         </tr>
                         <tr>
@@ -64,10 +65,13 @@
                         <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn"
                                 onclick="formReset()">清空
                         </button>
+                        <button class="but_save" type="submit" onclick="save()">新增</button>
+
+                        <button class="but_save" type="submit" onclick="area()">修改</button>
                         <button class="but_save" type="button" style="margin-right: 10px" id="deleteRoleBtn"
                                 onclick="deleteRole()">删除
                         </button>
-                        <button class="but_save" type="submit" onclick="area()">保存</button>
+
                     </div>
                 </div>
             </div>
@@ -110,7 +114,9 @@
     };
 
     function selectGridTree() {
-        var url = /*[[@{/tree/grid?num=two}]]*/ "/tree/grid?num=two";
+        var id = $("#id").val();
+        var url = /*[[@{/tree/grid}]]*/ "/tree/grid?num=two";
+        url += "?level=3&id=" + id
         var options = {
             title: '请选择区域',
             width: "380",
@@ -122,10 +128,15 @@
 
     function gridDoSubmit(index, layero) {
         var body = layer.getChildFrame('body', index);
+        if ($("#ifLevel").val() !== null && $("#ifLevel").val() !== "") {
+            if ((body.find('#treeLevel').val()) !== $("#ifLevel").val()) {
+                layer.close(index);
+                return;
+            }
+        }
         $("#pid").val(body.find('#treeId').val());
         $("#parentName").val(body.find('#treeName').val());
-        $("#level").val(body.find('#treeLevel').val());
-
+        $("#level").val(body.find('#treeLevel').val() + 1);
         layer.close(index);
     }
 
@@ -158,13 +169,14 @@
 
     function toCollocation() {
         var id = $("#id").val();
-        window.parent.$.learuntab.myAddTab('配置网格', '/grid/toCollocation?id='+id, 'data_id')
+        window.parent.$.learuntab.myAddTab('配置网格', '/grid/toCollocation?id=' + id, 'data_id')
     }
 
     function zTreeOnClick(event, treeId, treeNode) {
         if (treeNode.level === 2) {
             $("#collocation").css("display", "block")
         }
+        $("#ifLevel").val(treeNode.level);
         $("#id").val(treeNode.id);
         $("#level").val(treeNode.level + 1);
         $("#gridName").val(treeNode.name);
@@ -185,8 +197,13 @@
         $("#gridName").val("");
         $("#parentName").val("");
         $("#pid").val("");
+        $("#ifLevel").val("");
     }
 
+    function save() {
+        $("#gridId").val("");
+        area();
+    }
 
     function area() {
         let data = $('#areaForm').serialize();
@@ -285,9 +302,7 @@
             //     phone: true
             // }
         },
-        messages: {
-
-        }
+        messages: {}
     });
 </script>
 </body>

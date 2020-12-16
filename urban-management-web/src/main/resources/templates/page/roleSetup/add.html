@@ -144,7 +144,7 @@
         saveAndReload(saveUserAndRoleURL, {"roleId": roleId,"userIdList" : userIdList})
     }
     function zTreeOnClick(event, treeId, treeNode) {
-        if(treeNode.isParent){
+        if(treeNode.isParent || treeNode.levelOrNot === null){
             $.modal.alertWarning("请选择角色");
             return false;
         }

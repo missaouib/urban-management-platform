@@ -1964,3 +1964,19 @@ span.search_highlight {
     height: 30px;
     overflow: hidden;
 }
+/*.ico_open,.ico_close{*/
+.treeDept{
+    background-image: url("../img/treedept.png") !important;
+    background-position: 0 0!important;
+    background-size: 100% 100%;
+}
+.treeRole{
+    background-image: url("../img/treerole.png") !important;
+    background-position: 0 0!important;
+    background-size: 100% 100%;
+}
+.treeUser{
+    background-image: url("../img/treeuser.png") !important;
+    background-position: 0 0!important;
+    background-size: 100% 100%;
+}

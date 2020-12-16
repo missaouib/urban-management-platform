@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.idioms;
 
+import cn.hutool.core.util.CharUtil;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.idioms.IdiomsRepository;
@@ -7,7 +8,9 @@ import com.unicom.urban.management.mapper.IdiomsMapper;
 import com.unicom.urban.management.pojo.entity.Idioms;
 import com.unicom.urban.management.pojo.vo.IdiomsVO;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.CharUtils;
 import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,7 +31,16 @@ public class IdiomsService {
     private IdiomsRepository idiomsRepository;
     public void saveIdioms(IdiomsVO idiomsVO){
         String idiomsValue = idiomsVO.getIdiomsValue().trim();
-        Idioms idiomsOld = idiomsRepository.findAllByIdiomsValue(idiomsValue);
+        char[] c = idiomsValue.toCharArray();
+        StringBuilder value = new StringBuilder();
+        //去除数字字母汉字以外的字符。
+        for (int i = 0; i < c.length; i++) {
+            if (String.valueOf(c[i]).matches("[0-9a-zA-Z\u4e00-\u9fa5]")){
+                value.append(c[i]);
+            }
+
+        }
+        Idioms idiomsOld = idiomsRepository.findAllByIdiomsValue(value.toString());
         if (ObjectUtils.isNotEmpty(idiomsOld)){
             throw new DataValidException("此惯用语已存在无需保存");
         }

@@ -10,7 +10,7 @@
 
 </style>
 <body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
-<div class="notice_main ">
+<div class="notice_main">
     <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
     <div class="notice_check">
         <form id="search-form">
@@ -20,25 +20,25 @@
             </p>
         </form>
     </div>
-    <div class="lian roleBox">
-        <div class="notice_bot" style="padding-left: 10px">
-            <div class="r_right but_p girdBtnGroup" id="eventButton" style="justify-content: start!important;">
-                <button class="but_save" type="button" style="margin-right: 10px" onclick="add()">新增</button>
-                <button class="but_save" type="button" id="sureOne">删除</button>
-            </div>
-        </div>
-        <table id="addTable" class="component"></table>
-    </div>
+<!--    <div class="lian roleBox">-->
+<!--        <div class="notice_bot" style="padding-left: 10px">-->
+<!--            <div class="r_right but_p girdBtnGroup" id="eventButton" style="justify-content: start!important;">-->
+<!--                <button class="but_save" type="button" style="margin-right: 10px" onclick="add()">新增</button>-->
+<!--                <button class="but_save" type="button" id="sureOne">删除</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <table id="addTable" class="table_style component"></table>-->
+<!--    </div>-->
 
-    <div class="jiean roleBox">
-        <div class="notice_bot" style="padding-left: 10px">
-            <div class="r_right but_p girdBtnGroup" id="" style="justify-content: start!important;">
-                <button class="but_save" type="button" style="margin-right: 10px" onclick="tableCommon()">新增</button>
-                <button class="but_save" type="button" id="sureTwo">删除</button>
-            </div>
-        </div>
-        <table id="tableCommon" class="component"></table>
-    </div>
+<!--    <div class="jiean roleBox">-->
+<!--        <div class="notice_bot" style="padding-left: 10px">-->
+<!--            <div class="r_right but_p girdBtnGroup" id="" style="justify-content: start!important;">-->
+<!--                <button class="but_save" type="button" style="margin-right: 10px" onclick="tableCommon()">新增</button>-->
+<!--                <button class="but_save" type="button" id="sureTwo">删除</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <table id="tableCommon" class="component"></table>-->
+<!--    </div>-->
 </div>
 
 
@@ -51,16 +51,29 @@
     $(function () {
         queryUserList();
 
+        tableRefresh();
+        tableRefreshAgain();
+
         $(document).on("click",".less_table",function(){
             // console.log(row)
         });
 
         $(document).on("click","#lian",function(){
-            $(".lian").removeClass("roleBox")
+            // $('#tableCommon').bootstrapTable('destroy');
+            // $(".jiean").remove();
+            // tableRefresh();
+            // $('#addTable').bootstrapTable('refresh');
+            $(".lian").removeClass("roleBox");
+            $(".jiean").addClass("roleBox");
         });
 
         $(document).on("click","#jiean",function(){
-            $(".jiean").removeClass("roleBox")
+            // $('#addTable').bootstrapTable('destroy');
+            // $(".lian").remove();
+            // tableRefreshAgain();
+            // $('#tableCommon').bootstrapTable('refresh');
+            $(".lian").addClass("roleBox");
+            $(".jiean").removeClass("roleBox");
         });
     });
 
@@ -121,81 +134,84 @@
         });
     }
 
-    $('#addTable').bootstrapTable({
-        //点击全选框时触发的操作
-        onCheckAll: function(rows) {
-            console.log("点击全选框时触发的操作",rows);
-        },
-        //  点击每行进行函数的触发
-        // onClickRow: function(row, tr, flied) {
-        //
-        //
-        // },
-        //点每一个单选框时触发的操作
-        onCheck: function(row) {
-            console.log("点每一个单选框时触发的操作",row);
-        },
-
-        //取消每一个单选框时对应的操作；
-        onUncheck: function(row) {
-            console.log("取消每一个单选框时对应的操作",row);
-        },
-
-        ////取消所有
-        onUncheckAll: function(row) {
-            console.log("取消所有",row);
-        },
-        columns: [
-            {
-                field: 'id',
-                title: '序号',
+    function tableRefresh() {
+        $('#addTable').bootstrapTable({
+            //点击全选框时触发的操作
+            onCheckAll: function(rows) {
+                console.log("点击全选框时触发的操作",rows);
             },
-            {
-                checkbox: true,
-                title: '编辑',
-                class: "check"
-            },
-            {
-                title: '类别名称',
-                field: 'name'
-            },
-            {
-                title: '立案区域',
-                field: 'username'
+            //  点击每行进行函数的触发
+            // onClickRow: function(row, tr, flied) {
+            //
+            //
+            // },
+            //点每一个单选框时触发的操作
+            onCheck: function(row) {
+                console.log("点每一个单选框时触发的操作",row);
             },
 
-            {
-                title: '立案条件',
-                field: 'phone',
-                formatter:function (value,row,index) {
-                    return "<input type='text' >"
-                }
+            //取消每一个单选框时对应的操作；
+            onUncheck: function(row) {
+                console.log("取消每一个单选框时对应的操作",row);
             },
-            {
-                title: '1类',
-                field: 'one',
-                formatter: priceForm
+
+            ////取消所有
+            onUncheckAll: function(row) {
+                console.log("取消所有",row);
             },
-            {
-                title: '2类',
-                field: 'two',
-                formatter: priceForm,
-            },
-            {
-                title: '3类',
-                field: 'three',
-                formatter: priceForm,
-            },
-            {
-                title: '操作',
-                field: 'lesstable',
-                formatter: function (value, row)  {
-                    let a = "<a class='less_table' id='"+ row.id +"' onclick='delDetail(this)'><img src='../img/lessTable.png'></a>";
-                    return a;
+            columns: [
+                {
+                    field: 'id',
+                    title: '序号',
                 },
-            },
-        ]
-    });
+                {
+                    checkbox: true,
+                    title: '编辑',
+                    class: "check"
+                },
+                {
+                    title: '类别名称',
+                    field: 'name'
+                },
+                {
+                    title: '立案区域',
+                    field: 'username'
+                },
+
+                {
+                    title: '立案条件',
+                    field: 'phone',
+                    formatter:function (value,row,index) {
+                        return "<input type='text' >"
+                    }
+                },
+                {
+                    title: '1类',
+                    field: 'one',
+                    formatter: priceForm
+                },
+                {
+                    title: '2类',
+                    field: 'two',
+                    formatter: priceForm,
+                },
+                {
+                    title: '3类',
+                    field: 'three',
+                    formatter: priceForm,
+                },
+                {
+                    title: '操作',
+                    field: 'lesstable',
+                    formatter: function (value, row)  {
+                        let a = "<a class='less_table' id='"+ row.id +"' onclick='delDetail(this)'><img src='../img/lessTable.png'></a>";
+                        return a;
+                    },
+                },
+            ]
+        });
+    }
+
     function priceForm(value, row, index) {
         return "<input value='2' class='' type='text' style='width: 50px!important;margin-right: 10px;text-align: center'/>" +
             "<select class=''>" +
@@ -212,7 +228,7 @@
     })
     function delDetail(index) {
         console.log((index));
-        $('#table').bootstrapTable('remove', {
+        $('#addTable').bootstrapTable('remove', {
             field: "id",
             values: (index).id
         });
@@ -233,61 +249,65 @@
         });
     }
 
-    $('#tableCommon').bootstrapTable({
-        //点击全选框时触发的操作
-        onCheckAll: function(rows) {
-            console.log("点击全选框时触发的操作",rows);
-        },
-        //  点击每行进行函数的触发
-        // onClickRow: function(row, tr, flied) {
-        //
-        //
-        // },
-        //点每一个单选框时触发的操作
-        onCheck: function(row) {
-            console.log("点每一个单选框时触发的操作",row);
-        },
-
-        //取消每一个单选框时对应的操作；
-        onUncheck: function(row) {
-            console.log("取消每一个单选框时对应的操作",row);
-        },
-
-        ////取消所有
-        onUncheckAll: function(row) {
-            console.log("取消所有",row);
-        },
-        columns: [
-            {
-                field: 'ids',
-                title: '序号',
+    function tableRefreshAgain() {
+        $('#tableCommon').bootstrapTable({
+            //点击全选框时触发的操作
+            onCheckAll: function(rows) {
+                console.log("点击全选框时触发的操作",rows);
             },
-            {
-                checkbox: true,
-                title: '编辑',
-                class: "check"
-            },
-            {
-                title: '类别名称',
-                field: 'names'
-            },
-            {
-                title: '立案区域',
-                field: 'usernames'
+            //  点击每行进行函数的触发
+            // onClickRow: function(row, tr, flied) {
+            //
+            //
+            // },
+            //点每一个单选框时触发的操作
+            onCheck: function(row) {
+                console.log("点每一个单选框时触发的操作",row);
             },
 
-            {
-                title: '立案条件',
-                field: 'phones'
-            }
-        ]
-    });
+            //取消每一个单选框时对应的操作；
+            onUncheck: function(row) {
+                console.log("取消每一个单选框时对应的操作",row);
+            },
+
+            ////取消所有
+            onUncheckAll: function(row) {
+                console.log("取消所有",row);
+            },
+            columns: [
+                {
+                    field: 'ids',
+                    title: '序号',
+                },
+                {
+                    checkbox: true,
+                    title: '编辑',
+                    class: "check"
+                },
+                {
+                    title: '类别名称',
+                    field: 'names'
+                },
+                {
+                    title: '立案区域',
+                    field: 'usernames'
+                },
+
+                {
+                    title: '立案条件',
+                    field: 'phones'
+                }
+            ]
+        });
+    }
 
     $("#sureTwo").click(function () {
         let num = $('#tableCommon').bootstrapTable('getSelections');
         alert(num)
         console.log(JSON.stringify(num));
     })
+
+
 
 </script>
 </body>
