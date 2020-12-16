@@ -112,7 +112,7 @@ public class EventConditionService {
         EventType eventType = new EventType();
         eventType.setId(eventConditionDTO.getEventTypeId());
         eventCondition.setEventType(eventType);
-        eventCondition.setRegion(eventCondition.getRegion());
+        eventCondition.setRegion(eventConditionDTO.getRegion());
         eventCondition.setType(1);
         eventConditionRepository.save(eventCondition);
     }
