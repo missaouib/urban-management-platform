@@ -61,7 +61,7 @@ public class UserService {
         Specification<User> specification = (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
             if (StringUtils.isNotEmpty(userDTO.getName())) {
-                list.add(criteriaBuilder.equal(root.get("name").as(String.class), userDTO.getName()));
+                list.add(criteriaBuilder.like(root.get("name").as(String.class), "%"+userDTO.getName()+"%"));
             }
             if (StringUtils.isNotEmpty(userDTO.getUsername())) {
                 list.add(criteriaBuilder.equal(root.get("username").as(String.class), userDTO.getUsername()));
