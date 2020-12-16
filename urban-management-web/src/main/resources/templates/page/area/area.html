@@ -36,7 +36,7 @@
                         <tr>
                             <td><span>*</span>名称</td>
                             <td>
-                                <input id="gridName" name="required" placeholder="" class="" type="text" required>
+                                <input id="gridName" name="gridName" placeholder="" class="" type="text">
                                 <input id="id" name="gridId" placeholder="" class="" type="hidden">
                                 <input id="level" name="level" placeholder="" class="" type="hidden" value="1">
                             </td>
@@ -64,10 +64,13 @@
                         <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn"
                                 onclick="formReset()">清空
                         </button>
+                        <button class="but_save" type="submit" onclick="save()">新增</button>
+
+                        <button class="but_save" type="submit" onclick="area()">修改</button>
                         <button class="but_save" type="button" style="margin-right: 10px" id="deleteRoleBtn"
                                 onclick="deleteRole()">删除
                         </button>
-                        <button class="but_save" type="submit" onclick="area()">保存</button>
+
                     </div>
                 </div>
             </div>
@@ -124,8 +127,7 @@
         var body = layer.getChildFrame('body', index);
         $("#pid").val(body.find('#treeId').val());
         $("#parentName").val(body.find('#treeName').val());
-        $("#level").val(body.find('#treeLevel').val());
-
+        $("#level").val(body.find('#treeLevel').val()+1);
         layer.close(index);
     }
 
@@ -187,6 +189,10 @@
         $("#pid").val("");
     }
 
+    function save() {
+        $("#gridId").val("");
+        area();
+    }
 
     function area() {
         let data = $('#areaForm').serialize();
