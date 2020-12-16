@@ -166,8 +166,7 @@
                                 <td><span></span>监督员</td>
                                 <td>
                                     <select class="form-control" id="userId" name="userId" required>
-                                        <option th:each="as:${userList}" th:value="${as.id}"
-                                                th:text="${as.name}"></option>
+
                                     </select>
                                 </td>
                             </tr>
@@ -220,7 +219,7 @@
                                     style="margin-right: 10px">保存
                             </button>
                             <button class="but_save" type="submit" onclick="submitHandler2()">核实</button>
-                            <button class="but_close" onclick="Cancel()">返回</button>
+                            <!--<button class="but_close" onclick="Cancel()">返回</button>-->
                         </div>
                     </div>
                 </div>
@@ -517,15 +516,13 @@
 
     function getGridPublishUrl() {
         $.ajaxUtil.get(getGridUrl, function (e) {
-            // console.log("e", e);
             /*
             * 初始渲染底图g
             * */
-            var urlParam = e.data.split("?");
-            var url = urlParam[0];
-            var param = urlParam[1];
-            // console.log(url+","+param)
-            var ImageVector = new ol.layer.Tile({
+            let urlParam = e.data.split("?");
+            let url = urlParam[0];
+            let param = urlParam[1];
+            let ImageVector = new ol.layer.Tile({
                 source: new ol.source.TileWMS({
                     url: url,
                     params: {
@@ -536,12 +533,12 @@
                     }
                 })
             });
-            var layersArray = map.getLayers();
+            let layersArray = map.getLayers();
             layersArray.insertAt(1, ImageVector);
             //获取地图数据s
             map.on('singleclick', function (evt) {
-                var viewResolution = map.getView().getResolution();
-                var url = ImageVector.getSource().getGetFeatureInfoUrl(
+                let viewResolution = map.getView().getResolution();
+                let url = ImageVector.getSource().getGetFeatureInfoUrl(
                     evt.coordinate, viewResolution, 'EPSG:4326', {
                         'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
                         'FEATURE_COUNT': 50 //点击查询能返回的数量上限
@@ -570,7 +567,6 @@
         if(features.length != 0){
             let mongodbId = features[0].H.mongodb_id;
             $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
-                let codePopup = e.data[0].name;
                 let data = e.data;
                 for (let i = 0; i < data.length; i++) {
                     switch (data[i].level) {
@@ -588,14 +584,16 @@
                             $("#grid3").html(option3);
                             break;
                         case 4:
-                            var coordinate = [$("#longitude").val(),
-                                $("#latitude").val()];
+                            let coordinate = [];
+                            coordinate.push($("#longitude").val());
+                            coordinate.push($("#latitude").val());
                             overlay.setPosition(coordinate);
-                            $("#popup-content").html(`<div class="demo2">网格名称:`+data[i].name+`
-                                    <em>&#9670;</em>
-                                    <span>&#9670;</span>
-                                    </div>`);
-                            $("#popup").on("click",".closePopup",function (e) {
+                            let popupContentHtml = "<div class='demo2'>网格名称:" + data[i].name;
+                            popupContentHtml += "<em>&#9670;</em>";
+                            popupContentHtml += "<span>&#9670;</span>";
+                            popupContentHtml += "</div>";
+                            $("#popup-content").html(popupContentHtml);
+                            $("#popup").on("click", ".closePopup", function (e) {
                                 e.preventDefault();
                                 overlay.setPosition(undefined);
                             })
@@ -603,6 +601,7 @@
                             $("#grid4").empty();
                             let option4 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                             $("#grid4").html(option4);
+                            getUserListForSupervisor(data[i].id);
                             break;
                         default:
                             console.log("查询出了网格之外的东西");
@@ -628,7 +627,6 @@
     function getLevelWithList(data, level) {
         for (let i = 0; i < data.length; i++) {
             if (data[i].level === level) {
-                console.log("data[" + i + "]", data[i]);
                 return data[i];
             }
         }
@@ -740,7 +738,6 @@
         var features = geojsonFormat.readFeatures(res);
         if (undefined !== features[0]) {
             $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function (e) {
-                console.log("data", e.data);
                 $("#objId").val(e.data.objId);
                 $("#objId1").val(e.data.id);
             });
@@ -877,6 +874,24 @@
             pointArray.push(data.split("-")[0] * 1);
             pointArray.push(data.split("-")[1] * 1);
             setCenterForGrid(pointArray);
+        });
+        getUserListForSupervisor(pointOfCenter);
+    }
+
+    /**
+     * 通过网格id获取符合条件得监督员
+     */
+    function getUserListForSupervisor(id) {
+        let getUserListForSupervisorUrl = "/event/getUserListForSupervisor/?gridId=" + id;
+        $.ajaxUtil.get(getUserListForSupervisorUrl, function (e) {
+            let option = "";
+            $("#userId").empty();
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.name + "</option>"
+                });
+                $("#userId").html(option);
+            }
         });
     }
 

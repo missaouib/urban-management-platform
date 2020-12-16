@@ -118,8 +118,8 @@ public class EventController {
      * @return 人
      */
     @GetMapping("/getUserListForSupervisor")
-    public Result getUserListForSupervisor() {
-        List<UserVO> userList = roleService.findUserListByRoleId(KvConstant.SUPERVISOR_ROLE);
+    public Result getUserListForSupervisor(String gridId) {
+        List<UserVO> userList = roleService.findUserListForSupervision(KvConstant.SUPERVISOR_ROLE, gridId);
         return Result.success(userList);
     }
 

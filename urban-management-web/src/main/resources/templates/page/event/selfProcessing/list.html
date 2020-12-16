@@ -793,8 +793,6 @@
             console.log(id);
         });
 
-        getUserListForSupervisor();
-
         setModelName();
 
     });
@@ -1203,11 +1201,14 @@
             $("#userName").val(e.data.userName);
             $("#recTypeStr").val(e.data.recTypeStr);
             $("#objId").val(e.data.objId);
-            if (e.data.objId == null){
+            if (e.data.objId == null) {
                 $(".partCodes").addClass('roleBox')
-            }else {
+            } else {
                 $(".partCodes").removeClass('roleBox')
             }
+
+            getUserListForSupervisor(e.data.gridId);
+
             /*流程图*/
             $("#eventImg").attr('src', img + e.data.processInstanceId);
 
@@ -1299,8 +1300,9 @@
     }
 
     /* 获取有监督员角色的人 */
-    function getUserListForSupervisor() {
+    function getUserListForSupervisor(id) {
         let getUserListForSupervisorUrl = /*[[@{/event/getUserListForSupervisor/}]]*/ "/event/getUserListForSupervisor/";
+        getUserListForSupervisorUrl += "?gridId=" + id;
         $.ajaxUtil.get(getUserListForSupervisorUrl, function (e) {
             $("#selectUser").empty();
             let userList = e.data;

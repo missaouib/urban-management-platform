@@ -6,10 +6,7 @@ import com.unicom.urban.management.mapper.RoleMapper;
 import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.dto.RoleDTO;
 import com.unicom.urban.management.pojo.dto.RoleMenuDTO;
-import com.unicom.urban.management.pojo.entity.Dept;
-import com.unicom.urban.management.pojo.entity.Menu;
-import com.unicom.urban.management.pojo.entity.Role;
-import com.unicom.urban.management.pojo.entity.User;
+import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.RoleVO;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.dept.DeptService;
@@ -75,16 +72,24 @@ public class RoleService {
         return roleRepository.getOne(id);
     }
 
-//    public void update(RoleDTO roleDTO) {
-//        Role one = this.findOne(roleDTO);
-//        one.setName(roleDTO.getName());
-//        roleRepository.saveAndFlush(one);
-//        throw new BusinessException("saveAndFlush");
-//    }
-
-    public List<UserVO> findUserListByRoleId(String id) {
-        List<User> userList = roleRepository.getOne(id).getUserList();
+    public List<UserVO> findUserListForSupervision(String roleId, String gridId) {
+        List<User> allUserList = roleRepository.getOne(roleId).getUserList();
+        List<User> userList = new ArrayList<>();
+        for (User user : allUserList) {
+            if (user.getSts() == 0 && isGridOwnerOrNot(user, gridId)) {
+                userList.add(user);
+            }
+        }
         return UserMapper.INSTANCE.userListToUserVOList(userList);
+    }
+
+    private boolean isGridOwnerOrNot(User user, String gridId) {
+        for (Grid grid : user.getGridList()) {
+            if (gridId.equals(grid.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
