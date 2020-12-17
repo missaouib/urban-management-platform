@@ -370,7 +370,7 @@
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
                             <span class="sendText" id="btnOpinion"><i></i>意见</span>
-                            <textarea type="text" id="opinions"></textarea>
+                            <textarea type="text" id="opinions" onmouseout="saveIdioms(this)"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays">
                                 <ul>
@@ -386,23 +386,17 @@
                         </div>
                         <div class="send">
                             <div class="sendImg">
-                                <div class="sendText" style="width: 72px"><span>照片:</span></div>
-                                <div><input id="picture" class="input-id" type="file" name="files" multiple="multiple">
-                                </div>
-                            </div>
-
-
-                            <div class="sendImg">
-                                <div class="sendText" style="width: 72px"><span>视频:</span></div>
-                                <div><input id="video" type="file" class="videoInput" name="file" multiple="multiple">
-                                </div>
+                                <div class="sendText"><span>图片:</span></div>
+                                <div><input id="imageInput" type="file" name="files" multiple="multiple"></div>
                             </div>
                             <div class="sendImg">
-                                <div class="sendText" style="width: 72px"><span>音频:</span></div>
-                                <div><input id="music" type="file" class="musicInput" name="file" multiple="multiple">
-                                </div>
+                                <div class="sendText"><span>视频:</span></div>
+                                <div><input id="videoInput" type="file" name="files" multiple="multiple"></div>
                             </div>
-
+                            <div class="sendImg">
+                                <div class="sendText"><span>音频:</span></div>
+                                <div><input id="audioInput" type="file" name="files" multiple="multiple"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between"
@@ -690,13 +684,14 @@
     }
 
     function processing() {
-        console.log(imageUrlList)
         var data = {
             "eventId": eventId,
             "buttonId": buttonId,
             "opinions": $("#opinions").val(),
             "delayedTime":$("#delayedTime").val(),
-            "imageUrlList":imageUrlList
+            "imageUrlList":imageUrlList,
+            "videoUrlList":videoUrlList,
+            "musicUrlList":musicUrlList,
         };
 
         $.ajax({
@@ -931,7 +926,6 @@
 
     function setFileUrl(data) {
         let value = $.parseJSON(data.value);
-        console.log(value)
         if (value.length > 0) {
             $("#modelImageList").empty();
             let imageHtml = "";
@@ -1097,7 +1091,6 @@
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.level + "</option>"
                 });
-                console.log(value.level)
             }
             $("#timeType").html(option);
 
@@ -1160,6 +1153,126 @@
             setConduct(e.data);
         });
     }
+
+
+    var imageUrlList;
+    var videoUrlList;
+    var musicUrlList;
+    //上传 照片视频音频
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/common/upload";
+    $(function () {
+
+        $("#imageInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+            maxFileCount: 3,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        }).on("filebatchselected", function (event, files) {
+            $(this).fileinput("upload");
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            imageUrlList = null;
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                console.log(data.response.data.url)
+                imageUrlList = data.response.data.url;
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
+            }
+        }).on('filepredelete', function (event, key) {
+            imageUrlList = null;
+            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
+            console.log('Key = ' + key);
+        })
+
+        $("#videoInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['mp4'],       // 接收的文件后缀
+            maxFileCount: 3,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        }).on("filebatchselected", function (event, files) {
+            $(this).fileinput("upload");
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            videoUrlList = null;
+            if (data.response.code === web_status.SUCCESS) {
+                videoUrlList = data.response.data.url;
+                console.log("data", videoUrlList);
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
+            }
+        }).on('filepredelete', function (event, key) {
+            videoUrlList = null;
+            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
+            console.log('Key = ' + key);
+        })
+
+        $("#audioInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['mp3'],       // 接收的文件后缀
+            maxFileCount: 3,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        }).on("filebatchselected", function (event, files) {
+            $(this).fileinput("upload");
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            musicUrlList = null;
+            if (data.response.code === web_status.SUCCESS) {
+                musicUrlList = data.response.data.url;
+                console.log("data", musicUrlList);
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
+            }
+        }).on('filesuccessremove', function (event, id) {
+            musicUrlList = null;
+            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
+            console.log(id);
+        })
+    })
 </script>
 </body>
 </html>
