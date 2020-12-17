@@ -835,7 +835,6 @@
                 });
 
                 $.ajaxUtil.get(superviseUrl + "?eventId=" + row.id, function (e) {
-                    console.log(e.data)
                     $("#deptName").val(e.data.deptName);
                     $("#deptName1").val(e.data.deptName);
                     $("#deptName2").val(e.data.deptName);
@@ -982,43 +981,6 @@
         });
     }
 
-    /* 附件图片回显 */
-    let file = e.data.file;
-    if (file.length > 0) {
-        $("#imageList").empty();
-        $("#videoList").empty();
-        $("#audioList").empty();
-        let imageHtml = "";
-        let videoHtml = "";
-        let audioHtml = "";
-        for (let i = 0; i < file.length; i++) {
-            if (file[i].type === "图片") {
-                imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
-                    "<img class='img-rounded' src='" + showUrl + file[i].url + "'>" +
-                    "</div>";
-            }
-            if (file[i].type === "视频") {
-                videoHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
-                    "<video class='img-rounded' controls src='" + showUrl + file[i].url + "'></video>" +
-                    "</div>";
-            }
-            if (file[i].type === "音频") {
-                audioHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
-                    "<audio class='img-rounded' controls src='" + showUrl + file[i].url + "'></audio>" +
-                    "</div>";
-            }
-        }
-        $("#imageList").html(imageHtml);
-        $("#videoList").html(videoHtml);
-        $("#audioList").html(audioHtml);
-        $("#pictureList").empty();
-        $("#modelImageList2").empty();
-        $("#modelVideoList2").empty();
-        $("#modelAudioList2").empty();
-        $("#modelImageList2").html(imageHtml);
-        $("#modelVideoList2").html(videoHtml);
-        $("#modelAudioList2").html(audioHtml);
-    }
 
     function getNodeName(eventId) {
         $.ajaxUtil.get(getNodeNameUrl + "?eventId=" + eventId, function (e) {
@@ -1029,7 +991,35 @@
     function Cancel() {
         $.modal.closeLoading();
     }
-
+    function setFileUrl(data) {
+        let value = $.parseJSON(data.value);
+        if (value.length > 0) {
+            $("#modelImageList").empty();
+            let imageHtml = "";
+            let videoHtml = "";
+            let audioHtml = "";
+            for (let i = 0; i < value.length; i++) {
+                if (value[i].type === "图片") {
+                    imageHtml += "<div class=\"swiper-slide\">" +
+                        "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>" +
+                        "</div>"
+                }
+                if (value[i].type === "视频") {
+                    videoHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                        "<video class='img-rounded' controls src='" + showUrl + value[i].url + "'></video>" +
+                        "</div>";
+                }
+                if (value[i].type === "音频") {
+                    audioHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                        "<audio class='img-rounded' controls src='" + showUrl + value[i].url + "'></audio>" +
+                        "</div>";
+                }
+            }
+            $("#modelImageList").html(imageHtml);
+            $("#modelVideoList").html(videoHtml);
+            $("#modelAudioList").html(audioHtml);
+        }
+    }
 
     var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
     // 沽源地图
@@ -1091,7 +1081,6 @@
     }
 
     function selectEventTypeTree() {
-        console.log(1)
         var treeId = $("#treeId").val();
         var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
         var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
@@ -1104,7 +1093,6 @@
         $.modal.openOptions(options);
     }
     function doSubmit(index, layero) {
-        console.log(2)
         var body = layer.getChildFrame('body', index);
         $("#eventTypeId").val(body.find('#treeId').val());
         $("#typeStr").val(body.find('#treeName').val());

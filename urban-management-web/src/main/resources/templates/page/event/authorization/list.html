@@ -250,7 +250,6 @@
                                 <input type="hidden" id="button" value="">
                                 </tbody>
                             </table>
-
                             <div class="send">
                                 <div class="sendImg">
                                     <div class="sendText"><span>照片:</span></div>
@@ -261,27 +260,24 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
                                     <div>
-                                        <!--                                        <input class="videoInput" type="file" name="file" multiple="multiple">-->
-                                        <div class="innerPic">
-                                            无
+                                        <div id="videoList">
+                                            <div class="innerPic" style="float:left;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
                                     <div>
-                                        <!--                                        <input class="musicInput" type="file" name="file" multiple="multiple">-->
-                                        <div class="innerPic">
-                                            无
+                                        <div id="audioList">
+                                            <div class="innerPic" style="float:left;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="notice_bot">
@@ -417,8 +413,7 @@
         <div class="duck_box">
             <div class="allTiel">
                 <div class="duck_close">
-                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png"
-                                                             style="width: 100%;height: 100%"></i>
+                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png" style="width: 100%;height: 100%"></i>
                 </div>
                 <div class="duck_title">
                     <span class="duckActive">图片</span>
@@ -427,20 +422,38 @@
                 </div>
                 <div class="duck_info">
                     <div class="info_chance blockActive">
-                        <div class="swiper-container sw1">
+                        <div class="swiper-container modelImageBox">
                             <div class="swiper-wrapper" id="modelImageList">
                             </div>
                             <!-- Add Pagination -->
-                            <div class="swiper-pagination pg1"></div>
+                            <div class="swiper-pagination modelImagePage"></div>
                             <!-- Add Arrows -->
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
                         </div>
                     </div>
-                    <div class="info_chance">视频
-                        <video style="width: 100%;height: 100%"></video>
+                    <div class="info_chance">
+                        <div class="swiper-container modelVideoBox">
+                            <div class="swiper-wrapper" id="modelVideoList">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination modelVideoPage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
                     </div>
-                    <div class="info_chance">音频</div>
+                    <div class="info_chance">
+                        <div class="swiper-container modelAudioBox">
+                            <div class="swiper-wrapper" id="modelAudioList">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination modelAudioPage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -453,19 +466,46 @@
                 <div class="fullScreen" id="fullScreen">全屏</div>
                 <div class="fullScreen exitfullScreen" id="exitfullScreen">退出全屏</div>
                 <div class="duk_close" id="duk_picture">
-                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png"
-                                                             style="width: 100%;height: 100%"></i>
+                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png" style="width: 100%;height: 100%"></i>
                 </div>
-                <div style="width: 100%;height: 100%;padding: 5px">
-                    <div class="swiper-container sw2">
-                        <div class="swiper-wrapper" id="pictureList">
-
+                <div class="duck_title">
+                    <span class="duckActive">图片</span>
+                    <span>视频</span>
+                    <span>音频</span>
+                </div>
+                <div class="duck_info">
+                    <div class="info_chance blockActive">
+                        <div class="swiper-container modelImageBox">
+                            <div class="swiper-wrapper" id="modelImageList2">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination modelImagePage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
                         </div>
-                        <!-- Add Pagination -->
-                        <div class="swiper-pagination pg2"></div>
-                        <!-- Add Arrows -->
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
+                    </div>
+                    <div class="info_chance">
+                        <div class="swiper-container modelVideoBox">
+                            <div class="swiper-wrapper" id="modelVideoList2">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination modelVideoPage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+                    <div class="info_chance">
+                        <div class="swiper-container modelAudioBox">
+                            <div class="swiper-wrapper" id="modelAudioList2">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination modelAudioPage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -754,7 +794,7 @@
                     class: "doit",
                     width: "150px",
                     formatter: function (value, row) {
-                        var actions = '<a  href="#" title=""  data-toggle="modal" data-target="#modal-default8">挂账原因</a> ' +
+                        var actions = '<a  href="#" title=""  data-toggle="modal" data-target="#modal-default8">申请原因</a> ' +
                             '<a  href="#" title="" data-toggle="modal" data-target="#modal-default9">审批</a> ';
                         return actions
                     }
@@ -894,12 +934,28 @@
         if (value.length > 0) {
             $("#modelImageList").empty();
             let imageHtml = "";
+            let videoHtml = "";
+            let audioHtml = "";
             for (let i = 0; i < value.length; i++) {
-                imageHtml += "<div class=\"swiper-slide\">" +
-                    "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>" +
-                    "</div>"
+                if (value[i].type === "图片") {
+                    imageHtml += "<div class=\"swiper-slide\">" +
+                        "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>" +
+                        "</div>"
+                }
+                if (value[i].type === "视频") {
+                    videoHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                        "<video class='img-rounded' controls src='" + showUrl + value[i].url + "'></video>" +
+                        "</div>";
+                }
+                if (value[i].type === "音频") {
+                    audioHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                        "<audio class='img-rounded' controls src='" + showUrl + value[i].url + "'></audio>" +
+                        "</div>";
+                }
             }
             $("#modelImageList").html(imageHtml);
+            $("#modelVideoList").html(videoHtml);
+            $("#modelAudioList").html(audioHtml);
         }
     }
 
@@ -950,26 +1006,41 @@
             /* 坐标 */
             setPoint(e.data.x, e.data.y);
             /* 附件图片回显 */
-            /*$("#imageList").attr('src', showUrl + e.data.processInstanceId); <img class="img-rounded" src="">*/
             let file = e.data.file;
             if (file.length > 0) {
                 $("#imageList").empty();
+                $("#videoList").empty();
+                $("#audioList").empty();
                 let imageHtml = "";
+                let videoHtml = "";
+                let audioHtml = "";
                 for (let i = 0; i < file.length; i++) {
-                    imageHtml += "<div class=\"innerPic\" style=\"float:left;margin-left: 10px\">" +
-                        "<img class='img-rounded' src='" + showUrl + file[i].url + "'>" +
-                        "</div>"
+                    if (file[i].type === "图片") {
+                        imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<img class='img-rounded' src='" + showUrl + file[i].url + "'>" +
+                            "</div>";
+                    }
+                    if (file[i].type === "视频") {
+                        videoHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<video class='img-rounded' controls src='" + showUrl + file[i].url + "'></video>" +
+                            "</div>";
+                    }
+                    if (file[i].type === "音频") {
+                        audioHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<audio class='img-rounded' controls src='" + showUrl + file[i].url + "'></audio>" +
+                            "</div>";
+                    }
                 }
                 $("#imageList").html(imageHtml);
-
+                $("#videoList").html(videoHtml);
+                $("#audioList").html(audioHtml);
                 $("#pictureList").empty();
-                let pictureList = "";
-                for (let i = 0; i < file.length; i++) {
-                    pictureList += "<div class=\"swiper-slide\">" +
-                        "<img style='width: 100%;height: 100%' src='" + showUrl + file[i].url + "'>" +
-                        "</div>"
-                }
-                $("#pictureList").html(pictureList);
+                $("#modelImageList2").empty();
+                $("#modelVideoList2").empty();
+                $("#modelAudioList2").empty();
+                $("#modelImageList2").html(imageHtml);
+                $("#modelVideoList2").html(videoHtml);
+                $("#modelAudioList2").html(audioHtml);
             }
         });
     }
@@ -988,8 +1059,7 @@
         let data = {
             "eventId": idVal,
             "buttonId": buttonVal,
-            "opinions": opinions,
-            "imageUrlList": imageUrlList
+            "opinions": opinions
         };
         $.ajax({
             type: "post",
@@ -1019,109 +1089,6 @@
         });
 
     }
-
-    var imageUrlList;
-    let uploadUrl = /*[[@{/common/uploads}]]*/ "/common/upload";
-    //上传 照片视频音频
-    $(function () {
-
-        $(".input-id").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
-            maxFileCount: 10,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        }).on('change', function (event) {
-            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        }).on('fileselect', function (event, numFiles, label) {
-            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        }).on("filebatchselected", function (event, files) {
-            $(this).fileinput("upload");
-        }).on("fileuploaded", function (event, data) {
-
-        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
-            imageUrlList=null;
-            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
-            if (data.response.code === web_status.SUCCESS) {
-                console.log(data.response.data.url)
-                imageUrlList = data.response.data.url;
-                $.modal.alertSuccess('上传成功');
-            } else {
-                $.modal.alertError(data.response.message);
-            }
-        }).on('filedeleted', function (event, key) {
-            imageUrlList=null;
-            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            imageUrlList=null;
-            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            console.log(id);
-        }).on('fileclear', function (event) {
-            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-            console.log(event);
-        }).on('filecleared', function (event) {
-            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-            console.log(event);
-        }).on('filepredelete', function (event, key) {
-            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log('filesuccessremove()   ')
-            console.log(id);
-        });
-        $("#video").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            // uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        })
-        $("#music").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            // uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['mov', 'mp4', 'mp3'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        })
-    })
 
     var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
     // 沽源地图
