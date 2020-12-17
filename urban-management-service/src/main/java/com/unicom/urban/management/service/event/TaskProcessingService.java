@@ -604,8 +604,10 @@ public class TaskProcessingService {
 
     public List<String> getUsers(String roleId) {
         Role one = roleService.findOne(roleId);
+        if(one==null)throw new DataValidException("角色不存在，请选择角色");
         List<String> user = new ArrayList<>();
         one.getUserList().forEach(u -> user.add(u.getId()));
+        if(user.size()==0)throw new DataValidException("角色下没有人员");
         return user;
     }
 
