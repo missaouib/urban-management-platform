@@ -9,6 +9,7 @@ import com.unicom.urban.management.pojo.RestReturn;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.entity.Grid;
 import com.unicom.urban.management.pojo.vo.EventButtonVO;
+import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.grid.GridService;
@@ -143,6 +144,12 @@ public class EventController {
     public Result getGridPolygon(String eventId) {
         String gridPolygon = gridService.getGridPolygon(eventId);
         return Result.success(gridPolygon);
+    }
+
+    @GetMapping("/similarCasesForEvent")
+    public Result similarCasesForEvent(double x, double y) {
+        List<EventVO> eventVOList = eventService.similarCasesForEvent(x, y);
+        return Result.success(eventVOList);
     }
 
 }

@@ -114,11 +114,13 @@
                             <tr>
                                 <td><span></span>位置坐标</td>
                                 <td>
-                                    <input type="text" class="" value="经度" name="x" id="longitude" readonly/>
+                                    <input type="text" class="" placeholder="经度" value="" name="x" id="longitude"
+                                           readonly/>
                                 </td>
                                 <td></td>
                                 <td>
-                                    <input type="text" class="" value="纬度" name="y" id="latitude" readonly/>
+                                    <input type="text" class="" placeholder="纬度" value="" name="y" id="latitude"
+                                           readonly/>
                                 </td>
                             </tr>
                             <tr>
@@ -213,7 +215,7 @@
                         <div class="r_right but_p girdBtnGroup">
 
                             <button class="but_save" type="button" style="margin-right: 10px" data-toggle="modal"
-                                    data-target="#modal-sm">相似案件
+                                    id="similarCasesBtn" onclick="similarCasesForEvent()">相似案件
                             </button>
                             <button class="but_save" type="submit" onclick="submitHandler1()"
                                     style="margin-right: 10px">保存
@@ -262,16 +264,8 @@
             <div class="modal-header">
                 <h4 class="modal-title">相似案件</h4>
             </div>
-            <div class="modal-body">
-                <div class="such">案件：<a>E0300476522</a></div>
-                <div class="same">该事件与以下案件相似：</div>
-                <div class="sameArray">
-                    <ul>
-                        <li>案件：<a>E0300476522</a></li>
-                        <li>案件：<a>E0300476522</a></li>
-                        <li>案件：<a>E0300476522</a></li>
-                    </ul>
-                </div>
+            <div class="modal-body" id="similarCases">
+
             </div>
             <div class="modal-footer justify-content-between"
                  style="display: flex;justify-content: flex-end!important;">
@@ -297,6 +291,8 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
+
+        console.clear();
 
         $(".ol-full-screen-false").html("全屏")
         $(".name").click(function () {
@@ -513,6 +509,7 @@
     let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
     let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
     let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
+    let similarCasesForEventUrl = /*[[@{/event/similarCasesForEvent}]]*/ "/event/similarCasesForEvent";
 
     function getGridPublishUrl() {
         $.ajaxUtil.get(getGridUrl, function (e) {
@@ -1071,6 +1068,43 @@
 
     function Cancel() {
         $.modal.closeLoading();
+    }
+
+    function similarCasesForEvent() {
+        let longitude = $("#longitude").val();
+        let latitude = $("#latitude").val();
+        if (!longitude || !latitude) {
+            $.modal.alertError("请填选完整坐标", function (e) {
+                console.warn("e", e);
+                return false;
+            });
+        } else {
+            $.ajaxUtil.get(similarCasesForEventUrl + "?x=" + longitude + "&y=" + latitude, function (e) {
+                $("#similarCases").empty();
+                let similarCasesHtml = "";
+                if (e.code === 0) {
+                    let data = e.data;
+                    for (let i = 0; i < data.length; i++) {
+                        similarCasesHtml += "";
+                        similarCasesHtml += "<li>编号：<a>" + data[i].eventCode + "</a></li>";
+                        if (data[i].represent.length > 15) {
+                            similarCasesHtml += "<li>描述：<a title='" + data[i].represent + "'>" + (data[i].represent).slice(0, 15) + "..." + "</a></li>";
+                        } else {
+                            similarCasesHtml += "<li>描述：<a>" + data[i].represent + "</a></li>";
+                        }
+                        similarCasesHtml += "<li>类型：<a>" + data[i].recTypeName + "</a></li>";
+                        similarCasesHtml += "</ul>";
+                        similarCasesHtml += "<ul><li>----------------------------------</li></ul>";
+                    }
+                } else {
+                    similarCasesHtml += "<ul>";
+                    similarCasesHtml += "<li>没有相似案件</li>";
+                    similarCasesHtml += "</ul>";
+                }
+                $("#similarCases").html(similarCasesHtml);
+            });
+            $("#similarCasesBtn").attr("data-target", "#modal-sm");
+        }
     }
 
     function submitHandler1() {

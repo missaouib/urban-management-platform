@@ -44,6 +44,9 @@ import java.util.stream.Collectors;
 @Transactional(rollbackOn = Exception.class)
 public class EventService {
 
+    private final double EARTH_RADIUS = 6378.137;
+    private final double COMPONENT_DISTANCE = 3;
+
     @Autowired
     private EventRepository eventRepository;
     @Autowired
@@ -829,11 +832,41 @@ public class EventService {
 
     public EventVO getShowPoint(String eventId) {
         Event event = this.findOne(eventId);
-        EventVO eventVO = EventMapper.INSTANCE.eventToEventVO(event);
-        return eventVO;
+        return EventMapper.INSTANCE.eventToEventVO(event);
     }
 
     public long findAllByConditionId(String id) {
         return eventRepository.countEventByConditionId(id);
     }
+
+    public List<EventVO> similarCasesForEvent(double lng, double lat) {
+        List<Event> all = eventRepository.findAll();
+        List<Event> eventList = new ArrayList<>();
+        for (Event event : all) {
+            if (similarCases(lng, lat, event.getX(), event.getY())) {
+                eventList.add(event);
+            }
+        }
+        return EventMapper.INSTANCE.eventListToEventVOList(eventList);
+    }
+
+    private boolean similarCases(double lng, double lat, double eventLng, double eventLat) {
+        double radLat1 = rad(lat);
+        double radLat2 = rad(eventLat);
+        double a = radLat1 - radLat2;
+        double b = rad(lng) - rad(eventLng);
+        double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
+                Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+        s = s * EARTH_RADIUS * 1000;
+        if (s < COMPONENT_DISTANCE) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private static double rad(double d) {
+        return d * Math.PI / 180.0;
+    }
+
 }
