@@ -675,7 +675,11 @@
 
 
     function zTreeOnClick(event, treeId, treeNode) {
-        $("#doorer").val(treeNode.menuName);
+        console.log(treeNode)
+        if(treeNode.levelOrNot === "role"){
+            $("#doorer").val(treeNode.deptName);
+            $("#dept").val(treeNode.id)
+        }
         $(".closemodal").click();
         $("#checkMain").slideUp(300)
     }
@@ -702,8 +706,11 @@
 
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
     let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
+    let roleUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+
 
     var buttonId = "";
+    var buttonName = "";
     var eventId = "";
 
     var deptId = "";
@@ -716,17 +723,10 @@
                 "<input type='text' class='find_input' id='delayedTime' style='margin-right: 5px' oninput=\"value=value.replace(/[^\\d]/g,'')\"/>"+ "小时";
             $("#deptDiv").append(deptStr);
         }else if ("派遣" === $(obj).text()) {
-            $.ajaxUtil.get(deptUrl, function (o) {
-                var deptName;
-                var deptId;
-                $(o.data).each(function (index,value) {
-                    deptName = value.deptName
-                    deptId = value.id
-                })
 
                 let deptStr = `
                      <div class="checkMain" style="position: relative;align-items: center">
-                        <span class="sendText" style="width: 73px"><i></i>专业部门</span>
+                        <span class="sendText" style="width: 73px"><i></i>专业部门角色</span>
                         <input type="text" class="find_input" id="doorer">
                         <input type="hidden" class="find_input" id="dept">
                         <span class="add_tree">+</span>
@@ -741,10 +741,9 @@
                     </div>
                `
                 $("#deptDiv").append(deptStr);
-                $("#doorer").val(deptName)
-                $("#dept").val(deptId)
 
-                var settingss = {
+
+                var setting = {
                     callback: {
                         onClick: zTreeOnClick
                     },
@@ -753,10 +752,9 @@
                             enable: true,  //true 、 false 分别表示 使用 、 不使用 简单数据模式
                             idKey: "id",  //节点数据中保存唯一标识的属性名称
                             pIdKey: "parentId",    //节点数据中保存其父节点唯一标识的属性名称
-                            rootPId: -1  //用于修正根节点父节点数据，即 pIdKey 指定的属性值
                         },
                         key: {
-                            name: "menuName"  //zTree 节点数据保存节点名称的属性名称  默认值："name"
+                            name: "deptName"  //zTree 节点数据保存节点名称的属性名称  默认值："name"
                         }
                     },
                     check:{
@@ -764,31 +762,30 @@
                         nocheckInherit:true  //当父节点设置 nocheck = true 时，设置子节点是否自动继承 nocheck = true
                     }
                 };
+                $.ajaxUtil.get(roleUrl, function (e) {
+                    var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+                    zTreeObj.expandAll(false);    //true 节点全部展开、false节点收缩
+                })
 
-                //数据
-                var zNodes = [
-                    //注意，数据中的 menuName 必须与 settingss 中key 中定义的name一致，否则找不到
-                    {menuName:"专业部门", open:false, children:[
-                            {menuName:"处理部门"}, {menuName:"执法部门"}, {menuName:"综合部门"}]}
-                ];
 
-                zTreeObj = $.fn.zTree.init($("#treeDemo"), settingss, zNodes); //初始化树
-                zTreeObj.expandAll(false);    //true 节点全部展开、false节点收缩
 
-                // $.ajaxUtil.get(componentTypeUrl, function (e) {
-                //     var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
-                // })
-            })
         }
         buttonId = $(obj).attr("id");
+        buttonName = $(obj).text();
     }
 
     function reductionButton() {
         buttonId = "";
+        buttonName = "";
     }
 
     function processing() {
-        console.log(imageUrlList)
+        if(buttonName === "派遣"){
+            if($("#dept").val()===null||$("#dept").val()===""){
+                $.modal.alertWarning("请选择角色");
+                return
+            }
+        }
         var data = {
             "eventId": eventId,
             "buttonId": buttonId,

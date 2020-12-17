@@ -70,8 +70,7 @@ public class TaskProcessingService {
             if("申请作废".equals(eventButton.getButtonText())){
                 this.backOff(eventId, eventButton, statisticsDTO);
             }else{
-                Dept dept = deptService.findOne(statisticsDTO.getDeptId());
-                List<String> users = this.getUsers(dept);
+                List<String> users = this.getUsers(statisticsDTO.getDeptId());
                 this.dispatcher(eventId, users, buttonId, statisticsDTO);
             }
 
@@ -214,7 +213,7 @@ public class TaskProcessingService {
     }
 
     /**
-     * 派遣员-派遣 给专业部门
+     * 派遣员-派遣 给专业部门角色
      */
     private void dispatcher(String eventId, List<String> userId, String buttonId, StatisticsDTO statisticsDTO) {
         this.avtivitiHandle(eventId, userId, buttonId);
@@ -237,8 +236,8 @@ public class TaskProcessingService {
         Statistics newStatistics = this.initStatistics(event);
         newStatistics.setNeedDispose(1);
         newStatistics.setToDispose(1);
-        Dept dept = new Dept();
-        dept.setId(statisticsDTO.getDeptId());
+        Role one = roleService.findOne(statisticsDTO.getDeptId());
+        Dept dept = one.getDept();
         newStatistics.setDisposeUnit(dept);
         newStatistics.setDisposeUnitName(dept);
         newStatistics.setSort(statistics.getSort() + 1);
@@ -527,6 +526,7 @@ public class TaskProcessingService {
         }
         return users;
     }
+
 
     /**
      * 工作流处理 领取 -> 派发
