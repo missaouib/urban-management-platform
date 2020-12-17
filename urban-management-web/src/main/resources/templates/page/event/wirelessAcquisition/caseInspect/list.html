@@ -431,20 +431,38 @@
                 </div>
                 <div class="duck_info">
                     <div class="info_chance blockActive">
-                        <div class="swiper-container sw1">
+                        <div class="swiper-container modelImageBox">
                             <div class="swiper-wrapper" id="modelImageList">
                             </div>
                             <!-- Add Pagination -->
-                            <div class="swiper-pagination pg1"></div>
+                            <div class="swiper-pagination modelImagePage"></div>
                             <!-- Add Arrows -->
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
                         </div>
                     </div>
-                    <div class="info_chance">视频
-                        <video style="width: 100%;height: 100%"></video>
+                    <div class="info_chance">
+                        <div class="swiper-container modelVideoBox">
+                            <div class="swiper-wrapper" id="modelVideoList">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination modelVideoPage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
                     </div>
-                    <div class="info_chance">音频</div>
+                    <div class="info_chance">
+                        <div class="swiper-container modelAudioBox">
+                            <div class="swiper-wrapper" id="modelAudioList">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination modelAudioPage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1007,13 +1025,26 @@
             let value = $.parseJSON(data.value);
             if (value.length > 0) {
                 $("#modelImageList").empty();
+                $("#modelVideoList").empty();
+                $("#modelAudioList").empty();
                 let imageHtml = "";
+                let videoHtml = "";
+                let audioHtml = "";
                 for (let i = 0; i < value.length; i++) {
-                    imageHtml += "<div class=\"swiper-slide\">" +
-                        "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>" +
-                        "</div>"
+                    imageHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>";
+                    if (value[i].type === "图片") {
+                        imageHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>";
+                    }
+                    if (value[i].type === "视频") {
+                        videoHtml += "<video style='width: 100%;height: 100%' controls src='" + showUrl + value[i].url + "'></video>";
+                    }
+                    if (value[i].type === "音频") {
+                        audioHtml += "<audio style='width: 100%;height: 100%' controls src='" + showUrl + value[i].url + "'></audio>";
+                    }
                 }
                 $("#modelImageList").html(imageHtml);
+                $("#modelVideoList").html(videoHtml);
+                $("#modelAudioList").html(audioHtml);
             }
         }
         function getEventDetail(eventId) {
@@ -1050,13 +1081,31 @@
                 let file = e.data.file;
                 if (file.length > 0) {
                     $("#imageList").empty();
+                    $("#videoList").empty();
+                    $("#audioList").empty();
                     let imageHtml = "";
+                    let videoHtml = "";
+                    let audioHtml = "";
                     for (let i = 0; i < file.length; i++) {
-                        imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
-                            "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
-                            "</div>";
+                        if (file[i].type === "图片") {
+                            imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                                "<img class='img-rounded' src='" + showUrl + file[i].url + "'>" +
+                                "</div>";
+                        }
+                        if (file[i].type === "视频") {
+                            videoHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                                "<video class='img-rounded' controls src='" + showUrl + file[i].url + "'></video>" +
+                                "</div>";
+                        }
+                        if (file[i].type === "音频") {
+                            audioHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                                "<audio class='img-rounded' controls src='" + showUrl + file[i].url + "'></audio>" +
+                                "</div>";
+                        }
                     }
                     $("#imageList").html(imageHtml);
+                    $("#videoList").html(videoHtml);
+                    $("#audioList").html(audioHtml);
 
                     $("#pictureList").empty();
                     let pictureList = "";

@@ -263,27 +263,24 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                                 <div class="sendImg">
                                     <div class="sendText"><span>视频:</span></div>
                                     <div>
-                                        <!--                                        <input class="videoInput" type="file" name="file" multiple="multiple">-->
-                                        <div class="innerPic">
-                                            无
+                                        <div id="videoList">
+                                            <div class="innerPic" style="float:left;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="sendImg">
                                     <div class="sendText"><span>音频:</span></div>
                                     <div>
-                                        <!--                                        <input class="musicInput" type="file" name="file" multiple="multiple">-->
-                                        <div class="innerPic">
-                                            无
+                                        <div id="audioList">
+                                            <div class="innerPic" style="float:left;">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <div id="before" class="send" style="display: none">
                                 <div class="sendImg">
@@ -992,16 +989,30 @@
         });
     }
     function setFileUrl(data) {
+        let showUrl = [[${@fastProperties.nginxUrl}]];
         let value = $.parseJSON(data.value);
         if (value.length > 0) {
             $("#modelImageList").empty();
+            $("#modelVideoList").empty();
+            $("#modelAudioList").empty();
             let imageHtml = "";
+            let videoHtml = "";
+            let audioHtml = "";
             for (let i = 0; i < value.length; i++) {
-                imageHtml += "<div class=\"swiper-slide\">" +
-                    "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>" +
-                    "</div>"
+                imageHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>";
+                if (value[i].type === "图片") {
+                    imageHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>";
+                }
+                if (value[i].type === "视频") {
+                    videoHtml += "<video style='width: 100%;height: 100%' controls src='" + showUrl + value[i].url + "'></video>";
+                }
+                if (value[i].type === "音频") {
+                    audioHtml += "<audio style='width: 100%;height: 100%' controls src='" + showUrl + value[i].url + "'></audio>";
+                }
             }
             $("#modelImageList").html(imageHtml);
+            $("#modelVideoList").html(videoHtml);
+            $("#modelAudioList").html(audioHtml);
         }
     }
     //上传 照片视频音频
@@ -1104,6 +1115,66 @@
 
         })
     })
+    /**
+     * 回显上传照片
+     */
+    function showImage(){
+        let showUrl = [[${@fastProperties.nginxUrl}]];
+        let file = [[${files}]];
+        console.log("file",file)
+        let imageHtml = "";
+        let videoHtml = "";
+        let musicHtml = "";
+        let imageHtmlAfter = "";
+        let videoHtmlAfter = "";
+        let musicHtmlAfter = "";
+        if (file.length > 0) {
+            $("#imageList").empty();
+            $("#videoList").empty();
+            $("#musicList").empty();
+            $("#imageListAfter").empty();
+            $("#videoListAfter").empty();
+            $("#musicListAfter").empty();
+            for (let i = 0; i < file.length; i++) {
+                console.log("filei",file[i])
+                if (file[i].management ==="处置前"){
+                    if (file[i].type=== '图片'){
+                        imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
+                            "</div>";
+                    } else if (file[i].type=== '视频') {
+                        videoHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<video controls src='" + showUrl + file[i].url + "'>" +
+                            "</div>";
+                    } else if (file[i].type=== '音频') {
+                        musicHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<audio controls src='" + showUrl + file[i].url + "'>" +
+                            "</div>";
+                    }
+                }else {
+                    if (file[i].type=== '图片'){
+                        imageHtmlAfter += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
+                            "</div>";
+                    } else if (file[i].type=== '视频') {
+                        videoHtmlAfter += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<video controls src='" + showUrl + file[i].url + "'>" +
+                            "</div>";
+                    } else if (file[i].type=== '音频') {
+                        musicHtmlAfter += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<audio controls src='" + showUrl + file[i].url + "'>" +
+                            "</div>";
+                    }
+                }
+            }
+        }
+        $("#imageList").html(imageHtml);
+        $("#videoList").html(videoHtml);
+        $("#musicList").html(musicHtml);
+        $("#imageListAfter").html(imageHtmlAfter);
+        $("#videoListAfter").html(videoHtmlAfter);
+        $("#musicListAfter").html(musicHtmlAfter);
+    }
 </script>
 </body>
 </html>
