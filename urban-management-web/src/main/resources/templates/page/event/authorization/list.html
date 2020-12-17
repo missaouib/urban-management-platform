@@ -358,7 +358,7 @@
                 </div>
                 <div class="modal-body">
                     <div style="display: flex;justify-content: space-between">
-                        <div style="width: 50%;display: flex;justify-content: space-between">
+                        <div style="width: 50%;display: flex;justify-content: space-between" id="deptDiv2">
                             <div class="sendText" style="width: 100px!important;">当前处理部门</div>
                             <input type="text" id="dept2" style="width: 50%" class="find_input" readonly="readonly">
                         </div>
@@ -387,7 +387,7 @@
                     <h4 class="modal-title">审批意见</h4>
                 </div>
                 <div class="modal-body">
-                    <div style="display: flex;justify-content: space-between">
+                    <div style="display: flex;justify-content: space-between" id="deptDiv1">
                         <div style="width: 50%;display: flex;justify-content: space-between">
                             <div class="sendText" style="width: 100px!important;">当前处理部门</div>
                             <input type="text" id="dept1" style="width: 50%" class="find_input" readonly="readonly">
@@ -413,7 +413,8 @@
         <div class="duck_box">
             <div class="allTiel">
                 <div class="duck_close">
-                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png" style="width: 100%;height: 100%"></i>
+                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png"
+                                                             style="width: 100%;height: 100%"></i>
                 </div>
                 <div class="duck_title">
                     <span class="duckActive">图片</span>
@@ -466,7 +467,8 @@
                 <div class="fullScreen" id="fullScreen">全屏</div>
                 <div class="fullScreen exitfullScreen" id="exitfullScreen">退出全屏</div>
                 <div class="duk_close" id="duk_picture">
-                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png" style="width: 100%;height: 100%"></i>
+                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png"
+                                                             style="width: 100%;height: 100%"></i>
                 </div>
                 <div class="duck_title">
                     <span class="duckActive">图片</span>
@@ -723,10 +725,8 @@
     }
 
 
-
     //回调函数接收查询结果
     var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
-
 
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
@@ -774,7 +774,7 @@
                 {
                     title: '问题描述',
                     field: 'represent',
-                    class:"problem"
+                    class: "problem"
                 },
                 {
                     title: '当前阶段',
@@ -925,7 +925,7 @@
                 }
             }
             $("#timeAxis").append(html);
-            $("div[class=dot-close]:last").css("background","green")
+            $("div[class=dot-close]:last").css("background", "green")
         });
     }
 
@@ -984,8 +984,7 @@
             $("#petitionerName").val(e.data.petitionerName);
             $("#userName").val(e.data.userName);
             $("#recTypeStr").val(e.data.recTypeStr);
-            $("#dept1").val(e.data.taskDeptName);
-            $("#dept2").val(e.data.taskDeptName);
+
             $("#opinions1").val(e.data.opinions);
             $("#opinions2").val(e.data.opinions);
             $("#objId").val(e.data.objId);
@@ -993,6 +992,13 @@
                 $(".partCodes").addClass('roleBox')
             } else {
                 $(".partCodes").removeClass('roleBox')
+            }
+            if (e.data.taskDeptName === null || e.data.taskDeptName === '') {
+                $("#deptDiv1").css("display", "none");
+                $("#deptDiv2").css("display", "none");
+            } else {
+                $("#dept1").val(e.data.taskDeptName);
+                $("#dept2").val(e.data.taskDeptName);
             }
             if (e.data.delayedHours != null && "" !== e.data.delayedHours) {
                 $("#delayedHours").empty();
@@ -1148,7 +1154,9 @@
             })
         }));
     }
+
     let getGridPolygonUrl = /*[[@{/event/getGridPolygon}]]*/ "/event/getGridPolygon";
+
     /* 点击获取网格 */
     function getGridPolygon(eventId) {
         $.ajaxUtil.get(getGridPolygonUrl + "?eventId=" + eventId, function (e) {
@@ -1166,6 +1174,7 @@
             setPolygon(polygonArrayEnd, 1);
         });
     }
+
     function setPolygon(coordinates, id) {
 
         let Polygon = new ol.Feature({
@@ -1178,7 +1187,9 @@
         });
         layerMap.getSource().addFeature(Polygon);
     }
+
     let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
+
     /* 步骤图 */
     function getNodeName(eventId) {
         $.ajaxUtil.get(getNodeNameUrl + "?eventId=" + eventId, function (e) {

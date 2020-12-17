@@ -67,9 +67,14 @@ public class TaskProcessingService {
 
             this.shiftLeader(eventId, users, eventButton, statisticsDTO);
         } else if ("派遣员-派遣".equals(statistics.getTaskName())) {
-            Dept dept = deptService.findOne(statisticsDTO.getDeptId());
-            List<String> users = this.getUsers(dept);
-            this.dispatcher(eventId, users, buttonId, statisticsDTO);
+            if("申请作废".equals(eventButton.getButtonText())){
+                this.backOff(eventId, eventButton, statisticsDTO);
+            }else{
+                Dept dept = deptService.findOne(statisticsDTO.getDeptId());
+                List<String> users = this.getUsers(dept);
+                this.dispatcher(eventId, users, buttonId, statisticsDTO);
+            }
+
         } else if ("专业部门".equals(statistics.getTaskName())) {
 
             this.professionalAgenc(eventId, buttonId, statisticsDTO);
