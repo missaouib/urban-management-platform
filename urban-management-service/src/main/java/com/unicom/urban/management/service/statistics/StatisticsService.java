@@ -673,8 +673,13 @@ public class StatisticsService {
                 throw new DataValidException("请正确选择日期");
         }
         List<Map<String, String>> highIncidenceByInst = findHighIncidenceByInst(startTime, endTime);
-        findHighIncidenceByClose(highIncidenceByInst);
-        return highIncidenceByInst;
+        List<Map<String, String>> highIncidenceByInst2 = new ArrayList<>(highIncidenceByInst.size());
+        for (Map<String, String> stringStringMap : highIncidenceByInst) {
+            Map<String, String> stringStringMapNew = new HashMap<>(stringStringMap);
+            highIncidenceByInst2.add(stringStringMapNew);
+        }
+        findHighIncidenceByClose(highIncidenceByInst2);
+        return highIncidenceByInst2;
     }
 
     /**

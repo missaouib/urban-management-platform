@@ -60,7 +60,7 @@
                         <tr>
                             <td><span>*</span>角色名称</td>
                             <td>
-                                <input id="name" name="required" placeholder="" class="" type="text" required>
+                                <input id="name" name="name" placeholder="" class="" type="text" required>
                             </td>
                             <td><span></span>角色描述</td>
                             <td>
@@ -76,7 +76,7 @@
                             </td>
                             <td><span></span>排序</td>
                             <td>
-                                <input id="sort" type="text" readonly required>
+                                <input id="sort" type="text" name="sort" required>
                             </td>
                         </tr>
                         <tr class="col-12">
@@ -307,6 +307,9 @@
             }, "json");
         },
         rules: {
+            name: {
+                required: true
+            },
             userName: {
                 required: true
             },
@@ -357,7 +360,9 @@
             // }
         },
         messages: {
-
+            name: {
+                required: "必填"
+            },
         }
     });
 </script>
