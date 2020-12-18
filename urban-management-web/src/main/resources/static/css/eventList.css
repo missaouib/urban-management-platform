@@ -4,13 +4,34 @@
     display: flex;
     justify-content: space-between;
 }
+.do_span:hover,.keep_span:hover{
+    background: #7086c4;
+    color: white;
+}
+.do_span:hover,.keep_span:hover{
+    cursor: pointer;
+}
 .leftContent{
-    width: 49%;
+    width: 69%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.leftContent .left_topIn,.leftContent .left_bottomIn{
+    height: 49.5%;
+    overflow: hidden;
+    width: 100%;
+    border: 1px solid rgb(242, 243, 245);
+    box-shadow: rgba(228, 228, 228, 0.5) 1px 1px 6px 0px;
+}
+.left_bottomIn{
+    display: flex;
+    justify-content: space-between;
 }
 .rightContent{
     border: 1px solid rgb(242, 243, 245);
     box-shadow: 1px 1px 6px 0px rgba(228, 228, 228, 0.5);
-    width: 49%;
+    width: 30%;
     border-radius: 10px;
     overflow: hidden;
     padding: 5px;
@@ -30,17 +51,20 @@
 .r_right button{
     margin: 0 10px;
 }
-.tabTitle{
+.tabTitle,.doItTitle,.right_topIn{
     width: 100%;
     height: 40px;
     display: flex;
 }
-.tabTitle span{
+.tabTitle span,.do_span,.keep_span{
     width: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 12px;
+}
+.right_bottomIn{
+    position: relative;
 }
 .active{
     background-color: #354e85;
@@ -48,7 +72,7 @@
 }
 .tabInfo{
     width: 100%;
-    height: 90%;
+    height: 100%;
     position: relative;
 }
 .banner{
@@ -59,6 +83,18 @@
     left: 0;
     display: none;
     overflow: auto;
+}
+.doItInner{
+    position: relative;
+}
+.banners{
+    width: 100%;height: 100%;
+    overflow: auto;
+}
+.do_banner,.banners{
+    position: absolute;
+    top: 0;left: 0;
+    display: none;
 }
 .but_p{
     display: flex;
@@ -260,4 +296,16 @@
 .withAdd label.error{
     right: 36px!important;
     margin-top: -10px!important;
+}
+.left_bottomIn .bottom_left{
+    width: 30%;
+    height: 100%;
+    border: 1px solid rgb(242, 243, 245);
+    box-shadow: rgba(228, 228, 228, 0.5) 1px 1px 6px 0px;
+}
+.left_bottomIn .bottom_right{
+    width: 70%;
+    height: 100%;
+    border: 1px solid rgb(242, 243, 245);
+    box-shadow: rgba(228, 228, 228, 0.5) 1px 1px 6px 0px;
 }

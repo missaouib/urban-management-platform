@@ -1077,9 +1077,18 @@ ul,li{list-style: none}
     padding-left: 0px;
     padding-right: 0px;
 }
-/*.table td, .table th{*/
-/*    padding: 0.4rem!important;*/
-/*}*/
+.table td, .table th{
+    padding: 1px 4px 2px!important;
+}
+.closeSearch{
+
+}
+.banners input{
+    border: none!important;
+}
+.banners textarea{
+    border: none!important;
+}
 .dateTime{
     width: 100%;
 }
@@ -1979,4 +1988,10 @@ span.search_highlight {
     background-image: url("../img/treeuser.png") !important;
     background-position: 0 0!important;
     background-size: 100% 100%;
+}
+.areaCenter{
+    flex: 1!important;
+    border: 1px solid rgb(242, 243, 245);
+    box-shadow: rgba(228, 228, 228, 0.5) 1px 1px 6px 0px;
+    padding: 10px;
 }

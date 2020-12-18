@@ -121,6 +121,43 @@ $(".hideMenu").click(function () {
 	$(".showMenu").removeClass("menuActive")
 })
 
+// $("#sidebar-menu").mouseleave(function (e) {
+// 	e.stopPropagation();
+// 	$(".main-sidebar").css("width","0%");
+// 	$(".content-wrapper").css("width","100%")
+// 	$('.hideMenu').addClass("menuActive")
+// 	$(".showMenu").removeClass("menuActive")
+// });
+
+$(".main-sidebar").mouseleave(function (e) {
+	e.stopPropagation();
+	$(".main-sidebar").css("width","0%");
+	$(".content-wrapper").css("width","100%")
+	$('.hideMenu').addClass("menuActive")
+	$(".showMenu").removeClass("menuActive")
+})
+
+/*
+* 新页面控制
+* */
+//搜索重置 关掉搜索条件盒子
+$(".closeSearch").click(function () {
+	$(".selectPoint").slideUp(300);
+});
+console.log($(".bottom_left").height())
+$(".doItInner").height($(".bottom_left").height() - $(".doItTitle").height());
+$(".right_bottomIn").height($(".bottom_right").height() - $(".right_topIn").height());
+
+$(".do_span").click(function () {
+	$(this).addClass("active").siblings(".do_span").removeClass("active");
+	$(".do_banner").eq($(this).index(".do_span")).addClass("blockActive").siblings(".do_banner").removeClass("blockActive");
+});
+
+$(".keep_span").click(function () {
+	$(this).addClass("active").siblings(".keep_span").removeClass("active");
+	$(".banners").eq($(this).index(".keep_span")).addClass("blockActive").siblings(".banners").removeClass("blockActive");
+})
+
 /**
  * 步骤进行到哪一步
  * @param bgmNum
