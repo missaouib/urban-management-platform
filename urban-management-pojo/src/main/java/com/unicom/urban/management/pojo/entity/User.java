@@ -21,7 +21,6 @@ import java.util.List;
 @Getter
 @Entity
 @SQLDelete(sql = "update sys_user set deleted = " + Delete.DELETE + " where id = ?")
-@Where(clause = "deleted = " + Delete.NORMAL)
 @Table(name = "sys_user")
 public class User extends BaseEntity {
 

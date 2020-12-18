@@ -51,6 +51,7 @@ public class Dept extends BaseEntity {
     @JoinColumn
     private Dept parent;
 
+    @Where(clause = "deleted = " + Delete.NORMAL)
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "dept_id")
     private List<User> userList;

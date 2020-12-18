@@ -2,6 +2,7 @@ package com.unicom.urban.management.web.framework.security;
 
 import com.unicom.urban.management.common.exception.authentication.NotDeptException;
 import com.unicom.urban.management.dao.user.UserRepository;
+import com.unicom.urban.management.pojo.Delete;
 import com.unicom.urban.management.pojo.SecurityDeptBean;
 import com.unicom.urban.management.pojo.SecurityRoleBean;
 import com.unicom.urban.management.pojo.SecurityUserBean;
@@ -32,7 +33,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsernameAndDeleted(username, Delete.NORMAL);
 
         if (user == null) {
             throw new UsernameNotFoundException("用户不存在");
