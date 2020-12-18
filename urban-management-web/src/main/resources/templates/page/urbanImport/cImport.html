@@ -97,7 +97,7 @@
         let upload = /*[[@{/componentImport}]]*/ "/componentImport";
         function uploadFiles() {
 
-            var formData = new FormData($("#fileForm")[0]);
+            var formData = $("#fileForm").serialize();
             $.ajax({
                 url: upload,
                 type: 'POST',
