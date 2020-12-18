@@ -111,7 +111,7 @@ a:hover,a:active,a:focus{outline:none;text-decoration:none;color:#72afd2}
 @media (max-width:767px){.navbar-nav>.user-menu .user-image{float:none;margin-right:0;margin-top:-8px;line-height:10px}}.open:not(.dropup)>.animated-dropdown-menu{backface-visibility:visible !important;-webkit-animation:flipInX .7s both;-o-animation:flipInX .7s both;animation:flipInX .7s both}
 
 .content-wrapper {
-    width: 86.5%;
+    width: 100%;
     float: right;
     transition: all 0.3s;
 }
@@ -482,7 +482,11 @@ font-size: 20px;
     font-size: 15px!important;
 }
 .main-sidebar{
-    width: 13.5%;
+    /*width: 13.5%;*/
+    width: 0%;
+}
+.content-wrapper{
+    width: 100%;
 }
 .menuLeftContral{
     left: 0!important;

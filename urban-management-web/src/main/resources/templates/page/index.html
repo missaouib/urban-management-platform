@@ -82,10 +82,10 @@
     <!--中间内容-->
     <div id="content-wrapper" class="content-wrapper">
         <div class="content-tabs">
-            <button class="roll-nav menuLeftContral showMenu menuActive">
+            <button class="roll-nav menuLeftContral showMenu">
                 <i class="fa fa-bars" aria-hidden="true"></i>
             </button>
-            <button class="roll-nav menuLeftContral hideMenu">
+            <button class="roll-nav menuLeftContral hideMenu menuActive">
                 <i class="fa fa-bars" aria-hidden="true"></i>
             </button>
             <button class="roll-nav roll-left tabLeft">
@@ -136,6 +136,16 @@
 
 
     $(function () {
+
+        $(document).mousemove(function(e){
+          if(e.pageX == 0){
+              $(".main-sidebar").css("width","13.5%");
+              $(".content-wrapper").css("width","86.5%");
+              $(".showMenu").addClass("menuActive")
+              $(".hideMenu").removeClass("menuActive")
+          }
+        });
+
 
         $(".backHome").click(function () {
             window.location.href = mainUrl;
