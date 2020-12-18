@@ -13,6 +13,7 @@ import com.unicom.urban.management.service.component.ComponentService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.user.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -36,10 +37,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 网格导入管理
@@ -122,7 +120,10 @@ public class ImportController {
             }
         }
         if (layerId.equals("00")) {
-            return Result.fail(00, "");
+            return Result.fail(98, "");
+        }
+        if (StringUtils.isEmpty(layerId)){
+            return Result.fail(97, "");
         }
 
         /*新增发布*/
@@ -229,7 +230,8 @@ public class ImportController {
         grid.setPublish(publish);
         grid.setInitialDate(LocalDateTime.now());
         grid.setTerminationDate(LocalDateTime.now());
-        List<User> userList = Arrays.asList();
+        grid.setLevel(4);
+        List<User> userList = new ArrayList<>();
         userList.add(SecurityUtil.getUser().castToUser());
         grid.setUserList(userList);
         gridService.save4Import(grid);

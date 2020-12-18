@@ -60,12 +60,16 @@
             contentType: false,
             processData: false,
             success: function (data) {
-                if (data.code == "00"){
+                console.log(data.code)
+                if (data.code == 98){
                  $.modal.alertWarning("图层名称已经存在！");
                 }else if(data.code == 99){
                     $.modal.alertWarning("请选择正确文件格式！",function () {
                     });
                     return;
+                }else if (data.code == 97){
+                    $.modal.alertWarning("导入失败！",function () {
+                    });
                 }else if (data.code == 0){
                     $.modal.alertSuccess('导入成功',function () {
                         window.location.href = /*[[@{/gImport}]]*/ "/gImport";
