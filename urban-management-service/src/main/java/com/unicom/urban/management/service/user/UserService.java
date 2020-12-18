@@ -348,7 +348,7 @@ public class UserService {
     }
 
     private boolean ifSort(String deptId, Integer sort, String userId) {
-        List<User> users = userRepository.findAllByDept_IdAndSort(deptId, sort);
+        List<User> users = userRepository.findAllByDept_IdAndSortAndDeleted(deptId, sort, Delete.NORMAL);
         if (StringUtils.isBlank(userId)) {
             return users.size() == 0;
         } else {
