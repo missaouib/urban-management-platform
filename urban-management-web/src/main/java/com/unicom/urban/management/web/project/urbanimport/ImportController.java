@@ -268,8 +268,9 @@ public class ImportController {
         boolean flag = false;
         for (MultipartFile multipartFile : fileList) {
             String suffix = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf(".") + 1);
-            if (TYPE_SHP.equals(suffix)) {
+            if (TYPE_SHP.equals(suffix.toUpperCase())) {
                 flag = true;
+                break;
             }
         }
         return flag;
