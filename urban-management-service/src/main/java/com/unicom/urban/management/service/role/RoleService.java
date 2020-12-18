@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.role;
 
 import com.unicom.urban.management.common.annotations.Log;
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.role.RoleRepository;
 import com.unicom.urban.management.mapper.RoleMapper;
 import com.unicom.urban.management.mapper.UserMapper;
@@ -117,6 +118,13 @@ public class RoleService {
     @Log(name = "角色管理-修改")
     public void updateRoleByDeptId(RoleDTO roleDTO) {
         Role one = roleRepository.getOne(roleDTO.getId());
+        if (!roleDTO.getSort().equals(String.valueOf(one.getSort()))) {
+            if (roleRepository.existsAllBySortAndDept_Id(Integer.valueOf(roleDTO.getSort()), roleDTO.getDeptId())) {
+                throw new DataValidException("排序重复");
+            } else {
+                one.setSort(Integer.valueOf(roleDTO.getSort()));
+            }
+        }
         one.setName(roleDTO.getName());
         one.setDescribes(roleDTO.getDescribes());
         Dept dept = deptService.findOne(roleDTO.getDeptId());
@@ -126,6 +134,10 @@ public class RoleService {
 
     @Log(name = "角色管理-删除")
     public void deleteRoleById(String id) {
+        Role one = findOne(id);
+        if (one.getUserList().size() > 0) {
+            throw new DataValidException("请先删除该角色下所有人员");
+        }
         roleRepository.deleteById(id);
     }
 

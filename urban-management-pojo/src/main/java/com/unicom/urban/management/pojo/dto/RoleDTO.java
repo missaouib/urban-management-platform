@@ -31,4 +31,6 @@ public class RoleDTO {
      */
     private String describes;
 
+    private String sort;
+
 }

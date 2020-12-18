@@ -248,9 +248,10 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
     List<Map<String, String>> findHighIncidenceByInst(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
-     * 高发问题 立案
+     * 高发问题 结案
      *
-     * @return list
+     * @param eventTypeId 事件类型id
+     * @return map
      */
     @Query(value = "SELECT count(s.id) as totalClose FROM Statistics s LEFT JOIN s.event e LEFT JOIN e.eventType et WHERE s.close = 1 AND et.id = ?1")
     Map<String, String> findHighIncidenceByClose(String eventTypeId);
