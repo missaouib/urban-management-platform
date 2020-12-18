@@ -8,6 +8,7 @@ import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.mapper.UserMapper;
+import com.unicom.urban.management.pojo.Delete;
 import com.unicom.urban.management.pojo.dto.ChangePasswordDTO;
 import com.unicom.urban.management.pojo.dto.UserDTO;
 import com.unicom.urban.management.pojo.dto.UserIdListDTO;
@@ -61,20 +62,20 @@ public class UserService {
         Specification<User> specification = (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
             if (StringUtils.isNotEmpty(userDTO.getName())) {
-                list.add(criteriaBuilder.like(root.get("name").as(String.class), "%"+userDTO.getName()+"%"));
+                list.add(criteriaBuilder.like(root.get("name").as(String.class), "%" + userDTO.getName() + "%"));
             }
             if (StringUtils.isNotEmpty(userDTO.getUsername())) {
                 list.add(criteriaBuilder.equal(root.get("username").as(String.class), userDTO.getUsername()));
             }
-            if(userDTO.getSts()!=3){
-               list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class),userDTO.getSts()));
+            if (userDTO.getSts() != 3) {
+                list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class), userDTO.getSts()));
             }
-            if(StringUtils.isNotBlank(userDTO.getDeptId())){
-                list.add(criteriaBuilder.equal(root.get("dept").get("id").as(String.class),userDTO.getDeptId()));
+            if (StringUtils.isNotBlank(userDTO.getDeptId())) {
+                list.add(criteriaBuilder.equal(root.get("dept").get("id").as(String.class), userDTO.getDeptId()));
             }
-            if(StringUtils.isNotBlank(userDTO.getRoleId())){
+            if (StringUtils.isNotBlank(userDTO.getRoleId())) {
                 Join<Object, Object> roleList = root.join("roleList", JoinType.LEFT);
-                list.add(criteriaBuilder.equal(roleList.get("id").as(String.class),userDTO.getRoleId()));
+                list.add(criteriaBuilder.equal(roleList.get("id").as(String.class), userDTO.getRoleId()));
             }
 
 
@@ -174,7 +175,7 @@ public class UserService {
     }
 
     public void changePassword(ChangePasswordDTO changePasswordDTO) {
-        User user = userRepository.findByUsername(SecurityUtil.getUsername());
+        User user = userRepository.findByUsernameAndDeleted(SecurityUtil.getUsername(), Delete.NORMAL);
 
         if (!passwordService.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
             throw new BadPasswordException("密码错误");
@@ -193,15 +194,15 @@ public class UserService {
     public UserVO findById(String id) {
         User user = userRepository.getOne(id);
         UserVO userVO = new UserVO();
-        BeanUtils.copyProperties(user,userVO);
-        if(Optional.ofNullable(user.getDept()).isPresent()){
+        BeanUtils.copyProperties(user, userVO);
+        if (Optional.ofNullable(user.getDept()).isPresent()) {
             userVO.setDeptName(user.getDept().getDeptName());
             userVO.setDeptId(user.getDept().getId());
         }
         List<String> roleList = new ArrayList<>();
-        user.getRoleList().forEach(r->roleList.add(r.getId()));
+        user.getRoleList().forEach(r -> roleList.add(r.getId()));
         userVO.setRoleIdList(roleList);
-        if(Optional.ofNullable(user.getBirth()).isPresent()){
+        if (Optional.ofNullable(user.getBirth()).isPresent()) {
             userVO.setBirth(fmt.format(user.getBirth()));
         }
 
@@ -239,11 +240,11 @@ public class UserService {
     }
 
     public boolean usernameAlreadyExists(String username) {
-        return userRepository.existsByUsername(username);
+        return userRepository.existsByUsernameAndDeleted(username, Delete.NORMAL);
     }
 
     private boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
+        return userRepository.existsByUsernameAndDeleted(username, Delete.NORMAL);
     }
 
     /**
@@ -347,7 +348,7 @@ public class UserService {
     }
 
     private boolean ifSort(String deptId, Integer sort, String userId) {
-        List<User> users = userRepository.findAllByDept_IdAndSort(deptId, sort);
+        List<User> users = userRepository.findAllByDept_IdAndSortAndDeleted(deptId, sort, Delete.NORMAL);
         if (StringUtils.isBlank(userId)) {
             return users.size() == 0;
         } else {
@@ -365,16 +366,16 @@ public class UserService {
 
     public void saveBatchUser(UserIdListDTO userIdListDTO) {
         String deptId = userIdListDTO.getDeptId();
-        List<Map<String,Object>>  userIdList = userIdListDTO.getUserIdList();
-        for (Map<String,Object> map : userIdList){
+        List<Map<String, Object>> userIdList = userIdListDTO.getUserIdList();
+        for (Map<String, Object> map : userIdList) {
             String userId = map.get("id").toString();
             Integer checkbox = Integer.valueOf(map.get("checkbox").toString());
             User user = this.findOne(userId);
             Dept dept = new Dept();
-            if (checkbox == 1){
+            if (checkbox == 1) {
                 dept.setId(deptId);
                 user.setDept(dept);
-            }else {
+            } else {
                 user.setDept(null);
             }
 
@@ -385,9 +386,9 @@ public class UserService {
     public List<UserVO> findUserByDept(String deptId) {
         List<User> userList = this.findAll();
         List<UserVO> list = new ArrayList<>();
-        for (User user : userList){
+        for (User user : userList) {
             UserVO vo = new UserVO();
-            if (user.getDept() != null && user.getDept().getId().equals(deptId)){
+            if (user.getDept() != null && user.getDept().getId().equals(deptId)) {
                 vo.setCheckbox(1);
             } else {
                 vo.setCheckbox(0);
