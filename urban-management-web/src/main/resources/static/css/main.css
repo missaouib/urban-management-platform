@@ -264,7 +264,7 @@ img {
     overflow: hidden;
 }
 
-.username {
+.username_nn {
     font-size: 13px;
     font-family: Microsoft YaHei;
     font-weight: 400;
@@ -387,4 +387,193 @@ img {
 .intoBtn a{
     text-decoration: none!important;
     color: white!important;
+}
+.login_frame{
+    width: 100%;height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    background-image: url("../img/bg.png");
+    background-size: 100% 100%;
+}
+
+
+/*登录*/
+.div_top {
+    width: 100%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    text-align: center;
+    font-size: 45px;
+    font-family: BDZongYi-A001;
+    font-weight: 800;
+    color: #FFFFFF;
+    line-height: 17px;
+    position: absolute;
+    top: 15%;
+    background: linear-gradient(0deg, #63A3FF 0%, #EDF6FF 49.5849609375%, #72BEFF 100%);
+    letter-spacing: 10px;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.underTop{
+    height: 30px;
+    font-size: 22px;
+    font-family: Akzidenz-Grotesk BQ;
+    margin: 0 auto;
+    font-weight: 400;
+    color: #FFFFFF;
+    position: absolute;
+    top: 23%;
+    width: 100%;
+    line-height: 25px;
+    text-align: center;
+    background: linear-gradient(0deg, #63A3FF 0%, #EDF6FF 49.5849609375%, #72BEFF 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.login {
+    max-height: 330px;
+    max-width: 420px;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    /* overflow-x: hidden; */
+    background-image: url("../img/solid.png");
+    background-size: 100% 100%;
+    position: absolute;
+    top: 0;left: 0;right: 0;bottom: 0;
+    margin: auto;
+}
+
+a.logo {
+    display: block;
+    height: 58px;
+    width: 167px;
+    margin: 0 auto 30px auto;
+    background-size: 167px 42px;
+}
+
+.message {
+    margin-top: -30px;
+    text-align: center;
+    font-size: 18px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #AED4FF;
+    line-height: 24px;
+}
+
+#darkbannerwrap {
+
+    width: 18px;
+    height: 10px;
+    margin: 0 0 20px -58px;
+    position: relative;
+}
+.username,.password,.input-val{
+    padding-left: 45px!important;
+    /*color: white!important;*/
+}
+
+.username,.password,.input-val,.login_btn{
+
+    background: #FFFFFF!important;
+    border: none;
+    opacity: 0.3;
+    border-radius: 5px;
+    width: 100%;
+    height: 50px;
+    position: relative;
+    font-size: 16px;
+    font-weight: 800;
+}
+.login_btn{
+    background: linear-gradient(0deg, #5A82D2, #2A4B90, #122244)!important;
+    border-radius: 5px;
+    color: white;
+    font-size: 18px;
+    opacity: 1;
+    cursor:pointer;
+}
+.forget{
+    width: 100%;
+    display: block;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+}
+hr.hr15 {
+    height: 15px;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+hr.hr20 {
+    height: 20px;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    color: #2e619a;
+}
+
+.copyright {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    display: block;
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    text-align: center;
+    text-shadow: 5px 5px 5px #000;
+}
+
+.input-val {
+    width: 55% !important;
+}
+
+.canvas {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 99;
+    width: 40%;
+    height: 50px;
+    border-radius: 5px;
+    float: right;
+    cursor:pointer;
+}
+.ortion{
+    width: 100%;
+    height: 20px;
+    margin-bottom: 10px;
+}
+.leftChange,.rightChage{
+    width: 90px;
+    color: white;
+}
+.leftChange{
+    float: left;
+}
+.rightChage{
+    text-align: right;
+    float: right;
+}
+.checkbox{
+    margin: 2px;
+    display: block;
+    float: left;
+}
+.check{
+    margin-left: 20px;
+}
+.inpBox{
+    position: relative;
+}
+.noneActive{
+    display: none;
 }
