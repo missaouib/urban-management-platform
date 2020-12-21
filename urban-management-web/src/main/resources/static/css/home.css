@@ -372,7 +372,6 @@ table {
     left: 0;
     display: none;
     height: 100%;
-    overflow: auto;
 }
 .warps{
     display: flex;

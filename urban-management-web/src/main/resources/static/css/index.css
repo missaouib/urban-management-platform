@@ -483,6 +483,10 @@ font-size: 20px;
 .main-sidebar{
     /*width: 13.5%;*/
     width: 0%;
+    height: 100%;
+}
+.sidebar{
+    height: 100%;
 }
 .content-wrapper{
     width: 100%;
@@ -496,4 +500,8 @@ font-size: 20px;
 }
 .showMenu,.hideMenu{
     border-right: 1px solid #ddd!important;
+}
+#sidebar-menu{
+    overflow: auto;
+    height: 100%;
 }

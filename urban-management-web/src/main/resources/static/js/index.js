@@ -382,10 +382,11 @@
                 var row = data[i];
                 if (row.parentId == "") {
                     if (i == 0) {
-                        // _html += '<li class="treeview active">';
-                        _html += '<li class="treeview">';
+                        _html += '<li class="treeview active">';
+                        // _html += '<li class="treeview">';
                     } else {
-                        _html += '<li class="treeview">';
+                        // _html += '<li class="treeview">';
+                        _html += '<li class="treeview active">';
                     }
                     _html += '<a href="#">'
                     _html += '<i class="' + row.icon + '"></i><span>' + row.name + '</span><i class="fa fa-angle-left pull-right"></i>'
