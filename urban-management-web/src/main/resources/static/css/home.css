@@ -387,6 +387,15 @@ table {
     width: 100%;
     height: 39%;
 }
+.slideWarps{
+    height: 100%;
+}
+.slideAuto{
+    overflow: auto;
+}
 .fixed-table-toolbar{
     display: none!important;
+}
+.warpsNone{
+    display: none;
 }

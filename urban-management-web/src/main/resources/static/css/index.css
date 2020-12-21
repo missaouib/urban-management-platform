@@ -332,8 +332,9 @@ font-size: 20px;
 }
 
 .main-header{
-    background-image: url("../img/headtop.png") !important;
-    background-size: 100% 100%;
+    /*background-image: url("../img/headtop.png") !important;*/
+    /*background-size: 100% 100%;*/
+    background-color: #354e85!important;
 }
 .logotop{
     width: 40px;

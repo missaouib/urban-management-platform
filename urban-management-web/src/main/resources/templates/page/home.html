@@ -23,24 +23,25 @@
     <div id="areascontent">
         <div class="rows" style="margin-bottom: 0.8%; overflow: hidden;">
             <div style="float: left; width: 100%;">
-                <div  style="height: 98vh;width:100%;position: relative; border: 1px solid #e6e6e6; overflow: hidden;">
-                    <div class="warps" style="height: 60%">
-                        <div class="vneterBox" >
-                            <div class="manner">
-                                <div class="block">
-                                    <img th:src="@{/img/ground2.png}" alt="">
-                                    <div class="test1">上报数</div>
-                                    <div class="test2" id="report">80</div>
-                                    <div class="test3">本周</div>
+                <div  style="height: 100vh;width:100%;position: relative; border: 1px solid #e6e6e6; overflow: hidden;">
+                    <div class="warpsNone" style="height: 60%">
+                        <div class="warps" style="height: 100%;height: 100%">
+                            <div class="vneterBox" >
+                                <div class="manner">
+                                    <div class="block">
+                                        <img th:src="@{/img/ground2.png}" alt="">
+                                        <div class="test1">上报数</div>
+                                        <div class="test2" id="report">80</div>
+                                        <div class="test3">本周</div>
+                                    </div>
+                                    <div class="block">
+                                        <img th:src="@{/img/ground3.png}" alt="">
+                                        <div class="test1">立案数</div>
+                                        <div class="test2" id="inst">180</div>
+                                        <div class="test3">本周</div>
+                                    </div>
                                 </div>
-                                <div class="block">
-                                    <img th:src="@{/img/ground3.png}" alt="">
-                                    <div class="test1">立案数</div>
-                                    <div class="test2" id="inst">180</div>
-                                    <div class="test3">本周</div>
-                                </div>
-                            </div>
-                            <!--                        表格处-->
+                                <!--                        表格处-->
 
                                 <div class="mannertable autotable">
                                     <table class="table" >
@@ -59,104 +60,109 @@
                                     </table>
                                 </div>
 
-                        </div>
-                        <div class="vneterBox">
-                            <div class="manner">
-                                <div class="block">
-                                    <img th:src="@{/img/ground33.png}" alt="">
-                                    <div class="test1">派遣数</div>
-                                    <div class="test2" id="dispatch">90</div>
-                                    <div class="test3">本周</div>
-                                </div>
-                                <div class="block">
-                                    <img th:src="@{/img/ground4.png}" alt="">
-                                    <div class="test1">结案数</div>
-                                    <div class="test2" id="close">20</div>
-                                    <div class="test3">本周</div>
-                                </div>
                             </div>
-                            <!--                        表格处-->
-                            <div class="mannertable autotable">
-                                <table class="table">
-                                    <thead>
-                                    <tr>
-                                        <th>事件</th>
-                                        <th>本周</th>
-                                        <th>本月</th>
-                                        <th>总数</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="eventCount">
+                            <div class="vneterBox">
+                                <div class="manner">
+                                    <div class="block">
+                                        <img th:src="@{/img/ground33.png}" alt="">
+                                        <div class="test1">派遣数</div>
+                                        <div class="test2" id="dispatch">90</div>
+                                        <div class="test3">本周</div>
+                                    </div>
+                                    <div class="block">
+                                        <img th:src="@{/img/ground4.png}" alt="">
+                                        <div class="test1">结案数</div>
+                                        <div class="test2" id="close">20</div>
+                                        <div class="test3">本周</div>
+                                    </div>
+                                </div>
+                                <!--                        表格处-->
+                                <div class="mannertable autotable">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>事件</th>
+                                            <th>本周</th>
+                                            <th>本月</th>
+                                            <th>总数</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="eventCount">
 
 
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
-                        <div class="vneterBox">
-                            <div class="manner userManner">
-                                <div class="userBox">
-                                    <div class="headImg">
-                                        <div class="headerImg">
-                                            <img th:src="@{/img/header.png}" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="username">
-                                        <div class="adminName" th:sec:authentication="principal.name"></div>
-                                    </div>
-                                    <div class="purpose">
-                                        <div class="book">
-                                            <div class="bookBox">
-                                                <img th:src="@{/img/self.png}" alt="">
-                                                <div class="bookText" >用户</div>
+                            <div class="vneterBox">
+                                <div class="manner userManner">
+                                    <div class="userBox">
+                                        <div class="headImg">
+                                            <div class="headerImg">
+                                                <img th:src="@{/img/header.png}" alt="">
                                             </div>
                                         </div>
-                                        <div class="book">
-                                            <div class="bookBox">
-                                                <img th:src="@{/img/password1.png}" alt="">
-                                                <div class="bookText" >密码</div>
-                                            </div>
+                                        <div class="username">
+                                            <div class="adminName" th:sec:authentication="principal.name"></div>
                                         </div>
-                                        <div class="book">
-                                            <div class="bookBox">
-                                                <img th:src="@{/img/list.png}" alt="">
-                                                <div class="bookText" >通讯</div>
+                                        <div class="purpose">
+                                            <div class="book">
+                                                <div class="bookBox">
+                                                    <img th:src="@{/img/self.png}" alt="">
+                                                    <div class="bookText" >用户</div>
+                                                </div>
+                                            </div>
+                                            <div class="book">
+                                                <div class="bookBox">
+                                                    <img th:src="@{/img/password1.png}" alt="">
+                                                    <div class="bookText" >密码</div>
+                                                </div>
+                                            </div>
+                                            <div class="book">
+                                                <div class="bookBox">
+                                                    <img th:src="@{/img/list.png}" alt="">
+                                                    <div class="bookText" >通讯</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-<!--                                                    表格处-->
-                            <div class="mannertable">
-                                <table class="table">
-                                    <div class="mation mationTitle">
-                                        个人信息
-                                    </div>
-                                    <div class="mation">
-                                        <div style="float:left;font-size: 16px;color: #131313;">角色信息</div>
-                                        <div style="float: right;color: #666666;font-size: 16px" id="roleName"></div>
-                                    </div>
-                                    <div class="mation">
-                                        <div style="float:left;font-size: 16px;color: #131313;">岗位案件数</div>
-                                        <div style="float: right;color: #666666;font-size: 16px" id="takeCase"></div>
-                                    </div>
-                                    <div class="mation">
-                                        <div style="float:left;font-size: 16px;color: #131313;">办理案件数</div>
-                                        <div style="float: right;color: #666666;font-size: 16px" id="instCase"></div>
-                                    </div>
-                                    <div class="mation">
-                                        <div style="float:left;font-size: 16px;color: #131313;">完结案件数</div>
-                                        <div style="float: right;color: #666666;font-size: 16px" id="closeCase"></div>
-                                    </div>
-                                </table>
+                                <!--                                                    表格处-->
+                                <div class="mannertable">
+                                    <table class="table">
+                                        <div class="mation mationTitle">
+                                            个人信息
+                                        </div>
+                                        <div class="mation">
+                                            <div style="float:left;font-size: 16px;color: #131313;">角色信息</div>
+                                            <div style="float: right;color: #666666;font-size: 16px" id="roleName"></div>
+                                        </div>
+                                        <div class="mation">
+                                            <div style="float:left;font-size: 16px;color: #131313;">岗位案件数</div>
+                                            <div style="float: right;color: #666666;font-size: 16px" id="takeCase"></div>
+                                        </div>
+                                        <div class="mation">
+                                            <div style="float:left;font-size: 16px;color: #131313;">办理案件数</div>
+                                            <div style="float: right;color: #666666;font-size: 16px" id="instCase"></div>
+                                        </div>
+                                        <div class="mation">
+                                            <div style="float:left;font-size: 16px;color: #131313;">完结案件数</div>
+                                            <div style="float: right;color: #666666;font-size: 16px" id="closeCase"></div>
+                                        </div>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="warpsOther" style="height: 39%">
+
+                    <div style="width: 100%;width: 100%;display: flex;justify-content: center">
+                        <div class="xiala"><i class="selectmenu"></i></div>
+                    </div>
+
+                    <div class="warpsOther slideWarps">
                         <div class="col-md-12 bottomInner">
                             <div class="innerTop">
                                 <div class="buck">待办事项</div>
-
                             </div>
                             <div class="innerBottom">
                                 <div class="zara tiaoActive">
@@ -170,138 +176,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
-
-
-<!--        <div class="e_chart">-->
-<!--            <div class="charts l_left">-->
-<!--                <p class="charts_p">全年危险品计划量和实际需求量分析<span class="r_right"></span></p>-->
-<!--                <div id="salesProportion" style="height:350px;width: 98%"></div>-->
-<!--            </div>-->
-<!--            <div class="charts l_left last_charts">-->
-<!--                <p class="charts_p">全年事故分析走势图<span class="r_right"></span></p>-->
-<!--                <div id="profitProportion" style="height:350px;width: 98%"></div>-->
-<!--            </div>-->
-<!--            <div class="clear"></div>-->
-<!--        </div>-->
-
-
-<!--        <div class="article half notice">-->
-<!--            <div class="wrap-l">-->
-<!--                <div class="title ue-clear">-->
-<!--                    <h2>值班周报</h2>-->
-<!--                    <a href="javascript:;" class="more">更多</a>-->
-<!--                </div>-->
-<!--                <div class="content">-->
-<!--                    <ul class="notice-list">-->
-<!--                        <li class="ue-clear">-->
-<!--                            <a href="javascript:;" class="notice-title">210期值班周报信息。</a>-->
-<!--                            <div class="notice-time">9-18</div>-->
-<!--                        </li>-->
-<!--                        <li class="ue-clear">-->
-<!--                            <a href="javascript:;" class="notice-title">209期值班周报信息。</a>-->
-<!--                            <div class="notice-time">9-18</div>-->
-<!--                        </li>-->
-<!--                        <li class="ue-clear">-->
-<!--                            <a href="javascript:;" class="notice-title">208期值班周报信息。</a>-->
-<!--                            <div class="notice-time">9-18</div>-->
-<!--                        </li>-->
-<!--                        <li class="ue-clear">-->
-<!--                            <a href="javascript:;" class="notice-title">207期值班周报信息。</a>-->
-<!--                            <div class="notice-time">9-18</div>-->
-<!--                        </li>-->
-<!--                        <li class="ue-clear">-->
-<!--                            <a href="javascript:;" class="notice-title">206期值班周报信息。</a>-->
-<!--                            <div class="notice-time">9-18</div>-->
-<!--                        </li>-->
-<!--                        <li class="ue-clear">-->
-<!--                            <a href="javascript:;" class="notice-title">205期值班周报信息。</a>-->
-<!--                            <div class="notice-time">9-18</div>-->
-<!--                        </li>-->
-<!--                        <li class="ue-clear">-->
-<!--                            <a href="javascript:;" class="notice-title">204期值班周报信息。</a>-->
-<!--                            <div class="notice-time">9-18</div>-->
-<!--                        </li>-->
-<!--                    </ul>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="article half matter" style="margin-bottom: 14px">-->
-<!--            <div class="wrap-r">-->
-<!--                <div class="title ue-clear">-->
-<!--                    <h2 class="title-list">-->
-<!--                        <ul class="ue-clear">-->
-<!--                            <li class="current"><a href="javascript:;">待办事项</a></li>-->
-<!--                            <li><a href="javascript:;">已办事项</a></li>-->
-<!--                        </ul>-->
-<!--                    </h2>-->
-<!--                    <a href="javascript:;" class="more">更多</a>-->
-<!--                </div>-->
-<!--                <div class="content">-->
-<!--                    <div class="matter-content current ue-clear">-->
-<!--                        <div class="today">-->
-<!--                            <p class="year">2017年9月</p>-->
-<!--                            <p class="date">19</p>-->
-<!--                        </div>-->
-<!--                        <ul class="matter-list">-->
-<!--                            <li class="ue-clear">-->
-<!--                                <span class="matter-time">9-19</span>-->
-<!--                                <a href="javascript:;" class="matter-title">下午2点召开2017年9月的工作会议</a>-->
-<!--                            </li>-->
-<!--                            <li class="ue-clear">-->
-<!--                                <span class="matter-time">9-19</span>-->
-<!--                                <a href="javascript:;" class="matter-title">上交本年度下月的工作报告提纲</a>-->
-<!--                            </li>-->
-<!--                            <li class="ue-clear">-->
-<!--                                <span class="matter-time">9-19</span>-->
-<!--                                <a href="javascript:;" class="matter-title">参加危险品使用加强的方案会议</a>-->
-<!--                            </li>-->
-<!--                            <li class="ue-clear">-->
-<!--                                <span class="matter-time">9-19</span>-->
-<!--                                <a href="javascript:;" class="matter-title">参加危险品预防措施大会</a>-->
-<!--                            </li>-->
-<!--                            <li class="ue-clear">-->
-<!--                                <span class="matter-time">9-19</span>-->
-<!--                                <a href="javascript:;" class="matter-title">参加市政府举办的互动活动并宣传单位</a>-->
-<!--                            </li>-->
-
-<!--                        </ul>-->
-<!--                    </div>-->
-<!--                    <div class="matter-content ue-clear">-->
-<!--                        <div class="today">-->
-<!--                            <p class="year">2017年9月</p>-->
-<!--                            <p class="date">15</p>-->
-<!--                        </div>-->
-<!--                        <ul class="matter-list">-->
-<!--                            <li class="ue-clear">-->
-<!--                                <span class="matter-time">9-15</span>-->
-<!--                                <a href="javascript:;" class="matter-title">参加市政府举办的互动活动并宣传单位</a>-->
-<!--                            </li>-->
-<!--                            <li class="ue-clear">-->
-<!--                                <span class="matter-time">9-15</span>-->
-<!--                                <a href="javascript:;" class="matter-title">参加危险品预防措施大会</a>-->
-<!--                            </li>-->
-<!--                            <li class="ue-clear">-->
-<!--                                <span class="matter-time">9-15</span>-->
-<!--                                <a href="javascript:;" class="matter-title">参加危险品使用加强的方案会议</a>-->
-<!--                            </li>-->
-<!--                            <li class="ue-clear">-->
-<!--                                <span class="matter-time">9-15</span>-->
-<!--                                <a href="javascript:;" class="matter-title">上交本年度下月的工作报告提纲</a>-->
-<!--                            </li>-->
-<!--                            <li class="ue-clear">-->
-<!--                                <span class="matter-time">9-15</span>-->
-<!--                                <a href="javascript:;" class="matter-title">下午2点召开2017年9月的工作会议</a>-->
-<!--                            </li>-->
-<!--                        </ul>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-
-<!--        </div>-->
-<!--        <div class="clear"></div>-->
     </div>
 </body>
 <th:block th:include="page/fragments/common :: common_js"/>
@@ -320,6 +195,23 @@
         getCase()
 
     queryUserList()
+
+        var r = 0;
+        var slideNum = 0;
+        $(".xiala").click(function() {
+            r += 180;
+            slideNum++;
+            $(".warpsNone").slideToggle(300);
+            //下拉
+            if (slideNum % 2 == 0){
+                $(".warpsOther").addClass("slideWarps")
+                $(".warpsOther").removeClass("slideAuto")
+            }else {
+                $(".warpsOther").addClass("slideAuto")
+                $(".warpsOther").removeClass("slideWarps")
+            }
+            $(".selectmenu").css('transform', 'rotate(' + r + 'deg)');
+        })
 
         $(".star").click(function () {
             $(this).addClass("staractive").siblings(".star").removeClass("staractive");
@@ -404,6 +296,7 @@
             url: searchUrl,
             createUrl: addUrl,
             updateUrl: editUrl,
+            pageSize:20,
             removeUrl: removeUrl,
             // exportUrl: prefix + "/export",
             // importUrl: prefix + "/importData",
