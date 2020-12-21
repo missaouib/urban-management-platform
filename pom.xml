@@ -28,6 +28,7 @@
         <jts.version>1.16.0</jts.version>
         <commons-io.version>2.5</commons-io.version>
         <smiley-http-proxy-servlet.version>1.11</smiley-http-proxy-servlet.version>
+        <geotools.version>23.0</geotools.version>
     </properties>
 
     <modules>
@@ -137,6 +138,39 @@
                 <version>${smiley-http-proxy-servlet.version}</version>
             </dependency>
 
+            <!-- geoTools工具包 -->
+            <dependency>
+                <groupId>org.geotools</groupId>
+                <artifactId>gt-main</artifactId>
+                <version>${geotools.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.geotools</groupId>
+                <artifactId>gt-epsg-hsql</artifactId>
+                <version>${geotools.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.geotools</groupId>
+                <artifactId>gt-geotiff</artifactId>
+                <version>${geotools.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.geotools</groupId>
+                <artifactId>gt-wms</artifactId>
+                <version>${geotools.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.geotools</groupId>
+                <artifactId>gt-shapefile</artifactId>
+                <version>${geotools.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.geotools.jdbc</groupId>
+                <artifactId>gt-jdbc-postgis</artifactId>
+                <version>${geotools.version}</version>
+            </dependency>
+
+
             <dependency>
                 <groupId>cn.unicom.hlj.snr.firebird</groupId>
                 <artifactId>firebirds-eye-starter</artifactId>
@@ -192,6 +226,21 @@
             <releases>
                 <enabled>true</enabled>
             </releases>
+        </repository>
+        <repository>
+            <id>osgeo</id>
+            <name>OSGeo Release Repository</name>
+            <url>https://repo.osgeo.org/repository/release/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>GeoSolutions</id>
+            <url>http://maven.geo-solutions.it/</url>
         </repository>
     </repositories>
 
