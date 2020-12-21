@@ -129,13 +129,13 @@ $(".hideMenu").click(function () {
 // 	$(".showMenu").removeClass("menuActive")
 // });
 
-// $(".main-sidebar").mouseleave(function (e) {
-// 	e.stopPropagation();
-// 	$(".main-sidebar").css("width","0%");
-// 	$(".content-wrapper").css("width","100%")
-// 	$('.hideMenu').addClass("menuActive")
-// 	$(".showMenu").removeClass("menuActive")
-// })
+$(".main-sidebar").mouseleave(function (e) {
+	e.stopPropagation();
+	$(".main-sidebar").css("width","0%");
+	$(".content-wrapper").css("width","100%")
+	$('.hideMenu').addClass("menuActive")
+	$(".showMenu").removeClass("menuActive")
+})
 
 /*
 * 新页面控制
