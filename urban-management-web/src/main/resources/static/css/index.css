@@ -328,7 +328,7 @@ font-size: 20px;
 .skin-blue .sidebar-menu > li > .treeview-menu5{margin: 0 1px;background: #112d4a;}
 
 .logo1{
-    height: 50px!important;
+    height: 40px!important;
 }
 
 .main-header{
@@ -336,18 +336,18 @@ font-size: 20px;
     background-size: 100% 100%;
 }
 .logotop{
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     float: left;
     margin-right: 10px;
 }
 .logoTitle{
-    font-size: 25px;
+    font-size: 23px;
     font-family: Microsoft YaHei;
     font-weight: 800;
     color: #FFFFFF;
     float: left;
-    line-height: 50px;
+    line-height: 40px;
 }
 .logo img,.backHome i img,i img{
     width: 100%;height: 100%;
