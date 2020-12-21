@@ -40,4 +40,6 @@ public class DeptVO {
 
     private UserVO userVO;
 
+    private String iconSkin;
+
 }

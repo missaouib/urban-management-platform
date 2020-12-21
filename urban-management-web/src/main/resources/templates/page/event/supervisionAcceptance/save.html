@@ -629,37 +629,6 @@
         }
     }
 
-
-    var setting = {
-        callback: {
-            onClick: zTreeOnClick
-        },
-        data: {//数据加载
-            keep: {
-                parent: true,
-                leaf: true
-            },
-            simpleData: {
-                enable: true,
-                idKey: 'id',
-                pIdKey: 'parent'
-            },
-            key: {
-                name: "name"
-            }
-        }
-    };
-
-    function zTreeOnClick(event, treeId, treeNode) {
-        $("#typeStr").val(treeNode.name);
-        $("#eventTypeId").val(treeNode.id);
-        $(".closemodal").click();
-        let eventTypeId = $("#eventTypeId").val();
-        createEventCode(eventTypeId);
-        //获取立案区域
-        findEventConditionByEventType(eventTypeId)
-    }
-
     /**
      * 后台自动生成案卷号
      * @param eventTypeId

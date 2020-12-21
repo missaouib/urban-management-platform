@@ -50,4 +50,7 @@ public class UserVO {
     private String post;
 
     private Integer sort;
+
+    private String iconSkin;
+
 }
