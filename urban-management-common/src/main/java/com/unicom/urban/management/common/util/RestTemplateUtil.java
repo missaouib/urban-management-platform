@@ -1,9 +1,12 @@
 package com.unicom.urban.management.common.util;
 
+import com.unicom.urban.management.common.exception.DataValidException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -13,8 +16,15 @@ import java.util.Map;
  * @date 2020/10/14-9:34
  */
 public class RestTemplateUtil {
-    private static final RestTemplate restTemplate = new RestTemplate();
+    private static final RestTemplate restTemplate;
 
+    static {
+        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+        httpRequestFactory.setConnectionRequestTimeout(3000);
+        httpRequestFactory.setConnectTimeout(3000);
+        httpRequestFactory.setReadTimeout(3000);
+        restTemplate = new RestTemplate(httpRequestFactory);
+    }
     // ----------------------------------GET-------------------------------------------------------
 
     /**
@@ -25,7 +35,11 @@ public class RestTemplateUtil {
      * @return ResponseEntity 响应对象封装类
      */
     public static <T> ResponseEntity<T> get(String url, Class<T> responseType) {
-        return restTemplate.getForEntity(url, responseType);
+        try {
+            return restTemplate.getForEntity(url, responseType);
+        } catch (RestClientException e) {
+            throw new DataValidException("Gis服务连接异常");
+        }
     }
 
     /**

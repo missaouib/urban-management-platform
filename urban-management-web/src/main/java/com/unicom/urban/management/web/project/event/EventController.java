@@ -17,6 +17,7 @@ import com.unicom.urban.management.service.process.ProcessService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,18 +78,10 @@ public class EventController {
      * 逆地理编码
      */
     @GetMapping("localReverseGeocoding")
-    public Map<String, String> localReverseGeocoding(double x, double y) {
-
-        try {
-            RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/restApi/LocalReverseGeocoding?x=" + x + "&y=" + y, RestReturn.class).getBody();
-            assert body != null;
-            return (Map<String, String>) body.getData();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Map<String, String> map = new HashMap<>();
-            map.put("mongo", "");
-            return map;
-        }
+    public Map<String, String> localReverseGeocoding(double x, double y) throws DataAccessException {
+        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/restApi/LocalReverseGeocoding?x=" + x + "&y=" + y, RestReturn.class).getBody();
+        assert body != null;
+        return (Map<String, String>) body.getData();
     }
 
     /**
