@@ -144,7 +144,6 @@ $(".main-sidebar").mouseleave(function (e) {
 $(".closeSearch").click(function () {
 	$(".selectPoint").slideUp(300);
 });
-console.log($(".bottom_left").height())
 $(".doItInner").height($(".bottom_left").height() - $(".doItTitle").height());
 $(".right_bottomIn").height($(".bottom_right").height() - $(".right_topIn").height());
 
@@ -307,7 +306,7 @@ var table = {
 					sortOrder: "asc",
 					pagination: true,
 					paginationLoop: true,
-					pageSize: 10,
+					pageSize: 8,
 					pageNumber: 1,
 					pageList: [10],
 					// pageList: [10, 25, 50],
