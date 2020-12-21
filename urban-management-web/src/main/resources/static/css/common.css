@@ -1978,17 +1978,17 @@ span.search_highlight {
 
 
 /*.ico_open,.ico_close{*/
-.treeDept{
+.ztree li span.button.treeDept_ico_open, .ztree li span.button.treeDept_ico_close {
     background-image: url("../img/treedept.png") !important;
     background-position: 0 0!important;
     background-size: 100% 100%;
 }
-.treeRole{
+.ztree li span.button.treeRole_ico_docu {
     background-image: url("../img/treerole.png") !important;
     background-position: 0 0!important;
     background-size: 100% 100%;
 }
-.treeUser{
+.ztree li span.button.treeUser_ico_docu {
     background-image: url("../img/treeuser.png") !important;
     background-position: 0 0!important;
     background-size: 100% 100%;
