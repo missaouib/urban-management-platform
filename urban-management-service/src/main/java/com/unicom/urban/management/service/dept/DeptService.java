@@ -87,7 +87,7 @@ public class DeptService {
                     DeptVO roleVO = new DeptVO();
                     roleVO.setId(role.getId());
                     roleVO.setDeptName(role.getName());
-                    deptVO.setIconSkin("treeRole");
+                    roleVO.setIconSkin("treeRole");
                     roleVO.setDescribes(role.getDescribes());
                     roleVO.setCreateTime(df.format(role.getCreateTime()));
                     roleVO.setParentId(dept.getId());
