@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 @ResponseResultBody
 @RequestMapping("/api/event")
-public class WirelessAcquisitionController {
+public class  WirelessAcquisitionController {
 
     @Autowired
     private EventTypeService eventTypeService;

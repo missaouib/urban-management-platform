@@ -1978,7 +1978,7 @@ span.search_highlight {
 
 
 /*.ico_open,.ico_close{*/
-.ztree li span.button.treeDept_ico_open, .ztree li span.button.treeDept_ico_close {
+.ztree li span.button.treeDept_ico_open, .ztree li span.button.treeDept_ico_close,.ztree li span.button.treeDept_ico_docu  {
     background-image: url("../img/treedept.png") !important;
     background-position: 0 0!important;
     background-size: 100% 100%;
