@@ -121,8 +121,38 @@
         <div class="info">
             <div class="test testActive test1">
                 <div class="textsInbig">
-                    &nbsp; &nbsp;&nbsp;&nbsp;
-                    以数字地图和单元网格划分为基础，集成基础地理、地理编码、市政及社区服务部件事件的多种数据资源，以城市监管员和市民服务热线为信息收集渠道，创建城市管理和市民服务综合指挥系统。通过多部门信息共享、协同工作，构建起沟通快捷、责任到位、处置及时、运转高效的城市管理、公共服务的监督和处置新机制，全面提高城市管理和政府公共服务水平。
+                    <div class="login_main">
+                        <div class="login">
+                            <div class="message">登录账号</div>
+                            <div id="darkbannerwrap"></div>
+                            <form id="loginForm">
+                                <div class="inpBox">
+                                    <div class="icon icon1"></div>
+                                    <input name="username" placeholder="账号" id="username" type="text" class="username">
+                                </div>
+
+                                <hr class="hr20">
+                                <div class="inpBox">
+                                    <div class="icon icon2"></div>
+                                    <input name="password" placeholder="密码" id="password" type="password" class="password">
+                                </div>
+
+                                <hr class="hr20">
+
+                                <div class="inpBox">
+                                    <div class="icon icon3"></div>
+                                    <img id="captchaImg" th:src="@{/captcha.jpeg}" class="canvas" alt="验证码" title="点击图片刷新验证码" onclick="changeCaptcha()">
+                                    <input name="input-val" autocomplete="off" class="input-val" placeholder="请输入验证码" id="captcha" type="text" maxlength="4" >
+                                </div>
+
+                                <hr class="hr20">
+                            </form>
+
+                            <input value="登录" style="width: 100%;" type="button" onclick="login()" id="login_btn" class="login_btn">
+                            <!--    <span class="forget">忘记密码?</span>-->
+                        </div>
+                    </div>
+<!--                    以数字地图和单元网格划分为基础，集成基础地理、地理编码、市政及社区服务部件事件的多种数据资源，以城市监管员和市民服务热线为信息收集渠道，创建城市管理和市民服务综合指挥系统。通过多部门信息共享、协同工作，构建起沟通快捷、责任到位、处置及时、运转高效的城市管理、公共服务的监督和处置新机制，全面提高城市管理和政府公共服务水平。-->
                 </div>
             </div>
             <div class="test">
@@ -161,42 +191,7 @@
 </div>
 <div class="footer">Copyright © 2020 联通（黑龙江）产业互联网有限公司</div>
 
-<!--登录-->
-<div class="login_frame noneActive">
-    <div class="div_top">
-        城市综合管理服务平台
-    </div>
-    <div class="underTop">URBAN COMPREHENSIVE MANAGEMENT AND SERVICES PLATFORM</div>
-    <div class="login">
-        <div class="message">登录账号</div>
-        <div id="darkbannerwrap"></div>
-        <form id="loginForm">
-            <div class="inpBox">
-                <div class="icon icon1"></div>
-                <input name="username" placeholder="账号" id="username" type="text" class="username">
-            </div>
 
-            <hr class="hr20">
-            <div class="inpBox">
-                <div class="icon icon2"></div>
-                <input name="password" placeholder="密码" id="password" type="password" class="password">
-            </div>
-
-            <hr class="hr20">
-
-            <div class="inpBox">
-                <div class="icon icon3"></div>
-                <img id="captchaImg" th:src="@{/captcha.jpeg}" class="canvas" alt="验证码" title="点击图片刷新验证码" onclick="changeCaptcha()">
-                <input name="input-val" autocomplete="off" class="input-val" placeholder="请输入验证码" id="captcha" type="text" maxlength="4" >
-            </div>
-
-            <hr class="hr20">
-        </form>
-
-        <input value="登录" style="width: 100%;" type="button" onclick="login()" id="login_btn" class="login_btn">
-        <!--    <span class="forget">忘记密码?</span>-->
-    </div>
-</div>
 </body>
 <script type="text/javascript" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/main.js}"></script>

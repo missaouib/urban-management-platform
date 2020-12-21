@@ -400,42 +400,30 @@ img {
 
 
 /*登录*/
-.div_top {
-    width: 100%;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    text-align: center;
-    font-size: 45px;
-    font-family: BDZongYi-A001;
-    font-weight: 800;
-    color: #FFFFFF;
-    line-height: 17px;
-    position: absolute;
-    top: 15%;
-    background: linear-gradient(0deg, #63A3FF 0%, #EDF6FF 49.5849609375%, #72BEFF 100%);
-    letter-spacing: 10px;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.inpBox{
+    position: relative;
 }
-.underTop{
-    height: 30px;
-    font-size: 22px;
-    font-family: Akzidenz-Grotesk BQ;
-    margin: 0 auto;
-    font-weight: 400;
-    color: #FFFFFF;
+.icon{
+    width: 18px;
+    height: 18px;
     position: absolute;
-    top: 23%;
-    width: 100%;
-    line-height: 25px;
-    text-align: center;
-    background: linear-gradient(0deg, #63A3FF 0%, #EDF6FF 49.5849609375%, #72BEFF 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    background-size: 100% 100%;
+    top: 50%;
+    margin-top: -9px;
+    left: 15px;
+}
+.icon1{
+    background-image: url("../img/user.png");
+}
+.icon2{
+    background-image: url("../img/pass.png");
+}
+.icon3{
+    background-image: url("../img/code.png");
 }
 .login {
     max-height: 330px;
-    max-width: 420px;
+    max-width: 380px;
     padding: 20px;
     margin-left: auto;
     margin-right: auto;
@@ -466,10 +454,9 @@ a.logo {
 }
 
 #darkbannerwrap {
-
     width: 18px;
     height: 10px;
-    margin: 0 0 20px -58px;
+    margin: 0px;
     position: relative;
 }
 .username,.password,.input-val{
@@ -513,7 +500,7 @@ hr.hr15 {
 }
 
 hr.hr20 {
-    height: 20px;
+    height: 13px;
     border: none;
     margin: 0px;
     padding: 0px;
@@ -570,10 +557,4 @@ hr.hr20 {
 }
 .check{
     margin-left: 20px;
-}
-.inpBox{
-    position: relative;
-}
-.noneActive{
-    display: none;
 }
