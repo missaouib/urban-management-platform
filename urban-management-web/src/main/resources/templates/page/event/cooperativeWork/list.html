@@ -1225,12 +1225,18 @@
             console.log(id);
         })
     })
+    let url = [[${@geoServerProperties.url}]];
+    let center_x = [[${@geoServerProperties.center_x}]];
+    let center_y = [[${@geoServerProperties.center_y}]];
+    let layers = [[${@geoServerProperties.layers}]];
+    let zoom = [[${@geoServerProperties.zoom}]];
+    let epsg = [[${@geoServerProperties.epsg}]];
 
-    var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
+
     // 沽源地图
-    var center = [115.68192, 41.66462];
+    var center = [center_x, center_y];
     var projection = new ol.proj.Projection({
-        code: 'EPSG:4326',
+        code: epsg,
         units: 'degrees',
         axisOrientation: 'neu',
         global: true
@@ -1238,10 +1244,10 @@
     var untiled = new ol.layer.Image({
         source: new ol.source.ImageWMS({
             ratio: 1,
-            url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
+            url: url,
             params: {
                 'VERSION': '1.1.1',
-                "LAYERS": 'guyuan20201010:guyuan',
+                "LAYERS": layers,
                 "exceptions": 'application/vnd.ogc.se_inimage',
             }
         })
@@ -1256,7 +1262,7 @@
         view: new ol.View({
             // projection: projection,
             center: center,
-            zoom: 17,
+            zoom: zoom,
             projection: projection
         })
     });
