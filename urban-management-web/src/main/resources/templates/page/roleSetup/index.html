@@ -176,9 +176,11 @@
             var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
             console.log(treeObj,"treeObj")
             var node = treeObj.getNodes(); //可以获取所有的父节点
-            console.log("node",node)
             var nodes = treeObj.transformToArray(node); //获取树所有节点
             console.log("nodes",nodes)
+            for(let i = 0;i<nodes.length;i++){
+                console.log(nodes[i].levelOrNot)
+            }
         });
     }
 

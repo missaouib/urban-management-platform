@@ -932,7 +932,7 @@ body{height: 100vh!important;width: 100% !important;margin: 0 auto}
 .notice_bot{background-color: white!important;padding: 5px 0 5px 0;z-index:-1;border:none!important;width: 100%;}
 .notice_bot>div{font-size: 12px;margin-left: 10px;color: #07141e;line-height: 28px}
 .notice_bot>div input{margin-right: 2px;vertical-align: middle;height: 100%;width: 100%}
-textarea{width: 100%;height: 70px;resize: none;border-radius: 4px;border: 1px #ccc solid;padding: 0 5px;}
+textarea{width: 100%;height: 30px;resize: none;border-radius: 4px;border: 1px #ccc solid;padding: 0 5px;}
 
 
 .l_left{float: left}
@@ -1975,6 +1975,8 @@ span.search_highlight {
     height: 30px;
     overflow: hidden;
 }
+
+
 /*.ico_open,.ico_close{*/
 .treeDept{
     background-image: url("../img/treedept.png") !important;
@@ -1991,9 +1993,17 @@ span.search_highlight {
     background-position: 0 0!important;
     background-size: 100% 100%;
 }
+
+
 .areaCenter{
     flex: 1!important;
     border: 1px solid rgb(242, 243, 245);
     box-shadow: rgba(228, 228, 228, 0.5) 1px 1px 6px 0px;
     padding: 10px;
+}
+.doItInner{
+    overflow: auto;
+}
+.right_bottomIn td{
+    padding: 0!important;
 }
