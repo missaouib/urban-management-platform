@@ -708,7 +708,7 @@
 .fixed-table-pagination{z-index:1;margin-top:0 !important;margin-bottom:0 !important;width: 100%!important;border-top:1px #ccc solid}
 .pagination-detail{margin-top:0 !important;margin-bottom:0 !important;}
 .pagination{margin-top:3px !important;margin-bottom:5px !important;}
-.but_close{margin-right: 0px!important;}
+.but_close{margin-right: 10px!important;}
 .l_left{float: left}
 .r_right{float: right}
 .notice_bot{background-color: #ecf0f5;border-top:1px #ccc solid;width: 100%;margin: 0!important;}
@@ -718,7 +718,7 @@
 .div_form>div{margin: 5px}
 .but_p{margin-right: 10px}
 .btnGround button{width: 58px;height: 28px;line-height: 28px;border: none;background-color: #5cb85c;color: #fff;border-radius: 4px;cursor: pointer}
-.but_close{background-color: #d9534f;margin-left: 10px}
+.but_close{background-color: #d9534f;}
 
 .notice_nav a{height: 28px;line-height: 28px;padding: 0 12px;border-radius: 0;float: left;font-size: 13px}
 .notice_nav a:nth-child(1){border-top-left-radius: 4px;border-bottom-left-radius: 4px}
@@ -938,10 +938,11 @@ textarea{width: 100%;height: 70px;resize: none;border-radius: 4px;border: 1px #c
 .l_left{float: left}
 .r_right{float: right}
 .but_p{margin-right: 10px}
-.but_p .but_close{background-color: #d9534f;margin-left: 10px}
+.but_p .but_close{background-color: #d9534f;}
 .but_p{text-align: center;}
-.but_p button{width: 58px;height: 28px;line-height: 28px;border: none;background-color: #5cb85c;color: #fff;border-radius: 4px;cursor: pointer}
-.but_p .but_close{background-color: #d9534f;margin-left: 10px}
+.but_p button{width: 58px;height: 28px;line-height: 28px;border: none;background-color: #5cb85c;color: #fff;border-radius: 4px;cursor: pointer;
+font-size: 12px}
+.but_p .but_close{background-color: #d9534f;}
 
 .table2_top td span{color: red;}
 .table2_top select,.table2_top input[type=text],.table2_top input[type=password],.table2_top input[type=email],#dropdownMenu1{
@@ -960,7 +961,8 @@ ul,li{list-style: none}
     display: flex;
 }
 .girdBtnGroup{
-    display: flex!important;justify-content: flex-end!important;margin: 10px 0 30px 0!important;
+    display: flex!important;justify-content: flex-end!important;
+    /*margin: 10px 0 30px 0!important;*/
 }
 
 .blockActive{

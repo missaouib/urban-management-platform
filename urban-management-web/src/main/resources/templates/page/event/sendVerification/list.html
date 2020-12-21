@@ -106,6 +106,33 @@
                     </p>
                 </form>
             </div>
+            <div class="btn-group-sm" id="toolbar" >
+                <div class="checkUser">
+                    <span class="sendText" style="width: 120px"><i style="color: red!important;"></i>监督员</span>
+                    <div style="width: 100%;display: flex;justify-content: space-between">
+                        <div id="monitor_man" type="text"
+                             style="width:48%;resize: none;border-radius: 4px;border: 1px #ccc solid;line-height: 38px"></div>
+                        <input type="hidden" id="userId" value="">
+                        <input type="hidden" id="eventId" value="">
+                        <input type="hidden" id="button" value="">
+                        <div class="btn btn-primary" id="changeMan"
+                             style="width: 48%;margin-left: 10px">选择监督员
+                        </div>
+                    </div>
+
+                </div>
+                <div class="checkUser" id="selectUser" style="display: none">
+                                    <span class="sendText" style="width: 120px"><i
+                                            style="color: red!important;"></i></span>
+                    <div id="doUser"
+                         style="width:100%;resize: none;border-radius: 4px;border: 1px #ccc solid;max-height: 100px;overflow:auto;">
+                        <ul>
+                            <li class="monitor" value="1">超级管理员</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="r_right but_p girdBtnGroup" id="eventButton"></div>
+            </div>
             <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
 
         </div>
@@ -320,31 +347,9 @@
                                 </div>
 
                                 <div class="notice_bot">
-                                    <div class="checkUser">
-                                        <span class="sendText" style="width: 120px"><i style="color: red!important;"></i>监督员</span>
-                                        <div style="width: 100%;display: flex;justify-content: space-between">
-                                            <div id="monitor_man" type="text"
-                                                 style="width:48%;resize: none;border-radius: 4px;border: 1px #ccc solid;line-height: 38px"></div>
-                                            <input type="hidden" id="userId" value="">
-                                            <input type="hidden" id="eventId" value="">
-                                            <input type="hidden" id="button" value="">
-                                            <div class="btn btn-primary" id="changeMan"
-                                                 style="width: 48%;margin-left: 10px">选择监督员
-                                            </div>
-                                        </div>
 
-                                    </div>
-                                    <div class="checkUser" id="selectUser" style="display: none">
-                                    <span class="sendText" style="width: 120px"><i
-                                            style="color: red!important;"></i></span>
-                                        <div id="doUser"
-                                             style="width:100%;resize: none;border-radius: 4px;border: 1px #ccc solid;max-height: 100px;overflow:auto;">
-                                            <ul>
-                                                <li class="monitor" value="1">超级管理员</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="r_right but_p girdBtnGroup" id="eventButton"></div>
+
+
                                 </div>
                             </div>
                         </form>
