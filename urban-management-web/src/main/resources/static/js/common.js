@@ -167,6 +167,7 @@ function setConduct(bgmNum) {
 	$(".alist").removeClass("dieselActive")
 	$(".alist span").removeClass("spanlist")
 	alist[bgmNum].classList.remove("dieselActive");
+	alist[bgmNum].classList.add("alist_hover");
 	alist[bgmNum].childNodes[1].classList.add("spanlist");
 	alist[bgmNum].childNodes[3].classList.add("spanlist");
 	alist[bgmNum].childNodes[5].classList.add("spanlist");
@@ -306,7 +307,7 @@ var table = {
 					sortOrder: "asc",
 					pagination: true,
 					paginationLoop: true,
-					pageSize: 8,
+					pageSize: 10,
 					pageNumber: 1,
 					pageList: [10],
 					// pageList: [10, 25, 50],

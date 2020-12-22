@@ -173,14 +173,6 @@
     function setRoleTree() {
         $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
             $.fn.zTree.init($("#treeDemo"), setting, e.data);
-            var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
-            console.log(treeObj,"treeObj")
-            var node = treeObj.getNodes(); //可以获取所有的父节点
-            var nodes = treeObj.transformToArray(node); //获取树所有节点
-            console.log("nodes",nodes)
-            for(let i = 0;i<nodes.length;i++){
-                console.log(nodes[i].levelOrNot)
-            }
         });
     }
 

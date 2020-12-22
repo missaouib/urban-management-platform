@@ -105,7 +105,7 @@
                                         <div class="username">
                                             <div class="adminName" th:sec:authentication="principal.name"></div>
                                         </div>
-                                        <div class="purpose">
+                                        <div class="purpose" style="visibility: hidden">
                                             <div class="book">
                                                 <div class="bookBox">
                                                     <img th:src="@{/img/self.png}" alt="">
@@ -316,6 +316,7 @@
                 {
                     field: 'index',
                     title: '序号',
+                    class:'index_width',
                     formatter: function (value, row, index) {
                         var page = $('#bootstrap-table').bootstrapTable("getPage");
                         return page.pageSize * (page.pageNumber - 1) + index + 1;
@@ -324,6 +325,7 @@
                 {
                     title: '处理时限',
                     field: '',
+                    class:'time_width',
                     formatter: setTimeLimit
                 },
                 {

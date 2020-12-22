@@ -77,6 +77,7 @@ public class DeptService {
         for (Dept dept : deptList) {
             DeptVO deptVO = new DeptVO();
             deptVO.setId(dept.getId());
+            deptVO.setIconSkin("treeDept");
             deptVO.setDeptName(dept.getDeptName());
             deptVO.setParentId(dept.getParent() != null ? dept.getParent().getId() : "");
             deptVO.setSort(dept.getSort() != null ? dept.getSort() : 0);
@@ -86,6 +87,7 @@ public class DeptService {
                     DeptVO roleVO = new DeptVO();
                     roleVO.setId(role.getId());
                     roleVO.setDeptName(role.getName());
+                    roleVO.setIconSkin("treeRole");
                     roleVO.setDescribes(role.getDescribes());
                     roleVO.setCreateTime(df.format(role.getCreateTime()));
                     roleVO.setParentId(dept.getId());
@@ -220,16 +222,16 @@ public class DeptService {
         deptList.forEach(dept -> {
             DeptVO deptVO = new DeptVO();
             deptVO.setId(dept.getId());
+            deptVO.setIconSkin("treeDept");
             deptVO.setDeptName(dept.getDeptName());
             deptVO.setParentId(dept.getParent() != null ? dept.getParent().getId() : "");
             List<User> userList = dept.getUserList();
             if (userList.size() > 0) {
                 for (User user : userList) {
                     DeptVO userVO = new DeptVO();
-
-
                     userVO.setId(user.getId());
                     userVO.setDeptName(user.getName());
+                    userVO.setIconSkin("treeUser");
                     userVO.setParentId(dept.getId());
                     userVO.setCreateTime(df.format(user.getCreateTime()));
                     userVO.setSort(user.getSort());
