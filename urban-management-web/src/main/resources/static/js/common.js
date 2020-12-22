@@ -306,7 +306,7 @@ var table = {
 					sortOrder: "asc",
 					pagination: true,
 					paginationLoop: true,
-					pageSize: 8,
+					pageSize: 10,
 					pageNumber: 1,
 					pageList: [10],
 					// pageList: [10, 25, 50],

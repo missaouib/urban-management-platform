@@ -94,6 +94,7 @@
                 {
                     field: 'index',
                     title: '序号',
+                    class:'index_width',
                     formatter: function (value, row, index) {
                         let page = $('#bootstrap-table').bootstrapTable("getPage");
                         return page.pageSize * (page.pageNumber - 1) + index + 1;

@@ -527,6 +527,7 @@
                 {
                     field: 'index',
                     title: '序号',
+                    class:'index_width',
                     formatter : function (value, row, index){
                         var page = $('#bootstrap-table').bootstrapTable("getPage");
                         return page.pageSize * (page.pageNumber - 1) + index + 1;
@@ -535,6 +536,7 @@
                 {
                     title: '时限',
                     field: '',
+                    class:'time_width',
                     formatter:setTimeLimit
                 },
                 {
