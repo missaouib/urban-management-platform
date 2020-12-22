@@ -23,7 +23,7 @@ td{border: none !important;}
 .notice_bot>div input{margin:0 2px 0 0;vertical-align: middle}
 .div_form>div{margin: 5px}
 .but_p{margin-right: 10px}
-.but_p button{width: 58px;height: 28px;line-height: 28px;border: none;background-color: #5cb85c;color: #fff;border-radius: 4px;cursor: pointer}
+.but_p button{height: 28px;border: none;background-color: #5cb85c;color: #fff;border-radius: 4px;cursor: pointer}
 .but_p .but_close{background-color: #d9534f;margin-left: 10px}
 .top .td_select{width: 78px;margin-right: 2px}
 
@@ -56,7 +56,7 @@ td{border: none !important;}
 .div_form{margin:4% auto 0 auto;width: 90% }
 .div_form>div{margin: 5px 0 15px 0}
 .but_p{margin-right: 10px}
-.but_p button{width: 58px;height: 28px;line-height: 28px;border: none;background-color: #5cb85c;color: #fff;border-radius: 4px;cursor: pointer}
+.but_p button{height: 28px;border: none;background-color: #5cb85c;color: #fff;border-radius: 4px;cursor: pointer}
 .but_p .but_close{background-color: #d9534f;margin-left: 10px}
 .form_label{
     line-height: 26px;
@@ -649,4 +649,7 @@ textarea {
 }
 .span2{
     color: red;
+}
+.but_save{
+
 }
