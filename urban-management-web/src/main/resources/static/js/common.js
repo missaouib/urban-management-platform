@@ -1292,3 +1292,27 @@ function getIdioms(){
 		$("#wordSays").html(html)
 	});
 }
+
+	$(document).on('mousemove','.time_width',function (){
+		$(".toop").css("display","block")
+	})
+$(document).on('mouseout','.time_width',function (){
+	$(".toop").css("display","none")
+})
+	// $(".time_width").mouseover(function (){
+	//
+	// }).mouseout(function () {
+	// 	$(".toop").css("display","none")
+	// });
+
+// var tooltip=" <div class=\"toop\">\n" +
+// 	"                                        <img class=\"inline\" th:src=\"@{/img/2.png}\" width=\"20px\" alt=\"\">\n" +
+// 	"                                        <span class=\"inline\">表示当前时限阶段未超时</span>\n" +
+// 	"                                        <img class=\"inline\" th:src=\"@{/img/1.png}\" width=\"20px\" alt=\"\">\n" +
+// 	"                                        <span class=\"inline\">表示当前时限阶段即将超时</span>\n" +
+// 	"                                        <img  class=\"inline\"th:src=\"@{/img/0.png}\" width=\"20px\" alt=\"\">\n" +
+// 	"                                        <span class=\"inline\">表示当前时限阶段已超时</span>\n" +
+// 	"                                    </div>";
+// $(".time_width").mouseover(function (){
+// 	this.append(tooltip)
+// })

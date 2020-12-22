@@ -165,7 +165,15 @@
                                 <div class="buck">待办事项</div>
                             </div>
                             <div class="innerBottom">
-                                <div class="zara tiaoActive">
+                                <div class="zara tiaoActive" style="position: relative">
+                                    <div class="toop">
+                                        <img class="inline" th:src="@{/img/2.png}" width="20px" alt="">
+                                        <span class="inline">表示当前时限阶段未超时</span>
+                                        <img class="inline" th:src="@{/img/1.png}" width="20px" alt="">
+                                        <span class="inline">表示当前时限阶段即将超时</span>
+                                        <img  class="inline"th:src="@{/img/0.png}" width="20px" alt="">
+                                        <span class="inline">表示当前时限阶段已超时</span>
+                                    </div>
                                     <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
                                 </div>
 
@@ -182,6 +190,7 @@
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <script type="text/javascript" th:inline="javascript">
+
     function getCase() {
         $.ajaxUtil.get("/statistics/personInfo", function (e) {
             console.log(e)
