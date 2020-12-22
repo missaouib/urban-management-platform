@@ -56,14 +56,14 @@
                                 <tr>
                                     <td><span></span>立案区域</td>
                                     <td>
-                                        <select id="eventCondition" name="eventCondition" onchange="getEventCondition()"
+                                        <select id="eventCondition" class="form-control" name="eventCondition" onchange="getEventCondition()"
                                                 required>
                                             <option value="">--请选择--</option>
                                         </select>
                                     </td>
                                     <td><span></span>立案条件</td>
                                     <td>
-                                        <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
+                                        <select id="eventTerm" class="form-control" onchange="getTimeTypeList()" name="conditionId" required>
                                             <option value="">--请选择--</option>
                                         </select>
                                     </td>
@@ -71,7 +71,7 @@
                                 <tr>
                                     <td><span></span>计时等级</td>
                                     <td>
-                                        <select id="timeType" name="timeType" required>
+                                        <select id="timeType" class="form-control" name="timeType" required>
                                             <option value="">--请选择--</option>
                                         </select>
                                     </td>
@@ -109,8 +109,8 @@
                     <span class="do_span">处置后</span>
                 </div>
                 <div class="doItInner">
-                    <div class="do_banner blockActive">处置前</div>
-                    <div class="do_banner">处置后</div>
+                    <div class="do_banner blockActive"></div>
+                    <div class="do_banner"></div>
                 </div>
             </div>
             <div class="bottom_right">
@@ -122,175 +122,145 @@
                 </div>
                 <div class="right_bottomIn">
                     <div class="banners blockActive">
-                        <h3 class="bigTitle">案件详情</h3>
-                        <form class="details">
-                            <div class="top table2_top">
-                                <div class="top_out">
-                                    <table class="table">
-                                        <tbody>
-                                        <tr>
-                                            <td><span></span>案卷号</td>
-                                            <td>
-                                                <input id="eventCode" placeholder="" class="" type="text" readonly="readonly" required>
-                                            </td>
-                                            <td><span></span>问题类型</td>
-                                            <td>
-                                                <input id="eventTypeStr" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" >
+                        <div class="fami">
+                            <form class="details">
+                                <div class="top table2_top">
+                                    <div class="top_out">
+                                        <table class="table">
+                                            <tbody>
+                                            <tr>
+                                                <td><span></span>案卷号</td>
+                                                <td>
+                                                    <input id="eventCode" placeholder="" class="" type="text" readonly="readonly" required>
+                                                </td>
+                                                <td><span></span>问题类型</td>
+                                                <td>
+                                                    <input id="eventTypeStr" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly" >
 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>立案区域</td>
-                                            <td>
-                                                <input id="regionStr" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly">
-                                            </td>
-                                            <td><span></span>立案条件</td>
-                                            <td>
-                                                <input id="conditionValue" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" >
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>立案区域</td>
+                                                <td>
+                                                    <input id="regionStr" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly">
+                                                </td>
+                                                <td><span></span>立案条件</td>
+                                                <td>
+                                                    <input id="conditionValue" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly" >
 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>案件等级</td>
-                                            <td>
-                                                <input id="level" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>计时等级</td>
+                                                <td>
+                                                    <input id="level" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly">
 
-                                            </td>
-                                            <td><span></span>处理时限</td>
-                                            <td>
-                                                <input id="timeLimitStr" type="text" readonly required>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>问题描述</td>
+                                                </td>
+                                                <td><span></span>处理时限</td>
+                                                <td>
+                                                    <input id="timeLimitStr" type="text" readonly required>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>问题描述</td>
 
-                                            <td colspan="8"><textarea id="represent" name="problemescription" required readonly></textarea></td>
+                                                <td colspan="8"><textarea id="represent" name="problemescription" required readonly></textarea></td>
 
 
-                                        </tr>
-                                        <tr class="col-12">
-                                            <td><span></span>案件地址</td>
-                                            <td>
-                                                <input id="location" name="location" placeholder="" class="" readonly type="text">
-                                            </td>
-                                            <td><span></span>案件类型</td>
-                                            <td>
-                                                <input id="recTypeStr" name="location" placeholder="" class="" readonly type="text">
-                                            </td>
-                                        </tr>
-                                        <tr class="col-12">
-                                            <td><span></span>所属区域</td>
-                                            <td>
-                                                <input id="eventRegion" name="location" placeholder="" class="" readonly type="text">
+                                            </tr>
+                                            <tr class="col-12">
+                                                <td><span></span>案件地址</td>
+                                                <td>
+                                                    <input id="location" name="location" placeholder="" class="" readonly type="text">
+                                                </td>
+                                                <td><span></span>案件类型</td>
+                                                <td>
+                                                    <input id="recTypeStr" name="location" placeholder="" class="" readonly type="text">
+                                                </td>
+                                            </tr>
+                                            <tr class="col-12">
+                                                <td><span></span>所属区域</td>
+                                                <td>
+                                                    <input id="eventRegion" name="location" placeholder="" class="" readonly type="text">
 
-                                            </td>
-                                            <td><span></span>所属街道</td>
-                                            <td>
-                                                <input id="street" name="location" placeholder="" class="" readonly type="text">
+                                                </td>
+                                                <td><span></span>所属街道</td>
+                                                <td>
+                                                    <input id="street" name="location" placeholder="" class="" readonly type="text">
 
-                                            </td>
-                                        </tr>
-                                        <tr class="col-12">
-                                            <td><span></span>所属社区</td>
-                                            <td>
-                                                <input id="community" name="location" placeholder="" class="" readonly type="text">
-                                            </td>
-                                            <td><span></span>单元网格</td>
-                                            <td>
-                                                <input id="girdStr" name="location" placeholder="" class="" readonly type="text">
+                                                </td>
+                                            </tr>
+                                            <tr class="col-12">
+                                                <td><span></span>所属社区</td>
+                                                <td>
+                                                    <input id="community" name="location" placeholder="" class="" readonly type="text">
+                                                </td>
+                                                <td><span></span>单元网格</td>
+                                                <td>
+                                                    <input id="girdStr" name="location" placeholder="" class="" readonly type="text">
 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>问题来源</td>
-                                            <td>
-                                                <input name="eventSourceStr" id="eventSourceStr" placeholder="" class=""
-                                                       type="text" readonly="readonly">
-                                            </td>
-                                            <td><span></span>上报人</td>
-                                            <td>
-                                                <input id="userName" name="userName" placeholder="" class="" readonly type="text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>问题来源</td>
+                                                <td>
+                                                    <input name="eventSourceStr" id="eventSourceStr" placeholder="" class=""
+                                                           type="text" readonly="readonly">
+                                                </td>
+                                                <td><span></span>上报人</td>
+                                                <td>
+                                                    <input id="userName" name="userName" placeholder="" class="" readonly type="text">
 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>诉求人</td>
-                                            <td>
-                                                <input id="petitionerName" name="petitionerName" placeholder="" class="" readonly type="text">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>诉求人</td>
+                                                <td>
+                                                    <input id="petitionerName" name="petitionerName" placeholder="" class="" readonly type="text">
 
-                                            </td>
-                                            <td><span></span>联系方式</td>
-                                            <td><input id="petitionerPhone" name="petitionerPhone" type="text" value=""
-                                                       readonly="readonly"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>性别</td>
-                                            <td>
-                                                <input id="petitionerSex" name="petitionerSex" placeholder="" class="" readonly type="text">
+                                                </td>
+                                                <td><span></span>联系方式</td>
+                                                <td><input id="petitionerPhone" name="petitionerPhone" type="text" value=""
+                                                           readonly="readonly"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>性别</td>
+                                                <td>
+                                                    <input id="petitionerSex" name="petitionerSex" placeholder="" class="" readonly type="text">
 
-                                            </td>
-                                            <td><span></span>创建时间</td>
-                                            <td>
-                                                <input id="cdate" name="cdate" placeholder="" class="" readonly type="text">
+                                                </td>
+                                                <td><span></span>创建时间</td>
+                                                <td>
+                                                    <input id="cdate" name="cdate" placeholder="" class="" readonly type="text">
 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>位置坐标</td>
-                                            <td>
-                                                <input id="x" type="text" class="find_input" readonly="readonly" value="经度">
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <input id="y" type="text" class="find_input" readonly="readonly" value="纬度">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="partCodes">部件编码<span></span></td>
-                                            <td class="partCodes">
-                                                <input type="text" class="find_input" id="objId">
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                    <div class="send">
-                                        <div class="sendImg">
-                                            <div class="sendText"><span>照片:</span></div>
-                                            <div>
-                                                <div id="imageList">
-                                                    <div class="innerPic" style="float:left;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="sendImg">
-                                            <div class="sendText"><span>视频:</span></div>
-                                            <div>
-                                                <div id="videoList">
-                                                    <div class="innerPic" style="float:left;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="sendImg">
-                                            <div class="sendText"><span>音频:</span></div>
-                                            <div>
-                                                <div id="audioList">
-                                                    <div class="innerPic" style="float:left;">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>经度</td>
+                                                <td>
+                                                    <input id="x" type="text" class="find_input" readonly="readonly" value="">
+                                                </td>
+                                                <td><span></span>纬度</td>
+                                                <td>
+                                                    <input id="y" type="text" class="find_input" readonly="readonly" value="">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="partCodes">部件编码<span></span></td>
+                                                <td class="partCodes">
+                                                    <input type="text" class="find_input" id="objId">
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
                                     </div>
-                                </div>
 
-                                <!--                            按钮-->
-
-                                <div class="notice_bot">
 
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+
+                        </div>
                     </div>
                     <div class="banners">
                         <div class='g_con'>

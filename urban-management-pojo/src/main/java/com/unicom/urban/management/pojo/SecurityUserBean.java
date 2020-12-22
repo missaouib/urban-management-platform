@@ -79,7 +79,7 @@ public class SecurityUserBean implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return sts == 0;
+        return true;
     }
 
 

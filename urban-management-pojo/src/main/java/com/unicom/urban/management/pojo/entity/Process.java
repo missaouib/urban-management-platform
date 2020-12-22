@@ -27,12 +27,6 @@ public class Process extends BaseEntity {
     private String nodeName;
 
     /**
-     * 子环节名称 KV
-     */
-    @Column(columnDefinition = "tinyint")
-    private Integer node;
-
-    /**
      * 父
      */
     @ManyToOne(fetch = FetchType.LAZY)
@@ -44,5 +38,8 @@ public class Process extends BaseEntity {
      */
     private String url;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
 }

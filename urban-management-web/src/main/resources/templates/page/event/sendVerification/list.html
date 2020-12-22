@@ -27,13 +27,12 @@
                                 <td>问题类型<span></span></td>
                                 <td>
                                     <input id="event" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
-
                                 </td>
                             </tr>
                             <tr>
                                 <td>所属网格<span></span></td>
                                 <td>
-                                    <select id="gridKvId" name="kv" required>
+                                    <select class="form-control" id="gridKvId" name="kv" required>
                                         <option value="">请选择</option>
                                         <option>1</option>
                                         <option>2</option>
@@ -42,7 +41,7 @@
                                 </td>
                                 <td>问题来源<span></span></td>
                                 <td style="width: 35%">
-                                    <select  name="kv" required>
+                                    <select class="form-control" name="kv" required>
                                         <option value="">请选择</option>
                                         <option>1</option>
                                         <option>2</option>
@@ -53,7 +52,7 @@
                             <tr>
                                 <td>当前阶段<span></span></td>
                                 <td>
-                                    <select id="" name="kv" required>
+                                    <select class="form-control" id="" name="kv" required>
                                         <option value="">请选择</option>
                                         <option>1</option>
                                         <option>2</option>
@@ -62,7 +61,7 @@
                                 </td>
                                 <td>立案区域<span></span></td>
                                 <td >
-                                    <select  name="kv" required>
+                                    <select class="form-control" name="kv" required>
                                         <option value="">请选择</option>
                                         <option>1</option>
                                         <option>2</option>
@@ -74,7 +73,7 @@
                             <tr>
                                 <td>等级<span></span></td>
                                 <td>
-                                    <select name="kv" required>
+                                    <select class="form-control" name="kv" required>
                                         <option value="">请选择</option>
                                         <option>1</option>
                                         <option>2</option>
@@ -83,7 +82,7 @@
                                 </td>
                                 <td>立案条件<span></span></td>
                                 <td>
-                                    <select  name="kv" required>
+                                    <select class="form-control" name="kv" required>
                                         <option value="">请选择</option>
                                         <option>1</option>
                                         <option>2</option>
@@ -145,8 +144,8 @@
                     <span class="do_span">处置后</span>
                 </div>
                 <div class="doItInner">
-                    <div class="do_banner blockActive">处置前</div>
-                    <div class="do_banner">处置后</div>
+                    <div class="do_banner blockActive"></div>
+                    <div class="do_banner"></div>
                 </div>
             </div>
             <div class="bottom_right">
@@ -158,201 +157,176 @@
                 </div>
                 <div class="right_bottomIn">
                     <div class="banners blockActive">
-                        <h3 class="bigTitle">案件修改</h3>
-                        <form class="details">
-                            <div class="top table2_top">
-                                <div class="top_out">
-                                    <table class="table">
-                                        <tbody>
-                                        <tr>
-                                            <td><span></span>案卷号</td>
-                                            <td>
-                                                <input name="userName" placeholder="" class="" type="text" readonly="readonly" required>
-                                            </td>
-                                            <td><span></span>问题类型</td>
-                                            <td>
-                                                <input id="eventType" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                        <div class="">
+                            <form class="details">
+                                <div class="top table2_top">
+                                    <div class="top_out">
+                                        <table class="table">
+                                            <tbody>
+                                            <tr>
+                                                <td><span></span>案卷号</td>
+                                                <td>
+                                                    <input name="userName" placeholder="" class="" type="text" readonly="readonly" required>
+                                                </td>
+                                                <td><span></span>问题类型</td>
+                                                <td>
+                                                    <input id="eventType" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>立案区域</td>
-                                            <td>
-                                                <select name="kv" required readonly disabled>
-                                                    <option value="">请选择</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                </select>
-                                            </td>
-                                            <td><span></span>立案条件</td>
-                                            <td>
-                                                <select name="kv" required readonly disabled>
-                                                    <option value="">请选择</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>案件等级</td>
-                                            <td>
-                                                <select name="kv" required readonly disabled>
-                                                    <option value="">请选择</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                </select>
-                                            </td>
-                                            <td><span></span>处理时限</td>
-                                            <td>
-                                                <input type="text" readonly required>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>问题描述</td>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>立案区域</td>
+                                                <td>
+                                                    <select name="kv" required readonly disabled>
+                                                        <option value="">请选择</option>
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                    </select>
+                                                </td>
+                                                <td><span></span>立案条件</td>
+                                                <td>
+                                                    <select name="kv" required readonly disabled>
+                                                        <option value="">请选择</option>
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>计时等级</td>
+                                                <td>
+                                                    <select name="kv" required readonly disabled>
+                                                        <option value="">请选择</option>
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                    </select>
+                                                </td>
+                                                <td><span></span>处理时限</td>
+                                                <td>
+                                                    <input type="text" readonly required>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>问题描述</td>
 
-                                            <td colspan="8"><textarea id="problemescription" name="problemescription" required readonly></textarea></td>
-
-
-                                        </tr>
-                                        <tr class="col-12">
-                                            <td><span></span>案件地址</td>
-                                            <td>
-                                                <input name="userName" placeholder="" class="" readonly type="text">
-                                            </td>
-                                            <td><span></span>案件类型</td>
-                                            <td>
-                                                <select name="safeLevel" readonly="" disabled>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr class="col-12">
-                                            <td><span></span>所属区域</td>
-                                            <td>
-                                                <select name="safeLevel" disabled>
-                                                    <option>一般</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                </select>
-                                            </td>
-                                            <td><span></span>所属街道</td>
-                                            <td>
-                                                <select name="safeLevel" disabled>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr class="col-12">
-                                            <td><span></span>所属社区</td>
-                                            <td>
-                                                <select name="safeLevel" disabled>
-                                                    <option>一般</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                </select>
-                                            </td>
-                                            <td><span></span>单元网格</td>
-                                            <td>
-                                                <select name="safeLevel" disabled>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>案件类型</td>
-                                            <td>
-                                                <select name="safeLevel" disabled>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                </select>
-                                            </td>
-                                            <td><span></span>上报人</td>
-                                            <td>
-                                                <input readonly type="text" required>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>诉求人</td>
-                                            <td>
-                                                <input type="text" readonly>
-                                            </td>
-                                            <td><span></span>联系方式</td>
-                                            <td><input id="handleTime" name="handleTime" type="text" value="15645068888" readonly="readonly"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>性别</td>
-                                            <td>
-                                                <select name="safeLevel" disabled>
-                                                    <option>男</option>
-                                                    <option>女</option>
-                                                </select>
-                                            </td>
-                                            <td><span></span>创建时间</td>
-                                            <td>
-                                                <input name="userName" placeholder="" class="" type="text" readonly="readonly">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>位置坐标</td>
-                                            <td>
-                                                <input type="text" class="find_input" readonly="readonly" value="经度">
-                                            </td>
-                                            <td></td>
-                                            <td>
-                                                <input type="text" class="find_input" readonly="readonly" value="纬度">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><span></span>问题来源</td>
-                                            <td>
-                                                <input name="userName" placeholder="" class="" type="text" readonly="readonly">
-                                            </td>
-                                        </tr>
-
-                                        <!--                                    <tr>-->
-                                        <!--                                        <td>处理结果<span></span></td>-->
-                                        <!--                                        <td colspan = "8"><textarea></textarea></td>-->
-                                        <!--                                    </tr>-->
-                                        </tbody>
-                                    </table>
-
-                                    <div class="send">
-                                        <div class="sendImg">
-                                            <div class="sendText"><span>照片:</span></div>
-                                            <div><input id="input-id" type="file"  name="file" multiple="multiple"></div>
-                                        </div>
+                                                <td colspan="8"><textarea id="problemescription" name="problemescription" required readonly></textarea></td>
 
 
-                                        <div class="sendImg">
-                                            <div class="sendText"><span>视频:</span></div>
-                                            <div><input id="videoInput" type="file"  name="file" multiple="multiple"></div>
-                                        </div>
-                                        <div class="sendImg">
-                                            <div class="sendText"><span>音频:</span></div>
-                                            <div><input id="musicInput" type="file"  name="file" multiple="multiple"></div>
-                                        </div>
-
+                                            </tr>
+                                            <tr class="col-12">
+                                                <td><span></span>案件地址</td>
+                                                <td>
+                                                    <input name="userName" placeholder="" class="" readonly type="text">
+                                                </td>
+                                                <td><span></span>案件类型</td>
+                                                <td>
+                                                    <select name="safeLevel" readonly="" disabled>
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr class="col-12">
+                                                <td><span></span>所属区域</td>
+                                                <td>
+                                                    <select name="safeLevel" disabled>
+                                                        <option>一般</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                    </select>
+                                                </td>
+                                                <td><span></span>所属街道</td>
+                                                <td>
+                                                    <select name="safeLevel" disabled>
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr class="col-12">
+                                                <td><span></span>所属社区</td>
+                                                <td>
+                                                    <select name="safeLevel" disabled>
+                                                        <option>一般</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                    </select>
+                                                </td>
+                                                <td><span></span>单元网格</td>
+                                                <td>
+                                                    <select name="safeLevel" disabled>
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>案件类型</td>
+                                                <td>
+                                                    <select name="safeLevel" disabled>
+                                                        <option>1</option>
+                                                        <option>2</option>
+                                                        <option>3</option>
+                                                    </select>
+                                                </td>
+                                                <td><span></span>上报人</td>
+                                                <td>
+                                                    <input readonly type="text" required>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>诉求人</td>
+                                                <td>
+                                                    <input type="text" readonly>
+                                                </td>
+                                                <td><span></span>联系方式</td>
+                                                <td><input id="handleTime" name="handleTime" type="text" value="15645068888" readonly="readonly"></td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>性别</td>
+                                                <td>
+                                                    <select name="safeLevel" disabled>
+                                                        <option>男</option>
+                                                        <option>女</option>
+                                                    </select>
+                                                </td>
+                                                <td><span></span>创建时间</td>
+                                                <td>
+                                                    <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><span></span>经度</td>
+                                                <td>
+                                                    <input type="text" class="find_input" readonly="readonly" value="">
+                                                </td>
+                                                <td><span></span>纬度</td>
+                                                <td>
+                                                    <input type="text" class="find_input" readonly="readonly" value="">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="partCodes">部件编码<span></span></td>
+                                                <td class="partCodes">
+                                                    <input type="text" class="find_input" id="objId">
+                                                </td>
+                                                <td><span></span>问题来源</td>
+                                                <td>
+                                                    <input name="userName" placeholder="" class="" type="text" readonly="readonly">
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
-
                                 </div>
-
-                                <div class="notice_bot">
-
-
-
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                     <div class="banners">
                         <div class='g_con'>
@@ -562,7 +536,7 @@
                     }
                 },
                 {
-                    title: '时限',
+                    title: '示警灯',
                     field: '',
                     class:'time_width',
                     formatter:setTimeLimit

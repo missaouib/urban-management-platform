@@ -155,7 +155,14 @@ $(".do_span").click(function () {
 $(".keep_span").click(function () {
 	$(this).addClass("active").siblings(".keep_span").removeClass("active");
 	$(".banners").eq($(this).index(".keep_span")).addClass("blockActive").siblings(".banners").removeClass("blockActive");
-})
+});
+
+/*
+* 	处置多媒体为空
+* */
+if ($(".do_banner").html() == ''){
+	$(".do_banner").html("<div class=\"nothingDocument\"><div class='nothing_case'></div></div>")
+}
 
 /**
  * 步骤进行到哪一步
@@ -165,6 +172,7 @@ $(".keep_span").click(function () {
 function setConduct(bgmNum) {
 	var alist = document.querySelectorAll(".alist")
 	$(".alist").removeClass("dieselActive")
+	$(".alist").removeClass("alist_hover")
 	$(".alist span").removeClass("spanlist")
 	alist[bgmNum].classList.remove("dieselActive");
 	alist[bgmNum].classList.add("alist_hover");
@@ -1284,3 +1292,27 @@ function getIdioms(){
 		$("#wordSays").html(html)
 	});
 }
+
+	$(document).on('mousemove','.time_width',function (){
+		$(".toop").css("display","block")
+	})
+$(document).on('mouseout','.time_width',function (){
+	$(".toop").css("display","none")
+})
+	// $(".time_width").mouseover(function (){
+	//
+	// }).mouseout(function () {
+	// 	$(".toop").css("display","none")
+	// });
+
+// var tooltip=" <div class=\"toop\">\n" +
+// 	"                                        <img class=\"inline\" th:src=\"@{/img/2.png}\" width=\"20px\" alt=\"\">\n" +
+// 	"                                        <span class=\"inline\">表示当前时限阶段未超时</span>\n" +
+// 	"                                        <img class=\"inline\" th:src=\"@{/img/1.png}\" width=\"20px\" alt=\"\">\n" +
+// 	"                                        <span class=\"inline\">表示当前时限阶段即将超时</span>\n" +
+// 	"                                        <img  class=\"inline\"th:src=\"@{/img/0.png}\" width=\"20px\" alt=\"\">\n" +
+// 	"                                        <span class=\"inline\">表示当前时限阶段已超时</span>\n" +
+// 	"                                    </div>";
+// $(".time_width").mouseover(function (){
+// 	this.append(tooltip)
+// })
