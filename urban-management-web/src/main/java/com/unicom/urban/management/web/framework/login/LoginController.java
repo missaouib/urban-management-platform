@@ -29,7 +29,8 @@ public class LoginController {
      */
     @GetMapping("/login")
     public String login(Model model) {
-        return alreadyLogin() ? toMainPage() : toLoginPage(model);
+        return toLoginPage(model);
+//        return alreadyLogin() ? toMainPage() : toLoginPage(model);
     }
 
     private String toLoginPage(Model model) {
