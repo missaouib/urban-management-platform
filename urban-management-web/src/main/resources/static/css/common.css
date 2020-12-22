@@ -1535,7 +1535,7 @@ label.error {
 }
 
 .leftContent .bootstrap-table .table td,.leftContent .bootstrap-table .table th,.leftBox .bootstrap-table .table td,.leftBox .bootstrap-table .table th{
-    text-align: left!important;
+    text-align: left;
 }
 .leftContent .bootstrap-table .table .doit ,.leftContent .bootstrap-table .table .doit,.leftBox .bootstrap-table .table .doit,.leftBox .bootstrap-table .table .doit{
     text-align: center!important;
@@ -2016,6 +2016,7 @@ span.search_highlight {
 }
 .index_width{
     width: 30px!important;
+    text-align: center!important;
 }
 .time_width{
     width: 40px!important;
