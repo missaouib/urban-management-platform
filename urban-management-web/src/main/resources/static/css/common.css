@@ -1712,7 +1712,7 @@ label.error {
     /*-webkit-box-reflect: below 1px linear-gradient(transparent, #0003);*/
     cursor: pointer;
 }
-.alist:hover{
+.alist_hover{
     background: #354e85;
     color: white!important;
     transition-delay: 0.1s;
