@@ -3,6 +3,13 @@
     height: 100%;
     display: flex;
     justify-content: space-between;
+    background: #f5f5f5!important;
+}
+.details .top .top_out .table tbody tr td input{
+    background: #f5f5f5;
+}
+.details .top .top_out .table tbody tr td textarea{
+    background: #f5f5f5;
 }
 .do_span:hover,.keep_span:hover{
     background: #7086c4;
