@@ -13,6 +13,7 @@ import com.unicom.urban.management.service.componentinfo.ComponentInfoService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.record.RecordService;
+import com.unicom.urban.management.service.urbanimport.ImportService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.geotools.data.shapefile.ShapefileDataStore;
@@ -56,6 +57,8 @@ public class ImportController {
     private RecordService recordService;
     @Autowired
     private ComponentInfoService componentInfoService;
+    @Autowired
+    private ImportService importService;
 
     public static String TYPE_SHP = "SHP";
 //    public String gisShpPath = shpFileProperties.getFilePath();
@@ -81,9 +84,11 @@ public class ImportController {
      */
     @RequestMapping("/gridImport")
     public Result gridImport(HttpServletRequest request, String layerName, String layerSettingType, String shpType) throws IOException {
+        if (this.checkPublish(layerName)) {
+            return Result.fail(98,"");
+        }
         String layerId = "";
 
-        shpType = "";
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
         // 创建集合接受文件
         List<MultipartFile> fileList = multiRequest.getFiles("file");
@@ -119,11 +124,9 @@ public class ImportController {
             }
         }
 
-        /*新增发布*/
-        Publish publish = savePublish(layerName, layerId, KV.builder().id(KvConstant.KV_RELEASE_COMPONENT).build());
-
         /*新增部件*/
-        this.readGridFileInfo(layerName,shpFile,publish);
+        Publish publish = savePublish(layerName, layerId, KV.builder().id(KvConstant.KV_RELEASE_COMPONENT).build());
+        this.readGridFileInfo(shpFile,publish);
 
         return Result.success();
     }
@@ -141,6 +144,10 @@ public class ImportController {
      */
     @RequestMapping("/componentImport")
     public Result componentImport(HttpServletRequest request, String layerName, String layerSettingType, String shpType, String componentTypeId) throws IOException {
+
+        if (this.checkPublish(layerName)){
+            return Result.fail(98,"");
+        }
         String layerId = "";
         MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
         // 创建集合接受文件
@@ -179,34 +186,9 @@ public class ImportController {
 
         /*新增发布*/
         Publish publish = savePublish(layerName, layerId, KV.builder().id(KvConstant.KV_RELEASE_COMPONENT).build());
-        readComponentFileInfo(shpFile,publish,componentTypeId);
+        readComponentFileInfo(shpFile,componentTypeId,publish);
         return Result.success();
     }
-//    private HttpResponse gisImport(String layerName, String layerSettingType, MultipartHttpServletRequest multiRequest, HttpClient httpclient) throws IOException {
-//        // 创建集合接受文件
-//        List<MultipartFile> fileList = multiRequest.getFiles("file");
-//
-//        HttpPost httpPost = new HttpPost(gisServiceProperties.getUrl() + "/urbanImport");
-//        MultipartEntityBuilder reqEntity = MultipartEntityBuilder.create();
-//
-//        for (MultipartFile multipartFile : fileList) {
-//            String filePath = fileUploadUtil.uploadFileToLocal(multipartFile);
-//            reqEntity.addPart(multipartFile.getName(), new FileBody(new File(filePath)));
-//        }
-//        //接口常规参数开始-----------------------------------------
-//        Map<String, String> paramMap = new HashMap<>();
-//
-//        paramMap.put("layerName", layerName);
-//        paramMap.put("layerSettingType", layerSettingType);
-//        StringBody paramBody = new StringBody(JsonUtils.objectToJson(paramMap));
-//        //接口常规参数结束------------------------------------------------------
-//
-//        reqEntity.addPart("paramBody", paramBody);
-//        HttpEntity httpEntity = reqEntity.build();
-//        httpPost.setEntity(httpEntity);
-//
-//        return httpclient.execute(httpPost);
-//    }
 
     /*新增部件*/
     private void saveComponent(Publish publish, Record record,ComponentInfo componentInfo,String componentTypeId) {
@@ -243,9 +225,9 @@ public class ImportController {
     }
 
     /*新增网格*/
-    private void saveGrid(String layerName, Publish publish,Record record) {
+    private void saveGrid(Publish publish,Record record) {
         Grid grid = new Grid();
-        grid.setGridName(layerName);
+        grid.setGridName(publish.getName());
         grid.setPublish(publish);
         grid.setInitialDate(LocalDateTime.now());
         grid.setTerminationDate(LocalDateTime.now());
@@ -275,12 +257,12 @@ public class ImportController {
     }
 
     /**
-     * 查询publish表中是有有网格
+     * 查询publish表中是否已存在相同的网格或部件
      *
      * @return
      */
-    private boolean checkPublish() {
-        boolean f = false;
+    private boolean checkPublish(String name) {
+        boolean f = importService.checkPublish(name);
         return f;
     }
 
@@ -300,61 +282,83 @@ public class ImportController {
     /**
      * 读取部件文件信息并创建部件
      * @param shpFile
-     * @param publish
      * @throws IOException
      */
-    private void readComponentFileInfo(File shpFile,Publish publish,String componentTypeId) throws IOException {
+    private void readComponentFileInfo(File shpFile,String componentTypeId,Publish publish) throws IOException {
         ShapefileDataStore shapefileDataStore = new ShapefileDataStore(shpFile.toURI().toURL());
         shapefileDataStore.setCharset(StandardCharsets.UTF_8);
         ContentFeatureCollection featureCollection = shapefileDataStore.getFeatureSource().getFeatures();
+        String shpType = importService.getShpType(featureCollection);
         SimpleFeatureIterator iterator = featureCollection.features();
         while (iterator.hasNext()) {
             Feature feature = iterator.next();
-            Collection<Property> properties = feature.getProperties();
-            for (Property property : properties) {
+            Collection<Property> porperties = feature.getProperties();
+            String objId="";
+            String objName="";
+            String coordinate = "";
+            for (Property property : porperties) {
+                ComponentInfo componentInfo = new ComponentInfo();
                 String name = property.getName().toString();
                 String value = property.getValue() == null ? "" : property.getValue().toString();
-                String objId="";
-                String objName="";
-                String coordinate = "";
-//                if (name.equals("ObjName")) {
-//                    objName = value;
-//                }
-//                if (name.equals("ObjID")) {
-//                    objId = value;
-//                }
+                if (name.equals("ObjName")) {
+                     objName= value;
+                }
+                if (name.equals("ObjID")) {
+                    objId = value;
+                }
                 if (name.equals("the_geom")){
                     coordinate = value;
-                    ComponentInfo componentInfo = saveComponentInfo(objId,objName);
-                    Record record = saveRecord(publish,coordinate);
-                    saveComponent(publish,record,componentInfo,componentTypeId);
                 }
-
             }
+            ComponentInfo componentInfo = saveComponentInfo(objId,objName);
+
+            coordinate = findShpType(coordinate);
+            Record record = saveRecord(publish,coordinate);
+            saveComponent(publish,record,componentInfo,componentTypeId);
         }
         iterator.close();
     }
 
-    private void readGridFileInfo(String layerName,File shpFile,Publish publish) throws IOException {
+    private void readGridFileInfo(File shpFile,Publish publish) throws IOException {
+        String layerId = "";
         ShapefileDataStore shapefileDataStore = new ShapefileDataStore(shpFile.toURI().toURL());
         shapefileDataStore.setCharset(StandardCharsets.UTF_8);
         ContentFeatureCollection featureCollection = shapefileDataStore.getFeatureSource().getFeatures();
+        String shpType = importService.getShpType(featureCollection);
         SimpleFeatureIterator iterator = featureCollection.features();
         while (iterator.hasNext()) {
+            String coordinate = "";
             Feature feature = iterator.next();
             Collection<Property> properties = feature.getProperties();
             for (Property property : properties) {
                 String name = property.getName().toString();
                 String value = property.getValue() == null ? "" : property.getValue().toString();
-                String coordinate = "";
-
                 if (name.equals("the_geom")){
                     coordinate = value;
                 }
-                Record record = saveRecord(publish,coordinate);
-                saveGrid(layerName,publish,record);
+
             }
+            String shpType1 = this.findShpType(coordinate);
+            Record record = saveRecord(publish,shpType1);
+            saveGrid(publish,record);
         }
         iterator.close();
+    }
+
+    private String findShpType(String coordinate) {
+        String multiPolygon = coordinate
+                .replace("MULTILINESTRING (", "")
+                .replace("MULTIPOLYGON (", "")
+                .replace("MUTIPOLYGON (", "")
+                .replace("POLYGON (", "")
+                .replace("MULTIPOINT (", "")
+                .replace("LINESTRING (", "")
+                .replace("POINT (", "")
+                .replace("MULTI (", "")
+                .replace("(", "")
+                .replace(")", "")
+                .replace(",","-")
+                .replace(" ",",");
+        return multiPolygon;
     }
 }

@@ -37,4 +37,6 @@ public interface PublishRepository extends CustomizeRepository<Publish, String> 
      */
     Publish findByKv_Id(String kvId);
 
+    Publish findByName(String name);
+
 }

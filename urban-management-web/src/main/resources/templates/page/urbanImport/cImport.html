@@ -112,6 +112,8 @@
                         $.modal.alertSuccess('保存成功',function () {
                             window.location.href = /*[[@{/cImport}]]*/ "/cImport";
                         });
+                    }else if (data.code === 98) {
+                        $.modal.alertWarning("该分类已存在请选择其他分类！");
                     }
                 },
                 error: function (data) {
