@@ -1275,6 +1275,10 @@ label.error {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    justify-content: space-between;
+}
+.fami form{
+    width: 100% !important;
 }
 
 .getAddress-icon {
