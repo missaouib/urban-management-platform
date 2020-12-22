@@ -96,7 +96,9 @@
             <div style="width: 100%;width: 100%;display: flex;justify-content: center">
                 <div class="xiala"><i class="selectmenu"></i></div>
             </div>
-            <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+            <div style="overflow: auto">
+                <table id="bootstrap-table" class="table_style" style="margin: 0 auto" ></table>
+            </div>
         </div>
         <div class="left_bottomIn">
             <div class="bottom_left">
@@ -671,9 +673,11 @@
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
     let num = 1;
+    var h = $(".left_topIn").height();
     function queryUserList() {
         var options = {
             num: num,
+            // height: h,
             url: searchUrl,
             uniqueId: "id",
             sortName: "updateTime",
