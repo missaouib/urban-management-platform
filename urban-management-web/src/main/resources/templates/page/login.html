@@ -152,10 +152,15 @@
                             <!--    <span class="forget">忘记密码?</span>-->
                         </div>
                     </div>
-<!--                    以数字地图和单元网格划分为基础，集成基础地理、地理编码、市政及社区服务部件事件的多种数据资源，以城市监管员和市民服务热线为信息收集渠道，创建城市管理和市民服务综合指挥系统。通过多部门信息共享、协同工作，构建起沟通快捷、责任到位、处置及时、运转高效的城市管理、公共服务的监督和处置新机制，全面提高城市管理和政府公共服务水平。-->
                 </div>
             </div>
-            <div class="test" th:if="${#authentication.principal ne 'anonymousUser'}">
+            <div class="test testActive" th:if="${#authentication.principal ne 'anonymousUser'}">
+                <div class="textsInbig">
+                    &nbsp; &nbsp;&nbsp;&nbsp;
+                    以数字地图和单元网格划分为基础，集成基础地理、地理编码、市政及社区服务部件事件的多种数据资源，以城市监管员和市民服务热线为信息收集渠道，创建城市管理和市民服务综合指挥系统。通过多部门信息共享、协同工作，构建起沟通快捷、责任到位、处置及时、运转高效的城市管理、公共服务的监督和处置新机制，全面提高城市管理和政府公共服务水平。
+                </div>
+            </div>
+            <div class="test">
                 <div class="textsInbig">
                     &nbsp; &nbsp;&nbsp;&nbsp;
                     以大数据为基础进行综合分析、过滤形成可视化的科学数据展示，利用当前的可视化手段，将要展现的数据转化为基本图表、置于物理大屏，从而方便使用者更准确与科学的进行决策。
