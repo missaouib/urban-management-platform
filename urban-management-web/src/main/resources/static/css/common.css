@@ -898,7 +898,7 @@ ul{list-style: none}
 
 .fixed-table-pagination{background: white;}
 .pagination-info{font-size: 12px;height: 30px;display: block;margin: 6px 0 10px 20px;color: #0D8BBD;float: left}
-.pagination{font-size: 12px;margin-right: 10px;padding: 3px 0 0 0;}
+.pagination{font-size: 12px;margin-right: 10px;}
 .pagination .active .page-link{background-color: #0D8BBD!important;}
 .page-list{font-size: 12px;height: 30px;display: block;margin: 6px 0 10px 20px;color: #0D8BBD;line-height: 50px!important;}
 .page-list button{font-size: 8px}
@@ -2037,7 +2037,17 @@ span.search_highlight {
     height: 128px;
 }
 .bootstrap-table .fixed-table-container .table thead th .th-inner{
-    padding: 0.5rem!important;
+    padding: 0.3rem!important;
+    text-align: center!important;
+}
+.fixed-table-pagination{
+    position: absolute!important;
+    bottom: 0px!important;
+    left: 0px!important;
+    z-index: 2!important;
+}
+.mannertable th{
+    text-align: center;
 }
 /*
    序号 时限 变窄

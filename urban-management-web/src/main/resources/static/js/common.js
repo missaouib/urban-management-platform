@@ -172,6 +172,7 @@ if ($(".do_banner").html() == ''){
 function setConduct(bgmNum) {
 	var alist = document.querySelectorAll(".alist")
 	$(".alist").removeClass("dieselActive")
+	$(".alist").removeClass("alist_hover")
 	$(".alist span").removeClass("spanlist")
 	alist[bgmNum].classList.remove("dieselActive");
 	alist[bgmNum].classList.add("alist_hover");
