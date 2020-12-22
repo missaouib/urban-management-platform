@@ -24,7 +24,7 @@
                                     <tr>
                                         <td><span></span>部件名称</td>
                                         <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                            <input type="text" class="find_input" id="eventType" name="layerName" style="float: left">
+                                            <input type="text" class="find_input" id="eventType" style="float: left">
                                             <button type="button" class="addBtn"  onclick="selectEventTypeTree()">
                                                 +
                                             </button>
@@ -41,7 +41,8 @@
                     <!-- ztree-->
                     <form id="fileForm">
                         <input type="hidden" name="layerSettingType" value="1" />
-                        <input type="hidden" name="eventTypeId" id="eventTypeId" />
+                        <input type="hidden" name="layerName" id="layerName" />
+                        <input type="hidden" name="componentTypeId" id="componentTypeId" />
                         <div>
                             <label class="modelTitle"></label>
                             <input type="file" name="file" multiple="multiple">
@@ -84,7 +85,6 @@
         };
 
         function zTreeOnClick(event, treeId, treeNode) {
-            $("#eventTypeId").val(treeNode.id);
         }
         $(function () {
             $.ajaxUtil.get(eventTypeUrl, function (e) {
@@ -96,8 +96,7 @@
         let eventTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
         let upload = /*[[@{/componentImport}]]*/ "/componentImport";
         function uploadFiles() {
-
-            var formData = $("#fileForm").serialize();
+            var formData = new FormData($("#fileForm")[0]);
             $.ajax({
                 url: upload,
                 type: 'POST',
@@ -139,6 +138,8 @@
             var body = layer.getChildFrame('body', index);
             $("#treeId").val(body.find('#treeId').val());
             $("#eventType").val(body.find('#treeName').val());
+            $("#layerName").val(body.find('#treeName').val());
+            $("#componentTypeId").val(body.find('#treeId').val());
             layer.close(index);
         }
 

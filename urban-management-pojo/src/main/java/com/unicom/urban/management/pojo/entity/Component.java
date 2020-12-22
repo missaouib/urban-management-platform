@@ -31,7 +31,7 @@ public class Component extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private EventType eventType;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     private ComponentInfo componentInfo;
 
     @Column(columnDefinition = "TINYINT(1)")
