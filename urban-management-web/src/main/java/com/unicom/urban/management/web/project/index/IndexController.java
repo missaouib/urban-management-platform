@@ -18,7 +18,7 @@ public class IndexController {
 //    @Autowired
 //    private IndexService indexService;
 
-    @GetMapping("/index")
+    @GetMapping({"/index", "/"})
     public String index() {
         return SystemConstant.PAGE + "/index";
     }
