@@ -949,7 +949,7 @@ font-size: 12px}
 
 .table2_top td span{color: red;}
 .table2_top select,.table2_top input[type=text],.table2_top input[type=password],.table2_top input[type=email],#dropdownMenu1{
-    text-align: left;width: 100%;height:28px;border-radius: 4px;font-size: 12px;border: 1px #ccc solid;padding-left: 10px;
+    text-align: left;width: 100%;height:23px;border-radius: 4px;font-size: 12px;border: 1px #ccc solid;padding-left: 10px;
     }
 /*tbody tr:hover{background-color: white!important;}*/
 
@@ -2019,6 +2019,25 @@ span.search_highlight {
 }
 .time_width{
     width: 40px!important;
+}
+.do_banner{
+    width: 100%;
+    height: 100%;
+}
+.nothingDocument{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;align-items: center;
+}
+.nothing_case{
+    background: url("../img/zanwuCase.png");
+    background-size: 100% 100%;
+    width: 155px;
+    height: 128px;
+}
+.bootstrap-table .fixed-table-container .table thead th .th-inner{
+    padding: 0.5rem!important;
 }
 /*
    序号 时限 变窄

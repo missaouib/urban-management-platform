@@ -155,7 +155,14 @@ $(".do_span").click(function () {
 $(".keep_span").click(function () {
 	$(this).addClass("active").siblings(".keep_span").removeClass("active");
 	$(".banners").eq($(this).index(".keep_span")).addClass("blockActive").siblings(".banners").removeClass("blockActive");
-})
+});
+
+/*
+* 	处置多媒体为空
+* */
+if ($(".do_banner").html() == ''){
+	$(".do_banner").html("<div class=\"nothingDocument\"><div class='nothing_case'></div></div>")
+}
 
 /**
  * 步骤进行到哪一步
