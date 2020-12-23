@@ -9,5 +9,7 @@ import com.unicom.urban.management.pojo.entity.Idioms;
  * @author liubozhi
  */
 public interface IdiomsRepository extends CustomizeRepository<Idioms, String> {
-    Idioms findAllByIdiomsValue(String idiomsValue);
+
+    boolean existsByIdiomsValue(String idiomsValue);
+
 }
