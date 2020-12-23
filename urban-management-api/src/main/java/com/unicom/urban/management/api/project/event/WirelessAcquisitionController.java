@@ -4,20 +4,26 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
+import com.unicom.urban.management.pojo.dto.StatisticsDTO;
+import com.unicom.urban.management.pojo.entity.EventFile;
 import com.unicom.urban.management.pojo.entity.KV;
+import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.event.EventService;
+import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
+import com.unicom.urban.management.service.statistics.StatisticsService;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -28,7 +34,7 @@ import java.util.List;
 @RestController
 @ResponseResultBody
 @RequestMapping("/api/event")
-public class  WirelessAcquisitionController {
+public class WirelessAcquisitionController {
 
     @Autowired
     private EventTypeService eventTypeService;
@@ -38,6 +44,10 @@ public class  WirelessAcquisitionController {
     private GridService gridService;
     @Autowired
     private KVService kvService;
+    @Autowired
+    private StatisticsService statisticsService;
+    @Autowired
+    private EventFileService eventFileService;
 
     /**
      * 获取案件类型
@@ -160,8 +170,123 @@ public class  WirelessAcquisitionController {
     @PostMapping("/saveTemp")
     public Result saveTemp(@Valid EventDTO eventDTO) {
         eventDTO.setSts(EventConstant.SUPERVISE_SAVE);
-        eventService.saveTemp(eventDTO);
+        eventService.saveTempForApi(eventDTO);
         return Result.success("保存成功");
+    }
+
+    /**
+     * 案件核实
+     *
+     * @param eventDTO 查询条件
+     * @param pageable 分页
+     * @return list
+     */
+    @GetMapping("/caseVerifyList")
+    public Page<EventVO> caseVerifyList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_CASE_VERIFICATION));
+        return eventService.search(eventDTO, pageable);
+    }
+
+    /**
+     * 事件详情
+     *
+     * @param eventId 事件id
+     * @return 数据
+     */
+    @GetMapping("/eventFindOne")
+    public Result findOne(String eventId) {
+        EventOneVO oneToVo = eventService.findOneToVo(eventId);
+        return Result.success(oneToVo);
+    }
+
+    /**
+     * 获取下一环节完成按钮
+     *
+     * @param eventId 事件id
+     * @return button
+     */
+    @GetMapping("/getButton/{eventId}")
+    public Result getButton(@PathVariable String eventId) {
+        List<EventButtonVO> button = eventService.getButton(eventId);
+        return Result.success(button);
+    }
+
+    /**
+     * 监督员信息核实
+     *
+     * @param statisticsDTO 数据
+     */
+    @PostMapping("/completeByVerification")
+    public Result completeByVerification(StatisticsDTO statisticsDTO) {
+        String eventId = statisticsDTO.getEventId();
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList(), 1);
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        statistics.setOpinions(statisticsDTO.getOpinions());
+        statistics.setEventFileList(eventFileList);
+        statisticsService.update(statistics);
+        eventService.completeByVerification(statisticsDTO.getEventId(), statisticsDTO.getButtonText());
+        return Result.success("成功");
+    }
+
+    /**
+     * 案件核查
+     *
+     * @param eventDTO 查询条件
+     * @param pageable 分页
+     * @return list
+     */
+    @GetMapping("/caseInspectList")
+    public Page<EventVO> caseInspectList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setTaskName(Collections.singletonList(EventConstant.ACCEPTANCE_CASE_INSPECT));
+        return eventService.search(eventDTO, pageable);
+    }
+
+    /**
+     * 监督员案件核查
+     *
+     * @param statisticsDTO
+     */
+    @PostMapping("/completeByInspect")
+    public Result completeByInspect(StatisticsDTO statisticsDTO) {
+        String eventId = statisticsDTO.getEventId();
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList(), 1);
+        statistics.setOpinions(statisticsDTO.getOpinions());
+        statistics.setEventFileList(eventFileList);
+        statisticsService.update(statistics);
+        eventService.completeByInspect(statisticsDTO.getEventId(), statisticsDTO.getButtonText());
+        return Result.success("成功");
+    }
+
+    /**
+     * 无效案件
+     *
+     * @param eventDTO 查询条件
+     * @param pageable 分页
+     * @return list
+     */
+    @GetMapping("/caseInvalidList")
+    public Page<EventVO> caseInvalidList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setNotOperate(1);
+        return eventService.search(eventDTO, pageable);
+    }
+
+    @GetMapping("/findOpinions")
+    public Result findOpinions(String statisticsId) {
+        StatisticsVO statisticsVO = statisticsService.findById(statisticsId);
+        return Result.success(statisticsVO);
+    }
+
+    /**
+     * 案件历史
+     *
+     * @param eventDTO 查询条件
+     * @param pageable 分页
+     * @return list
+     */
+    @GetMapping("/caseHistoryList")
+    public Page<EventVO> caseHistoryList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        return eventService.search(eventDTO, pageable);
     }
 
 

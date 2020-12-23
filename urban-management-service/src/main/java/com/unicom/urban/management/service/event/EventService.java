@@ -44,9 +44,6 @@ import java.util.stream.Collectors;
 @Transactional(rollbackOn = Exception.class)
 public class EventService {
 
-    private final double EARTH_RADIUS = 6378.137;
-    private final double COMPONENT_DISTANCE = 3;
-
     @Autowired
     private EventRepository eventRepository;
     @Autowired
@@ -67,7 +64,6 @@ public class EventService {
     private KVService kvService;
     @Autowired
     private EventFileService eventFileService;
-
     @Autowired
     private ProcessService processService;
 
@@ -78,11 +74,16 @@ public class EventService {
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("eventSate").get("id"));
                 eventDTO.getClose().forEach(in::value);
                 list.add(in);
-
             }
+
+            if (StringUtils.isNotBlank(eventDTO.getEventId())) {
+                list.add(criteriaBuilder.equal(root.get("id").as(String.class), eventDTO.getEventId()));
+            }
+
             if (StringUtils.isNotBlank(eventDTO.getUserName())) {
                 list.add(criteriaBuilder.equal(root.get("user").get("username").as(String.class), eventDTO.getUserName()));
             }
+
             if (eventDTO.getSts() != null) {
                 list.add(criteriaBuilder.equal(root.get("sts").as(Integer.class), eventDTO.getSts()));
             }
@@ -434,7 +435,7 @@ public class EventService {
     }
 
     public String createCode(String eventTypeId) {
-        String eventCode = "";
+        String eventCode;
         //查询当天最大序号
         Integer maxNum = eventRepository.findMaxNum();
         EventType eventType = eventTypeService.getEventType(eventTypeId);
@@ -449,7 +450,7 @@ public class EventService {
             code = 0 + code;
         }
         //部件（简称C）或事件（E）+大类代码+小类代码+××××××××××（年：4位，月：2位，日：2位，序号：2位）即C01012019041101
-        String maxNumStr = "";
+        String maxNumStr;
         if (maxNum == null) {
             maxNum = 0;
         }
@@ -567,18 +568,18 @@ public class EventService {
      *
      * @param eventDTO 需要操作的实体
      */
-    public Event updateTemp(EventDTO eventDTO) {
+    public void updateTemp(EventDTO eventDTO) {
         eventDTO.setSts(0);
-        Event event = EventDTOtoEvent(eventDTO);
+        Event event = EventDTOToEvent(eventDTO);
         if (StringUtils.isNotBlank(eventDTO.getObjId())) {
             Component component = new Component();
             component.setId(eventDTO.getObjId());
             event.setComponent(component);
         }
-        return this.update(event);
+        this.update(event);
     }
 
-    public Event EventDTOtoEvent(EventDTO eventDTO) {
+    public Event EventDTOToEvent(EventDTO eventDTO) {
         Event event = eventRepository.findById(eventDTO.getId()).orElse(new Event());
         if (StringUtils.isNotBlank(eventDTO.getEventCode())) {
             event.setEventCode(eventDTO.getEventCode());
@@ -652,7 +653,7 @@ public class EventService {
     /**
      * 案件采集删除
      *
-     * @param eventId
+     * @param eventId id
      */
     public void remove(String eventId) {
         eventRepository.deleteById(eventId);
@@ -661,10 +662,10 @@ public class EventService {
     /**
      * 案件采集自处理
      *
-     * @param eventDTO
+     * @param eventDTO 数据
      */
     public void saveAutoReport(EventDTO eventDTO) {
-        Event event = this.EventDTOtoEvent(eventDTO);
+        Event event = this.EventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         if (StringUtils.isNotBlank(eventDTO.getObjId())) {
             Component component = new Component();
@@ -680,7 +681,7 @@ public class EventService {
      */
     public void saveReport(EventDTO eventDTO) {
         eventDTO.setSts(null);
-        Event event = this.EventDTOtoEvent(eventDTO);
+        Event event = this.EventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         if (StringUtils.isNotBlank(eventDTO.getObjId())) {
             Component component = new Component();
@@ -726,7 +727,8 @@ public class EventService {
 
     /**
      * 附件上传
-     * @param eventDTO
+     *
+     * @param eventDTO 数据
      */
     public void uploadFiles(EventDTO eventDTO) {
         List<EventFile> eventFileList = new ArrayList<>();
@@ -735,92 +737,66 @@ public class EventService {
             //处置前的图片上传
             if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlList())) {
                 List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(),1);
-                for (EventFile eventFile : fileList) {
-                    eventFileList.add(eventFile);
-                }
+                eventFileList.addAll(fileList);
             }
             //处置前的视频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getVideoUrlList())) {
                 List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(),2);
-                for (EventFile eventFile : fileList) {
-                    eventFileList.add(eventFile);
-                }
+                eventFileList.addAll(fileList);
             }
             //处置前的视频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getMusicUrlList())) {
                 List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(),3);
-                for (EventFile eventFile : fileList) {
-                    eventFileList.add(eventFile);
-                }
+                eventFileList.addAll(fileList);
             }
             //处置后的图片上传
             if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlListAfter())) {
                 List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getImageUrlListAfter(), 1);
-                for (EventFile e : eventFileListAfter) {
-                    eventFileList.add(e);
-                }
+                eventFileList.addAll(eventFileListAfter);
             }//处置后的视频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getVideoUrlListAfter())) {
                 List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getVideoUrlListAfter(), 2);
-                for (EventFile e : eventFileListAfter) {
-                    eventFileList.add(e);
-                }
+                eventFileList.addAll(eventFileListAfter);
             }//处置后的音频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getMusicUrlListAfter())) {
                 List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getMusicUrlListAfter(), 3);
-                for (EventFile e : eventFileListAfter) {
-                    eventFileList.add(e);
-                }
+                eventFileList.addAll(eventFileListAfter);
             }
             Event event = eventRepository.findById(eventDTO.getId()).orElse(new Event());
             List<EventFile> files = event.getEventFileList();
             if (CollectionUtils.isNotEmpty(files)) {
-                for (EventFile e : files) {
-                    eventFileList.add(e);
-                }
+                eventFileList.addAll(files);
             }
         }else {/*新增*/
             //处置前的图片上传
             if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlList())) {
                 List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);
-                for (EventFile eventFile : fileList) {
-                    eventFileList.add(eventFile);
-                }
+                eventFileList.addAll(fileList);
             }
             //处置前的视频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getVideoUrlList())) {
                 List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(), 2);
-                for (EventFile eventFile : fileList) {
-                    eventFileList.add(eventFile);
-                }
+                eventFileList.addAll(fileList);
             }
             //处置前的音频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getMusicUrlList())) {
                 List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(), 3);
-                for (EventFile eventFile : fileList) {
-                    eventFileList.add(eventFile);
-                }
+                eventFileList.addAll(fileList);
             }
             //处置后的图片上传
             if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlListAfter())) {
                 List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getImageUrlListAfter(), 1);
-                for (EventFile e : eventFileListAfter) {
-                    eventFileList.add(e);
-                }
+                eventFileList.addAll(eventFileListAfter);
             }
             //处置后的视频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getVideoUrlListAfter())) {
                 List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getVideoUrlListAfter(), 2);
-                for (EventFile e : eventFileListAfter) {
-                    eventFileList.add(e);
-                }
+                eventFileList.addAll(eventFileListAfter);
             }
             //处置后的音频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getMusicUrlListAfter())) {
                 List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getMusicUrlListAfter(), 3);
-                for (EventFile e : eventFileListAfter) {
-                    eventFileList.add(e);
-                }
+                eventFileList.addAll(eventFileListAfter);
             }
         }
         eventDTO.setEventFileList(eventFileList);
@@ -857,20 +833,38 @@ public class EventService {
         double b = rad(lng) - rad(eventLng);
         double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
                 Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+        double EARTH_RADIUS = 6378.137;
         s = s * EARTH_RADIUS * 1000;
-        if (s < COMPONENT_DISTANCE) {
-            return true;
-        } else {
-            return false;
-        }
+        double COMPONENT_DISTANCE = 3;
+        return s < COMPONENT_DISTANCE;
     }
 
     private static double rad(double d) {
         return d * Math.PI / 180.0;
     }
+
+    /**
+     * 为手机端新增接口 保存事件后直接上报
+     *
+     * @param eventDTO 数据
+     */
+    public void saveTempForApi(EventDTO eventDTO) {
+        eventDTO.setSts(0);
+        Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
+        event.setUser(SecurityUtil.getUser().castToUser());
+        if (StringUtils.isNotBlank(eventDTO.getObjId())) {
+            Component component = new Component();
+            component.setId(eventDTO.getObjId());
+            event.setComponent(component);
+        }
+        Event save = eventRepository.save(event);
+        this.reportOnList(save.getId());
+    }
+
     /**
      * 转应急
-     * @param eventId
+     *
+     * @param eventId id
      */
     public void changeUrgent(String eventId) {
         Event event = this.findOne(eventId);

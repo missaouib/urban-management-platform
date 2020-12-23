@@ -109,22 +109,20 @@
         <div class="left_bottomIn">
             <div class="bottom_left">
                 <div class="doItTitle">
-                    <span class="do_span active">
-                        处置前
-                    </span>
+                    <span class="do_span active">处置前</span>
                     <span class="do_span">处置后</span>
                 </div>
                 <div class="doItInner">
                     <div class="do_banner blockActive">
                         <!-- Swiper -->
-                        <div class="swiper-container" id="beforDisSwiper">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">Slide 1</div>
-                                <div class="swiper-slide">Slide 2</div>
-                                <div class="swiper-slide">Slide 3</div>
+                        <div class="swiper-container" id="beforeDisSwiper">
+                            <div class="swiper-wrapper" id="MultiMediaBefore">
+                                <!--                                <div class="swiper-slide">Slide 1</div>-->
+                                <!--                                <div class="swiper-slide">Slide 2</div>-->
+                                <!--                                <div class="swiper-slide">Slide 3</div>-->
                             </div>
                             <!-- Add Pagination -->
-                            <div class="swiper-pagination beforDisPg"></div>
+                            <div class="swiper-pagination beforeDisPg"></div>
                             <!-- Add Arrows -->
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
@@ -133,10 +131,10 @@
                     <div class="do_banner">
                         <!-- Swiper -->
                         <div class="swiper-container" id="afterDisSwiper">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">Slide 1</div>
-                                <div class="swiper-slide">Slide 2</div>
-                                <div class="swiper-slide">Slide 3</div>
+                            <div class="swiper-wrapper" id="MultiMediaAfter">
+                                <!--                                <div class="swiper-slide">Slide 1</div>-->
+                                <!--                                <div class="swiper-slide">Slide 2</div>-->
+                                <!--                                <div class="swiper-slide">Slide 3</div>-->
                             </div>
                             <!-- Add Pagination -->
                             <div class="swiper-pagination afterDisPg"></div>
@@ -360,6 +358,7 @@
                 </div>
             </div>
         </div>
+    </div>
     <div class="rightContent">
 
         <div class="tabInfo">
@@ -524,7 +523,6 @@
         </div>
     </div>
 </div>
-
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
 <th:block th:include="page/fragments/common :: fileUpload_js"/>
@@ -701,8 +699,8 @@
         });
 
         //处置前 轮播
-        var beforDisSwiper = new Swiper('#beforDisSwiper', {
-            pagination: '.beforDisPg',
+        var beforeDisSwiper = new Swiper('#beforeDisSwiper', {
+            pagination: '.beforeDisPg',
             paginationClickable: true,
             nextButton: '.swiper-button-next',
             prevButton: '.swiper-button-prev',
@@ -895,6 +893,8 @@
 
         setModelName();
 
+        $(".do_banner").html("<div class='nothingDocument'><div class='nothing_case'></div></div>");
+
     });
 
     let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
@@ -907,7 +907,6 @@
             var urlParam = e.data.split("?");
             var url = urlParam[0];
             var param = urlParam[1];
-            // console.log(url+","+param)
             var ImageVector = new ol.layer.Tile({
                 source: new ol.source.TileWMS({
                     url: url,
@@ -946,10 +945,7 @@
 
     function success_jsonpCallback(res) {
         var features = geojsonFormat.readFeatures(res);
-        console.log('点击查询返回的结果如下：');
-        console.log("features", features);
         let mongodbId = features[0].H.mongodb_id;
-        console.log("features", mongodbId);
         $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
             console.log("e", e);
         });
@@ -1169,7 +1165,6 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    console.log('button[i].buttonText',button[i].buttonText)
                     if (button[i].buttonText === '转应急'){
                         buttonHtml += "<button class='but_save' style='margin-right: 10px;' type='button' onclick='changeUrgent(\""+eventId+"\")'>" + button[i].buttonText + "</button>";
                     }else {
@@ -1290,101 +1285,98 @@
 
     function getEventDetail(eventId) {
         $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
-            eventId = e.data.id;
+            let data = e.data;
+            console.log("data", data);
+            eventId = data.id;
             /*详情*/
-            $("#eventCode").val(e.data.eventCode);
-            $("#eventTypeStr").val(e.data.eventTypeStr);
-            $("#represent").val(e.data.represent);
-            $("#location").val(e.data.location);
-            $("#regionStr").val(e.data.regionStr);
-            $("#conditionValue").val(e.data.conditionValue);
-            $("#level").val(e.data.level);
-            $("#timeLimitStr").val(e.data.timeLimitStr);
-            $("#girdStr").val(e.data.girdStr);
-            $("#community").val(e.data.community);
-            $("#street").val(e.data.street);
-            $("#eventRegion").val(e.data.eventRegion);
-            $("#x").val(e.data.x);
-            $("#y").val(e.data.y);
-            $("#eventSourceStr").val(e.data.eventSourceStr);
-            $("#cdate").val(e.data.cdate);
-            $("#petitionerSex").val(e.data.petitionerSex);
-            $("#petitionerPhone").val(e.data.petitionerPhone);
-            $("#petitionerName").val(e.data.petitionerName);
-            $("#userName").val(e.data.userName);
-            $("#recTypeStr").val(e.data.recTypeStr);
-            $("#objId").val(e.data.objId);
-            if (e.data.objId == null) {
+            $("#eventCode").val(data.eventCode);
+            $("#eventTypeStr").val(data.eventTypeStr);
+            $("#represent").val(data.represent);
+            $("#location").val(data.location);
+            $("#regionStr").val(data.regionStr);
+            $("#conditionValue").val(data.conditionValue);
+            $("#level").val(data.level);
+            $("#timeLimitStr").val(data.timeLimitStr);
+            $("#girdStr").val(data.girdStr);
+            $("#community").val(data.community);
+            $("#street").val(data.street);
+            $("#eventRegion").val(data.eventRegion);
+            $("#x").val(data.x);
+            $("#y").val(data.y);
+            $("#eventSourceStr").val(data.eventSourceStr);
+            $("#cdate").val(data.cdate);
+            $("#petitionerSex").val(data.petitionerSex);
+            $("#petitionerPhone").val(data.petitionerPhone);
+            $("#petitionerName").val(data.petitionerName);
+            $("#userName").val(data.userName);
+            $("#recTypeStr").val(data.recTypeStr);
+            $("#objId").val(data.objId);
+            if (data.objId == null) {
                 $(".partCodes").addClass('roleBox')
             } else {
                 $(".partCodes").removeClass('roleBox')
             }
 
-            getUserListForSupervisor(e.data.gridId);
+            getUserListForSupervisor(data.gridId);
 
             /*流程图*/
-            $("#eventImg").attr('src', img + e.data.processInstanceId);
+            $("#eventImg").attr('src', img + data.processInstanceId);
 
             /* 附件图片回显 */
-            let file = e.data.file;
+            let file = data.file;
             if (file.length > 0) {
-                $("#imageList").empty();
-                $("#videoList").empty();
-                $("#audioList").empty();
-                let imageHtml = "";
-                let videoHtml = "";
-                let audioHtml = "";
+                $("#MultiMediaBefore").empty();
+                $("#MultiMediaAfter").empty();
+                let MultiMediaBeforeHtml = "";
+                let MultiMediaAfterHtml = "";
                 for (let i = 0; i < file.length; i++) {
-                    if (file[i].type === "图片") {
-                        imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n";
-                        imageHtml += "<img class='img-rounded' src='" + showUrl + file[i].url + "'>";
-                        imageHtml += "</div>";
-                    }
-                    if (file[i].type === "视频") {
-                        videoHtml += "<div class=\"innerPic\" style=\"float:left;\">\n";
-                        videoHtml += "<video class='img-rounded' controls src='" + showUrl + file[i].url + "'></video>";
-                        videoHtml += "</div>";
-                    }
-                    if (file[i].type === "音频") {
-                        audioHtml += "<div class=\"innerPic\" style=\"float:left;\">\n";
-                        audioHtml += "<audio class='img-rounded' controls src='" + showUrl + file[i].url + "'></audio>";
-                        audioHtml += "</div>";
+                    if (file[i].management === "处置前") {
+                        if (file[i].type === "图片") {
+                            MultiMediaBeforeHtml += "<div class='swiper-slide'>";
+                            MultiMediaBeforeHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + file[i].url + "'>";
+                            MultiMediaBeforeHtml += "</div>";
+                        }
+                        if (file[i].type === "视频") {
+                            MultiMediaBeforeHtml += "<div class='swiper-slide'>";
+                            MultiMediaBeforeHtml += "<video style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></video>";
+                            MultiMediaBeforeHtml += "</div>";
+                        }
+                        if (file[i].type === "音频") {
+                            MultiMediaBeforeHtml += "<div class='swiper-slide'>";
+                            MultiMediaBeforeHtml += "<audio style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></audio>";
+                            MultiMediaBeforeHtml += "</div>";
+                        }
+                    } else {
+                        if (file[i].type === "图片") {
+                            MultiMediaAfterHtml += "<div class='swiper-slide'>";
+                            MultiMediaAfterHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + file[i].url + "'>";
+                            MultiMediaAfterHtml += "</div>";
+                        }
+                        if (file[i].type === "视频") {
+                            MultiMediaAfterHtml += "<div class='swiper-slide'>";
+                            MultiMediaAfterHtml += "<video style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></video>";
+                            MultiMediaAfterHtml += "</div>";
+                        }
+                        if (file[i].type === "音频") {
+                            MultiMediaAfterHtml += "<div class='swiper-slide'>";
+                            MultiMediaAfterHtml += "<audio style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></audio>";
+                            MultiMediaAfterHtml += "</div>";
+                        }
                     }
                 }
-                $("#imageList").html(imageHtml);
-                $("#videoList").html(videoHtml);
-                $("#audioList").html(audioHtml);
-
-                $("#imageDetailList").empty();
-                $("#videoDetailList").empty();
-                $("#audioDetailList").empty();
-                let imageList = "";
-                let videoList = "";
-                let audioList = "";
-                for (let i = 0; i < file.length; i++) {
-                    if (file[i].type === "图片") {
-                        imageList += "<div class='swiper-slide'>";
-                        imageList += "<img style='width: 100%;height: 100%' src='" + showUrl + file[i].url + "'>";
-                        imageList += "</div>";
-                    }
-                    if (file[i].type === "视频") {
-                        videoList += "<div class='swiper-slide'>";
-                        videoList += "<video style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></video>";
-                        videoList += "</div>";
-                    }
-                    if (file[i].type === "音频") {
-                        audioList += "<div class='swiper-slide'>";
-                        audioList += "<audio style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></audio>";
-                        audioList += "</div>";
-                    }
-
+                if (MultiMediaBeforeHtml === "") {
+                    /*处置前置空*/
                 }
-                $("#imageDetailList").html(imageList);
-                $("#videoDetailList").html(videoList);
-                $("#audioDetailList").html(audioList);
+                if (MultiMediaAfterHtml === "") {
+                    /*处置后置空*/
+                }
+                $("#MultiMediaBefore").html(MultiMediaBeforeHtml);
+                $("#MultiMediaAfter").html(MultiMediaAfterHtml);
+            } else {
+                $(".do_banner").html("");
             }
             /* 坐标 */
-            setPoint(e.data.x, e.data.y);
+            setPoint(data.x, data.y);
             /* 获取按钮 因为在监督员上报的时候不显示重新核实按钮 所以需要在赋值之后调用方法 */
             getButton(eventId);
         });
@@ -1433,8 +1425,8 @@
         let userIdVal = $("#userId").val();
         let buttonVal = $("#button").val();
         let idVal = $("#eventId").val();
-        if (buttonVal === "11" || buttonVal == 13 || buttonVal == 14 || buttonVal == 16) {
-            if (userIdVal == null || userIdVal == "") {
+        if (buttonVal === "11" || buttonVal === 13 || buttonVal === 14 || buttonVal === 16) {
+            if (userIdVal == null || userIdVal === "") {
                 alert("请选择监督员");
                 return false;
             }
