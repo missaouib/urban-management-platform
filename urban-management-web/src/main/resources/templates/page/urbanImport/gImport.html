@@ -55,10 +55,13 @@
             url: upload,
             type: 'POST',
             data: formData,
-            async: false,
+            async: true,
             cache: false,
             contentType: false,
             processData: false,
+            beforeSend: function () {
+                $.modal.loading("正在处理中，请稍后...");
+            },
             success: function (data) {
                 console.log(data.code)
                 if (data.code == 98){
