@@ -166,8 +166,17 @@ $(".do_banner").last().append("<div class='nothingDocument noneActives' style='p
 function setMediaBefore() {
 	$(".nothingDocument").first().removeClass('noneActives')
 }
+
 function setMediaAfter() {
 	$(".nothingDocument").last().removeClass('noneActives')
+}
+
+function addMediaBefore() {
+	$(".nothingDocument").first().addClass('noneActives')
+}
+
+function addMediaAfter() {
+	$(".nothingDocument").last().addClass('noneActives')
 }
 
 /**

@@ -1327,6 +1327,8 @@
             /* 附件图片回显 */
             let file = data.file;
             if (file.length > 0) {
+                addMediaBefore();
+                addMediaAfter();
                 $("#MultiMediaBefore").empty();
                 $("#MultiMediaAfter").empty();
                 let MultiMediaBeforeHtml = "";
@@ -1377,7 +1379,8 @@
                 $("#MultiMediaBefore").html(MultiMediaBeforeHtml);
                 $("#MultiMediaAfter").html(MultiMediaAfterHtml);
             } else {
-                $(".do_banner").html("");
+                setMediaBefore();
+                setMediaAfter();
             }
             /* 坐标 */
             setPoint(data.x, data.y);
