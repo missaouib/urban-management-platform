@@ -134,4 +134,10 @@ public class Event extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event")
     private List<Supervise> supervises;
 
+    /**
+     * 紧急程度
+     */
+    @Column(columnDefinition = "tinyint")
+    private Integer urgent = 0;
+
 }
