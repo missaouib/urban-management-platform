@@ -1006,7 +1006,7 @@
     let completeByReceptionistWithSendCheckUrl = /*[[@{/event/completeByReceptionistWithSendCheck}]]*/ "/event/completeByReceptionistWithSendCheck";
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
-
+    let changeUrgentUrl = /*[[@{/event/urgent}]]*/ "/event/urgent";
     let num = 1;
 
     function queryUserList() {
@@ -1111,7 +1111,13 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
+                    console.log('button[i].buttonText',button[i].buttonText)
+                    if (button[i].buttonText === '转应急'){
+                        buttonHtml += "<button class='but_save' style='margin-right: 10px;' type='button' onclick='changeUrgent(\""+eventId+"\")'>" + button[i].buttonText + "</button>";
+                    }else {
+                        buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
+                    }
+
                 }
             }
             $("#eventButton").html(buttonHtml);
@@ -1325,7 +1331,26 @@
             getButton(eventId);
         });
     }
-
+    /*转应急*/
+    function changeUrgent(eventId) {
+        $.ajax({
+            url: changeUrgentUrl,
+            type: 'POST',
+            data:{eventId: eventId},
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.code === 0){
+                    $.modal.alertSuccess('保存成功',function () {
+                    });
+                }
+            },
+            error: function (data) {
+                $.modal.alertError(data.message,function () {
+                });
+            }
+        });
+    }
     /* 步骤图 */
     function getNodeName(eventId) {
         $.ajaxUtil.get(getNodeNameUrl + "?eventId=" + eventId, function (e) {

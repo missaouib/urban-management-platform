@@ -868,5 +868,13 @@ public class EventService {
     private static double rad(double d) {
         return d * Math.PI / 180.0;
     }
-
+    /**
+     * 转应急
+     * @param eventId
+     */
+    public void changeUrgent(String eventId) {
+        Event event = this.findOne(eventId);
+        List<KV> kvList = kvService.findByTableNameAndFieldNameAndValue("event", "urgent", "紧急");
+        event.setUrgent(kvList.get(0).getKey());
+    }
 }

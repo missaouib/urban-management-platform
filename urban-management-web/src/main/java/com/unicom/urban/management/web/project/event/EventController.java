@@ -18,10 +18,7 @@ import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -144,5 +141,9 @@ public class EventController {
         List<EventVO> eventVOList = eventService.similarCasesForEvent(x, y);
         return Result.success(eventVOList);
     }
-
+    @PostMapping("/urgent")
+    public Result changeUrgentUrl(String eventId){
+        eventService.changeUrgent(eventId);
+        return Result.success();
+    }
 }

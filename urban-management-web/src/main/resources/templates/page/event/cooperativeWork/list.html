@@ -699,7 +699,7 @@
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
     let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
     let roleUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
-
+    let changeUrgentUrl = /*[[@{/event/urgent}]]*/ "/event/urgent";
 
     var buttonId = "";
     var buttonName = "";
@@ -765,7 +765,26 @@
         buttonId = $(obj).attr("id");
         buttonName = $(obj).text();
     }
-
+    /*转应急*/
+    function changeUrgent(eventId) {
+        $.ajax({
+            url: changeUrgentUrl,
+            type: 'POST',
+            data: {eventId: eventId},
+            async: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.code === 0) {
+                    $.modal.alertSuccess('保存成功', function () {
+                    });
+                }
+            },
+            error: function (data) {
+                $.modal.alertError(data.message, function () {
+                });
+            }
+        });
+    }
     function reductionButton() {
         buttonId = "";
         buttonName = "";
@@ -909,8 +928,11 @@
                         /*按钮*/
                     var buttonStr = "";
                     $(e.data.eventButtonVOS).each(function (index, value) {
-                        buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='" + value.id + "' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
-
+                        if (value.buttonText === '转应急'){
+                            buttonStr += "<button  type=\"button\" class=\"but_save\" id='" + value.id + "' onclick='changeUrgent(\""+value.id+"\")'  class=\"but_save\">" + value.buttonText + "</button>";
+                        }else {
+                            buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='" + value.id + "' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
+                        }
                     })
                     $("#btnGroupGround").empty();
                     $("#btnGroupGround").append(buttonStr);
