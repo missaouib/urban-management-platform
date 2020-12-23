@@ -160,11 +160,14 @@ $(".keep_span").click(function () {
 /*
 * 	处置多媒体为空
 * */
+$(".do_banner").first().append("<div class='nothingDocument noneActives' style='position: absolute;top: 0;left: 0;z-index: 6'><div class='nothing_case'></div></div>")
+$(".do_banner").last().append("<div class='nothingDocument noneActives' style='position: absolute;top: 0;left: 0;z-index: 6'><div class='nothing_case'></div></div>")
+
 function setMediaBefore() {
-	$(".do_banner").first().html("<div class='nothingDocument'><div class='nothing_case'></div></div>")
+	$(".nothingDocument").first().removeClass('noneActives')
 }
 function setMediaAfter() {
-	$(".do_banner").last().html("<div class='nothingDocument'><div class='nothing_case'></div></div>")
+	$(".nothingDocument").last().removeClass('noneActives')
 }
 
 /**

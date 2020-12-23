@@ -8,6 +8,7 @@
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
     <th:block th:include="page/fragments/common :: ztree_css"/>
+    <th:block th:include="page/fragments/common :: swiper_css"/>
     <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;">
@@ -36,12 +37,25 @@
                 <a class="btn btn-success" onclick="$.operate.addTab()">
                     <i class="fa fa-plus"></i> 新增
                 </a>
-                <!--            <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">-->
-                <!--                <i class="fa fa-edit"></i> 修改-->
-                <!--            </a>-->
-                <!--            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">-->
-                <!--                <i class="fa fa-remove"></i> 重置-->
-                <!--            </a>-->
+                <a class="btn btn-success" onclick="$.operate.report(' + row.id + ')">
+                    <i class="fa fa-paper-plane"></i> 上报
+                </a>
+                <a class="btn btn-info" onclick="$.operate.editTab(' + row.id + ')">
+                    <i class="fa fa-edit"></i> 修改
+                </a>
+                <a class="btn btn-danger" style="color: #ffffff"  onclick="$.operate.remove(' + row.id + ')">
+                    <i class="fa fa-trash"></i> 删除
+                </a>
+
+                <a class="btn btn-primary single disabled">
+                    <i class="fa fa-edit"></i>修改
+                </a>
+                <a class="btn btn-danger multiple disabled">
+                    <i class="fa fa-remove"></i>删除
+                </a>
+                <a class="btn btn-danger multiple disabled">
+                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>上报
+                </a>
             </div>
         </div>
 
@@ -322,6 +336,7 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
@@ -362,6 +377,9 @@
             observer: true, //修改swiper自己或子元素时，自动初始化swiper
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
+
+        setMediaBefore();
+        setMediaAfter();
     })
 
     function selectEventTypeTree() {
@@ -501,6 +519,14 @@
                     }
                 },
                 {
+                    title: '案卷号',
+                    field: 'eventCode',
+                },
+                {
+                    title: '案件分类',
+                    field: 'recTypeId',
+                },
+                {
                     title: '问题描述',
                     field: 'represent',
                     class:"problem"
@@ -518,19 +544,19 @@
                     field: 'createTime',
                     sortable: true,
                 },
-                {
-                    title: '操作',
-                    field: '',
-                    class:"doit",
-                    width:"150px",
-                    formatter: function (value, row) {
-                        var actions = [];
-                        actions.push('<a  href="#" title="" onclick="$.operate.editTab(\'' + row.id + '\')">修改</a> ');
-                        actions.push('<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ');
-                        actions.push('<a  href="#" title="" onclick="$.operate.report(\'' + row.id + '\')">上报</a> ');
-                        return actions.join('');
-                    }
-                }
+                // {
+                //     title: '操作',
+                //     field: '',
+                //     class:"doit",
+                //     width:"150px",
+                //     formatter: function (value, row) {
+                //         var actions = [];
+                //         actions.push('<a  href="#" title="" onclick="$.operate.editTab(\'' + row.id + '\')">修改</a> ');
+                //         actions.push('<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ');
+                //         actions.push('<a  href="#" title="" onclick="$.operate.report(\'' + row.id + '\')">上报</a> ');
+                //         return actions.join('');
+                //     }
+                // }
             ]
         };
         $.table.init(options);
