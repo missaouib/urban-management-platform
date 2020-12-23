@@ -179,25 +179,25 @@
                                                 </td>
                                                 <td><span></span>问题类型</td>
                                                 <td>
-                                                    <input id="eventTypeStr" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" >
+                                                    <input id="eventTypeStr" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly" >
 
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td><span></span>立案区域</td>
                                                 <td>
-                                                    <input id="regionStr" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly">
+                                                    <input id="regionStr" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly">
                                                 </td>
                                                 <td><span></span>立案条件</td>
                                                 <td>
-                                                    <input id="conditionValue" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly" >
+                                                    <input id="conditionValue" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly" >
 
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td><span></span>计时等级</td>
                                                 <td>
-                                                    <input id="level" name="eventType" placeholder="请选择问题类型" class="" type="text" maxlength="30" required readonly="readonly">
+                                                    <input id="level" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly">
 
                                                 </td>
                                                 <td><span></span>处理时限</td>
@@ -207,10 +207,7 @@
                                             </tr>
                                             <tr>
                                                 <td><span></span>问题描述</td>
-
-                                                <td colspan="8"><textarea id="represent" name="problemescription" required readonly></textarea></td>
-
-
+                                                <td colspan="8"><input id="represent" type="text" class="find_input" readonly></textarea></td>
                                             </tr>
                                             <tr class="col-12">
                                                 <td><span></span>案件地址</td>
@@ -645,7 +642,7 @@
                     /*详情*/
                     $("#eventCode").val(e.data.eventCode);
                     $("#eventTypeStr").val(e.data.eventTypeStr);
-                    $("#represent").text(e.data.represent);
+                    $("#represent").val(e.data.represent);
                     $("#location").val(e.data.location);
                     $("#regionStr").val(e.data.regionStr);
                     $("#conditionValue").val(e.data.conditionValue);

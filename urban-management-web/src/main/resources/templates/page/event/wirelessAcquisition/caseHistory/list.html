@@ -109,21 +109,7 @@
                     <span class="do_span">处置后</span>
                 </div>
                 <div class="doItInner">
-                    <div class="do_banner blockActive">
-                        <!-- Swiper -->
-                        <div class="swiper-container" id="beforDisSwiper">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">Slide 1</div>
-                                <div class="swiper-slide">Slide 2</div>
-                                <div class="swiper-slide">Slide 3</div>
-                            </div>
-                            <!-- Add Pagination -->
-                            <div class="swiper-pagination beforDisPg"></div>
-                            <!-- Add Arrows -->
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                        </div>
-                    </div>
+                    <div class="do_banner blockActive"></div>
                     <div class="do_banner">
                         <!-- Swiper -->
                         <div class="swiper-container" id="afterDisSwiper">
@@ -192,7 +178,7 @@
                                             </tr>
                                             <tr>
                                                 <td><span></span>问题描述</td>
-                                                <td colspan="8"><textarea id="represent" required readonly></textarea></td>
+                                                <td colspan="8"><input id="represent" type="text" class="find_input" required readonly></td>
                                             </tr>
                                             <tr class="col-12">
                                                 <td><span></span>案件地址</td>
@@ -896,7 +882,7 @@
             /*详情*/
             $("#eventCode").val(e.data.eventCode);
             $("#eventTypeStr").val(e.data.eventTypeStr);
-            $("#represent").text(e.data.represent);
+            $("#represent").val(e.data.represent);
             $("#location").val(e.data.location);
             $("#regionStr").val(e.data.regionStr);
             $("#conditionValue").val(e.data.conditionValue);

@@ -202,10 +202,7 @@
                                             </tr>
                                             <tr>
                                                 <td><span></span>问题描述</td>
-
-                                                <td colspan="8"><textarea id="represent" name="problemescription" required readonly></textarea></td>
-
-
+                                                <td colspan="8"><input id="represent" type="text" class="find_input" readonly></textarea></td>
                                             </tr>
                                             <tr class="col-12">
                                                 <td><span></span>案件地址</td>
@@ -833,7 +830,7 @@
             /*详情*/
             $("#eventCode").val(e.data.eventCode);
             $("#eventTypeStr").val(e.data.eventTypeStr);
-            $("#represent").text(e.data.represent);
+            $("#represent").val(e.data.represent);
             $("#location").val(e.data.location);
             $("#regionStr").val(e.data.regionStr);
             $("#conditionValue").val(e.data.conditionValue);
