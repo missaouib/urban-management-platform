@@ -101,10 +101,13 @@
                 url: upload,
                 type: 'POST',
                 data: formData,
-                async: false,
+                async: true,
                 cache: false,
                 contentType: false,
                 processData: false,
+                beforeSend: function () {
+                    $.modal.loading("正在处理中，请稍后...");
+                },
                 success: function (data) {
                     if(data.code == 99){
                         $.modal.alertWarning("请选择正确文件格式！");
