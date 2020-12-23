@@ -160,8 +160,11 @@ $(".keep_span").click(function () {
 /*
 * 	处置多媒体为空
 * */
-if ($(".do_banner").html() == ''){
-	$(".do_banner").html("<div class=\"nothingDocument\"><div class='nothing_case'></div></div>")
+function setMediaBefore() {
+	$(".do_banner").first().html("<div class='nothingDocument'><div class='nothing_case'></div></div>")
+}
+function setMediaAfter() {
+	$(".do_banner").last().html("<div class='nothingDocument'><div class='nothing_case'></div></div>")
 }
 
 /**

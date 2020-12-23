@@ -893,7 +893,9 @@
 
         setModelName();
 
-        $(".do_banner").html("<div class='nothingDocument'><div class='nothing_case'></div></div>");
+        //处置前后为空
+        setMediaBefore();
+        setMediaAfter();
 
     });
 
@@ -1366,9 +1368,11 @@
                 }
                 if (MultiMediaBeforeHtml === "") {
                     /*处置前置空*/
+                    setMediaBefore()
                 }
                 if (MultiMediaAfterHtml === "") {
                     /*处置后置空*/
+                    setMediaAfter()
                 }
                 $("#MultiMediaBefore").html(MultiMediaBeforeHtml);
                 $("#MultiMediaAfter").html(MultiMediaAfterHtml);
