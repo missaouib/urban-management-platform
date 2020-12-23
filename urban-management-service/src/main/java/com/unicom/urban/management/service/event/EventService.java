@@ -528,7 +528,7 @@ public class EventService {
         one.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
             map.put("url", f.getFilePath());
-            map.put("type", f.getFileType().getValue());
+            map.put("type", f.getFileType());
             map.put("management", f.getManagement().getValue());
             fileList.add(map);
         });

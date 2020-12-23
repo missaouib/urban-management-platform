@@ -33,7 +33,7 @@ public class EventFileService {
         return eventFileRepository.saveAll(eventFileList);
     }
 
-    public List<EventFile> joinEventFileListToObjet(List<String> fileUrlList,Integer fileType) {
+    public List<EventFile> joinEventFileListToObjet(List<String> fileUrlList, Integer fileType) {
         List<EventFile> eventFileList = new ArrayList<>(fileUrlList.size());
         if (CollectionUtils.isNotEmpty(fileUrlList)) {
             for (String s : fileUrlList) {
@@ -41,25 +41,14 @@ public class EventFileService {
                 eventFile.setFilePath(s);
                 eventFile.setFileName(s.contains("/") ? s.split("/")[s.split("/").length - 1] : "");
                 eventFile.setManagement(kvService.findByTableNameAndFieldNameAndValue("eventFile", "management", "处置前").get(0));
-                switch (fileType){
-                    case 1:
-                        eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "图片").get(0));
-                        break;
-                    case 2:
-                        eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "视频").get(0));
-                        break;
-                    case 3:
-                        eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "音频").get(0));
-                        break;
-                    default:
-                        break;
-                }
+                eventFile.setFileType(fileType);
                 eventFileList.add(eventFile);
             }
         }
         return this.saveAll(eventFileList);
     }
-    public List<EventFile> joinEventFileListToObjetAfter(List<String> fileUrlListUrlListAfter,Integer fileType) {
+
+    public List<EventFile> joinEventFileListToObjetAfter(List<String> fileUrlListUrlListAfter, Integer fileType) {
         List<EventFile> eventFileList = new ArrayList<>(fileUrlListUrlListAfter.size());
         if (CollectionUtils.isNotEmpty(fileUrlListUrlListAfter)) {
             for (String s : fileUrlListUrlListAfter) {
@@ -67,18 +56,7 @@ public class EventFileService {
                 eventFile.setFilePath(s);
                 eventFile.setFileName(s.contains("/") ? s.split("/")[s.split("/").length - 1] : "");
                 eventFile.setManagement(kvService.findByTableNameAndFieldNameAndValue("eventFile", "management", "处置后").get(0));
-                switch (fileType){
-                    case 1:
-                        eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "图片").get(0));
-                        break;
-                    case 2:
-                        eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "视频").get(0));
-                        break;
-                    case 3:
-                        eventFile.setFileType(kvService.findByTableNameAndFieldNameAndValue("eventFile", "fileType", "音频").get(0));
-                        break;
-                    default:
-                }
+                eventFile.setFileType(fileType);
                 eventFileList.add(eventFile);
             }
         }

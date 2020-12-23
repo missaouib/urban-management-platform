@@ -21,9 +21,8 @@ public class EventFile {
 
     private String fileName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "file_type")
-    private KV fileType;
+    @Column(columnDefinition = "tinyint")
+    private Integer fileType;
 
     private String filePath;
 

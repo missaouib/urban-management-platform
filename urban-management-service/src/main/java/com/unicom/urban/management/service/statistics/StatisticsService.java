@@ -83,7 +83,7 @@ public class StatisticsService {
             statistics.getEventFileList().forEach(eventFile -> {
                 Map<String, Object> map = new HashMap<>(3);
                 map.put("url", eventFile.getFilePath());
-                map.put("type", eventFile.getFileType().getValue());
+                map.put("type", eventFile.getFileType());
                 map.put("management", eventFile.getManagement().getValue());
                 stringList.add(map);
             });
@@ -111,7 +111,7 @@ public class StatisticsService {
         event.getEventFileList().forEach(eventFile -> {
             Map<String, Object> map = new HashMap<>(3);
             map.put("url", eventFile.getFilePath());
-            map.put("type", eventFile.getFileType().getValue());
+            map.put("type", eventFile.getFileType());
             map.put("management", eventFile.getManagement().getValue());
             mapArrayList.add(map);
         });
