@@ -62,49 +62,25 @@ public class CommonController {
     public Map<String, Object> uploadFile(MultipartFile file) throws Exception {
         Map<String, Object> map = new HashMap<>(1);
         String uploadFile = fileUploadUtil.uploadFileToFastDFS(file);
+        map.put("fileName", file.getOriginalFilename());
         map.put("url", uploadFile);
         return map;
     }
 
     @PostMapping("/common/uploads")
-    public Map<String, Object> uploadFiles(MultipartFile[] files) throws Exception {
-        Map<String, Object> map = new HashMap<>(1);
-        List<String> urlList = new ArrayList<>(10);
+    public List<Map<String, Object>> uploadFiles(MultipartFile[] files) throws Exception {
+        List<Map<String, Object>> list = new ArrayList<>();
         for (MultipartFile file : files) {
+            Map<String, Object> map = new HashMap<>(3);
             String url = fileUploadUtil.uploadFileToFastDFS(file);
-            log.debug("url:{}", url);
-            urlList.add(url);
+            map.put("url", url);
+            map.put("fileName", file.getOriginalFilename());
+            list.add(map);
         }
-        map.put("url", urlList);
-        return map;
+        return list;
     }
 
 
-    /**
-     * 通用下载请求
-     *
-     * @param fileName 文件名称
-     * @param delete   是否删除
-     */
-//    @GetMapping("common/download")
-//    public void fileDownload(String fileName, Boolean delete, HttpServletResponse response, HttpServletRequest request) {
-//        try {
-//            if (!FileUtils.isValidFilename(fileName)) {
-//                throw new Exception(StringUtils.format("文件名称({})非法，不允许下载。 ", fileName));
-//            }
-//            String realFileName = System.currentTimeMillis() + fileName.substring(fileName.indexOf("_") + 1);
-//            String filePath = RuoYiConfig.getDownloadPath() + fileName;
-//
-//            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-//            FileUtils.setAttachmentResponseHeader(response, realFileName);
-//            FileUtils.writeBytes(filePath, response.getOutputStream());
-//            if (delete) {
-//                FileUtils.deleteFile(filePath);
-//            }
-//        } catch (Exception e) {
-//            log.error("下载文件失败", e);
-//        }
-//    }
     @GetMapping("/common/img/{id}")
     public void getImageInputStream(@PathVariable("id") String processInstanceId, HttpServletResponse response) throws IOException {
         //获得流程实例

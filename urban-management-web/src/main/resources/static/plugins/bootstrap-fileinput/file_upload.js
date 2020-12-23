@@ -1,13 +1,13 @@
 (function ($) {
     $.extend({
         file_upload: {
-            image_input: function (options) {
+            init: function (options) {
                 let defaults = {
                     id: 'image-file-input',
                     language: 'zh',
                     theme: 'fa',
                     uploadAsync: false,
-                    allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],
+                    allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg','mp4'],
                     maxFileCount: 10,
                     hideThumbnailContent: false,
                     focusCaptionOnBrowse: false,
@@ -15,7 +15,9 @@
                     showPreview: true,
                     showUpload: false,
                     showRemove: true,
+                    initialPreviewShowDelete: true,
                     dropZoneEnabled: false,
+                    showClose: false,
                     enableResumableUpload: false
                 }
                 options = $.extend(defaults, options);
@@ -25,6 +27,8 @@
                     uploadUrl: uploadUrl,                                                       // 上传的URL
                     uploadAsync: options.uploadAsync,                                           // 关闭异步上传，改为同步上传。(一次上传多张)
                     enableResumableUpload: options.enableResumableUpload,                       // 是否开启续传功能
+                    initialPreviewShowDelete: options.initialPreviewShowDelete,                 // 预览中的删除按钮
+                    showClose: options.showClose,                                               // 右上角的×
                     allowedFileExtensions: options.allowedFileExtensions,                       // 接收的文件后缀
                     maxFileCount: options.maxFileCount,                                         // 最大文件数量
                     hideThumbnailContent: options.hideThumbnailContent,                         // 上传图片之后 是否隐藏缩略图
@@ -46,18 +50,23 @@
                     console.log();
                 }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
                     console.log('filebatchuploadsuccess() 同步上传返回结果处理')
-                    if (data.response.code === web_status.SUCCESS) {
-                        $.modal.alertSuccess('上传成功');
-                    } else {
-                        $(this).fileinput("clear");
-                        $.modal.alertError(data.response.message);
-                    }
+                    console.log(event);
+                    console.log(data);
+                    console.log(previewId);
+                    console.log(index);
+                    // if (data.response.code === web_status.SUCCESS) {
+                    //     $.modal.alertSuccess('上传成功');
+                    // } else {
+                    //     $(this).fileinput("clear");
+                    //     $.modal.alertError(data.response.message);
+                    // }
                 }).on('filedeleted', function (event, key) {
                     console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
                     console.log('Key = ' + key);
                 }).on('filesuccessremove', function (event, id) {
                     console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
                     console.log(id);
+                    console.log(event);
                 }).on('fileclear', function (event) {
                     console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
                     console.log(event);
@@ -67,9 +76,6 @@
                 }).on('filepredelete', function (event, key) {
                     console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
                     console.log('Key = ' + key);
-                }).on('filesuccessremove', function (event, id) {
-                    console.log('filesuccessremove()   ')
-                    console.log(id);
                 });
 
             }

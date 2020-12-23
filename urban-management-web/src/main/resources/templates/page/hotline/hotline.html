@@ -151,17 +151,6 @@
                                         <div class="sendText"><span>图片:</span></div>
                                         <div><input id="input-id" type="file"  name="files" multiple="multiple"></div>
                                     </div>
-
-
-                                    <div class="sendImg">
-                                        <div class="sendText"><span>视频:</span></div>
-                                        <div><input id="videoInput" type="file"  name="file" multiple="multiple"></div>
-                                    </div>
-                                    <div class="sendImg">
-                                        <div class="sendText"><span>音频:</span></div>
-                                        <div><input id="musicInput" type="file"  name="file" multiple="multiple"></div>
-                                    </div>
-
                                 </div>
                             </div>
 
@@ -259,46 +248,7 @@
         var imageOption = {
             id: 'input-id'
         };
-        $.file_upload.image_input(imageOption);
-
-        $("#videoInput").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        })
-        $("#musicInput").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        })
+        $.file_upload.init(imageOption);
     })
 
     function Cancel() {
