@@ -105,34 +105,24 @@
                                         <div class="username">
                                             <div class="adminName" th:sec:authentication="principal.name"></div>
                                         </div>
-                                        <div class="purpose" style="visibility: hidden">
-                                            <div class="book">
-                                                <div class="bookBox">
-                                                    <img th:src="@{/img/self.png}" alt="">
-                                                    <div class="bookText" >用户</div>
-                                                </div>
-                                            </div>
-                                            <div class="book">
-                                                <div class="bookBox">
-                                                    <img th:src="@{/img/password1.png}" alt="">
-                                                    <div class="bookText" >密码</div>
-                                                </div>
-                                            </div>
-                                            <div class="book">
-                                                <div class="bookBox">
-                                                    <img th:src="@{/img/list.png}" alt="">
-                                                    <div class="bookText" >通讯</div>
-                                                </div>
-                                            </div>
+                                        <div class="purpose">
+
+<!--                                            <div class="book">-->
+<!--                                                <div class="bookBox">-->
+<!--                                                    <img th:src="@{/img/self.png}" alt="">-->
+<!--                                                    <div class="bookText" >用户</div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+
                                         </div>
                                     </div>
                                 </div>
                                 <!--                                                    表格处-->
                                 <div class="mannertable">
                                     <table class="table">
-                                        <div class="mation mationTitle">
-                                            个人信息
-                                        </div>
+<!--                                        <div class="mation mationTitle">-->
+<!--                                            个人信息-->
+<!--                                        </div>-->
                                         <div class="mation">
                                             <div style="float:left;font-size: 16px;color: #131313;">角色信息</div>
                                             <div style="float: right;color: #666666;font-size: 16px" id="roleName"></div>
@@ -355,7 +345,6 @@
         };
         $.table.init(options);
     }
-
 
 </script>
 </html>
