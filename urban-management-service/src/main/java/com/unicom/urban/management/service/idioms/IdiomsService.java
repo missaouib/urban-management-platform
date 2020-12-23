@@ -1,6 +1,5 @@
 package com.unicom.urban.management.service.idioms;
 
-import cn.hutool.core.util.CharUtil;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.idioms.IdiomsRepository;
@@ -8,9 +7,6 @@ import com.unicom.urban.management.mapper.IdiomsMapper;
 import com.unicom.urban.management.pojo.entity.Idioms;
 import com.unicom.urban.management.pojo.vo.IdiomsVO;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.CharUtils;
-import org.apache.commons.lang3.ObjectUtils;
-import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,8 +37,7 @@ public class IdiomsService {
 
         }
         String idiomsValue = stringBuilder.toString();
-        Idioms idiomsOld = idiomsRepository.findAllByIdiomsValue(idiomsValue);
-        if (ObjectUtils.isNotEmpty(idiomsOld)){
+        if (idiomsRepository.existsByIdiomsValue(idiomsValue)) {
             throw new DataValidException("此惯用语已存在无需保存");
         }
         Idioms idioms = new Idioms();
