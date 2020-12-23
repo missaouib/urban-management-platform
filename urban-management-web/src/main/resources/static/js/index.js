@@ -183,19 +183,19 @@
 
             $(".navbar-custom-menu>ul>li.open").removeClass("open");
             var dataId = data_id;
-            var dataUrl = Href;
+            var dataUrl = Href.trim();
             var menuName = Name;
             var flag = true;
             if (dataUrl == undefined || $.trim(dataUrl).length == 0) {
                 return false;
             }
             $('.menuTab').each(function () {
-                if ($(this).data('id') == dataUrl) {
+                if ($(this).data('id') === dataUrl) {
                     if (!$(this).hasClass('active')) {
                         $(this).addClass('active').siblings('.menuTab').removeClass('active');
                         $.learuntab.scrollToTab(this);
                         $('.mainContent .LRADMS_iframe').each(function () {
-                            if ($(this).data('id') == dataUrl) {
+                            if ($(this).data('id') === dataUrl) {
                                 $(this).show().siblings('.LRADMS_iframe').hide();
                                 return false;
                             }

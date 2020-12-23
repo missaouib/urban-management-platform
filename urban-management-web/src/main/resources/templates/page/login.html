@@ -151,7 +151,7 @@
                 </div>
             </div>
             <div class="test testActive" th:if="${#authentication.principal ne 'anonymousUser'}" style="position: relative">
-                <div class="intoBtn temporary testActive" th:if="${#authentication.principal ne 'anonymousUser'}">进入系统</div>
+                <div class="intoBtn temporary testActive">进入系统</div>
 
                 <div class="textsInbig">
                     &nbsp; &nbsp;&nbsp;&nbsp;
@@ -207,13 +207,13 @@
 
 </body>
 <script type="text/javascript" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
-<script type="text/javascript" th:src="@{/js/main.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/jquery-serializejson/jquery.serializejson.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/layer/layer.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/jsencrypt/jsencrypt.min.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/jquery-validation/dist/jquery.validate.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/jquery-validation/dist/additional-methods.js}"></script>
 <script type="text/javascript" th:src="@{/plugins/jquery-validation/dist/localization/messages_zh.js}"></script>
+<script type="text/javascript" th:src="@{/js/login.js}"></script>
 
 <script type="text/javascript" th:inline="javascript">
     let logoutUrl = /*[[@{/logout}]]*/ "/logout";

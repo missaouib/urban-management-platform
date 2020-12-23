@@ -120,8 +120,36 @@
                     <span class="do_span">处置后</span>
                 </div>
                 <div class="doItInner">
-                    <div class="do_banner blockActive"></div>
-                    <div class="do_banner"></div>
+                    <div class="do_banner blockActive">
+                        <!-- Swiper -->
+                        <div class="swiper-container" id="beforDisSwiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">Slide 1</div>
+                                <div class="swiper-slide">Slide 2</div>
+                                <div class="swiper-slide">Slide 3</div>
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination beforDisPg"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+                    <div class="do_banner">
+                        <!-- Swiper -->
+                        <div class="swiper-container" id="afterDisSwiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">Slide 1</div>
+                                <div class="swiper-slide">Slide 2</div>
+                                <div class="swiper-slide">Slide 3</div>
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination afterDisPg"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="bottom_right">
@@ -175,9 +203,7 @@
                                             </tr>
                                             <tr>
                                                 <td><span></span>问题描述</td>
-
-                                                <td colspan="8"><textarea id="represent" name="problemescription" required
-                                                                          readonly></textarea></td>
+                                                <td colspan="8"><input id="represent" type="text" class="find_input" readonly></td>
                                             </tr>
                                             <tr class="col-12">
                                                 <td><span></span>案件地址</td>
@@ -370,7 +396,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
-                            <span class="sendText" id="btnOpinion"><i></i>意见</span>
+                            <span class="sendText" id="btnOpinion" style="width: 125px"><i></i>意见</span>
                             <textarea type="text" id="opinions" onmouseout="saveIdioms(this)"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays">
@@ -387,16 +413,8 @@
                         </div>
                         <div class="send">
                             <div class="sendImg">
-                                <div class="sendText"><span>图片:</span></div>
+                                <div class="sendText" style="width: 100px;"><span>多媒体:</span></div>
                                 <div><input id="imageInput" type="file" name="files" multiple="multiple"></div>
-                            </div>
-                            <div class="sendImg">
-                                <div class="sendText"><span>视频:</span></div>
-                                <div><input id="videoInput" type="file" name="files" multiple="multiple"></div>
-                            </div>
-                            <div class="sendImg">
-                                <div class="sendText"><span>音频:</span></div>
-                                <div><input id="audioInput" type="file" name="files" multiple="multiple"></div>
                             </div>
                         </div>
                     </div>
@@ -667,7 +685,27 @@
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
 
+//处置前 轮播
+        var beforDisSwiper = new Swiper('#beforDisSwiper', {
+            pagination: '.beforDisPg',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
 
+        //处置后 轮播
+        var afterDisSwiper = new Swiper('#afterDisSwiper', {
+            pagination: '.afterDisPg',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
 
     })
 
@@ -727,7 +765,7 @@
 
                 let deptStr = `
                      <div class="checkMain" style="position: relative;align-items: center">
-                        <span class="sendText" style="width: 73px"><i></i>专业部门角色</span>
+                        <span class="sendText" style="width: 100px"><i></i>专业部门角色</span>
                         <input type="text" class="find_input" id="doorer">
                         <input type="hidden" class="find_input" id="dept">
                         <span class="add_tree">+</span>
@@ -867,7 +905,7 @@
                     /*详情*/
                     $("#eventCode").val(e.data.eventCode);
                     $("#eventTypeStr").val(e.data.eventTypeStr);
-                    $("#represent").text(e.data.represent);
+                    $("#represent").val(e.data.represent);
                     $("#location").val(e.data.location);
                     $("#regionStr").val(e.data.regionStr);
                     $("#conditionValue").val(e.data.conditionValue);
@@ -1124,7 +1162,7 @@
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg','mp4','mp3'],       // 接收的文件后缀
             maxFileCount: 3,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
@@ -1132,7 +1170,7 @@
             showPreview: true,                                  // 是否显示预览
             showUpload: false,                                  // 是否显示上传按钮
             showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            dropZoneEnabled: true,                             // 是否显示拖拽区域
             // browseClass: "btn btn-primary",                     // 按钮样式
 
         }).on("filebatchselected", function (event, files) {

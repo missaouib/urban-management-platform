@@ -29,6 +29,7 @@
         <commons-io.version>2.5</commons-io.version>
         <smiley-http-proxy-servlet.version>1.11</smiley-http-proxy-servlet.version>
         <geotools.version>23.0</geotools.version>
+        <springfox-boot-starter.version>3.0.0</springfox-boot-starter.version>
     </properties>
 
     <modules>
@@ -63,6 +64,13 @@
                 <artifactId>spring-security-oauth2-autoconfigure</artifactId>
                 <version>${spring-boot.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${springfox-boot-starter.version}</version>
+            </dependency>
+
 
             <!-- 解析客户端操作系统、浏览器等 -->
             <dependency>
