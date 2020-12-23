@@ -1214,8 +1214,9 @@ label.error {
 }
 .alwaysSay{
     position: absolute;
-    bottom: 15px;
-    right: 5px;
+    bottom: 10px;
+    right: 0px;
+    font-size: 12px;
 }
 .g_con {
     width: 100%;

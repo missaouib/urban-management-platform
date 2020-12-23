@@ -193,6 +193,8 @@
     border-radius: 4px!important;
     display: none;
     z-index: 10;
+    background-color: #fff;
+    padding: 5px;
 }
 .swiper-container {
     width: 100%;
@@ -322,4 +324,30 @@
 .index_width{
     width: 30px!important;
     text-align: center!important;
+}
+
+/*
+    上传插件
+*/
+.file-preview-thumbnails{
+    max-width: 235px;
+    max-height: 280px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    display: flex;
+    /*align-items: center;*/
+    justify-content: space-between;
+}
+.file-drop-zone-title{
+    padding: 100px 55px;
+    font-size: 14px;
+}
+.krajee-default .file-footer-caption{
+    margin-bottom: 10px;
+}
+.krajee-default.file-preview-frame{
+    display: flex;flex-direction: column;justify-content: flex-end;
+}
+.file-preview{
+    padding: 0;
 }
