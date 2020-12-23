@@ -11,7 +11,7 @@
     <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;">
-<div class="content">
+<di class="content">
     <div class="leftContent">
         <div class="left_topIn">
             <div class="selectPoint">
@@ -132,9 +132,9 @@
                         <!-- Swiper -->
                         <div class="swiper-container" id="afterDisSwiper">
                             <div class="swiper-wrapper" id="MultiMediaAfter">
-                                <!--                                <div class="swiper-slide">Slide 1</div>-->
-                                <!--                                <div class="swiper-slide">Slide 2</div>-->
-                                <!--                                <div class="swiper-slide">Slide 3</div>-->
+                                                                <div class="swiper-slide">Slide 1</div>
+                                                                <div class="swiper-slide">Slide 2</div>
+                                                                <div class="swiper-slide">Slide 3</div>
                             </div>
                             <!-- Add Pagination -->
                             <div class="swiper-pagination afterDisPg"></div>
@@ -360,7 +360,6 @@
         </div>
     </div>
     <div class="rightContent">
-
         <div class="tabInfo">
             <div class="banner blockActive">
                 <div class="map" id="map" style="width: 100%;height: 100%"></div>
@@ -371,7 +370,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     <!--    核实-->
@@ -475,8 +473,8 @@
         </div>
     </div>
 
-    <!-- &lt;!&ndash;  点击图片弹出  &ndash;&gt;-->
-    <div class="duk_duck" id="pictureBoxDuc" style="display: none">
+    <!-- &lt;!&ndash; 处置前 弹出的全屏显示轮播图  &ndash;&gt;-->
+    <div class="duk_duck" id="pictureBoxDuc">
         <div class="duk_box">
             <div class="allTiel" id="allTiel">
                 <div class="fullScreen" id="fullScreen">全屏</div>
@@ -496,32 +494,12 @@
                             <div class="swiper-button-prev"></div>
                         </div>
                     </div>
-                    <div class="info_chance">
-                        <div class="swiper-container videoDetailBox">
-                            <div class="swiper-wrapper" id="videoDetailList">
-                            </div>
-                            <!-- Add Pagination -->
-                            <div class="swiper-pagination videoDetailPage"></div>
-                            <!-- Add Arrows -->
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                        </div>
-                    </div>
-                    <div class="info_chance">
-                        <div class="swiper-container audioDetailBox">
-                            <div class="swiper-wrapper" id="audioDetailList">
-                            </div>
-                            <!-- Add Pagination -->
-                            <div class="swiper-pagination audioDetailPage"></div>
-                            <!-- Add Arrows -->
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
@@ -597,8 +575,14 @@
             $("#pictureBoxDuc").fadeOut(300)
         });
 
-        $(".banners").on("click", ".innerPic", function() {
-            $("#pictureBoxDuc").fadeIn(300)
+        $(".do_banner").on("click", "#beforeDisSwiper", function() {
+            $("#imageDetailList").html($("#MultiMediaBefore").html())
+            $("#pictureBoxDuc").fadeIn(300);
+        });
+
+        $(".do_banner").on("click", "#afterDisSwiper", function() {
+            $("#imageDetailList").html($("#MultiMediaAfter").html())
+            $("#pictureBoxDuc").fadeIn(300);
         });
 
         //全屏
@@ -712,6 +696,17 @@
         //处置后 轮播
         var afterDisSwiper = new Swiper('#afterDisSwiper', {
             pagination: '.afterDisPg',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        //处置后放大 轮播
+        var imageMediailListAfter = new Swiper('#imageMediailListAfter', {
+            pagination: '.imageMediailListAfterPg',
             paginationClickable: true,
             nextButton: '.swiper-button-next',
             prevButton: '.swiper-button-prev',
@@ -1329,6 +1324,7 @@
             if (file.length > 0) {
                 addMediaBefore();
                 addMediaAfter();
+                $("#imageDetailList").empty();
                 $("#MultiMediaBefore").empty();
                 $("#MultiMediaAfter").empty();
                 let MultiMediaBeforeHtml = "";
@@ -1376,6 +1372,7 @@
                     /*处置后置空*/
                     setMediaAfter()
                 }
+                $("#imageDetailList").html(MultiMediaBeforeHtml);
                 $("#MultiMediaBefore").html(MultiMediaBeforeHtml);
                 $("#MultiMediaAfter").html(MultiMediaAfterHtml);
             } else {
