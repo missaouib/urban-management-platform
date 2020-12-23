@@ -61,8 +61,8 @@ public class ImportController {
     private ImportService importService;
 
     public static String TYPE_SHP = "SHP";
-//    public String gisShpPath = shpFileProperties.getFilePath();
-    public String gisShpPath = "/gis/shp";
+
+//    public String gisShpPath = "/gis/shp";
     @GetMapping("/gImport")
     public ModelAndView gImport() {
         return new ModelAndView(SystemConstant.PAGE + "/urbanImport/gImport");
@@ -84,6 +84,7 @@ public class ImportController {
      */
     @RequestMapping("/gridImport")
     public Result gridImport(HttpServletRequest request, String layerName, String layerSettingType, String shpType) throws IOException {
+        String gisShpPath = shpFileProperties.getPath();
         if (this.checkPublish(layerName)) {
             return Result.fail(98,"");
         }
@@ -144,7 +145,7 @@ public class ImportController {
      */
     @RequestMapping("/componentImport")
     public Result componentImport(HttpServletRequest request, String layerName, String layerSettingType, String shpType, String componentTypeId) throws IOException {
-
+        String gisShpPath = shpFileProperties.getPath();
         if (this.checkPublish(layerName)){
             return Result.fail(98,"");
         }
@@ -288,7 +289,6 @@ public class ImportController {
         ShapefileDataStore shapefileDataStore = new ShapefileDataStore(shpFile.toURI().toURL());
         shapefileDataStore.setCharset(StandardCharsets.UTF_8);
         ContentFeatureCollection featureCollection = shapefileDataStore.getFeatureSource().getFeatures();
-        String shpType = importService.getShpType(featureCollection);
         SimpleFeatureIterator iterator = featureCollection.features();
         while (iterator.hasNext()) {
             Feature feature = iterator.next();
@@ -324,19 +324,17 @@ public class ImportController {
         ShapefileDataStore shapefileDataStore = new ShapefileDataStore(shpFile.toURI().toURL());
         shapefileDataStore.setCharset(StandardCharsets.UTF_8);
         ContentFeatureCollection featureCollection = shapefileDataStore.getFeatureSource().getFeatures();
-        String shpType = importService.getShpType(featureCollection);
         SimpleFeatureIterator iterator = featureCollection.features();
         while (iterator.hasNext()) {
             String coordinate = "";
             Feature feature = iterator.next();
             Collection<Property> properties = feature.getProperties();
-            for (Property property : properties) {
-                String name = property.getName().toString();
-                String value = property.getValue() == null ? "" : property.getValue().toString();
+              for (Property property : properties) {
+                        String name = property.getName().toString();
+                 String value = property.getValue() == null ? "" : property.getValue().toString();
                 if (name.equals("the_geom")){
                     coordinate = value;
                 }
-
             }
             String shpType1 = this.findShpType(coordinate);
             Record record = saveRecord(publish,shpType1);
@@ -357,7 +355,7 @@ public class ImportController {
                 .replace("MULTI (", "")
                 .replace("(", "")
                 .replace(")", "")
-                .replace(",","-")
+                .replace(", ","-")
                 .replace(" ",",");
         return multiPolygon;
     }

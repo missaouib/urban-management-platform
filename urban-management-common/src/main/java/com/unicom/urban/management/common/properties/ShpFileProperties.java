@@ -15,6 +15,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix ="file.shp")
 public class ShpFileProperties {
 
-    private String filePath;
+    private String path;
 
 }
