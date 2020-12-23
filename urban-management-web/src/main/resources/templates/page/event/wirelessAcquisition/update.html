@@ -172,28 +172,28 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="sendImg warpPictures">
-                                <div class="sendText"><span>视频:</span></div>
-                                <div><input id="videoInput" class="videoInput" type="file" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="videoUrlList" name="videoUrlList" />
-                                <div class="warpPictureBox">
-                                    <div id="videoList" >
-                                        <div class="innerPic" style="float:left;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sendImg warpPictures">
-                                <div class="sendText"><span>音频:</span></div>
-                                <div><input id="musicInput" class="musicInput" type="file" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="musicUrlList" name="musicUrlList" />
-                                <div class="warpPictureBox">
-                                    <div id="musicList" >
-                                        <div class="innerPic" style="float:left;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+<!--                            <div class="sendImg warpPictures">-->
+<!--                                <div class="sendText"><span>视频:</span></div>-->
+<!--                                <div><input id="videoInput" class="videoInput" type="file" name="files" multiple="multiple"></div>-->
+<!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" />-->
+<!--                                <div class="warpPictureBox">-->
+<!--                                    <div id="videoList" >-->
+<!--                                        <div class="innerPic" style="float:left;">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="sendImg warpPictures">-->
+<!--                                <div class="sendText"><span>音频:</span></div>-->
+<!--                                <div><input id="musicInput" class="musicInput" type="file" name="files" multiple="multiple"></div>-->
+<!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" />-->
+<!--                                <div class="warpPictureBox">-->
+<!--                                    <div id="musicList" >-->
+<!--                                        <div class="innerPic" style="float:left;">-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                         <div class="send" id="after" style="display:none;">
                             <div><span>处置后</span></div>
@@ -206,24 +206,24 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="sendImg warpPictures">
-                                <div class="sendText"><span>视频:</span></div>
-                                <div><input id="videoInputAfter" type="file" class="videoInput" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter"/>
-                                <div id="videoListAfter" class="warpPictureBox">
-                                    <div class="innerPic" style="float:left;">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sendImg warpPictures">
-                                <div class="sendText"><span>音频:</span></div>
-                                <div><input id="musicInputAfter" type="file" class="musicInput" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter"/>
-                                <div id="musicListAfter" class="warpPictureBox">
-                                    <div class="innerPic" style="float:left;">
-                                    </div>
-                                </div>
-                            </div>
+<!--                            <div class="sendImg warpPictures">-->
+<!--                                <div class="sendText"><span>视频:</span></div>-->
+<!--                                <div><input id="videoInputAfter" type="file" class="videoInput" name="files" multiple="multiple"></div>-->
+<!--                                <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter"/>-->
+<!--                                <div id="videoListAfter" class="warpPictureBox">-->
+<!--                                    <div class="innerPic" style="float:left;">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                            <div class="sendImg warpPictures">-->
+<!--                                <div class="sendText"><span>音频:</span></div>-->
+<!--                                <div><input id="musicInputAfter" type="file" class="musicInput" name="files" multiple="multiple"></div>-->
+<!--                                <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter"/>-->
+<!--                                <div id="musicListAfter" class="warpPictureBox">-->
+<!--                                    <div class="innerPic" style="float:left;">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
                         </div>
                     </div>
 
@@ -231,9 +231,15 @@
 
                 </div>
             </form>
-            <div style="width: 100%;display: flex;justify-content: flex-end">
-                <button class="but_save saveTheBtn" type="submit" onclick="reportHandler()" style="margin-right: 10px">上报</button>
-                <button class="but_save saveTheBtn" type="submit" onclick="submitHandler()">保存</button>
+            <div class="r_right but_p girdBtnGroup">
+
+                <button class="but_save" type="submit" style="margin-right: 10px" data-toggle="modal"
+                        id="similarCasesBtn" onclick="reportHandler()">上报
+                </button>
+                <button class="but_save" type="submit" onclick="submitHandler()"
+                        style="margin-right: 10px">保存
+                </button>
+
             </div>
         </div>
         <div class="rightBox">
@@ -735,7 +741,7 @@
             theme: 'fa',
             uploadUrl: uploadUrl,
             uploadAsync: false,                                       //关闭异步上传，改为同步上传。
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg','mp4','mp3'],       // 接收的文件后缀
             maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
@@ -743,7 +749,7 @@
             showPreview: true,                                  // 是否显示预览
             showUpload: false,                                  // 是否显示上传按钮
             showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            dropZoneEnabled: true,                             // 是否显示拖拽区域
             // browseClass: "btn btn-primary",                     // 按钮样式
 
         }).on('change', function (event) {
@@ -796,7 +802,7 @@
             showPreview: true,                                  // 是否显示预览
             showUpload: false,                                  // 是否显示上传按钮
             showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            dropZoneEnabled: true,                             // 是否显示拖拽区域
             // browseClass: "btn btn-primary",                     // 按钮样式
 
         }).on('change', function (event) {
@@ -897,7 +903,7 @@
             theme: 'fa',
             uploadUrl: uploadUrl,
             uploadAsync: false,                                       //关闭异步上传，改为同步上传。
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg','mp4','mp3'],       // 接收的文件后缀
             maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
@@ -905,7 +911,7 @@
             showPreview: true,                                  // 是否显示预览
             showUpload: false,                                  // 是否显示上传按钮
             showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            dropZoneEnabled: true,                             // 是否显示拖拽区域
         }).on('change', function (event) {
             console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
         }).on('fileselect', function (event, numFiles, label) {
