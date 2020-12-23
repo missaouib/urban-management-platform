@@ -652,8 +652,27 @@ textarea {
 }
 .but_save{
 
-}
 
+}
+.leftContent{
+    width: 70%;
+}
+.rightContent{
+    border: 1px solid rgb(242, 243, 245);
+    box-shadow: 1px 1px 6px 0px rgba(228, 228, 228, 0.5);
+    width: 30.9%;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 5px;
+    /*overflow: auto;*/
+}
+.leftContent,rightContent{
+    height: 100%;
+    border-radius: 5px;
+    padding: 5px;
+    border: 1px solid rgb(242, 243, 245);
+    box-shadow: 1px 1px 6px 0px rgba(228, 228, 228, 0.5);
+}
 .file-preview-thumbnails{
     max-width: 235px;
     max-height: 280px;
