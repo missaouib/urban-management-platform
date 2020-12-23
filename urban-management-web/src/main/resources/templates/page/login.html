@@ -110,16 +110,12 @@
         </div>
     </div>
     <div class="get">
-        <div class="intoBtn temporary testActive" th:if="${#authentication.principal ne 'anonymousUser'}">进入系统</div>
-<!--        <div class="intoBtn"><a href="http://106.74.154.90:20524/toBigscreen" target="_blank">进入系统</a></div>-->
-<!--        <div class="intoBtn temporary">进入系统</div>-->
-<!--        <div class="intoBtn temporary">进入系统</div>-->
-<!--        <div class="intoBtn temporary">进入系统</div>-->
-<!--        <div class="intoBtn temporary">进入系统</div>-->
+
 
         <div class="robot"></div>
         <div class="info" >
             <div class="test testActive test1" th:if="${#authentication.principal eq 'anonymousUser'}">
+                <div class="intoBtn temporary testActive" th:if="${#authentication.principal ne 'anonymousUser'}">进入系统</div>
                 <div class="textsInbig">
                     <div class="login_main">
                         <div class="login">
@@ -154,37 +150,49 @@
                     </div>
                 </div>
             </div>
-            <div class="test testActive" th:if="${#authentication.principal ne 'anonymousUser'}">
+            <div class="test testActive" th:if="${#authentication.principal ne 'anonymousUser'}" style="position: relative">
+                <div class="intoBtn temporary testActive" th:if="${#authentication.principal ne 'anonymousUser'}">进入系统</div>
+
                 <div class="textsInbig">
                     &nbsp; &nbsp;&nbsp;&nbsp;
                     以数字地图和单元网格划分为基础，集成基础地理、地理编码、市政及社区服务部件事件的多种数据资源，以城市监管员和市民服务热线为信息收集渠道，创建城市管理和市民服务综合指挥系统。通过多部门信息共享、协同工作，构建起沟通快捷、责任到位、处置及时、运转高效的城市管理、公共服务的监督和处置新机制，全面提高城市管理和政府公共服务水平。
                 </div>
             </div>
             <div class="test">
+                <div class="intoBtn temporary">进入系统</div>
+
                 <div class="textsInbig">
                     &nbsp; &nbsp;&nbsp;&nbsp;
                     以大数据为基础进行综合分析、过滤形成可视化的科学数据展示，利用当前的可视化手段，将要展现的数据转化为基本图表、置于物理大屏，从而方便使用者更准确与科学的进行决策。
                 </div>
             </div>
             <div class="test">
+                <div class="intoBtn temporary">进入系统</div>
+
                 <div class="textsInbig">
                     &nbsp; &nbsp;&nbsp;&nbsp;
                     是运用“互联网+”思维和物联网、大数据云计算、移动互联网、信息智能终端等新一代信息技术，与现代生态园林相融合，建立智慧园林大数据库，把人与自然用智慧的方式连接起来，达到人与自然的互感、互知、互动。
                 </div>
             </div>
             <div class="test">
+                <div class="intoBtn temporary">进入系统</div>
+
                 <div class="textsInbig">
                     &nbsp; &nbsp;&nbsp;&nbsp;
                     面向城市市政设施管理、维修养护部门，涉及市政日常业务全流程。智慧市政综合监管平台是一个包含基础数据采集、基础设施管理、日常巡查养护等基础功能和道桥、路灯、井盖、排水等多个专业应用系统为一体的综合信息管理平台。通过智慧市政综合监管平台的建设，构建可持续的市政公用事业综合监管新模式，有效加强对提供服务的企事业单位进行监督、评价、考核，提高公用事业的服务质量和群众满意度
                 </div>
             </div>
             <div class="test">
+                <div class="intoBtn temporary">进入系统</div>
+
                 <div class="textsInbig">
                     &nbsp; &nbsp;&nbsp;&nbsp;
                     依托城市物联网、云计算、多网融合等现代化技术，运用数字基础资源、多维信息感知、协同工作处置、智能督察考评、预警决策分析等手段，量化城市管理部件、事件标准，建设城市管理、执法服务平台，形成具备高度感知、互联、智能的城市管理新模式。依托自主研发的“六位一体”综合执法平台，实现了执法办案全程无纸化、自动化、即时化。
                 </div>
             </div>
             <div class="test">
+                <div class="intoBtn temporary">进入系统</div>
+
                 <div class="textsInbig">
                     &nbsp; &nbsp;&nbsp;&nbsp;
                     一体化管理指挥平台运用云计算和大数据、物联网和互联网、安防视频和工业控制等相关技术，通过智能终端感知设备进行数据采集、挖掘、分析及处理，通过互联网或移动互联网，建设统一的管理信息共享平台，实现对环卫管理所涉及到的人、车、物、事件进行全过程实时监督，提升环卫作业质量，降低环卫运营成本。

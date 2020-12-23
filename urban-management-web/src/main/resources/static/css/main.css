@@ -51,8 +51,8 @@ body {
     background: url('../img/bborder.png');
     background-size: 100%;
     position: absolute;
-    bottom: 15px;
-    right: 170px;
+    bottom: -45px;
+    right: 10px;
     text-align: center;
     line-height: 53px;
     cursor:pointer;
