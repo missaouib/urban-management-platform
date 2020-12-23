@@ -223,28 +223,7 @@
             source: new ol.source.Vector({})
         });
 
-        var map = new ol.Map({
-            target: 'map',
-            layers: [
-                new ol.layer.Image({
-                    source: new ol.source.ImageWMS({
-                        ratio: 1,
-                        url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
-                        params: {
-                            'VERSION': '1.1.1',
-                            "LAYERS": 'guyuan20201010:guyuan',
-                            "exceptions": 'application/vnd.ogc.se_inimage',
-                        }
-                    }),
-                    projection: 'EPSG:4326',
-                }), vectorLayer, vectorLayer2
-            ],
-            view: new ol.View({
-                projection: projection,
-                center: [115.68192, 41.66462],
-                zoom: 17
-            })
-        });
+
 
         var startMarker = new ol.Feature({
             geometry: new ol.geom.Point(routeCoords[0])
@@ -436,6 +415,14 @@
         })
 
     })
+    let url = [[${@geoServerProperties.url}]];
+    let center_x = [[${@geoServerProperties.center_x}]];
+    let center_y = [[${@geoServerProperties.center_y}]];
+    let layers = [[${@geoServerProperties.layers}]];
+    let zoom = [[${@geoServerProperties.zoom}]];
+    let epsg = [[${@geoServerProperties.epsg}]];
 </script>
+<th:block th:include="page/fragments/common :: mapinit_js"/>
+
 </body>
 </html>
