@@ -2082,6 +2082,24 @@ span.search_highlight {
     display: block;
     float: left;
 }
+.toop1{
+    padding: 10px;
+    z-index: 10;
+    background: #fff;
+    height: 36px;
+    min-width: 324px;
+    top: 20px;
+    position: absolute;
+    left: 53px;
+    border-radius: 3px;
+    border: 1px solid #dcdcdc;
+    display: none;
+}
+.toop1 .inline{
+    margin-left: 5px;
+    display: block;
+    float: left;
+}
 
 /*
    序号 时限 变窄
