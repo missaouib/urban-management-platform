@@ -1,7 +1,7 @@
 
-var center = [594692, 5239498.31];
+var center = [115.68192, 41.66462];
 var projection = new ol.proj.Projection({
-    code: 'EPSG:4552',
+    code: 'EPSG:4326',
     units: 'degrees',
     axisOrientation: 'neu',
     global: true
@@ -10,10 +10,10 @@ var untiled = new ol.layer.Image({
     source: new ol.source.ImageWMS({
         ratio: 1,
         // url: 'http://192.168.24.203:7880/geoserver/hegang/wms',
-        url: 'http://localhost:7880/geoserver/hegang/wms',
+        url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
         params: {
             'VERSION': '1.1.1',
-            "LAYERS": 'hegang:hegang',
+            "LAYERS": 'guyuan20201010:guyuan',
             "exceptions": 'application/vnd.ogc.se_inimage',
         }
     })
