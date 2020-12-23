@@ -12,7 +12,6 @@
 </head>
 <body style="border-radius: 8px;">
 <div class="col-md-12" style="height: 100%">
-    <h3 class="bigTitle">案件新增</h3>
     <div class="content">
         <div class="leftBox">
             <form id="userForm">
@@ -156,38 +155,38 @@
                         <div class="send" style="float:left;width: 48%">
                             <div><span>处置前</span></div>
                             <div class="sendImg">
-                                <div class="sendText"><span>图片:</span></div>
+                                <div class="sendText"><span>多媒体:</span></div>
                                 <div><input id="input-id" class="input-id" type="file" name="files" multiple="multiple"></div>
                                 <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
                             </div>
-                            <div class="sendImg">
-                                <div class="sendText"><span>视频:</span></div>
-                                <div><input id="videoInput" class="videoInput" type="file" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="videoUrlList" name="videoUrlList" />
-                            </div>
-                            <div class="sendImg">
-                                <div class="sendText"><span>音频:</span></div>
-                                <div><input id="musicInput" class="musicInput" type="file" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="musicUrlList" name="musicUrlList" />
-                            </div>
+<!--                            <div class="sendImg">-->
+<!--                                <div class="sendText"><span>视频:</span></div>-->
+<!--                                <div><input id="videoInput" class="videoInput" type="file" name="files" multiple="multiple"></div>-->
+<!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" />-->
+<!--                            </div>-->
+<!--                            <div class="sendImg">-->
+<!--                                <div class="sendText"><span>音频:</span></div>-->
+<!--                                <div><input id="musicInput" class="musicInput" type="file" name="files" multiple="multiple"></div>-->
+<!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" />-->
+<!--                            </div>-->
                         </div>
                         <div class="send" id="after" style="display:none;">
                             <div><span>处置后</span></div>
                             <div class="sendImg">
-                                <div class="sendText"><span>图片:</span></div>
+                                <div class="sendText"><span>多媒体:</span></div>
                                 <div><input id="input-id-after" type="file" class="input-id" name="files" multiple="multiple"></div>
                                 <input type="hidden" id="imageUrlListAfter" name="imageUrlListAfter" value="">
                             </div>
-                            <div class="sendImg">
-                                <div class="sendText"><span>视频:</span></div>
-                                <div><input id="videoInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter" value="">
-                            </div>
-                            <div class="sendImg">
-                                <div class="sendText"><span>音频:</span></div>
-                                <div><input id="musicInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter" value="">
-                            </div>
+<!--                            <div class="sendImg">-->
+<!--                                <div class="sendText"><span>视频:</span></div>-->
+<!--                                <div><input id="videoInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>-->
+<!--                                <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter" value="">-->
+<!--                            </div>-->
+<!--                            <div class="sendImg">-->
+<!--                                <div class="sendText"><span>音频:</span></div>-->
+<!--                                <div><input id="musicInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>-->
+<!--                                <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter" value="">-->
+<!--                            </div>-->
                         </div>
                     </div>
 
@@ -631,7 +630,7 @@
             theme: 'fa',
             uploadUrl: uploadUrl,
             uploadAsync: false, //关闭异步上传，改为同步上传。
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg','mp4','mp3'],       // 接收的文件后缀
             maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
@@ -639,7 +638,7 @@
             showPreview: true,                                  // 是否显示预览
             showUpload: false,                                  // 是否显示上传按钮
             showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            dropZoneEnabled: true,                             // 是否显示拖拽区域
             // browseClass: "btn btn-primary",                     // 按钮样式
 
         }).on('change', function (event) {
@@ -793,7 +792,7 @@
         theme: 'fa',
         uploadUrl: uploadUrl,
         uploadAsync: false, //关闭异步上传，改为同步上传。
-        allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+        allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg','mp4','mp3'],       // 接收的文件后缀
         maxFileCount: 10,                                    // 最大文件数量
         hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
         focusCaptionOnBrowse: false,
@@ -801,7 +800,7 @@
         showPreview: true,                                  // 是否显示预览
         showUpload: false,                                  // 是否显示上传按钮
         showRemove: true,                                   // 显示移除按钮
-        dropZoneEnabled: false,                             // 是否显示拖拽区域
+        dropZoneEnabled: true,                             // 是否显示拖拽区域
         // browseClass: "btn btn-primary",                     // 按钮样式
 
     }).on('change', function (event) {
