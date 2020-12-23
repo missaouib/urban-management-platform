@@ -8,6 +8,7 @@
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
     <th:block th:include="page/fragments/common :: ztree_css"/>
+    <th:block th:include="page/fragments/common :: swiper_css"/>
     <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;">
@@ -46,12 +47,15 @@
                     <i class="fa fa-trash"></i> 删除
                 </a>
 
-                <!--            <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">-->
-                <!--                <i class="fa fa-edit"></i> 修改-->
-                <!--            </a>-->
-                <!--            <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">-->
-                <!--                <i class="fa fa-remove"></i> 重置-->
-                <!--            </a>-->
+                <a class="btn btn-primary single disabled">
+                    <i class="fa fa-edit"></i>修改
+                </a>
+                <a class="btn btn-danger multiple disabled">
+                    <i class="fa fa-remove"></i>删除
+                </a>
+                <a class="btn btn-danger multiple disabled">
+                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>上报
+                </a>
             </div>
         </div>
 
@@ -332,6 +336,7 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
@@ -372,6 +377,9 @@
             observer: true, //修改swiper自己或子元素时，自动初始化swiper
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
+
+        setMediaBefore();
+        setMediaAfter();
     })
 
     function selectEventTypeTree() {
