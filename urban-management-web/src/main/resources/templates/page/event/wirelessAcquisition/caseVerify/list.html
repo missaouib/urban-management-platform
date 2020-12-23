@@ -826,36 +826,38 @@
     let showUrl = [[${@fastProperties.nginxUrl}]];
     function getEventDetail(eventId) {
         $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
-            eventId = e.data.id;
+            let data = e.data;
+            console.log("data", data);
+            eventId = data.id;
             /*详情*/
-            $("#eventCode").val(e.data.eventCode);
-            $("#eventTypeStr").val(e.data.eventTypeStr);
-            $("#represent").val(e.data.represent);
-            $("#location").val(e.data.location);
-            $("#regionStr").val(e.data.regionStr);
-            $("#conditionValue").val(e.data.conditionValue);
-            $("#level").val(e.data.level);
-            $("#timeLimitStr").val(e.data.timeLimitStr);
-            $("#girdStr").val(e.data.girdStr);
-            $("#community").val(e.data.community);
-            $("#street").val(e.data.street);
-            $("#eventRegion").val(e.data.eventRegion);
-            $("#x").val(e.data.x);
-            $("#y").val(e.data.y);
-            $("#eventSourceStr").val(e.data.eventSourceStr);
-            $("#cdate").val(e.data.cdate);
-            $("#petitionerSex").val(e.data.petitionerSex);
-            $("#petitionerPhone").val(e.data.petitionerPhone);
-            $("#petitionerName").val(e.data.petitionerName);
-            $("#userName").val(e.data.userName);
-            $("#recTypeStr").val(e.data.recTypeStr);
-            $("#objId").val(e.data.objId);
-            if (e.data.objId == null){
+            $("#eventCode").val(data.eventCode);
+            $("#eventTypeStr").val(data.eventTypeStr);
+            $("#represent").val(data.represent);
+            $("#location").val(data.location);
+            $("#regionStr").val(data.regionStr);
+            $("#conditionValue").val(data.conditionValue);
+            $("#level").val(data.level);
+            $("#timeLimitStr").val(data.timeLimitStr);
+            $("#girdStr").val(data.girdStr);
+            $("#community").val(data.community);
+            $("#street").val(data.street);
+            $("#eventRegion").val(data.eventRegion);
+            $("#x").val(data.x);
+            $("#y").val(data.y);
+            $("#eventSourceStr").val(data.eventSourceStr);
+            $("#cdate").val(data.cdate);
+            $("#petitionerSex").val(data.petitionerSex);
+            $("#petitionerPhone").val(data.petitionerPhone);
+            $("#petitionerName").val(data.petitionerName);
+            $("#userName").val(data.userName);
+            $("#recTypeStr").val(data.recTypeStr);
+            $("#objId").val(data.objId);
+            if (data.objId == null) {
                 $(".partCodes").addClass('roleBox')
-            }else {
+            } else {
                 $(".partCodes").removeClass('roleBox')
             }
-            let file = e.data.file;
+            let file = data.file;
             if (file.length > 0) {
 
                 $("#imageList").empty();
@@ -883,9 +885,9 @@
                 $("#musicList").html(musicHtml);
             }
             /*流程图*/
-            $("#eventImg").attr('src', img + e.data.processInstanceId);
+            $("#eventImg").attr('src', img + data.processInstanceId);
             /* 坐标 */
-            setPoint(e.data.x, e.data.y);
+            setPoint(data.x, data.y);
         });
     }
 

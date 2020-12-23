@@ -16,6 +16,11 @@ public class EventDTO {
 
     private String id;
 
+    /**
+     * 事件id 用于主页跳转到各页面后回显单一数据使用
+     */
+    private String eventId;
+
     private String eventCode;
 
     /**
