@@ -35,6 +35,12 @@
                                         <div class="test3">本周</div>
                                     </div>
                                     <div class="block">
+                                        <img th:src="@{/img/ground2.png}" alt="">
+                                        <div class="test1">受理数</div>
+                                        <div class="test2" id="operate">80</div>
+                                        <div class="test3">本周</div>
+                                    </div>
+                                    <div class="block">
                                         <img th:src="@{/img/ground3.png}" alt="">
                                         <div class="test1">立案数</div>
                                         <div class="test2" id="inst">180</div>
@@ -67,6 +73,12 @@
                                         <img th:src="@{/img/ground33.png}" alt="">
                                         <div class="test1">派遣数</div>
                                         <div class="test2" id="dispatch">90</div>
+                                        <div class="test3">本周</div>
+                                    </div>
+                                    <div class="block">
+                                        <img th:src="@{/img/ground33.png}" alt="">
+                                        <div class="test1">处置数</div>
+                                        <div class="test2" id="dispose">90</div>
                                         <div class="test3">本周</div>
                                     </div>
                                     <div class="block">
@@ -233,6 +245,8 @@
             $("#inst").text(e.data.inst);
             $("#dispatch").text(e.data.dispatch);
             $("#close").text(e.data.close);
+            $("#operate").text(e.data.close);
+            $("#dispose").text(e.data.close);
         });
     }
 

@@ -609,11 +609,15 @@ public class StatisticsService {
         int instSize = statisticsRepository.findByInst(monday, sunday).size();
         int dispatchSize = statisticsRepository.findByDispatch(monday, sunday).size();
         int closeSize = statisticsRepository.findByClose(monday, sunday).size();
+        int operateSize = statisticsRepository.findByOperate(monday, sunday).size();
+        int disposeSize = statisticsRepository.findByDispose(monday, sunday).size();
         Map<String, Object> map = new HashMap<>(4);
         map.put("report", reportSize);
         map.put("inst", instSize);
         map.put("dispatch", dispatchSize);
         map.put("close", closeSize);
+        map.put("operate", operateSize);
+        map.put("dispose", disposeSize);
         return map;
     }
 
