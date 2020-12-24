@@ -90,7 +90,9 @@
                                 </td>
                                 <td><span></span>诉求时间</td>
                                 <td>
-                                    <input th:name="createTime" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}" type="text" class=""/>
+                                    <input th:name="createTime"
+                                           th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}"
+                                           type="text" class=""/>
                                 </td>
                             </tr>
 
@@ -125,7 +127,8 @@
                             <tr>
                                 <td><span>*</span>所在区域</td>
                                 <td>
-                                    <select name="required" class="form-control" id="grid1" onchange="getStreetList()" required>
+                                    <select name="required" class="form-control" id="grid1" onchange="getStreetList()"
+                                            required>
                                         <option>--请选择--</option>
                                         <option th:each="as:${gridList}" th:value="${as.id}"
                                                 th:text="${as.gridName}"></option>
@@ -133,14 +136,16 @@
                                 </td>
                                 <td><span>*</span>所属街道</td>
                                 <td>
-                                    <select name="phone" class="form-control" id="grid2" onchange="getCommunityList()" required>
+                                    <select name="phone" class="form-control" id="grid2" onchange="getCommunityList()"
+                                            required>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span>*</span>所属社区</td>
                                 <td>
-                                    <select name="petitonerPhone" class="form-control" id="grid3" onchange="getGridList()" required>
+                                    <select name="petitonerPhone" class="form-control" id="grid3"
+                                            onchange="getGridList()" required>
                                     </select>
                                 </td>
                                 <td><span>*</span>所属网格</td>
@@ -152,8 +157,10 @@
                             <tr>
                                 <td><span></span>问题来源</td>
                                 <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required readonly="readonly">
-                                        <option th:each="as:${eventSource}" th:value="${as.id}" th:text="${as.value}"></option>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required
+                                            readonly="readonly">
+                                        <option th:each="as:${eventSource}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
                                     </select>
                                 </td>
                                 <td><span></span>上报人</td>
@@ -193,34 +200,34 @@
                                 <div><input id="imageInput" type="file" name="files" multiple="multiple"></div>
                                 <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
                             </div>
-<!--                            <div class="sendImg">-->
-<!--                                <div class="sendText"><span>视频:</span></div>-->
-<!--                                <div><input id="videoInput" type="file" name="files" multiple="multiple"></div>-->
-<!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" value="">-->
-<!--                            </div>-->
-<!--                            <div class="sendImg">-->
-<!--                                <div class="sendText"><span>音频:</span></div>-->
-<!--                                <div><input id="audioInput" type="file" name="files" multiple="multiple"></div>-->
-<!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" value="">-->
-<!--                            </div>-->
+                            <!--                            <div class="sendImg">-->
+                            <!--                                <div class="sendText"><span>视频:</span></div>-->
+                            <!--                                <div><input id="videoInput" type="file" name="files" multiple="multiple"></div>-->
+                            <!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" value="">-->
+                            <!--                            </div>-->
+                            <!--                            <div class="sendImg">-->
+                            <!--                                <div class="sendText"><span>音频:</span></div>-->
+                            <!--                                <div><input id="audioInput" type="file" name="files" multiple="multiple"></div>-->
+                            <!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" value="">-->
+                            <!--                            </div>-->
                         </div>
                     </div>
 
                     <!--                            按钮-->
-                        <!--            <div class="l_left">-->
-                        <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-                        <!--            </div>-->
-                        <div class="r_right but_p girdBtnGroup">
+                    <!--            <div class="l_left">-->
+                    <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                    <!--            </div>-->
+                    <div class="r_right but_p girdBtnGroup">
 
-<!--                            <button class="but_save" type="button" style="margin-right: 10px" data-toggle="modal"-->
-<!--                                    id="similarCasesBtn" onclick="similarCasesForEvent()">相似案件-->
-<!--                            </button>-->
-                            <button class="but_save" type="submit" onclick="submitHandler1()"
-                                    style="margin-right: 10px">保存
-                            </button>
-                            <button class="but_save" type="submit" onclick="submitHandler2()">核实</button>
-                            <!--<button class="but_close" onclick="Cancel()">返回</button>-->
-                        </div>
+                        <!--                            <button class="but_save" type="button" style="margin-right: 10px" data-toggle="modal"-->
+                        <!--                                    id="similarCasesBtn" onclick="similarCasesForEvent()">相似案件-->
+                        <!--                            </button>-->
+                        <button class="but_save" type="submit" onclick="submitHandler1()"
+                                style="margin-right: 10px">保存
+                        </button>
+                        <button class="but_save" type="submit" onclick="submitHandler2()">核实</button>
+                        <!--<button class="but_close" onclick="Cancel()">返回</button>-->
+                    </div>
                 </div>
             </form>
         </div>
@@ -324,7 +331,7 @@
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg','mp4','mp3'],       // 接收的文件后缀
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'],       // 接收的文件后缀
             maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
@@ -557,7 +564,7 @@
     /* 点击网格列表赋值 */
     function success_jsonpCallback(res) {
         var features = geojsonFormat.readFeatures(res);
-        if(features.length != 0){
+        if (features.length != 0) {
             let mongodbId = features[0].H.mongodb_id;
             $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
                 let data = e.data;
@@ -829,15 +836,50 @@
      */
     function getGridCenter() {
         let pointOfCenter = $("#grid4 option:selected").val();
-        let url = "/grid/getGridCenter?gridId=" + pointOfCenter;
+        // let url = "/grid/getGridCenter?gridId=" + pointOfCenter;
+        let url = "/event/findGeomByGridId?id=" + pointOfCenter;
+        // $.ajaxUtil.get(url, function (e) {
+        //     let data = e.data;
+        //     let pointArray = [];
+        //     pointArray.push(data.split("-")[0] * 1);
+        //     pointArray.push(data.split("-")[1] * 1);
+        //     setCenterForGrid(pointArray);
+        // });
         $.ajaxUtil.get(url, function (e) {
-            let data = e.data;
-            let pointArray = [];
-            pointArray.push(data.split("-")[0] * 1);
-            pointArray.push(data.split("-")[1] * 1);
-            setCenterForGrid(pointArray);
+
+            $(e.data.geom).each(function (index, value) {
+                let split = value.split(",");
+                let polygonArray = [];
+                let polygonArrayEnd = [];
+                for (let j = 0; j < split.length; j++) {
+                    let pointArray = [];
+                    pointArray.push(split[j].split(" ")[0]);
+                    pointArray.push(split[j].split(" ")[1]);
+                    polygonArray.push(pointArray);
+                    polygonArrayEnd.push(polygonArray);
+                }
+                setPolygon(polygonArrayEnd);
+            })
+            var data = e.data.center[0].split(" ");
+            var center = [];
+            center.push(parseFloat(data[0]))
+            center.push(parseFloat(data[1]))
+            setCenterForGrid(center);
         });
+
         getUserListForSupervisor(pointOfCenter);
+    }
+
+    function setPolygon(Polygons, data) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(Polygons),
+            data: {
+                id: data,
+                // name: name,
+                coordinate: Polygons
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
     }
 
     /**
@@ -1101,10 +1143,17 @@
             duration: 250
         }
     });
+
+    let mapUrl = [[${@geoServerProperties.url}]];
+    let center_x = [[${@geoServerProperties.center_x}]];
+    let center_y = [[${@geoServerProperties.center_y}]];
+    let layers = [[${@geoServerProperties.layers}]];
+    let zoom = [[${@geoServerProperties.zoom}]];
+    let epsg = [[${@geoServerProperties.epsg}]];
     // 沽源地图
-    var center = [115.68192, 41.66462];
+    var center = [center_x, center_y];
     var projection = new ol.proj.Projection({
-        code: 'EPSG:4326',
+        code: epsg,
         units: 'degrees',
         axisOrientation: 'neu',
         global: true
@@ -1112,10 +1161,10 @@
     var untiled = new ol.layer.Image({
         source: new ol.source.ImageWMS({
             ratio: 1,
-            url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
+            url: mapUrl,
             params: {
                 'VERSION': '1.1.1',
-                "LAYERS": 'guyuan20201010:guyuan',
+                "LAYERS": layers,
                 "exceptions": 'application/vnd.ogc.se_inimage',
             }
         })
@@ -1132,7 +1181,7 @@
         view: new ol.View({
             // projection: projection,
             center: center,
-            zoom: 17,
+            zoom: zoom,
             projection: projection
         })
     });

@@ -1,5 +1,6 @@
 
-
+var bounds = [593489.95, 5237489.95,
+    598010.0499999999, 5247510.05]
 var center = [center_x, center_y];
 var projection = new ol.proj.Projection({
     code: epsg,
@@ -27,7 +28,7 @@ var map = new ol.Map({
     ],
     view: new ol.View({
         center:center,
-        zoom:zoom,
+        // zoom:zoom,
         projection: projection
     })
 });
@@ -36,3 +37,4 @@ var layerMap = new ol.layer.Vector({
     source: new ol.source.Vector(),
 });
 map.addLayer(layerMap);
+map.getView().fit(bounds, map.getSize());

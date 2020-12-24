@@ -82,6 +82,16 @@ public class EventController {
     }
 
     /**
+     * 选择网格查询小格
+     */
+    @GetMapping("findGeomByGridId")
+    public Map<String, String> findGeomByGridId(String id) throws DataAccessException {
+        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/queryGrid?id=" + id, RestReturn.class).getBody();
+        assert body != null;
+        return (Map<String, String>) body.getData();
+    }
+
+    /**
      * 点击网格反差信息
      *
      * @param mongodbId mongoId
