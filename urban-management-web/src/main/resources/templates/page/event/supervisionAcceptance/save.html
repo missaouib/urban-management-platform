@@ -192,6 +192,8 @@
                                 <div class="sendText"><span>多媒体:</span></div>
                                 <div><input id="imageInput" type="file" name="files" multiple="multiple"></div>
                                 <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
+                                <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
+                                <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
                             </div>
 <!--                            <div class="sendImg">-->
 <!--                                <div class="sendText"><span>视频:</span></div>-->
@@ -287,9 +289,9 @@
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
-    $(function () {
+    let multiMediaData;
 
-        console.clear();
+    $(function () {
 
         $(".ol-full-screen-false").html("全屏")
         $(".name").click(function () {
@@ -313,8 +315,6 @@
             showMeridian: 1,
             format: "yyyy-mm-dd hh:ii:ss"
         });
-
-        getGridPublishUrl();
 
         $("#imageInput").fileinput({
             language: 'zh',                                     // 设置语言
@@ -345,9 +345,8 @@
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {
-                let imageUrlList = data.response.data.url;
-                $("#imageUrlList").val(imageUrlList);
-                console.log("data", imageUrlList);
+                multiMediaData = data;
+                insertMultiMedia(data);
                 $.modal.alertSuccess('上传成功');
             } else {
                 $.modal.alertError(data.response.message);
@@ -357,7 +356,7 @@
             console.log('Key = ' + key);
         }).on('filesuccessremove', function (event, id) {
             console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            console.log(id);
+            deleteMultiMedia(id, multiMediaData);
         }).on('fileclear', function (event) {
             console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
             console.log(event);
@@ -367,10 +366,10 @@
         }).on('filepredelete', function (event, key) {
             console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
             console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log('filesuccessremove()   ')
-            console.log(id);
         });
+
+        getGridPublishUrl();
+
         //
         // $("#videoInput").fileinput({
         //     language: 'zh',                                     // 设置语言
