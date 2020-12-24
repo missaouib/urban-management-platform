@@ -918,7 +918,6 @@
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
     let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
-    let changeUrgentUrl = /*[[@{/event/urgent}]]*/ "/event/urgent";
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
     let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
@@ -989,23 +988,6 @@
                     title: '截止时间',
                     field: 'endTimeStr'
                 },
-                {
-                    title: '应急状态',
-                    field: '',
-                    class:'time_width',
-                    formatter: function (value, row) {
-                        let image = "";
-                        let urgent = row.urgent;
-                        if (urgent === 1) {
-                            image = "<img src='../../img/yj.png' style='width: 25%;height: 25%;align-content: center'>";
-                        }else {
-                            image="正常"
-                        }
-                        return image;
-
-
-                    }
-                },
             ]
         };
         $.table.init(options);
@@ -1040,16 +1022,6 @@
         getGridPolygon(eventId);
     }
 
-    function getUrgentImg(row, index) {
-        let image = "";
-        let urgent = index.urgent;
-        console.log("urgent",urgent)
-        if (urgent === 1) {
-            image = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
-                "<img src='../img/yj.png' style='width: 100%;height: 100%'></div>";
-        }
-        return image;
-    }
     /* 获取下一步按钮 */
     function getButton(eventId) {
         let getButtonUrl = /*[[@{/event/getButton/}]]+eventId*/ "/event/getButton/" + eventId;
@@ -1061,7 +1033,6 @@
                 for (let i = 0; i < button.length; i++) {
                     buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
                 }
-                setUrgentButton(eventId);
             }
             $("#eventButton").append(buttonHtml);
             if ($("#eventSourceStr").val() === "监督员上报") {
@@ -1220,27 +1191,6 @@
             getButton(eventId);
             /*设置转应急按钮*/
 
-        });
-    }
-    /*转应急*/
-    function changeUrgent(eventId) {
-        $.ajax({
-            url: changeUrgentUrl,
-            type: 'POST',
-            data:{eventId: eventId},
-            async: false,
-            dataType: 'json',
-            success: function (data) {
-                if (data.code === 0){
-                    $.modal.alertSuccess('保存成功',function () {
-                        window.location.href = "/event/toSelfProcessingList";
-                    });
-                }
-            },
-            error: function (data) {
-                $.modal.alertError(data.message,function () {
-                });
-            }
         });
     }
     /* 步骤图 */
@@ -1426,28 +1376,6 @@
             }
         });
         layerMap.getSource().addFeature(Polygon);
-    }
-    /* 设置转应急 */
-    function setUrgentButton(eventId) {
-        $.ajax({
-            type: 'GET',
-            url: "/event/findUrgent?eventId=" + eventId,
-            dataType: 'json',
-            async: false,
-            success: function (e) {
-                let data = e.data;
-                let buttonText = "";
-                let buttonStr = "";
-                if (data === 1){
-                    buttonText = '取消应急';
-                }else{
-                    buttonText = '转应急';
-                }
-                buttonStr = "<button class='but_save' style='margin-right: 10px;' type='button' onclick='changeUrgent(\""+eventId+"\")' >" + buttonText + "</button>";
-                $("#eventButton").append(buttonStr);
-                console.log($("#eventButton").html())
-            }
-        });
     }
 </script>
 </body>

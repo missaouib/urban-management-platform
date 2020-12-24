@@ -60,7 +60,7 @@ public class EventVO {
     private String startTime;
 
     /**
-     * 当前状态
+     * 当前阶段
      */
     private String taskName;
 

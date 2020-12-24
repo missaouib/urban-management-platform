@@ -994,8 +994,10 @@
                     getTimeAxis(row.id);
 
                     getNodeName(row.id);
+                    if (row.taskName === '值班长-立案') {
+                        setUrgentButton(row.id);
+                    }
 
-                    setUrgentButton(row.id);
                 });
             },
             columns: [
