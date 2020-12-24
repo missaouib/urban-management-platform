@@ -773,10 +773,21 @@
     let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
     function success_jsonpCallback(res) {
         var features = geojsonFormat.readFeatures(res);
-        let mongodbId = features[0].H.mongodb_id;
-        $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
-            console.log("e", e);
-            let data = e.data;
+        var x = $("#longitude").val();
+        var y = $("#latitude").val();
+        $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + x + "&y=" + y, function (e) {
+            let split = e.data.multiPolygon.split(",");
+            let polygonArray = [];
+            let polygonArrayEnd = [];
+            for (let j = 0; j < split.length; j++) {
+                let pointArray = [];
+                pointArray.push(split[j].split(" ")[0]);
+                pointArray.push(split[j].split(" ")[1]);
+                polygonArray.push(pointArray);
+                polygonArrayEnd.push(polygonArray);
+            }
+            setPolygon(polygonArrayEnd);
+            let data = e.data.mapList;
             for (let i = 0; i < data.length; i++) {
                 switch (data[i].level) {
                     case 1:
@@ -1369,12 +1380,16 @@
         $.operate.saveAndReload(dispatchUrl, data);
     }
 
-
-    var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
+    let mapUrl = [[${@geoServerProperties.url}]];
+    let center_x = [[${@geoServerProperties.center_x}]];
+    let center_y = [[${@geoServerProperties.center_y}]];
+    let layers = [[${@geoServerProperties.layers}]];
+    let zoom = [[${@geoServerProperties.zoom}]];
+    let epsg = [[${@geoServerProperties.epsg}]];
     // 沽源地图
-    var center = [115.68192, 41.66462];
+    var center = [center_x, center_y];
     var projection = new ol.proj.Projection({
-        code: 'EPSG:4326',
+        code: epsg,
         units: 'degrees',
         axisOrientation: 'neu',
         global: true
@@ -1382,10 +1397,10 @@
     var untiled = new ol.layer.Image({
         source: new ol.source.ImageWMS({
             ratio: 1,
-            url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
+            url: mapUrl,
             params: {
                 'VERSION': '1.1.1',
-                "LAYERS": 'guyuan20201010:guyuan',
+                "LAYERS": layers,
                 "exceptions": 'application/vnd.ogc.se_inimage',
             }
         })
@@ -1412,7 +1427,7 @@
         view: new ol.View({
             // projection: projection,
             center:center,
-            zoom:17,
+            zoom:zoom,
             projection: projection
         })
     });
@@ -1434,13 +1449,27 @@
      */
     function getGridCenter() {
         let pointOfCenter = $("#grid4 option:selected").val();
-        let url = "/grid/getGridCenter?gridId=" + pointOfCenter;
+        let url = "/event/findGeomByGridId?id=" + pointOfCenter;
         $.ajaxUtil.get(url, function (e) {
-            let data = e.data;
-            let pointArray = [];
-            pointArray.push(data.split("-")[0] * 1);
-            pointArray.push(data.split("-")[1] * 1);
-            setCenterForGrid(pointArray);
+
+            $(e.data.geom).each(function (index, value) {
+                let split = value.split(",");
+                let polygonArray = [];
+                let polygonArrayEnd = [];
+                for (let j = 0; j < split.length; j++) {
+                    let pointArray = [];
+                    pointArray.push(split[j].split(" ")[0]);
+                    pointArray.push(split[j].split(" ")[1]);
+                    polygonArray.push(pointArray);
+                    polygonArrayEnd.push(polygonArray);
+                }
+                setPolygon(polygonArrayEnd);
+            })
+            var data = e.data.center[0].split(" ");
+            var center = [];
+            center.push(parseFloat(data[0]))
+            center.push(parseFloat(data[1]))
+            setCenterForGrid(center);
         });
     }
     /**
@@ -1525,6 +1554,20 @@
                 src: '../../img/dwpoint3.png'
             })
         }));
+    }
+    function setPolygon(Polygons, data) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(Polygons),
+            data: {
+                id: data,
+                // name: name,
+                coordinate: Polygons
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
+    }
+    function setCenterForGrid(data) {
+        map.getView().setCenter(data);
     }
 </script>
 </body>

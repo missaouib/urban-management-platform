@@ -82,15 +82,24 @@ public class EventController {
     }
 
     /**
+     * 选择网格查询小格
+     */
+    @GetMapping("findGeomByGridId")
+    public Map<String, String> findGeomByGridId(String id) throws DataAccessException {
+        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/queryGrid?id=" + id, RestReturn.class).getBody();
+        assert body != null;
+        return (Map<String, String>) body.getData();
+    }
+
+    /**
      * 点击网格反差信息
-     *
-     * @param mongodbId mongoId
      */
     @GetMapping("/getGridByCheckLayer")
-    public Result getGridByCheckLayer(String mongodbId) {
-        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/queryMongoById?id=" + mongodbId, RestReturn.class).getBody();
+    public Result getGridByCheckLayer(String x, String y) {
+        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/queryGridByXY?x=" + x + "&y=" + y, RestReturn.class).getBody();
         Map<String, String> dataMap = (Map<String, String>) body.getData();
-        String objId = dataMap.get("objId");
+        String objId = dataMap.get("id");
+        String multiPolygon = dataMap.get("multiPolygon");
         Grid byGridCode = gridService.findByGridCode(objId);
         List<Map<String, Object>> mapList = new ArrayList<>(4);
         Map<String, Object> map = new HashMap<>(3);
@@ -100,7 +109,10 @@ public class EventController {
         map.put("user", SecurityUtil.getUsername());
         mapList.add(map);
         gridService.addMapToList(byGridCode, mapList);
-        return Result.success(mapList);
+        Map<String, Object> newMap = new HashMap<>();
+        newMap.put("multiPolygon", multiPolygon);
+        newMap.put("mapList", mapList);
+        return Result.success(newMap);
     }
 
     /**
@@ -148,7 +160,7 @@ public class EventController {
      * @return
      */
     @PostMapping("/urgent")
-    public Result changeUrgentUrl(String eventId){
+    public Result changeUrgentUrl(String eventId) {
         eventService.changeUrgent(eventId);
         return Result.success();
     }

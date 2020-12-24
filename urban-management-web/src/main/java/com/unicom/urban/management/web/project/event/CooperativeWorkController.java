@@ -95,13 +95,13 @@ public class CooperativeWorkController {
      * @return 页面
      */
     @GetMapping("/toOnAccountList")
-    public ModelAndView toOnAccount() {
-        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/onAccount/list");
+    public ModelAndView toOnAccount(Model model, String eventId) {
         //问题来源
-        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        model.addAttribute("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
-        modelAndView.addObject("gridList", gridService.searchAll());
-        return modelAndView;
+        model.addAttribute("gridList", gridService.searchAll());
+        model.addAttribute("eventId", eventId);
+        return new ModelAndView(SystemConstant.PAGE + "/event/onAccount/list");
     }
 
     /**
@@ -151,13 +151,13 @@ public class CooperativeWorkController {
      * @return 页面
      */
     @GetMapping("/toAuthorizationList")
-    public ModelAndView toAuthorization() {
-        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/authorization/list");
+    public ModelAndView toAuthorization(Model model, String eventId) {
         //问题来源
-        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        model.addAttribute("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
-        modelAndView.addObject("gridList", gridService.searchAll());
-        return modelAndView;
+        model.addAttribute("gridList", gridService.searchAll());
+        model.addAttribute("eventId", eventId);
+        return new ModelAndView(SystemConstant.PAGE + "/event/authorization/list");
     }
 
     /**

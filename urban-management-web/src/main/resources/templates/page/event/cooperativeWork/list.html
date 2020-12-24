@@ -546,6 +546,7 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <th:block th:include="page/fragments/common :: swiper_js"/>
+
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
@@ -740,6 +741,10 @@
             observer: true, //修改swiper自己或子元素时，自动初始化swiper
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
+
+        //处置前后为空
+        setMediaBefore();
+        setMediaAfter();
 
     })
 
@@ -1242,52 +1247,6 @@ function setUrgentButton(eventId) {
             console.log('Key = ' + key);
         });
     })
-    let url = [[${@geoServerProperties.url}]];
-    let center_x = [[${@geoServerProperties.center_x}]];
-    let center_y = [[${@geoServerProperties.center_y}]];
-    let layers = [[${@geoServerProperties.layers}]];
-    let zoom = [[${@geoServerProperties.zoom}]];
-    let epsg = [[${@geoServerProperties.epsg}]];
-
-
-    // 沽源地图
-    var center = [center_x, center_y];
-    var projection = new ol.proj.Projection({
-        code: epsg,
-        units: 'degrees',
-        axisOrientation: 'neu',
-        global: true
-    });
-    var untiled = new ol.layer.Image({
-        source: new ol.source.ImageWMS({
-            ratio: 1,
-            url: url,
-            params: {
-                'VERSION': '1.1.1',
-                "LAYERS": layers,
-                "exceptions": 'application/vnd.ogc.se_inimage',
-            }
-        })
-    });
-    var source = new ol.source.Vector({wrapX: false});
-    var fullScreenControl = new ol.control.FullScreen();
-    var map = new ol.Map({
-        target: 'map',
-        layers: [
-            untiled
-        ],
-        view: new ol.View({
-            // projection: projection,
-            center: center,
-            zoom: zoom,
-            projection: projection
-        })
-    });
-    map.addControl(fullScreenControl)
-    var layerMap = new ol.layer.Vector({
-        source: new ol.source.Vector(),
-    });
-    map.addLayer(layerMap);
 
     function setPoint(x, y) {
         let point = new ol.Feature({
@@ -1434,6 +1393,10 @@ function setUrgentButton(eventId) {
         });
         layerMap.getSource().addFeature(Polygon);
     }
+
+
 </script>
+<th:block th:include="page/fragments/common :: mapinit_js"/>
+
 </body>
 </html>
