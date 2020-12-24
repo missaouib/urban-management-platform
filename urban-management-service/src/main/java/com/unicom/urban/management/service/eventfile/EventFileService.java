@@ -40,7 +40,7 @@ public class EventFileService {
                 EventFile eventFile = new EventFile();
                 eventFile.setFilePath(s);
                 eventFile.setFileName(s.contains("/") ? s.split("/")[s.split("/").length - 1] : "");
-                eventFile.setManagement(kvService.findByTableNameAndFieldNameAndValue("eventFile", "management", "处置前").get(0));
+                eventFile.setManagement(1);
                 eventFile.setFileType(fileType);
                 eventFileList.add(eventFile);
             }
@@ -55,7 +55,7 @@ public class EventFileService {
                 EventFile eventFile = new EventFile();
                 eventFile.setFilePath(s);
                 eventFile.setFileName(s.contains("/") ? s.split("/")[s.split("/").length - 1] : "");
-                eventFile.setManagement(kvService.findByTableNameAndFieldNameAndValue("eventFile", "management", "处置后").get(0));
+                eventFile.setManagement(2);
                 eventFile.setFileType(fileType);
                 eventFileList.add(eventFile);
             }
