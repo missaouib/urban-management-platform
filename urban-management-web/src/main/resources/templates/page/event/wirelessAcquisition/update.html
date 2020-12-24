@@ -646,10 +646,21 @@
     let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
     function success_jsonpCallback(res) {
         var features = geojsonFormat.readFeatures(res);
-        let mongodbId = features[0].H.mongodb_id;
-        $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
-            console.log("e", e);
-            let data = e.data;
+        var x = $("#longitude").val();
+        var y = $("#latitude").val();
+        $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + x + "&y=" + y, function (e) {
+            let split = e.data.multiPolygon.split(",");
+            let polygonArray = [];
+            let polygonArrayEnd = [];
+            for (let j = 0; j < split.length; j++) {
+                let pointArray = [];
+                pointArray.push(split[j].split(" ")[0]);
+                pointArray.push(split[j].split(" ")[1]);
+                polygonArray.push(pointArray);
+                polygonArrayEnd.push(polygonArray);
+            }
+            setPolygon(polygonArrayEnd);
+            let data = e.data.mapList;
             for (let i = 0; i < data.length; i++) {
                 switch (data[i].level) {
                     case 1:
@@ -1294,13 +1305,27 @@
      */
     function getGridCenter() {
         let pointOfCenter = $("#grid4 option:selected").val();
-        let url = "/grid/getGridCenter?gridId=" + pointOfCenter;
+        let url = "/event/findGeomByGridId?id=" + pointOfCenter;
         $.ajaxUtil.get(url, function (e) {
-            let data = e.data;
-            let pointArray = [];
-            pointArray.push(data.split("-")[0] * 1);
-            pointArray.push(data.split("-")[1] * 1);
-            setCenterForGrid(pointArray);
+
+            $(e.data.geom).each(function (index, value) {
+                let split = value.split(",");
+                let polygonArray = [];
+                let polygonArrayEnd = [];
+                for (let j = 0; j < split.length; j++) {
+                    let pointArray = [];
+                    pointArray.push(split[j].split(" ")[0]);
+                    pointArray.push(split[j].split(" ")[1]);
+                    polygonArray.push(pointArray);
+                    polygonArrayEnd.push(polygonArray);
+                }
+                setPolygon(polygonArrayEnd);
+            })
+            var data = e.data.center[0].split(" ");
+            var center = [];
+            center.push(parseFloat(data[0]))
+            center.push(parseFloat(data[1]))
+            setCenterForGrid(center);
         });
     }
     /**
@@ -1362,6 +1387,20 @@
         $("#imageListAfter").html(imageHtmlAfter);
         $("#videoListAfter").html(videoHtmlAfter);
         $("#musicListAfter").html(musicHtmlAfter);
+    }
+    function setPolygon(Polygons, data) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(Polygons),
+            data: {
+                id: data,
+                // name: name,
+                coordinate: Polygons
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
+    }
+    function setCenterForGrid(data) {
+        map.getView().setCenter(data);
     }
 </script>
 </body>

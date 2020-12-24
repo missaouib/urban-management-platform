@@ -316,7 +316,7 @@ public class GridService {
     }
 
     public Grid findByGridCode(String gridCode) {
-        return gridRepository.findByGridCode(gridCode);
+        return gridRepository.findById(gridCode).orElse(new Grid());
     }
 
     private Map<String, Object> findByParentId(String id) {
