@@ -62,22 +62,20 @@
         <div class="left_bottomIn">
             <div class="bottom_left">
                 <div class="doItTitle">
-                    <span class="do_span active">
-                        处置前
-                    </span>
+                    <span class="do_span active">处置前</span>
                     <span class="do_span">处置后</span>
                 </div>
                 <div class="doItInner">
                     <div class="do_banner blockActive">
                         <!-- Swiper -->
-                        <div class="swiper-container" id="beforDisSwiper">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">Slide 1</div>
-                                <div class="swiper-slide">Slide 2</div>
-                                <div class="swiper-slide">Slide 3</div>
+                        <div class="swiper-container" id="beforeDisSwiper">
+                            <div class="swiper-wrapper" id="MultiMediaBefore">
+                                <!--                                <div class="swiper-slide">Slide 1</div>-->
+                                <!--                                <div class="swiper-slide">Slide 2</div>-->
+                                <!--                                <div class="swiper-slide">Slide 3</div>-->
                             </div>
                             <!-- Add Pagination -->
-                            <div class="swiper-pagination beforDisPg"></div>
+                            <div class="swiper-pagination beforeDisPg"></div>
                             <!-- Add Arrows -->
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
@@ -86,7 +84,7 @@
                     <div class="do_banner">
                         <!-- Swiper -->
                         <div class="swiper-container" id="afterDisSwiper">
-                            <div class="swiper-wrapper">
+                            <div class="swiper-wrapper" id="MultiMediaAfter">
                                 <div class="swiper-slide">Slide 1</div>
                                 <div class="swiper-slide">Slide 2</div>
                                 <div class="swiper-slide">Slide 3</div>
@@ -324,6 +322,33 @@
             </div>
         </div>
     </div>
+
+    <!-- &lt;!&ndash;  点击图片弹出  &ndash;&gt;-->
+    <div class="duk_duck" id="pictureBoxDuc" style="display: none">
+        <div class="duk_box">
+            <div class="allTiel" id="allTiel">
+                <div class="fullScreen" id="fullScreen">全屏</div>
+                <div class="fullScreen exitfullScreen" id="exitfullScreen">退出全屏</div>
+                <div class="duk_close" id="duk_picture">
+                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png"
+                                                             style="width: 100%;height: 100%"></i>
+                </div>
+                <div style="width: 100%;height: 100%;padding: 5px">
+                    <div class="swiper-container sw2">
+                        <div class="swiper-wrapper" id="imageDetailList">
+
+                        </div>
+                        <!-- Add Pagination -->
+                        <div class="swiper-pagination pg2"></div>
+                        <!-- Add Arrows -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
@@ -350,11 +375,51 @@
         getGridPublishUrl();
 
         var r = 0;
-        $(".xiala").click(function() {
+        $(".xiala").click(function () {
             r += 180;
             $(".selectPoint").slideToggle(300);
             $(".selectmenu").css('transform', 'rotate(' + r + 'deg)');
         })
+
+        $(".duk_close").click(function () {
+            $("#pictureBoxDuc").fadeOut(300)
+        });
+
+        $(".banners").on("click", ".innerPic", function () {
+            $("#pictureBoxDuc").fadeIn(300);
+        });
+
+        $(".do_banner").on("click", "#beforeDisSwiper", function () {
+            $("#imageDetailList").html($("#MultiMediaBefore").html())
+            $("#pictureBoxDuc").fadeIn(300);
+        });
+
+        $(".do_banner").on("click", "#afterDisSwiper", function () {
+            $("#imageDetailList").html($("#MultiMediaAfter").html())
+            $("#pictureBoxDuc").fadeIn(300);
+        });
+
+        //处置前 轮播
+        var beforeDisSwiper = new Swiper('#beforeDisSwiper', {
+            pagination: '.beforeDisPg',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        //处置后 轮播
+        var afterDisSwiper = new Swiper('#afterDisSwiper', {
+            pagination: '.afterDisPg',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
 
         //处置前 轮播
         var beforDisSwiper = new Swiper('#beforDisSwiper', {
@@ -409,7 +474,7 @@
 
     let addUrl = /*[[@{/event/toWirelessAcquisitionSave}]]*/ "/event/toWirelessAcquisitionSave";
 
-
+    let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
     let removeUrl = /*[[@{/event/remove/{id}}]]*/ "/event/remove/{id}";
 
     let editUrl = /*[[@{/event/toWirelessAcquisitionUpdate/{id}}]]*/ "/event/toWirelessAcquisitionUpdate/{id}";
@@ -506,7 +571,8 @@
             modalName: "案件",
             onClickRow: function (row,index) {
                 layerMap.getSource().clear();
-                setPoint(row.id)
+                setPoint(row.id);
+                getEventDetail(row.id);
             },
             columns: [
                 {
@@ -560,6 +626,49 @@
             ]
         };
         $.table.init(options);
+    }
+
+    let showUrl = [[${@fastProperties.nginxUrl}]];
+
+    function getEventDetail(eventId) {
+        $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
+            let data = e.data;
+            eventId = data.id;
+            /*详情*/
+            $("#eventCode").val(data.eventCode);
+            $("#eventTypeStr").val(data.eventTypeStr);
+            $("#represent").val(data.represent);
+            $("#location").val(data.location);
+            $("#regionStr").val(data.regionStr);
+            $("#conditionValue").val(data.conditionValue);
+            $("#level").val(data.level);
+            $("#timeLimitStr").val(data.timeLimitStr);
+            $("#girdStr").val(data.girdStr);
+            $("#community").val(data.community);
+            $("#street").val(data.street);
+            $("#eventRegion").val(data.eventRegion);
+            $("#x").val(data.x);
+            $("#y").val(data.y);
+            $("#eventSourceStr").val(data.eventSourceStr);
+            $("#cdate").val(data.cdate);
+            $("#petitionerSex").val(data.petitionerSex);
+            $("#petitionerPhone").val(data.petitionerPhone);
+            $("#petitionerName").val(data.petitionerName);
+            $("#userName").val(data.userName);
+            $("#recTypeStr").val(data.recTypeStr);
+            $("#objId").val(data.objId);
+            if (data.objId == null) {
+                $(".partCodes").addClass('roleBox')
+            } else {
+                $(".partCodes").removeClass('roleBox')
+            }
+            let file = data.file;
+            setFileInput(file);
+            /*流程图*/
+            $("#eventImg").attr('src', img + data.processInstanceId);
+            /* 坐标 */
+            setPoint(data.x, data.y);
+        });
     }
 
     // 沽源地图

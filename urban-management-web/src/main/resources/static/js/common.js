@@ -394,6 +394,65 @@ function deleteMultiMediaAfter(id, multiMediaData) {
 	}
 }
 
+function setFileInput(file) {
+	if (file.length > 0) {
+		addMediaBefore();
+		addMediaAfter();
+		$("#MultiMediaBefore").empty();
+		$("#MultiMediaAfter").empty();
+		let MultiMediaBeforeHtml = "";
+		let MultiMediaAfterHtml = "";
+		for (let i = 0; i < file.length; i++) {
+			if (file[i].management === 1) {
+				if (file[i].type === 1) {
+					MultiMediaBeforeHtml += "<div class='swiper-slide'>";
+					MultiMediaBeforeHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + file[i].url + "'>";
+					MultiMediaBeforeHtml += "</div>";
+				}
+				if (file[i].type === 2) {
+					MultiMediaBeforeHtml += "<div class='swiper-slide'>";
+					MultiMediaBeforeHtml += "<video style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></video>";
+					MultiMediaBeforeHtml += "</div>";
+				}
+				if (file[i].type === 3) {
+					MultiMediaBeforeHtml += "<div class='swiper-slide'>";
+					MultiMediaBeforeHtml += "<audio style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></audio>";
+					MultiMediaBeforeHtml += "</div>";
+				}
+			} else {
+				if (file[i].type === 1) {
+					MultiMediaAfterHtml += "<div class='swiper-slide'>";
+					MultiMediaAfterHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + file[i].url + "'>";
+					MultiMediaAfterHtml += "</div>";
+				}
+				if (file[i].type === 2) {
+					MultiMediaAfterHtml += "<div class='swiper-slide'>";
+					MultiMediaAfterHtml += "<video style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></video>";
+					MultiMediaAfterHtml += "</div>";
+				}
+				if (file[i].type === 3) {
+					MultiMediaAfterHtml += "<div class='swiper-slide'>";
+					MultiMediaAfterHtml += "<audio style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></audio>";
+					MultiMediaAfterHtml += "</div>";
+				}
+			}
+		}
+		if (MultiMediaBeforeHtml === "") {
+			/*处置前置空*/
+			setMediaBefore()
+		}
+		if (MultiMediaAfterHtml === "") {
+			/*处置后置空*/
+			setMediaAfter()
+		}
+		$("#MultiMediaBefore").html(MultiMediaBeforeHtml);
+		$("#MultiMediaAfter").html(MultiMediaAfterHtml);
+	} else {
+		setMediaBefore();
+		setMediaAfter();
+	}
+}
+
 //重写confirm式样框
 // window.confirm = function(msg, callback){
 // 	parent.layer.confirm(msg, {btn: ['确定','取消']},
