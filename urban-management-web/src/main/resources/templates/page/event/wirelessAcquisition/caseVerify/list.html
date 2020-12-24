@@ -388,29 +388,17 @@
                     </div>
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
-                            <span class="sendText" id="btnOpinion"><i>*</i>意见</span>
+                            <span class="sendText" id="btnOpinion" style="width: 125px"><i>*</i>意见</span>
                             <textarea type="text" id="textIdioms" onmouseout="saveIdioms(this)"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays" style="background-color:#fff;">
                             </div>
                         </div>
-                        <div class="send">
-                            <div class="sendText" style="width: 72px"><span>照片:</span></div>
+                        <div class="send" style="display: flex;align-items: center">
+                            <div class="sendText" style="width: 99px"><span>多媒体:</span></div>
                             <div class="sendImg">
                                 <input type="hidden" id="imageUrlList" value="">
                                 <div><div><input id="input-id" class="input-id" type="file" name="file" multiple="multiple"></div></div>
-                            </div>
-
-
-                            <div class="sendImg">
-                                <div class="sendText" style="width: 72px"><span>视频:</span></div>
-                                <div><input id="video" type="file" class="videoInput" name="file" multiple="multiple"></div>
-                            </div>
-                            <div class="sendImg">
-                                <div class="sendText" style="width: 72px"><span>音频:</span></div>
-                                <div><input id="music" type="file" class="musicInput" name="file" multiple="multiple"></div>
-                            </div>
-
                             </div>
                         </div>
 
@@ -1071,7 +1059,7 @@
             showPreview: true,                                  // 是否显示预览
             showUpload: false,                                  // 是否显示上传按钮
             showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            dropZoneEnabled: true,                             // 是否显示拖拽区域
             // browseClass: "btn btn-primary",                     // 按钮样式
 
         }).on('change', function (event) {
