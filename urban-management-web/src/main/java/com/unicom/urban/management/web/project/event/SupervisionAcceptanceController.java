@@ -90,13 +90,13 @@ public class SupervisionAcceptanceController {
      * @return list
      */
     @GetMapping("/toSelfProcessingList")
-    public ModelAndView toSelfProcessingList() {
-        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/selfProcessing/list");
+    public ModelAndView toSelfProcessingList(Model model, String eventId) {
         //问题来源
-        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        model.addAttribute("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
-        modelAndView.addObject("gridList", gridService.searchAll());
-        return modelAndView;
+        model.addAttribute("gridList", gridService.searchAll());
+        model.addAttribute("eventId", eventId);
+        return new ModelAndView(SystemConstant.PAGE + "/event/selfProcessing/list");
     }
 
     /**
