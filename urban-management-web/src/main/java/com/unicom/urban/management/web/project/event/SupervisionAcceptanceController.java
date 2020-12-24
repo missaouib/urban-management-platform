@@ -13,7 +13,6 @@ import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
-import com.unicom.urban.management.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,17 +45,15 @@ public class SupervisionAcceptanceController {
     private GridService gridService;
     @Autowired
     private EventFileService eventFileService;
-    @Autowired
-    private RoleService roleService;
 
     @GetMapping("/toSupervisionAcceptanceList")
-    public ModelAndView toSupervisionAcceptanceList() {
-        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/list");
+    public ModelAndView toSupervisionAcceptanceList(Model model, String eventId) {
         //问题来源
-        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        model.addAttribute("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
-        modelAndView.addObject("gridList", gridService.searchAll());
-        return modelAndView;
+        model.addAttribute("gridList", gridService.searchAll());
+        model.addAttribute("eventId", eventId);
+        return new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/list");
     }
 
     /**
