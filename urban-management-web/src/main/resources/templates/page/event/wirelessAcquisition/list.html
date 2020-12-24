@@ -380,6 +380,19 @@
             $("#pictureBoxDuc").fadeIn(300);
         });
 
+        //全屏
+        $("#fullScreen").click(function() {
+            $("#allTiel").addClass("allTielFont");
+            $("#exitfullScreen").css("display", "block");
+            $(this).css("display", "none")
+        });
+
+        $("#exitfullScreen").click(function() {
+            $("#allTiel").removeClass("allTielFont");
+            $(this).css("display", "none");
+            $("#fullScreen").css("display", "block");
+        })
+
         //处置前 轮播
         var beforeDisSwiper = new Swiper('#beforeDisSwiper', {
             pagination: '.beforeDisPg',
@@ -414,8 +427,8 @@
         });
 
         //处置后 轮播
-        var afterDisSwiper = new Swiper('#afterDisSwiper', {
-            pagination: '.afterDisPg',
+        var sw2 = new Swiper('.sw2', {
+            pagination: '.pg2',
             paginationClickable: true,
             nextButton: '.swiper-button-next',
             prevButton: '.swiper-button-prev',
