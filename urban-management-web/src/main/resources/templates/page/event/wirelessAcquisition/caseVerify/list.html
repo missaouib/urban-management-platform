@@ -396,7 +396,11 @@
                             <div class="sendText" style="width: 99px"><span>多媒体:</span></div>
                             <div class="sendImg">
                                 <input type="hidden" id="imageUrlList" value="">
-                                <div><div><input id="input-id" class="input-id" type="file" name="file" multiple="multiple"></div></div>
+                                <input type="hidden" id="videoUrlList" value="">
+                                <input type="hidden" id="musicUrlList" value="">
+                                <div>
+                                    <div><input id="imageInput" type="file" name="files" multiple="multiple"></div>
+                                </div>
                             </div>
                         </div>
 
@@ -944,10 +948,12 @@
         }));
     }
     function save() {
-        $.operate.saveAndReload(completeByVerificationUrl,{
-            eventId:$("#eventId").val(),
+        $.operate.saveAndReload(completeByVerificationUrl, {
+            eventId: $("#eventId").val(),
             buttonText: $("#buttonText").val(),
             imageUrlList: $("#imageUrlList").val(),
+            videoUrlList: $("#videoUrlList").val(),
+            musicUrlList: $("#musicUrlList").val(),
             opinions: $("#opinions").val()
         });
     }
@@ -1047,12 +1053,14 @@
             $("#modelAudioList").html(audioHtml);
         }
     }
+
     //上传 照片视频音频
-    let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
+    let multiMediaData;
     //上传 照片视频音频
     $(function () {
         getIdioms();
-        $(".input-id").fileinput({
+        $("#imageInput").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
@@ -1060,17 +1068,17 @@
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'],       // 接收的文件后缀
             maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
+            showClose: false,                                   // 右上角的×
             showCaption: false,                                 // 是否显示标题
             showPreview: true,                                  // 是否显示预览
             showUpload: false,                                  // 是否显示上传按钮
             showRemove: true,                                   // 显示移除按钮
             dropZoneEnabled: true,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
+            // browseClass: "btn btn-primary",                  // 按钮样式
         }).on('change', function (event) {
             console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
         }).on('fileselect', function (event, numFiles, label) {
@@ -1082,9 +1090,8 @@
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {
-                console.log(data.response.data.url)
-                let imageUrlList = data.response.data.url;
-                $("#imageUrlList").val(imageUrlList);
+                multiMediaData = data;
+                insertMultiMedia(data);
                 $.modal.alertSuccess('上传成功');
             } else {
                 $.modal.alertError(data.response.message);
@@ -1094,58 +1101,15 @@
             console.log('Key = ' + key);
         }).on('filesuccessremove', function (event, id) {
             console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            console.log(id);
+            deleteMultiMedia(id, multiMediaData);
         }).on('fileclear', function (event) {
             console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-            console.log(event);
         }).on('filecleared', function (event) {
             console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-            console.log(event);
         }).on('filepredelete', function (event, key) {
             console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
             console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log('filesuccessremove()   ')
-            console.log(id);
         });
-        $("#video").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            // uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        })
-        $("#music").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            // uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['mov', 'mp4', 'mp3'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        })
     })
     /**
      * 回显上传照片

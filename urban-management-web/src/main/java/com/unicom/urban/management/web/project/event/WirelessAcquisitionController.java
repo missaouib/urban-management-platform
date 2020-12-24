@@ -24,6 +24,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -327,7 +328,13 @@ public class WirelessAcquisitionController {
     @PostMapping("/completeByVerification")
     public Result completeByVerification(StatisticsDTO statisticsDTO) {
         String eventId = statisticsDTO.getEventId();
-        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList(),1);
+        List<EventFile> eventFileList = new ArrayList<>();
+        List<EventFile> eventFileList1 = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList(), 1);
+        List<EventFile> eventFileList2 = eventFileService.joinEventFileListToObjet(statisticsDTO.getVideoUrlList(), 2);
+        List<EventFile> eventFileList3 = eventFileService.joinEventFileListToObjet(statisticsDTO.getMusicUrlList(), 3);
+        eventFileList.addAll(eventFileList1);
+        eventFileList.addAll(eventFileList2);
+        eventFileList.addAll(eventFileList3);
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
         statistics.setOpinions(statisticsDTO.getOpinions());
         statistics.setEventFileList(eventFileList);
@@ -344,7 +351,13 @@ public class WirelessAcquisitionController {
     public Result completeByInspect(StatisticsDTO statisticsDTO) {
         String eventId = statisticsDTO.getEventId();
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-        List<EventFile> eventFileList = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList(),1);
+        List<EventFile> eventFileList = new ArrayList<>();
+        List<EventFile> eventFileList1 = eventFileService.joinEventFileListToObjet(statisticsDTO.getImageUrlList(), 1);
+        List<EventFile> eventFileList2 = eventFileService.joinEventFileListToObjet(statisticsDTO.getVideoUrlList(), 2);
+        List<EventFile> eventFileList3 = eventFileService.joinEventFileListToObjet(statisticsDTO.getMusicUrlList(), 3);
+        eventFileList.addAll(eventFileList1);
+        eventFileList.addAll(eventFileList2);
+        eventFileList.addAll(eventFileList3);
         statistics.setOpinions(statisticsDTO.getOpinions());
         statistics.setEventFileList(eventFileList);
         statisticsService.update(statistics);

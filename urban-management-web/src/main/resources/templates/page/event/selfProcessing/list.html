@@ -398,6 +398,8 @@
                             <div class="sendText" style="width: 99px"><span>多媒体:</span></div>
                             <div><input id="imageInput" type="file" name="files" multiple="multiple"></div>
                             <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
+                            <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
+                            <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
                         </div>
                     </div>
                 </div>
@@ -498,6 +500,8 @@
 <th:block th:include="page/fragments/common :: swiper_js"/>
 <script type="text/javascript" th:inline="javascript">
 
+    let multiMediaData;
+
     $(function () {
 
         $(".ol-full-screen-false").html("全屏")
@@ -563,24 +567,46 @@
             $("#pictureBoxDuc").fadeOut(300)
         });
 
-        $(".do_banner").on("click", "#beforeDisSwiper", function() {
+        $(".do_banner").on("click", "#beforeDisSwiper", function () {
             $("#imageDetailList").html($("#MultiMediaBefore").html())
             $("#pictureBoxDuc").fadeIn(300);
         });
 
-        $(".do_banner").on("click", "#afterDisSwiper", function() {
+        $(".do_banner").on("click", "#afterDisSwiper", function () {
             $("#imageDetailList").html($("#MultiMediaAfter").html())
             $("#pictureBoxDuc").fadeIn(300);
         });
 
+        //处置前 轮播
+        var beforeDisSwiper = new Swiper('#beforeDisSwiper', {
+            pagination: '.beforeDisPg',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        //处置后 轮播
+        var afterDisSwiper = new Swiper('#afterDisSwiper', {
+            pagination: '.afterDisPg',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
         //全屏
-        $("#fullScreen").click(function() {
+        $("#fullScreen").click(function () {
             $("#allTiel").addClass("allTielFont");
             $("#exitfullScreen").css("display", "block");
             $(this).css("display", "none")
         });
 
-        $("#exitfullScreen").click(function() {
+        $("#exitfullScreen").click(function () {
             $("#allTiel").removeClass("allTielFont");
             $(this).css("display", "none");
             $("#fullScreen").css("display", "block");
@@ -670,28 +696,6 @@
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
 
-        //处置前 轮播
-        var beforeDisSwiper = new Swiper('#beforeDisSwiper', {
-            pagination: '.beforeDisPg',
-            paginationClickable: true,
-            nextButton: '.swiper-button-next',
-            prevButton: '.swiper-button-prev',
-            spaceBetween: 30,
-            observer: true, //修改swiper自己或子元素时，自动初始化swiper
-            observeParents: true //修改swiper的父元素时，自动初始化swiperd
-        });
-
-        //处置后 轮播
-        var afterDisSwiper = new Swiper('#afterDisSwiper', {
-            pagination: '.afterDisPg',
-            paginationClickable: true,
-            nextButton: '.swiper-button-next',
-            prevButton: '.swiper-button-prev',
-            spaceBetween: 30,
-            observer: true, //修改swiper自己或子元素时，自动初始化swiper
-            observeParents: true //修改swiper的父元素时，自动初始化swiperd
-        });
-
         //处置后放大 轮播
         var imageMediailListAfter = new Swiper('#imageMediailListAfter', {
             pagination: '.imageMediailListAfterPg',
@@ -711,17 +715,17 @@
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg','mp4','mp3'],       // 接收的文件后缀
-            maxFileCount: 3,                                    // 最大文件数量
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'],       // 接收的文件后缀
+            maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
+            showClose: false,                                   // 右上角的×
             showCaption: false,                                 // 是否显示标题
             showPreview: true,                                  // 是否显示预览
             showUpload: false,                                  // 是否显示上传按钮
             showRemove: true,                                   // 显示移除按钮
             dropZoneEnabled: true,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
+            // browseClass: "btn btn-primary",                  // 按钮样式
         }).on('change', function (event) {
             console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
         }).on('fileselect', function (event, numFiles, label) {
@@ -733,9 +737,8 @@
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {
-                let imageUrlList = data.response.data.url;
-                $("#imageUrlList").val(imageUrlList);
-                console.log("data", imageUrlList);
+                multiMediaData = data;
+                insertMultiMedia(data);
                 $.modal.alertSuccess('上传成功');
             } else {
                 $.modal.alertError(data.response.message);
@@ -745,127 +748,11 @@
             console.log('Key = ' + key);
         }).on('filesuccessremove', function (event, id) {
             console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            console.log(id);
+            deleteMultiMedia(id, multiMediaData);
         }).on('fileclear', function (event) {
             console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-            console.log(event);
         }).on('filecleared', function (event) {
             console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-            console.log(event);
-        }).on('filepredelete', function (event, key) {
-            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log('filesuccessremove()   ')
-            console.log(id);
-        });
-
-        $("#videoInput").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['mp4'],       // 接收的文件后缀
-            maxFileCount: 3,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        }).on('change', function (event) {
-            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        }).on('fileselect', function (event, numFiles, label) {
-            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        }).on("filebatchselected", function (event, files) {
-            $(this).fileinput("upload");
-        }).on("fileuploaded", function (event, data) {
-
-        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
-            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
-            if (data.response.code === web_status.SUCCESS) {
-                let videoUrlList = data.response.data.url;
-                $("#videoUrlList").val(videoUrlList);
-                console.log("data", videoUrlList);
-                $.modal.alertSuccess('上传成功');
-            } else {
-                $.modal.alertError(data.response.message);
-            }
-        }).on('filedeleted', function (event, key) {
-            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            console.log(id);
-        }).on('fileclear', function (event) {
-            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-            console.log(event);
-        }).on('filecleared', function (event) {
-            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-            console.log(event);
-        }).on('filepredelete', function (event, key) {
-            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log('filesuccessremove()   ')
-            console.log(id);
-        });
-
-        $("#audioInput").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['mp3'],       // 接收的文件后缀
-            maxFileCount: 3,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        }).on('change', function (event) {
-            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        }).on('fileselect', function (event, numFiles, label) {
-            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        }).on("filebatchselected", function (event, files) {
-            $(this).fileinput("upload");
-        }).on("fileuploaded", function (event, data) {
-
-        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
-            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
-            if (data.response.code === web_status.SUCCESS) {
-                let musicUrlList = data.response.data.url;
-                $("#musicUrlList").val(musicUrlList);
-                console.log("data", musicUrlList);
-                $.modal.alertSuccess('上传成功');
-            } else {
-                $.modal.alertError(data.response.message);
-            }
-        }).on('filedeleted', function (event, key) {
-            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            console.log(id);
-        }).on('fileclear', function (event) {
-            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-            console.log(event);
-        }).on('filecleared', function (event) {
-            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-            console.log(event);
         }).on('filepredelete', function (event, key) {
             console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
             console.log('Key = ' + key);
@@ -1027,22 +914,20 @@
         $("#userId").val(options.val());
     }
 
-    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
-    let showUrl = [[${@fastProperties.nginxUrl}]];
-    let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
+    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
+    let changeUrgentUrl = /*[[@{/event/urgent}]]*/ "/event/urgent";
+    let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
     let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
+    let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
     let getGridPolygonUrl = /*[[@{/event/getGridPolygon}]]*/ "/event/getGridPolygon";
     let searchUrl = /*[[@{/event/selfProcessingList}]]*/ "/event/selfProcessingList";
-    let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
-    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
-    let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
-    let claimAndCompleteByReceptionistUrl = /*[[@{/event/claimAndCompleteByReceptionistWithShiftLeader}]]*/ "/event/claimAndCompleteByReceptionistWithShiftLeader";
-    let completeByReceptionistWithSendCheckUrl = /*[[@{/event/completeByReceptionistWithSendCheck}]]*/ "/event/completeByReceptionistWithSendCheck";
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
-    let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
-    let changeUrgentUrl = /*[[@{/event/urgent}]]*/ "/event/urgent";
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+    let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
+    let showUrl = [[${@fastProperties.nginxUrl}]];
     let num = 1;
 
     function queryUserList() {
