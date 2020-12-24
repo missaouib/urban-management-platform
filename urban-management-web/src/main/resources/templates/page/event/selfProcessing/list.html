@@ -381,35 +381,23 @@
                 </div>
                 <div class="modal-body">
                     <div class="checkMain" style="position: relative">
-                        <span class="sendText" style="width: 102px" id="btnOpinion"><i style="color: red!important;"></i></span>
+                        <span class="sendText" style="width: 125px" id="btnOpinion"><i style="color: red!important;"></i></span>
                         <textarea type="text" id="textIdioms" onmouseout="saveIdioms(this)"></textarea>
                         <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                         <div id="wordSays" class="wordSays" style="background-color:#fff;">
                         </div>
                     </div>
                     <div class="checkMain" style="position: relative;display: block" id="userListDiv">
+                        <div class="sendText" style="float:left;width: 99px">监督员</div>
+                        <select name="safeLevel" id="selectUser" onchange="getUserVal()" type="text" class="find_input">
 
-                            <div class="sendText" style="float:left;">监督员</div>
-                                <select name="safeLevel" id="selectUser" onchange="getUserVal()" type="text" class="find_input">
-
-                                </select>
-
+                        </select>
                     </div>
                     <div class="send">
                         <div class="sendImg">
-                            <div class="sendText"><span>图片:</span></div>
+                            <div class="sendText" style="width: 99px"><span>多媒体:</span></div>
                             <div><input id="imageInput" type="file" name="files" multiple="multiple"></div>
                             <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
-                        </div>
-                        <div class="sendImg">
-                            <div class="sendText"><span>视频:</span></div>
-                            <div><input id="videoInput" type="file" name="files" multiple="multiple"></div>
-                            <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
-                        </div>
-                        <div class="sendImg">
-                            <div class="sendText"><span>音频:</span></div>
-                            <div><input id="audioInput" type="file" name="files" multiple="multiple"></div>
-                            <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
                         </div>
                     </div>
                 </div>
@@ -723,7 +711,7 @@
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg'],       // 接收的文件后缀
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg','mp4','mp3'],       // 接收的文件后缀
             maxFileCount: 3,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
@@ -731,7 +719,7 @@
             showPreview: true,                                  // 是否显示预览
             showUpload: false,                                  // 是否显示上传按钮
             showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
+            dropZoneEnabled: true,                             // 是否显示拖拽区域
             // browseClass: "btn btn-primary",                     // 按钮样式
 
         }).on('change', function (event) {
