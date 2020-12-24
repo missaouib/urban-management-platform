@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -79,14 +80,15 @@ public class WirelessAcquisitionController {
         modelAndView.addObject("gridList", gridService.searchAll());
         return modelAndView;
     }
+
     @GetMapping("/toCaseVerifyList")
-    public ModelAndView toCaseVerifyList() {
-        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseVerify/list");
+    public ModelAndView toCaseVerifyList(Model model, String eventId) {
         //问题来源
-        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        model.addAttribute("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
-        modelAndView.addObject("gridList", gridService.searchAll());
-        return modelAndView;
+        model.addAttribute("gridList", gridService.searchAll());
+        model.addAttribute("eventId", eventId);
+        return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseVerify/list");
     }
 
     @GetMapping("/toWirelessAcquisitionSave")
