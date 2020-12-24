@@ -868,20 +868,16 @@ public class EventService {
      */
     public void changeUrgent(String eventId) {
         Event event = this.findOne(eventId);
-        List<KV> kvList0 = kvService.findByTableNameAndFieldNameAndValue("event", "urgent", "正常");
-        List<KV> kvList1 = kvService.findByTableNameAndFieldNameAndValue("event", "urgent", "紧急");
-        Integer key0 = kvList0.get(0).getKey();
-        Integer key1 = kvList1.get(0).getKey();
-        if (key0.equals(event.getUrgent())) {
-            event.setUrgent(key1);
-        }else {
-            event.setUrgent(key0);
+        if (event.getUrgent().equals(0)) {
+            event.setUrgent(1);
+        } else {
+            event.setUrgent(0);
         }
         eventRepository.saveAndFlush(event);
     }
 
     public int findUrgent(String eventId) {
         Event event = this.findOne(eventId);
-        return event.getUrgent()== null ? 0 : event.getUrgent();
+        return event.getUrgent() == null ? 0 : event.getUrgent();
     }
 }
