@@ -295,7 +295,7 @@
     let completeByReceptionistWithSendCheckUrl = /*[[@{/event/completeByReceptionistWithSendCheck}]]*/ "/event/completeByReceptionistWithSendCheck";
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
-
+    let dispatcherUrl= /*[[@{/workbench/dispatcher}]]*/ "/workbench/dispatcher";
 
     let num = 1;
 
@@ -308,7 +308,7 @@
             url: searchUrl,
             createUrl: addUrl,
             updateUrl: editUrl,
-            pageSize:20,
+            pageSize: 20,
             removeUrl: removeUrl,
             // exportUrl: prefix + "/export",
             // importUrl: prefix + "/importData",
@@ -316,12 +316,10 @@
             uniqueId: "id",
             sortName: "updateTime",
             sortOrder: "desc",
-            modalName: "用户",
+            modalName: "待办事件",
             onClickRow: function (row, index) {
-                //跳转
-                window.parent.$.learuntab.myAddTab('待办事件', row.url, 'data_id')
-                // window.location.href = row.url
-                // checkRow(row.id);
+                let url = dispatcherUrl + "?url=" + row.url + "&id=" + row.id;
+                window.parent.$.learuntab.myAddTab('待办事件', url, 'data_id')
             },
             columns: [
                 {

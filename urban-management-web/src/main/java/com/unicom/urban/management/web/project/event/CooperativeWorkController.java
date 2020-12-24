@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,13 +44,14 @@ public class CooperativeWorkController {
      * @return 页面
      */
     @GetMapping("/toCooperativeWorkList")
-    public ModelAndView toCooperativeWorkList() {
-        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/cooperativeWork/list");
+    public ModelAndView toCooperativeWorkList(Model model, String eventId) {
         //问题来源
-        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        model.addAttribute("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
-        modelAndView.addObject("gridList", gridService.searchAll());
-        return modelAndView;
+        model.addAttribute("gridList", gridService.searchAll());
+        // 从工作台跳转过来传递的eventId
+        model.addAttribute("eventId", eventId);
+        return new ModelAndView(SystemConstant.PAGE + "/event/cooperativeWork/list");
     }
 
     @GetMapping("/cooperativeWorkList")
@@ -199,7 +201,6 @@ public class CooperativeWorkController {
     public ModelAndView toSuperviseCasesList() {
         return new ModelAndView(SystemConstant.PAGE + "/event/superviseCases/list");
     }
-
 
 
 }
