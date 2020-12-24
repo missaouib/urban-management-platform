@@ -1172,7 +1172,7 @@
             $("#musicListAfter").empty();
             for (let i = 0; i < file.length; i++) {
                 console.log("filei",file[i])
-                if (file[i].management ==="处置前"){
+                if (file[i].management === 1){
                     if (file[i].type=== '图片'){
                         imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
                             "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
