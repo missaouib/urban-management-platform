@@ -107,4 +107,6 @@ public class EventVO {
 
     private String url;
 
+    private Integer urgent;
+
 }

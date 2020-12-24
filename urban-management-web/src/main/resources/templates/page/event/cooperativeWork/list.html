@@ -813,16 +813,17 @@
         buttonName = $(obj).text();
     }
     /*转应急*/
-    function changeUrgent(eventId) {
+    function changeUrgent(eventId,type) {
         $.ajax({
             url: changeUrgentUrl,
             type: 'POST',
-            data: {eventId: eventId},
+            data: {eventId: eventId,type: type},
             async: false,
             dataType: 'json',
             success: function (data) {
                 if (data.code === 0) {
                     $.modal.alertSuccess('保存成功', function () {
+                        window.location.href = "/event/toCooperativeWorkList";
                     });
                 }
             },
@@ -895,7 +896,6 @@
                 getGridPolygon(row.id);
                 $('.changeColor').removeClass('changeColor');
                 $($element).addClass('changeColor');
-
                 layerMap.getSource().clear()
                 //详情  流程图  流转记录
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
@@ -975,11 +975,7 @@
                         /*按钮*/
                     var buttonStr = "";
                     $(e.data.eventButtonVOS).each(function (index, value) {
-                        if (value.buttonText === '转应急'){
-                            buttonStr += "<button  type=\"button\" class=\"but_save\" id='" + value.id + "' onclick='changeUrgent(\""+value.id+"\")'  class=\"but_save\">" + value.buttonText + "</button>";
-                        }else {
-                            buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='" + value.id + "' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
-                        }
+                        buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='" + value.id + "' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
                     })
                     $("#btnGroupGround").empty();
                     $("#btnGroupGround").append(buttonStr);
@@ -987,6 +983,8 @@
                     getTimeAxis(row.id);
 
                     getNodeName(row.id);
+
+                    setUrgentButton(row.id);
                 });
             },
             columns: [
@@ -1030,12 +1028,41 @@
                     title: '截止时间',
                     field: 'endTimeStr'
                 },
+                {
+                    title: '应急状态',
+                    field: '',
+                    class:'time_width',
+                    formatter: function (value, row) {
+                        let image = "";
+                        let urgent = row.urgent;
+                        if (urgent === 1) {
+                            image = "<img src='../../img/yj.png' style='width: 25%;height: 25%;align-content: center'>";
+                        }else {
+                            image="正常"
+                        }
+                        return image;
 
+
+                    }
+                },
             ]
         };
         $.table.init(options);
     }
-
+function setUrgentButton(eventId) {
+    $.ajaxUtil.get("/event/findUrgent" + "/?eventId=" + eventId, function (e) {
+        let data = e.data;
+        let buttonText = "";
+        let buttonStr = "";
+        if (data === 1){
+            buttonText = '取消应急';
+        }else{
+            buttonText = '转应急';
+        }
+        buttonStr = "<button  type=\"button\" class=\"but_save\" onclick='changeUrgent(\""+eventId+"\")'  class=\"but_save\">" + buttonText + "</button>";
+        $("#btnGroupGround").append(buttonStr);
+    });
+}
     function getTimeAxis(eventId) {
         $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
             let data = e.data;

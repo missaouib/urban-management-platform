@@ -141,9 +141,20 @@ public class EventController {
         List<EventVO> eventVOList = eventService.similarCasesForEvent(x, y);
         return Result.success(eventVOList);
     }
+
+    /**
+     * 设置转应急状态
+     * @param eventId
+     * @return
+     */
     @PostMapping("/urgent")
     public Result changeUrgentUrl(String eventId){
         eventService.changeUrgent(eventId);
         return Result.success();
+    }
+    @GetMapping("/findUrgent")
+    public Result findUrgent(String eventId){
+        int type = eventService.findUrgent(eventId);
+        return Result.success(type);
     }
 }
