@@ -168,7 +168,7 @@ public class EventService {
                 list.add(in);
             }
             /*无效案件*/
-            if (eventDTO.getNotOperate() !=null &&eventDTO.getNotOperate() == 1 ){
+            if (eventDTO.getNotOperate() != null && eventDTO.getNotOperate() == 1) {
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
                 List<String> eventId = statisticsService.findEventIdByNotOperate(eventDTO.getNotOperate());
                 if (eventId.size() == 0) {
@@ -186,23 +186,23 @@ public class EventService {
         /*循环添加vo*/
         page.getContent().forEach(e -> {
             EventVO eventVO = EventMapper.INSTANCE.eventToEventVO(e);
-            if(e.getSupervises().size()>0){
+            if (e.getSupervises().size() > 0) {
                 /*督办*/
                 eventVO.setSupSts("1");
-            }else{
+            } else {
                 /*未督办*/
                 eventVO.setSupSts("0");
             }
             eventVO.setEventTypeName(e.getEventType().getParent().getParent().getName() + "-" + e.getEventType().getParent().getName() + "-" + e.getEventType().getName());
-           /*查询事件步骤endtime为null的  如果有取出这条 附加到vo信息*/
+            /*查询事件步骤endtime为null的  如果有取出这条 附加到vo信息*/
             List<Statistics> collect1 = e.getStatisticsList().stream().filter(s -> s.getEndTime() == null).collect(Collectors.toList());
-            if (collect1.size()>0) {
+            if (collect1.size() > 0) {
                 Statistics statistics = collect1.get(0);
                 eventVO.setTaskName(statistics.getTaskName());
                 String format = simpleDateFormat.format(statistics.getStartTime());
                 eventVO.setStartTime(format);
                 int hangDurationHours = 0;
-                if("专业部门".equals(statistics.getTaskName())) {
+                if ("专业部门".equals(statistics.getTaskName())) {
                     int timeLimit = statistics.getDeptTimeLimit().getTimeLimit();
                     eventVO.setTimeLimit(timeLimit);
                     String timeType = statistics.getDeptTimeLimit().getTimeType().getValue();
@@ -262,8 +262,8 @@ public class EventService {
                 }
             }
             List<Statistics> notOperateCollect = e.getStatisticsList();
-            for (Statistics s : notOperateCollect){
-                if (s.getNotOperate()!= null && s.getNotOperate() ==1 ) {
+            for (Statistics s : notOperateCollect) {
+                if (s.getNotOperate() != null && s.getNotOperate() == 1) {
                     eventVO.setStatisticsId(s.getId());
                 }
             }
@@ -390,7 +390,7 @@ public class EventService {
      * @param button  按钮
      */
     public void completeByVerification(String eventId, String button) {
-        workService.completeByVerificationist(eventId,button);
+        workService.completeByVerificationist(eventId, button);
     }
 
     /**
@@ -529,7 +529,7 @@ public class EventService {
             Map<String, Object> map = new HashMap<>();
             map.put("url", f.getFilePath());
             map.put("type", f.getFileType());
-            map.put("management", f.getManagement().getValue());
+            map.put("management", f.getManagement());
             fileList.add(map);
         });
         eventOneVO.setFile(fileList);
@@ -538,12 +538,12 @@ public class EventService {
         eventOneVO.setDeptName(dept.map(Dept::getDeptName).orElse(""));
 
         List<Statistics> statisticsList = statisticsService.findAllByEventIdOrderBySort(eventId);
-        if(statisticsList.size()>1){
+        if (statisticsList.size() > 1) {
             Statistics statistics = statisticsList.get(1);
-            if("派遣员-申请延时".equals(statisticsList.get(0).getTaskName())){
+            if ("派遣员-申请延时".equals(statisticsList.get(0).getTaskName())) {
                 eventOneVO.setDelayedHours(statistics.getDelayedHours());
             }
-            if("值班长-作废审批".equals(statisticsList.get(0).getTaskName())){
+            if ("值班长-作废审批".equals(statisticsList.get(0).getTaskName())) {
                 eventOneVO.setTaskDeptName(Optional.ofNullable(statisticsList.get(2).getDisposeUnitName()).map(Dept::getDeptName).orElse(""));
             }
             eventOneVO.setTaskDeptName(Optional.ofNullable(statistics.getDisposeUnitName()).map(Dept::getDeptName).orElse(""));
@@ -628,23 +628,23 @@ public class EventService {
             recType.setId(eventDTO.getRecTypeId());
             event.setRecType(recType);
         }
-        if (eventDTO.getDoBySelf() == null){
+        if (eventDTO.getDoBySelf() == null) {
             event.setDoBySelf(null);
-        }else {
+        } else {
             event.setDoBySelf(eventDTO.getDoBySelf());
         }
         if (eventDTO.getEventFileList() != null) {
             event.setEventFileList(eventDTO.getEventFileList());
         }
-        if (StringUtils.isNotBlank(eventDTO.getRepresent())){
+        if (StringUtils.isNotBlank(eventDTO.getRepresent())) {
             event.setRepresent(eventDTO.getRepresent());
         }
-        if (StringUtils.isNotBlank(eventDTO.getLocation())){
+        if (StringUtils.isNotBlank(eventDTO.getLocation())) {
             event.setLocation(eventDTO.getLocation());
         }
         if (eventDTO.getSts() == null) {
             event.setSts(null);
-        }else {
+        } else {
             event.setSts(eventDTO.getSts());
         }
         return event;
@@ -736,17 +736,17 @@ public class EventService {
 
             //处置前的图片上传
             if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlList())) {
-                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(),1);
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);
                 eventFileList.addAll(fileList);
             }
             //处置前的视频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getVideoUrlList())) {
-                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(),2);
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(), 2);
                 eventFileList.addAll(fileList);
             }
             //处置前的视频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getMusicUrlList())) {
-                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(),3);
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(), 3);
                 eventFileList.addAll(fileList);
             }
             //处置后的图片上传
@@ -767,7 +767,7 @@ public class EventService {
             if (CollectionUtils.isNotEmpty(files)) {
                 eventFileList.addAll(files);
             }
-        }else {/*新增*/
+        } else {/*新增*/
             //处置前的图片上传
             if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlList())) {
                 List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);

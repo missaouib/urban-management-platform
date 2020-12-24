@@ -90,7 +90,9 @@
                                 </td>
                                 <td><span></span>诉求时间</td>
                                 <td>
-                                    <input th:name="createTime" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}" type="text" class=""/>
+                                    <input th:name="createTime"
+                                           th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}"
+                                           type="text" class=""/>
                                 </td>
                             </tr>
 
@@ -125,7 +127,8 @@
                             <tr>
                                 <td><span>*</span>所在区域</td>
                                 <td>
-                                    <select name="required" class="form-control" id="grid1" onchange="getStreetList()" required>
+                                    <select name="required" class="form-control" id="grid1" onchange="getStreetList()"
+                                            required>
                                         <option>--请选择--</option>
                                         <option th:each="as:${gridList}" th:value="${as.id}"
                                                 th:text="${as.gridName}"></option>
@@ -133,14 +136,16 @@
                                 </td>
                                 <td><span>*</span>所属街道</td>
                                 <td>
-                                    <select name="phone" class="form-control" id="grid2" onchange="getCommunityList()" required>
+                                    <select name="phone" class="form-control" id="grid2" onchange="getCommunityList()"
+                                            required>
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span>*</span>所属社区</td>
                                 <td>
-                                    <select name="petitonerPhone" class="form-control" id="grid3" onchange="getGridList()" required>
+                                    <select name="petitonerPhone" class="form-control" id="grid3"
+                                            onchange="getGridList()" required>
                                     </select>
                                 </td>
                                 <td><span>*</span>所属网格</td>
@@ -152,8 +157,10 @@
                             <tr>
                                 <td><span></span>问题来源</td>
                                 <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required readonly="readonly">
-                                        <option th:each="as:${eventSource}" th:value="${as.id}" th:text="${as.value}"></option>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required
+                                            readonly="readonly">
+                                        <option th:each="as:${eventSource}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
                                     </select>
                                 </td>
                                 <td><span></span>上报人</td>
@@ -192,35 +199,37 @@
                                 <div class="sendText"><span>多媒体:</span></div>
                                 <div><input id="imageInput" type="file" name="files" multiple="multiple"></div>
                                 <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
+                                <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
+                                <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
                             </div>
-<!--                            <div class="sendImg">-->
-<!--                                <div class="sendText"><span>视频:</span></div>-->
-<!--                                <div><input id="videoInput" type="file" name="files" multiple="multiple"></div>-->
-<!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" value="">-->
-<!--                            </div>-->
-<!--                            <div class="sendImg">-->
-<!--                                <div class="sendText"><span>音频:</span></div>-->
-<!--                                <div><input id="audioInput" type="file" name="files" multiple="multiple"></div>-->
-<!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" value="">-->
-<!--                            </div>-->
+                            <!--                            <div class="sendImg">-->
+                            <!--                                <div class="sendText"><span>视频:</span></div>-->
+                            <!--                                <div><input id="videoInput" type="file" name="files" multiple="multiple"></div>-->
+                            <!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" value="">-->
+                            <!--                            </div>-->
+                            <!--                            <div class="sendImg">-->
+                            <!--                                <div class="sendText"><span>音频:</span></div>-->
+                            <!--                                <div><input id="audioInput" type="file" name="files" multiple="multiple"></div>-->
+                            <!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" value="">-->
+                            <!--                            </div>-->
                         </div>
                     </div>
 
                     <!--                            按钮-->
-                        <!--            <div class="l_left">-->
-                        <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
-                        <!--            </div>-->
-                        <div class="r_right but_p girdBtnGroup">
+                    <!--            <div class="l_left">-->
+                    <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                    <!--            </div>-->
+                    <div class="r_right but_p girdBtnGroup">
 
-<!--                            <button class="but_save" type="button" style="margin-right: 10px" data-toggle="modal"-->
-<!--                                    id="similarCasesBtn" onclick="similarCasesForEvent()">相似案件-->
-<!--                            </button>-->
-                            <button class="but_save" type="submit" onclick="submitHandler1()"
-                                    style="margin-right: 10px">保存
-                            </button>
-                            <button class="but_save" type="submit" onclick="submitHandler2()">核实</button>
-                            <!--<button class="but_close" onclick="Cancel()">返回</button>-->
-                        </div>
+                        <!--                            <button class="but_save" type="button" style="margin-right: 10px" data-toggle="modal"-->
+                        <!--                                    id="similarCasesBtn" onclick="similarCasesForEvent()">相似案件-->
+                        <!--                            </button>-->
+                        <button class="but_save" type="submit" onclick="submitHandler1()"
+                                style="margin-right: 10px">保存
+                        </button>
+                        <button class="but_save" type="submit" onclick="submitHandler2()">核实</button>
+                        <!--<button class="but_close" onclick="Cancel()">返回</button>-->
+                    </div>
                 </div>
             </form>
         </div>
@@ -287,11 +296,13 @@
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
+    let multiMediaData;
+    let codePopup;
+
     $(function () {
 
-        console.clear();
+        $(".ol-full-screen-false").html("全屏");
 
-        $(".ol-full-screen-false").html("全屏")
         $(".name").click(function () {
             $(this).addClass("active").siblings(".name").removeClass("active");
             $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
@@ -301,7 +312,7 @@
             alert("附件详情")
         });
 
-        ////日期插件
+        //日期插件
         $('.form_datetime').datetimepicker({
             language: 'zh-CN',
             weekStart: 1,
@@ -314,8 +325,6 @@
             format: "yyyy-mm-dd hh:ii:ss"
         });
 
-        getGridPublishUrl();
-
         $("#imageInput").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
@@ -324,7 +333,7 @@
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg','mp4','mp3'],       // 接收的文件后缀
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'],       // 接收的文件后缀
             maxFileCount: 10,                                    // 最大文件数量
             hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
@@ -345,9 +354,8 @@
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {
-                let imageUrlList = data.response.data.url;
-                $("#imageUrlList").val(imageUrlList);
-                console.log("data", imageUrlList);
+                multiMediaData = data;
+                insertMultiMedia(data);
                 $.modal.alertSuccess('上传成功');
             } else {
                 $.modal.alertError(data.response.message);
@@ -357,155 +365,35 @@
             console.log('Key = ' + key);
         }).on('filesuccessremove', function (event, id) {
             console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            console.log(id);
+            deleteMultiMedia(id, multiMediaData);
         }).on('fileclear', function (event) {
             console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-            console.log(event);
         }).on('filecleared', function (event) {
             console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-            console.log(event);
         }).on('filepredelete', function (event, key) {
             console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
             console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log('filesuccessremove()   ')
-            console.log(id);
         });
-        //
-        // $("#videoInput").fileinput({
-        //     language: 'zh',                                     // 设置语言
-        //     theme: 'fa',
-        //     uploadUrl: uploadUrl,
-        //     uploadAsync: false,                                       //关闭异步上传，改为同步上传。
-        //     // showUpload: true,
-        //     // previewFileType: 'any',
-        //     // enableResumableUpload: true,
-        //     allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg','mp4'],       // 接收的文件后缀
-        //     maxFileCount: 3,                                    // 最大文件数量
-        //     hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-        //     focusCaptionOnBrowse: false,
-        //     showCaption: false,                                 // 是否显示标题
-        //     showPreview: true,                                  // 是否显示预览
-        //     showUpload: false,                                  // 是否显示上传按钮
-        //     showRemove: true,                                   // 显示移除按钮
-        //     dropZoneEnabled: false,                             // 是否显示拖拽区域
-        //     // browseClass: "btn btn-primary",                     // 按钮样式
-        //
-        // }).on('change', function (event) {
-        //     console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        // }).on('fileselect', function (event, numFiles, label) {
-        //     console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        // }).on("filebatchselected", function (event, files) {
-        //     $(this).fileinput("upload");
-        // }).on("fileuploaded", function (event, data) {
-        //
-        // }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
-        //     console.log('filebatchuploadsuccess() 同步上传返回结果处理')
-        //     if (data.response.code === web_status.SUCCESS) {
-        //         let videoUrlList = data.response.data.url;
-        //         $("#videoUrlList").val(videoUrlList);
-        //         console.log("data", videoUrlList);
-        //         $.modal.alertSuccess('上传成功');
-        //     } else {
-        //         $.modal.alertError(data.response.message);
-        //     }
-        // }).on('filedeleted', function (event, key) {
-        //     console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
-        //     console.log('Key = ' + key);
-        // }).on('filesuccessremove', function (event, id) {
-        //     console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-        //     console.log(id);
-        // }).on('fileclear', function (event) {
-        //     console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-        //     console.log(event);
-        // }).on('filecleared', function (event) {
-        //     console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-        //     console.log(event);
-        // }).on('filepredelete', function (event, key) {
-        //     console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
-        //     console.log('Key = ' + key);
-        // }).on('filesuccessremove', function (event, id) {
-        //     console.log('filesuccessremove()   ')
-        //     console.log(id);
-        // });
-        //
-        // $("#audioInput").fileinput({
-        //     language: 'zh',                                     // 设置语言
-        //     theme: 'fa',
-        //     uploadUrl: uploadUrl,
-        //     uploadAsync: false,                                       //关闭异步上传，改为同步上传。
-        //     // showUpload: true,
-        //     // previewFileType: 'any',
-        //     // enableResumableUpload: true,
-        //     allowedFileExtensions: ['mp3'],       // 接收的文件后缀
-        //     maxFileCount: 3,                                    // 最大文件数量
-        //     hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-        //     focusCaptionOnBrowse: false,
-        //     showCaption: false,                                 // 是否显示标题
-        //     showPreview: true,                                  // 是否显示预览
-        //     showUpload: false,                                  // 是否显示上传按钮
-        //     showRemove: true,                                   // 显示移除按钮
-        //     dropZoneEnabled: false,                             // 是否显示拖拽区域
-        //     // browseClass: "btn btn-primary",                     // 按钮样式
-        //
-        // }).on('change', function (event) {
-        //     console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        // }).on('fileselect', function (event, numFiles, label) {
-        //     console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        // }).on("filebatchselected", function (event, files) {
-        //     $(this).fileinput("upload");
-        // }).on("fileuploaded", function (event, data) {
-        //
-        // }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
-        //     console.log('filebatchuploadsuccess() 同步上传返回结果处理')
-        //     if (data.response.code === web_status.SUCCESS) {
-        //         let musicUrlList = data.response.data.url;
-        //         $("#musicUrlList").val(musicUrlList);
-        //         console.log("data", musicUrlList);
-        //         $.modal.alertSuccess('上传成功');
-        //     } else {
-        //         $.modal.alertError(data.response.message);
-        //     }
-        // }).on('filedeleted', function (event, key) {
-        //     console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
-        //     console.log('Key = ' + key);
-        // }).on('filesuccessremove', function (event, id) {
-        //     console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-        //     console.log(id);
-        // }).on('fileclear', function (event) {
-        //     console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-        //     console.log(event);
-        // }).on('filecleared', function (event) {
-        //     console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-        //     console.log(event);
-        // }).on('filepredelete', function (event, key) {
-        //     console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
-        //     console.log('Key = ' + key);
-        // }).on('filesuccessremove', function (event, id) {
-        //     console.log('filesuccessremove()   ')
-        //     console.log(id);
-        // });
 
+        getGridPublishUrl();
     });
 
-    function setCenterForGrid(data) {
-        map.getView().setCenter(data);
-    }
-
-    let url = /*[[@{/event/register}]]*/ "/event/register";
     let receiveUrl = /*[[@{/event/receive}]]*/ "/event/receive";
-    let dispatchUrl = /*[[@{/event/dispatch}]]*/ "/event/dispatch";
     let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
-    let componentTypeUrl = /*[[@{/allEventType}]]*/ "/allEventType";
-    let createEventCodeUrl = /*[[@{/event/createEventCode}]]*/ "/event/createEventCode";
-    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
-    let getDeptTimeLimitByLevelUrl = /*[[@{/event/getDeptTimeLimitByLevel}]]*/ "/event/getDeptTimeLimitByLevel";
-    let findAllByKvIdUrl = /*[[@{/event/findAllByKvId}]]*/ "/event/findAllByKvId";
-    let saveUrl = /*[[@{/event/save}]]*/ "/event/save";
+    let dispatchUrl = /*[[@{/event/dispatch}]]*/ "/event/dispatch";
     let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
-    let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
     let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
+    let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
+    let getGridCenterUrl = /*[[@{/grid/getGridCenter}]]*/ "/grid/getGridCenter";
+    let createEventCodeUrl = /*[[@{/event/createEventCode}]]*/ "/event/createEventCode";
+    let getEventConditionUrl = /*[[@{/event/getEventCondition}]]*/ "/event/getEventCondition";
+    let findDeptTimeLimitUrl = /*[[@{/event/findDeptTimeLimit}]]*/ "/event/findDeptTimeLimit";
+    let findAllByParentIdUrl = /*[[@{/event/findAllByParentId}]]*/ "/event/findAllByParentId";
+    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
     let similarCasesForEventUrl = /*[[@{/event/similarCasesForEvent}]]*/ "/event/similarCasesForEvent";
+    let getUserListForSupervisorUrl = /*[[@{/event/getUserListForSupervisor}]]*/ "/event/getUserListForSupervisor";
+    let findDeptTimeLimitByConditionUrl = /*[[@{/event/findDeptTimeLimitByCondition}]]*/ "/event/findDeptTimeLimitByCondition";
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
 
     function getGridPublishUrl() {
         $.ajaxUtil.get(getGridUrl, function (e) {
@@ -550,14 +438,10 @@
     //回调函数接收查询结果
     var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
 
-    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
-
-    var codePopup;
-
     /* 点击网格列表赋值 */
     function success_jsonpCallback(res) {
         var features = geojsonFormat.readFeatures(res);
-        if(features.length != 0){
+        if (features.length != 0) {
             let mongodbId = features[0].H.mongodb_id;
             $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
                 let data = e.data;
@@ -600,28 +484,7 @@
                             console.log("查询出了网格之外的东西");
                     }
                 }
-                /* todo 上面的方式是单纯的回显 想做一个触发级联之后再赋值的操作 可能需要类似等待的方式 需要执行完一个函数之后通过回调执行下一个 同步 */
-                /*let grid1 = getLevelWithList(data, 1);
-                $("#grid1").val(grid1.id);
-                getStreetList();
-                let grid2 = getLevelWithList(data, 2);
-                $("#grid2").val(grid2.id);
-                getCommunityList();
-                let grid3 = getLevelWithList(data, 3);
-                $("#grid3").val(grid3.id);
-                getGridList();
-                let grid4 = getLevelWithList(data, 4);
-                $("#grid4").val(grid4.id);*/
             });
-        }
-
-    }
-
-    function getLevelWithList(data, level) {
-        for (let i = 0; i < data.length; i++) {
-            if (data[i].level === level) {
-                return data[i];
-            }
         }
     }
 
@@ -630,8 +493,7 @@
      * @param eventTypeId
      */
     function createEventCode(eventTypeId) {
-        var url = createEventCodeUrl + "?eventTypeId=" + eventTypeId
-        $.ajaxUtil.get(url, function (e) {
+        $.ajaxUtil.get(createEventCodeUrl + "?eventTypeId=" + eventTypeId, function (e) {
             if (e.code === 0) {
                 let eventCode = e.data
                 $("#eventCode").val(eventCode);
@@ -650,11 +512,11 @@
                 publish = value.name;
                 publishId = value.id;
                 if (value.url != null) {
-                    var urlParam = value.url.split("?");
-                    var url = urlParam[0];
-                    var param = urlParam[1];
+                    let urlParam = value.url.split("?");
+                    let url = urlParam[0];
+                    let param = urlParam[1];
 
-                    var ImageVector = new ol.layer.Tile({
+                    let ImageVector = new ol.layer.Tile({
                         source: new ol.source.TileWMS({
                             url: url,
                             params: {
@@ -665,10 +527,10 @@
                             }
                         })
                     });
-                    var layersArray = map.getLayers();
+                    let layersArray = map.getLayers();
                     layersArray.insertAt(1, ImageVector);
                     //删除上一个底图
-                    var mation = map.getLayerGroup().getLayers().a;
+                    let mation = map.getLayerGroup().getLayers().a;
                     if (mation.length > 4) {
                         mation.splice(1, 1);
                         source.clear();
@@ -676,8 +538,8 @@
                     $("#layerId").val(value.layerId == null ? "" : value.layerId);
                     //获取地图数据s
                     map.on('singleclick', function (evt) {
-                        var viewResolution = map.getView().getResolution();
-                        var url = ImageVector.getSource().getGetFeatureInfoUrl(
+                        let viewResolution = map.getView().getResolution();
+                        let url = ImageVector.getSource().getGetFeatureInfoUrl(
                             evt.coordinate, viewResolution, 'EPSG:4326', {
                                 'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
                                 'FEATURE_COUNT': 50 //点击查询能返回的数量上限
@@ -710,8 +572,7 @@
      * 获取立案区域
      */
     function findEventConditionByEventType(eventTypeId) {
-        let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
-        $.ajaxUtil.get(url, function (e) {
+        $.ajaxUtil.get(findEventConditionByEventTypeUrl + "?eventTypeId=" + eventTypeId, function (e) {
             let option = "<option>--请选择--</option>";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
@@ -727,8 +588,7 @@
      */
     function getEventCondition() {
         let eventConditionId = $("#eventCondition").val();
-        let url = "/event/getEventCondition/?conditionId=" + eventConditionId;
-        $.ajaxUtil.get(url, function (e) {
+        $.ajaxUtil.get(getEventConditionUrl + "?conditionId=" + eventConditionId, function (e) {
             $("#eventTerm").empty();
             let option = "<option>--请选择--</option>";
             if (e.code === 0) {
@@ -745,8 +605,7 @@
      */
     function getTimeTypeList() {
         let eventTerm = $("#eventTerm").val();
-        let url = "/event/findDeptTimeLimitByCondition/?conditionId=" + eventTerm;
-        $.ajaxUtil.get(url, function (e) {
+        $.ajaxUtil.get(findDeptTimeLimitByConditionUrl + "?conditionId=" + eventTerm, function (e) {
             $("#timeType").empty();
             let option = "<option>--请选择--</option>";
             if (e.code === 0) {
@@ -763,8 +622,7 @@
      */
     function getDeptTimeLimitList() {
         let deptTimeLimitId = $("#timeType").val();
-        let url = "/event/findDeptTimeLimit/?deptTimeLimitId=" + deptTimeLimitId;
-        $.ajaxUtil.get(url, function (e) {
+        $.ajaxUtil.get(findDeptTimeLimitUrl + "?deptTimeLimitId=" + deptTimeLimitId, function (e) {
             if (e.code === 0) {
                 let data = e.data;
                 $("#deptTImeLimitId").val(data.id);
@@ -778,8 +636,7 @@
      */
     function getStreetList() {
         let parentId = $("#grid1 option:selected").val();
-        let url = "/event/findAllByParentId/?parentId=" + parentId;
-        $.ajaxUtil.get(url, function (e) {
+        $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function (e) {
             let option = "<option>--请选择--</option>";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
@@ -795,8 +652,7 @@
      */
     function getCommunityList() {
         let parentId = $("#grid2 option:selected").val();
-        let url = "/event/findAllByParentId/?parentId=" + parentId;
-        $.ajaxUtil.get(url, function (e) {
+        $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function (e) {
             let option = "<option>--请选择--</option>";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
@@ -812,8 +668,7 @@
      */
     function getGridList() {
         let parentId = $("#grid3 option:selected").val();
-        let url = "/event/findAllByParentId/?parentId=" + parentId;
-        $.ajaxUtil.get(url, function (e) {
+        $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function (e) {
             let option = "<option>--请选择--</option>";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
@@ -829,8 +684,7 @@
      */
     function getGridCenter() {
         let pointOfCenter = $("#grid4 option:selected").val();
-        let url = "/grid/getGridCenter?gridId=" + pointOfCenter;
-        $.ajaxUtil.get(url, function (e) {
+        $.ajaxUtil.get(getGridCenterUrl + "?gridId=" + pointOfCenter, function (e) {
             let data = e.data;
             let pointArray = [];
             pointArray.push(data.split("-")[0] * 1);
@@ -840,12 +694,15 @@
         getUserListForSupervisor(pointOfCenter);
     }
 
+    function setCenterForGrid(data) {
+        map.getView().setCenter(data);
+    }
+
     /**
      * 通过网格id获取符合条件得监督员
      */
     function getUserListForSupervisor(id) {
-        let getUserListForSupervisorUrl = "/event/getUserListForSupervisor/?gridId=" + id;
-        $.ajaxUtil.get(getUserListForSupervisorUrl, function (e) {
+        $.ajaxUtil.get(getUserListForSupervisorUrl + "?gridId=" + id, function (e) {
             let option = "";
             $("#userId").empty();
             if (e.code === 0) {

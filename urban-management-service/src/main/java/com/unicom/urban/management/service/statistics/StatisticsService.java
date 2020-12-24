@@ -84,7 +84,7 @@ public class StatisticsService {
                 Map<String, Object> map = new HashMap<>(3);
                 map.put("url", eventFile.getFilePath());
                 map.put("type", eventFile.getFileType());
-                map.put("management", eventFile.getManagement().getValue());
+                map.put("management", eventFile.getManagement());
                 stringList.add(map);
             });
             StatisticsVO statisticsVO = StatisticsVO.builder()
@@ -112,7 +112,7 @@ public class StatisticsService {
             Map<String, Object> map = new HashMap<>(3);
             map.put("url", eventFile.getFilePath());
             map.put("type", eventFile.getFileType());
-            map.put("management", eventFile.getManagement().getValue());
+            map.put("management", eventFile.getManagement());
             mapArrayList.add(map);
         });
         firstStatisticsVO.setFileName(mapArrayList);
@@ -264,30 +264,31 @@ public class StatisticsService {
 
     /**
      * 高发区域
+     *
      * @return mapList
      */
-    public List<Map<String,Object>> findHotGrid(String time){
+    public List<Map<String, Object>> findHotGrid(String time) {
         LocalDateTime[] timeArr = this.getStartEndTime(time);
-        List<Map<String,Object>> hotGridList = new ArrayList<>();
-        List<Map<String,Object>> mapList = statisticsRepository.findHotGrid(timeArr[0],timeArr[1]);
+        List<Map<String, Object>> hotGridList = new ArrayList<>();
+        List<Map<String, Object>> mapList = statisticsRepository.findHotGrid(timeArr[0], timeArr[1]);
         if (mapList != null && mapList.size() > 0) {
             List<GridVO> gridList = gridService.findAllByParentIsNull();
 
-            Map<String,Object> hotMap = new HashMap<>(3);
+            Map<String, Object> hotMap = new HashMap<>(3);
             Integer totalInst = 0;
-            Integer totalClose =0;
-            for (GridVO vo : gridList){
+            Integer totalClose = 0;
+            for (GridVO vo : gridList) {
                 String gridName = vo.getGridName();
                 for (Map<String, Object> map : mapList) {
                     String gridN = findFirstGrid(map.get("gridId").toString());
-                    if (gridName.equals(gridN)){
+                    if (gridName.equals(gridN)) {
                         totalInst += Integer.parseInt(map.get("totalInst").toString());
                         totalClose += Integer.parseInt(map.get("totalClose").toString());
                     }
                 }
-                hotMap.put("totalInst",totalInst);
-                hotMap.put("totalClose",totalClose);
-                hotMap.put("gridName",gridName);
+                hotMap.put("totalInst", totalInst);
+                hotMap.put("totalClose", totalClose);
+                hotMap.put("gridName", gridName);
                 hotGridList.add(hotMap);
             }
         }
@@ -615,6 +616,7 @@ public class StatisticsService {
         map.put("close", closeSize);
         return map;
     }
+
     /* 首页 个人信息 */
     public Map<String, Object> findPersonInfo() {
         Map<String, Object> personMap = new HashMap<>();
@@ -623,14 +625,16 @@ public class StatisticsService {
         Integer takeCase = statisticsRepository.findTakeCase(userId);
         Integer instCase = statisticsRepository.findInstCase(userId);
         Integer closeCase = statisticsRepository.findCloseCase(userId);
-        personMap.put("roleName",roleName);
-        personMap.put("takeCase",takeCase);
-        personMap.put("instCase",instCase);
-        personMap.put("closeCase",closeCase);
+        personMap.put("roleName", roleName);
+        personMap.put("takeCase", takeCase);
+        personMap.put("instCase", instCase);
+        personMap.put("closeCase", closeCase);
         return personMap;
     }
+
     /**
      * 问题来源（大屏）
+     *
      * @return
      */
     public Map<String, String> findEventSource(String time) {
@@ -755,9 +759,10 @@ public class StatisticsService {
 
     /**
      * 获取本年的开始时间和结束时间
+     *
      * @return
      */
-    private LocalDateTime[] getStartEndTime(String time){
+    private LocalDateTime[] getStartEndTime(String time) {
         final String year = "year";
         final String month = "month";
         final String day = "day";
@@ -780,7 +785,7 @@ public class StatisticsService {
             default:
                 throw new DataValidException("请正确选择日期");
         }
-        LocalDateTime[] timeArr= new LocalDateTime[2];
+        LocalDateTime[] timeArr = new LocalDateTime[2];
         timeArr[0] = startTime;
         timeArr[1] = endTime;
         return timeArr;
