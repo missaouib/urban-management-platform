@@ -14,7 +14,7 @@
                     showCaption: false,
                     showPreview: true,
                     showUpload: false,
-                    showRemove: true,
+                    showRemove: false,
                     initialPreviewShowDelete: true,
                     dropZoneEnabled: false,
                     showClose: false,

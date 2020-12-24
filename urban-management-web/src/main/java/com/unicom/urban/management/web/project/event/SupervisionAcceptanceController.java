@@ -59,6 +59,9 @@ public class SupervisionAcceptanceController {
         return modelAndView;
     }
 
+    /**
+     * 跳转到案件受理页面
+     */
     @GetMapping("/toSupervisionAcceptanceSave")
     public ModelAndView toSupervisionAcceptanceSave() {
         ModelAndView model = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/save");
