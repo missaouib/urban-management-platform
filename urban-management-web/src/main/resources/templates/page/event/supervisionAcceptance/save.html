@@ -26,7 +26,7 @@
                                     <input type="text" readonly="readonly" th:name="eventCode" id="eventCode"
                                            class="find_input"/>
                                 </td>
-                                <td><span></span>问题类型</td>
+                                <td><span></span>案件类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
                                     <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId"
@@ -104,7 +104,7 @@
                                     <input type="text" id="objId" readonly="readonly">
                                     <input type="hidden" id="objId1" name="objId" readonly="readonly">
                                 </td>
-                                <td><span></span>案件类型</td>
+                                <td><span></span>案件分类</td>
                                 <td>
                                     <select class="form-control" id="recTypeId" th:name="recTypeId" required>
                                         <option th:each="as:${recType}" th:value="${as.id}"

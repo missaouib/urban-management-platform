@@ -43,7 +43,7 @@
                                                     th:text="${as.value}"></option>
                                         </select>
                                     </td>
-                                    <td>问题类型<span></span></td>
+                                    <td>案件类型<span></span></td>
                                     <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                         <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
                                         <input type="hidden" readonly="readonly" id="eventTypeId" name="eventTypeId"
@@ -161,7 +161,7 @@
                                                 <td>
                                                     <input id="eventCode" placeholder="" class="" type="text" readonly="readonly" required>
                                                 </td>
-                                                <td><span></span>问题类型</td>
+                                                <td><span></span>案件类型</td>
                                                 <td>
                                                     <input id="eventTypeStr" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly" >
 
@@ -198,7 +198,7 @@
                                                 <td>
                                                     <input id="location" name="location" placeholder="" class="" readonly type="text">
                                                 </td>
-                                                <td><span></span>案件类型</td>
+                                                <td><span></span>案件分类</td>
                                                 <td>
                                                     <input id="recTypeStr" name="location" placeholder="" class="" readonly type="text">
                                                 </td>
@@ -719,7 +719,7 @@
                     field: 'taskName'
                 },
                 {
-                    title: '案件类型',
+                    title: '案件分类',
                     field: 'eventTypeName'
                 },
                 {
