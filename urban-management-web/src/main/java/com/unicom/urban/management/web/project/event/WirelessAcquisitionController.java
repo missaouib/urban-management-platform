@@ -275,15 +275,12 @@ public class WirelessAcquisitionController {
         eventService.updateTemp(eventDTO);
     }
     /**
-     * 案件采集删除
+     * 案件采集批量删除
      * @param id
      */
-    @RequestMapping("/remove/{id}")
-    public void remove(@PathVariable String id){
-        Event event = eventService.findOne(id);
-        event.setPetitioner(null);
-        eventService.update(event);
-        eventService.remove(id);
+    @PostMapping("/remove")
+    public void remove(String ids){
+        eventService.remove(ids);
     }
     /**
      * 案件采集上报
@@ -384,8 +381,8 @@ public class WirelessAcquisitionController {
      * 列表页案件采集上报
      * @param id
      */
-    @RequestMapping("reportOnList")
-    public Result reportOnList(String id){
+    @RequestMapping("reportOnList/{id}")
+    public Result reportOnList(@PathVariable String id){
         eventService.reportOnList(id);
         return Result.success();
 

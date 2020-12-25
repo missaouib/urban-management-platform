@@ -38,13 +38,16 @@
                 <a class="btn btn-primary" onclick="$.operate.addTab()">
                     <i class="fa fa-plus"></i> 新增
                 </a>
-                <a class="btn btn-primary" onclick="serRowIdFrom()">
+                <a class="btn btn-primary multiple disabled" onclick="$.operate.report()">
                     <i class="fa fa-paper-plane"></i> 上报
                 </a>
-                <a class="btn btn-primary" onclick="setRowIdUp()">
+                <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">
                     <i class="fa fa-edit"></i> 修改
                 </a>
-                <a class="btn btn-danger" style="color: #ffffff" onclick="serRowIdDel()">
+<!--                <a class="btn btn-danger" style="color: #ffffff" onclick="serRowIdDel()">-->
+<!--                    <i class="fa fa-remove"></i> 删除-->
+<!--                </a>-->
+                <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">
                     <i class="fa fa-remove"></i> 删除
                 </a>
             </div>
@@ -465,9 +468,9 @@
     let addUrl = /*[[@{/event/toWirelessAcquisitionSave}]]*/ "/event/toWirelessAcquisitionSave";
 
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
-    let removeUrl = /*[[@{/event/remove/{id}}]]*/ "/event/remove/{id}";
+    let removeUrl = /*[[@{/event/remove}]]*/ "/event/remove";
     let editUrl = /*[[@{/event/toWirelessAcquisitionUpdate/{id}}]]*/ "/event/toWirelessAcquisitionUpdate/{id}";
-    let reportOnListUrl = /*[[@{/event/reportOnList}]]*/ "/event/reportOnList";
+    let reportOnListUrl = /*[[@{/event/reportOnList/{id}}]]*/ "/event/reportOnList";
 
     //回调函数接收查询结果
     var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
@@ -523,7 +526,6 @@
                 setPoint(row.id)
                 setInput(row)
                 getEventDetail(row.id);
-                console.log(index[0].rowIndex)
                 localStorage.setItem("rowIndex",index[0].rowIndex);
             },
             columns: [
@@ -535,6 +537,9 @@
                         var page = $('#bootstrap-table').bootstrapTable("getPage");
                         return page.pageSize * (page.pageNumber - 1) + index + 1;
                     }
+                },
+                {
+                    checkbox: true
                 },
                 {
                     title: '案卷号',

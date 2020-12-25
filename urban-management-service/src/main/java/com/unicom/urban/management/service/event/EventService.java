@@ -653,10 +653,16 @@ public class EventService {
     /**
      * 案件采集删除
      *
-     * @param eventId id
+     * @param ids
      */
-    public void remove(String eventId) {
-        eventRepository.deleteById(eventId);
+    public void remove(String ids) {
+        String[] idList = ids.split(",");
+        for (String id : idList) {
+            Event event = this.findOne(id);
+            event.setPetitioner(null);
+            this.update(event);
+            eventRepository.deleteById(id);
+        }
     }
 
     /**
