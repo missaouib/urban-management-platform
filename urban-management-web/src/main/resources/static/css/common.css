@@ -2065,6 +2065,9 @@ span.search_highlight {
     left: 0px!important;
     z-index: 2!important;
 }
+#areascontent .fixed-table-pagination{
+    position: relative!important;
+}
 .mannertable th{
     text-align: center;
 }

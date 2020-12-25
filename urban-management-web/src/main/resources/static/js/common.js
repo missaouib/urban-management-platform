@@ -549,7 +549,7 @@ var table = {
 					showPageGo: false,
 					showRefresh: true,
 					showColumns: true,
-					showToggle: true,
+					showToggle: false,
 					showExport: false,
 					clickToSelect: false,
 					singleSelect: false,
