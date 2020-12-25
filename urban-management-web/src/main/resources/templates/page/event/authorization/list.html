@@ -1101,6 +1101,7 @@
 
     /* 完成任务 派核实 监督员 */
     function setValueForCompleteEvent(data) {
+        $("#textIdioms").empty();
         $("#eventId").val(data.value)
         $("#button").val(data.id)
         completeEvent();

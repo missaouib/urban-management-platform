@@ -389,7 +389,7 @@
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
                             <span class="sendText" id="btnOpinion"><i></i>意见</span>
-                            <textarea type="text" id="opinions"></textarea>
+                            <textarea type="text" id="opinions" onblur="saveIdioms(this)"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays">
                                 <ul>
@@ -643,6 +643,10 @@
             setConduct(bgmNum)
 
             queryUserList();
+            let eventId = $("input[name='eventId']").val();
+            if (eventId !== '' && eventId !== undefined){
+                checkRow(eventId);
+            }
             $(".tabTitle span").click(function () {
                 $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
                 $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
@@ -872,13 +876,7 @@
                 pageSize: 10,
                 onClickRow: function (row) {
                     layerMap.getSource().clear()
-                    console.log("row", row);
-                    getButton(row.id);
-                    getTimeAxis(row.id);
-                    //详情
-                    getEventDetail(row.id);
-                    //步骤图
-                    getNodeName(row.id);
+                    checkRow(row.id)
                 },
                 columns: [
                     {
@@ -936,6 +934,14 @@
                 ]
             };
             $.table.init(options);
+        }
+        function checkRow(eventId) {
+            getButton(eventId);
+            getTimeAxis(eventId);
+            //详情
+            getEventDetail(eventId);
+            //步骤图
+            getNodeName(eventId);
         }
         function getTimeAxis(eventId) {
             let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";

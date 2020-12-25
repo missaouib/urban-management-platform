@@ -674,11 +674,16 @@
 
         getIdioms();
         queryUserList();
+
         setModelName();
         //处置前后为空
         setMediaBefore();
         setMediaAfter();
 
+        let eventId = $("input[name='eventId']").val();
+        if (eventId !== '' && eventId !== undefined){
+            checkRow(eventId);
+        }
     });
 
     function setModelName(){
@@ -1020,6 +1025,7 @@
 
     /* 完成任务 派核实 监督员 */
     function setValueForCompleteEvent(data) {
+        $("#textIdioms").empty();
         $("#eventId").val(data.value)
         $("#button").val(data.id)
     }

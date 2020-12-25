@@ -507,6 +507,10 @@
         setConduct(bgmNum)
 
         queryUserList();
+        let eventId = $("input[name='eventId']").val();
+        if (eventId !== '' && eventId !== undefined){
+            checkRow(eventId);
+        }
         $(".tabTitle span").click(function() {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
@@ -730,12 +734,9 @@
             modalName: "用户",
              // 点击每行进行函数的触发
             onClickRow: function (row, tr, flied) {
-                getButton(row.id)
                 layerMap.getSource().clear()
-                getEventDetail(row.id);
-                getTimeAxis(row.id)
-                //步骤图
-                getNodeName(row.id);
+                getButton(row.id)
+                checkRow(eventId)
             },
             columns: [
                 {
@@ -793,6 +794,12 @@
             ]
         };
         $.table.init(options);
+    }
+    function checkRow(eventId) {
+        getEventDetail(eventId);
+        getTimeAxis(eventId)
+        //步骤图
+        getNodeName(eventId);
     }
     //模态窗 selectEventTypeTree
     function selectEventTypeTree() {

@@ -522,6 +522,7 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
+
         $(".ol-full-screen-false").html("全屏")
         getIdioms()
         //步骤进行到
@@ -529,6 +530,11 @@
         setConduct(bgmNum)
 
         queryUserList();
+
+        let eventId = $("input[name='eventId']").val();
+        if (eventId !== '' && eventId !== undefined){
+            checkRow(eventId);
+        }
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
@@ -1032,6 +1038,7 @@
 
     /* 完成任务 派核实 监督员 */
     function setValueForCompleteEvent(data) {
+        $("#textIdioms").empty();
         $("#eventId").val(data.value)
         $("#button").val(data.id)
     }

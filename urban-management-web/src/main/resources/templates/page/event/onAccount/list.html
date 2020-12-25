@@ -386,7 +386,7 @@
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
                             <span class="sendText" id="btnOpinion" style="width: 100px"><i></i>意见</span>
-                            <textarea type="text" id="opinions"></textarea>
+                            <textarea type="text" id="opinions" onblur="saveIdioms(this)"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays">
                                 <ul>
@@ -549,6 +549,10 @@
         setConduct(bgmNum)
 
         queryUserList();
+        let eventId = $("input[name='eventId']").val();
+        if (eventId !== '' && eventId !== undefined){
+            checkRow(eventId);
+        }
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
@@ -724,6 +728,7 @@
     var deptName = ""
 
     function eventButton(obj) {
+        $("#textIdioms").empty();
         buttonId = $(obj).attr("id");
     }
 
@@ -793,59 +798,7 @@
             // 点击每行进行函数的触发
             onClickRow: function (row, index, tr, flied) {
                 layerMap.getSource().clear()
-                //详情  流程图  流转记录
-                $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
-                    eventId = e.data.id;
-                    getNodeName(eventId);
-                    /*流程图*/
-                    $("#eventImg").attr('src', img + e.data.processInstanceId);
-                    /*详情*/
-                    $("#eventCode").val(e.data.eventCode);
-                    $("#eventTypeStr").val(e.data.eventTypeStr);
-                    $("#represent").val(e.data.represent);
-                    $("#location").val(e.data.location);
-                    $("#regionStr").val(e.data.regionStr);
-                    $("#conditionValue").val(e.data.conditionValue);
-                    $("#level").val(e.data.level);
-                    $("#timeLimitStr").val(e.data.timeLimitStr);
-                    $("#girdStr").val(e.data.girdStr);
-                    $("#community").val(e.data.community);
-                    $("#street").val(e.data.street);
-                    $("#eventRegion").val(e.data.eventRegion);
-                    $("#x").val(e.data.x);
-                    $("#y").val(e.data.y);
-                    setPoint(e.data.x, e.data.y)
-                    $("#eventSourceStr").val(e.data.eventSourceStr);
-                    $("#cdate").val(e.data.cdate);
-                    $("#petitionerSex").val(e.data.petitionerSex);
-                    $("#petitionerPhone").val(e.data.petitionerPhone);
-                    $("#petitionerName").val(e.data.petitionerName);
-                    $("#userName").val(e.data.userName);
-                    $("#recTypeStr").val(e.data.recTypeStr);
-                    $("#objId").val(e.data.objId);
-                    if (e.data.objId == null) {
-                        $(".partCodes").addClass('roleBox')
-                    } else {
-                        $(".partCodes").removeClass('roleBox')
-                    }
-                    deptId = e.data.deptId;
-                    deptName = e.data.deptName;
-
-                    /* 附件图片回显 */
-                    let file = e.data.file;
-                    setFileInput(file);
-
-                    /*按钮*/
-                    var buttonStr = "";
-                    $(e.data.eventButtonVOS).each(function (index, value) {
-                        buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='"+value.id+"' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
-
-                    })
-                    $("#btnGroupGround").empty();
-                    $("#btnGroupGround").append(buttonStr);
-
-                    getTimeAxis(row.id);
-                });
+                checkRow(row.id)
             },
             columns: [
                 {
@@ -885,7 +838,61 @@
         };
         $.table.init(options);
     }
+function checkRow(eventId) {
+    //详情  流程图  流转记录
+    $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
+        eventId = e.data.id;
+        getNodeName(eventId);
+        /*流程图*/
+        $("#eventImg").attr('src', img + e.data.processInstanceId);
+        /*详情*/
+        $("#eventCode").val(e.data.eventCode);
+        $("#eventTypeStr").val(e.data.eventTypeStr);
+        $("#represent").val(e.data.represent);
+        $("#location").val(e.data.location);
+        $("#regionStr").val(e.data.regionStr);
+        $("#conditionValue").val(e.data.conditionValue);
+        $("#level").val(e.data.level);
+        $("#timeLimitStr").val(e.data.timeLimitStr);
+        $("#girdStr").val(e.data.girdStr);
+        $("#community").val(e.data.community);
+        $("#street").val(e.data.street);
+        $("#eventRegion").val(e.data.eventRegion);
+        $("#x").val(e.data.x);
+        $("#y").val(e.data.y);
+        setPoint(e.data.x, e.data.y)
+        $("#eventSourceStr").val(e.data.eventSourceStr);
+        $("#cdate").val(e.data.cdate);
+        $("#petitionerSex").val(e.data.petitionerSex);
+        $("#petitionerPhone").val(e.data.petitionerPhone);
+        $("#petitionerName").val(e.data.petitionerName);
+        $("#userName").val(e.data.userName);
+        $("#recTypeStr").val(e.data.recTypeStr);
+        $("#objId").val(e.data.objId);
+        if (e.data.objId == null) {
+            $(".partCodes").addClass('roleBox')
+        } else {
+            $(".partCodes").removeClass('roleBox')
+        }
+        deptId = e.data.deptId;
+        deptName = e.data.deptName;
 
+        /* 附件图片回显 */
+        let file = e.data.file;
+        setFileInput(file);
+
+        /*按钮*/
+        var buttonStr = "";
+        $(e.data.eventButtonVOS).each(function (index, value) {
+            buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='"+value.id+"' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
+
+        })
+        $("#btnGroupGround").empty();
+        $("#btnGroupGround").append(buttonStr);
+
+        getTimeAxis(eventId);
+    });
+}
     function getTimeAxis(eventId) {
         $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
             let data = e.data;
