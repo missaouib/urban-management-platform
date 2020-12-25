@@ -103,7 +103,22 @@ $(".duk_box").click(function () {
 $(".duck_close").html("×");
 $(".duk_close").html("×")
 
+/*
+* 惯用语 封装
+* */
+function setAlwaysBox(alwaysBox,boxInner){//惯用语文字点击  ，  装惯用语的盒子
+	$(alwaysBox).click(function () {
+		$(boxInner).stop().fadeToggle(300)
+	});
+}
 
+function setAlwaysSay(idiomsParent,setInput,alwaysBox) {//装惯用语盒子的父级 ， 把文字喷到哪个inout里  ， 装惯用语的盒子
+	$(idiomsParent).on("click", ".idioms", function () {
+		let idioms = $(this).html()
+		$(setInput).val($(setInput).val() + idioms);
+		$(alwaysBox).fadeOut(300)
+	});
+}
 
 /*
 * 左树
