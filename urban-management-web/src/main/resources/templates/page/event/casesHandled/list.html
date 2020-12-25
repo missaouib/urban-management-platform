@@ -658,7 +658,6 @@
                 layerMap.getSource().clear()
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
                     eventId = e.data.id;
-                    getGridPolygon(eventId);
                     getNodeName(eventId);
                     /*流程图*/
                     $("#eventImg").attr('src',img+e.data.processInstanceId);
@@ -931,24 +930,6 @@
         });
     }
 
-    let getGridPolygonUrl = /*[[@{/event/getGridPolygon}]]*/ "/event/getGridPolygon";
-    /* 点击获取网格 */
-    function getGridPolygon(eventId) {
-        $.ajaxUtil.get(getGridPolygonUrl + "?eventId=" + eventId, function (e) {
-            let data = e.data
-            let split = data.split("-");
-            let polygonArray = [];
-            let polygonArrayEnd = [];
-            for (let j = 0; j < split.length; j++) {
-                let pointArray = [];
-                pointArray.push(split[j].split(",")[0]);
-                pointArray.push(split[j].split(",")[1]);
-                polygonArray.push(pointArray);
-                polygonArrayEnd.push(polygonArray);
-            }
-            setPolygon(polygonArrayEnd, 1);
-        });
-    }
     function setPolygon(coordinates, id) {
 
         let Polygon = new ol.Feature({
