@@ -453,7 +453,7 @@
                 <div class="modal-body">
                     <div class="checkMain" style="position: relative">
                         <span class="sendText" style="width: 120px"><i style="color: red!important;"></i>核实意见</span>
-                        <textarea type="text" id="textIdioms"></textarea>
+                        <textarea type="text" id="textIdioms" onblur="saveIdioms(this)"></textarea>
                         <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                         <div id="wordSays" class="wordSays" style="background-color:#fff;">
                             <ul>
@@ -486,7 +486,7 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
-
+        getIdioms()
         $(".ol-full-screen-false").html("全屏")
 
         //步骤进行到

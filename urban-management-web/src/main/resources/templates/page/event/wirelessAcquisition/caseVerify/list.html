@@ -388,8 +388,8 @@
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
                             <span class="sendText" id="btnOpinion" style="width: 125px"><i>*</i>意见</span>
-                            <textarea type="text" id="textIdioms"></textarea>
-                            <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
+                            <textarea type="text" id="textIdioms" onblur="saveIdioms(this)"></textarea>
+                            <div class="alwaysSay btn btn-primary" id="alwaysSay" >惯用语</div>
                             <div id="wordSays" class="wordSays" style="background-color:#fff;">
                             </div>
                         </div>
@@ -980,7 +980,6 @@
     let multiMediaData;
     //上传 照片视频音频
     $(function () {
-        getIdioms();
         $("#imageInput").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
