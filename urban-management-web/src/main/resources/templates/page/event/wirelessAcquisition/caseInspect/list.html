@@ -539,7 +539,7 @@
             $(".duck_duck").fadeOut(300)
         });
 
-        $(".banner").on("click", ".enclosure", function () {
+        $(".banners").on("click", ".enclosure", function () {
             $(".duck_duck").fadeIn(300)
         });
         /**
@@ -649,7 +649,7 @@
 
             getGridPublishUrl()
 
-            $(".duk_close").click(function () {
+            $(".duk_duck").click(function () {
                 $("#pictureBoxDuc").fadeOut(300)
             });
 
@@ -658,12 +658,12 @@
             });
 
             $(".do_banner").on("click", "#beforeDisSwiper", function () {
-                $("#imageDetailList").html($("#MultiMediaBefore").html())
+                $("#pictureList").html($("#MultiMediaBefore").html())
                 $("#pictureBoxDuc").fadeIn(300);
             });
 
             $(".do_banner").on("click", "#afterDisSwiper", function () {
-                $("#imageDetailList").html($("#MultiMediaAfter").html())
+                $("#pictureList").html($("#MultiMediaAfter").html())
                 $("#pictureBoxDuc").fadeIn(300);
             });
 

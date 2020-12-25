@@ -598,7 +598,13 @@
             $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
             event.stopPropagation();
         });
+        $(".duk_duck").click(function () {
+            $("#pictureBoxDuc").fadeOut(300)
+        });
 
+        $(".banners").on("click", ".innerPic", function () {
+            $("#pictureBoxDuc").fadeIn(300)
+        });
         $(".duck_close").click(function () {
             $(".duck_duck").fadeOut(300)
         });
@@ -627,12 +633,12 @@
         });
 
         $(".do_banner").on("click", "#beforeDisSwiper", function () {
-            $("#imageDetailList").html($("#MultiMediaBefore").html())
+            $("#pictureList").html($("#MultiMediaBefore").html())
             $("#pictureBoxDuc").fadeIn(300);
         });
 
         $(".do_banner").on("click", "#afterDisSwiper", function () {
-            $("#imageDetailList").html($("#MultiMediaAfter").html())
+            $("#pictureList").html($("#MultiMediaAfter").html())
             $("#pictureBoxDuc").fadeIn(300);
         });
 
