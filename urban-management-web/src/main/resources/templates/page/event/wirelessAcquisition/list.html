@@ -35,17 +35,17 @@
             <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
 
             <div class="btn-group-sm" id="toolbar" >
-                <a class="btn btn-info" onclick="$.operate.addTab()">
+                <a class="btn btn-primary" onclick="$.operate.addTab()">
                     <i class="fa fa-plus"></i> 新增
                 </a>
-                <a class="btn btn-info" onclick="serRowIdFrom()">
+                <a class="btn btn-primary" onclick="serRowIdFrom()">
                     <i class="fa fa-paper-plane"></i> 上报
                 </a>
-                <a class="btn btn-info" onclick="setRowIdUp()">
+                <a class="btn btn-primary" onclick="setRowIdUp()">
                     <i class="fa fa-edit"></i> 修改
                 </a>
                 <a class="btn btn-danger" style="color: #ffffff" onclick="serRowIdDel()">
-                    <i class="fa fa-trash"></i> 删除
+                    <i class="fa fa-remove"></i> 删除
                 </a>
             </div>
         </div>
@@ -361,7 +361,7 @@
             $(".selectPoint").slideToggle(300);
             $(".selectmenu").css('transform', 'rotate(' + r + 'deg)');
         })
-
+     //轮播图放大
         $(".duk_close").click(function () {
             $("#pictureBoxDuc").fadeOut(300)
         });
