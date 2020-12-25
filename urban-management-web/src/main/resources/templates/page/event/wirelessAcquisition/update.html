@@ -36,12 +36,13 @@
                         <tr>
                             <td><span></span>案卷号</td>
                             <td>
-                                <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input" />
+                                <input type="hidden" name="id" th:value="${eventOneVO.id}" />
+                                <input type="text" readonly="readonly" th:name="eventCode" th:value="${eventOneVO.eventCode}" id="eventCode" class="find_input" />
                             </td>
                             <td><span></span>案件分类</td>
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
-                                <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId" class="find_input" />
+                                <input type="text" readonly="readonly" id="typeStr" name="typeStr" th:value="${eventOneVO.eventTypeStr}" class="find_input" />
+                                <input type="hidden" id="eventTypeId" th:name="eventTypeId" th:value="${eventOneVO.eventTypeId}" class="find_input" />
                                 <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                     +
                                 </button>
@@ -52,8 +53,9 @@
                             <td><span>*</span>立案区域</td>
                             <td>
                                 <select id="eventCondition" onchange="getEventCondition()" required>
-
+                                    <option th:text="${eventOneVO.regionStr}"></option>
                                 </select>
+
                             </td>
 
                         </tr>
@@ -61,20 +63,20 @@
                             <td><span>*</span>立案条件</td>
                             <td>
                                 <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
-
+                                    <option th:value="${eventOneVO.conditionId}" th:text="${eventOneVO.conditionValue}"></option>
                                 </select>
                             </td>
 
                             <td><span></span>计时等级</td>
                             <td>
                                 <select id="timeType" onchange="getDeptTimeLimitList()" required>
-
+                                    <option th:text="${eventOneVO.level}"></option>
                                 </select>
                             </td>
                             <td><span></span>处理时限</td>
                             <td>
-                                <input th:name="timeLimitId" type="hidden" id="deptTImeLimitId"/>
-                                <input type="text" id="deptTImeLimit" required readonly/>
+                                <input th:name="timeLimitId" th:value="${eventOneVO.timeLimitId}" type="hidden" id="deptTImeLimitId" />
+                                <input type="text" id="deptTImeLimit" th:value="${eventOneVO.timeLimitStr}" name="timeLimitStr" required readonly/>
 
                             </td>
                         </tr>
@@ -82,21 +84,19 @@
 
                             <td><span></span>部件编码</td>
                             <td>
-                                <input type="text" readonly id="objId" />
-                                <input type="hidden" readonly id="objId1" name="objId" />
+                                <input type="text" readonly id="objId" th:value="${eventOneVO.objId}" />
+                                <input type="hidden" id="objId1" name="objId" />
                             </td>
                             <td><span></span>案件分类</td>
                             <td>
                                 <select class="form-control" id="recTypeId" th:name="recTypeId" required>
-                                    <option th:each="as:${recType}" th:value="${as.id}" th:text="${as.value}"></option>
+                                    <option th:value="${eventOneVO.recTypeId}" th:text="${eventOneVO.recTypeStr}"></option>
                                 </select>
                             </td>
                             <td><span>*</span>所在区域</td>
                             <td>
-                                <select name="required" class="form-control" id="grid1" onchange="getStreetList()" required>
-                                    <option>--请选择--</option>
-                                    <option th:each="as:${gridList}" th:value="${as.id}"
-                                            th:text="${as.gridName}"></option>
+                                <select class="form-control" id="grid1" onchange="getStreetList()" required>
+                                    <option th:text="${eventOneVO.eventRegion}"></option>
                                 </select>
                             </td>
                         </tr>
@@ -104,18 +104,20 @@
 
                             <td><span></span>经度</td>
                             <td>
-                                <input type="text" class="" value="" name="x" id="longitude"  required readonly/>
+                                <input type="text" class="" value="" name="x" id="longitude" th:value="${eventOneVO.x}" required readonly/>
 
                             </td>
                             <td><span></span>纬度</td>
                             <td>
-                                <input type="text" class="" value="" name="y" id="latitude" required readonly/>
+                                <input type="text" class="" value="" name="y" id="latitude" th:value="${eventOneVO.y}" required readonly/>
                             </td>
 
                             <td><span>*</span>所属街道</td>
                             <td>
-                                <select name="petitonerPhone" class="form-control" id="grid2" onchange="getCommunityList()" required>
+                                <select class="form-control" id="grid2" onchange="getCommunityList()" required>
+                                    <option th:text="${eventOneVO.street}"></option>
                                 </select>
+
                             </td>
 
                         </tr>
@@ -123,31 +125,30 @@
                         <tr>
                             <td><span></span>所属社区</td>
                             <td>
-                                <select name="phone" class="form-control" id="grid3" onchange="getGridList()" required>
-                                </select>
+                                <select class="form-control" id="grid3" onchange="getGridList()" required>
+                                    <option th:text="${eventOneVO.community}"></option>
                             </td>
                             <td><span>*</span>所属网格</td>
                             <td>
-                                <select  th:name="gridId"  id="grid4"  onchange="getGridCenter(this)" required>
+                                <select th:name="gridId" id="grid4" onchange="getGridCenter(this)">
+                                    <option th:value="${eventOneVO.gridId}" th:text="${eventOneVO.girdStr}"></option>
                                 </select>
                             </td>
                             <td><span></span>问题来源</td>
                             <td>
                                 <select class="form-control" id="eventSource" th:name="eventSourceId" required disabled>
-                                    <option th:each="as:${eventSource}" th:value="${as.id}"
-                                            th:text="${as.value}"></option>
+                                    <option th:value="${eventOneVO.eventSourceId}" th:text="${eventOneVO.eventSourceStr}"></option>
                                 </select>
                             </td>
                         </tr>
                         <tr >
                             <td><span>*</span>案件地址</td>
                             <td >
-                                <input id="location" th:name="location" type="text" required>
+                                <input id="location" th:name="location" th:value="${eventOneVO.location}" type="text" required>
                             </td>
                             <td><span>*</span>问题描述</td>
-                            <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
                             <td >
-                                <input th:name="represent" id="problemescription" type="text" class="overInput" onmouseover="this.title=this.value"  required>
+                                <input th:name="represent" th:value="${eventOneVO.represent}" id="problemescription" type="text" class="overInput" onmouseover="this.title=this.value"  required>
                             </td>
                             <td><span></span>上报人</td>
                             <td  style="text-align: left"><div class="username" th:sec:authentication="principal.name"></div></td>
