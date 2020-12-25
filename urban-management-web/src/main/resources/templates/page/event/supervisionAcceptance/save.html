@@ -706,7 +706,8 @@
      */
     function getGridCenter() {
         let pointOfCenter = $("#grid4 option:selected").val();
-        $.ajaxUtil.get(getGridCenterUrl + "?gridId=" + pointOfCenter, function (e) {
+        let url = "/event/findGeomByGridId?id=" + pointOfCenter;
+        $.ajaxUtil.get(url, function (e) {
             $(e.data.geom).each(function (index, value) {
                 let split = value.split(",");
                 let polygonArray = [];
@@ -1063,9 +1064,9 @@
         let t = evt.coordinate;
         $("#longitude").val(t[0])
         $("#latitude").val(t[1])
-        $.ajaxUtil.get(localReverseGeocoding + "?x=" + t[0] + "&y=" + t[1], function (e) {
-            $("#location").val(e.data.mongo);
-        });
+        // $.ajaxUtil.get(localReverseGeocoding + "?x=" + t[0] + "&y=" + t[1], function (e) {
+        //     $("#location").val(e.data.mongo);
+        // });
         layerMap.getSource().clear()
         setPoint(evt.coordinate)
     });
