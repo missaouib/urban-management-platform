@@ -457,6 +457,11 @@ function setPointForList(value, row, index){
 	setPoint(row.x, row.y);
 }
 
+function setCenterAndZoom(x, y, zoom) {
+	map.getView().setZoom(zoom);
+	map.getView().setCenter([x, y]);
+}
+
 //重写confirm式样框
 // window.confirm = function(msg, callback){
 // 	parent.layer.confirm(msg, {btn: ['确定','取消']},
