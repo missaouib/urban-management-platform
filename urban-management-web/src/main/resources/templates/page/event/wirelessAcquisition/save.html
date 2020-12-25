@@ -10,6 +10,20 @@
     <th:block th:include="page/fragments/common :: ztree_css"/>
     <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
+<style>
+    .file-drop-zone-title{
+        padding: 68px 55px!important;
+    }
+    .file-drop-zone{
+        min-height: 200px!important;
+    }
+    .file-preview-thumbnails{
+        max-height: 233px!important;
+    }
+    .file-preview{
+        height: 241px!important;
+    }
+</style>
 <body style="border-radius: 8px;">
 <div class="col-md-12" style="height: 100%">
     <div class="content">
@@ -35,24 +49,21 @@
                                     <!--                                        +-->
                                     <!--                                    </button>-->
                                 </td>
-
-                            </tr>
-                            <tr>
-
                                 <td><span>*</span>立案区域</td>
                                 <td>
                                     <select id="eventCondition" onchange="getEventCondition()" required>
 
                                     </select>
                                 </td>
+
+                            </tr>
+                            <tr>
                                 <td><span>*</span>立案条件</td>
                                 <td>
                                     <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
 
                                     </select>
                                 </td>
-                            </tr>
-                            <tr>
 
                                 <td><span></span>计时等级</td>
                                 <td>
@@ -80,18 +91,6 @@
                                         <option th:each="as:${recType}" th:value="${as.id}" th:text="${as.value}"></option>
                                     </select>
                                 </td>
-                            </tr>
-                            <tr>
-                                <td><span></span>经度</td>
-                                <td>
-                                    <input type="text" class="" value="" name="x" id="longitude"  required readonly/>
-                                </td>
-                                <td><span></span>纬度</td>
-                                <td>
-                                    <input type="text" class="" value="" name="y" id="latitude" required readonly/>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td><span>*</span>所在区域</td>
                                 <td>
                                     <select name="required" class="form-control" id="grid1" onchange="getStreetList()" required>
@@ -100,12 +99,27 @@
                                                 th:text="${as.gridName}"></option>
                                     </select>
                                 </td>
+                            </tr>
+                            <tr>
+
+                                <td><span></span>经度</td>
+                                <td>
+                                    <input type="text" class="" value="" name="x" id="longitude"  required readonly/>
+
+                                </td>
+                                <td><span></span>纬度</td>
+                                <td>
+                                    <input type="text" class="" value="" name="y" id="latitude" required readonly/>
+                                </td>
+
                                 <td><span>*</span>所属街道</td>
                                 <td>
                                     <select name="petitonerPhone" class="form-control" id="grid2" onchange="getCommunityList()" required>
                                     </select>
                                 </td>
+
                             </tr>
+
                             <tr>
                                 <td><span></span>所属社区</td>
                                 <td>
@@ -117,8 +131,6 @@
                                     <select  th:name="gridId"  id="grid4"  onchange="getGridCenter(this)" required>
                                     </select>
                                 </td>
-                            </tr>
-                            <tr>
                                 <td><span></span>问题来源</td>
                                 <td>
                                     <select class="form-control" id="eventSource" th:name="eventSourceId" required disabled>
@@ -126,33 +138,35 @@
                                                 th:text="${as.value}"></option>
                                     </select>
                                 </td>
-                                <td><span></span>上报人</td>
-                                <td style="text-align: left"><div class="username" th:sec:authentication="principal.name"></div></td>
-
                             </tr>
-                            <tr>
+                            <tr >
                                 <td><span>*</span>案件地址</td>
-                                <td colspan="8">
+                                <td >
                                     <input id="location" th:name="location" type="text" required>
                                 </td>
-
-                            </tr>
-                            <tr>
                                 <td><span>*</span>问题描述</td>
                                 <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
-                                <td colspan = "8">
+                                <td >
                                     <input th:name="represent" id="problemescription" type="text" class="overInput" onmouseover="this.title=this.value"  required>
                                 </td>
+                                <td><span></span>上报人</td>
+                                <td  style="text-align: left"><div class="username" th:sec:authentication="principal.name"></div></td>
+
                             </tr>
-                            <tr>
-                                <td><span></span>是否自处理</td>
-                                <td style="text-align: left">
-                                    <input  id="doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
-                                </td>
-                            </tr>
+
+                            <div style="position: relative">
+                                <tr style="position: absolute;left: 46%;top: 44%">
+                                    <td><span></span>是否自处理</td>
+                                    <td style="text-align: left">
+                                        <input  id="doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
+                                    </td>
+                                </tr>
+                            </div>
+
                             </tbody>
                         </table>
                         <div class="send" style="float:left;width: 48%">
+
                             <div><span>处置前</span></div>
                             <div class="sendImg">
                                 <div class="sendText"><span>多媒体:</span></div>
@@ -176,7 +190,7 @@
                         <div class="send" id="after" style="display:none;">
                             <div><span>处置后</span></div>
                             <div class="sendImg">
-                                <div class="sendText"><span>多媒体:</span></div>
+                                <div class="sendText" style="margin-left:-28%"><span>多媒体:</span></div>
                                 <div><input id="input-id-after" type="file" class="input-id" name="files"
                                             multiple="multiple"></div>
                                 <input type="hidden" id="imageUrlListAfter" name="imageUrlListAfter" value="">
@@ -200,8 +214,8 @@
 
                 </div>
             </form>
-            <div style="width: 100%;display: flex;justify-content: flex-end">
-                <button class="but_save saveTheBtn" type="submit" onclick="submitHandler()">保存</button>
+            <div style="width: 100%;display: flex;justify-content: flex-end;">
+                <button style="margin-top: -43px" class="but_save saveTheBtn" type="submit" onclick="submitHandler()">保存</button>
             </div>
 
         </div>

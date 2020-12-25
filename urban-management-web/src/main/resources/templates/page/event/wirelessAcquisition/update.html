@@ -8,305 +8,216 @@
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
     <th:block th:include="page/fragments/common :: ztree_css"/>
-    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
+<!--    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">-->
+    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
+<style>
+    .file-drop-zone-title{
+        padding: 68px 55px!important;
+    }
+    .file-drop-zone{
+        min-height: 200px!important;
+    }
+    .file-preview-thumbnails{
+        max-height: 233px!important;
+    }
+    .file-preview{
+        height: 241px!important;
+    }
+</style>
 <body style="border-radius: 8px;">
 <div class="content">
-    <div class="leftContent" style="justify-content: start!important;">
-        <div class="left_topIn">
-            <div class="selectPoint">
-                <div class="notice_check">
-                    <form id="search-form">
-                        <p>
-                            <label class="">案件类型：</label>
-                            <label class="">问题类型：</label>
-                            <input type="hidden" id="eventId" value="">
-                            <input type="text" class="find_input" id="eventTypeName" onclick="selectEventTypeTree()" readonly="readonly">
-                            <input type="hidden" th:name="eventTypeId" id="eventTypeId">
-                            <input type="button" class="check_btn button_ground closeSearch" onclick="$.table.search()" value="查询">
-                            <input type="button" class="check_btn1 button_ground closeSearch" onclick="$.form.reset()" value="重置">
-                        </p>
-                    </form>
+    <div class="leftContent">
+        <form id="userForm">
+            <div class="top table2_top">
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span></span>案卷号</td>
+                            <td>
+                                <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input" />
+                            </td>
+                            <td><span></span>案件分类</td>
+                            <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
+                                <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId" class="find_input" />
+                                <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                    +
+                                </button>
+                                <!--                                    <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">-->
+                                <!--                                        +-->
+                                <!--                                    </button>-->
+                            </td>
+                            <td><span>*</span>立案区域</td>
+                            <td>
+                                <select id="eventCondition" onchange="getEventCondition()" required>
+
+                                </select>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td><span>*</span>立案条件</td>
+                            <td>
+                                <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
+
+                                </select>
+                            </td>
+
+                            <td><span></span>计时等级</td>
+                            <td>
+                                <select id="timeType" onchange="getDeptTimeLimitList()" required>
+
+                                </select>
+                            </td>
+                            <td><span></span>处理时限</td>
+                            <td>
+                                <input th:name="timeLimitId" type="hidden" id="deptTImeLimitId"/>
+                                <input type="text" id="deptTImeLimit" required readonly/>
+
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td><span></span>部件编码</td>
+                            <td>
+                                <input type="text" readonly id="objId" />
+                                <input type="hidden" readonly id="objId1" name="objId" />
+                            </td>
+                            <td><span></span>案件分类</td>
+                            <td>
+                                <select class="form-control" id="recTypeId" th:name="recTypeId" required>
+                                    <option th:each="as:${recType}" th:value="${as.id}" th:text="${as.value}"></option>
+                                </select>
+                            </td>
+                            <td><span>*</span>所在区域</td>
+                            <td>
+                                <select name="required" class="form-control" id="grid1" onchange="getStreetList()" required>
+                                    <option>--请选择--</option>
+                                    <option th:each="as:${gridList}" th:value="${as.id}"
+                                            th:text="${as.gridName}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td><span></span>经度</td>
+                            <td>
+                                <input type="text" class="" value="" name="x" id="longitude"  required readonly/>
+
+                            </td>
+                            <td><span></span>纬度</td>
+                            <td>
+                                <input type="text" class="" value="" name="y" id="latitude" required readonly/>
+                            </td>
+
+                            <td><span>*</span>所属街道</td>
+                            <td>
+                                <select name="petitonerPhone" class="form-control" id="grid2" onchange="getCommunityList()" required>
+                                </select>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td><span></span>所属社区</td>
+                            <td>
+                                <select name="phone" class="form-control" id="grid3" onchange="getGridList()" required>
+                                </select>
+                            </td>
+                            <td><span>*</span>所属网格</td>
+                            <td>
+                                <select  th:name="gridId"  id="grid4"  onchange="getGridCenter(this)" required>
+                                </select>
+                            </td>
+                            <td><span></span>问题来源</td>
+                            <td>
+                                <select class="form-control" id="eventSource" th:name="eventSourceId" required disabled>
+                                    <option th:each="as:${eventSource}" th:value="${as.id}"
+                                            th:text="${as.value}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr >
+                            <td><span>*</span>案件地址</td>
+                            <td >
+                                <input id="location" th:name="location" type="text" required>
+                            </td>
+                            <td><span>*</span>问题描述</td>
+                            <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
+                            <td >
+                                <input th:name="represent" id="problemescription" type="text" class="overInput" onmouseover="this.title=this.value"  required>
+                            </td>
+                            <td><span></span>上报人</td>
+                            <td  style="text-align: left"><div class="username" th:sec:authentication="principal.name"></div></td>
+
+                        </tr>
+
+                        <div style="position: relative">
+                            <tr style="position: absolute;left: 46%;top: 44%">
+                                <td><span></span>是否自处理</td>
+                                <td style="text-align: left">
+                                    <input  id="doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
+                                </td>
+                            </tr>
+                        </div>
+
+                        </tbody>
+                    </table>
+                    <div class="send" style="float:left;width: 48%">
+
+                        <div><span>处置前</span></div>
+                        <div class="sendImg">
+                            <div class="sendText"><span>多媒体:</span></div>
+                            <div><input id="input-id" class="input-id" type="file" name="files" multiple="multiple">
+                            </div>
+                            <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
+                            <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
+                            <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
+                        </div>
+                        <!--                            <div class="sendImg">-->
+                        <!--                                <div class="sendText"><span>视频:</span></div>-->
+                        <!--                                <div><input id="videoInput" class="videoInput" type="file" name="files" multiple="multiple"></div>-->
+                        <!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" />-->
+                        <!--                            </div>-->
+                        <!--                            <div class="sendImg">-->
+                        <!--                                <div class="sendText"><span>音频:</span></div>-->
+                        <!--                                <div><input id="musicInput" class="musicInput" type="file" name="files" multiple="multiple"></div>-->
+                        <!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" />-->
+                        <!--                            </div>-->
+                    </div>
+                    <div class="send" id="after" style="display:none;">
+                        <div><span>处置后</span></div>
+                        <div class="sendImg">
+                            <div class="sendText" style="margin-left:-28%"><span>多媒体:</span></div>
+                            <div><input id="input-id-after" type="file" class="input-id" name="files"
+                                        multiple="multiple"></div>
+                            <input type="hidden" id="imageUrlListAfter" name="imageUrlListAfter" value="">
+                            <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter" value="">
+                            <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter" value="">
+                        </div>
+                        <!--                            <div class="sendImg">-->
+                        <!--                                <div class="sendText"><span>视频:</span></div>-->
+                        <!--                                <div><input id="videoInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>-->
+                        <!--                                <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter" value="">-->
+                        <!--                            </div>-->
+                        <!--                            <div class="sendImg">-->
+                        <!--                                <div class="sendText"><span>音频:</span></div>-->
+                        <!--                                <div><input id="musicInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>-->
+                        <!--                                <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter" value="">-->
+                        <!--                            </div>-->
+                    </div>
                 </div>
-            </div>
-            <div style="width: 100%;width: 100%;display: flex;justify-content: center">
-                <div class="xiala"><i class="selectmenu"></i></div>
-            </div>
 
-            <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+                <!--                            按钮-->
 
-            <div class="btn-group-sm" id="toolbar" >
-                <a class="btn btn-info" data-toggle="modal" id="similarCasesBtn" onclick="reportHandler()">
-                    <i class="fa fa-plus"></i> 上报
-                </a>
-                <a class="btn btn-info" onclick="submitHandler()" >
-                    <i class="fa fa-paper-plane"></i> 保存
-                </a>
             </div>
+        </form>
+        <div style="width: 100%;display: flex;justify-content: flex-end;">
+            <button style="margin-top: -43px" class="but_save saveTheBtn" type="submit" onclick="submitHandler()">保存</button>
         </div>
-        <div class="left_bottomIn">
-            <div class="bottom_left">
-                <div class="doItTitle">
-                    <span class="do_span active" id="doitBeforSpan">
-                        处置前
-                    </span>
-                    <span class="do_span noneActivti">处置后</span>
-                </div>
-                <div class="doItInner">
-                    <div class="do_banner blockActive" id="doitBefor">
-                        <div class="send" style="display: flex;align-items: center;justify-content: center;">
-                            <div class="sendImg warpPictures">
-                                <div><input id="input-id" class="input-id" type="file" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="imageUrlList" name="imageUrlList" />
-                                <div class="warpPictureBox">
-                                    <div id="imageList">
-                                        <div class="innerPic" style="float:left;">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="do_banner">
-                        <div class="send" id="after" style="display: flex;align-items: center;justify-content: center;">
-                            <div class="sendImg warpPictures">
-                                <div><input id="input-id-after" type="file" class="input-id" name="files" multiple="multiple"></div>
-                                <input type="hidden" id="imageUrlListAfter" name="imageUrlListAfter" />
-                                <div id="imageListAfter" class="warpPictureBox">
-                                    <div class="innerPic" style="float:left;">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="bottom_right">
-                <div class="right_topIn">
-                    <span class="keep_span active">案件详情</span>
-                    <span class="keep_span">流转记录</span>
-                    <span class="keep_span">阶段图</span>
-                    <span class="keep_span">流程图</span>
-                </div>
-                <div class="right_bottomIn">
-                    <div class="banners banner_update blockActive">
-                        <div class="fami">
-                            <form id="userForm">
-                                <div class="top table2_top">
-                                    <div class="top_out">
-                                        <table class="table">
-                                            <tbody>
-                                            <tr>
-                                                <td><span>*</span>案卷号</td>
-
-                                                <td>
-                                                    <input type="hidden" name="id" th:value="${eventOneVO.id}" />
-                                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" th:value="${eventOneVO.eventCode}" class="find_input" />
-                                                </td>
-                                                <td><span>*</span>问题类型</td>
-                                                <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                                    <input type="text" readonly="readonly" id="typeStr" name="typeStr" th:value="${eventOneVO.eventTypeStr}" class="find_input" />
-                                                    <input type="hidden" id="eventTypeId" th:name="eventTypeId" th:value="${eventOneVO.eventTypeId}" class="find_input" />
-                                                    <button type="button" class="addBtn" onclick="selectEventTypeTree()">
-                                                        +
-                                                    </button>
-                                                    <!--                                    <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">-->
-                                                    <!--                                        +-->
-                                                    <!--                                    </button>-->
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-
-                                                <td><span>*</span>立案区域</td>
-                                                <td>
-                                                    <select id="eventCondition" onchange="getEventCondition()" required>
-                                                        <option th:text="${eventOneVO.regionStr}"></option>
-                                                    </select>
-                                                </td>
-                                                <td><span>*</span>立案条件</td>
-                                                <td>
-                                                    <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
-                                                        <option th:value="${eventOneVO.conditionId}" th:text="${eventOneVO.conditionValue}"></option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-
-                                                <td><span>*</span>计时等级</td>
-                                                <td>
-                                                    <select id="timeType" onchange="getDeptTimeLimitList()" required>
-                                                        <option th:text="${eventOneVO.level}"></option>
-                                                    </select>
-                                                </td>
-                                                <td><span>*</span>处理时限</td>
-                                                <td>
-                                                    <input th:name="timeLimitId" th:value="${eventOneVO.timeLimitId}" type="hidden" id="deptTImeLimitId" />
-                                                    <input type="text" id="deptTImeLimit" th:value="${eventOneVO.timeLimitStr}" name="timeLimitStr" required readonly/>
-
-                                                </td>
-                                            </tr>
-                                            <tr>
-
-                                                <td><span></span>部件编码</td>
-                                                <td>
-                                                    <input type="text" readonly id="objId" th:value="${eventOneVO.objId}" />
-                                                    <input type="hidden" id="objId1" name="objId" />
-                                                </td>
-                                                <td><span>*</span>案件类型</td>
-                                                <td>
-                                                    <select class="form-control" id="recTypeId" th:name="recTypeId" required>
-                                                        <option th:value="${eventOneVO.recTypeId}" th:text="${eventOneVO.recTypeStr}"></option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><span>*</span>经度</td>
-                                                <td>
-                                                    <input type="text" class="" value="" th:name="x" id="longitude" th:value="${eventOneVO.x}" required readonly/>
-                                                </td>
-                                                <td><span>*</span>纬度</td>
-                                                <td>
-                                                    <input type="text" class="" value="" th:name="y" id="latitude" th:value="${eventOneVO.y}" required readonly/>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><span>*</span>所在区域</td>
-                                                <td>
-                                                    <select class="form-control" id="grid1" onchange="getStreetList()" required>
-                                                        <option th:text="${eventOneVO.eventRegion}"></option>
-                                                    </select>
-                                                </td>
-                                                <td><span>*</span>所属街道</td>
-                                                <td>
-                                                    <select class="form-control" id="grid2" onchange="getCommunityList()" required>
-                                                        <option th:text="${eventOneVO.street}"></option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><span>*</span>所属社区</td>
-                                                <td>
-                                                    <select class="form-control" id="grid3" onchange="getGridList()" required>
-                                                        <option th:text="${eventOneVO.community}"></option>
-                                                    </select>
-                                                </td>
-                                                <td><span>*</span>单元网格</td>
-                                                <td>
-                                                    <select th:name="gridId" id="grid4" onchange="getGridCenter(this)">
-                                                        <option th:value="${eventOneVO.gridId}" th:text="${eventOneVO.girdStr}"></option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><span>*</span>问题来源</td>
-                                                <td>
-                                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required disabled>
-                                                        <option th:value="${eventOneVO.eventSourceId}" th:text="${eventOneVO.eventSourceStr}"></option>
-                                                    </select>
-                                                </td>
-                                                <td><span></span>上报人</td>
-                                                <td>
-                                                    <input type="text" th:value="${eventOneVO.userName}" id="userName">
-                                                </td>
-                                                <!--                                <td style="text-align: left"><div class="username"  th:value="${eventOneVO.userName}" id="userName"></div></td>-->
-
-                                            </tr>
-                                            <tr>
-                                                <td><span>*</span>案件地址</td>
-                                                <td colspan="8">
-                                                    <input id="location" th:name="location" th:value="${eventOneVO.location}" type="text" required/>
-                                                </td>
-
-                                            </tr>
-                                            <tr>
-                                                <td><span>*</span>问题描述</td>
-                                                <td colspan="8">
-                                                    <input id="problemescription" th:name="represent" type="text" th:value="${eventOneVO.represent}" class="overInput" onmouseover="this.title=this.value" required>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><span></span>是否自处理</td>
-                                                <td style="display: flex;align-items: center;margin: 2px">
-                                                    <input id="doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" th:checked="${eventOneVO.doBySelf}" style="width: 30px">
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-
-
-                                    </div>
-
-                                    <!--                            按钮-->
-
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="banners">
-                        <div class='g_con'>
-                            <!-- 物流时间轴 -->
-                            <div class='expressRecord' id="timeAxis">
-                                <div>暂时没有数据，请进入流程处理案件</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="banners">
-                        <div class="conduct">
-                            <div class="rootBox">
-                                <a class="alist alist1">
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span> 1.信息收集<input style="display: none" value="1">
-                                </a>
-                                <i>→</i>
-                                <a class="alist alist2">
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span> 2.案件建立<input style="display: none" value="0">
-                                </a>
-                                <i>→</i>
-                                <a class="alist alist3">
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span> 3.任务派遣<input style="display: none" value="">
-                                </a>
-                            </div>
-                            <div class="downIn">
-                                <span class="downi">↓</span>
-                            </div>
-                            <div class="rootBox">
-                                <a class="alist alist4">
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span> 6.核查结案<input style="display: none" value="">
-                                </a>
-                                <i>←</i>
-                                <a class="alist alist5">
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span> 5.处理反馈<input style="display: none" value="">
-                                </a>
-                                <i>←</i>
-                                <a class="alist alist6">
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span>
-                                    <span class="spanlist"></span> 4.任务处理<input style="display: none" value="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="banners"><img id="eventImg"></div>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="rightContent">
         <div class="map" id="map" style="width: 100%;height: 100%"></div>
@@ -353,6 +264,14 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
+    $("#doBySelf").on('click', function () {
+        var after = $("#after");
+        if ($("#doBySelf").is(':checked')) {
+            after.css("display", "block")
+        } else {
+            after.css('display', 'none')
+        }
+    });
 
     let searchUrl = /*[[@{/event/wirelessAcquisitionList}]]*/ "/event/wirelessAcquisitionList";
     let addUrl = /*[[@{/event/toWirelessAcquisitionSave}]]*/ "/event/toWirelessAcquisitionSave";
@@ -828,7 +747,7 @@
         $("#doBySelf").on('click',function (){
             var after=$("#after");
             if($("#doBySelf").is(':checked')){
-                $("#after").css('display','flex');
+                $("#after").css('display','block');
                 $(".do_span").last().removeClass("noneActivti")
             }else {
                 $("#after").css('display','none');
