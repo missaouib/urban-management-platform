@@ -1156,7 +1156,7 @@
             /* 坐标 */
             setPoint(data.x, data.y);
             /* 设定中心点和层级 */
-            setCenterAndZoom(data.x, data.y, 15);
+            setCenterAndZoom(data.x, data.y, map.getView().getZoom() + 4);
             /* 获取按钮 因为在监督员上报的时候不显示重新核实按钮 所以需要在赋值之后调用方法 */
             getButton(eventId);
             /*设置转应急按钮*/

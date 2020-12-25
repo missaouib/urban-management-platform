@@ -97,8 +97,17 @@
             <div style="width: 100%;width: 100%;display: flex;justify-content: center">
                 <div class="xiala"><i class="selectmenu"></i></div>
             </div>
+
             <div class="btn-group-sm" id="toolbar" >
-                <div class="r_right but_p girdBtnGroup" id="btnGroupGround"></div>
+                <a class="btn btn-primary roleBox" id="doIt" onclick="" data-toggle="modal" data-target="#modal-default1">
+                    <i class="fa fa-plus"></i> 督办详情
+                </a>
+                <a class="btn btn-primary roleBox" id="messageIt" onclick="" data-toggle="modal" data-target="#modal-default2">
+                    <i class="fa fa-paper-plane"></i> 意见回复
+                </a>
+                <a class="btn btn-primary roleBox" id="didIt" onclick="" data-toggle="modal" data-target="#modal-default">
+                    <i class="fa fa-edit"></i> 督办
+                </a>
             </div>
             <table id="bootstrap-table" class="table_style" style="margin: 0 auto;"> </table>
         </div>
@@ -478,35 +487,26 @@
                 <div class="modal-header">
                     <h4 class="modal-title">督办</h4>
                 </div>
+
                 <div class="modal-body">
-                    <p>
-                    <form id="supervise">
-                        <div class="top table2_top">
-                            <!--        <div>-->
-                            <div class="top_out">
-                                <table class="table">
-                                    <tbody>
-                                    <tr>
-                                        <td><span>处理部门</span></td>
-                                        <td>
-                                            <input class="" readonly="readonly" id="deptName" value="园林局">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>督办意见<span></span></td>
-
-                                        <td colspan="8"><textarea id="supOpinion" name="problemescription" required></textarea></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="checkMain" style="position: relative;display: block" id="userListDiv">
+                        <div class="sendText" style="float:left;width: 99px">处理部门</div>
+                        <input class="find_input" readonly="readonly" id="deptName" type="text" value="园林局">
+                    </div>
+                    <div class="checkMain" style="position: relative">
+                        <span class="sendText" style="width: 125px" id="btnOpinion"><i style="color: red!important;"></i>督办意见</span>
+                        <textarea type="text" name="problemescription" id="supOpinion" onblur="saveIdioms(this)"></textarea>
+                        <div class="alwaysSay btn btn-primary" id="alwaysSay" >惯用语</div>
+                        <div id="wordSays" class="wordSays" style="background-color:#fff;">
+                            <ul>
+                                <li class="idioms">请快速处理</li>
+                                <li class="idioms">请认真处理</li>
+                                <li class="idioms">请根据实际情况酌情处置</li>
+                            </ul>
                         </div>
-
-                        <!--    </div>-->
-                    </form>
-                    </p>
+                    </div>
                 </div>
-                <div class="modal-footer justify-content-between">
+                <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
                     <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" onclick="save()">确认</button>
                 </div>
@@ -521,52 +521,41 @@
                     <h4 class="modal-title">督办</h4>
                 </div>
                 <div class="modal-body">
-                    <p>
-                    <form id="details">
-                        <div class="top table2_top">
-                            <!--        <div>-->
-                            <div class="top_out">
-                                <table class="table">
-                                    <tbody>
-                                    <tr>
-                                        <td>处理部门<span></span></td>
-                                        <td>
-                                            <input readonly="readonly" class="" id="deptName1" >
-                                        </td>
-
-                                        <td>督办人员<span></span></td>
-                                        <td>
-                                            <input readonly="readonly" class="" id="user" >
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>督办意见<span></span></td>
-
-                                        <td colspan="8">
-                                            <div class="modelOpin"><textarea id="supOpinion1" name="problemescription" readonly="readonly="readonly""></textarea></div>
-                                        </td>
-
-
-                                    </tr>
-                                    <tr>
-                                        <td>专业部门意见<span></span></td>
-
-                                        <td colspan="8">
-                                            <div class="modelOpin"><textarea id="supReplayOpinion" name="problemescription" readonly="readonly"></textarea></div>
-                                        </td>
-
-
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="checkMain" style="position: relative;display: block" id="userListDiv2">
+                        <div class="sendText" style="float:left;width: 99px">处理部门</div>
+                        <input class="find_input" readonly="readonly" id="deptName1" type="text" value="">
+                    </div>
+                    <div class="checkMain" style="position: relative;display: block" id="userListDiv3">
+                        <div class="sendText" style="float:left;width: 99px">督办人员</div>
+                        <input class="find_input" readonly="readonly" id="user" type="text" value="">
+                    </div>
+                    <div class="checkMain" style="position: relative">
+                        <span class="sendText" style="width: 125px" id="btnOpinion2"><i style="color: red!important;"></i>督办意见</span>
+                        <textarea type="text" id="supOpinion1" name="problemescription" onblur=""></textarea>
+                        <div class="alwaysSay btn btn-primary" id="alwaysSay2" >惯用语</div>
+                        <div id="wordSays2" class="wordSays" style="background-color:#fff;">
+                            <ul>
+                                <li class="idioms">请快速处理</li>
+                                <li class="idioms">请认真处理</li>
+                                <li class="idioms">请根据实际情况酌情处置</li>
+                            </ul>
                         </div>
+                    </div>
 
-                        <!--    </div>-->
-                    </form>
-                    </p>
+                    <div class="checkMain" style="position: relative">
+                        <span class="sendText" style="width: 125px" id="btnOpinion22"><i style="color: red!important;"></i>专业部门意见</span>
+                        <textarea type="text" id="supReplayOpinion" name="problemescription" onblur=""></textarea>
+                        <div class="alwaysSay btn btn-primary" id="alwaysSay22" >惯用语</div>
+                        <div id="wordSaysXiangQ" class="wordSays" style="background-color:#fff;">
+                            <ul>
+                                <li class="idioms">请快速处理</li>
+                                <li class="idioms">请认真处理</li>
+                                <li class="idioms">请根据实际情况酌情处置</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer justify-content-between">
+                <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
                     <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
                 </div>
             </div>
@@ -580,49 +569,42 @@
                     <h4 class="modal-title">专业部门回复意见</h4>
                 </div>
                 <div class="modal-body">
-                    <p>
-                    <form id="opinion">
-                        <div class="top table2_top">
-                            <!--        <div>-->
-                            <div class="top_out">
-                                <table class="table">
-                                    <tbody>
-                                    <tr>
-                                        <td>处理部门<span></span></td>
-                                        <td>
-                                            <input readonly="readonly" class="" id="deptName2" value="园林局">
-                                        </td>
-                                        <td>督办人员<span></span></td>
-                                        <td>
-                                            <input readonly="readonly" class="" id="user1" >
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>督办意见<span></span></td>
+                    <div class="checkMain" style="position: relative;display: block" id="userListDiv5">
+                        <div class="sendText" style="float:left;width: 99px">处理部门</div>
+                        <input class="find_input" readonly="readonly" id="deptName2" type="text" value="">
+                    </div>
+                    <div class="checkMain" style="position: relative;display: block" id="userListDiv4">
+                        <div class="sendText" style="float:left;width: 99px">督办人员</div>
+                        <input class="find_input" readonly="readonly" id="user1" type="text" value="">
+                    </div>
 
-                                        <td colspan="8">
-                                            <div class="modelOpin"><textarea id="supOpinion2" name="problemescription" readonly="readonly"></textarea></div>
-                                        </td>
-
-
-                                    </tr>
-                                    <tr>
-                                        <td>专业部门意见<span></span></td>
-
-                                        <td colspan="8"><textarea id="supReplayOpinion1" name="problemescription"></textarea></td>
-
-
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="checkMain" style="position: relative">
+                        <span class="sendText" style="width: 125px" id="btnOpinion4"><i style="color: red!important;"></i>督办意见</span>
+                        <textarea type="text" id="supOpinion2" name="problemescription" onblur=""></textarea>
+                        <div class="alwaysSay btn btn-primary" id="alwaysSay222" >惯用语</div>
+                        <div id="wordSays2222" class="wordSays" style="background-color:#fff;">
+                            <ul>
+                                <li class="idioms">请快速处理</li>
+                                <li class="idioms">请认真处理</li>
+                                <li class="idioms">请根据实际情况酌情处置</li>
+                            </ul>
                         </div>
+                    </div>
 
-                        <!--    </div>-->
-                    </form>
-                    </p>
+                    <div class="checkMain" style="position: relative">
+                        <span class="sendText" style="width: 125px" id="btnOpinion2233"><i style="color: red!important;"></i>专业部门意见</span>
+                        <textarea type="text" id="supReplayOpinion1" name="problemescription" onblur=""></textarea>
+                        <div class="alwaysSay btn btn-primary" id="alwaysSay22111" >惯用语</div>
+                        <div id="wordSaysXiangQ111" class="wordSays" style="background-color:#fff;">
+                            <ul>
+                                <li class="idioms">请快速处理</li>
+                                <li class="idioms">请认真处理</li>
+                                <li class="idioms">请根据实际情况酌情处置</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-footer justify-content-between">
+                <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
                     <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary" id="replyButton" onclick="reply()">确认</button>
                 </div>
@@ -687,6 +669,25 @@
             $("#imageDetailList").html($("#MultiMediaAfter").html())
             $("#pictureBoxDuc").fadeIn(300);
         });
+
+        //惯用语
+
+        setAlwaysBox("#alwaysSay","#wordSays")
+        setAlwaysBox("#alwaysSay2","#wordSays2")
+        setAlwaysBox("#alwaysSay22","#wordSaysXiangQ")
+        setAlwaysBox("#alwaysSay222","#wordSays2222")
+        setAlwaysBox("#alwaysSay22111","#wordSaysXiangQ111")
+
+
+
+
+        setAlwaysSay("#wordSays","#supOpinion","#wordSays");
+        setAlwaysSay("#wordSays2","#supOpinion1","#wordSays2");
+        setAlwaysSay("#wordSaysXiangQ","#supReplayOpinion","#wordSaysXiangQ");
+        setAlwaysSay("#wordSays2222","#supOpinion2","#wordSays2222");
+        setAlwaysSay("#wordSaysXiangQ111","#supReplayOpinion1","#wordSaysXiangQ111");
+
+
 
         //处置前 轮播
         var beforeDisSwiper = new Swiper('#beforeDisSwiper', {
@@ -824,6 +825,14 @@
             modalName: "用户",
             // 点击每行进行函数的触发
             onClickRow: function (row, tr, flied,index) {
+                console.log(row.id)
+                $("#toolbar a").addClass("roleBox")
+                if(row.supSts==="1"){
+                    $("#doIt").removeClass("roleBox");
+                    $("#messageIt").removeClass("roleBox")
+                }else{
+                    $("#didIt").removeClass("roleBox")
+                }
                 //详情  流程图  流转记录
                 layerMap.getSource().clear()
                 $.ajaxUtil.get(event + "?eventId=" + row.id, function (e) {
@@ -846,7 +855,6 @@
                     $("#eventRegion").val(e.data.eventRegion);
                     $("#x").val(e.data.x);
                     $("#y").val(e.data.y);
-                    setPoint(e.data.x,e.data.y)
                     $("#eventSourceStr").val(e.data.eventSourceStr);
                     $("#cdate").val(e.data.cdate);
                     $("#petitionerSex").val(e.data.petitionerSex);
@@ -863,10 +871,13 @@
                     /* 附件图片回显 */
                     let file = e.data.file;
                     setFileInput(file);
-
                     getTimeAxis(row.id);
 
                     getNodeName(row.id);
+
+                    setPoint(e.data.x,e.data.y);
+                    /* 设定中心点和层级 */
+                    setCenterAndZoom(e.data.x, e.data.y, map.getView().getZoom() + 4);
                 });
 
                 $.ajaxUtil.get(superviseUrl + "?eventId=" + row.id, function (e) {
@@ -933,21 +944,21 @@
 
                     }
                 },
-                {
-                    title: '操作',
-                    field: '',
-                    width:"100px",
-                    formatter: function(value, row) {
-                        var e = "";
-                        if(row.supSts==="1"){
-                            e += '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default1">督办详情</a> '+
-                            '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default2">意见回复</a> ';
-                        }else{
-                            e += '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default">督办</a> ';
-                        }
-                        return e;
-                    }
-                },
+                // {
+                //     title: '操作',
+                //     field: '',
+                //     width:"100px",
+                //     formatter: function(value, row) {
+                //         var e = "";
+                //         if(row.supSts==="1"){
+                //             e += '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default1">督办详情</a> '+
+                //             '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default2">意见回复</a> ';
+                //         }else{
+                //             e += '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default">督办</a> ';
+                //         }
+                //         return e;
+                //     }
+                // },
             ]
         };
         $.table.init(options);

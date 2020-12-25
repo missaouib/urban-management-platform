@@ -1077,6 +1077,8 @@
                 $("#eventImg").attr('src', img + e.data.processInstanceId);
                 /* 坐标 */
                 setPoint(e.data.x, e.data.y);
+                /* 设定中心点和层级 */
+                setCenterAndZoom(e.data.x, e.data.y, map.getView().getZoom() + 4);
             });
         }
 
