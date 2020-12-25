@@ -130,7 +130,6 @@
     function getSupervisorUserList() {
         $.ajaxUtil.get(getSupervisorUserListUrl + "?gridId=" + gridId, function (e) {
             let data = e.data;
-            console.log(data)
             let html = "";
             $("#userList").empty();
             if (data.length > 0) {
@@ -166,7 +165,6 @@
         } else {
             $("#saveGridOwner").attr("disabled", "disabled");
         }
-        console.log("userList", userList);
     }
 
     function getGridData() {
@@ -176,18 +174,6 @@
             $("#region").text(data.region);
             $("#remark").text(data.remark);
             $("#street").text(data.street);
-            /* 网格渲染 */
-            let split = data.coordinate.split("-");
-            let polygonArray = [];
-            let polygonArrayEnd = [];
-            for (let j = 0; j < split.length; j++) {
-                let pointArray = [];
-                pointArray.push(split[j].split(",")[0]);
-                pointArray.push(split[j].split(",")[1]);
-                polygonArray.push(pointArray);
-                polygonArrayEnd.push(polygonArray);
-            }
-            setPolygon(polygonArrayEnd);
         });
     }
 

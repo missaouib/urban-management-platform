@@ -72,7 +72,7 @@ public class GridService {
             if (StringUtils.isNotEmpty(gridDTO.getRegion())) {
                 list.add(criteriaBuilder.equal(root.get("parent").get("parent").get("parent").get("id").as(String.class), gridDTO.getRegion()));
             }
-            list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.RELEASE));
+//            list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.RELEASE));
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
