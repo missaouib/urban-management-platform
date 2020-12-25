@@ -883,6 +883,7 @@
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
     let searchUrl = /*[[@{/event/selfProcessingList}]]*/ "/event/selfProcessingList";
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
+    let getUserListForSupervisorUrl = /*[[@{/event/getUserListForSupervisor/}]]*/ "/event/getUserListForSupervisor/";
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
     let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
     let showUrl = [[${@fastProperties.nginxUrl}]];
@@ -1194,9 +1195,7 @@
 
     /* 获取有监督员角色的人 */
     function getUserListForSupervisor(id) {
-        let getUserListForSupervisorUrl = /*[[@{/event/getUserListForSupervisor/}]]*/ "/event/getUserListForSupervisor/";
-        getUserListForSupervisorUrl += "?gridId=" + id;
-        $.ajaxUtil.get(getUserListForSupervisorUrl, function (e) {
+        $.ajaxUtil.get(getUserListForSupervisorUrl + "?gridId=" + id, function (e) {
             $("#selectUser").empty();
             let userList = e.data;
             let userHtml = "";
@@ -1214,8 +1213,6 @@
         let point = new ol.Feature({
             geometry: new ol.geom.Point([x, y]),
             data: {
-                // id: data,
-                // name: name,
                 coordinate: x + "," + y
             }
         });

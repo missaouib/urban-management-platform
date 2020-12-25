@@ -113,22 +113,20 @@
         <div class="left_bottomIn">
             <div class="bottom_left">
                 <div class="doItTitle">
-                    <span class="do_span active">
-                        处置前
-                    </span>
+                    <span class="do_span active">处置前</span>
                     <span class="do_span">处置后</span>
                 </div>
                 <div class="doItInner">
                     <div class="do_banner blockActive">
                         <!-- Swiper -->
-                        <div class="swiper-container" id="beforDisSwiper">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">Slide 1</div>
-                                <div class="swiper-slide">Slide 2</div>
-                                <div class="swiper-slide">Slide 3</div>
+                        <div class="swiper-container" id="beforeDisSwiper">
+                            <div class="swiper-wrapper" id="MultiMediaBefore">
+                                <!--                                <div class="swiper-slide">Slide 1</div>-->
+                                <!--                                <div class="swiper-slide">Slide 2</div>-->
+                                <!--                                <div class="swiper-slide">Slide 3</div>-->
                             </div>
                             <!-- Add Pagination -->
-                            <div class="swiper-pagination beforDisPg"></div>
+                            <div class="swiper-pagination beforeDisPg"></div>
                             <!-- Add Arrows -->
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
@@ -137,7 +135,7 @@
                     <div class="do_banner">
                         <!-- Swiper -->
                         <div class="swiper-container" id="afterDisSwiper">
-                            <div class="swiper-wrapper">
+                            <div class="swiper-wrapper" id="MultiMediaAfter">
                                 <div class="swiper-slide">Slide 1</div>
                                 <div class="swiper-slide">Slide 2</div>
                                 <div class="swiper-slide">Slide 3</div>
@@ -523,7 +521,7 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
-        getIdioms()
+
         //搜索重置 关掉搜索条件盒子
         $(".closeSearch").click(function () {
             $(".selectPoint").slideUp(300);
@@ -543,7 +541,6 @@
 
         $(".ol-full-screen-false").html("全屏")
 
-        queryUserList();
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
@@ -570,24 +567,44 @@
             $("#wordSays_tag").fadeOut(300)
         });
 
-        setModelName()
-        function setModelName(){
-            $("#eventButton").on("click",".but_save",function () {
-                $(".modal-title").html($(this).html())
-                $("#underBtn").html($(this).html())
-                $("#btnOpinion").html($(this).html()+"意见")
-            })
-        };
-
-
-
-
         $(".duk_close").click(function() {
             $("#pictureBoxDuc").fadeOut(300)
         });
 
         $(".banners").on("click", ".innerPic", function() {
             $("#pictureBoxDuc").fadeIn(300)
+        });
+
+        $(".do_banner").on("click", "#beforeDisSwiper", function () {
+            $("#imageDetailList").html($("#MultiMediaBefore").html())
+            $("#pictureBoxDuc").fadeIn(300);
+        });
+
+        $(".do_banner").on("click", "#afterDisSwiper", function () {
+            $("#imageDetailList").html($("#MultiMediaAfter").html())
+            $("#pictureBoxDuc").fadeIn(300);
+        });
+
+        //处置前 轮播
+        var beforeDisSwiper = new Swiper('#beforeDisSwiper', {
+            pagination: '.beforeDisPg',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        //处置后 轮播
+        var afterDisSwiper = new Swiper('#afterDisSwiper', {
+            pagination: '.afterDisPg',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
 
         //全屏
@@ -654,7 +671,23 @@
             observer: true, //修改swiper自己或子元素时，自动初始化swiper
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
+
+        getIdioms();
+        queryUserList();
+        setModelName();
+        //处置前后为空
+        setMediaBefore();
+        setMediaAfter();
+
     });
+
+    function setModelName(){
+        $("#eventButton").on("click",".but_save",function () {
+            $(".modal-title").html($(this).html())
+            $("#underBtn").html($(this).html())
+            $("#btnOpinion").html($(this).html()+"意见")
+        })
+    };
 
     function selectEventTypeTree() {
         var treeId = $("#treeId").val();
@@ -973,27 +1006,8 @@
             /*流程图*/
             $("#eventImg").attr('src', img + e.data.processInstanceId);
             /* 附件图片回显 */
-            /*$("#imageList").attr('src', showUrl + e.data.processInstanceId); <img class="img-rounded" src="">*/
             let file = e.data.file;
-            if (file.length > 0) {
-                $("#imageList").empty();
-                let imageHtml = "";
-                for (let i = 0; i < file.length; i++) {
-                    imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
-                        "<img class='img-rounded' src='" + showUrl + file[i].url + "'>" +
-                        "</div>";
-                }
-                $("#imageList").html(imageHtml);
-
-                $("#pictureList").empty();
-                let pictureList = "";
-                for (let i = 0; i < file.length; i++) {
-                    pictureList += "<div class=\"swiper-slide\">" +
-                        "<img style='width: 100%;height: 100%' src='" + showUrl + file[i].url + "'>" +
-                        "</div>"
-                }
-                $("#pictureList").html(pictureList);
-            }
+            setFileInput(file);
             /* 坐标 */
             setPoint(e.data.x, e.data.y);
         });
