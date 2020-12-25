@@ -47,13 +47,16 @@ public class SupervisionAcceptanceController {
     private EventFileService eventFileService;
 
     @GetMapping("/toSupervisionAcceptanceList")
-    public ModelAndView toSupervisionAcceptanceList(Model model, String eventId) {
+    public ModelAndView toSupervisionAcceptanceList(Model model,String eventId) {
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/list");
         //问题来源
-        model.addAttribute("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
-        model.addAttribute("gridList", gridService.searchAll());
+        modelAndView.addObject("gridList", gridService.searchAll());
+        modelAndView.addObject("gridList", gridService.searchAll());
+        // 从工作台跳转过来传递的eventId
         model.addAttribute("eventId", eventId);
-        return new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/list");
+        return modelAndView;
     }
 
     /**
@@ -102,7 +105,9 @@ public class SupervisionAcceptanceController {
      * @return list
      */
     @GetMapping("/toSendVerificationList")
-    public ModelAndView toSendVerificationList() {
+    public ModelAndView toSendVerificationList(Model model, String eventId) {
+        // 从工作台跳转过来传递的eventId
+        model.addAttribute("eventId", eventId);
         return new ModelAndView(SystemConstant.PAGE + "/event/sendVerification/list");
     }
 
@@ -112,7 +117,9 @@ public class SupervisionAcceptanceController {
      * @return list
      */
     @GetMapping("/toSendCheckList")
-    public ModelAndView toSendCheckList() {
+    public ModelAndView toSendCheckList(Model model, String eventId) {
+        // 从工作台跳转过来传递的eventId
+        model.addAttribute("eventId", eventId);
         return new ModelAndView(SystemConstant.PAGE + "/event/sendCheck/list");
     }
 

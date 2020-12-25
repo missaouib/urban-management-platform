@@ -63,32 +63,40 @@ public class WirelessAcquisitionController {
         return modelAndView;
     }
     @GetMapping("/toCaseInspectList")
-    public ModelAndView toCaseInspectList() {
+    public ModelAndView toCaseInspectList(Model model, String eventId) {
         ModelAndView modelAndView =  new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseInspect/list");
         //问题来源
         modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
         modelAndView.addObject("gridList", gridService.searchAll());
+        model.addAttribute("eventId", eventId);
         return modelAndView;
     }
     @GetMapping("/toCaseInvalidList")
-    public ModelAndView toCaseInvalidList() {
+    public ModelAndView toCaseInvalidList(Model model, String eventId) {
         ModelAndView modelAndView =  new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseInvalid/list");
         //问题来源
         modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
         modelAndView.addObject("gridList", gridService.searchAll());
+        // 从工作台跳转过来传递的eventId
+        model.addAttribute("eventId", eventId);
         return modelAndView;
     }
 
     @GetMapping("/toCaseVerifyList")
     public ModelAndView toCaseVerifyList(Model model, String eventId) {
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseVerify/list");
         //问题来源
-        model.addAttribute("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
-        model.addAttribute("gridList", gridService.searchAll());
+        modelAndView.addObject("gridList", gridService.searchAll());
+
+        modelAndView.addObject("gridList", gridService.searchAll());
+
+        // 从工作台跳转过来传递的eventId
         model.addAttribute("eventId", eventId);
-        return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/caseVerify/list");
+        return modelAndView;
     }
 
     @GetMapping("/toWirelessAcquisitionSave")

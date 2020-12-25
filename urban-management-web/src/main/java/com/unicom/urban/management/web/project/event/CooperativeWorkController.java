@@ -96,12 +96,14 @@ public class CooperativeWorkController {
      */
     @GetMapping("/toOnAccountList")
     public ModelAndView toOnAccount(Model model, String eventId) {
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/onAccount/list");
         //问题来源
-        model.addAttribute("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
-        model.addAttribute("gridList", gridService.searchAll());
+        modelAndView.addObject("gridList", gridService.searchAll());
+        // 从工作台跳转过来传递的eventId
         model.addAttribute("eventId", eventId);
-        return new ModelAndView(SystemConstant.PAGE + "/event/onAccount/list");
+        return modelAndView;
     }
 
     /**
@@ -123,12 +125,14 @@ public class CooperativeWorkController {
      * @return 页面
      */
     @GetMapping("/toCancelList")
-    public ModelAndView toCancel() {
+    public ModelAndView toCancel(Model model, String eventId) {
         ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/cancel/list");
         //问题来源
         modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
         modelAndView.addObject("gridList", gridService.searchAll());
+        // 从工作台跳转过来传递的eventId
+        model.addAttribute("eventId", eventId);
         return modelAndView;
     }
 
@@ -152,12 +156,14 @@ public class CooperativeWorkController {
      */
     @GetMapping("/toAuthorizationList")
     public ModelAndView toAuthorization(Model model, String eventId) {
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/authorization/list");
         //问题来源
-        model.addAttribute("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
-        model.addAttribute("gridList", gridService.searchAll());
+        modelAndView.addObject("gridList", gridService.searchAll());
+        // 从工作台跳转过来传递的eventId
         model.addAttribute("eventId", eventId);
-        return new ModelAndView(SystemConstant.PAGE + "/event/authorization/list");
+        return modelAndView;
     }
 
     /**
@@ -198,7 +204,9 @@ public class CooperativeWorkController {
      * @return 督办页面list
      */
     @GetMapping("/toSuperviseCasesList")
-    public ModelAndView toSuperviseCasesList() {
+    public ModelAndView toSuperviseCasesList(Model model, String eventId) {
+        // 从工作台跳转过来传递的eventId
+        model.addAttribute("eventId", eventId);
         return new ModelAndView(SystemConstant.PAGE + "/event/superviseCases/list");
     }
 
