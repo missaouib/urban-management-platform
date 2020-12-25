@@ -890,7 +890,7 @@
     let num = 1;
 
     function queryUserList() {
-        var options = {
+        let options = {
             num: num,
             url: searchUrl,
             createUrl: addUrl,
@@ -946,13 +946,13 @@
                 },
                 {
                     title: '截止时间',
+                    formatter: setPointForList,
                     field: 'endTimeStr'
                 },
             ]
         };
         $.table.init(options);
     }
-
 
     jQuery.extend(jQuery.validator.messages, {
         required: "必填",

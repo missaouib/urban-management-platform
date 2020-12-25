@@ -53,7 +53,6 @@ public class SupervisionAcceptanceController {
         modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
         modelAndView.addObject("gridList", gridService.searchAll());
-        modelAndView.addObject("gridList", gridService.searchAll());
         // 从工作台跳转过来传递的eventId
         model.addAttribute("eventId", eventId);
         return modelAndView;
