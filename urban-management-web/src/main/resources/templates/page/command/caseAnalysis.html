@@ -116,7 +116,7 @@
             $(".viewGroup").fadeIn(300);
         });
 
-        $(".layerGrounp").click(function() {
+        $(".layerGrounp").click(function () {
             $(".clickLayer").html($(this).children(".layerInfo").html())
             $(".clickName").html($(this).children(".layerName").html())
             $(".viewGroup").fadeOut(300);
@@ -124,31 +124,45 @@
         });
 
 
-        $("#map1").click(function() {
-            let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
-            $.ajaxUtil.get(getGridUrl, function (e) {
-                var urlParam = e.data.split("?");
-                var url = urlParam[0];
-                var param = urlParam[1];
-                var ImageVector = new ol.layer.Tile({
-                    source: new ol.source.TileWMS({
-                        url: url,
-                        params: {
-                            'VERSION': '1.1.1',
-                            tiled: true,
-                            "LAYERS": param,
-                            "exceptions": ''
-                        }
-                    })
-                });
-                map.addLayer(ImageVector);
+        var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
+        // 沽源地图
+        var center = [115.68192, 41.66462];
+        var projection = new ol.proj.Projection({
+            code: 'EPSG:4326',
+            units: 'degrees',
+            axisOrientation: 'neu',
+            global: true
+        });
+        var untiled = new ol.layer.Image({
+            source: new ol.source.ImageWMS({
+                ratio: 1,
+                url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
+                params: {
+                    'VERSION': '1.1.1',
+                    "LAYERS": 'guyuan20201010:guyuan',
+                    "exceptions": 'application/vnd.ogc.se_inimage',
+                }
             })
-        })
+        });
+        var source = new ol.source.Vector({wrapX: false});
 
-        $("#map2").click(function() {})
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                untiled
+            ],
+            view: new ol.View({
+                // projection: projection,
+                center: center,
+                zoom: 17,
+                projection: projection
+            })
+        });
 
-        $("#map3").click(function() {})
-
+        var layerMap = new ol.layer.Vector({
+            source: new ol.source.Vector(),
+        });
+        map.addLayer(layerMap);
 
         getCaseAnalysisTitle();
 

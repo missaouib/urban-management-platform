@@ -209,35 +209,6 @@
             $(".checkBox").fadeIn(300);
         });
 
-
-        $("#map1").click(function () {
-            let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
-            $.ajaxUtil.get(getGridUrl, function (e) {
-                var urlParam = e.data.split("?");
-                var url = urlParam[0];
-                var param = urlParam[1];
-                var ImageVector = new ol.layer.Tile({
-                    source: new ol.source.TileWMS({
-                        url: url,
-                        params: {
-                            'VERSION': '1.1.1',
-                            tiled: true,
-                            "LAYERS": param,
-                            "exceptions": ''
-                        }
-                    })
-                });
-                map.addLayer(ImageVector);
-            })
-        })
-
-        $("#map2").click(function () {
-        })
-
-        $("#map3").click(function () {
-            // map.removeLayer(ImageVector);
-        })
-
         $("#reporting").click(function () {
             layerMap.getSource().clear()
             var data = [

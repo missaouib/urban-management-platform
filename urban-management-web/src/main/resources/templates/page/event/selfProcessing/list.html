@@ -767,47 +767,6 @@
 
     });
 
-    let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
-
-    function getGridPublishUrl() {
-        $.ajaxUtil.get(getGridUrl, function (e) {
-            /*
-            * 初始渲染底图g
-            * */
-            var urlParam = e.data.split("?");
-            var url = urlParam[0];
-            var param = urlParam[1];
-            var ImageVector = new ol.layer.Tile({
-                source: new ol.source.TileWMS({
-                    url: url,
-                    params: {
-                        'VERSION': '1.1.1',
-                        tiled: true,
-                        "LAYERS": param,
-                        "exceptions": ''
-                    }
-                })
-            });
-            var layersArray = map.getLayers();
-            layersArray.insertAt(1, ImageVector);
-            //获取地图数据s
-            map.on('singleclick', function (evt) {
-                var viewResolution = map.getView().getResolution();
-                var url = ImageVector.getSource().getGetFeatureInfoUrl(
-                    evt.coordinate, viewResolution, 'EPSG:4326', {
-                        'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
-                        'FEATURE_COUNT': 50 //点击查询能返回的数量上限
-                    });
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    dataType: 'jsonp',
-                    jsonp: 'format_options',
-                    jsonpCallback: "callback:success_jsonpCallback"
-                });
-            });
-        })
-    }
     //回调函数接收查询结果
     var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
 

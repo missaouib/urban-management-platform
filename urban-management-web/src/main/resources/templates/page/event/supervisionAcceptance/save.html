@@ -382,7 +382,6 @@
     let receiveUrl = /*[[@{/event/receive}]]*/ "/event/receive";
     let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
     let dispatchUrl = /*[[@{/event/dispatch}]]*/ "/event/dispatch";
-    let getGridUrl = /*[[@{/event/getGridUrl}]]*/ "/event/getGridUrl";
     let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
     let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
     let getGridCenterUrl = /*[[@{/grid/getGridCenter}]]*/ "/grid/getGridCenter";
@@ -395,46 +394,6 @@
     let getUserListForSupervisorUrl = /*[[@{/event/getUserListForSupervisor}]]*/ "/event/getUserListForSupervisor";
     let findDeptTimeLimitByConditionUrl = /*[[@{/event/findDeptTimeLimitByCondition}]]*/ "/event/findDeptTimeLimitByCondition";
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
-
-    function getGridPublishUrl() {
-        $.ajaxUtil.get(getGridUrl, function (e) {
-            /*
-            * 初始渲染底图g
-            * */
-            let urlParam = e.data.split("?");
-            let url = urlParam[0];
-            let param = urlParam[1];
-            let ImageVector = new ol.layer.Tile({
-                source: new ol.source.TileWMS({
-                    url: url,
-                    params: {
-                        'VERSION': '1.1.1',
-                        tiled: true,
-                        "LAYERS": param,
-                        "exceptions": ''
-                    }
-                })
-            });
-            let layersArray = map.getLayers();
-            layersArray.insertAt(1, ImageVector);
-            //获取地图数据s
-            map.on('singleclick', function (evt) {
-                let viewResolution = map.getView().getResolution();
-                let url = ImageVector.getSource().getGetFeatureInfoUrl(
-                    evt.coordinate, viewResolution, 'EPSG:4326', {
-                        'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
-                        'FEATURE_COUNT': 50 //点击查询能返回的数量上限
-                    });
-                $.ajax({
-                    type: 'GET',
-                    url: url,
-                    dataType: 'jsonp',
-                    jsonp: 'format_options',
-                    jsonpCallback: "callback:success_jsonpCallback"
-                });
-            });
-        })
-    }
 
     //回调函数接收查询结果
     var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});

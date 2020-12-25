@@ -201,7 +201,7 @@ public class PublishService {
 
     public String getGridUrl() {
         Publish byKvId = publishRepository.findByKv_Id("28526efe-3db5-415b-8c7a-d0e3a49cab8f");
-        if (StringUtils.isNotBlank(byKvId.getUrl())) {
+        if (byKvId != null && StringUtils.isNotBlank(byKvId.getUrl())) {
             return byKvId.getUrl();
         } else {
             throw new DataValidException("未查询到发布网格数据地址，请先发布网格");
