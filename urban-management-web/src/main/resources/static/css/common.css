@@ -2084,7 +2084,7 @@ span.search_highlight {
     z-index: 10;
     background: #fff;
     height: 36px;
-    min-width: 324px;
+    min-width: 124px;
     top: -40px;
     position: absolute;
     left: 56px;
@@ -2102,14 +2102,14 @@ span.search_highlight {
     z-index: 10;
     background: #fff;
     height: 36px;
-    min-width: 324px;
+    min-width: 124px;
     top: 20px;
     position: absolute;
     left: 53px;
     border-radius: 3px;
     border: 1px solid #dcdcdc;
     font-size: 12px;
-    display: none;
+    /*display: none;*/
 }
 .toop1 .inline{
     margin-left: 5px;
