@@ -924,6 +924,9 @@
     }
 
     function toArray(data) {
+        if (data === null || data === "" || data === undefined) {
+            return [];
+        }
         let dataArray = [];
         if (data.indexOf(",") !== -1) {
             dataArray = data.split(",");
