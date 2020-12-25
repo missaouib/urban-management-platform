@@ -846,7 +846,6 @@
                     $("#eventRegion").val(e.data.eventRegion);
                     $("#x").val(e.data.x);
                     $("#y").val(e.data.y);
-                    setPoint(e.data.x,e.data.y)
                     $("#eventSourceStr").val(e.data.eventSourceStr);
                     $("#cdate").val(e.data.cdate);
                     $("#petitionerSex").val(e.data.petitionerSex);
@@ -863,10 +862,13 @@
                     /* 附件图片回显 */
                     let file = e.data.file;
                     setFileInput(file);
-
                     getTimeAxis(row.id);
 
                     getNodeName(row.id);
+
+                    setPoint(e.data.x,e.data.y);
+                    /* 设定中心点和层级 */
+                    setCenterAndZoom(e.data.x, e.data.y, map.getView().getZoom() + 4);
                 });
 
                 $.ajaxUtil.get(superviseUrl + "?eventId=" + row.id, function (e) {

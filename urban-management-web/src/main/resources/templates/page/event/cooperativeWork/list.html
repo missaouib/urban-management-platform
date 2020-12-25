@@ -969,7 +969,6 @@
                     $("#eventRegion").val(data1.eventRegion);
                     $("#x").val(data1.x);
                     $("#y").val(data1.y);
-                    setPoint(data1.x, data1.y)
                     $("#eventSourceStr").val(data1.eventSourceStr);
                     $("#cdate").val(data1.cdate);
                     $("#petitionerSex").val(data1.petitionerSex);
@@ -985,10 +984,12 @@
                     }
                     deptId = data1.deptId;
                     deptName = data1.deptName;
-
                     /* 附件图片回显 */
                     let file = data1.file;
                     setFileInput(file);
+                    setPoint(data1.x, data1.y)
+                    /* 设定中心点和层级 */
+                    setCenterAndZoom(data1.x, data1.y, map.getView().getZoom() + 4);
 
                     /*按钮*/
                     var buttonStr = "";
