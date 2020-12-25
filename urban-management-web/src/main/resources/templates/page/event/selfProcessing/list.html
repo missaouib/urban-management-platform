@@ -881,7 +881,6 @@
     let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
     let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
-    let getGridPolygonUrl = /*[[@{/event/getGridPolygon}]]*/ "/event/getGridPolygon";
     let searchUrl = /*[[@{/event/selfProcessingList}]]*/ "/event/selfProcessingList";
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
@@ -979,7 +978,6 @@
         getTimeAxis(eventId);
         getEventDetail(eventId);
         getNodeName(eventId);
-        getGridPolygon(eventId);
     }
 
     /* 获取下一步按钮 */
@@ -1211,25 +1209,6 @@
             $("#selectUser").html(userHtml);
         });
     }
-
-    /* 点击获取网格 */
-    function getGridPolygon(eventId) {
-        $.ajaxUtil.get(getGridPolygonUrl + "?eventId=" + eventId, function (e) {
-            let data = e.data
-            let split = data.split("-");
-            let polygonArray = [];
-            let polygonArrayEnd = [];
-            for (let j = 0; j < split.length; j++) {
-                let pointArray = [];
-                pointArray.push(split[j].split(",")[0]);
-                pointArray.push(split[j].split(",")[1]);
-                polygonArray.push(pointArray);
-                polygonArrayEnd.push(polygonArray);
-            }
-            setPolygon(polygonArrayEnd, 1);
-        });
-    }
-
 
     function setPoint(x, y) {
         let point = new ol.Feature({
