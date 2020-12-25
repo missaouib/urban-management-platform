@@ -66,22 +66,27 @@
                 {
                     title: '账号',
                     field: 'username',
+                    sortable: true,
                 },
                 {
                     title: "登录地址",
                     field: 'ip',
+                    sortable: true,
                 },
                 {
                     title: "操作系统",
                     field: 'os',
+                    sortable: true,
                 },
                 {
                     title: "浏览器",
                     field: 'browser',
+                    sortable: true,
                 },
                 {
                     title: "登录结果",
                     field: 'message',
+                    sortable: true,
                     formatter: function (value, row, index) {
                         if (value === 0) {
                             return '登录成功';
@@ -111,6 +116,7 @@
                 },
                 {
                     title: '登录时间',
+                    sortable: true,
                     field: 'loginTime',
                     sortable: true
                 }

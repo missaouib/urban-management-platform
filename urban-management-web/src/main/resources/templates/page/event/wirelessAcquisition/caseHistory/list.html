@@ -743,15 +743,18 @@
                 {
                     title: '问题描述',
                     field: 'represent',
-                    class:"problem"
+                    class:"problem",
+                    sortable: true,
                 },
                 {
                     title: '上报人',
-                    field: 'userName'
+                    field: 'userName',
+                    sortable: true,
                 },
                 {
                     title: '案件分类',
-                    field: 'eventTypeName'
+                    field: 'eventTypeName',
+                    sortable: true,
                 },
                 {
                     title: '创建时间',
@@ -760,12 +763,14 @@
                 },
                 {
                     title: '处置时限',
-                    field: 'timeLimitStr'
+                    field: 'timeLimitStr',
+                    sortable: true,
                 },
                 {
                     title: '截止时间',
                     formatter: setPointForList,
-                    field: 'endTimeStr'
+                    field: 'endTimeStr',
+                    sortable: true,
                 },
 
             ]

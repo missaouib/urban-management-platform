@@ -1021,33 +1021,39 @@
                     title: '示警灯',
                     field: '',
                     class:'time_width',
-                    formatter:setTimeLimit
+                    formatter:setTimeLimit,
                 },
                 {
                     title: '案件编号',
-                    field: 'eventCode'
+                    field: 'eventCode',
+                    sortable: true,
                 },
                 {
                     title: '问题描述',
                     field: 'represent',
-                    class:'problem'
+                    class:'problem',
+                    sortable: true,
                 },
                 {
                     title: '当前阶段',
-                    field: 'taskName'
+                    field: 'taskName',
+                    sortable: true,
                 },
                 {
                     title: '到达时间',
-                    field: 'startTime'
+                    field: 'startTime',
+                    sortable: true,
                 },
                 {
                     title: '处置时限',
-                    field: 'timeLimitStr'
+                    field: 'timeLimitStr',
+                    sortable: true,
                 },
                 {
                     title: '截止时间',
                     formatter: setPointForList,
-                    field: 'endTimeStr'
+                    field: 'endTimeStr',
+                    sortable: true,
                 },
                 {
                     title: '应急状态',

@@ -901,24 +901,29 @@
                 },
                 {
                     title: '案件编号',
-                    field: 'eventCode'
+                    field: 'eventCode',
+                    sortable: true,
                 },
                 {
                     title: '问题描述',
                     field: 'represent',
-                    class:"problem"
+                    class:"problem",
+                    sortable: true,
                 },
                 {
                     title: '当前处理部门',
-                    field: 'deptName'
+                    field: 'deptName',
+                    sortable: true,
                 },
                 {
                     title: '案件分类',
                     formatter: setPointForList,
-                    field: 'eventTypeName'
+                    field: 'eventTypeName',
+                    sortable: true,
                 },
                 {
                     title: '督办状态',
+                    sortable: true,
                     formatter: function(value, row) {
                         if(row.supSts==="1"){
                             return "已督办";
