@@ -11,9 +11,8 @@
 </head>
 <body style="border-radius: 8px;">
     <div class="col-md-12" style="height: 100%">
-        <h3 class="bigTitle">事件上报</h3>
         <div class="content">
-            <div class="leftBox">
+            <div class="leftContent">
                 <form id="userForm">
                     <div class="top table2_top">
                             <div class="top_out">
@@ -28,8 +27,6 @@
                                         <td>
                                             <input id="userName" name="userName" placeholder="" class="" type="text" maxlength="30" required disabled>
                                         </td>
-                                    </tr>
-                                    <tr>
                                         <td><span></span>立案条件</td>
                                         <td>
                                             <select  name="safeLevel" required>
@@ -39,17 +36,13 @@
                                                 <option>4</option>
                                             </select>
                                         </td>
+                                    </tr>
+                                    <tr>
+
                                         <td><span></span>部件编码</td>
                                         <td>
                                             <input  name="userName" placeholder="" class="" type="text" maxlength="30" >
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td><span></span>问题描述</td>
-<!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
-                                        <td colspan = "8"><textarea id="problemescription" name="problemescription" required></textarea></td>
-                                    </tr>
-                                    <tr>
                                         <td><span></span>案件等级</td>
                                         <td>
                                             <select  name="safeLevel" >
@@ -62,6 +55,11 @@
                                         <td>
                                             <input  name="userName" placeholder="" class="" type="text" maxlength="30" >
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td><span></span>问题描述</td>
+<!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
+                                        <td colspan = "8"><textarea id="problemescription" name="problemescription" required></textarea></td>
                                     </tr>
                                     <tr>
                                         <td><span></span>所在区域</td>
@@ -82,6 +80,15 @@
                                                 <option>4</option>
                                             </select>
                                         </td>
+                                        <td><span></span>案件分类</td>
+                                        <td>
+                                            <select  required>
+                                                <option>日常管理</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                            </select>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><span></span>案件地址</td>
@@ -94,12 +101,13 @@
                                         <td style="text-align: left">张辉</td>
                                         <td><span></span>联系方式</td>
                                         <td><input id="handleTime" name="handleTime" type="text" value="15645068888"></td>
-                                    </tr>
-                                    <tr>
                                         <td><span></span>是否处理</td>
                                         <td style="text-align: left">
                                             <input  name="userName" placeholder="" class="" type="checkbox" required style="width: 30px">
                                         </td>
+                                    </tr>
+                                    <tr>
+
                                         <td><span></span>问题来源</td>
                                         <td>
                                             <select  name="safeLevel" required>
@@ -109,14 +117,13 @@
                                                 <option>4</option>
                                             </select>
                                         </td>
-                                    </tr>
-                                    <tr>
                                         <td><span></span>创建时间</td>
                                         <td>
                                             <input size="16" class="form_datetime" type="text" value="" readonly>
 
                                         </td>
                                     </tr>
+
                                     <tr>
                                         <td><span></span>位置坐标</td>
                                         <td>
@@ -125,17 +132,6 @@
                                         <td></td>
                                         <td>
                                             <input type="text" class="" readonly="readonly" disabled value="纬度">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><span></span>案件分类</td>
-                                        <td>
-                                            <select  required>
-                                                <option>日常管理</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                            </select>
                                         </td>
 
                                     </tr>
@@ -155,7 +151,7 @@
                             </div>
 
                             <!--                            按钮-->
-                            <div class="notice_bot">
+
                                 <!--            <div class="l_left">-->
                                 <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                                 <!--            </div>-->
@@ -165,10 +161,10 @@
                                     <button class="but_close" onclick="Cancel()">返回</button>
                                 </div>
                             </div>
-                    </div>
+
                 </form>
             </div>
-            <div class="rightBox">
+            <div class="rightContent">
                 <div class="map" id="map"></div>
 
                 <div id="popup" class="ol-popup">
@@ -215,6 +211,58 @@
             showMeridian: 1,
             format: "yyyy-mm-dd hh:ii:ss"
         });
+
+        $("#input-id").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'],       // 接收的文件后缀
+            maxFileCount: 10,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showClose: false,                                   // 右上角的×
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: true,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                  // 按钮样式
+        }).on('change', function (event) {
+            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
+        }).on('fileselect', function (event, numFiles, label) {
+            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
+        }).on("filebatchselected", function (event, files) {
+            $(this).fileinput("upload");
+        }).on("fileuploaded", function (event, data) {
+
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                multiMediaData = data;
+                insertMultiMedia(data);
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
+            }
+        }).on('filedeleted', function (event, key) {
+            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
+            console.log('Key = ' + key);
+        }).on('filesuccessremove', function (event, id) {
+            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
+            deleteMultiMedia(id, multiMediaData);
+        }).on('fileclear', function (event) {
+            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
+        }).on('filecleared', function (event) {
+            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
+        }).on('filepredelete', function (event, key) {
+            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
+            console.log('Key = ' + key);
+        });
+
     })
 
 
