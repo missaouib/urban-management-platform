@@ -88,6 +88,7 @@
                             <td><span></span>部件编码</td>
                             <td>
                                 <input type="text" readonly id="componentObjId" name="componentObjId" th:value="${eventOneVO.objId}" />
+                                <input type="hidden" id="layer"  readonly="readonly">
 <!--                                <input type="hidden" id="componentObjId1" name="componentObjId" />-->
                             </td>
                             <td><span></span>案件分类</td>
@@ -588,6 +589,7 @@
     let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
     function findUrlListByEventTypeId(eventTypeId) {
         $.ajaxUtil.get(publishUrl + "?typeId=" + eventTypeId, function (e) {
+            $("#layer").val("");
             //删除上一个底图
             let mation = map.getLayerGroup().getLayers().a;
             console.log(mation)
@@ -599,6 +601,7 @@
             }
             $(e.data).each(function (index, value) {
                 if (value.url != null) {
+                    $("#layer").val(value.layerId);
                     let urlParam = value.url.split("?");
                     let url = urlParam[0];
                     let param = urlParam[1];
@@ -619,15 +622,7 @@
                     let layersArray = map.getLayers();
                     layersArray.insertAt(1, ImageVector);
 
-                    //获取地图数据s
-                    map.on('singleclick', function (evt) {
-                        let t = evt.coordinate;
-                        $.ajaxUtil.get(unit + "?tableName=" + value.layerId+"&x="+t[0]+"&y="+t[1], function (e) {
-                            $("#componentObjId").val(e.data.id)
-                            $("#componentObjId").val(e.data.id)
 
-                        });
-                    });
 
                 }
             })
@@ -1370,7 +1365,20 @@
             }
         });
 
-        setPoint(evt.coordinate)
+        setPoint(evt.coordinate);
+
+        /**
+         * 获取部件编码
+         */
+        if($("#layer").val()===""||$("#layer").val()===null){
+            $("#componentObjId").val("")
+        }else{
+            let t = evt.coordinate;
+            $.ajaxUtil.get(unit + "?tableName=" + $("#layer").val()+"&x="+t[0]+"&y="+t[1], function (e) {
+                $("#componentObjId").val(e.data.id)
+
+            });
+        }
     });
 
 
