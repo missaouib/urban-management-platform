@@ -16,7 +16,7 @@
         <div class="left_topIn">
             <div class="selectPoint">
                 <form id="userForm">
-                    <input th:name="eventId" th:value="${eventId}" type="hidden">
+                    <input th:name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
                     <div class="top table2_top xianging">
                         <div class="top_out">
                             <table class="table">
@@ -531,7 +531,7 @@
 
         queryUserList();
 
-        let eventId = $("input[name='eventId']").val();
+        let eventId = $('#eventIdFromWorkBench').val();
         if (eventId !== '' && eventId !== undefined){
             checkRow(eventId);
         }
@@ -806,6 +806,9 @@
             onClickRow: function (row, index) {
                 layerMap.getSource().clear()
                 checkRow(row.id);
+            },
+            onLoadSuccess: function (data) {
+                $('#eventIdFromWorkBench').val('');
             },
             columns: [
                 {

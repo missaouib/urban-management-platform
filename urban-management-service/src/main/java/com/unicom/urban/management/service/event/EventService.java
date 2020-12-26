@@ -881,9 +881,19 @@ public class EventService {
         }
         eventRepository.saveAndFlush(event);
     }
-
+    /**
+     * 查找转应急状态
+     *
+     * @param eventId id
+     */
     public int findUrgent(String eventId) {
-        Event event = this.findOne(eventId);
-        return event.getUrgent() == null ? 0 : event.getUrgent();
+        Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
+        if ("值班长-立案".equals(statistics.getTaskName())) {
+            Event event = this.findOne(eventId);
+            return event.getUrgent() == null ? 0 : event.getUrgent();
+        }else {
+            return 9;
+        }
+
     }
 }

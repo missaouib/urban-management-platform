@@ -17,7 +17,7 @@
         <div class="left_topIn">
             <div class="selectPoint">
                 <form id="userForm">
-                    <input th:name="eventId" th:value="${eventId}" type="hidden">
+                    <input th:name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
                     <div class="top table2_top xiangqing">
                         <!--        <div>-->
                         <div class="top_out">
@@ -553,7 +553,7 @@
         $(".ol-full-screen-false").html("全屏")
         getIdioms();
         queryUserList();
-        let eventId = $("input[name='eventId']").val();
+        let eventId = $('#eventIdFromWorkBench').val();
         if (eventId !== '' && eventId !== undefined){
             checkRow(eventId);
         }
@@ -954,9 +954,10 @@
                 $($element).addClass('changeColor');
                 layerMap.getSource().clear()
                 checkRow(row.id)
-                if (row.taskName === '值班长-立案') {
-                    setUrgentButton(row.id);
-                }
+
+            },
+            onLoadSuccess: function (data) {
+                $('#eventIdFromWorkBench').val('');
             },
             columns: [
                 {
@@ -1074,28 +1075,36 @@
             $(data1.eventButtonVOS).each(function (index, value) {
                 buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='" + value.id + "' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
             })
-            $("#btnGroupGround").empty();
+
             $("#btnGroupGround").append(buttonStr);
+
+            this.setUrgentButton(eventId);
 
             getTimeAxis(eventId);
 
             getNodeName(eventId);
 
 
+
         });
     }
 function setUrgentButton(eventId) {
     $.ajaxUtil.get("/event/findUrgent" + "/?eventId=" + eventId, function (e) {
-        let data = e.data;
+        let buttonStr = '';
         let buttonText = "";
-        let buttonStr = "";
-        if (data === 1){
+        let data = e.data;
+        if (data === 1) {
             buttonText = '取消应急';
-        }else{
+            buttonStr = "<button  type=\"button\" class=\"but_save\" onclick='changeUrgent(\"" + eventId + "\")'  class=\"but_save\">" + buttonText + "</button>";
+            $("#btnGroupGround").append(buttonStr);
+        } if (data === 0) {
             buttonText = '转应急';
+            buttonStr = "<button  type=\"button\" class=\"but_save\" onclick='changeUrgent(\"" + eventId + "\")'  class=\"but_save\">" + buttonText + "</button>";
+            $("#btnGroupGround").append(buttonStr);
+        }else {
+            buttonStr = '';
+            $("#btnGroupGround").append(buttonStr);
         }
-        buttonStr = "<button  type=\"button\" class=\"but_save\" onclick='changeUrgent(\""+eventId+"\")'  class=\"but_save\">" + buttonText + "</button>";
-        $("#btnGroupGround").append(buttonStr);
     });
 }
     function getTimeAxis(eventId) {
