@@ -355,8 +355,11 @@
                 },
                 {
                     title: '案件分类',
-                    field: 'recTypeName',
+                    field: 'recType.value',
                     sortable: true,
+                    formatter: function (value, row, index) {
+                        return row.recTypeName;
+                    }
                 },
                 {
                     title: '当前阶段',
