@@ -154,5 +154,7 @@ public class EventDTO {
      */
     private List<String> eventIdListByBox;
 
+    private String componentObjId;
+
 
 }
