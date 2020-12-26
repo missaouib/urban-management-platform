@@ -1266,6 +1266,10 @@ var table = {
 						$.modal.alertWarning("请至少选择一条记录");
 						return;
 					}
+					if (id.length > 1) {
+						$.modal.alertWarning("只能选择一条记录");
+						return;
+					}
 					url = table.options.updateUrl.replace("{id}", id);
 				}
 				return url;
@@ -1321,19 +1325,19 @@ var table = {
 				});
 
 			},
-			//上报案件
-			report: function(id) {
+			//批量上报案件
+			report: function() {
 				table.set();
-				$.modal.confirm("确定上报该条信息吗？", function() {
-					var url = $.common.isNotEmpty(id) ? table.options.reportUrl : table.options.reportUrl.replace("{id}", $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId));
-					if(table.options.type == table_type.bootstrapTreeTable) {
-						$.operate.get(url);
-					} else {
-						var data = { "id": id };
-						$.operate.submit(url, "post", "json", data);
-					}
+				var rows = $.common.isEmpty(table.options.uniqueId) ? $.table.selectFirstColumns() : $.table.selectColumns(table.options.uniqueId);
+				if (rows.length == 0) {
+					$.modal.alertWarning("请至少选择一条记录");
+					return;
+				}
+				$.modal.confirm("确定上报 " + rows.length + " 条数据吗?", function() {
+					var url = table.options.reportUrl;
+					var data = { "ids": rows.join() };
+					$.operate.submit(url, "post", "json", data);
 				});
-
 			},
 			// 批量删除信息
 			removeBatch: function() {

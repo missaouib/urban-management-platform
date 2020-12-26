@@ -381,9 +381,9 @@ public class WirelessAcquisitionController {
      * 列表页案件采集上报
      * @param id
      */
-    @RequestMapping("reportOnList/{id}")
-    public Result reportOnList(@PathVariable String id){
-        eventService.reportOnList(id);
+    @RequestMapping("/reportOnList")
+    public Result reportOnList(String ids){
+        eventService.reportOnList(ids);
         return Result.success();
 
     }

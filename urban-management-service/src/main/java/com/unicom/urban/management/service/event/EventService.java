@@ -701,15 +701,18 @@ public class EventService {
     /**
      * 案件采集页表页上报
      */
-    public void reportOnList(String id) {
-        Event event = this.findOne(id);
-        event.setUser(SecurityUtil.getUser().castToUser());
-        event.setSts(null);
-        Event saved = eventRepository.saveAndFlush(event);
-        if (event.getDoBySelf() != null && event.getDoBySelf()) {
-            workService.saveAutoReport(saved.getId());
-        } else {
-            workService.superviseReporting(saved.getId());
+    public void reportOnList(String ids) {
+        String[] idList = ids.split(",");
+        for (String id : idList) {
+            Event event = this.findOne(id);
+            event.setUser(SecurityUtil.getUser().castToUser());
+            event.setSts(null);
+            Event saved = eventRepository.saveAndFlush(event);
+            if (event.getDoBySelf() != null && event.getDoBySelf()) {
+                workService.saveAutoReport(saved.getId());
+            } else {
+                workService.superviseReporting(saved.getId());
+            }
         }
     }
 
