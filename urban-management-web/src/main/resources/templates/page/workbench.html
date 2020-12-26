@@ -365,8 +365,11 @@
                 },
                 {
                     title: '案件来源',
-                    field: 'eventSourceName',
+                    field: 'eventSource.value',
                     sortable: true,
+                    formatter: function (value, row, index) {
+                        return row.eventSourceName;
+                    }
                 },
                 {
                     title: '创建日期',
