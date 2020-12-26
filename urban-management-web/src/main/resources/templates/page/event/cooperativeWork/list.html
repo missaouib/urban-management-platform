@@ -1075,7 +1075,7 @@
             $(data1.eventButtonVOS).each(function (index, value) {
                 buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='" + value.id + "' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
             })
-
+            $("#btnGroupGround").html('');
             $("#btnGroupGround").append(buttonStr);
 
             this.setUrgentButton(eventId);
