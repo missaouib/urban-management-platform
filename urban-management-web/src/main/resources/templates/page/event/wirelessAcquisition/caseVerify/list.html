@@ -737,7 +737,7 @@
             onClickRow: function (row, tr, flied) {
                 layerMap.getSource().clear()
                 getButton(row.id)
-                checkRow(eventId)
+                checkRow(row.id)
             },
             onLoadSuccess: function (data) {
                 $('#eventIdFromWorkBench').val('');
@@ -983,15 +983,18 @@
             let videoHtml = "";
             let audioHtml = "";
             for (let i = 0; i < value.length; i++) {
-                imageHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>";
-                if (value[i].type === "图片") {
-                    imageHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>";
-                }
-                if (value[i].type === "视频") {
-                    videoHtml += "<video style='width: 100%;height: 100%' controls src='" + showUrl + value[i].url + "'></video>";
-                }
-                if (value[i].type === "音频") {
-                    audioHtml += "<audio style='width: 100%;height: 100%' controls src='" + showUrl + value[i].url + "'></audio>";
+                if (value[i].type=== 1){
+                    imageHtml += "<div class=\"swiper-slide\" >\n" +
+                        "<img class='img-rounded' style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>"+
+                        "</div>";
+                } else if (value[i].type=== 2) {
+                    videoHtml += "<div class=\"swiper-slide\">\n" +
+                        "<video controls style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>" +
+                        "</div>";
+                } else if (value[i].type=== 3) {
+                    musicHtml += "<div class=\"swiper-slide\">\n" +
+                        "<audio controls style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>" +
+                        "</div>";
                 }
             }
             $("#modelImageList").html(imageHtml);
