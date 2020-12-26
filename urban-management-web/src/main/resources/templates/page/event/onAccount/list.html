@@ -793,7 +793,7 @@
         var options = {
             url: searchUrl,
             uniqueId: "id",
-            sortName: "statisticsList.startTime",
+            sortName: "createTime",
             sortOrder: "desc",
             modalName: "用户",
             // 点击每行进行函数的触发
@@ -839,11 +839,8 @@
                 },
                 {
                     title: '到达时间',
-                    field: 'statisticsList.startTime',
+                    field: 'startTime',
                     sortable: true,
-                    formatter : function (value, row, index){
-                        return row.startTime;
-                    }
                 },
 
             ]
