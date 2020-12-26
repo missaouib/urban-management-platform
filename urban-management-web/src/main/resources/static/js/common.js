@@ -470,6 +470,7 @@ function setFileInput(file) {
 
 function setPointForList(data) {
 	let rowArray = data.rows;
+	wkts = [];
 	for (let i = 0; i < rowArray.length; i++) {
 		setPoint(rowArray[i].x, rowArray[i].y);
 		let point = "POINT(" + rowArray[i].x + " " + rowArray[i].y + ")@"+rowArray[i].id;

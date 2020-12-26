@@ -29,6 +29,7 @@ function setBoxSelect() {
     map.addInteraction(dragBox);
     dragBox.on('boxend', function() {
         let extent = dragBox.getGeometry().getExtent();
+        eventIdListByBox = [];
         vectorSource.forEachFeatureIntersectingExtent(extent, function(feature) {
             eventIdListByBox.push(feature.f);
         });

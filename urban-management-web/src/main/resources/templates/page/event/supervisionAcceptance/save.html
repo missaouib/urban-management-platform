@@ -400,38 +400,39 @@
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
 
 
-                let data = e.data.mapList;
-                for (let i = 0; i < data.length; i++) {
-                    switch (data[i].level) {
-                        case 1:
-                            $("#grid1").val(data[i].id);
-                            break;
-                        case 2:
-                            $("#grid2").empty();
-                            let option2 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            $("#grid2").html(option2);
-                            break;
-                        case 3:
-                            $("#grid3").empty();
-                            let option3 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
-                            $("#grid3").html(option3);
-                            break;
-                        case 4:
-                            let coordinate = [];
-                            coordinate.push($("#longitude").val());
-                            coordinate.push($("#latitude").val());
-                            overlay.setPosition(coordinate);
-                            let popupContentHtml = "<div class='demo2'>网格名称:" + data[i].name;
-                            popupContentHtml += "<em>&#9670;</em>";
-                            popupContentHtml += "<span>&#9670;</span>";
-                            popupContentHtml += "</div>";
-                            $("#popup-content").html(popupContentHtml);
-                            $("#popup").on("click", ".closePopup", function (e) {
-                                e.preventDefault();
-                                overlay.setPosition(undefined);
-                            })
+    let data = e.data.mapList;
+    for (let i = 0; i < data.length; i++) {
+        switch (data[i].level) {
+            case 1:
+                $("#grid1").val(data[i].id);
+                break;
+            case 2:
+                $("#grid2").empty();
+                let option2 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                $("#grid2").html(option2);
+                break;
+            case 3:
+                $("#grid3").empty();
+                let option3 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                $("#grid3").html(option3);
+                break;
+            case 4:
+                let coordinate = [];
+                coordinate.push($("#longitude").val());
+                coordinate.push($("#latitude").val());
+                overlay.setPosition(coordinate);
+                let popupContentHtml = "<div class='demo2'>网格名称:" + data[i].name;
+                popupContentHtml += "<em>&#9670;</em>";
+                popupContentHtml += "<span>&#9670;</span>";
+                popupContentHtml += "</div>";
+                $("#popup-content").html(popupContentHtml);
+                $("#popup").on("click", ".closePopup", function (e) {
+                    e.preventDefault();
+                    overlay.setPosition(undefined);
+                })
 
-
+        }
+    }
 
     /**
      * 后台自动生成案卷号
@@ -744,46 +745,10 @@
                 required: true,
                 // email: true
             },
-            // idcard: {
-            //     card: true
-            // },
-            // phone: {
-            //     phone: true
-            // }
+
         },
         messages: {
-            // realname: {
-            //     required: "真实姓名不能为空"
-            // },
-            // username: {
-            //     required: "登录名不能为空",
-            //     rangelength: "登录名长度要在5-8位之间"
-            // },
-            // pwd: {
-            //     required: "密码不能为空",
-            //     rangelength: "密码长度在6-12位之间"
-            // },
-            // pwd2: {
-            //     required: "重复密码不能为空",
-            //     rangelength: "重复密码长度在6-12位之间",
-            //     equalTo: "重复密码与密码不一致"
-            // },
-            // sex: {
-            //     required: "请选择性别"
-            // },
-            // age: {
-            //     required: "年龄不能为空",
-            //     range: "年龄必须在26-50岁之间"
-            // },
-            // email: {
-            //     email: "请输入有效邮箱"
-            // },
-            // idcard: {
-            //     card: "请输入有效身份证号"
-            // },
-            // phone: {
-            //     phone: "必填"
-            // }
+
         }
     });
     /*手机号格式验证*/
@@ -1054,7 +1019,7 @@
     var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4552"});
     function success_jsonpCallback1(res) {
         var features = geojsonFormat.readFeatures(res);
-     console.log(features[0].H)
+        console.log(features[0].H)
     }
 
 </script>
