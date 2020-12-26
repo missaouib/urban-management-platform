@@ -17,6 +17,7 @@
             <div class="selectPoint">
 
                 <form id="userForm">
+                    <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
                     <input th:name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
                     <div class="top table2_top">
                         <!--        <div>-->
@@ -880,6 +881,12 @@
                 },
                 onLoadSuccess: function (data) {
                     $('#eventIdFromWorkBench').val('');
+                    layerMap.getSource().clear();
+                    if(vector !== null && vector !== undefined && vector !== ""){
+                        vector.getSource().clear();
+                    }
+                    setPointForList(data);
+                    setBoxSelect();
                 },
                 columns: [
                     {
@@ -930,7 +937,6 @@
                     },
                     {
                         title: '截止时间',
-                        formatter: setPointForList,
                         field: 'endTimeStr',
                         sortable: true,
                     },

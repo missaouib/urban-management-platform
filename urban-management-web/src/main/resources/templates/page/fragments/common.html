@@ -49,6 +49,7 @@
         let epsg = [[${@geoServerProperties.epsg}]];
     </script>
     <script th:src="@{/plugins/map/map.js}"></script>
+    <script th:src="@{/plugins/map/boxSelect.js}"></script>
 <!--    <script th:src="@{/plugins/map/map_wmts.js}"></script>-->
 </div>
 
@@ -163,6 +164,7 @@
 </div>
 <div th:fragment="map_js">
     <script th:src="@{/plugins/ol/build/ol.js}"></script>
+<!--    <script th:src="@{/plugins/ol/ol/interaction/interaction.js}"></script>-->
 </div>
 
 

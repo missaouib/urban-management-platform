@@ -16,6 +16,7 @@
         <div class="left_topIn">
             <div class="selectPoint">
                 <form id="userForm">
+                    <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
                     <div class="top table2_top xiangqing">
                         <!--        <div>-->
                         <div class="top_out">
@@ -703,6 +704,14 @@
                     setCenterAndZoom(e.data.x, e.data.y, map.getView().getZoom() + 4);
                 });
             },
+            onLoadSuccess: function (data) {
+                layerMap.getSource().clear();
+                if(vector !== null && vector !== undefined && vector !== ""){
+                    vector.getSource().clear();
+                }
+                setPointForList(data);
+                setBoxSelect();
+            },
             columns: [
                 {
                     field: 'index',
@@ -725,7 +734,6 @@
                 },
                 {
                     title: '办结时间',
-                    formatter: setPointForList,
                     field: 'closeTime',
                     sortable: true,
                 }

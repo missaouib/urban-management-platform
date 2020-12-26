@@ -16,6 +16,7 @@
         <div class="left_topIn">
             <div class="selectPoint">
                 <form id="userForm">
+                    <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
                     <input th:name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
                     <div class="top table2_top xiangqing">
                         <!--        <div>-->
@@ -825,7 +826,6 @@
             modalName: "用户",
             // 点击每行进行函数的触发
             onClickRow: function (row, tr, flied,index) {
-                console.log(row.id)
                 $("#toolbar a").addClass("roleBox")
                 if(row.supSts==="1"){
                     $("#doIt").removeClass("roleBox");
@@ -900,6 +900,14 @@
 
                 })
             },
+            onLoadSuccess: function (data) {
+                layerMap.getSource().clear();
+                if(vector !== null && vector !== undefined && vector !== ""){
+                    vector.getSource().clear();
+                }
+                setPointForList(data);
+                setBoxSelect();
+            },
             columns: [
                 {
                     field: 'index',
@@ -928,7 +936,6 @@
                 },
                 {
                     title: '案件分类',
-                    formatter: setPointForList,
                     field: 'eventTypeName',
                     sortable: true,
                 },

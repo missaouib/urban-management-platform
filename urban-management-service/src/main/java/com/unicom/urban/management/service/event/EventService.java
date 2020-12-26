@@ -127,6 +127,13 @@ public class EventService {
                 list.add(in);
             }
 
+            List<String> eventIdListByBox = eventDTO.getEventIdListByBox();
+            if (eventIdListByBox != null && eventIdListByBox.size() > 0) {
+                CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
+                eventIdListByBox.forEach(in::value);
+                list.add(in);
+            }
+
             if (StringUtils.isNotBlank(eventDTO.getUserId())) {
                 /* 查询当前登陆人所拥有的任务 */
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));

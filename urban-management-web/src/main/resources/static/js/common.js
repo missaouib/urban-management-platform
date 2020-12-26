@@ -468,8 +468,13 @@ function setFileInput(file) {
 	}
 }
 
-function setPointForList(value, row, index){
-	setPoint(row.x, row.y);
+function setPointForList(data) {
+	let rowArray = data.rows;
+	for (let i = 0; i < rowArray.length; i++) {
+		setPoint(rowArray[i].x, rowArray[i].y);
+		let point = "POINT(" + rowArray[i].x + " " + rowArray[i].y + ")@"+rowArray[i].id;
+		wkts.push(point);
+	}
 }
 
 function setCenterAndZoom(x, y, zoom) {

@@ -16,6 +16,7 @@
         <div class="left_topIn">
             <div class="selectPoint">
                 <form id="userForm">
+                    <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
                     <input th:name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
                     <div class="top table2_top xiangqing">
                         <div class="top_out">
@@ -91,7 +92,7 @@
                     </form>
                 </div>
             </div>
-            <div style="width: 100%;width: 100%;display: flex;justify-content: center">
+            <div style="width: 100%;display: flex;justify-content: center">
                 <div class="xiala"><i class="selectmenu"></i></div>
             </div>
             <div class="btn-group-sm" id="toolbar" >
@@ -522,11 +523,11 @@
             $(".duck_duck").fadeIn(300)
         });
 
-        queryUserList();
         let eventId = $('#eventIdFromWorkBench').val();
         if (eventId !== '' && eventId !== undefined){
             checkRow(eventId);
         }
+
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
@@ -564,8 +565,6 @@
             $("#textIdioms_tag").html(idioms);
             $("#wordSays_tag").fadeOut(300)
         });
-
-        getIdioms();
 
         $(".duk_close").click(function() {
             $("#pictureBoxDuc").fadeOut(300)
@@ -764,6 +763,10 @@
 
         setModelName();
 
+        getIdioms();
+
+        queryUserList();
+
         //处置前后为空
         setMediaBefore();
         setMediaAfter();
@@ -907,10 +910,17 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row, index) {
-                layerMap.getSource().clear()
+                layerMap.getSource().clear();
                 checkRow(row.id);
-            },onLoadSuccess: function (data) {
+            },
+            onLoadSuccess: function (data) {
                 $('#eventIdFromWorkBench').val('');
+                layerMap.getSource().clear();
+                if(vector !== null && vector !== undefined && vector !== ""){
+                    vector.getSource().clear();
+                }
+                setPointForList(data);
+                setBoxSelect();
             },
             columns: [
                 {
@@ -956,7 +966,6 @@
                 },
                 {
                     title: '截止时间',
-                    formatter: setPointForList,
                     field: 'endTimeStr',
                     sortable: true,
                 },
@@ -1189,9 +1198,9 @@
         let userIdVal = $("#userId").val();
         let buttonVal = $("#button").val();
         let idVal = $("#eventId").val();
-        if (buttonVal === "11" || buttonVal === 13 || buttonVal === 14 || buttonVal === 16) {
+        if (buttonVal === "11" || buttonVal === "13" || buttonVal === "14" || buttonVal === "16") {
             if (userIdVal == null || userIdVal === "") {
-                alert("请选择监督员");
+                $.modal.alertError("请选择监督员");
                 return false;
             }
         }
@@ -1222,10 +1231,11 @@
         });
     }
 
-    function setPoint(x, y) {
+    function setPoint(x, y, id) {
         let point = new ol.Feature({
             geometry: new ol.geom.Point([x, y]),
             data: {
+                id: id,
                 coordinate: x + "," + y
             }
         });
@@ -1249,6 +1259,5 @@
     }
 </script>
 <th:block th:include="page/fragments/common :: mapinit_js"/>
-
 </body>
 </html>

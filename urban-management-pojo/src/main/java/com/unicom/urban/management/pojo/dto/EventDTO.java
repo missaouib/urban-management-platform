@@ -149,5 +149,10 @@ public class EventDTO {
      */
     private Integer notOperate;
 
+    /**
+     * 页面框选事件id的查询条件
+     */
+    private List<String> eventIdListByBox;
+
 
 }

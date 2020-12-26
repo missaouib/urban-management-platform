@@ -16,6 +16,7 @@
         <div class="left_topIn">
             <div class="selectPoint">
                 <form id="userForm">
+                    <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
                     <div class="top table2_top xiangqing">
                         <!--        <div>-->
                         <div class="top_out">
@@ -730,6 +731,14 @@
                 getNodeName(row.id);
                 setBee(row)
             },
+            onLoadSuccess: function (data) {
+                layerMap.getSource().clear();
+                if(vector !== null && vector !== undefined && vector !== ""){
+                    vector.getSource().clear();
+                }
+                setPointForList(data);
+                setBoxSelect();
+            },
             columns: [
                 {
                     field: 'index',
@@ -768,7 +777,6 @@
                 },
                 {
                     title: '截止时间',
-                    formatter: setPointForList,
                     field: 'endTimeStr',
                     sortable: true,
                 },

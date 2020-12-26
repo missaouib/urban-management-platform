@@ -16,6 +16,7 @@
         <div class="left_topIn">
             <div class="selectPoint">
                 <form id="userForm">
+                    <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
                     <input th:name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
                     <div class="top table2_top xiangqing">
                         <div class="top_out">
@@ -803,17 +804,6 @@
 
     let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
 
-    function success_jsonpCallback(res) {
-        var features = geojsonFormat.readFeatures(res);
-        console.log('点击查询返回的结果如下：');
-        console.log("features", features);
-        let mongodbId = features[0].H.mongodb_id;
-        console.log("features", mongodbId);
-        $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
-            console.log("e", e);
-        });
-    }
-
     let num = 1;
 
     function queryUserList() {
@@ -836,6 +826,12 @@
             },
             onLoadSuccess: function (data) {
                 $('#eventIdFromWorkBench').val('');
+                layerMap.getSource().clear();
+                if(vector !== null && vector !== undefined && vector !== ""){
+                    vector.getSource().clear();
+                }
+                setPointForList(data);
+                setBoxSelect();
             },
             columns: [
                 {
@@ -871,7 +867,6 @@
                 },
                 {
                     title: '案件分类',
-                    formatter: setPointForList,
                     field: 'eventTypeName',
                     sortable: true,
                 },
@@ -1141,9 +1136,6 @@
 
         })
     })
-
-
-
 
     function setPoint(x, y) {
         let point = new ol.Feature({

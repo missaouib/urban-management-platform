@@ -2116,6 +2116,10 @@ span.search_highlight {
     display: block;
     float: left;
 }
+.ol-dragbox {
+    background-color: rgba(255,255,255,0.4);
+    border: 1px solid rgb(0, 38, 150);
+}
 
 /*
    序号 时限 变窄

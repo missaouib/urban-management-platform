@@ -21,6 +21,7 @@
                         <p>
                             <label class="">问题类型：</label>
                             <input type="hidden" id="eventId" value="">
+                            <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
                             <input type="text" class="find_input" id="eventTypeName" onclick="selectEventTypeTree()" readonly="readonly">
                             <input type="hidden" th:name="eventTypeId" id="eventTypeId">
                             <input type="button" class="check_btn button_ground closeSearch" onclick="$.table.search()" value="查询">
@@ -528,6 +529,14 @@
                 getEventDetail(row.id);
                 localStorage.setItem("rowIndex",index[0].rowIndex);
             },
+            onLoadSuccess: function (data) {
+                layerMap.getSource().clear();
+                if(vector !== null && vector !== undefined && vector !== ""){
+                    vector.getSource().clear();
+                }
+                setPointForList(data);
+                setBoxSelect();
+            },
             columns: [
                 {
                     field: 'index',
@@ -565,7 +574,6 @@
                 },
                 {
                     title: '案件类型',
-                    formatter: setPointForList,
                     field: 'recTypeName',
                     sortable: true,
                 },
