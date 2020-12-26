@@ -732,6 +732,7 @@
                 setBee(row)
             },
             onLoadSuccess: function (data) {
+                $("#eventIdListByBox").val("");
                 layerMap.getSource().clear();
                 if(vector !== null && vector !== undefined && vector !== ""){
                     vector.getSource().clear();

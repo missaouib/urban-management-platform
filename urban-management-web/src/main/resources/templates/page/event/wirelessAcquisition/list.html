@@ -530,6 +530,7 @@
                 localStorage.setItem("rowIndex",index[0].rowIndex);
             },
             onLoadSuccess: function (data) {
+                $("#eventIdListByBox").val("");
                 layerMap.getSource().clear();
                 if(vector !== null && vector !== undefined && vector !== ""){
                     vector.getSource().clear();

@@ -803,6 +803,7 @@
             },
             onLoadSuccess: function (data) {
                 $('#eventIdFromWorkBench').val('');
+                $("#eventIdListByBox").val("");
                 layerMap.getSource().clear();
                 if(vector !== null && vector !== undefined && vector !== ""){
                     vector.getSource().clear();
