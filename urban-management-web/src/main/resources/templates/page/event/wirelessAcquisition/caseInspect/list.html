@@ -390,7 +390,7 @@
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
                             <span class="sendText" id="btnOpinion" style="width: 125px"><i></i>意见</span>
-                            <textarea type="text" id="opinions" onblur="saveIdioms(this)"></textarea>
+                            <textarea type="text" id="textIdioms" onblur="saveIdioms(this)"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays">
                                 <ul>
@@ -510,26 +510,7 @@
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
     <th:block th:include="page/fragments/common :: swiper_js"/>
     <script type="text/javascript" th:inline="javascript">
-        //惯用语
-        $("#alwaysSay").click(function () {
-            $("#wordSays").stop().fadeToggle(300)
-        });
 
-        $("#wordSays").on("click", ".idioms", function () {
-            let idioms = $(this).html()
-            $("#textIdioms").val($("#textIdioms").val() + idioms);
-            $("#wordSays").fadeOut(300)
-        });
-
-        $("#alwaysSay_tag").click(function () {
-            $("#wordSays_tag").stop().fadeToggle(300)
-        });
-
-        $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
-            let idioms = $(this).html()
-            $("#textIdioms_tag").html(idioms);
-            $("#wordSays_tag").fadeOut(300)
-        });
         //附件详情弹出
         $(".duck_title span").click(function (e) {
             $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
@@ -644,6 +625,29 @@
             setConduct(bgmNum)
 
             queryUserList();
+            getIdioms();
+
+            //惯用语
+            $("#alwaysSay").click(function () {
+                $("#wordSays").stop().fadeToggle(300)
+            });
+
+            $("#wordSays").on("click", ".idioms", function () {
+                let idioms = $(this).html()
+                $("#textIdioms").val($("#textIdioms").val() + idioms);
+                $("#wordSays").fadeOut(300)
+            });
+
+            $("#alwaysSay_tag").click(function () {
+                $("#wordSays_tag").stop().fadeToggle(300)
+            });
+
+            $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
+                let idioms = $(this).html()
+                $("#textIdioms_tag").html(idioms);
+                $("#wordSays_tag").fadeOut(300)
+            });
+
             let eventId = $('#eventIdFromWorkBench').val();
             if (eventId !== '' && eventId !== undefined){
                 checkRow(eventId);

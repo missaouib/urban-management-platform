@@ -554,9 +554,10 @@
         $(".ol-full-screen-false").html("全屏")
         getIdioms();
         queryUserList();
-        let eventId = $('#eventIdFromWorkBench').val();
-        if (eventId !== '' && eventId !== undefined){
-            checkRow(eventId);
+        let eventIdFromWorkBench = $('#eventIdFromWorkBench').val();
+        if (eventIdFromWorkBench !== '' && eventIdFromWorkBench !== undefined){
+            checkRow(eventIdFromWorkBench);
+            eventIdOnce = eventIdFromWorkBench;
         }
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
@@ -795,6 +796,7 @@
     var buttonId = "";
     var buttonName = "";
     var eventId = "";
+    var eventIdOnce = "";
 
     var deptId = "";
     var deptName = ""
@@ -891,7 +893,7 @@
             }
         }
         let data = {
-            "eventId": eventId,
+            "eventId": eventIdOnce,
             "buttonId": buttonId,
             "opinions": $("#opinions").val(),
             "deptId": $("#dept").val(),
@@ -912,7 +914,7 @@
             success: function (result) {
                 if (result.code === web_status.SUCCESS) {
                     $.modal.msgSuccess(result.message);
-                    setTimeout("window.location.reload()", 2000);
+                    window.location.href = "/event/toCooperativeWorkList";
                     return;
                 } else if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTreeTable) {
                     $.modal.msgSuccess(result.message);
@@ -955,6 +957,7 @@
                 $($element).addClass('changeColor');
                 layerMap.getSource().clear()
                 checkRow(row.id)
+                eventIdOnce = row.id;
 
             },
             onLoadSuccess: function (data) {
@@ -1033,11 +1036,10 @@
         };
         $.table.init(options);
     }
-    function checkRow(eventId) {
+    function checkRow(eventIdOnce) {
         //详情  流程图  流转记录
-        $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
+        $.ajaxUtil.get(event + "?eventId=" + eventIdOnce, function (e) {
             let data1 = e.data;
-            eventId = data1.id;
             /*流程图*/
             $("#eventImg").attr('src', img + data1.processInstanceId);
             /*详情*/
@@ -1081,29 +1083,29 @@
             $(data1.eventButtonVOS).each(function (index, value) {
                 buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='" + value.id + "' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
             })
-            $("#btnGroupGround").html('');
+            $("#btnGroupGround").empty();
             $("#btnGroupGround").append(buttonStr);
 
-            this.setUrgentButton(eventId);
+            this.setUrgentButton(eventIdOnce);
 
-            getTimeAxis(eventId);
+            getTimeAxis(eventIdOnce);
 
-            getNodeName(eventId);
+            getNodeName(eventIdOnce);
 
         });
     }
-function setUrgentButton(eventId) {
-    $.ajaxUtil.get("/event/findUrgent" + "/?eventId=" + eventId, function (e) {
+function setUrgentButton(eventIdOnce) {
+    $.ajaxUtil.get("/event/findUrgent" + "/?eventId=" + eventIdOnce, function (e) {
         let buttonStr = '';
         let buttonText = "";
         let data = e.data;
         if (data === 1) {
             buttonText = '取消应急';
-            buttonStr = "<button  type=\"button\" class=\"but_save\" onclick='changeUrgent(\"" + eventId + "\")'  class=\"but_save\">" + buttonText + "</button>";
+            buttonStr = "<button  type=\"button\" class=\"but_save\" onclick='changeUrgent(\"" + eventIdOnce + "\")'  class=\"but_save\">" + buttonText + "</button>";
             $("#btnGroupGround").append(buttonStr);
         } if (data === 0) {
             buttonText = '转应急';
-            buttonStr = "<button  type=\"button\" class=\"but_save\" onclick='changeUrgent(\"" + eventId + "\")'  class=\"but_save\">" + buttonText + "</button>";
+            buttonStr = "<button  type=\"button\" class=\"but_save\" onclick='changeUrgent(\"" + eventIdOnce + "\")'  class=\"but_save\">" + buttonText + "</button>";
             $("#btnGroupGround").append(buttonStr);
         }else {
             buttonStr = '';
@@ -1111,8 +1113,8 @@ function setUrgentButton(eventId) {
         }
     });
 }
-    function getTimeAxis(eventId) {
-        $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
+    function getTimeAxis(eventIdOnce) {
+        $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventIdOnce, function (e) {
             let data = e.data;
             $("#timeAxis").empty();
             let html = "";
