@@ -856,6 +856,18 @@
         let data = $('#userForm').serialize();
         $.operate.saveAndReload(dispatchUrl, data);
     }
+
+
+    var container = document.getElementById('popup');
+    var content = document.getElementById('popup-content');
+    var closer = document.getElementById('popup-closer');
+    var overlay = new ol.Overlay({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    });
     let mapUrl = [[${@geoServerProperties.url}]];
     let center_x = [[${@geoServerProperties.center_x}]];
     let center_y = [[${@geoServerProperties.center_y}]];

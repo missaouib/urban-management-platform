@@ -342,6 +342,16 @@
         };
         $.table.init(options);
     }
+    var container = document.getElementById('popup');
+    var content = document.getElementById('popup-content');
+    var closer = document.getElementById('popup-closer');
+    var overlay = new ol.Overlay({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    });
 
     let updateTempUrl = /*[[@{/event/updateTemp}]]*/ "/event/updateTemp";
     let receiveUrl = /*[[@{/event/receive}]]*/ "/event/receive";
@@ -638,6 +648,8 @@
             });
         }
     }
+
+
     //回调函数接收查询结果
     var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
 
