@@ -517,11 +517,12 @@ public class EventService {
         eventOneVO.setRecTypeStr(one.getRecType().getValue());
         eventOneVO.setUserId(Optional.ofNullable(one.getUser()).map(User::getId).orElse(""));
         eventOneVO.setUserName(Optional.ofNullable(one.getUser()).map(User::getName).orElse(""));
-        if (one.getComponent() != null) {
-            if (one.getComponent().getComponentInfo() != null) {
-                eventOneVO.setObjId(one.getComponent().getComponentInfo().getObjId());
-            }
-        }
+//        if (one.getComponent() != null) {
+//            if (one.getComponent().getComponentInfo() != null) {
+//                eventOneVO.setObjId(one.getComponent().getComponentInfo().getObjId());
+//            }
+//        }
+        eventOneVO.setObjId(one.getComponentObjId());
         Optional<Petitioner> petitioner = Optional.ofNullable(one.getPetitioner());
         eventOneVO.setPetitionerName(petitioner.map(Petitioner::getName).orElse(""));
         eventOneVO.setPetitionerPhone(petitioner.map(Petitioner::getPhone).orElse(""));
