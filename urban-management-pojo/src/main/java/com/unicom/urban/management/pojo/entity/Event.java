@@ -140,4 +140,10 @@ public class Event extends BaseEntity {
     @Column(columnDefinition = "tinyint")
     private Integer urgent = 0;
 
+
+    /**
+     * 临时字段 演示之后删除
+     */
+    private String componentObjId;
+
 }
