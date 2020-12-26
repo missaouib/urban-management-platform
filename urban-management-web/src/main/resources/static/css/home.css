@@ -399,3 +399,17 @@ table {
 .warpsNone{
     display: none;
 }
+.cardInfo{
+    height: 60%;
+    width: 100%;
+    background: url("../img/cardInfo.png")!important;
+    background-size: 100% 100%!important;
+    padding: 20px;
+}
+.whitebg{
+    width: 100%;
+    padding: 20px;
+    height: 100%;
+    background: rgba(255,255,255,0.52);
+    border-radius: 5px;
+}
