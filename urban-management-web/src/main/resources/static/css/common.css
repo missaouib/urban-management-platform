@@ -2109,7 +2109,7 @@ span.search_highlight {
     border-radius: 3px;
     border: 1px solid #dcdcdc;
     font-size: 12px;
-    /*display: none;*/
+    display: none;
 }
 .toop1 .inline{
     margin-left: 5px;
