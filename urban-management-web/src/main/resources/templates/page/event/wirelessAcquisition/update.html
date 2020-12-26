@@ -87,8 +87,8 @@
 
                             <td><span></span>部件编码</td>
                             <td>
-                                <input type="text" readonly id="objId" th:value="${eventOneVO.objId}" />
-                                <input type="hidden" id="objId1" name="objId" />
+                                <input type="text" readonly id="componentObjId" name="componentObjId" th:value="${eventOneVO.objId}" />
+<!--                                <input type="hidden" id="componentObjId1" name="componentObjId" />-->
                             </td>
                             <td><span></span>案件分类</td>
                             <td>
@@ -584,53 +584,48 @@
     /**
      * 获取部件的发布图层
      */
+    let unit = /*[[@{/event/findUnit}]]*/ "/event/findUnit";
     let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
     function findUrlListByEventTypeId(eventTypeId) {
         $.ajaxUtil.get(publishUrl + "?typeId=" + eventTypeId, function (e) {
+            //删除上一个底图
+            let mation = map.getLayerGroup().getLayers().a;
+            console.log(mation)
+            if (mation.length > 2) {
+                mation.splice(1, 1);
+                source.clear();
+                $("#componentObjId").val("")
+                $("#componentObjId").val("")
+            }
             $(e.data).each(function (index, value) {
-                $("#publish").val(value.name);
-                $("#publishId").val(value.id);
-                publish = value.name;
-                publishId = value.id;
                 if (value.url != null) {
-                    var urlParam = value.url.split("?");
-                    var url = urlParam[0];
-                    var param = urlParam[1];
-
-                    var ImageVector = new ol.layer.Tile({
-                        source: new ol.source.TileWMS({
+                    let urlParam = value.url.split("?");
+                    let url = urlParam[0];
+                    let param = urlParam[1];
+                    var format = 'image/png';
+                    var ImageVector = new ol.layer.Image({
+                        source: new ol.source.ImageWMS({
                             url: url,
-                            params: {
+                            params: {'FORMAT': format,
                                 'VERSION': '1.1.1',
                                 tiled: true,
                                 "LAYERS": param,
-                                "exceptions": ''
+                                "exceptions": 'application/vnd.ogc.se_inimage'
                             }
                         })
                     });
-                    var layersArray = map.getLayers();
+
+
+                    let layersArray = map.getLayers();
                     layersArray.insertAt(1, ImageVector);
-                    //删除上一个底图
-                    var mation = map.getLayerGroup().getLayers().a;
-                    if (mation.length > 4) {
-                        mation.splice(1, 1);
-                        source.clear();
-                    }
-                    $("#layerId").val(value.layerId == null ? "" : value.layerId);
+
                     //获取地图数据s
                     map.on('singleclick', function (evt) {
-                        var viewResolution = map.getView().getResolution();
-                        var url = ImageVector.getSource().getGetFeatureInfoUrl(
-                            evt.coordinate, viewResolution, 'EPSG:4326', {
-                                'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
-                                'FEATURE_COUNT': 50 //点击查询能返回的数量上限
-                            });
-                        $.ajax({
-                            type: 'GET',
-                            url: url,
-                            dataType: 'jsonp',
-                            jsonp: 'format_options',
-                            jsonpCallback: "callback:success_jsonpCallback1"
+                        let t = evt.coordinate;
+                        $.ajaxUtil.get(unit + "?tableName=" + value.layerId+"&x="+t[0]+"&y="+t[1], function (e) {
+                            $("#componentObjId").val(e.data.id)
+                            $("#componentObjId").val(e.data.id)
+
                         });
                     });
 
@@ -1286,7 +1281,6 @@
         })
     });
     var source = new ol.source.Vector({wrapX: false});
-    var source = new ol.source.Vector({wrapX: false});
     var container = document.getElementById('popup');
     var content = document.getElementById('popup-content');
     var closer = document.getElementById('popup-closer');
@@ -1321,6 +1315,62 @@
         let t = evt.coordinate;
         $("#longitude").val(t[0])
         $("#latitude").val(t[1])
+        layerMap.getSource().clear()
+        $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + t[0] + "&y=" + t[1], function (e) {
+            let split = e.data.multiPolygon.split(",");
+            let polygonArray = [];
+            let polygonArrayEnd = [];
+            for (let j = 0; j < split.length; j++) {
+                let pointArray = [];
+                pointArray.push(split[j].split(" ")[0]);
+                pointArray.push(split[j].split(" ")[1]);
+                polygonArray.push(pointArray);
+                polygonArrayEnd.push(polygonArray);
+            }
+            setPolygon(polygonArrayEnd);
+            let data = e.data.mapList;
+            for (let i = 0; i < data.length; i++) {
+                switch (data[i].level) {
+                    case 1:
+                        $("#grid1").val(data[i].id);
+                        break;
+                    case 2:
+                        $("#grid2").empty();
+                        let option2 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid2").html(option2);
+                        break;
+                    case 3:
+                        $("#grid3").empty();
+                        let option3 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid3").html(option3);
+                        break;
+                    case 4:
+                        let coordinate = [];
+                        coordinate.push($("#longitude").val());
+                        coordinate.push($("#latitude").val());
+                        overlay.setPosition(coordinate);
+                        let popupContentHtml = "<div class='demo2'>网格名称:" + data[i].name;
+                        popupContentHtml += "<em>&#9670;</em>";
+                        popupContentHtml += "<span>&#9670;</span>";
+                        popupContentHtml += "</div>";
+                        $("#popup-content").html(popupContentHtml);
+                        $("#popup").on("click", ".closePopup", function (e) {
+                            e.preventDefault();
+                            overlay.setPosition(undefined);
+                        })
+
+                        $("#grid4").empty();
+                        let option4 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid4").html(option4);
+                        getUserListForSupervisor(data[i].id);
+                        break;
+                    default:
+                        console.log("查询出了网格之外的东西");
+                }
+            }
+        });
+
+        setPoint(evt.coordinate)
     });
 
 
@@ -1331,7 +1381,6 @@
         let pointOfCenter = $("#grid4 option:selected").val();
         let url = "/event/findGeomByGridId?id=" + pointOfCenter;
         $.ajaxUtil.get(url, function (e) {
-
             $(e.data.geom).each(function (index, value) {
                 let split = value.split(",");
                 let polygonArray = [];
@@ -1351,6 +1400,8 @@
             center.push(parseFloat(data[1]))
             setCenterForGrid(center);
         });
+
+        getUserListForSupervisor(pointOfCenter);
     }
     /**
      * 回显上传照片
@@ -1413,12 +1464,6 @@
         $("#musicListAfter").html(musicHtmlAfter);
     }
 
-    map.on("click", function(e) {
-        layerMap.getSource().clear();
-        $("#x").val(e.coordinate[0]);
-        $("#y").val(e.coordinate[1]);
-        setPoints(e.coordinate)
-    })
     function setPoints(coor) {
         let point = new ol.Feature({
             geometry: new ol.geom.Point(coor),
@@ -1448,6 +1493,22 @@
     }
     function setCenterForGrid(data) {
         map.getView().setCenter(data);
+    }
+    /**
+     * 通过网格id获取符合条件得监督员
+     */
+    let getUserListForSupervisorUrl = /*[[@{/event/getUserListForSupervisor}]]*/ "/event/getUserListForSupervisor";
+    function getUserListForSupervisor(id) {
+        $.ajaxUtil.get(getUserListForSupervisorUrl + "?gridId=" + id, function (e) {
+            let option = "";
+            $("#userId").empty();
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.name + "</option>"
+                });
+                $("#userId").html(option);
+            }
+        });
     }
 </script>
 </body>
