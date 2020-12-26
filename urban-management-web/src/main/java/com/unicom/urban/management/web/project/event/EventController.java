@@ -92,6 +92,16 @@ public class EventController {
     }
 
     /**
+     * 选择网格查询小格
+     */
+    @GetMapping("findUnit")
+    public Map<String, String> findUnit(String tableName, String x, String y) throws DataAccessException {
+        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/queryUnit?tableName=" + tableName + "&x=" + x + "&y=" + y, RestReturn.class).getBody();
+        assert body != null;
+        return (Map<String, String>) body.getData();
+    }
+
+    /**
      * 点击网格反差信息
      */
     @GetMapping("/getGridByCheckLayer")
@@ -156,6 +166,7 @@ public class EventController {
 
     /**
      * 设置转应急状态
+     *
      * @param eventId
      * @return
      */
@@ -164,8 +175,9 @@ public class EventController {
         eventService.changeUrgent(eventId);
         return Result.success();
     }
+
     @GetMapping("/findUrgent")
-    public Result findUrgent(String eventId){
+    public Result findUrgent(String eventId) {
         int type = eventService.findUrgent(eventId);
         return Result.success(type);
     }
