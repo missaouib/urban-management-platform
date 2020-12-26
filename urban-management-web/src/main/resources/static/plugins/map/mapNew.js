@@ -51,7 +51,7 @@ function constructSource() {
     return source;
 }
 
-var layer = new ol.layer.Tile({
+var untiled = new ol.layer.Tile({
     source: constructSource()
 });
 
@@ -64,7 +64,7 @@ var view = new ol.View({
 });
 
 var map = new ol.Map({
-    layers: [layer],
+    layers: [untiled],
     target: 'map',
     view: view
 });
