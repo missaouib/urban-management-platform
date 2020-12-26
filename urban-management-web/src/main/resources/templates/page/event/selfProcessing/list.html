@@ -776,16 +776,6 @@
     //回调函数接收查询结果
     var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
 
-    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
-
-    function success_jsonpCallback(res) {
-        var features = geojsonFormat.readFeatures(res);
-        let mongodbId = features[0].H.mongodb_id;
-        $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
-            console.log("e", e);
-        });
-    }
-
     /**
      * 根据按钮名赋值模态窗标题
      */
