@@ -1512,6 +1512,11 @@ label.error {
     color: white;
     border-color: white;
 }
+.enclosureActive{
+    display: flex;
+    justify-content: flex-end;
+}
+
 .enclosure i{
     position: absolute;
     width: 15px;
@@ -1591,7 +1596,7 @@ label.error {
 }
 .allTiel{
     width: 600px;
-    height: 500px;
+    /*height: 500px;*/
     background-color: #ffffff;
     position: relative;
 }
