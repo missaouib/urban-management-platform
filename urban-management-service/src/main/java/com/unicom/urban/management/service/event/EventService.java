@@ -542,7 +542,7 @@ public class EventService {
             fileList.add(map);
         });
         /*处置前*/
-        one.getStatisticsList().stream().filter(s->taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getEndTime)).forEach(s-> s.getEventFileList().forEach(f->{
+        one.getStatisticsList().stream().filter(s->taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getStartTime)).forEach(s-> s.getEventFileList().forEach(f->{
             Map<String, Object> map = new HashMap<>();
             map.put("url", f.getFilePath());
             map.put("type", f.getFileType());
@@ -551,7 +551,7 @@ public class EventService {
             fileList.add(map);
         }));
         /*处置后*/
-        one.getStatisticsList().stream().filter(s->!taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getEndTime)).forEach(s-> s.getEventFileList().forEach(f->{
+        one.getStatisticsList().stream().filter(s->!taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getStartTime)).forEach(s-> s.getEventFileList().forEach(f->{
             Map<String, Object> map = new HashMap<>();
             map.put("url", f.getFilePath());
             map.put("type", f.getFileType());
