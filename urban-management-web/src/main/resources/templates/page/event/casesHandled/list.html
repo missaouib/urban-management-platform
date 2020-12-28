@@ -789,17 +789,17 @@
             let videoHtml = "";
             let audioHtml = "";
             for (let i = 0; i < value.length; i++) {
-                if (value[i].type === "图片") {
+                if (value[i].type === 1) {
                     imageHtml += "<div class=\"swiper-slide\">" +
                         "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>" +
                         "</div>"
                 }
-                if (value[i].type === "视频") {
+                if (value[i].type === 2) {
                     videoHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
                         "<video class='img-rounded' controls src='" + showUrl + value[i].url + "'></video>" +
                         "</div>";
                 }
-                if (value[i].type === "音频") {
+                if (value[i].type === 3) {
                     audioHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
                         "<audio class='img-rounded' controls src='" + showUrl + value[i].url + "'></audio>" +
                         "</div>";
