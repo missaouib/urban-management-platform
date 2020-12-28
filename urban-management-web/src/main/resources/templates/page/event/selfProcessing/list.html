@@ -17,7 +17,7 @@
             <div class="selectPoint">
                 <form id="userForm">
                     <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
-                    <input th:name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
+                    <input name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
                     <div class="top table2_top xiangqing">
                         <div class="top_out">
                             <table class="table">
@@ -523,11 +523,6 @@
             $(".duck_duck").fadeIn(300)
         });
 
-        let eventId = $('#eventIdFromWorkBench').val();
-        if (eventId !== '' && eventId !== undefined){
-            checkRow(eventId);
-        }
-
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
@@ -766,6 +761,10 @@
         getIdioms();
 
         queryUserList();
+        let eventId = $('#eventIdFromWorkBench').val();
+        if (eventId !== '' && eventId !== undefined){
+            checkRow(eventId);
+        }
 
         //处置前后为空
         setMediaBefore();
@@ -889,14 +888,8 @@
         let options = {
             num: num,
             url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
-            // exportUrl: prefix + "/export",
-            // importUrl: prefix + "/importData",
-            // importTemplateUrl: prefix + "/importTemplate",
             uniqueId: "id",
-            sortName: "updateTime",
+            sortName: "createTime",
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row, index) {
@@ -904,8 +897,8 @@
                 checkRow(row.id);
             },
             onLoadSuccess: function (data) {
-                $('#eventIdFromWorkBench').val('');
-                $('#eventIdListByBox').val('');
+                $('#eventIdFromWorkBench').val("");
+                $('#eventIdListByBox').val("");
                 layerMap.getSource().clear();
                 if(vector !== null && vector !== undefined && vector !== ""){
                     vector.getSource().clear();
