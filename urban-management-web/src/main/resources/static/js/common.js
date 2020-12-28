@@ -1189,7 +1189,7 @@ var table = {
         operate: {
 
             // 保存提交当前表单数据 然后刷新当前选项卡页面
-            saveAndReload(url, data) {
+            saveAndReload(url, data, callback) {
                 let config = {
                     url: url,
                     type: 'post',
@@ -1212,6 +1212,9 @@ var table = {
                             $.modal.alertWarning(result.message)
                         } else {
                             $.modal.alertError(result.message);
+                            if (typeof callback == "function") {
+                                callback(data);
+                            }
                             return;
                         }
                         $.modal.closeLoading();
