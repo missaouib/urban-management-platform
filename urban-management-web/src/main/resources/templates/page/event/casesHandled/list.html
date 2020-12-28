@@ -386,11 +386,11 @@
                 </div>
                 <div class="duck_info">
                     <div class="info_chance blockActive">
-                        <div class="swiper-container modelImageBox">
+                        <div class="swiper-container modelImageBox" id="encl_picBanner">
                             <div class="swiper-wrapper" id="modelImageList">
                             </div>
                             <!-- Add Pagination -->
-                            <div class="swiper-pagination modelImagePage"></div>
+                            <div class="swiper-pagination modelImagePage" id="encl_picPg"></div>
                             <!-- Add Arrows -->
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
@@ -429,43 +429,14 @@
             <div class="allTiel" id="allTiel">
                 <div class="fullScreen" id="fullScreen">全屏</div>
                 <div class="fullScreen exitfullScreen" id="exitfullScreen">退出全屏</div>
-                <div class="duk_close" id="duk_picture">
-                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png" style="width: 100%;height: 100%"></i>
-                </div>
-                <div class="duck_title">
-                    <span class="duckActive">图片</span>
-                    <span>视频</span>
-                    <span>音频</span>
-                </div>
                 <div class="duck_info">
                     <div class="info_chance blockActive">
-                        <div class="swiper-container modelImageBox">
+                        <div class="swiper-container modelImageBox" id="swiper_pic">
                             <div class="swiper-wrapper" id="modelImageList2">
+
                             </div>
                             <!-- Add Pagination -->
-                            <div class="swiper-pagination modelImagePage"></div>
-                            <!-- Add Arrows -->
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                        </div>
-                    </div>
-                    <div class="info_chance">
-                        <div class="swiper-container modelVideoBox">
-                            <div class="swiper-wrapper" id="modelVideoList2">
-                            </div>
-                            <!-- Add Pagination -->
-                            <div class="swiper-pagination modelVideoPage"></div>
-                            <!-- Add Arrows -->
-                            <div class="swiper-button-next"></div>
-                            <div class="swiper-button-prev"></div>
-                        </div>
-                    </div>
-                    <div class="info_chance">
-                        <div class="swiper-container modelAudioBox">
-                            <div class="swiper-wrapper" id="modelAudioList2">
-                            </div>
-                            <!-- Add Pagination -->
-                            <div class="swiper-pagination modelAudioPage"></div>
+                            <div class="swiper-pagination modelImagePage" id="swiper_pg"></div>
                             <!-- Add Arrows -->
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
@@ -528,12 +499,12 @@
         });
 
         $(".do_banner").on("click", "#beforeDisSwiper", function () {
-            $("#imageDetailList").html($("#MultiMediaBefore").html())
+            $("#modelImageList2").html($("#MultiMediaBefore").html())
             $("#pictureBoxDuc").fadeIn(300);
         });
 
         $(".do_banner").on("click", "#afterDisSwiper", function () {
-            $("#imageDetailList").html($("#MultiMediaAfter").html())
+            $("#modelImageList2").html($("#MultiMediaAfter").html())
             $("#pictureBoxDuc").fadeIn(300);
         });
 
@@ -558,6 +529,7 @@
             observer: true, //修改swiper自己或子元素时，自动初始化swiper
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
+        encl_picBanner
 
         //全屏
         $("#fullScreen").click(function () {
@@ -578,8 +550,8 @@
             $(".selectmenu").css('transform', 'rotate(' + r + 'deg)');
         })
 
-        var swiper = new Swiper('.sw1', {
-            pagination: '.pg1',
+        var swiper = new Swiper('#encl_picBanner', {
+            pagination: '#encl_picPg',
             nextButton: '.swiper-button-next',
             prevButton: '.swiper-button-prev',
             slidesPerView: 1,
@@ -590,8 +562,8 @@
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
 
-        var swiper2 = new Swiper('.sw2', {
-            pagination: '.pg2',
+        var swiper2 = new Swiper('#swiper_pic', {
+            pagination: '#swiper_pg',
             nextButton: '.swiper-button-next',
             prevButton: '.swiper-button-prev',
             slidesPerView: 1,
@@ -763,7 +735,7 @@
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd felx_end'>";
-                    html += "<div class='endBox'>";
+                    html += "<div class='endBox enclosureActive'>";
                     if (data[i].fileName.length > 0) {
                         html += "<button class='endBox enclosure' type='button' value='" + JSON.stringify(data[i].fileName) + "' onclick='setFileUrl(this)'><i></i>附件详情</button>";
                     }

@@ -86,7 +86,7 @@ function cleanSearchInput() {
 * 问题描述
 * */
 $(".leftContent").on("mouseover",".problem",function () {
-	var problemTitle = $(this).html()
+	var problemTitle = $(this).text()
 	$(".problem").attr("title",problemTitle);
 })
 
