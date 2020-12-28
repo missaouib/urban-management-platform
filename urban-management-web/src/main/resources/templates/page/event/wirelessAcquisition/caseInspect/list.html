@@ -814,7 +814,7 @@
                 console.log('filebatchuploadsuccess() 同步上传返回结果处理')
                 if (data.response.code === web_status.SUCCESS) {
                     multiMediaData = data;
-                    insertMultiMedia(data);
+                    insertMultiMediaAfter(data);
                     $.modal.alertSuccess('上传成功');
                 } else {
                     $.modal.alertError(data.response.message);
