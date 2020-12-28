@@ -746,7 +746,6 @@
             $("#eventRegion").val(e.data.eventRegion);
             $("#x").val(e.data.x);
             $("#y").val(e.data.y);
-            setPoint(e.data.x, e.data.y)
             $("#eventSourceStr").val(e.data.eventSourceStr);
             $("#cdate").val(e.data.cdate);
             $("#petitionerSex").val(e.data.petitionerSex);
@@ -754,6 +753,9 @@
             $("#petitionerName").val(e.data.petitionerName);
             $("#userName").val(e.data.userName);
             $("#recTypeStr").val(e.data.recTypeStr);
+
+            setPoint(e.data.x, e.data.y);
+            setCenterAndZoom(e.data.x, e.data.y, map.getView().getZoom() + 4);
         });
     }
 
