@@ -159,6 +159,15 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
+    public List<String> queryTaskByTaskName(String taskName) {
+        long startTime = System.currentTimeMillis();
+        List<Task> list = taskService.createTaskQuery().taskName(taskName).list();
+        List<String> eventIdList = queryTask(list);
+        log.debug("----------------------activiti查询花费时间: {}ms--------------------------------------", System.currentTimeMillis() - startTime);
+        return eventIdList;
+    }
+
+    @Override
     public List<String> queryTaskByAssigneeAndTaskName(String userId, List<String> taskName, Pageable pageable) {
         long startTime = System.currentTimeMillis();
         List<Task> taskList = taskService.createTaskQuery().taskAssignee(userId).taskNameIn(taskName).listPage(pageable.getPageNumber(), pageable.getPageSize());
