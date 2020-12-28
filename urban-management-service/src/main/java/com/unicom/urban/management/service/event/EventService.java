@@ -120,7 +120,13 @@ public class EventService {
             if (eventDTO.getTaskName() != null && eventDTO.getTaskName().size()!=0) {
                 /* 查询当前登陆人所拥有的任务 */
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
-                List<String> type = workService.queryTaskByAssigneeAndTaskName(eventDTO.getTaskName());
+                List<String> type;
+                if(StringUtils.isBlank(eventDTO.getSupervision())){
+                    type = workService.queryTaskByAssigneeAndTaskName(SecurityUtil.getUserId(),eventDTO.getTaskName());
+                }else{
+                    type = workService.queryTaskByTaskName(eventDTO.getTaskName().get(0));
+                }
+
                 if (type.size() == 0) {
                     type = Collections.singletonList("");
                 }

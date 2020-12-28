@@ -156,5 +156,7 @@ public class EventDTO {
 
     private String componentObjId;
 
+    private String supervision;
+
 
 }

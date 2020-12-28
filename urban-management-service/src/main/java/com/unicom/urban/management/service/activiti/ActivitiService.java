@@ -93,6 +93,8 @@ public interface ActivitiService {
      */
     List<String> queryTask(String userId);
 
+    List<String> queryTaskByTaskName(String taskName);
+
     /**
      * 查询指定环节的待办任务 带分页
      *

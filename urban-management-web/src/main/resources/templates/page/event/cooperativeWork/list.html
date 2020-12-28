@@ -1013,7 +1013,6 @@
             $("#eventRegion").val(data1.eventRegion);
             $("#x").val(data1.x);
             $("#y").val(data1.y);
-            setPoint(data1.x, data1.y)
             $("#eventSourceStr").val(data1.eventSourceStr);
             $("#cdate").val(data1.cdate);
             $("#petitionerSex").val(data1.petitionerSex);
@@ -1029,24 +1028,26 @@
             }
             deptId = data1.deptId;
             deptName = data1.deptName;
-
             /* 附件图片回显 */
             let file = data1.file;
-            setFileInput(file);
 
+            setFileInput(file);
             /*按钮*/
             var buttonStr = "";
+
             $(data1.eventButtonVOS).each(function (index, value) {
                 buttonStr += "<button  type=\"button\" data-toggle=\"modal\" data-target=\"#modal-default\" class=\"but_save\" id='" + value.id + "' onclick='eventButton(this)'  class=\"but_save\">" + value.buttonText + "</button>";
             })
             $("#btnGroupGround").empty();
             $("#btnGroupGround").append(buttonStr);
-
             this.setUrgentButton(eventIdOnce);
 
             getTimeAxis(eventIdOnce);
 
             getNodeName(eventIdOnce);
+
+            setPoint(data1.x, data1.y);
+            setCenterAndZoom(data1.x, data1.y, map.getView().getZoom() + 4);
 
         });
     }
