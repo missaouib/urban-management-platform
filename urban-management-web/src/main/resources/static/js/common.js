@@ -1183,7 +1183,41 @@ var table = {
                 }
                 return value.toString().replace(/(^\s*)|(\s*$)|\r|\n/g, "");
             },
+            // 获取url查询参数
+            getQueryString: function (name) {
+                let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                let r = window.location.search.substr(1).match(reg); //获取url中"?"符后的字符串并正则匹配
+                let context = "";
+                if (r != null) {
+                    context = r[2];
+                }
+                reg = null;
+                r = null;
+                return context == null || context === "" || context === "undefined" ? "" : context;
+            },
+            delParam: function (paramKey) {
+                let url = window.location.href;    //页面url
+                let urlParam = window.location.search.substr(1);   //页面参数
+                let beforeUrl = url.substr(0, url.indexOf("?"));   //页面主地址（参数之前地址）
+                let nextUrl = "";
 
+                let arr = [];
+                if (urlParam !== "") {
+                    var urlParamArr = urlParam.split("&"); //将参数按照&符分成数组
+                    for (var i = 0; i < urlParamArr.length; i++) {
+                        var paramArr = urlParamArr[i].split("="); //将参数键，值拆开
+                        //如果键雨要删除的不一致，则加入到参数中
+                        if (paramArr[0] !== paramKey) {
+                            arr.push(urlParamArr[i]);
+                        }
+                    }
+                }
+                if (arr.length > 0) {
+                    nextUrl = "?" + arr.join("&");
+                }
+                url = beforeUrl + nextUrl;
+                return url;
+            }
 
         },
         operate: {
@@ -1202,7 +1236,10 @@ var table = {
                     success: function (result) {
                         if (result.code === web_status.SUCCESS) {
                             $.modal.msgSuccess(result.message);
-                            setTimeout("window.location.reload()", 2000);
+                            var newUrl = $.common.delParam("eventId");
+                            setTimeout(function () {
+                                window.location.href = newUrl
+                            }, 2000);
                             return;
                         } else if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTreeTable) {
                             $.modal.msgSuccess(result.message);
