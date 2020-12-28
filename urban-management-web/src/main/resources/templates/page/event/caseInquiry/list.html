@@ -403,11 +403,11 @@
                 </div>
                 <div class="duck_info">
                     <div class="info_chance blockActive">
-                        <div class="swiper-container modelImageBox">
+                        <div class="swiper-container modelImageBox" id="modelfj">
                             <div class="swiper-wrapper" id="modelImageList">
                             </div>
                             <!-- Add Pagination -->
-                            <div class="swiper-pagination modelImagePage"></div>
+                            <div class="swiper-pagination modelImagePage" id="modelfj2"></div>
                             <!-- Add Arrows -->
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
@@ -456,11 +456,11 @@
                 </div>
                 <div class="duck_info">
                     <div class="info_chance blockActive">
-                        <div class="swiper-container modelImageBox">
+                        <div id="modelInfo" class="swiper-container modelImageBox">
                             <div class="swiper-wrapper" id="modelImageList2">
                             </div>
                             <!-- Add Pagination -->
-                            <div class="swiper-pagination modelImagePage"></div>
+                            <div class="swiper-pagination modelImagePage" id="modelInfo2"></div>
                             <!-- Add Arrows -->
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
@@ -542,13 +542,15 @@
         });
 
         $(".do_banner").on("click", "#beforeDisSwiper", function () {
-            $("#imageDetailList").html($("#MultiMediaBefore").html())
+            $("#modelImageList2").html($("#MultiMediaBefore").html())
             $("#pictureBoxDuc").fadeIn(300);
         });
-
         $(".do_banner").on("click", "#afterDisSwiper", function () {
-            $("#imageDetailList").html($("#MultiMediaAfter").html())
+            $("#modelImageList2").html($("#MultiMediaAfter").html())
             $("#pictureBoxDuc").fadeIn(300);
+        });
+        $(".duk_duck").click(function () {
+            $("#pictureBoxDuc").fadeOut(300)
         });
 
         //处置前 轮播
@@ -573,6 +575,25 @@
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
 
+        var afterDisSwiper2 = new Swiper('#modelInfo', {
+            pagination: '#modelInfo2',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        var afterDisSwiper3 = new Swiper('#modelfj', {
+            pagination: '#modelfj2',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
         //全屏
         $("#fullScreen").click(function() {
             $("#allTiel").addClass("allTielFont");
