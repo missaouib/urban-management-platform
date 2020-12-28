@@ -229,6 +229,17 @@
     -ms-flex-align: center;
     -webkit-align-items: center;
     align-items: center;
+    position: relative;
+}
+.swiperRole{
+    position: absolute;
+    bottom: 0;
+    background-color: rgba(0, 60, 136, .5);
+    /*background-color: #fff;*/
+    color: white;
+    font-size: 14px;
+    font-weight: 400;
+    width: 100%;
 }
 .ol-overlaycontainer-stopevent{
     height: 100%;

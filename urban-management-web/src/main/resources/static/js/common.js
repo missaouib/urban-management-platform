@@ -425,38 +425,38 @@ function setFileInput(file) {
                 if (file[i].type === 1) {
                     MultiMediaBeforeHtml += "<div class='swiper-slide'>";
                     MultiMediaBeforeHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + file[i].url + "'>";
-                    MultiMediaBeforeHtml += "<div><span>" + file[i].taskName + "</span></div>";
+                    MultiMediaBeforeHtml += "<div class='swiperRole'><span>" + file[i].taskName + "</span></div>";
                     MultiMediaBeforeHtml += "</div>";
                 }
                 if (file[i].type === 2) {
                     MultiMediaBeforeHtml += "<div class='swiper-slide'>";
                     MultiMediaBeforeHtml += "<video style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></video>";
-                    MultiMediaBeforeHtml += "<div><span>" + file[i].taskName + "</span></div>";
+                    MultiMediaBeforeHtml += "<div class='swiperRole'><span>" + file[i].taskName + "</span></div>";
                     MultiMediaBeforeHtml += "</div>";
                 }
                 if (file[i].type === 3) {
                     MultiMediaBeforeHtml += "<div class='swiper-slide'>";
                     MultiMediaBeforeHtml += "<audio style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></audio>";
-                    MultiMediaBeforeHtml += "<div><span>" + file[i].taskName + "</span></div>";
+                    MultiMediaBeforeHtml += "<div class='swiperRole'><span>" + file[i].taskName + "</span></div>";
                     MultiMediaBeforeHtml += "</div>";
                 }
             } else {
                 if (file[i].type === 1) {
                     MultiMediaAfterHtml += "<div class='swiper-slide'>";
                     MultiMediaAfterHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + file[i].url + "'>";
-                    MultiMediaBeforeHtml += "<div><span>" + file[i].taskName + "</span></div>";
+                    MultiMediaBeforeHtml += "<div class='swiperRole'><span>" + file[i].taskName + "</span></div>";
                     MultiMediaAfterHtml += "</div>";
                 }
                 if (file[i].type === 2) {
                     MultiMediaAfterHtml += "<div class='swiper-slide'>";
                     MultiMediaAfterHtml += "<video style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></video>";
-                    MultiMediaBeforeHtml += "<div><span>" + file[i].taskName + "</span></div>";
+                    MultiMediaBeforeHtml += "<div class='swiperRole'><span>" + file[i].taskName + "</span></div>";
                     MultiMediaAfterHtml += "</div>";
                 }
                 if (file[i].type === 3) {
                     MultiMediaAfterHtml += "<div class='swiper-slide'>";
                     MultiMediaAfterHtml += "<audio style='width: 100%;height: 100%' controls src='" + showUrl + file[i].url + "'></audio>";
-                    MultiMediaBeforeHtml += "<div><span>" + file[i].taskName + "</span></div>";
+                    MultiMediaBeforeHtml += "<div class='swiperRole'><span>" + file[i].taskName + "</span></div>";
                     MultiMediaAfterHtml += "</div>";
                 }
             }
