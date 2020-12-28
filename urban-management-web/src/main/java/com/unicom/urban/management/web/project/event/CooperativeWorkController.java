@@ -6,6 +6,7 @@ import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
+import com.unicom.urban.management.service.event.TaskProcessingService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,8 @@ public class CooperativeWorkController {
     private KVService kvService;
     @Autowired
     private GridService gridService;
+    @Autowired
+    private TaskProcessingService taskProcessingService;
 
     /**
      * 案件处理
@@ -195,6 +198,9 @@ public class CooperativeWorkController {
         modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
         modelAndView.addObject("gridList", gridService.searchAll());
+        modelAndView.addObject("taskNames", taskProcessingService.findTaskNames());
+
+
         return modelAndView;
     }
 

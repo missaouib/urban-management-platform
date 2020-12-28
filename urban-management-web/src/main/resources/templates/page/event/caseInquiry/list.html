@@ -26,8 +26,10 @@
 
                                     <td>当前阶段<span></span></td>
                                     <td>
-                                        <select class="form-control" name="kv" required>
-                                            <option value="">请选择</option>
+                                        <select class="form-control" name="taskName" required>
+                                            <option value="">--请选择--</option>
+                                            <option th:each="as:${taskNames}" th:value="${as}"
+                                                    th:text="${as}"></option>
                                         </select>
                                     </td>
                                     <td>问题描述<span></span></td>

@@ -116,7 +116,7 @@ public class EventService {
                 list.add(criteriaBuilder.equal(root.get("timeLimit").get("id").as(String.class), eventDTO.getTimeType()));
             }
 
-            if (eventDTO.getTaskName() != null) {
+            if (eventDTO.getTaskName() != null && eventDTO.getTaskName().size()!=0) {
                 /* 查询当前登陆人所拥有的任务 */
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
                 List<String> type = workService.queryTaskByAssigneeAndTaskName(eventDTO.getTaskName());

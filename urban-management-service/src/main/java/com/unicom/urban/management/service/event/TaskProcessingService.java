@@ -50,6 +50,13 @@ public class TaskProcessingService {
     @Autowired
     private EventFileService eventFileService;
 
+    public List<String> findTaskNames(){
+        List<EventButton> all = eventButtonRepository.findAll();
+        List<String>  buttonText = new ArrayList<>();
+        all.forEach(b->buttonText.add(b.getTaskName()));
+        return buttonText.stream().distinct().collect(Collectors.toList());
+    }
+
 
     /**
      * 任务处理
