@@ -152,6 +152,7 @@ public class GridService {
     }
 
     public Grid findOne(String id) {
+        if(StringUtils.isBlank(id))throw new DataValidException("选择区域没有网格");
         return gridRepository.getOne(id);
     }
     public Integer getLevel(String id) {
@@ -316,6 +317,7 @@ public class GridService {
     }
 
     public Grid findByGridCode(String gridCode) {
+        if(StringUtils.isBlank(gridCode))throw new DataValidException("选择区域没有网格");
         return gridRepository.findById(gridCode).orElse(new Grid());
     }
 
