@@ -537,9 +537,29 @@ public class EventService {
             Map<String, Object> map = new HashMap<>();
             map.put("url", f.getFilePath());
             map.put("type", f.getFileType());
+            map.put("taskName", "预上报");
             map.put("management", f.getManagement());
             fileList.add(map);
         });
+        /*处置前*/
+        one.getStatisticsList().stream().filter(s->taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getEndTime)).forEach(s-> s.getEventFileList().forEach(f->{
+            Map<String, Object> map = new HashMap<>();
+            map.put("url", f.getFilePath());
+            map.put("type", f.getFileType());
+            map.put("taskName", s.getTaskName());
+            map.put("management", 1);
+            fileList.add(map);
+        }));
+        /*处置后*/
+        one.getStatisticsList().stream().filter(s->!taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getEndTime)).forEach(s-> s.getEventFileList().forEach(f->{
+            Map<String, Object> map = new HashMap<>();
+            map.put("url", f.getFilePath());
+            map.put("type", f.getFileType());
+            map.put("taskName", s.getTaskName());
+            map.put("management", 0);
+            fileList.add(map);
+        }));
+
         eventOneVO.setFile(fileList);
         Optional<Dept> dept = Optional.ofNullable(one.getEventType().getDept());
         eventOneVO.setDeptId(dept.map(Dept::getId).orElse(""));
@@ -560,6 +580,12 @@ public class EventService {
 
 
         return eventOneVO;
+    }
+
+
+    private boolean taskName(String taskName){
+        List<String> taskNames = Arrays.asList("受理员-信息收集","值班长-立案","派遣员-派遣","值班长-作废审批","受理员-案件登记","监督员-信息核实");
+        return taskNames.stream().anyMatch(t -> t.equals(taskName));
     }
 
     /**
