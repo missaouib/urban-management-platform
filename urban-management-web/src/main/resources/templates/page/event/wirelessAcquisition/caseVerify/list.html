@@ -726,7 +726,7 @@
              // 点击每行进行函数的触发
             onClickRow: function (row, tr, flied) {
                 layerMap.getSource().clear()
-                getButton(row.id)
+
                 checkRow(row.id)
             },
             onLoadSuccess: function (data) {
@@ -800,6 +800,7 @@
         getTimeAxis(eventId)
         //步骤图
         getNodeName(eventId);
+        getButton(eventId);
     }
     //模态窗 selectEventTypeTree
     function selectEventTypeTree() {
