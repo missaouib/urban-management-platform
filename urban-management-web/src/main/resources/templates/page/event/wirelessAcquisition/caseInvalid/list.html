@@ -100,7 +100,7 @@
             </div>
             <div class="btn-group-sm" id="toolbar" >
                 <div class="r_right but_p girdBtnGroup">
-                    <button class="but_close" onclick="Cancel()">返回</button>
+
                 </div>
             </div>
             <table id="bootstrap-table" class="table_style" style="margin: 0 auto" ></table>
@@ -912,9 +912,7 @@
                     html += "<div class='endBox'>";
                     html += "回复内容:<em class='roleSize'>"+ data[i].opinions +"</em> ";
                     html += "</div>";
-                    if (data[i].fileName.length > 0) {
-                        html += "<button class='endBox enclosure' type='button' value='" + JSON.stringify(data[i].fileName) + "' onclick='setFileUrl(this)'><i></i>附件详情</button>";
-                    }
+
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
@@ -932,8 +930,11 @@
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";
-                    html += "<div class='endBox'>";
+                    html += "<div class='endBox enclosureActive'>";
                     html += "<em></em>"
+                    if (data[i].fileName.length > 0) {
+                        html += "<button class='endBox enclosure' type='button' value='" + JSON.stringify(data[i].fileName) + "' onclick='setFileUrl(this)'><i></i>附件详情</button>";
+                    }
                     html += "</div>";
                     html += "</div>";
                     html += "</div>";
