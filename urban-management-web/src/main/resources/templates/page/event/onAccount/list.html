@@ -1129,7 +1129,7 @@ function checkRow(eventId) {
     //上传 照片视频音频
     let uploadUrl = /*[[@{/common/uploads}]]*/ "/common/upload";
     $(function () {
-
+        getIdioms();
         $("#imageInput").fileinput({
             language: 'zh',                                     // 设置语言
             theme: 'fa',
