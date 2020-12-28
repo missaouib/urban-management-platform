@@ -49,8 +49,11 @@ public class WorkService {
         return activitiService.queryTask(SecurityUtil.getUserId());
     }
 
-    public List<String> queryTaskByAssigneeAndTaskName(List<String> taskName) {
-        return activitiService.queryTaskByAssigneeAndTaskName(SecurityUtil.getUserId(), taskName);
+    public List<String> queryTaskByAssigneeAndTaskName(String userId,List<String> taskName) {
+        return activitiService.queryTaskByAssigneeAndTaskName(userId, taskName);
+    }
+    public List<String> queryTaskByTaskName(String taskName) {
+        return activitiService.queryTaskByTaskName(taskName);
     }
 
     /* ---------------------------------------------------------------------- */

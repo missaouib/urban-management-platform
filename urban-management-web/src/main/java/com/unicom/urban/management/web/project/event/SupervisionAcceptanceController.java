@@ -4,6 +4,7 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.EventFile;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * 监督受理子系统
@@ -47,7 +49,7 @@ public class SupervisionAcceptanceController {
     private EventFileService eventFileService;
 
     @GetMapping("/toSupervisionAcceptanceList")
-    public ModelAndView toSupervisionAcceptanceList(Model model,String eventId) {
+    public ModelAndView toSupervisionAcceptanceList(Model model, String eventId) {
         ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/list");
         //问题来源
         modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
@@ -225,8 +227,15 @@ public class SupervisionAcceptanceController {
         return eventService.search(eventDTO, pageable);
     }
 
+    /**
+     * 督办列表
+     */
     @GetMapping("/superviseCasesList")
     public Page<EventVO> superviseCasesList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        Stream<String> stream = SecurityUtil.getRoleId().stream();
+        if (stream.anyMatch(r -> r.equals(KvConstant.DISPATCHER_ROLE)||r.equals(SystemConstant.ADMIN_USER_ID))) {
+            eventDTO.setSupervision("1");
+        }
         eventDTO.setTaskName(Collections.singletonList(EventConstant.PROFESSIONAL_AGENCY));
         return eventService.search(eventDTO, pageable);
     }
