@@ -502,7 +502,7 @@
 <th:block th:include="page/fragments/common :: swiper_js"/>
 <script type="text/javascript" th:inline="javascript">
 
-    let multiMediaData;
+    let multiMediaData = [];
 
     $(function () {
 
@@ -740,7 +740,7 @@
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {
-                multiMediaData = data;
+                multiMediaData.push(data);
                 insertMultiMedia(data);
                 $.modal.alertSuccess('上传成功');
             } else {

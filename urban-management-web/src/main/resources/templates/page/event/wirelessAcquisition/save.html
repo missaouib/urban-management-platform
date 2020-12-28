@@ -281,8 +281,8 @@
         }
     });
 
-    let multiMediaData;
-    let multiMediaAfterData;
+    let multiMediaData = [];
+    let multiMediaAfterData = [];
 
     $(function () {
         $(".ol-full-screen-false").html("全屏");
@@ -339,7 +339,7 @@
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {
-                multiMediaData = data;
+                multiMediaData.push(data);
                 insertMultiMedia(data);
                 $.modal.alertSuccess('上传成功');
             } else {
@@ -389,7 +389,7 @@
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {
-                multiMediaAfterData = data;
+                multiMediaAfterData.push(data);
                 insertMultiMediaAfter(data);
                 $.modal.alertSuccess('上传成功');
             } else {

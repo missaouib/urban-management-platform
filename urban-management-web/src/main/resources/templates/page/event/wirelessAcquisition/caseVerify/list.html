@@ -995,7 +995,7 @@
 
     //上传 照片视频音频
     let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
-    let multiMediaData;
+    let multiMediaData = [];
     //上传 照片视频音频
     $(function () {
         $("#imageInput").fileinput({
@@ -1028,7 +1028,7 @@
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {
-                multiMediaData = data;
+                multiMediaData.push(data);
                 insertMultiMedia(data);
                 $.modal.alertSuccess('上传成功');
             } else {

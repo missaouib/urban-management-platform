@@ -274,66 +274,80 @@ function insertMultiMedia(data) {
     let videoUrlList = [];
     let musicUrlList = [];
     for (let i = 0; i < data.files.length; i++) {
-        if (data.files[i].type.indexOf("image") !== -1) {
-            imageUrlList.push(data.response.data[i].url);
-        }
-        if (data.files[i].type.indexOf("video") !== -1) {
-            videoUrlList.push(data.response.data[i].url);
-        }
-        if (data.files[i].type.indexOf("audio") !== -1) {
-            musicUrlList.push(data.response.data[i].url);
-        }
+        arrayPushUrl("image", imageUrlList, data, i);
+        arrayPushUrl("video", videoUrlList, data, i);
+        arrayPushUrl("audio", musicUrlList, data, i);
     }
-    $("#imageUrlList").val(imageUrlList);
-    $("#videoUrlList").val(videoUrlList);
-    $("#musicUrlList").val(musicUrlList);
+    fileIntoInput("imageUrlList", imageUrlList);
+    fileIntoInput("videoUrlList", videoUrlList);
+    fileIntoInput("musicUrlList", musicUrlList);
+}
+
+function arrayPushUrl(type, fileUrlList, data, i) {
+    if (data.files[i].type.indexOf(type) !== -1) {
+        fileUrlList.push(data.response.data[i].url);
+    }
+}
+
+function fileIntoInput(id, fileUrlList) {
+    let fileUrlListOld = $("#" + id + "").val();
+    $("#" + id + "").val(fileUrlList);
+    let fileUrlListNew;
+    if (fileUrlList.length > 0 && fileUrlListOld !== "") {
+        fileUrlListNew = fileUrlListOld + "," + $("#" + id + "").val();
+    } else {
+        fileUrlListNew = fileUrlListOld + $("#" + id + "").val();
+    }
+    $("#" + id + "").val(fileUrlListNew);
 }
 
 /* 删除附件，上报事件之前删除才有效 */
 function deleteMultiMedia(id, multiMediaData) {
-    let fileData = id.split("_");
-    let uploadMultiMediaData = multiMediaData.response.data;
-    let uploadMultiMediaFile = multiMediaData.files;
-    for (let i = 0; i < uploadMultiMediaData.length; i++) {
-        let reg = new RegExp(uploadMultiMediaData[i].url);
-        if (uploadMultiMediaData[i].fileName === fileData[fileData.length - 1]) {
-            if (uploadMultiMediaFile[i].type.indexOf("image") !== -1) {
-                let imageUrlList = $("#imageUrlList").val();
-                let result = imageUrlList.replace(reg, "");
-                if (result.length > 0) {
-                    let resultList = result.split(",");
-                    let resultListArray = resultList.filter(function (s) {
-                        return s && s.trim();
-                    })
-                    $("#imageUrlList").val(resultListArray);
-                } else {
-                    $("#imageUrlList").val(result);
+    for (let j = 0; j < multiMediaData.length; j++) {
+        let fileData = id.split("_");
+        let uploadMultiMediaData = multiMediaData[j].response.data;
+        let uploadMultiMediaFile = multiMediaData[j].files;
+        for (let i = 0; i < uploadMultiMediaData.length; i++) {
+            let reg = new RegExp(uploadMultiMediaData[i].url);
+            if (uploadMultiMediaData[i].fileName === fileData[fileData.length - 1]) {
+                if (uploadMultiMediaFile[i].type.indexOf("image") !== -1) {
+                    let imageUrlList = $("#imageUrlList").val();
+                    let result = imageUrlList.replace(reg, "");
+                    if (result.length > 0) {
+                        let resultList = result.split(",");
+                        let resultListArray = resultList.filter(function (s) {
+                            return s && s.trim();
+                        })
+                        $("#imageUrlList").val(resultListArray);
+                    } else {
+                        $("#imageUrlList").val(result);
+                    }
                 }
-            }
-            if (uploadMultiMediaFile[i].type.indexOf("video") !== -1) {
-                let videoUrlList = $("#videoUrlList").val();
-                let result = videoUrlList.replace(reg, "");
-                if (result.length > 0) {
-                    let resultList = result.split(",");
-                    let resultListArray = resultList.filter(function (s) {
-                        return s && s.trim();
-                    })
-                    $("#videoUrlList").val(resultListArray);
-                } else {
-                    $("#videoUrlList").val(result);
+                if (uploadMultiMediaFile[i].type.indexOf("video") !== -1) {
+                    let videoUrlList = $("#videoUrlList").val();
+                    let result = videoUrlList.replace(reg, "");
+                    if (result.length > 0) {
+                        let resultList = result.split(",");
+                        let resultListArray = resultList.filter(function (s) {
+                            return s && s.trim();
+                        })
+                        $("#videoUrlList").val(resultListArray);
+                    } else {
+                        $("#videoUrlList").val(result);
+                    }
                 }
-            }
-            if (uploadMultiMediaFile[i].type.indexOf("audio") !== -1) {
-                let musicUrlList = $("#musicUrlList").val();
-                let result = musicUrlList.replace(reg, "");
-                if (result.length > 0) {
-                    let resultList = result.split(",");
-                    let resultListArray = resultList.filter(function (s) {
-                        return s && s.trim();
-                    })
-                    $("#musicUrlList").val(resultListArray);
-                } else {
-                    $("#musicUrlList").val(result);
+                if (uploadMultiMediaFile[i].type.indexOf("audio") !== -1) {
+                    let musicUrlList = $("#musicUrlList").val();
+                    let result = musicUrlList.replace(reg, "");
+                    if (result.length > 0) {
+                        let resultList = result.split(",");
+                        let resultListArray = resultList.filter(function (s) {
+                            return s && s.trim();
+                        })
+                        $("#musicUrlList").val(resultListArray);
+                    } else {
+                        $("#musicUrlList").val(result);
+                    }
                 }
             }
         }
@@ -346,66 +360,62 @@ function insertMultiMediaAfter(data) {
     let videoUrlListAfter = [];
     let musicUrlListAfter = [];
     for (let i = 0; i < data.files.length; i++) {
-        if (data.files[i].type.indexOf("image") !== -1) {
-            imageUrlListAfter.push(data.response.data[i].url);
-        }
-        if (data.files[i].type.indexOf("video") !== -1) {
-            videoUrlListAfter.push(data.response.data[i].url);
-        }
-        if (data.files[i].type.indexOf("audio") !== -1) {
-            musicUrlListAfter.push(data.response.data[i].url);
-        }
+        arrayPushUrl("image", imageUrlListAfter, data, i);
+        arrayPushUrl("video", videoUrlListAfter, data, i);
+        arrayPushUrl("audio", musicUrlListAfter, data, i);
     }
-    $("#imageUrlListAfter").val(imageUrlListAfter);
-    $("#videoUrlListAfter").val(videoUrlListAfter);
-    $("#musicUrlListAfter").val(musicUrlListAfter);
+    fileIntoInput("imageUrlListAfter", imageUrlListAfter);
+    fileIntoInput("imageUrlListAfter", videoUrlListAfter);
+    fileIntoInput("imageUrlListAfter", musicUrlListAfter);
 }
 
 /* 删除附件，上报事件之前删除才有效——处置后 */
 function deleteMultiMediaAfter(id, multiMediaData) {
-    let fileData = id.split("_");
-    let uploadMultiMediaData = multiMediaData.response.data;
-    let uploadMultiMediaFile = multiMediaData.files;
-    for (let i = 0; i < uploadMultiMediaData.length; i++) {
-        let reg = new RegExp(uploadMultiMediaData[i].url);
-        if (uploadMultiMediaData[i].fileName === fileData[fileData.length - 1]) {
-            if (uploadMultiMediaFile[i].type.indexOf("image") !== -1) {
-                let imageUrlList = $("#imageUrlListAfter").val();
-                let result = imageUrlList.replace(reg, "");
-                if (result.length > 0) {
-                    let resultList = result.split(",");
-                    let resultListArray = resultList.filter(function (s) {
-                        return s && s.trim();
-                    })
-                    $("#imageUrlListAfter").val(resultListArray);
-                } else {
-                    $("#imageUrlListAfter").val(result);
+    for (let j = 0; j < multiMediaData.length; j++) {
+        let fileData = id.split("_");
+        let uploadMultiMediaData = multiMediaData[j].response.data;
+        let uploadMultiMediaFile = multiMediaData[j].files;
+        for (let i = 0; i < uploadMultiMediaData.length; i++) {
+            let reg = new RegExp(uploadMultiMediaData[i].url);
+            if (uploadMultiMediaData[i].fileName === fileData[fileData.length - 1]) {
+                if (uploadMultiMediaFile[i].type.indexOf("image") !== -1) {
+                    let imageUrlList = $("#imageUrlListAfter").val();
+                    let result = imageUrlList.replace(reg, "");
+                    if (result.length > 0) {
+                        let resultList = result.split(",");
+                        let resultListArray = resultList.filter(function (s) {
+                            return s && s.trim();
+                        })
+                        $("#imageUrlListAfter").val(resultListArray);
+                    } else {
+                        $("#imageUrlListAfter").val(result);
+                    }
                 }
-            }
-            if (uploadMultiMediaFile[i].type.indexOf("video") !== -1) {
-                let videoUrlList = $("#videoUrlListAfter").val();
-                let result = videoUrlList.replace(reg, "");
-                if (result.length > 0) {
-                    let resultList = result.split(",");
-                    let resultListArray = resultList.filter(function (s) {
-                        return s && s.trim();
-                    })
-                    $("#videoUrlListAfter").val(resultListArray);
-                } else {
-                    $("#videoUrlListAfter").val(result);
+                if (uploadMultiMediaFile[i].type.indexOf("video") !== -1) {
+                    let videoUrlList = $("#videoUrlListAfter").val();
+                    let result = videoUrlList.replace(reg, "");
+                    if (result.length > 0) {
+                        let resultList = result.split(",");
+                        let resultListArray = resultList.filter(function (s) {
+                            return s && s.trim();
+                        })
+                        $("#videoUrlListAfter").val(resultListArray);
+                    } else {
+                        $("#videoUrlListAfter").val(result);
+                    }
                 }
-            }
-            if (uploadMultiMediaFile[i].type.indexOf("audio") !== -1) {
-                let musicUrlList = $("#musicUrlListAfter").val();
-                let result = musicUrlList.replace(reg, "");
-                if (result.length > 0) {
-                    let resultList = result.split(",");
-                    let resultListArray = resultList.filter(function (s) {
-                        return s && s.trim();
-                    })
-                    $("#musicUrlListAfter").val(resultListArray);
-                } else {
-                    $("#musicUrlListAfter").val(result);
+                if (uploadMultiMediaFile[i].type.indexOf("audio") !== -1) {
+                    let musicUrlList = $("#musicUrlListAfter").val();
+                    let result = musicUrlList.replace(reg, "");
+                    if (result.length > 0) {
+                        let resultList = result.split(",");
+                        let resultListArray = resultList.filter(function (s) {
+                            return s && s.trim();
+                        })
+                        $("#musicUrlListAfter").val(resultListArray);
+                    } else {
+                        $("#musicUrlListAfter").val(result);
+                    }
                 }
             }
         }
