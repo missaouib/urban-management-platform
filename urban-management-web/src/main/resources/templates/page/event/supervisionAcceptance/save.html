@@ -900,7 +900,10 @@
             return;
         }
         let data = $('#userForm').serialize();
-        $.operate.saveAndReload(receiveUrl, data);
+        $.operate.saveAndReload(receiveUrl, data, function (e){
+            createEventCode($("#eventTypeId").val());
+        });
+
     }
 
     function submitHandler2() {
@@ -909,7 +912,9 @@
             return;
         }
         let data = $('#userForm').serialize();
-        $.operate.saveAndReload(dispatchUrl, data);
+        $.operate.saveAndReload(dispatchUrl, data, function (e){
+            createEventCode($("#eventTypeId").val());
+        });
     }
 
 

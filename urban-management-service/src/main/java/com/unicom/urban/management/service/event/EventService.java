@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.event;
 
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventRepository;
 import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
@@ -344,6 +345,9 @@ public class EventService {
      * @param eventDTO 事件参数
      */
     public void save(EventDTO eventDTO) {
+        if(existsByEventCode(eventDTO.getEventCode())){
+            throw new DataValidException("案件号已存在，将为你修改新的编号");
+        }
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         if (StringUtils.isNotBlank(eventDTO.getObjId())) {
             Component component = new Component();
@@ -379,6 +383,10 @@ public class EventService {
             eventDTO.setEventFileList(null);
             workService.caseAcceptanceByReceive(eventDTO);
         }
+    }
+
+    private boolean existsByEventCode(String eventCode) {
+        return eventRepository.existsByEventCode(eventCode);
     }
 
     /**

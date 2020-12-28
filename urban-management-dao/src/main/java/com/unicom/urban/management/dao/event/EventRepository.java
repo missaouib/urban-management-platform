@@ -14,4 +14,12 @@ public interface EventRepository extends CustomizeRepository<Event, String> {
     Integer findMaxNum();
 
     long countEventByConditionId(String conditionId);
+
+    /**
+     * 通过案件号验重
+     *
+     * @param eventCode 案卷号
+     * @return 是否重复
+     */
+    boolean existsByEventCode(String eventCode);
 }
