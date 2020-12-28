@@ -720,6 +720,8 @@
             $("#grid4").val(grid4.id);*/
         });
     }
+    let multiMediaData = [];
+    let multiMediaAfterData = [];
     $(function () {
         $('#bootstrap-table').on('load-success.bs.table', function (e,data) {
            let colorIndex =  localStorage.getItem("rowIndex");
@@ -800,8 +802,8 @@
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {
-                let imageUrlList = data.response.data.url;
-                $("#imageUrlList").val(imageUrlList);
+                multiMediaData.push(data);
+                insertMultiMedia(data);
                 $.modal.alertSuccess('上传成功');
             } else {
                 $.modal.alertError(data.response.message);
@@ -811,7 +813,7 @@
             console.log('Key = ' + key);
         }).on('filesuccessremove', function (event, id) {
             console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            console.log(id);
+            deleteMultiMedia(id, multiMediaData);
         }).on('fileclear', function (event) {
             console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
             console.log(event);
@@ -1250,7 +1252,9 @@
             return;
         }
         let data = $('#userForm').serialize();
-        $.operate.saveAndReload(receiveUrl, data);
+        $.operate.saveAndReload(receiveUrl, data, function (e){
+            createEventCode($("#eventTypeId").val());
+        });
     }
 
     function submitHandler2() {
@@ -1259,7 +1263,9 @@
             return;
         }
         let data = $('#userForm').serialize();
-        $.operate.saveAndReload(dispatchUrl, data);
+        $.operate.saveAndReload(dispatchUrl, data, function (e){
+            createEventCode($("#eventTypeId").val());
+        });
     }
 
     let mapUrl = [[${@geoServerProperties.url}]];
