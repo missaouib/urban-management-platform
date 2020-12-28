@@ -521,9 +521,9 @@
             modalName: "案件",
             onClickRow: function (row,index) {
                 layerMap.getSource().clear();
-
                 $("#eventId").val(row.id)
-
+                //onClickRow事件，实现单击行选中的效果
+                index[0].firstElementChild.firstElementChild.click()
                 setPoint(row.id)
                 setInput(row)
                 getEventDetail(row.id);
@@ -540,6 +540,9 @@
             },
             columns: [
                 {
+                    checkbox: true
+                },
+                {
                     field: 'index',
                     title: '序号',
                     class:'index_width',
@@ -548,9 +551,7 @@
                         return page.pageSize * (page.pageNumber - 1) + index + 1;
                     }
                 },
-                {
-                    checkbox: true
-                },
+
                 {
                     title: '案卷号',
                     field: 'eventCode',
