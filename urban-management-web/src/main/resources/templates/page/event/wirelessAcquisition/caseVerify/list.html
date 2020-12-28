@@ -528,16 +528,6 @@
             $("#wordSays").fadeOut(300)
         });
 
-        $("#alwaysSay_tag").click(function () {
-            $("#wordSays_tag").stop().fadeToggle(300)
-        });
-
-        $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
-            let idioms = $(this).html()
-            $("#textIdioms_tag").html(idioms);
-            $("#wordSays_tag").fadeOut(300)
-        });
-
         getIdioms();
 
         $(".duk_close").click(function () {
@@ -900,7 +890,7 @@
             imageUrlList: $("#imageUrlList").val(),
             videoUrlList: $("#videoUrlList").val(),
             musicUrlList: $("#musicUrlList").val(),
-            opinions: $("#opinions").val()
+            opinions: $("#textIdioms").val()
         });
     }
     function getTimeAxis(eventId) {

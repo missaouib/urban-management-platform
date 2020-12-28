@@ -397,7 +397,7 @@
                     <div class="modal-body">
                         <div class="checkMain" style="position: relative">
                             <span class="sendText" id="btnOpinion" style="width: 125px"><i></i>意见</span>
-                            <textarea type="text" id="opinions" onblur="saveIdioms(this)"></textarea>
+                            <textarea type="text" id="textIdioms" onblur="saveIdioms(this)"></textarea>
                             <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
                             <div id="wordSays" class="wordSays">
                                 <ul>
@@ -622,27 +622,9 @@
             observer: true, //修改swiper自己或子元素时，自动初始化swiper
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
-
         //惯用语
-        $("#alwaysSay").click(function () {
-            $("#wordSays").stop().fadeToggle(300)
-        });
-
-        $("#wordSays").on("click", ".idioms", function () {
-            let idioms = $(this).html()
-            $("#opinions").html(idioms);
-            $("#wordSays").fadeOut(300)
-        });
-
-        $("#alwaysSay_tag").click(function () {
-            $("#wordSays_tag").stop().fadeToggle(300)
-        });
-
-        $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
-            let idioms = $(this).html()
-            $("#textIdioms_tag").html(idioms);
-            $("#wordSays_tag").fadeOut(300)
-        });
+        setAlwaysBox("#alwaysSay","#wordSays");
+        setAlwaysSay("#wordSays","#textIdioms","#wordSays");
 
         //全屏
         $("#fullScreen").click(function () {
@@ -895,7 +877,7 @@
         let data = {
             "eventId": eventIdOnce,
             "buttonId": buttonId,
-            "opinions": $("#opinions").val(),
+            "opinions": $("#textIdioms").val(),
             "deptId": $("#dept").val(),
             "delayedTime": $("#delayedTime").val(),
             "imageUrlList": toArray($("#imageUrlList").val()),
