@@ -1024,6 +1024,12 @@
         let t = evt.coordinate;
         $("#longitude").val(t[0])
         $("#latitude").val(t[1])
+        $.ajaxUtil.get(localReverseGeocoding + "?x=" + t[0] + "&y=" + t[1], function (e) {
+            $("#location").val(e.data.mongo)
+        })
+
+
+
         layerMap.getSource().clear()
         $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + t[0] + "&y=" + t[1], function (e) {
             let split = e.data.multiPolygon.split(",");
