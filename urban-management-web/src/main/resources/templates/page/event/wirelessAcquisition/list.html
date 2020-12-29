@@ -525,7 +525,6 @@
                 $("#eventId").val(row.id)
                 //onClickRow事件，实现单击行选中的效果
                 index[0].firstElementChild.firstElementChild.click()
-                setPoint(row.id)
                 setInput(row)
                 getEventDetail(row.id);
                 localStorage.setItem("rowIndex",index[0].rowIndex);
@@ -654,27 +653,20 @@
         });
     }
 
-
-    function setPoint(eventId) {
-        let getPointUrl = /*[[@{/event/getPoint}]]*/ "/event/getPoint";
-        $.ajaxUtil.get(getPointUrl+"?eventId="+eventId, function (e) {
-            let x = e.data.x;
-            let y = e.data.y;
-            let point = new ol.Feature({
-                geometry: new ol.geom.Point([x, y]),
-                data: {
-                    // id: data,
-                    // name: name,
-                    coordinate: x + "," + y
-                }
-            });
-            layerMap.getSource().addFeature(point);
-            point.setStyle(new ol.style.Style({
-                image: new ol.style.Icon({
-                    src: '../img/dwpoint3.png'
-                })
-            }));
+    function setPoint(x, y, id) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                id: id,
+                coordinate: x + "," + y
+            }
         });
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                src: '../img/dwpoint3.png'
+            })
+        }));
+        layerMap.getSource().addFeature(point);
     }
 
     function setInput(row) {
