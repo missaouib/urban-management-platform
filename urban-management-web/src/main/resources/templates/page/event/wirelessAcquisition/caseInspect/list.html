@@ -927,11 +927,14 @@
                         sortable: true,
                     },
 
-                    // {
-                    //     title: '处理部门',
-                    //     field: 'eventTypeName',
-                    //     // sortable: true,
-                    // },
+                    {
+                        title: '案件类型',
+                        field: 'recTypeId',
+                        sortable: true,
+                        formatter: function (value,row){
+                            return row.recTypeName;
+                        }
+                    },
 
                     {
                         title: '创建日期',
