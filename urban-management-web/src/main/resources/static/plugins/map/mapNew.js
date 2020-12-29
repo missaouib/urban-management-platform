@@ -71,8 +71,10 @@ var map = new ol.Map({
 map.getView().fit([593489.95, 5237489.95,
     598010.0499999999, 5247510.05], map.getSize());
 var fullScreenControl = new ol.control.FullScreen();
+var scaleLineControl = new ol.control.ScaleLine();
 
-map.addControl(fullScreenControl)
+map.addControl(fullScreenControl);
+map.addControl(scaleLineControl);
 var layerMap = new ol.layer.Vector({
     source: new ol.source.Vector(),
 });
