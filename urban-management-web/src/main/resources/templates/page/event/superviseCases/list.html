@@ -900,8 +900,9 @@
                     class:"problem",
                 },
                 {
-                    title: '当前处理部门',
-                    field: 'deptName',
+                    title: '当前阶段',
+                    field: 'taskName',
+                    sortable: true,
                 },
                 {
                     title: '案件分类',
@@ -909,16 +910,46 @@
                     sortable: true,
                 },
                 {
-                    title: '督办状态',
-                    formatter: function(value, row) {
-                        if(row.supSts==="1"){
-                            return "已督办";
-                        }else{
-                            return "未督办";
-                        }
-
-                    }
+                    title: '案件类型',
+                    field: 'recTypeName',
+                    sortable: true,
                 },
+                {
+                    title: '创建时间',
+                    field: 'createTime',
+                    sortable: true,
+                },
+                {
+                    title: '上报人',
+                    field: 'userName',
+                    sortable: true,
+                },
+                // {
+                //     title: '当前处理部门',
+                //     field: 'deptName',
+                // },
+                // {
+                //     title: '案件分类',
+                //     field: 'eventTypeName',
+                //     sortable: true,
+                // },
+                // {
+                //     title: '案件类型',
+                //     field: 'recTypeName',
+                //     sortable: true,
+                // },
+
+                // {
+                //     title: '督办状态',
+                //     formatter: function(value, row) {
+                //         if(row.supSts==="1"){
+                //             return "已督办";
+                //         }else{
+                //             return "未督办";
+                //         }
+                //
+                //     }
+                // },
                 // {
                 //     title: '操作',
                 //     field: '',

@@ -751,14 +751,19 @@
                     }
                 },
                 {
+                    title: '案件编号',
+                    field: 'eventCode',
+                    sortable: true,
+                },
+                {
                     title: '问题描述',
                     field: 'represent',
                     class:"problem",
                     // sortable: true,
                 },
                 {
-                    title: '上报人',
-                    field: 'userName',
+                    title: '当前阶段',
+                    field: 'taskName',
                     sortable: true,
                 },
                 {
@@ -767,21 +772,36 @@
                     sortable: true,
                 },
                 {
+                    title: '案件类型',
+                    field: 'recTypeName',
+                    sortable: true,
+                },
+                {
                     title: '创建时间',
                     field: 'createTime',
                     sortable: true,
                 },
                 {
-                    title: '处置时限',
-                    field: 'timeLimitStr',
-                    // sortable: true,
-                },
-                {
-                    title: '截止时间',
-                    field: 'endTimeStr',
+                    title: '上报人',
+                    field: 'userName',
                     sortable: true,
                 },
-
+                // {
+                //     title: '案件分类',
+                //     field: 'eventTypeName',
+                //     sortable: true,
+                // },
+                //
+                // {
+                //     title: '处置时限',
+                //     field: 'timeLimitStr',
+                //     // sortable: true,
+                // },
+                // {
+                //     title: '截止时间',
+                //     field: 'endTimeStr',
+                //     sortable: true,
+                // },
             ]
         };
         $.table.init(options);

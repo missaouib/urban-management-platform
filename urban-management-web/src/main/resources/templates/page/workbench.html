@@ -354,6 +354,11 @@
                     sortable: true,
                 },
                 {
+                    title: '当前阶段',
+                    field: 'taskName',
+                    sortable: true,
+                },
+                {
                     title: '案件分类',
                     field: 'recType.value',
                     sortable: true,
@@ -362,23 +367,35 @@
                     }
                 },
                 {
-                    title: '当前阶段',
-                    field: 'taskName',
+                    title: '案件类型',
+                    field: 'caseType',
                     sortable: true,
-                },
-                {
-                    title: '案件来源',
-                    field: 'eventSource.value',
-                    sortable: true,
-                    formatter: function (value, row, index) {
-                        return row.eventSourceName;
-                    }
+                    class: 'caseType'
                 },
                 {
                     title: '创建日期',
                     field: 'createTime',
                     sortable: true,
                 },
+                {
+                    title: '处置时限',
+                    field: 'timeLimitStr',
+                    // sortable: true,
+                },
+                {
+                    title: '截止日期',
+                    field: 'endTimeStr',
+                    sortable: true,
+                },
+                // {
+                //     title: '案件来源',
+                //     field: 'eventSource.value',
+                //     sortable: true,
+                //     formatter: function (value, row, index) {
+                //         return row.eventSourceName;
+                //     }
+                // },
+
             ]
         };
         $.table.init(options);
