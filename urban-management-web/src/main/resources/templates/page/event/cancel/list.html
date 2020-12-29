@@ -794,6 +794,7 @@
                     title: '序号',
                     class:'index_width',
                     formatter : function (value, row, index){
+                        console.log(row)
                         var page = $('#bootstrap-table').bootstrapTable("getPage");
                         return page.pageSize * (page.pageNumber - 1) + index + 1;
                     }
@@ -810,12 +811,32 @@
                 },
                 {
                     title: '当前阶段',
-                    field: 'taskName',
-                    sortable: true,
+                    field: 'statisticsList.taskName',
+                    formatter: function (value, row, index) {
+                        return row.taskName;
+                    }
                 },
                 {
                     title: '案件分类',
-                    field: 'recTypeName',
+                    field: 'eventTypeName',
+                    sortable: true,
+                },
+                {
+                    title: '案件类型',
+                    field: 'recType.value',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        return row.recTypeName;
+                    }
+                },
+                {
+                    title: '创建时间',
+                    field: 'createTime',
+                    sortable: true,
+                },
+                {
+                    title: '上报人',
+                    field: 'userName',
                 },
                 {
                     title: '案件类型',
@@ -832,6 +853,7 @@
                     field: '',
                     sortable: true,
                 },
+
             ]
         };
         $.table.init(options);

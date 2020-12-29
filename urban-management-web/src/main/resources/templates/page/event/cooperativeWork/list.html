@@ -950,17 +950,23 @@
                 },
                 {
                     title: '当前阶段',
-                    field: 'taskName',
-                    sortable: true,
+                    field: 'statisticsList.taskName',
+                    formatter: function (value, row, index) {
+                        return row.taskName;
+                    }
                 },
                 {
                     title: '案件分类',
-                    field: 'recTypeName',
+                    field: 'eventTypeName',
+                    sortable: true,
                 },
                 {
                     title: '案件类型',
-                    field: 'recTypeName',
+                    field: 'recType.value',
                     sortable: true,
+                    formatter: function (value, row, index) {
+                        return row.recTypeName;
+                    }
                 },
                 {
                     title: '创建日期',
