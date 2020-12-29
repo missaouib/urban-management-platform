@@ -45,7 +45,7 @@
 
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
-
+<script th:src="@{/js/index.js}"></script>
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
@@ -59,21 +59,21 @@
         });
 
         $(document).on("click","#lian",function(){
-            // $('#tableCommon').bootstrapTable('destroy');
-            // $(".jiean").remove();
-            // tableRefresh();
-            // $('#addTable').bootstrapTable('refresh');
+            // $.learuntab.init.refreshTab()
+            // window.location.reload()
             $(".lian").removeClass("roleBox");
             $(".jiean").addClass("roleBox");
         });
 
         $(document).on("click","#jiean",function(){
+            // window.location.reload()
+            // $.learuntab.init.refreshTab()
             // $('#addTable').bootstrapTable('destroy');
             // $(".lian").remove();
             // tableRefreshAgain();
             // $('#tableCommon').bootstrapTable('refresh');
-            $(".lian").addClass("roleBox");
-            $(".jiean").removeClass("roleBox");
+           $(".jiean").removeClass("roleBox");
+           $(".lian").addClass("roleBox");
         });
     });
 
@@ -318,7 +318,6 @@
         alert(num)
         console.log(JSON.stringify(num));
     })
-
 
 
 </script>
