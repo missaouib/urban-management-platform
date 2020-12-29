@@ -284,10 +284,12 @@
                                             <tr>
                                                 <td><span></span>监督员</td>
                                                 <td>
-                                                    <select name="safeLevel" id="selectUser" onchange="getUserval()">
-                                                        <option selected>请选择</option>
-                                                        <option value="1">超级管理员</option>
-                                                    </select>
+                                                    <input id="selectUser" type="text" name="safeLevel" class="find_input" onchange="getUserval()"
+                                                           readonly="readonly" value="">
+<!--                                                    <select name="safeLevel" id="selectUser" onchange="getUserval()">-->
+<!--                                                        <option selected>请选择</option>-->
+<!--                                                        <option value="1">超级管理员</option>-->
+<!--                                                    </select>-->
                                                     <input type="hidden" id="userId" value="">
                                                     <input type="hidden" id="eventId" value="">
                                                     <input type="hidden" id="button" value="">
