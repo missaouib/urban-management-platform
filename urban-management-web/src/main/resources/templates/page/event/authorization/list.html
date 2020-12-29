@@ -99,6 +99,12 @@
             <div style="width: 100%;width: 100%;display: flex;justify-content: center">
                 <div class="xiala"><i class="selectmenu"></i></div>
             </div>
+            <div class="btn-group-sm roleBox" id="toolbar" >
+                <div class="r_right but_p girdBtnGroup" id="">
+                    <button class="but_save underbtn" data-toggle="modal" data-target="#modal-default8">申请原因</button>
+                    <button class="but_save underbtn" data-toggle="modal" data-target="#modal-default9">审批</button>
+                </div>
+            </div>
             <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
         </div>
         <div class="left_bottomIn">
@@ -523,9 +529,6 @@
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
         });
-        //步骤进行到
-        var bgmNum = 2;
-        setConduct(bgmNum)
 
         //选择监督员
         $("#changeMan").click(function () {
@@ -806,7 +809,8 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row, index) {
-                layerMap.getSource().clear()
+                $("#toolbar").removeClass('roleBox');
+                layerMap.getSource().clear();
                 checkRow(row.id);
             },
             onLoadSuccess: function (data) {
@@ -853,17 +857,17 @@
                     title: '申请类型',
                     field: 'recTypeName',
                 },
-                {
-                    title: '操作',
-                    field: '',
-                    class: "doit",
-                    width: "150px",
-                    formatter: function (value, row) {
-                        var actions = '<a  href="#" title=""  data-toggle="modal" data-target="#modal-default8">申请原因</a> ' +
-                            '<a  href="#" title="" data-toggle="modal" data-target="#modal-default9">审批</a> ';
-                        return actions
-                    }
-                }
+                // {
+                //     title: '操作',
+                //     field: '',
+                //     class: "doit",
+                //     width: "150px",
+                //     formatter: function (value, row) {
+                //         var actions = '<a  href="#" title=""  data-toggle="modal" data-target="#modal-default8">申请原因</a> ' +
+                //             '<a  href="#" title="" data-toggle="modal" data-target="#modal-default9">审批</a> ';
+                //         return actions
+                //     }
+                // }
             ]
         };
         $.table.init(options);

@@ -16,6 +16,7 @@
         <div class="left_topIn">
             <div class="selectPoint">
                 <form id="userForm">
+                    <input id="processInstanceId" type="hidden" value="">
                     <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
                     <input th:name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
                     <div class="top table2_top xiangqing">
@@ -98,9 +99,9 @@
             <div style="width: 100%;width: 100%;display: flex;justify-content: center">
                 <div class="xiala"><i class="selectmenu"></i></div>
             </div>
-            <div class="btn-group-sm" id="toolbar" >
-                <div class="r_right but_p girdBtnGroup">
-
+            <div class="btn-group-sm roleBox" id="toolbar" >
+                <div class="r_right but_p girdBtnGroup" id="">
+                    <button class="but_save underbtn" data-toggle="modal" data-target="#modal-default" onclick="findOpinions(processInstanceId)">不予受理意见</button>
                 </div>
             </div>
             <table id="bootstrap-table" class="table_style" style="margin: 0 auto" ></table>
@@ -614,9 +615,7 @@
         $(".banners").on("click", ".enclosure", function () {
             $(".duck_duck").fadeIn(300)
         });
-        //步骤进行到
-        var bgmNum = 2;
-        setConduct(bgmNum)
+
 
         queryUserList();
         let eventId = $('#eventIdFromWorkBench').val();
@@ -756,20 +755,6 @@
     }
 
 
-    //职位角色按钮组
-    var roleNum = 1;
-    if(roleNum =1){
-        $("#leader").addClass("blockActive")
-    }else if (roleNum =2){
-        $("#dispatcher").addClass("blockActive")
-    }else if (roleNum =3){
-        $("#departments").addClass("blockActive")
-    }else if (roleNum =4){
-        $("#case").addClass("blockActive")
-    }else if (roleNum =5){
-        $("#treatment").addClass("blockActive")
-    }
-
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
     let searchUrl = /*[[@{/event/caseInvalidList}]]*/ "/event/caseInvalidList";
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
@@ -792,9 +777,11 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row,index) {
-                layerMap.getSource().clear()
-                checkRow(row.id)
+                $("#toolbar").removeClass('roleBox');
+                layerMap.getSource().clear();
+                checkRow(row.id);
                 findOpinions(row.statisticsId);
+                setRowId(row.processInstanceId);
             },
             onLoadSuccess: function (data) {
                 $('#eventIdFromWorkBench').val('');
@@ -847,20 +834,26 @@
                     field: 'endTimeStr',
                     sortable: true,
                 },
-                {
-                    title: '状态',
-                    field: 'eventTypeName',
-                    sortable: true,
-                    formatter: function (value,row) {
-                        var e = '<a  data-toggle=\"modal\" data-target=\"#modal-default\" onclick="findOpinions(\'' + row.processInstanceId + '\')">不予受理意见</a> '
-                        return e;
-                    }
-                },
-
+                // {
+                //     title: '状态',
+                //     field: 'eventTypeName',
+                //     sortable: true,
+                //     formatter: function (value,row) {
+                //         console.log(row.processInstanceId)
+                //         var e = '<a  data-toggle=\"modal\" data-target=\"#modal-default\" onclick="findOpinions(\'' + row.processInstanceId + '\')">不予受理意见</a> '
+                //         return e;
+                //     }
+                // },
             ]
         };
         $.table.init(options);
     }
+    function setRowId(processInstanceId){
+        $("#processInstanceId").val(processInstanceId);
+        let num = $("#processInstanceId").val();
+        findOpinions(num)
+    }
+
     function checkRow(eventId){
         getTimeAxis(eventId);
         getEventDetail(eventId);
