@@ -901,8 +901,10 @@
                 },
                 {
                     title: '当前阶段',
-                    field: 'taskName',
-                    sortable: true,
+                    field: 'statisticsList.taskName',
+                    formatter: function (value, row, index) {
+                        return row.taskName;
+                    }
                 },
                 {
                     title: '案件分类',
@@ -910,8 +912,11 @@
                 },
                 {
                     title: '案件类型',
-                    field: 'recTypeName',
+                    field: 'recType.value',
                     sortable: true,
+                    formatter: function (value, row, index) {
+                        return row.recTypeName;
+                    }
                 },
                 {
                     title: '创建日期',
@@ -923,10 +928,10 @@
                     field: 'userName',
                     sortable: true,
                 },
-                // {
-                //     title: '当前处理部门',
-                //     field: 'deptName',
-                // },
+                {
+                    title: '当前处理部门',
+                    field: 'deptName',
+                },
                 // {
                 //     title: '案件分类',
                 //     field: 'eventTypeName',
@@ -938,17 +943,17 @@
                 //     sortable: true,
                 // },
 
-                // {
-                //     title: '督办状态',
-                //     formatter: function(value, row) {
-                //         if(row.supSts==="1"){
-                //             return "已督办";
-                //         }else{
-                //             return "未督办";
-                //         }
-                //
-                //     }
-                // },
+                {
+                    title: '督办状态',
+                    formatter: function(value, row) {
+                        if(row.supSts==="1"){
+                            return "已督办";
+                        }else{
+                            return "未督办";
+                        }
+
+                    }
+                },
                 // {
                 //     title: '操作',
                 //     field: '',

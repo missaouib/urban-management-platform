@@ -799,11 +799,11 @@
                     title: '序号',
                     class:'index_width',
                     formatter : function (value, row, index){
+                        console.log(row)
                         var page = $('#bootstrap-table').bootstrapTable("getPage");
                         return page.pageSize * (page.pageNumber - 1) + index + 1;
                     }
                 },
-
                 {
                     title: '案件编号',
                     field: 'eventCode',
@@ -812,30 +812,37 @@
                 {
                     title: '问题描述',
                     field: 'represent',
-                    class: "problem",
+                    class:"problem",
+                    sortable: true,
                 },
                 {
                     title: '当前阶段',
-                    field: 'taskName',
-                    sortable: true,
+                    field: 'statisticsList.taskName',
+                    formatter: function (value, row, index) {
+                        return row.taskName;
+                    }
                 },
                 {
                     title: '案件分类',
-                    field: 'recTypeName',
-                },
-                {
-                    title: '案件类型',
-                    field: '',
+                    field: 'eventTypeName',
                     sortable: true,
                 },
                 {
-                    title: '创建日期',
-                    field: '',
+                    title: '案件类型',
+                    field: 'recType.value',
+                    sortable: true,
+                    formatter: function (value, row, index) {
+                        return row.recTypeName;
+                    }
+                },
+                {
+                    title: '创建时间',
+                    field: 'createTime',
                     sortable: true,
                 },
                 {
                     title: '上报人',
-                    field: '',
+                    field: 'userName',
                     sortable: true,
                 },
 
