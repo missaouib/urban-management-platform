@@ -763,18 +763,25 @@
                 },
                 {
                     title: '当前阶段',
-                    field: 'taskName',
+                    field: 'statisticsList.taskName',
                     sortable: true,
+                    formatter: function (value, row, index) {
+                        return row.taskName;
+                    },
+
                 },
                 {
                     title: '案件分类',
                     field: 'eventTypeName',
-                    // sortable: true,
+                    sortable: true,
                 },
                 {
                     title: '案件类型',
-                    field: 'recTypeName',
+                    field: 'recTypeId',
                     sortable: true,
+                    formatter: function (value,row){
+                        return row.recTypeName;
+                    }
                 },
                 {
                     title: '创建日期',
@@ -783,8 +790,11 @@
                 },
                 {
                     title: '上报人',
-                    field: 'userName',
+                    field: 'userId',
                     sortable: true,
+                    formatter: function (value,row){
+                        return row.userName;
+                    }
                 },
                 // {
                 //     title: '案件分类',

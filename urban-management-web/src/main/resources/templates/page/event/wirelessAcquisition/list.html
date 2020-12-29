@@ -553,9 +553,9 @@
                 },
 
                 {
-                    title: '案卷编号',
+                    title: '案件编号',
                     field: 'eventCode',
-                    // sortable: true,
+                    sortable: true,
                 },
                 {
                     title: '问题描述',
@@ -566,20 +566,25 @@
                 {
                     title: '案件分类',
                     field: 'eventTypeName',
-                    // sortable: true,
+                    sortable: true,
                 },
                 {
                     title: '案件类型',
-                    field: 'recTypeName',
+                    field: 'recTypeId',
                     sortable: true,
+                    formatter: function (value,row){
+                        return row.recTypeName;
+                    }
                 },
 
                 {
                     title: '上报人',
-                    field: 'userName',
+                    field: 'userId',
                     sortable: true,
+                    formatter: function (value,row){
+                        return row.userName;
+                    }
                 },
-
                 {
                     title: '创建日期',
                     field: 'createTime',

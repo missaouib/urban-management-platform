@@ -726,7 +726,7 @@
              // 点击每行进行函数的触发
             onClickRow: function (row, tr, flied) {
                 layerMap.getSource().clear()
-
+                console.log(row)
                 checkRow(row.id)
             },
             onLoadSuccess: function (data) {
@@ -768,9 +768,12 @@
                 },
                 {
                     title: '当前阶段',
-                    field: 'currentStage',
-                    class:"currentStage",
+                    field: 'statisticsList.taskName',
                     sortable: true,
+                    formatter: function (value, row, index) {
+                        return row.taskName;
+                    },
+
                 },
                 {
                     title: '案件分类',
@@ -779,9 +782,11 @@
                 },
                 {
                     title: '案件类型',
-                    field: 'caseType',
+                    field: 'recTypeId',
                     sortable: true,
-                    class: 'caseType'
+                    formatter: function (value,row){
+                        return row.recTypeName;
+                    }
                 },
                 // {
                 //     title: '问题来源',
@@ -802,7 +807,7 @@
                 {
                     title: '截止日期',
                     field: 'endTimeStr',
-                    sortable: true,
+                    // sortable: true,
                 },
             ]
         };
