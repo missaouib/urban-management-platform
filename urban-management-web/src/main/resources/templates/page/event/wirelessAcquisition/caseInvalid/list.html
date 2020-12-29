@@ -101,7 +101,7 @@
             </div>
             <div class="btn-group-sm roleBox" id="toolbar" >
                 <div class="r_right but_p girdBtnGroup" id="">
-                    <button class="but_save underbtn" data-toggle="modal" data-target="#modal-default" onclick="findOpinions(processInstanceId)">不予受理意见</button>
+                    <button class="but_save underbtn" data-toggle="modal" data-target="#modal-default" onclick="setCaseFeautreu()">不予受理意见</button>
                 </div>
             </div>
             <table id="bootstrap-table" class="table_style" style="margin: 0 auto" ></table>
@@ -878,10 +878,12 @@
     }
     function setRowId(processInstanceId){
         $("#processInstanceId").val(processInstanceId);
-        let num = $("#processInstanceId").val();
-        findOpinions(num)
     }
 
+    function setCaseFeautreu() {
+        let num = $("#processInstanceId").val();
+        // findOpinions(num)
+    }
     function checkRow(eventId){
         getTimeAxis(eventId);
         getEventDetail(eventId);
@@ -896,6 +898,7 @@
                 $("#handler").val(data.name);
             }
         });
+
     }
 
     /* 时间轴 */
