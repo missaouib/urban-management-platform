@@ -986,23 +986,23 @@
                 //     }
                 // },
                 //
-                // {
-                //     title: '应急状态',
-                //     field: '',
-                //     formatter: function (value, row) {
-                //         let image = "";
-                //         let urgent = row.urgent;
-                //         if (urgent === 1) {
-                //              image = "<div style='width: 20px;height: 20px;'>" +
-                //                 "<img src='../../img/yj.png' style='width:100%;height:100%;'></div>";
-                //         }else {
-                //             image="正常"
-                //         }
-                //         return image;
-                //
-                //
-                //     }
-                // },
+                {
+                    title: '应急状态',
+                    field: '',
+                    formatter: function (value, row) {
+                        let image = "";
+                        let urgent = row.urgent;
+                        if (urgent === 1) {
+                             image = "<div style='width: 20px;height: 20px;'>" +
+                                "<img src='../../img/yj.png' style='width:100%;height:100%;'></div>";
+                        }else {
+                            image="正常"
+                        }
+                        return image;
+
+
+                    }
+                },
             ]
         };
         $.table.init(options);
