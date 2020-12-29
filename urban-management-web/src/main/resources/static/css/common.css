@@ -1594,9 +1594,14 @@ label.error {
     cursor: pointer;
     display: flex;justify-content: center;align-items: center;
 }
-.allTiel{
+.duck_duck .allTiel{
     width: 600px;
-    /*height: 500px;*/
+    height: 500px;
+    background-color: #ffffff;
+    position: relative;
+}
+.duk_duck .allTiel{
+    width: 600px;
     background-color: #ffffff;
     position: relative;
 }
@@ -1624,6 +1629,9 @@ label.error {
     width: 100%;
     height: 460px;
     position: relative;
+}
+.setHeight{
+    height: 100%!important;
 }
 .info_chance{
     width: 100%;

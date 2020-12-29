@@ -95,10 +95,12 @@ $(".leftContent").on("mouseover", ".problem", function () {
 /*
 * 点击黑屏 关闭
 * */
-$(".duck_box").click(function () {
+$(".duck_box").click(function (e) {
+    e.stopPropagation();
     $(".duck_duck").fadeOut(300)
 })
-$(".duk_box").click(function () {
+$(".duk_box").click(function (e) {
+    e.stopPropagation();
     $(".duk_duck").fadeOut(300)
 })
 $(".duck_close").html("×");
@@ -237,12 +239,14 @@ function fullScreen() {
     }
 }
 
-//全屏
+//全屏 阻止冒泡
 $("#fullScreen").click(function (e) {
+    $(".duck_info").addClass('setHeight');
     e.stopPropagation()
 });
 
 $("#exitfullScreen").click(function (e) {
+    $(".duck_info").removeClass('setHeight');
     e.stopPropagation()
 })
 
@@ -253,7 +257,24 @@ $(".swiper-button-next").click(function (e) {
 $(".swiper-button-prev").click(function (e) {
     e.stopPropagation()
 })
-
+// $(".swiper-container").click(function (e) {
+//     e.stopPropagation()
+// })
+// $(".swiper-wrapper").click(function (e) {
+//     e.stopPropagation()
+// })
+$(".swiper-pagination-bullet").click(function (e) {
+    e.stopPropagation()
+})
+$(".duck_info").click(function (e) {
+    e.stopPropagation()
+})
+$(".info_chance").click(function (e) {
+    e.stopPropagation()
+})
+$(".swiper-slide").click(function (e) {
+    e.stopPropagation()
+})
 //退出全屏
 function exitFullscreen() {
     var element = document.getElementById("content-wrapper");

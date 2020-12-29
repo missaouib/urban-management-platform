@@ -678,7 +678,7 @@
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
 
-//处置前 轮播
+        //处置前 轮播
         var beforDisSwiper = new Swiper('#beforDisSwiper', {
             pagination: '.beforDisPg',
             paginationClickable: true,
@@ -979,7 +979,8 @@
                         let image = "";
                         let urgent = row.urgent;
                         if (urgent === 1) {
-                            image = "<img src='../../img/yj.png' style='width:28px;height:28px;align-content: center'>";
+                             image = "<div style='width: 20px;height: 20px;'>" +
+                                "<img src='../../img/yj.png' style='width:100%;height:100%;'></div>";
                         }else {
                             image="正常"
                         }
