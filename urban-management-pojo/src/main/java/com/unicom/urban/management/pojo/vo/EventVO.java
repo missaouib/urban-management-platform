@@ -109,4 +109,6 @@ public class EventVO {
 
     private Integer urgent;
 
+    private String centerPoint;
+
 }

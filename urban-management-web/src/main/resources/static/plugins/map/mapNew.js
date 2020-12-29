@@ -77,3 +77,19 @@ var layerMap = new ol.layer.Vector({
     source: new ol.source.Vector(),
 });
 map.addLayer(layerMap);
+function setPointForCenter(x, y) {
+    let point = new ol.Feature({
+        geometry: new ol.geom.Point([x, y]),
+        data: {
+            // id: data,
+            // name: name,
+            coordinate: x + "," + y
+        }
+    });
+    layerMap.getSource().addFeature(point);
+    point.setStyle(new ol.style.Style({
+        image: new ol.style.Icon({
+            src: '../img/dwpoint5.png'
+        })
+    }));
+}

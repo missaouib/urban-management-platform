@@ -15,11 +15,13 @@ import com.unicom.urban.management.service.activiti.ActivitiService;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
+import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.process.ProcessService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.locationtech.jts.geom.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -63,7 +65,7 @@ public class EventService {
     @Autowired
     private PetitionerService petitionerService;
     @Autowired
-    private KVService kvService;
+    private GridService gridService;
     @Autowired
     private EventFileService eventFileService;
     @Autowired
@@ -198,9 +200,13 @@ public class EventService {
         }, pageable);
         List<EventVO> eventVOList = new ArrayList<>();
         DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        List<Coordinate> coordinateList = new ArrayList<>();
         /*循环添加vo*/
         page.getContent().forEach(e -> {
             EventVO eventVO = EventMapper.INSTANCE.eventToEventVO(e);
+            if(eventVO.getX() > 0 && eventVO.getY() > 0){
+                coordinateList.add(new Coordinate(eventVO.getX(), eventVO.getY()));
+            }
             if (e.getSupervises().size() > 0) {
                 /*督办*/
                 eventVO.setSupSts("1");
@@ -299,8 +305,26 @@ public class EventService {
             }
             eventVOList.add(eventVO);
         });
+        if(coordinateList.size() > 0){
+            String center = getCenterOfMultiPoint(coordinateList);
+            for (EventVO eventVO : eventVOList) {
+                eventVO.setCenterPoint(center);
+            }
+        }
 
         return new PageImpl<>(eventVOList, page.getPageable(), page.getTotalElements());
+    }
+
+    private String getCenterOfMultiPoint(List<Coordinate> coordinateList) {
+        Coordinate[] coordinates = new Coordinate[coordinateList.size()];
+        coordinateList.toArray(coordinates);
+        GeometryFactory geometryFactory = new GeometryFactory();
+        /* 创建多点 */
+        MultiPoint morePoint = geometryFactory.createMultiPointFromCoords(coordinates);
+        /* 得到多边形内心 */
+        double x = morePoint.getCentroid().getCoordinates()[0].getX();
+        double y = morePoint.getCentroid().getCoordinates()[0].getY();
+        return x + "-" + y;
     }
 
 
@@ -906,10 +930,10 @@ public class EventService {
         double b = rad(lng) - rad(eventLng);
         double s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
                 Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
-        double EARTH_RADIUS = 6378.137;
-        s = s * EARTH_RADIUS * 1000;
-        double COMPONENT_DISTANCE = 3;
-        return s < COMPONENT_DISTANCE;
+        double earthRadius = 6378.137;
+        s = s * earthRadius * 1000;
+        double componentDistance = 3;
+        return s < componentDistance;
     }
 
     private static double rad(double d) {

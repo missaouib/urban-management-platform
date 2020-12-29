@@ -510,6 +510,12 @@ function setFileInput(file) {
 
 function setPointForList(data) {
     let rowArray = data.rows;
+    if(rowArray.length > 0){
+        let x = parseFloat(rowArray[0].centerPoint.split("-")[0]);
+        let y = parseFloat(rowArray[0].centerPoint.split("-")[1]);
+        // setPointForCenter(x, y);
+        setCenterAndZoom(x, y, map.getView().getZoom());
+    }
     wkts = [];
     for (let i = 0; i < rowArray.length; i++) {
         setPoint(rowArray[i].x, rowArray[i].y);
