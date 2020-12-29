@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/plugins/layer/theme/default/layer.css}">
+</head>
+<body>
+
+<div class="div_top">
+    城市综合管理服务平台
+</div>
+<div class="underTop">URBAN COMPREHENSIVE MANAGEMENT AND SERVICES PLATFORM</div>
+<div class="login">
+    <div class="message">登录账号</div>
+    <div id="darkbannerwrap"></div>
+    <form id="loginForm">
+        <div class="inpBox">
+            <div class="icon icon1"></div>
+            <input name="username" placeholder="账号" id="username" type="text" class="username">
+        </div>
+
+        <hr class="hr20">
+        <div class="inpBox">
+            <div class="icon icon2"></div>
+            <input name="password" placeholder="密码" id="password" type="password" class="password">
+        </div>
+
+        <hr class="hr20">
+
+        <div class="inpBox">
+            <div class="icon icon3"></div>
+            <img id="captchaImg" th:src="@{/captcha.jpeg}" class="canvas" alt="验证码" title="点击图片刷新验证码" onclick="changeCaptcha()">
+            <input name="input-val" autocomplete="off" class="input-val" placeholder="请输入验证码" id="captcha" type="text" maxlength="4" >
+        </div>
+
+        <hr class="hr20">
+    </form>
+
+    <input value="登录" style="width: 100%;" type="button" onclick="login()" id="login_btn" class="login_btn">
+    <!--    <span class="forget">忘记密码?</span>-->
+</div>
+<script type="text/javascript" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/jquery-serializejson/jquery.serializejson.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/layer/layer.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/jsencrypt/jsencrypt.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/jquery-validation/dist/jquery.validate.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/jquery-validation/dist/additional-methods.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/jquery-validation/dist/localization/messages_zh.js}"></script>
+
+
+<script type="text/javascript" th:inline="javascript">
+
+    $(document).keydown(function (e) {
+        if (e.keyCode == 13){
+            login()
+        }
+    })
+
+    if (window.top !== window.self) {
+        alert('未登录或登录超时。请重新登录');
+        window.top.location = window.location
+    }
+
+
+    let loginUrl = /*[[@{/login}]]*/ "/login";
+
+    let captchaUrl = /*[[@{/captcha.jpeg?}]]*/ "/captcha.jpeg";
+
+    let mainUrl = /*[[@{/main}]]*/ "/main";
+
+    let PUBLIC_KEY = [[${PUBLIC_KEY}]];
+
+
+    function changeCaptcha() {
+        $('#captchaImg').attr('src', captchaUrl + new Date().getTime() + '');
+    }
+
+
+    function login() {
+
+        let username = $('#username').val();
+        if (username.trim() === '') {
+            layer.msg('请输入账号');
+            return;
+        }
+
+        let password = $('#password').val();
+        if (password.trim() === '') {
+            layer.msg('请输入密码');
+            return;
+        }
+
+        let captcha = $('#captcha').val();
+
+        if (captcha.trim() === '') {
+            layer.msg('请输入验证码');
+            return;
+        }
+
+
+        let data = {
+            username: username,
+            password: encryptPassword(password),
+            captcha: captcha
+        }
+
+
+        $.ajax({
+            type: 'POST',
+            url: loginUrl,
+            data: data,
+            beforeSend: function () {
+                layer.msg('正在登录 请稍后...', {icon: 16, shade: 0.5, time: 0});
+            },
+            success: function (result) {
+                if (result.code === 0) {
+                    window.location.href = mainUrl;
+                } else {
+                    changeCaptcha();
+                    layer.msg(result.message);
+                }
+            }
+        });
+
+
+    }
+
+
+
+
+    function encryptPassword(password) {
+        let encrypt = new JSEncrypt();
+        encrypt.setPublicKey(PUBLIC_KEY);
+        return encrypt.encrypt(password);
+    }
+
+</script>
+</body>
+</html>
