@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -117,13 +118,13 @@ public class EventService {
                 list.add(criteriaBuilder.equal(root.get("timeLimit").get("id").as(String.class), eventDTO.getTimeType()));
             }
 
-            if (eventDTO.getTaskName() != null && eventDTO.getTaskName().size()!=0) {
+            if (eventDTO.getTaskName() != null && eventDTO.getTaskName().size() != 0) {
                 /* 查询当前登陆人所拥有的任务 */
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
                 List<String> type;
-                if(StringUtils.isBlank(eventDTO.getSupervision())){
-                    type = workService.queryTaskByAssigneeAndTaskName(SecurityUtil.getUserId(),eventDTO.getTaskName());
-                }else{
+                if (StringUtils.isBlank(eventDTO.getSupervision())) {
+                    type = workService.queryTaskByAssigneeAndTaskName(SecurityUtil.getUserId(), eventDTO.getTaskName());
+                } else {
                     type = workService.queryTaskByTaskName(eventDTO.getTaskName().get(0));
                 }
 
@@ -216,6 +217,7 @@ public class EventService {
                 String format = simpleDateFormat.format(statistics.getStartTime());
                 eventVO.setStartTime(format);
                 int hangDurationHours = 0;
+                int delayedHours = 0;
                 if ("专业部门".equals(statistics.getTaskName())) {
                     int timeLimit = statistics.getDeptTimeLimit().getTimeLimit();
                     eventVO.setTimeLimit(timeLimit);
@@ -223,6 +225,9 @@ public class EventService {
                     eventVO.setTimeType(timeType);
                     if (statistics.getHangDuration() != null) {
                         hangDurationHours += statistics.getHangDuration();
+                    }
+                    if (statistics.getDelayedHours() != null) {
+                        delayedHours += statistics.getDelayedHours();
                     }
                 } else {
                     if (Optional.ofNullable(statistics.getProcessTimeLimit()).isPresent()) {
@@ -234,24 +239,35 @@ public class EventService {
                 }
                 LocalDateTime startTime = statistics.getStartTime();
                 Integer timeLimit = eventVO.getTimeLimit();
+                DecimalFormat df = new DecimalFormat("#.00");
                 String timeType = StringUtils.isNotBlank(eventVO.getTimeType()) ? eventVO.getTimeType() : "";
                 switch (timeType) {
                     case "工作日":
                     case "天":
-                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusDays(timeLimit).plusHours(hangDurationHours)));
+                        if(hangDurationHours!=0){
+                            String time = df.format(((double) ((timeLimit * 24) + hangDurationHours)) / 24);
+                            eventVO.setTimeLimitStr(time + timeType);
+                        }
+                        if(delayedHours!=0){
+                            String time = df.format(((double) ((timeLimit * 24) + delayedHours)) / 24);
+                            eventVO.setTimeLimitStr(time + timeType);
+                        }
+                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusDays(timeLimit).plusHours(hangDurationHours).plusHours(delayedHours)));
                         break;
                     case "工作时":
                     case "小时":
-                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusHours(timeLimit).plusHours(hangDurationHours)));
+                        eventVO.setTimeLimitStr(timeLimit + timeType);
+                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusHours(timeLimit).plusHours(hangDurationHours).plusHours(delayedHours)));
                         break;
                     case "分钟":
-                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusMinutes(timeLimit).plusHours(hangDurationHours)));
+                        eventVO.setTimeLimitStr(timeLimit + timeType);
+                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusMinutes(timeLimit).plusHours(hangDurationHours).plusHours(delayedHours)));
                         break;
                     default:
                         eventVO.setEndTimeStr("暂无");
                         break;
                 }
-                eventVO.setTimeLimitStr(timeLimit + timeType);
+
                 eventVO.setDeptName(Optional.ofNullable(statistics.getDisposeUnit()).map(Dept::getDeptName).orElse(""));
             } else {
                 /*如果事件步骤没有endTime为null的  证明事件已经完成 获取结束时间最近的那条步骤 附加到vo信息*/
@@ -351,7 +367,7 @@ public class EventService {
      * @param eventDTO 事件参数
      */
     public void save(EventDTO eventDTO) {
-        if(existsByEventCode(eventDTO.getEventCode())){
+        if (existsByEventCode(eventDTO.getEventCode())) {
             throw new DataValidException("案件号已存在，将为你修改新的编号");
         }
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
@@ -551,12 +567,12 @@ public class EventService {
             Map<String, Object> map = new HashMap<>();
             map.put("url", f.getFilePath());
             map.put("type", f.getFileType());
-            map.put("taskName", "预上报");
+            map.put("taskName", "上报");
             map.put("management", f.getManagement());
             fileList.add(map);
         });
         /*处置前*/
-        one.getStatisticsList().stream().filter(s->taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getStartTime)).forEach(s-> s.getEventFileList().forEach(f->{
+        one.getStatisticsList().stream().filter(s -> taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getStartTime)).forEach(s -> s.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
             map.put("url", f.getFilePath());
             map.put("type", f.getFileType());
@@ -565,7 +581,7 @@ public class EventService {
             fileList.add(map);
         }));
         /*处置后*/
-        one.getStatisticsList().stream().filter(s->!taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getStartTime)).forEach(s-> s.getEventFileList().forEach(f->{
+        one.getStatisticsList().stream().filter(s -> !taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getStartTime)).forEach(s -> s.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
             map.put("url", f.getFilePath());
             map.put("type", f.getFileType());
@@ -597,8 +613,8 @@ public class EventService {
     }
 
 
-    private boolean taskName(String taskName){
-        List<String> taskNames = Arrays.asList("受理员-信息收集","值班长-立案","派遣员-派遣","值班长-作废审批","受理员-案件登记","监督员-信息核实");
+    private boolean taskName(String taskName) {
+        List<String> taskNames = Arrays.asList("受理员-信息收集", "值班长-立案", "派遣员-派遣", "值班长-作废审批", "受理员-案件登记", "监督员-信息核实");
         return taskNames.stream().anyMatch(t -> t.equals(taskName));
     }
 
@@ -932,6 +948,7 @@ public class EventService {
         }
         eventRepository.saveAndFlush(event);
     }
+
     /**
      * 查找转应急状态
      *
@@ -942,7 +959,7 @@ public class EventService {
         if ("值班长-立案".equals(statistics.getTaskName())) {
             Event event = this.findOne(eventId);
             return event.getUrgent() == null ? 0 : event.getUrgent();
-        }else {
+        } else {
             return 9;
         }
 
