@@ -83,8 +83,6 @@ function setPointForCenter(x, y) {
     let point = new ol.Feature({
         geometry: new ol.geom.Point([x, y]),
         data: {
-            // id: data,
-            // name: name,
             coordinate: x + "," + y
         }
     });
