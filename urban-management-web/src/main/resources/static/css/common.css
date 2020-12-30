@@ -2212,3 +2212,117 @@ span.search_highlight {
     /*justify-content: space-between;*/
     padding: 10px!important;
 }
+
+/*
+测距
+*/
+.clean {
+    width: 30px;
+    height: 30px;
+    background-color: red;
+}
+#menu_cejv{
+    background-color: #fff;
+    border-radius: 5px;
+    float: left;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    z-index: 9;
+    padding: 3px 5px;
+}
+.checkbox {
+    left: 20px;
+    display: none;!important;
+}
+.cejv,.removeCejv,.clean_cejv{
+    border-radius: 4px!important;
+    margin: 1px!important;
+    color: #fff!important;
+    font-weight: 700!important;
+    text-decoration: none!important;
+    text-align: center!important;
+    background-color: rgba(0, 60, 136, .5) !important;
+    border: none!important;
+    padding: 3px 5px;
+    font-size: 14px;
+}
+.menu_cejv{
+    display: flex;
+    justify-content: space-between;
+}
+.ol-scale-line{
+    position: absolute!important;
+    bottom: 43px!important;
+    /* right: 0px; */
+    left: 10px!important;
+    font-size: 12px!important;
+    background: rgba(0,60,136,.3) !important;
+    border-radius: 4px!important;
+}
+.ol-scale-line-inner{
+    border: 1px solid #eee!important;
+    border-top: none!important;
+    color: #eee!important;
+    font-size: 10px!important;
+    text-align: center!important;
+    margin: 1px!important;
+    will-change: contents,width!important;
+    width: 65px!important;
+}
+.ol-mouse-position{
+    position: absolute!important;
+    bottom: -4px!important;
+    font-size: 10px!important;
+    left: 10px!important;
+    background-color: #fff;
+}
+
+/**
+* 提示框的样式信息
+*/
+
+.tooltip {
+    position: relative;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    color: white;
+    padding: 4px 8px;
+    opacity: 0.7;
+    white-space: nowrap;
+}
+
+.tooltip-measure {
+    opacity: 1;
+    font-weight: bold;
+}
+
+.tooltip-static {
+    background-color: #ffffff;
+    color: black;
+    border: 1px solid white;
+}
+
+.tooltip-measure:before,
+.tooltip-static:before {
+    border-top: 6px solid rgba(0, 0, 0, 0.5);
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    margin-left: -7px;
+    left: 50%;
+}
+
+.tooltip-static:before {
+    border-top-color: #ffffff;
+}
+
+#scalebar {
+    float: left;
+    margin-bottom: 10px;
+}
+#type_cejv{
+    margin-top: 5px;
+}
