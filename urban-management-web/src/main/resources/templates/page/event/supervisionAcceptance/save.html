@@ -200,7 +200,7 @@
                                 <td style="position: relative">
                                     <input onmouseover="this.title=this.value" id="location" th:name="location"
                                            type="text" class="overInput" required>
-                                    <div class="caseSeach"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
+                                    <div class="caseSeach" onclick="localGeocoding()"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
                                 </td>
 
                                 <td><span>*</span>问题描述</td>
@@ -239,7 +239,7 @@
         </div>
         <div class="rightContent" style="position: relative">
             <div class="address">
-                <ul class="caseUl">
+                <ul class="caseUl" id="localGeocoding">
                     <li class="caseLi">大碗面大碗面奥利奥巧克力棒奥利奥玫瑰饼奥利奥大碗面</li>
                 </ul>
             </div>
@@ -308,17 +308,6 @@
     let codePopup;
 
     $(function () {
-        /*
-        案件地址搜索
-        * */
-        $(".caseSeach").click(function () {
-            $(".address").slideDown(200)
-        })
-        $(document).on('click','.caseLi',function () {
-            setCenterAndZoom(595677.038671875,5242300.472485352,17);
-            setPoint([595677.038671875,5242300.472485352]);
-            $(".address").slideUp(200);
-        })
 
         $(".file-drop-zone").css("min-height","200px")
         $(".file-drop-zone-title").css("padding","68px 55px")
@@ -377,7 +366,6 @@
         }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {
-                console.log("data", data);
                 multiMediaData.push(data);
                 insertMultiMedia(data);
                 $.modal.alertSuccess('上传成功');
@@ -435,8 +423,6 @@
                 polygonArrayEnd.push(polygonArray);
             }
             setPolygon(polygonArrayEnd);
-
-
 
             let data = e.data.mapList;
             for (let i = 0; i < data.length; i++) {
@@ -1035,6 +1021,7 @@
 
 
     let localReverseGeocoding = /*[[@{/event/localReverseGeocoding}]]*/ "/event/localReverseGeocoding";
+    let localGeocodingUrl = /*[[@{/event/localGeocoding}]]*/ "/event/localGeocoding";
 
 
     map.on('singleclick', function (evt) {
@@ -1117,6 +1104,39 @@
         }
         setPoint(evt.coordinate)
     });
+
+    function localGeocoding() {
+        let location = $("#location").val();
+        if(location === null || location === "" || location === undefined){
+            $.modal.alertError("请填写地址", function (){
+               return;
+            });
+        }else{
+            $.ajaxUtil.get(localGeocodingUrl + "?address=" + location, function (e) {
+                console.log("e", e);
+                let data = e.data;
+                $("#localGeocoding").empty();
+                let localGeocoding = "";
+                if(data.length > 0){
+                    for (let i = 0; i < data.length; i++) {
+                        localGeocoding += "<li id='"+ data[i].multiPolygon +"' onclick='setLocationPoint(this)'>"+ data[i].mongo +"</li>";
+                    }
+                }else{
+                    localGeocoding += "<li class='caseLi'>没有可匹配的地址</li>";
+                }
+                $("#localGeocoding").html(localGeocoding);
+                $(".address").slideDown(200);
+            })
+        }
+    }
+
+    function setLocationPoint(data) {
+        let x = parseFloat(data.id.split(" ")[0]);
+        let y = parseFloat(data.id.split(" ")[1]);
+        setCenterAndZoom(x, y, map.getView().getZoom() + 2);
+        setPoint([x, y]);
+        $(".address").slideUp(200);
+    }
 
     function setPoint(newPoint) {
         let point = new ol.Feature({

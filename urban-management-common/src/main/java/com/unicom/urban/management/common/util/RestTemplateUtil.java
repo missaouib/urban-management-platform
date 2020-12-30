@@ -20,9 +20,9 @@ public class RestTemplateUtil {
 
     static {
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-        httpRequestFactory.setConnectionRequestTimeout(3000);
-        httpRequestFactory.setConnectTimeout(3000);
-        httpRequestFactory.setReadTimeout(3000);
+        httpRequestFactory.setConnectionRequestTimeout(13000);
+        httpRequestFactory.setConnectTimeout(13000);
+        httpRequestFactory.setReadTimeout(13000);
         restTemplate = new RestTemplate(httpRequestFactory);
     }
     // ----------------------------------GET-------------------------------------------------------

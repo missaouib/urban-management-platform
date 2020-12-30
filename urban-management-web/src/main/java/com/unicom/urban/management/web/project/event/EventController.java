@@ -82,6 +82,16 @@ public class EventController {
     }
 
     /**
+     * 地理编码
+     */
+    @GetMapping("localGeocoding")
+    public Object localGeocoding(String address) throws DataAccessException {
+        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/restApi/LocalGeocoding?address=" + address, RestReturn.class).getBody();
+        assert body != null;
+        return body.getData();
+    }
+
+    /**
      * 选择网格查询小格
      */
     @GetMapping("findGeomByGridId")
