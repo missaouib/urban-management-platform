@@ -525,8 +525,9 @@ function setPointForList(data) {
 }
 
 function setCenterAndZoom(x, y, zoom) {
-    map.getView().setZoom(zoom);
-    map.getView().setCenter([x, y]);
+    // map.getView().setZoom(zoom);
+    // map.getView().setCenter([x, y]);
+    map.getView().animate({zoom: zoom}, {center: [x, y]});
 }
 
 //重写confirm式样框
