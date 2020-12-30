@@ -197,9 +197,10 @@
 
                             <tr>
                                 <td><span>*</span>案件地址</td>
-                                <td >
+                                <td style="position: relative">
                                     <input onmouseover="this.title=this.value" id="location" th:name="location"
                                            type="text" class="overInput" required>
+                                    <div class="caseSeach"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
                                 </td>
 
                                 <td><span>*</span>问题描述</td>
@@ -236,8 +237,12 @@
                 </div>
             </form>
         </div>
-        <div class="rightContent">
-
+        <div class="rightContent" style="position: relative">
+            <div class="address">
+                <ul class="caseUl">
+                    <li class="caseLi">大碗面大碗面奥利奥巧克力棒奥利奥玫瑰饼奥利奥大碗面</li>
+                </ul>
+            </div>
             <div class="map" id="map"></div>
             <div id="popup" class="ol-popup">
                 <div class="closePopup">×</div>
@@ -303,6 +308,18 @@
     let codePopup;
 
     $(function () {
+        /*
+        案件地址搜索
+        * */
+        $(".caseSeach").click(function () {
+            $(".address").slideDown(200)
+        })
+        $(document).on('click','.caseLi',function () {
+            setCenterAndZoom(595677.038671875,5242300.472485352,17);
+            setPoint([595677.038671875,5242300.472485352]);
+            $(".address").slideUp(200);
+        })
+
         $(".file-drop-zone").css("min-height","200px")
         $(".file-drop-zone-title").css("padding","68px 55px")
 
