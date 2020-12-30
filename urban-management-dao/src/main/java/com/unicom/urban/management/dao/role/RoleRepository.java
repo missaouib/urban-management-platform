@@ -1,7 +1,10 @@
 package com.unicom.urban.management.dao.role;
 
 import com.unicom.urban.management.dao.CustomizeRepository;
+import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.Role;
+
+import java.util.List;
 
 public interface RoleRepository extends CustomizeRepository<Role, String> {
 
@@ -13,5 +16,7 @@ public interface RoleRepository extends CustomizeRepository<Role, String> {
      * @return 是否重复
      */
     boolean existsAllBySortAndDept_Id(Integer sort, String deptId);
+
+    List<Role> findAllByDept(Dept d);
 
 }

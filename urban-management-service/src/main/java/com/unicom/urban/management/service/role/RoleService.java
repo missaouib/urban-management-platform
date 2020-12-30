@@ -210,4 +210,8 @@ public class RoleService {
             roleRepository.saveAndFlush(role);
         }
     }
+
+    public List<Role> findByDept(Dept dept){
+        return roleRepository.findAllByDept(dept);
+    }
 }

@@ -12,6 +12,8 @@ import com.unicom.urban.management.pojo.vo.DeptVO;
 import com.unicom.urban.management.pojo.vo.TreeVO;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.grid.GridService;
+import com.unicom.urban.management.service.role.RoleService;
+import com.unicom.urban.management.service.user.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +46,10 @@ public class DeptService {
     private DeptRepository deptRepository;
     @Autowired
     private GridService gridService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private RoleService roleService;
 
     public List<DeptVO> getAll() {
         List<Dept> all = deptRepository.findAllByOrderBySortDesc();
@@ -282,10 +288,12 @@ public class DeptService {
         Optional<Dept> dept = deptRepository.findById(id);
         if (dept.isPresent()) {
             Dept entity = dept.get();
-            if (entity.getUserList().size() > 0) {
+            List<UserVO> userByDept = userService.findUserByDept(id);
+            if (userByDept.size() > 0) {
                 throw new DataValidException("部门中有人员，请删除后再执行操作");
             }
-            if (entity.getRoleList().size() > 0) {
+            List<Role> roles = roleService.findByDept(entity);
+            if (roles.size() > 0) {
                 throw new DataValidException("部门中有角色，请删除后再执行操作");
             }
             List<Dept> depts = deptRepository.findAllByParent_Id(entity.getId());

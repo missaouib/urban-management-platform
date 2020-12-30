@@ -721,6 +721,7 @@
     }
 
     function processing() {
+        console.log(eventId)
         var data = {
             "eventId": eventId,
             "buttonId": buttonId,
@@ -852,9 +853,9 @@
         };
         $.table.init(options);
     }
-function checkRow(eventId) {
+function checkRow(id) {
     //详情  流程图  流转记录
-    $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
+    $.ajaxUtil.get(event + "?eventId=" + id, function (e) {
         eventId = e.data.id;
         getNodeName(eventId);
         /*流程图*/
