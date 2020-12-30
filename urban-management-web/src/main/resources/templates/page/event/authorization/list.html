@@ -810,8 +810,7 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row, index) {
-                $("#toolbar").removeClass('roleBox');
-                layerMap.getSource().clear();
+
                 checkRow(row.id);
             },
             onLoadSuccess: function (data) {
@@ -946,9 +945,11 @@
     });
 
     function checkRow(eventId) {
+        $("#toolbar").removeClass('roleBox');
+        layerMap.getSource().clear();
+        getButton(eventId);
         getTimeAxis(eventId);
         getEventDetail(eventId);
-        getButton(eventId);
         getNodeName(eventId);
 
     }
@@ -1157,7 +1158,10 @@
             success: function (result) {
                 if (result.code === web_status.SUCCESS) {
                     $.modal.msgSuccess(result.message);
-                    setTimeout("window.location.reload()", 2000);
+                    var newUrl = $.common.delParam("eventId");
+                    setTimeout(function () {
+                        window.location.href = newUrl
+                    }, 2000);
                     return;
                 } else if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTreeTable) {
                     $.modal.msgSuccess(result.message);

@@ -541,7 +541,7 @@
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <th:block th:include="page/fragments/common :: swiper_js" />
 <script type="text/javascript" th:inline="javascript">
-
+    var eventId = "";
     $(function () {
         $(".ol-full-screen-false").html("全屏")
 
@@ -551,9 +551,9 @@
         setConduct(bgmNum)
 
         queryUserList();
-        let eventIdFromWorkBench = $('#eventIdFromWorkBench').val();
-        if (eventIdFromWorkBench !== '' && eventIdFromWorkBench !== undefined){
-            checkRow(eventIdFromWorkBench);
+        eventId = $('#eventIdFromWorkBench').val();
+        if (eventId !== '' && eventId !== undefined) {
+            checkRow(eventId);
         }
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
@@ -706,7 +706,7 @@
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
 
     var buttonId = "";
-    var eventId = "";
+
 
     var deptId = "";
     var deptName = ""
@@ -742,7 +742,10 @@
             success: function (result) {
                 if (result.code === web_status.SUCCESS) {
                     $.modal.msgSuccess(result.message);
-                    setTimeout("window.location.reload()", 2000);
+                    var newUrl = $.common.delParam("eventId");
+                    setTimeout(function () {
+                        window.location.href = newUrl
+                    }, 2000);
                     return;
                 } else if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTreeTable) {
                     $.modal.msgSuccess(result.message);
@@ -855,7 +858,6 @@
 function checkRow(eventId) {
     //详情  流程图  流转记录
     $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
-        eventId = e.data.id;
         getNodeName(eventId);
         /*流程图*/
         $("#eventImg").attr('src', img + e.data.processInstanceId);
