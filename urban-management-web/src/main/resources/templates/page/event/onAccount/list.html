@@ -551,9 +551,9 @@
         setConduct(bgmNum)
 
         queryUserList();
-        let eventId = $('#eventIdFromWorkBench').val();
-        if (eventId !== '' && eventId !== undefined){
-            checkRow(eventId);
+        let eventIdFromWorkBench = $('#eventIdFromWorkBench').val();
+        if (eventIdFromWorkBench !== '' && eventIdFromWorkBench !== undefined){
+            checkRow(eventIdFromWorkBench);
         }
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
@@ -783,6 +783,7 @@
             onClickRow: function (row, index, tr, flied) {
                 layerMap.getSource().clear()
                 checkRow(row.id)
+                eventId = row.id;
             },
             onLoadSuccess: function (data) {
                 $('#eventIdFromWorkBench').val('');
