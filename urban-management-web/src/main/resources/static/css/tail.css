@@ -696,3 +696,42 @@ textarea {
 .file-preview{
     padding: 0;
 }
+.caseSeach{
+    width: 28px;
+    height: 28px;
+    position: absolute;
+    right: -3px;
+    top: 50%;
+    margin-top: -18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.address{
+    width: 50%;
+    padding: 5px;
+    background-color: #FFFFFF;
+    border: 2px #394E81 solid;
+    max-height: 400px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 9;
+    border-radius: 5px;
+    overflow: hidden;
+    overflow: auto;
+    cursor: pointer;
+    display: none;
+}
+.caseLi{
+    padding: 2px 4px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    cursor: pointer;
+}
+.caseLi:hover{
+    background-color: #D9DADF;
+}

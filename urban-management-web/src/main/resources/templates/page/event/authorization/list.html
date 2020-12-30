@@ -524,6 +524,7 @@
 
         let eventId = $('#eventIdFromWorkBench').val();
         if (eventId !== '' && eventId !== undefined){
+            $("#toolbar").removeClass('roleBox');
             checkRow(eventId);
         }
         $(".tabTitle span").click(function () {
