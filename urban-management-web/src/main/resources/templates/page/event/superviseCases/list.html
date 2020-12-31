@@ -103,9 +103,9 @@
                 <a class="btn btn-primary roleBox" id="doIt" onclick="" data-toggle="modal" data-target="#modal-default1">
                     <i class="fa fa-plus"></i> 督办详情
                 </a>
-                <a class="btn btn-primary roleBox" id="messageIt" onclick="" data-toggle="modal" data-target="#modal-default2">
-                    <i class="fa fa-paper-plane"></i> 意见回复
-                </a>
+<!--                <a class="btn btn-primary roleBox" id="messageIt" onclick="" data-toggle="modal" data-target="#modal-default2">-->
+<!--                    <i class="fa fa-paper-plane"></i> 意见回复-->
+<!--                </a>-->
                 <a class="btn btn-primary roleBox" id="didIt" onclick="" data-toggle="modal" data-target="#modal-default">
                     <i class="fa fa-edit"></i> 督办
                 </a>
@@ -811,7 +811,7 @@
                 $("#toolbar a").addClass("roleBox")
                 if(row.supSts==="1"){
                     $("#doIt").removeClass("roleBox");
-                    $("#messageIt").removeClass("roleBox")
+                    // $("#messageIt").removeClass("roleBox")
                 }else{
                     $("#didIt").removeClass("roleBox")
                 }
@@ -878,8 +878,6 @@
 
                     }
                     eventId = e.data.eventId;
-
-
                 })
             },
             onLoadSuccess: function (data) {
@@ -944,17 +942,6 @@
                     title: '当前处理部门',
                     field: 'deptName',
                 },
-                // {
-                //     title: '案件分类',
-                //     field: 'eventTypeName',
-                //     sortable: true,
-                // },
-                // {
-                //     title: '案件类型',
-                //     field: 'recTypeName',
-                //     sortable: true,
-                // },
-
                 {
                     title: '督办状态',
                     formatter: function(value, row) {
@@ -965,22 +952,7 @@
                         }
 
                     }
-                },
-                // {
-                //     title: '操作',
-                //     field: '',
-                //     width:"100px",
-                //     formatter: function(value, row) {
-                //         var e = "";
-                //         if(row.supSts==="1"){
-                //             e += '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default1">督办详情</a> '+
-                //             '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default2">意见回复</a> ';
-                //         }else{
-                //             e += '<a  href="#" title="" onclick="" data-toggle="modal" data-target="#modal-default">督办</a> ';
-                //         }
-                //         return e;
-                //     }
-                // },
+                }
             ]
         };
         $.table.init(options);

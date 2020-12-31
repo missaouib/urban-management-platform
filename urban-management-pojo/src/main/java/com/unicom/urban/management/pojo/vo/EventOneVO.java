@@ -159,4 +159,9 @@ public class EventOneVO {
      */
     private String objId;
 
+    /**
+     * 督办状态
+     */
+    private String supSts;
+
 }

@@ -16,12 +16,13 @@ import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.grid.GridService;
-import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.process.ProcessService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.locationtech.jts.geom.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.MultiPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -207,7 +208,7 @@ public class EventService {
         /*循环添加vo*/
         page.getContent().forEach(e -> {
             EventVO eventVO = EventMapper.INSTANCE.eventToEventVO(e);
-            if(eventVO.getX() > 0 && eventVO.getY() > 0){
+            if (eventVO.getX() > 0 && eventVO.getY() > 0) {
                 coordinateList.add(new Coordinate(eventVO.getX(), eventVO.getY()));
             }
             if (e.getSupervises().size() > 0) {
@@ -250,33 +251,35 @@ public class EventService {
                 Integer timeLimit = eventVO.getTimeLimit();
                 DecimalFormat df = new DecimalFormat("#.00");
                 String timeType = StringUtils.isNotBlank(eventVO.getTimeType()) ? eventVO.getTimeType() : "";
+                String time = "";
                 switch (timeType) {
                     case "工作日":
                     case "天":
-                        if(hangDurationHours!=0){
-                            String time = df.format(((double) ((timeLimit * 24) + hangDurationHours)) / 24);
-                            eventVO.setTimeLimitStr(time + timeType);
+                        if (hangDurationHours == 0 && delayedHours == 0) {
+                            time = String.valueOf(timeLimit);
+                        } else {
+                            time = df.format(((double) ((timeLimit * 24) + hangDurationHours + delayedHours)) / 24);
                         }
-                        if(delayedHours!=0){
-                            String time = df.format(((double) ((timeLimit * 24) + delayedHours)) / 24);
-                            eventVO.setTimeLimitStr(time + timeType);
-                        }
+                        eventVO.setTimeLimitStr(time + timeType);
+
                         eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusDays(timeLimit).plusHours(hangDurationHours).plusHours(delayedHours)));
                         break;
                     case "工作时":
                     case "小时":
+                        time = String.valueOf((timeLimit + hangDurationHours + delayedHours));
                         eventVO.setTimeLimitStr(timeLimit + timeType);
                         eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusHours(timeLimit).plusHours(hangDurationHours).plusHours(delayedHours)));
                         break;
                     case "分钟":
-                        eventVO.setTimeLimitStr(timeLimit + timeType);
+                        time = String.valueOf((timeLimit + (hangDurationHours * 60) + (delayedHours * 60)));
+
                         eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusMinutes(timeLimit).plusHours(hangDurationHours).plusHours(delayedHours)));
                         break;
                     default:
                         eventVO.setEndTimeStr("暂无");
                         break;
                 }
-
+                eventVO.setTimeLimitStr(time + timeType);
                 eventVO.setDeptName(Optional.ofNullable(statistics.getDisposeUnit()).map(Dept::getDeptName).orElse(""));
             } else {
                 /*如果事件步骤没有endTime为null的  证明事件已经完成 获取结束时间最近的那条步骤 附加到vo信息*/
@@ -308,7 +311,7 @@ public class EventService {
             }
             eventVOList.add(eventVO);
         });
-        if(coordinateList.size() > 0){
+        if (coordinateList.size() > 0) {
             String center = getCenterOfMultiPoint(coordinateList);
             for (EventVO eventVO : eventVOList) {
                 eventVO.setCenterPoint(center);
@@ -616,6 +619,14 @@ public class EventService {
             map.put("management", 0);
             fileList.add(map);
         }));
+
+        if (one.getSupervises().size() > 0) {
+            /*督办*/
+            eventOneVO.setSupSts("1");
+        } else {
+            /*未督办*/
+            eventOneVO.setSupSts("0");
+        }
 
         eventOneVO.setFile(fileList);
         Optional<Dept> dept = Optional.ofNullable(one.getEventType().getDept());
