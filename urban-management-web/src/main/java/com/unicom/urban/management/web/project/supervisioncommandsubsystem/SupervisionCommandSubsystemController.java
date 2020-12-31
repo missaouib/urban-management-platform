@@ -56,6 +56,13 @@ public class SupervisionCommandSubsystemController {
         return new ModelAndView(SystemConstant.PAGE + "/command/gridInformation");
     }
 
+    @GetMapping("/toIndexDetails")
+    public ModelAndView toEventConditionList(String eventId) {
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/command/indexDetails");
+        modelAndView.addObject("eventId", eventId);
+        return modelAndView;
+    }
+
     /**
      * 大屏 趋势分析
      *
