@@ -510,7 +510,6 @@ function setFileInput(file) {
 
 function setPointForList(data) {
     let rowArray = data.rows;
-    console.log("rowArray", rowArray);
     if(rowArray.length > 0){
         let x = parseFloat(rowArray[0].centerPoint.split("-")[0]);
         let y = parseFloat(rowArray[0].centerPoint.split("-")[1]);
