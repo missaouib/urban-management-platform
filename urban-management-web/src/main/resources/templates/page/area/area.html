@@ -135,9 +135,10 @@
                 return;
             }
         }
+        console.log(body.find('#treeLevel').val())
         $("#pid").val(body.find('#treeId').val());
         $("#parentName").val(body.find('#treeName').val());
-        $("#level").val(body.find('#treeLevel').val() + 1);
+        $("#level").val(parseInt(body.find('#treeLevel').val()) + 1);
         layer.close(index);
     }
 
