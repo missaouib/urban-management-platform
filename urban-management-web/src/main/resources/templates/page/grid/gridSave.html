@@ -318,11 +318,9 @@
     selectSingleClick.on('select', function (e) {
         let features = e.target.getFeatures().getArray();
         let dataId = features[0].H.data.id;
-        console.log("data", dataId);
         let getGridOneUrl = /*[[@{/grid/getGridOne/}]]+dataId*/ "/grid/getGridOne/" + dataId;
         $.ajaxUtil.get(getGridOneUrl, function (e) {
             let data = e.data;
-            console.log("data", data);
             $("#id").val(data.id);
             $("#coordinate").val(data.coordinate);
             $("#area").val(data.area);

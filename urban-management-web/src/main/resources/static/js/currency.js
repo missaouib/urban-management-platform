@@ -19,3 +19,18 @@ $(document).keyup(function(event){
         $(".tips_sele").removeClass('roleBox')
     }
 });
+
+/**
+ * 搜索地图数据 打开地点
+ */
+//点击搜索 打开搜索情况菜单
+$(".map_button").click(function () {
+    //输入的查询名字
+    console.log($("#sole-input").val())
+    $(".place_map").slideDown(200);
+})
+//点击菜单 收起搜索情况菜单
+$(document).on('click','.place_li',function () {
+    $(".place_map").slideUp(200);
+    setCenterAndZoom(595677.038671875,5242300.472485352,17);
+})
