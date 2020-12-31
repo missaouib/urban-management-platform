@@ -52,6 +52,7 @@ public class PositionService {
                 Integer validPatrolReport=0;
                 String SupervisorName = sVO.getSupervisorName();
                 String gridOnwer =sVO.getGridOnwer();
+                BigDecimal temp = new BigDecimal(0);
                 for (Map<String, Object> stringObjectMap : validPatrolReportList) {
                     String userName = stringObjectMap.get("userName").toString();
                     String gridName = stringObjectMap.get("gridName").toString();
@@ -66,7 +67,7 @@ public class PositionService {
                 }else {
                     sVO.setValidPatrolReport(validPatrolReport);
                     //监督员有效上报率：监督员有效上报数/监督员上报数×100%。
-                    BigDecimal temp = new BigDecimal(validPatrolReport).divide(new BigDecimal(sVO.getPatrolReport()),2,BigDecimal.ROUND_HALF_DOWN);
+                    temp = new BigDecimal(validPatrolReport).divide(new BigDecimal(sVO.getPatrolReport()),2,BigDecimal.ROUND_HALF_DOWN);
                     sVO.setReportVaildNumRate(temp.doubleValue()*100 + "%");
                 }
 
@@ -78,14 +79,14 @@ public class PositionService {
                 sVO.setInst(map.get("inst") == null ? 0 : Integer.parseInt(map.get("inst").toString()) );
                 sVO.setPublicReportRate(map.get("publicReportRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("publicReportRate").toString())* 100).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue()) ) + "%");
                 //综合指标值=监督员有效上报率分值×40%+漏报率分值×20%+按时核实率分值×20%+按时核查率分值×20%
-                double validPatrolReportRate = sVO.getValidPatrolReport()*100*0.4;
-                double publicReportRate = Float.parseFloat((map.get("publicReportRate") == null ? 0 :map.get("publicReportRate")).toString())*100*0.2;
-                double inTimeVerifyRate = Float.parseFloat((map.get("inTimeVerifyRate") == null ? 0 : map.get("inTimeVerifyRate")).toString())*100*0.2;
+                double validPatrolReportRate = temp.multiply(new BigDecimal(0.4)).doubleValue();
+                double publicReportRate = Float.parseFloat((map.get("publicReportRate") == null ? 0 :map.get("publicReportRate")).toString())*0.2;
+                double inTimeVerifyRate = Float.parseFloat((map.get("inTimeVerifyRate") == null ? 0 : map.get("inTimeVerifyRate")).toString())*0.2;
                 double checkRate = 0;
                 if (!"0".equals(map.get("needSendCheck").toString())){
-                    checkRate = new BigDecimal(sVO.getInTimeCheck()).divide(new BigDecimal(Float.parseFloat(map.get("needSendCheck").toString())), 2, BigDecimal.ROUND_HALF_DOWN).doubleValue() * 100 * 0.2;
+                    checkRate = new BigDecimal(sVO.getInTimeCheck()).divide(new BigDecimal(Float.parseFloat(map.get("needSendCheck").toString())), 2, BigDecimal.ROUND_HALF_DOWN).doubleValue() * 0.2;
                 }
-                Double aggregativeIndicator =  validPatrolReportRate+publicReportRate+inTimeVerifyRate+ checkRate;
+                Double aggregativeIndicator =  (validPatrolReportRate+publicReportRate+inTimeVerifyRate+ checkRate)*100;
                 sVO.setAggregativeIndicator(String.valueOf(aggregativeIndicator.intValue()));
                 sVO.setRatingLevel(getRatingLevel(aggregativeIndicator.intValue()));
                 list.add(sVO);
@@ -114,10 +115,10 @@ public class PositionService {
                 sVO.setOperate(map.get("operate") == null ? 0 : (Integer.parseInt(map.get("operate").toString())));
                 sVO.setIntimeSendVerify(map.get("intimeSendVerify") == null ? 0 : (Integer.parseInt(map.get("intimeSendVerify").toString())));
                 sVO.setNeedSendVerify(map.get("needSendVerify") == null ? 0 : (Integer.parseInt(map.get("needSendVerify").toString())));
-                sVO.setSendVerifyRate(map.get("sendVerifyRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("sendVerifyRate").toString()) * 100).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
+                sVO.setSendVerifyRate(map.get("sendVerifyRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("sendVerifyRate").toString())).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
                 sVO.setIntimeSendCheck(map.get("intimeSendCheck") == null ? 0 : (Integer.parseInt(map.get("intimeSendCheck").toString())));
                 sVO.setNeedSendCheck(map.get("needSendCheck") == null ? 0 : (Integer.parseInt(map.get("needSendCheck").toString())));
-                sVO.setNeedSendCheckRate(map.get("needSendCheckRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("needSendCheckRate").toString()) * 100).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
+                sVO.setNeedSendCheckRate(map.get("needSendCheckRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("needSendCheckRate").toString())).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
                 //计算受理数分值
                 Integer operate = Integer.parseInt(map.get("operate").toString());
                 Integer operateFen = 0;
@@ -135,8 +136,8 @@ public class PositionService {
                     operateFen = 0;
                 }
                 //计算综合指标值=受理数分值×25%+核实按时派发率分值×40%+核查按时派发率分值×35%
-                double aggregativeIndicator = operateFen * 0.25 + Float.parseFloat(map.get("sendVerifyRate").toString()) * 100 * 0.4 +
-                        (Float.parseFloat(map.get("sendVerifyRate").toString())) * 100 * 0.35;
+                double aggregativeIndicator = operateFen * 0.25 + Float.parseFloat(map.get("sendVerifyRate").toString()) * 0.4 +
+                        (Float.parseFloat(map.get("sendVerifyRate").toString())) * 0.35;
                 sVO.setAggregativeIndicator(String.valueOf((int)(aggregativeIndicator)));
                 /*计算评价等级*/
                 sVO.setRatingLevel(getRatingLevel((int)(aggregativeIndicator)));
@@ -166,12 +167,12 @@ public class PositionService {
                 sVO.setInstHumanName(map.get("instHumanName") == null ? "" : map.get("instHumanName").toString());
                 sVO.setInst(map.get("inst") == null ? 0 : (Integer.parseInt(map.get("inst").toString())));
                 sVO.setIntimeInst(map.get("intimeInst") == null ? 0 : (Integer.parseInt(map.get("intimeInst").toString())));
-                sVO.setIntimeInstRate(map.get("intimeInstRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("intimeInstRate").toString()) * 100).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
+                sVO.setIntimeInstRate(map.get("intimeInstRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("intimeInstRate").toString())).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
                 sVO.setExactInst(map.get("exactInst") == null ? 0 : (Integer.parseInt(map.get("exactInst").toString())));
-                sVO.setExactInstRate(map.get("exactInstRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("exactInstRate").toString()) * 100).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
+                sVO.setExactInstRate(map.get("exactInstRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("exactInstRate").toString())).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
                 sVO.setInTimeClose(map.get("inTimeClose") == null ? 0 : (Integer.parseInt(map.get("inTimeClose").toString())));
                 sVO.setClose(map.get("close") == null ? 0 : (Integer.parseInt(map.get("close").toString())));
-                sVO.setInTimeCloseRate(map.get("inTimeCloseRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("inTimeCloseRate").toString()) * 100).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
+                sVO.setInTimeCloseRate(map.get("inTimeCloseRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("inTimeCloseRate").toString())).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
                 sVO.setAggregativeIndicator(map.get("aggregativeIndicator") == null ? "0" :  String.valueOf((int)((Float.parseFloat(map.get("aggregativeIndicator").toString())))));
                 sVO.setRatingLevel(getRatingLevel(Integer.parseInt(sVO.getAggregativeIndicator())));
                 list.add(sVO);
@@ -199,9 +200,9 @@ public class PositionService {
                 sVO.setToDispatch(map.get("toDispatch") == null ? 0 : (Integer.parseInt(map.get("toDispatch").toString())));
                 sVO.setIntimeDispatch(map.get("intimeDispatch") == null ? 0 : (Integer.parseInt(map.get("intimeDispatch").toString())));
                 sVO.setNeedDispatch(map.get("needDispatch") == null ? 0 : (Integer.parseInt(map.get("needDispatch").toString())));
-                sVO.setIntimeDispatchRate(map.get("intimeDispatchRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("intimeDispatchRate").toString()) * 100).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
+                sVO.setIntimeDispatchRate(map.get("intimeDispatchRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("intimeDispatchRate").toString())).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
                 sVO.setAccuracyDispatch(map.get("accuracyDispatch") == null ? 0 : (Integer.parseInt(map.get("accuracyDispatch").toString())));
-                sVO.setAccuracyDispatchRate(map.get("accuracyDispatchRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("accuracyDispatchRate").toString()) * 100).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
+                sVO.setAccuracyDispatchRate(map.get("accuracyDispatchRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("accuracyDispatchRate").toString())).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
                 sVO.setAggregativeIndicator(map.get("aggregativeIndicator") == null ? "0" :  String.valueOf((int)((Float.parseFloat(map.get("aggregativeIndicator").toString())))));
                 sVO.setRatingLevel(getRatingLevel(Integer.parseInt(sVO.getAggregativeIndicator())));
                 list.add(sVO);
