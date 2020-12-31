@@ -29,10 +29,10 @@
                 field: 'index',
                 title: '序号',
                 class:'index_width',
-                formatter: function (value, row, index) {
-                    var page = $('#bootstrap-table').bootstrapTable("getPage");
-                    return page.pageSize * (page.pageNumber - 1) + index + 1;
-                }
+                // formatter: function (value, row, index) {
+                //     var page = $('#bootstrap-table').bootstrapTable("getPage");
+                //     return page.pageSize * (page.pageNumber - 1) + index + 1;
+                // }
             },
             {
                 field: "sort",
@@ -52,26 +52,31 @@
         ],
         data:[
             {
+                index:"1",
                 sort:"[90,100]",
                 eventType:"A",
                 objId:"绿色",
             },
             {
+                index:"2",
                 sort:"[75,90]",
                 eventType:"B",
                 objId:"蓝色"
             },
             {
+                index:"3",
                 sort:"[60,75]",
                 eventType:"C",
                 objId:"黄色"
             },
             {
+                index:"4",
                 sort:"[40,60]",
                 eventType:"D",
                 objId:"红色"
             },
             {
+                index:"5",
                 sort:"[0,40]",
                 eventType:"E",
                 objId:"黑色"
