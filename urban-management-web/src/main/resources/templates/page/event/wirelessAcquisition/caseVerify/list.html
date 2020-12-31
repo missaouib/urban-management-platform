@@ -946,18 +946,18 @@
             /*流程图*/
             $("#eventImg").attr('src', img + data.processInstanceId);
             /* 坐标 */
-            setPoint(data.x, data.y);
+            setPoint(data.x, data.y, data.id);
             /* 设定中心点和层级 */
             setCenterAndZoom(data.x, data.y, map.getView().getZoom() + 4);
         });
     }
 
 
-    function setPoint(x, y) {
+    function setPoint(x, y, id) {
         let point = new ol.Feature({
             geometry: new ol.geom.Point([x, y]),
             data: {
-                // id: data,
+                id: id,
                 // name: name,
                 coordinate: x + "," + y
             }

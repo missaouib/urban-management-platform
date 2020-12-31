@@ -510,15 +510,16 @@ function setFileInput(file) {
 
 function setPointForList(data) {
     let rowArray = data.rows;
+    console.log("rowArray", rowArray);
     if(rowArray.length > 0){
         let x = parseFloat(rowArray[0].centerPoint.split("-")[0]);
         let y = parseFloat(rowArray[0].centerPoint.split("-")[1]);
         // setPointForCenter(x, y);
-        setCenterAndZoom(x, y, map.getView().getZoom());
+        setCenterAndZoom(x, y, map.getView().getZoom()-4);
     }
     wkts = [];
     for (let i = 0; i < rowArray.length; i++) {
-        setPoint(rowArray[i].x, rowArray[i].y);
+        setPoint(rowArray[i].x, rowArray[i].y, rowArray[i].id);
         let point = "POINT(" + rowArray[i].x + " " + rowArray[i].y + ")@" + rowArray[i].id;
         wkts.push(point);
     }

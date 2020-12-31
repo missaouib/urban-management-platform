@@ -1079,7 +1079,7 @@
 
             getNodeName(eventIdOnce);
 
-            setPoint(data1.x, data1.y);
+            setPoint(data1.x, data1.y, data1.id);
             setCenterAndZoom(data1.x, data1.y, map.getView().getZoom() + 4);
 
         });
@@ -1272,11 +1272,11 @@ function setUrgentButton(eventIdOnce) {
         });
     })
 
-    function setPoint(x, y) {
+    function setPoint(x, y, id) {
         let point = new ol.Feature({
             geometry: new ol.geom.Point([x, y]),
             data: {
-                // id: data,
+                id: id,
                 // name: name,
                 coordinate: x + "," + y
             }

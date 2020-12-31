@@ -776,7 +776,7 @@
             /*流程图*/
             $("#eventImg").attr('src', img + data.processInstanceId);
             /* 坐标 */
-            setPoint(data.x, data.y);
+            setPoint(data.x, data.y, data.id);
             /* 设定中心点和层级 */
             setCenterAndZoom(data.x, data.y, map.getView().getZoom() + 4);
         });

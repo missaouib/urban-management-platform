@@ -766,7 +766,7 @@
             $("#userName").val(e.data.userName);
             $("#recTypeStr").val(e.data.recTypeStr);
 
-            setPoint(e.data.x, e.data.y);
+            setPoint(e.data.x, e.data.y, e.data.id);
             setCenterAndZoom(e.data.x, e.data.y, map.getView().getZoom() + 4);
         });
     }
@@ -1005,11 +1005,11 @@
     })
 
 
-    function setPoint(x, y) {
+    function setPoint(x, y, id) {
         let point = new ol.Feature({
             geometry: new ol.geom.Point([x, y]),
             data: {
-                // id: data,
+                id: id,
                 // name: name,
                 coordinate: x + "," + y
             }

@@ -919,7 +919,7 @@ function checkRow(eventId) {
 
         getTimeAxis(eventId);
 
-        setPoint(e.data.x, e.data.y);
+        setPoint(e.data.x, e.data.y, e.data.id);
         setCenterAndZoom(e.data.x, e.data.y, map.getView().getZoom() + 4);
     });
 }
@@ -1029,11 +1029,11 @@ function checkRow(eventId) {
 
 
 
-    function setPoint(x, y) {
+    function setPoint(x, y, id) {
         let point = new ol.Feature({
             geometry: new ol.geom.Point([x, y]),
             data: {
-                // id: data,
+                id: id,
                 // name: name,
                 coordinate: x + "," + y
             }
