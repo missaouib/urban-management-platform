@@ -247,6 +247,19 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <script type="text/javascript" th:inline="javascript">
     $(function () {
+
+        ////日期插件
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
         supervisorEvaluationSearch();
         acceptanceEvaluationSearch();
         shiftForemanEvaluationSearch();
@@ -259,11 +272,19 @@
         if (theWeek !== '') {
             // 本周一的日期
             date.setDate(date.getDate() - date.getDay() + 1);
-            let begin = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " 00:00:00";
+            let sMonth = date.getMonth() + 1;
+            sMonth = sMonth > 9 ? sMonth : "0" + sMonth;
+            let sDay = date.getDate();
+            sDay =  sDay > 9 ? sDay : "0" + sDay;
+            let begin = date.getFullYear() + "-" + sMonth + "-" + sDay + " 00:00:00";
             $("#"+startTime).val(begin)
             // 本周日的日期
             date.setDate(date.getDate() + 6);
-            let end = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " 23:59:59";
+            let eMonth = date.getMonth() + 1;
+            eMonth = eMonth > 9 ? eMonth : "0" + eMonth;
+            let eDay = date.getDate();
+            eDay =  eDay > 9 ? eDay : "0" + eDay;
+            let end = date.getFullYear() + "-" + eMonth + "-" + eDay + " 23:59:59";
             $("#"+endTime).val(end)
         }
 
