@@ -46,3 +46,24 @@ $(document).keydown(function (e) {
     }
 
 })
+
+/*
+* 清空 查询的选项 搜索条件内 选择部件之后
+* */
+$(".addBtn").click(function () {
+    $(".selectPoint #grid1 option:first").prop("selected",'selected');
+    $(".selectPoint #eventSource option:first").prop("selected",'selected');
+    $(".selectPoint #eventTerm option:first").prop("selected",'selected');
+    $(".selectPoint #eventCondition option:first").prop("selected",'selected');
+    $(".selectPoint #timeType option:first").prop("selected",'selected');
+    $(".selectPoint .datepicker").val("")
+})
+
+
+
+
+
+
+
+
+
