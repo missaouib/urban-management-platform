@@ -16,14 +16,77 @@
     <div class="leftContent" style="justify-content: start!important;">
         <div class="left_topIn">
             <div class="selectPoint">
+                <form id="userForm">
+                    <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
+                    <input name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
+                    <div class="top table2_top xiangqing">
+                        <div class="top_out">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td>问题描述<span></span></td>
+                                    <td>
+                                        <input type="text" class="datepicker" name="represent">
+                                    </td>
+                                    <td>所在网格<span></span></td>
+                                    <td>
+                                        <select class="form-control" id="grid1" name="grid" onchange="getStreetList()" required>
+                                            <option value="">--请选择--</option>
+                                            <option th:each="as:${gridList}" th:value="${as.id}"
+                                                    th:text="${as.gridName}"></option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>问题来源<span></span></td>
+                                    <td>
+                                        <select class="form-control" id="eventSource" name="eventSourceId" required>
+                                            <option value="">--请选择--</option>
+                                            <option th:each="as:${eventSource}" th:value="${as.id}"
+                                                    th:text="${as.value}"></option>
+                                        </select>
+                                    </td>
+                                    <td>案件类型<span></span></td>
+                                    <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                        <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
+                                        <input type="hidden" readonly="readonly" id="eventTypeId" name="eventTypeId"
+                                               class="find_input"/>
+                                        <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                            +
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>立案区域<span></span></td>
+                                    <td>
+                                        <select id="eventCondition" class="form-control" name="eventCondition" onchange="getEventCondition()"
+                                                required>
+                                            <option value="">--请选择--</option>
+                                        </select>
+                                    </td>
+                                    <td>立案条件<span></span></td>
+                                    <td>
+                                        <select id="eventTerm" class="form-control" onchange="getTimeTypeList()" name="conditionId" required>
+                                            <option value="">--请选择--</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>计时等级<span></span></td>
+                                    <td>
+                                        <select id="timeType" class="form-control" name="timeType" required>
+                                            <option value="">--请选择--</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
                 <div class="notice_check">
                     <form id="search-form">
-                        <p>
-                            <label class="">问题类型：</label>
-                            <input type="hidden" id="eventId" value="">
-                            <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
-                            <input type="text" class="find_input" id="eventTypeName" onclick="selectEventTypeTree()" readonly="readonly">
-                            <input type="hidden" th:name="eventTypeId" id="eventTypeId">
+                        <p style="display: flex;justify-content: flex-end">
                             <input type="button" class="check_btn button_ground closeSearch" onclick="$.table.search()" value="查询">
                             <input type="button" class="check_btn1 button_ground closeSearch" onclick="$.form.reset()" value="重置">
                         </p>
@@ -443,25 +506,94 @@
         setMediaBefore();
         setMediaAfter();
     })
+    /**
+     * 获取街道
+     */
+    function getStreetList(){
+        let parentId = $("#grid1 option:selected").val();
+        let url = "/event/findAllByParentId?parentId="+parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option="<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid2").html(option);
+            }
+        });
+    }
+    /**
+     * 获取立案区域
+     */
+    function findEventConditionByEventType(eventTypeId) {
+        let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
+                });
+                $("#eventCondition").html(option);
+            }
+        });
+    }
+
+    /**
+     * 立案条件
+     */
+    function getEventCondition() {
+        let eventConditionId = $("#eventCondition").val();
+        let url = "/event/getEventCondition/?conditionId=" + eventConditionId;
+        $.ajaxUtil.get(url, function (e) {
+            $("#eventTerm").empty();
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
+                });
+            }
+            $("#eventTerm").html(option);
+        });
+    }
+
+    /**
+     * 获取立案时限分类
+     */
+    function getTimeTypeList() {
+        let eventTerm = $("#eventTerm").val();
+        let url = "/event/findDeptTimeLimitByCondition/?conditionId=" + eventTerm;
+        $.ajaxUtil.get(url, function (e) {
+            $("#timeType").empty();
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.level + "</option>"
+                });
+            }
+            $("#timeType").html(option);
+        });
+    }
 
     function selectEventTypeTree() {
         var treeId = $("#treeId").val();
         var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
         var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
         var options = {
-            title: '选择案件类型',
-            width: "350",
+            title: '选择事件类型',
+            width: "380",
             url: url,
             callBack: doSubmit
         };
-        // $.modal.openOptions(options);
+        $.modal.openOptions(options);
     }
 
-    function doSubmit(index, layero){
-        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+    function doSubmit(index, layero) {
         var body = layer.getChildFrame('body', index);
         $("#eventTypeId").val(body.find('#treeId').val());
-        $("#eventTypeName").val(body.find('#treeName').val());
+        $("#typeStr").val(body.find('#treeName').val());
+        let eventTypeId = $("#eventTypeId").val();
+        //获取立案区域
+        findEventConditionByEventType(eventTypeId)
         layer.close(index);
     }
 
@@ -474,6 +606,8 @@
     let editUrl = /*[[@{/event/toWirelessAcquisitionUpdate/{id}}]]*/ "/event/toWirelessAcquisitionUpdate/{id}";
     let reportOnListUrl = /*[[@{/event/reportOnList}]]*/ "/event/reportOnList";
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+
     //回调函数接收查询结果
     var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
 
@@ -489,23 +623,6 @@
             console.log("e", e);
         });
     }
-
-    // function reportOnList(id){
-    //     $.ajax({
-    //         url: reportOnListUrl,
-    //         type: 'POST',
-    //         data: {id:id},
-    //         async: false,
-    //         dataType: 'json',
-    //         success: function (data) {
-    //             console.log("data.code", data.code)
-    //             if (data.code === 0) {
-    //                 $.modal.msgSuccess("上报成功");
-    //                 window.location.reload();
-    //             }
-    //         }
-    //     });
-    // }
     function queryUserList() {
         var options = {
             url: searchUrl,
@@ -667,28 +784,6 @@
             })
         }));
         layerMap.getSource().addFeature(point);
-    }
-
-    function setInput(row) {
-        $("#eventCode").val(row.id);
-        $("#eventTypeStr").val(row.recTypeName);
-        $("#regionStr").val(row.represent);
-        $("#conditionValue").val(row.represent);
-        $("#level").val(row.represent);
-        $("#timeLimitStr").val(row.timeLimitStr);
-        $("#represent").val(row.represent);
-        $("#location").val(row.location);
-        $("#eventRegion").val(row.eventTypeName);
-        $("#street").val(row.eventTypeName);
-        $("#community").val(row.eventTypeName);
-        $("#girdStr").val(row.eventTypeName);
-        $("#recTypeStr").val(row.eventSourceName);
-        $("#petitionerSex").val();
-        $("#cdate").val(row.createTime);
-        $("#x").val(row.x);
-        $("#y").val(row.y);
-        $("#eventSourceStr").val();
-        $("#objId").val(row.eventCode);
     }
 
 </script>

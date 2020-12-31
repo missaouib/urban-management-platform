@@ -51,7 +51,13 @@ public class WirelessAcquisitionController {
     private EventFileService eventFileService;
     @GetMapping("/toWirelessAcquisitionList")
     public ModelAndView toWirelessAcquisitionList() {
-        return new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/list");
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/wirelessAcquisition/list");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+
+        return modelAndView;
     }
     @GetMapping("/toCaseHistoryList")
     public ModelAndView toCaseHistoryList() {
@@ -90,8 +96,6 @@ public class WirelessAcquisitionController {
         //问题来源
         modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
-        modelAndView.addObject("gridList", gridService.searchAll());
-
         modelAndView.addObject("gridList", gridService.searchAll());
 
         // 从工作台跳转过来传递的eventId
@@ -276,7 +280,7 @@ public class WirelessAcquisitionController {
     }
     /**
      * 案件采集批量删除
-     * @param id
+     * @param ids
      */
     @PostMapping("/remove")
     public void remove(String ids){
@@ -379,7 +383,7 @@ public class WirelessAcquisitionController {
 
     /**
      * 列表页案件采集上报
-     * @param id
+     * @param ids
      */
     @RequestMapping("/reportOnList")
     public Result reportOnList(String ids){
