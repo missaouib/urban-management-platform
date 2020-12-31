@@ -2401,4 +2401,6 @@ span.search_highlight {
 .place_mirror{
     margin: 0 3px;
 }
-
+.delBorder input{
+    border: none!important;
+}
