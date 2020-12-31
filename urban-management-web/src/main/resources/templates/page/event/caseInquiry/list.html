@@ -758,7 +758,6 @@
                     title: '序号',
                     class:'index_width',
                     formatter : function (value, row, index){
-                        console.log(row)
                         var page = $('#bootstrap-table').bootstrapTable("getPage");
                         return page.pageSize * (page.pageNumber - 1) + index + 1;
                     }
@@ -881,7 +880,6 @@
     }
     function setFileUrl(data) {
         let value = $.parseJSON(data.value);
-        console.log(value)
         if (value.length > 0) {
             $("#modelImageList").empty();
             let imageHtml = "";
@@ -932,7 +930,6 @@
     }
 
     function selectEventTypeTree() {
-        console.log(1)
         var treeId = $("#treeId").val();
         var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
         var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
@@ -945,7 +942,6 @@
         $.modal.openOptions(options);
     }
     function doSubmit(index, layero) {
-        console.log(2)
         var body = layer.getChildFrame('body', index);
         $("#eventTypeId").val(body.find('#treeId').val());
         $("#typeStr").val(body.find('#treeName').val());

@@ -592,7 +592,6 @@
      * 获取立案区域
      */
     function findEventConditionByEventType(eventTypeId) {
-        console.log("eventTypeId",eventTypeId)
         let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
         $.ajaxUtil.get(url, function (e) {
             let option = "<option value=''>--请选择--</option>";
@@ -759,9 +758,7 @@
     function success_jsonpCallback(res) {
         var features = geojsonFormat.readFeatures(res);
         console.log('点击查询返回的结果如下：');
-        console.log("features", features);
         let mongodbId = features[0].H.mongodb_id;
-        console.log("features", mongodbId);
         $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
             console.log("e", e);
         });
@@ -879,7 +876,6 @@
                 //     field: 'eventTypeName',
                 //     sortable: true,
                 //     formatter: function (value,row) {
-                //         console.log(row.processInstanceId)
                 //         var e = '<a  data-toggle=\"modal\" data-target=\"#modal-default\" onclick="findOpinions(\'' + row.processInstanceId + '\')">不予受理意见</a> '
                 //         return e;
                 //     }

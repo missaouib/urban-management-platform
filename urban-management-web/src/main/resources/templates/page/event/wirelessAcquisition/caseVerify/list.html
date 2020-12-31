@@ -672,9 +672,7 @@
     function success_jsonpCallback(res) {
         var features = geojsonFormat.readFeatures(res);
         console.log('点击查询返回的结果如下：');
-        console.log("features", features);
         let mongodbId = features[0].H.mongodb_id;
-        console.log("features", mongodbId);
         $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
             console.log("e", e);
         });
@@ -740,7 +738,6 @@
              // 点击每行进行函数的触发
             onClickRow: function (row, tr, flied) {
                 layerMap.getSource().clear()
-                console.log(row)
                 checkRow(row.id)
             },
             onLoadSuccess: function (data) {
@@ -1141,7 +1138,6 @@
     function showImage(){
         let showUrl = [[${@fastProperties.nginxUrl}]];
         let file = [[${files}]];
-        console.log("file",file)
         let imageHtml = "";
         let videoHtml = "";
         let musicHtml = "";
@@ -1156,7 +1152,6 @@
             $("#videoListAfter").empty();
             $("#musicListAfter").empty();
             for (let i = 0; i < file.length; i++) {
-                console.log("filei",file[i])
                 if (file[i].management === 1){
                     if (file[i].type=== '图片'){
                         imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +

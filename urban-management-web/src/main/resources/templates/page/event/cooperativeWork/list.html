@@ -724,7 +724,6 @@
 
 
     function zTreeOnClick(event, treeId, treeNode) {
-        console.log(treeNode)
         if(treeNode.levelOrNot === "role"){
             $("#doorer").val(treeNode.deptName);
             $("#dept").val(treeNode.id)
@@ -1361,7 +1360,6 @@ function setUrgentButton(eventIdOnce) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.level + "</option>"
                 });
-                console.log(value.level)
             }
             $("#timeType").html(option);
 

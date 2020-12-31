@@ -536,7 +536,6 @@
 
     function success_jsonpCallback1(res) {
         var features = geojsonFormat.readFeatures(res);
-        console.log(features)
         if (undefined !== features[0]) {
             $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function (e) {
                 $("#objId").val(e.data.objId);
