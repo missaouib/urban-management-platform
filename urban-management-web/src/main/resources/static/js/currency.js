@@ -34,3 +34,15 @@ $(document).on('click','.place_li',function () {
     $(".place_map").slideUp(200);
     setCenterAndZoom(595677.038671875,5242300.472485352,17);
 })
+
+/*
+* 回车与搜索条件挂钩
+* */
+$(document).keydown(function (e) {
+    if (e.keyCode === 13){
+        if ($(".selectPoint").css("display")=="block"){
+            $.table.search()
+        }
+    }
+
+})
