@@ -360,7 +360,18 @@
 
     </div>
     <div class="rightContent">
+        <div id="menu_cejv">
+            <button class="cejv"><img th:src="@{/img/ruler.png}"></button>
+            <button class="removeCejv roleBox"><i class="fa fa-window-close" aria-hidden="true"></i></button>
+            <button class="clean_cejv"><img th:src="@{/img/worryed.png}"></button>
+            <label style="font-size: 14px">测量类型</label>
+            <select id="type" style="font-size: 14px" disabled>
+                <option value="length">长度</option>
+                <option value="area">面积</option>
+            </select>
+            <label class="checkbox label"><input type="checkbox" id="geodesic" />使用大地测量</label>
 
+        </div>
         <div class="tabInfo">
             <div class="tips_sele">Ctrl+鼠标左键可进行地图框选</div>
             <div class="banner blockActive">

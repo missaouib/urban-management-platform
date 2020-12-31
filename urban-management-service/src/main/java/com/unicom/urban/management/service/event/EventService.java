@@ -101,7 +101,10 @@ public class EventService {
             }
 
             if (StringUtils.isNotBlank(eventDTO.getEventTypeId())) {
-                list.add(criteriaBuilder.equal(root.get("eventType").get("id").as(String.class), eventDTO.getEventTypeId()));
+                CriteriaBuilder.In<Object> in = criteriaBuilder.in(root.get("eventType").get("id"));
+                List<String> type = eventTypeService.getComponentTypeIds(eventDTO.getEventTypeId());
+                type.forEach(in::value);
+                list.add(in);
             }
 
             if (StringUtils.isNotBlank(eventDTO.getConditionId())) {
