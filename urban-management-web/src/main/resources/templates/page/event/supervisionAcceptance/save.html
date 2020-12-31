@@ -940,18 +940,18 @@
     let epsg = [[${@geoServerProperties.epsg}]];
     // 沽源地图
     var gridsetName = 'EPSG:4552';
-    var gridNames = ['EPSG:4552:0', 'EPSG:4552:1', 'EPSG:4552:2', 'EPSG:4552:3'];
-    var baseUrl = 'http://192.168.24.203:7881/geoserver/gwc/service/wmts';
+    var gridNames = ['EPSG:4552:0', 'EPSG:4552:1', 'EPSG:4552:2', 'EPSG:4552:3', 'EPSG:4552:4', 'EPSG:4552:5', 'EPSG:4552:6', 'EPSG:4552:7'];
+    var baseUrl = 'http://218.10.223.8:9050/geoserver/gwc/service/wmts';
     var style = '';
-    var format = 'image/vnd.jpeg-png8';
+    var format = 'image/png8';
     var infoFormat = 'text/html';
-    var layerName = 'hegang:hegang';
+    var layerName = 'hegang:MosaicResult';
     var projection = new ol.proj.Projection({
         code: 'EPSG:4552',
         units: 'm',
         axisOrientation: 'neu'
     });
-    var resolutions = [5.6, 2.8, 1.4, 0.7];
+    var resolutions = [13.999999999999998, 6.999999999999999, 3.4999999999999996, 1.7499999999999998, 0.8749999999999999, 0.43749999999999994, 0.21874999999999997, 0.10937499999999999];
     baseParams = ['VERSION','LAYER','STYLE','TILEMATRIX','TILEMATRIXSET','SERVICE','FORMAT'];
 
     params = {
