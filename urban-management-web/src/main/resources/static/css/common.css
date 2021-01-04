@@ -2407,3 +2407,16 @@ span.search_highlight {
 .lopWidth .roleSize{
     width: 77% !important;
 }
+.fullScreen_index{
+    width: 30px;
+    height: 30px;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px #1181FF solid;
+    overflow: hidden;
+    line-height: 30px;text-align: center;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 20;
+}

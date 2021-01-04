@@ -239,6 +239,20 @@ function fullScreen() {
     }
 }
 
+//退出全屏
+function exitFullscreen() {
+    var element = document.getElementById("content-wrapper");
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+    }
+}
+
 //全屏 阻止冒泡
 $("#fullScreen").click(function (e) {
     $(".duck_info").addClass('setHeight');
@@ -275,19 +289,7 @@ $(".info_chance").click(function (e) {
 $(".swiper-slide").click(function (e) {
     e.stopPropagation()
 })
-//退出全屏
-function exitFullscreen() {
-    var element = document.getElementById("content-wrapper");
-    if (document.exitFullscreen) {
-        document.exitFullscreen();
-    } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-    }
-}
+
 
 /* 附件上传后赋值 */
 function insertMultiMedia(data) {

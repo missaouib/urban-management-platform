@@ -60,7 +60,10 @@ $(".addBtn").click(function () {
 })
 
 
-
+//全屏展示  大屏处
+$(".fullScreen_index").click(function () {
+    $.learuntab.requestFullScreen();
+})
 
 
 
