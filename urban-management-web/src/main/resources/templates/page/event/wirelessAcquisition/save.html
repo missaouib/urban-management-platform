@@ -146,8 +146,10 @@
                             </tr>
                             <tr style="position: relative">
                                 <td><span>*</span>案件地址</td>
-                                <td >
-                                    <input id="location" th:name="location" type="text" required>
+                                <td style="position: relative">
+                                    <input onmouseover="this.title=this.value" id="location" th:name="location" onkeyup="setLocalSearch(this.value)"
+                                           type="text" class="overInput" required>
+                                    <div class="caseSeach" onclick="localGeocoding()"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
                                 </td>
                                 <td><span>*</span>问题描述</td>
                                 <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
@@ -228,25 +230,20 @@
         <div class="rightContent" style="position: relative">
             <div class="search_map">
                 <div class="map_input">
-                    <input id="sole-input" placeholder="搜索地点" value="" >
+                    <input id="sole-input" placeholder="搜索地点" value="" onkeyup="setLocalSearch(this.value)">
                 </div>
                 <div class="map_button"><img th:src="@{/img/search.png}"></div>
                 <div class="place_map">
                     <ul id="place_ul">
-                        <li class="place_li"><i class="fa fa-search place_mirror" aria-hidden="true"></i>哈尔滨南岗区国民街14号奥维斯发展大厦（联通大厦）</li>
+
                     </ul>
                 </div>
             </div>
             <div class="map" id="map"></div>
-
             <div id="popup" class="ol-popup">
                 <div class="closePopup">×</div>
                 <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-                <div id="popup-content">
-                    <ul id="message">
-
-                    </ul>
-                </div>
+                <div id="popup-content"></div>
             </div>
         </div>
     </div>
@@ -1068,6 +1065,50 @@
             }
         });
     }
+
+    let localGeocodingUrl = /*[[@{/event/localGeocoding}]]*/ "/event/localGeocoding";
+
+    function localGeocoding() {
+        let location = $("#location").val();
+        if(location === null || location === "" || location === undefined){
+            $.modal.alertError("请填写地址", function (){
+                return;
+            });
+        }else{
+            $.ajaxUtil.get(localGeocodingUrl + "?address=" + location, function (e) {
+                let data = e.data;
+                $("#place_ul").empty();
+                let localGeocoding = "";
+                if(data.length > 0){
+                    for (let i = 0; i < data.length; i++) {
+                        localGeocoding += "<li className='place_li' id='"+ data[i].multiPolygon +"' onclick='setLocationPoint(this)'><i className='fa fa-search place_mirror' aria-hidden='true'></i>"+ data[i].mongo +"</li>";
+                    }
+                }else{
+                    localGeocoding += "<li class='place_li' onclick='setLocationPointClose()'>没有可匹配的地址</li>";
+                }
+                $("#place_ul").html(localGeocoding);
+                $(".place_map").slideDown(200);
+            })
+        }
+    }
+
+    function setLocalSearch(data) {
+        $("#location").val(data);
+        $("#sole-input").val(data);
+    }
+
+    function setLocationPoint(data) {
+        let x = parseFloat(data.id.split(" ")[0]);
+        let y = parseFloat(data.id.split(" ")[1]);
+        setCenterAndZoom(x, y, map.getView().getZoom() + 2);
+        setPoint([x, y]);
+        setLocationPointClose();
+    }
+
+    function setLocationPointClose() {
+        $(".place_map").slideUp(200);
+    }
+
     function setPoint(newPoint) {
         let point = new ol.Feature({
             geometry: new ol.geom.Point(newPoint),

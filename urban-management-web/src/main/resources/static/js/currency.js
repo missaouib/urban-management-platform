@@ -25,15 +25,13 @@ $(document).keyup(function(event){
  */
 //点击搜索 打开搜索情况菜单
 $(".map_button").click(function () {
-    //输入的查询名字
-    console.log($("#sole-input").val())
-    $(".place_map").slideDown(200);
+    localGeocoding();
 })
 //点击菜单 收起搜索情况菜单
-$(document).on('click','.place_li',function () {
-    $(".place_map").slideUp(200);
-    setCenterAndZoom(595677.038671875,5242300.472485352,17);
-})
+// $(document).on('click','.place_li',function () {
+//     $(".place_map").slideUp(200);
+//     setCenterAndZoom(595677.038671875,5242300.472485352,17);
+// })
 
 /*
 * 回车与搜索条件挂钩

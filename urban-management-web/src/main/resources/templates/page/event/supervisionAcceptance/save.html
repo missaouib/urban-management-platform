@@ -198,7 +198,7 @@
                             <tr>
                                 <td><span>*</span>案件地址</td>
                                 <td style="position: relative">
-                                    <input onmouseover="this.title=this.value" id="location" th:name="location"
+                                    <input onmouseover="this.title=this.value" id="location" th:name="location" onkeyup="setLocalSearch(this.value)"
                                            type="text" class="overInput" required>
                                     <div class="caseSeach" onclick="localGeocoding()"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
                                 </td>
@@ -231,28 +231,20 @@
                             <!--                            </div>-->
                         </div>
                     </div>
-
-
-
                 </div>
             </form>
         </div>
         <div class="rightContent" style="position: relative">
             <div class="search_map">
                 <div class="map_input">
-                    <input id="sole-input" placeholder="搜索地点" value="" >
+                    <input id="sole-input" placeholder="搜索地点" value="" onkeyup="setLocalSearch(this.value)">
                 </div>
                 <div class="map_button"><img th:src="@{/img/search.png}"></div>
                 <div class="place_map">
                     <ul id="place_ul">
-                        <li class="place_li"><i class="fa fa-search place_mirror" aria-hidden="true"></i>哈尔滨南岗区国民街14号奥维斯发展大厦（联通大厦）</li>
+
                     </ul>
                 </div>
-            </div>
-            <div class="address">
-                <ul class="caseUl" id="localGeocoding">
-                    <li class="caseLi">大碗面大碗面奥利奥巧克力棒奥利奥玫瑰饼奥利奥大碗面</li>
-                </ul>
             </div>
             <div class="map" id="map"></div>
             <div id="popup" class="ol-popup">
@@ -1127,21 +1119,25 @@
             });
         }else{
             $.ajaxUtil.get(localGeocodingUrl + "?address=" + location, function (e) {
-                console.log("e", e);
                 let data = e.data;
-                $("#localGeocoding").empty();
+                $("#place_ul").empty();
                 let localGeocoding = "";
                 if(data.length > 0){
                     for (let i = 0; i < data.length; i++) {
-                        localGeocoding += "<li id='"+ data[i].multiPolygon +"' onclick='setLocationPoint(this)'>"+ data[i].mongo +"</li>";
+                        localGeocoding += "<li className='place_li' id='"+ data[i].multiPolygon +"' onclick='setLocationPoint(this)'><i className='fa fa-search place_mirror' aria-hidden='true'></i>"+ data[i].mongo +"</li>";
                     }
                 }else{
-                    localGeocoding += "<li class='caseLi'>没有可匹配的地址</li>";
+                    localGeocoding += "<li class='place_li' onclick='setLocationPointClose()'>没有可匹配的地址</li>";
                 }
-                $("#localGeocoding").html(localGeocoding);
-                $(".address").slideDown(200);
+                $("#place_ul").html(localGeocoding);
+                $(".place_map").slideDown(200);
             })
         }
+    }
+
+    function setLocalSearch(data) {
+        $("#location").val(data);
+        $("#sole-input").val(data);
     }
 
     function setLocationPoint(data) {
@@ -1149,7 +1145,11 @@
         let y = parseFloat(data.id.split(" ")[1]);
         setCenterAndZoom(x, y, map.getView().getZoom() + 2);
         setPoint([x, y]);
-        $(".address").slideUp(200);
+        setLocationPointClose();
+    }
+
+    function setLocationPointClose() {
+        $(".place_map").slideUp(200);
     }
 
     function setPoint(newPoint) {
