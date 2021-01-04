@@ -38,6 +38,12 @@ public class LoginController {
         return SystemConstant.PAGE + "/login";
     }
 
+    @GetMapping("/defaultlogin")
+    private String toDefaultLoginPage(Model model) {
+        model.addAttribute("PUBLIC_KEY", RSAUtil.PUBLIC_KEY);
+        return SystemConstant.PAGE + "/defaultlogin";
+    }
+
     private String toMainPage() {
         return "redirect:/";
     }
