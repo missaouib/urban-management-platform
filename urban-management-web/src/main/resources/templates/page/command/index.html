@@ -36,6 +36,10 @@
                         <span>立案</span>
                         <span id="inst">···</span>
                     </div>
+                    <div id="caseDispose">
+                        <span>处置</span>
+                        <span id="dispose">···</span>
+                    </div>
                     <div id="caseclosed">
                         <span>结案</span>
                         <span id="close">···</span>
@@ -190,11 +194,28 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: echarts_js"/>
 <th:block th:include="page/fragments/common :: swiper_js"/>
+<th:block th:include="page/fragments/common :: mapinit_js"/>
 <script type="text/javascript" th:inline="javascript">
     var countUrl = /*[[@{/bigscreen/count}]]*/ "/bigscreen/count";
+    var showPointsUrl = /*[[@{/bigscreen/showPoints}]]*/ "/bigscreen/showPoints";
     var findHighIncidenceUrl = /*[[@{/commandSubsystem/findHighIncidence}]]*/ "/commandSubsystem/findHighIncidence";
     var getTrendAnalysisUrl = /*[[@{/commandSubsystem/getTrendAnalysis}]]*/ "/commandSubsystem/getTrendAnalysis";
     $(function () {
+
+        var selectSingleClick = new ol.interaction.Select();
+        map.addInteraction(selectSingleClick);
+        selectSingleClick.on('select', function (e) {
+
+            let features = e.target.getFeatures().getArray();
+            let eventId = features[0].H.data.eventId;
+            if(eventId !== null && eventId !== undefined){
+                let getDetailUrl = /*[[@{/commandSubsystem/toIndexDetails}]]*/ "/commandSubsystem/toIndexDetails";
+                let url = getDetailUrl + "?eventId=" + eventId;
+                window.parent.$.learuntab.myAddTab('详情', url, 'eventId');
+            }
+
+        });
+
         count();
 
         $(".checkBox").click(function () {
@@ -208,67 +229,73 @@
             $(".viewGroup").fadeOut(300);
             $(".checkBox").fadeIn(300);
         });
-
-        $("#reporting").click(function () {
+    })
+    $("#reporting").click(function () {
+        var timeType = $("#time").val();
+        $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "reporting", function (e) {
             layerMap.getSource().clear()
-            var data = [
-                {
-                    multiPolygon: "595839.1115722656 5243208.01940918",
-                },
-                {
-                    multiPolygon: "596147.1474609375 5244572.004699707",
-                },
-                {
-                    multiPolygon: "594775.9387207031 594775.9387207031",
-                },
-                {
-                    multiPolygon: "115.68436495924564 41.66598516056955",
-                },
-                {
-                    multiPolygon: "115.6807560470161 41.666199988747834",
-                },
-                {
-                    multiPolygon: "115.6832905249876 41.66311280808121",
-                }
-            ];
+            var data = e.data;
             for (let i = 0; i < data.length; i++) {
-                setPoint(data[i].multiPolygon.split(" ")[0], data[i].multiPolygon.split(" ")[1]);
+                $.each(data[i], function (key, value) {
+                    setPoint(value.split(" ")[0], value.split(" ")[1], key);
+                });
             }
-        })
+        });
 
-
-        $("#register").click(function () {
+    })
+    $("#register").click(function () {
+        var timeType = $("#time").val();
+        $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "register", function (e) {
             layerMap.getSource().clear()
-            var data = [
-                {
-                    multiPolygon: "595272.7729492188 5243783.585693359",
-                },
-                {
-                    multiPolygon: "115.68509359808834 41.66456405079633",
-                }
-            ];
+            var data = e.data;
             for (let i = 0; i < data.length; i++) {
-                setPoint(data[i].multiPolygon.split(" ")[0], data[i].multiPolygon.split(" ")[1]);
+                $.each(data[i], function (key, value) {
+                    setPoint(value.split(" ")[0], value.split(" ")[1], key);
+                });
             }
-        })
+        });
 
-        $("#caseclosed").click(function () {
+    })
+    $("#caseDispose").click(function () {
+        var timeType = $("#time").val();
+        $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "caseDispose", function (e) {
             layerMap.getSource().clear()
-        })
+            var data = e.data;
+            for (let i = 0; i < data.length; i++) {
+                $.each(data[i], function (key, value) {
+                    setPoint(value.split(" ")[0], value.split(" ")[1], key);
+                });
+            }
+        });
+    });
+    $("#caseclosed").click(function () {
+        var timeType = $("#time").val();
+        $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "caseclosed", function (e) {
+            layerMap.getSource().clear()
+            var data = e.data;
+            for (let i = 0; i < data.length; i++) {
+                $.each(data[i], function (key, value) {
+                    setPoint(value.split(" ")[0], value.split(" ")[1], key);
+                });
+            }
+        });
+    });
 
-        function setPoint(x, y) {
+        function setPoint(x, y, id) {
+            console.log(x+"-"+y+"-"+id)
             let point = new ol.Feature({
                 geometry: new ol.geom.Point([x, y]),
                 data: {
-                    coordinate: x + "," + y
+                    eventId: id,
+                    coordinate2: x + "," + y
                 }
             });
-            layerMap.getSource().addFeature(point);
             point.setStyle(new ol.style.Style({
                 image: new ol.style.Icon({
                     src: '../img/pointInMap.png'
                 })
             }));
+            layerMap.getSource().addFeature(point);
         }
         //表格
 
@@ -280,7 +307,7 @@
         getEventSource();
         //高发时段趋势分析
         getTrendAnalysis();
-    });
+
     function findHighGrid(){
         let time = $("#time").val();
         var myChart1 = echarts.init(document.getElementById('region'));
@@ -1065,10 +1092,6 @@
 
 
 </script>
-<th:block th:include="page/fragments/common :: mapinit_js"/>
-<script>
-    map.on("click", function(e) {
-    });
-</script>
+
 </body>
 </html>

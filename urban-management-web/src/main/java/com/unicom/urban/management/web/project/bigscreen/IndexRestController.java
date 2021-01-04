@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,5 +25,10 @@ public class IndexRestController {
     @GetMapping("/count")
     public Map<String,Object> count(String timeType){
         return indexService.count(timeType);
+    }
+
+    @GetMapping("/showPoints")
+    public List<Map<String, String>> showPoints(String timeType,String showType){
+        return indexService.showPoints(timeType,showType);
     }
 }

@@ -1145,7 +1145,7 @@
         source: new ol.source.Vector(),
     });
     map.addLayer(layerMap);
-
+    let localReverseGeocoding = /*[[@{/event/localReverseGeocoding}]]*/ "/event/localReverseGeocoding";
     map.on('singleclick', function (evt) {
         let t = evt.coordinate;
         $("#longitude").val(t[0])

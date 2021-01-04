@@ -3,6 +3,7 @@ package com.unicom.urban.management.service.bigscreen;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.dao.event.EventRepository;
 import com.unicom.urban.management.pojo.entity.Event;
+import com.unicom.urban.management.pojo.entity.Statistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -15,12 +16,10 @@ import javax.transaction.Transactional;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author 顾志杰
@@ -97,4 +96,65 @@ public class IndexService {
     }
 
 
+    public List<Map<String, String>> showPoints(String timeType,String showType) {
+        Map<String, Object> map = new ConcurrentHashMap<>();
+        List<Map<String,String>> showPointList = new ArrayList<>();
+        List<Event> events = eventRepository.findAll((Specification<Event>) (root, criteriaQuery, criteriaBuilder) -> {
+            List<Predicate> list = new ArrayList<>();
+            LocalDateTime now = LocalDateTime.now();
+            if ("year".equals(timeType)) {
+                now = now.with(TemporalAdjusters.firstDayOfYear()).toLocalDate().atStartOfDay();
+            } else if ("month".equals(timeType)) {
+                now = now.with(TemporalAdjusters.firstDayOfMonth()).toLocalDate().atStartOfDay();
+            } else {
+                now = now.toLocalDate().atStartOfDay();
+            }
+            list.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(LocalDateTime.class), now));
+            Predicate[] p = new Predicate[list.size()];
+            return criteriaBuilder.and(list.toArray(p));
+        });
+        //上报
+        if ("reporting".equals(showType)){
+            for (Event event : events) {
+                Map<String,String> map1 = new HashMap<>();
+                map1.put(event.getId(),event.getX()+" "+event.getY());
+                showPointList.add(map1);
+            }
+            map.put("reportList", showPointList);
+        //立案
+        }else if ("register".equals(showType)){
+            for (Event event : events) {
+                for (Statistics statistics : event.getStatisticsList()) {
+                    if (statistics.getInst() == 1) {
+                        Map<String,String> map1 = new HashMap<>();
+                        map1.put(event.getId(),event.getX()+" "+ event.getY());
+                        showPointList.add(map1);
+                    }
+                }
+            }
+            //处置
+        } else if ("caseDispose".equals(showType)) {
+            for (Event event : events) {
+                for (Statistics statistics : event.getStatisticsList()) {
+                    if (statistics.getDispose() == 1) {
+                        Map<String,String> map1 = new HashMap<>();
+                        map1.put(event.getId(),event.getX()+" "+ event.getY());
+                        showPointList.add(map1);
+                    }
+                }
+            }
+            //结案
+        } else if ("caseclosed".equals(showType)) {
+            for (Event event : events) {
+                for (Statistics statistics : event.getStatisticsList()) {
+                    if (statistics.getClose() == 1) {
+                        Map<String,String> map1 = new HashMap<>();
+                        map1.put(event.getId(),event.getX()+" "+ event.getY());
+                        showPointList.add(map1);
+                    }
+                }
+            }
+        }
+        return showPointList;
+    }
 }
