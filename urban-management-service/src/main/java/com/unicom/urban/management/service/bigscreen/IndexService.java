@@ -78,6 +78,9 @@ public class IndexService {
         /*部件处置数*/
         long unitDisponse = unit.stream().filter(e -> e.getStatisticsList().stream().filter(s -> Optional.ofNullable(s.getInst()).isPresent()).anyMatch(s -> 1 == s.getDispose())).count();
         map.put("unitDisponse", unitDisponse);
+        /*处置数*/
+        long dispose = event.stream().filter(e -> e.getStatisticsList().stream().anyMatch(s -> 1 == s.getDispose())).count();
+        map.put("dispose",dispose);
         /*立案数*/
         map.put("inst", eventNum + unitNum);
         /*部件处置率*/

@@ -564,6 +564,7 @@
         var timeType = $("#time").val()
         $.ajaxUtil.get(countUrl + "?timeType=" + timeType, function (e) {
             $("#count").text(e.data.count);
+            $("#dispose").text(e.data.dispose);
             $("#close").text(e.data.close);
             $("#inst").text(e.data.inst);
             $("#eventNum").text(e.data.eventNum);
