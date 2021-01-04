@@ -153,9 +153,9 @@
                         <!-- Swiper -->
                         <div class="swiper-container" id="beforeDisSwiper">
                             <div class="swiper-wrapper" id="MultiMediaBefore">
-                                <!--                                <div class="swiper-slide">Slide 1</div>-->
-                                <!--                                <div class="swiper-slide">Slide 2</div>-->
-                                <!--                                <div class="swiper-slide">Slide 3</div>-->
+                                                                <div class="swiper-slide">Slide 1</div>
+                                                                <div class="swiper-slide">Slide 2</div>
+                                                                <div class="swiper-slide">Slide 3</div>
                             </div>
                             <!-- Add Pagination -->
                             <div class="swiper-pagination beforeDisPg"></div>
@@ -186,7 +186,7 @@
     <div class="rightContent">
         <div class='g_con'>
             <!-- 物流时间轴 -->
-            <div class='expressRecord' id="timeAxis">
+            <div class='expressRecord lopWidth' id="timeAxis">
                 <div>暂时没有数据，请进入流程处理案件</div>
             </div>
         </div>
@@ -324,15 +324,48 @@
 
     $(function () {
 
+        //附件详情弹出 选项卡
+        $(".duck_title span").click(function (event) {
+            $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
+            $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
+            event.stopPropagation();
+        });
+
+        $(".duck_close").click(function () {
+            $(".duck_duck").fadeOut(300)
+        });
+
+        $(document).on("click", ".enclosure", function () {
+            $(".duck_duck").fadeIn(300)
+        });
+
+        $(".tabTitle span").click(function () {
+            $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
+            $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
+        });
+
         $(".do_banner").on("click", "#beforeDisSwiper", function () {
             $("#imageDetailList").html($("#MultiMediaBefore").html())
             $("#pictureBoxDuc").fadeIn(300);
         });
 
-        $(".do_banner").on("click", "#afterDisSwiper", function () {
+        $(".do_banner").on("click", "#afterDisSwiper ", function () {
             $("#imageDetailList").html($("#MultiMediaAfter").html())
             $("#pictureBoxDuc").fadeIn(300);
         });
+
+        //全屏
+        $("#fullScreen").click(function () {
+            $("#allTiel").addClass("allTielFont");
+            $("#exitfullScreen").css("display", "block");
+            $(this).css("display", "none")
+        });
+
+        $("#exitfullScreen").click(function () {
+            $("#allTiel").removeClass("allTielFont");
+            $(this).css("display", "none");
+            $("#fullScreen").css("display", "block");
+        })
 
         //处置前 轮播
         var beforeDisSwiper = new Swiper('#beforeDisSwiper', {

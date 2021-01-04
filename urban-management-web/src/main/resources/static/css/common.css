@@ -2254,7 +2254,7 @@ span.search_highlight {
 }
 .ol-scale-line{
     position: absolute!important;
-    bottom: 43px!important;
+    bottom: 50px!important;
     /* right: 0px; */
     left: 10px!important;
     font-size: 12px!important;
@@ -2403,4 +2403,7 @@ span.search_highlight {
 }
 .delBorder input{
     border: none!important;
+}
+.lopWidth .roleSize{
+    width: 77% !important;
 }
