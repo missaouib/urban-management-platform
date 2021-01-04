@@ -236,6 +236,13 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
      */
     @Query(value = "select count(1) from `event` where event_source_id in (select id from kv where field_name='eventSource') and do_by_self=1 and create_time between ?1 and ?2 ", nativeQuery = true)
     Integer findReportSelfNum(LocalDateTime startTime, LocalDateTime endTime);
+    /**
+     * 问题来源-热线上报
+     *
+     * @return int
+     */
+    @Query(value = "select count(1) from `event` where event_source_id in (select id from kv where field_name='eventSource' and value='热线上报') and create_time between ?1 and ?2 ", nativeQuery = true)
+    Integer findHotReportNum(LocalDateTime startTime, LocalDateTime endTime);
 
     /* -------------------------------------------------------------- */
 

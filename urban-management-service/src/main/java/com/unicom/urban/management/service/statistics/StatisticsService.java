@@ -646,8 +646,10 @@ public class StatisticsService {
         Map<String, String> map = new HashMap<>();
         Integer reportPatrolNum = statisticsRepository.findReportPatrolNum(timeArr[0], timeArr[1]);
         Integer reportSelfNum = statisticsRepository.findReportSelfNum(timeArr[0], timeArr[1]);
+        Integer findHotReportNum = statisticsRepository.findHotReportNum(timeArr[0], timeArr[1]);
         map.put("reportPatrolNum", String.valueOf(reportPatrolNum));
         map.put("reportSelfNum", String.valueOf(reportSelfNum));
+        map.put("findHotReportNum", String.valueOf(findHotReportNum));
         return map;
     }
 

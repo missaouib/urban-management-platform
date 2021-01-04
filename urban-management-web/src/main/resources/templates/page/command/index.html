@@ -561,7 +561,7 @@
                         orient: 'vertical',
                         left: 10,
                         x: "center",
-                        data: ['自行处理上报', '信息采集员上报'],
+                        data: ['自行处理上报', '信息采集员上报', '热线上报'],
                         y: "bottom",
                         textStyle: {
                             color: '#ffffff'//字体颜色
@@ -590,6 +590,7 @@
                             data: [
                                 {value: e.data.reportSelfNum, name: '自行处理上报'},
                                 {value: e.data.reportPatrolNum, name: '信息采集员上报'},
+                                {value: e.data.findHotReportNum, name: '热线上报'},
                             ],
                             itemStyle: {
                                 emphasis: {
