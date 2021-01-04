@@ -360,3 +360,9 @@
 .ol-overlay-container{
 	left: 540px!important;
 }
+.details{
+	cursor: pointer;
+}
+.details:hover{
+	color: #1181FF;
+}
