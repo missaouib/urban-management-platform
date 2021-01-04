@@ -2,8 +2,10 @@ package com.unicom.urban.management.web.project.supervisioncommandsubsystem;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.service.statistics.StatisticsService;
+import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,6 +60,9 @@ public class SupervisionCommandSubsystemController {
 
     @GetMapping("/toIndexDetails")
     public ModelAndView toEventConditionList(String eventId) {
+        if(StringUtils.isBlank(eventId)){
+            throw new DataValidException("数据异常，请先选择事件");
+        }
         ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/command/indexDetails");
         modelAndView.addObject("eventId", eventId);
         return modelAndView;

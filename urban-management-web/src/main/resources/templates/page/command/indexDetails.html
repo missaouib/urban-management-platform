@@ -320,75 +320,16 @@
 <th:block th:include="page/fragments/common :: swiper_js"/>
 <script type="text/javascript" th:inline="javascript">
 
-    let multiMediaData = [];
+    let eventId = [[${eventId}]];
 
     $(function () {
 
-        $(".ol-full-screen-false").html("全屏")
-
-        //附件详情弹出
-        $(".duck_title span").click(function (event) {
-            $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
-            $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
-            event.stopPropagation();
-        });
-
-        $(".duck_close").click(function () {
-            $(".duck_duck").fadeOut(300)
-        });
-
-        $(document).on("click", ".enclosure", function () {
-            $(".duck_duck").fadeIn(300)
-        });
-
-        $(".tabTitle span").click(function () {
-            $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
-            $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
-        });
-
-        //选择监督员
-        $("#changeMan").click(function () {
-            $("#selectUser").stop().slideToggle(300)
-        });
-
-        $("#selectUser").on("click", ".monitor", function () {
-            let monitor = $(this).html()
-            $("#userId").val($(this).val())
-            $("#monitor_man").html(monitor);
-            $("#selectUser").slideUp(300)
-        });
-
-        //惯用语
-        $("#alwaysSay").click(function () {
-            $("#wordSays").stop().fadeToggle(300)
-        });
-
-        $("#wordSays").on("click", ".idioms", function () {
-            let idioms = $(this).html()
-            $("#textIdioms").val($("#textIdioms").val() + idioms);
-            $("#wordSays").fadeOut(300)
-        });
-
-        $("#alwaysSay_tag").click(function () {
-            $("#wordSays_tag").stop().fadeToggle(300)
-        });
-
-        $("#wordSays_tag").on("click", ".idioms_noCheck", function () {
-            let idioms = $(this).html()
-            $("#textIdioms_tag").html(idioms);
-            $("#wordSays_tag").fadeOut(300)
-        });
-
-        $(".duk_close").click(function() {
-            $("#pictureBoxDuc").fadeOut(300)
-        });
-
-        $(document).on("click", "#beforeDisSwiper", function () {
+        $(".do_banner").on("click", "#beforeDisSwiper", function () {
             $("#imageDetailList").html($("#MultiMediaBefore").html())
             $("#pictureBoxDuc").fadeIn(300);
         });
 
-        $(document).on("click", "#afterDisSwiper", function () {
+        $(".do_banner").on("click", "#afterDisSwiper", function () {
             $("#imageDetailList").html($("#MultiMediaAfter").html())
             $("#pictureBoxDuc").fadeIn(300);
         });
@@ -414,25 +355,6 @@
             observer: true, //修改swiper自己或子元素时，自动初始化swiper
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
-
-        //全屏
-        $("#fullScreen").click(function () {
-            $("#allTiel").addClass("allTielFont");
-            $("#exitfullScreen").css("display", "block");
-            $(this).css("display", "none")
-        });
-
-        $("#exitfullScreen").click(function () {
-            $("#allTiel").removeClass("allTielFont");
-            $(this).css("display", "none");
-            $("#fullScreen").css("display", "block");
-        })
-        var r = 0;
-        $(".xiala").click(function () {
-            r += 180;
-            $(".selectPoint").slideToggle(300);
-            $(".selectmenu").css('transform', 'rotate(' + r + 'deg)');
-        })
 
         /* 详情图片轮播 */
         var swiperImage1 = new Swiper('.imageDetailBox', {
@@ -523,313 +445,19 @@
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
 
-        $("#imageInput").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'],       // 接收的文件后缀
-            maxFileCount: 10,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showClose: false,                                   // 右上角的×
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: true,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                  // 按钮样式
-        }).on('change', function (event) {
-            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        }).on('fileselect', function (event, numFiles, label) {
-            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        }).on("filebatchselected", function (event, files) {
-            $(this).fileinput("upload");
-        }).on("fileuploaded", function (event, data) {
-
-        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
-            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
-            if (data.response.code === web_status.SUCCESS) {
-                multiMediaData.push(data);
-                insertMultiMedia(data);
-                $.modal.alertSuccess('上传成功');
-            } else {
-                $.modal.alertError(data.response.message);
-            }
-        }).on('filedeleted', function (event, key) {
-            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            deleteMultiMedia(id, multiMediaData);
-        }).on('fileclear', function (event) {
-            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-        }).on('filecleared', function (event) {
-            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-        }).on('filepredelete', function (event, key) {
-            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
-            console.log('Key = ' + key);
-        });
-
-        setModelName();
-
-        getIdioms();
-
-        queryUserList();
-        let eventId = $('#eventIdFromWorkBench').val();
-        if (eventId !== '' && eventId !== undefined){
-            checkRow(eventId);
+        if(eventId !== null && eventId !== undefined && eventId !== ""){
+            getTimeAxis(eventId);
+            getEventDetail(eventId);
+        }else{
+            $.modal.alertWarning("数据异常");
         }
 
-        //处置前后为空
-        setMediaBefore();
-        setMediaAfter();
 
     });
 
-    //回调函数接收查询结果
-    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
-
-    /**
-     * 根据按钮名赋值模态窗标题
-     */
-    function setModelName() {
-        $("#eventButton").on("click", ".but_save", function () {
-            $(".modal-title").html($(this).html())
-            $("#underBtn").html($(this).html())
-            $("#btnOpinion").html($(this).html() + "意见")
-        })
-    }
-
-    function selectEventTypeTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
-        var options = {
-            title: '选择事件类型',
-            width: "380",
-            url: url,
-            callBack: doSubmit
-        };
-        $.modal.openOptions(options);
-    }
-
-    function doSubmit(index, layero) {
-        var body = layer.getChildFrame('body', index);
-        $("#eventTypeId").val(body.find('#treeId').val());
-        $("#typeStr").val(body.find('#treeName').val());
-        let eventTypeId = $("#eventTypeId").val();
-        //获取立案区域
-        findEventConditionByEventType(eventTypeId)
-        layer.close(index);
-    }
-
-    /**
-     * 获取立案区域
-     */
-    function findEventConditionByEventType(eventTypeId) {
-        let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
-        $.ajaxUtil.get(url, function (e) {
-            let option = "<option value=''>--请选择--</option>";
-            if (e.code === 0) {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
-                });
-                $("#eventCondition").html(option);
-            }
-        });
-    }
-
-    /**
-     * 立案条件
-     */
-    function getEventCondition() {
-        let eventConditionId = $("#eventCondition").val();
-        let url = "/event/getEventCondition/?conditionId=" + eventConditionId;
-        $.ajaxUtil.get(url, function (e) {
-            $("#eventTerm").empty();
-            let option = "<option value=''>--请选择--</option>";
-            if (e.code === 0) {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
-                });
-            }
-            $("#eventTerm").html(option);
-        });
-    }
-
-    /**
-     * 获取立案时限分类
-     */
-    function getTimeTypeList() {
-        let eventTerm = $("#eventTerm").val();
-        let url = "/event/findDeptTimeLimitByCondition/?conditionId=" + eventTerm;
-        $.ajaxUtil.get(url, function (e) {
-            $("#timeType").empty();
-            let option = "<option value=''>--请选择--</option>";
-            if (e.code === 0) {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.level + "</option>"
-                });
-            }
-            $("#timeType").html(option);
-        });
-    }
-
-    /**
-     * userId
-     */
-    function getUserVal() {
-        var options = $("#selectUser option:selected");
-        $("#userId").val(options.val());
-    }
-
-    let img = /*[[@{/common/img/}]]*/ "/common/img/";
-    let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
-    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
-    let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
-    let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
-    let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
-    let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
-    let searchUrl = /*[[@{/event/selfProcessingList}]]*/ "/event/selfProcessingList";
     let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
-    let getUserListForSupervisorUrl = /*[[@{/event/getUserListForSupervisor/}]]*/ "/event/getUserListForSupervisor/";
-    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
-    let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
+    let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
     let showUrl = [[${@fastProperties.nginxUrl}]];
-    let num = 1;
-
-    function queryUserList() {
-        let options = {
-            num: num,
-            url: searchUrl,
-            uniqueId: "id",
-            sortName: "createTime",
-            sortOrder: "desc",
-            modalName: "用户",
-            onClickRow: function (row, index) {
-                layerMap.getSource().clear();
-                checkRow(row.id);
-            },
-            onLoadSuccess: function (data) {
-                $('#eventIdFromWorkBench').val("");
-                $('#eventIdListByBox').val("");
-                layerMap.getSource().clear();
-                if(vector !== null && vector !== undefined && vector !== ""){
-                    vector.getSource().clear();
-                }
-                setPointForList(data);
-                setBoxSelect();
-            },
-            columns: [
-                {
-                    field: 'index',
-                    title: '序号',
-                    class:'index_width',
-                    formatter: function (value, row, index) {
-                        var page = $('#bootstrap-table').bootstrapTable("getPage");
-                        return page.pageSize * (page.pageNumber - 1) + index + 1;
-                    }
-                },
-                {
-                    title: '示警灯',
-                    field: '',
-                    class:'time_width',
-                    formatter: setTimeLimit
-                },
-                {
-                    title: '案件编号',
-                    field: 'eventCode',
-                    sortable: true
-                },
-                {
-                    title: '问题描述',
-                    field: 'represent',
-                    class: "problem"
-                },
-                {
-                    title: '当前阶段',
-                    field: 'taskName'
-                },
-                {
-                    title: '案件分类',
-                    field: 'eventTypeName',
-                    sortable: true,
-                },
-                {
-                    title: '案件类型',
-                    field: 'recType.value',
-                    sortable: true,
-                    formatter: function (value, row, index) {
-                        return row.recTypeName;
-                    }
-                },
-                {
-                    title: '创建日期',
-                    field: 'createTime',
-                    sortable: true
-                },
-                {
-                    title: '处置时限',
-                    field: 'timeLimitStr'
-                },
-                {
-                    title: '截止时间',
-                    field: 'endTimeStr'
-                },
-            ]
-        };
-        $.table.init(options);
-    }
-
-    jQuery.extend(jQuery.validator.messages, {
-        required: "必填",
-        phone: "必填",
-        remote: "请修正该字段",
-        email: "请输入正确格式的电子邮件",
-        url: "请输入合法的网址",
-        date: "请输入合法的日期",
-        dateISO: "请输入合法的日期 (ISO).",
-        number: "请输入合法的数字",
-        digits: "只能输入整数",
-        creditcard: "请输入合法的信用卡号",
-        equalTo: "请再次输入相同的值",
-        accept: "请输入拥有合法后缀名的字符串",
-        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
-        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
-        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
-        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
-        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
-        min: jQuery.validator.format("请输入一个最小为{0} 的值")
-    });
-
-    function checkRow(eventId) {
-        getTimeAxis(eventId);
-        getEventDetail(eventId);
-        getNodeName(eventId);
-    }
-
-    /* 获取下一步按钮 */
-    function getButton(eventId) {
-        let getButtonUrl = /*[[@{/event/getButton/}]]+eventId*/ "/event/getButton/" + eventId;
-        $.ajaxUtil.get(getButtonUrl, function (e) {
-            $("#eventButton").empty();
-            let button = e.data;
-            let buttonHtml = "";
-            if (button.length > 0) {
-                for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
-                }
-            }
-            $("#eventButton").append(buttonHtml);
-            if ($("#eventSourceStr").val() === "监督员上报") {
-                $("#13").remove();
-            }
-        });
-    }
 
     /* 时间轴 */
     function getTimeAxis(eventId) {
@@ -966,109 +594,11 @@
             } else {
                 $(".partCodes").removeClass('roleBox')
             }
-
-            getUserListForSupervisor(data.gridId);
-
-            /*流程图*/
-            $("#eventImg").attr('src', img + data.processInstanceId);
-
             /* 附件图片回显 */
             let file = data.file;
             setFileInput(file);
-            /* 坐标 */
-            setPoint(data.x, data.y, eventId);
-            /* 设定中心点和层级 */
-            setCenterAndZoom(data.x, data.y, map.getView().getZoom() + 4);
-            /* 获取按钮 因为在监督员上报的时候不显示重新核实按钮 所以需要在赋值之后调用方法 */
-            getButton(eventId);
-            /*设置转应急按钮*/
-
         });
-    }
-    /* 步骤图 */
-    function getNodeName(eventId) {
-        $.ajaxUtil.get(getNodeNameUrl + "?eventId=" + eventId, function (e) {
-            setConduct(e.data);
-        });
-    }
-
-    /* 完成任务 派核实 监督员 */
-    function setValueForCompleteEvent(data) {
-        $("#textIdioms").val('');
-        $("#eventId").val(data.value);
-        let id = data.id;
-        $("#button").val(id);
-        if (id === "11" || id === "13" || id === "14" || id === "16") {
-            $("#userListDiv").css("display", "block");
-        } else {
-            $("#userListDiv").css("display", "none");
-        }
-    }
-
-    function completeEvent() {
-        let userIdVal = $("#userId").val();
-        let buttonVal = $("#button").val();
-        let idVal = $("#eventId").val();
-        if (buttonVal === "11" || buttonVal === "13" || buttonVal === "14" || buttonVal === "16") {
-            if (userIdVal == null || userIdVal === "") {
-                $.modal.alertError("请选择监督员");
-                return false;
-            }
-        }
-        $.operate.saveAndReload(completeByReceptionistUrl, {
-            id: idVal,
-            userId: userIdVal,
-            button: buttonVal,
-            imageUrlList: $("#imageUrlList").val(),
-            videoUrlList: $("#videoUrlList").val(),
-            musicUrlList: $("#musicUrlList").val(),
-            represent: $("#textIdioms").val()
-        });
-    }
-
-    /* 获取有监督员角色的人 */
-    function getUserListForSupervisor(id) {
-        $.ajaxUtil.get(getUserListForSupervisorUrl + "?gridId=" + id, function (e) {
-            $("#selectUser").empty();
-            let userList = e.data;
-            let userHtml = "";
-            if (e.code === 0) {
-                userHtml += "<option selected value=''>--请选择--</option>"
-                $(userList).each(function (index, value) {
-                    userHtml += "<option value='" + value.id + "'>" + value.name + "</option>"
-                });
-            }
-            $("#selectUser").html(userHtml);
-        });
-    }
-
-    function setPoint(x, y, id) {
-        let point = new ol.Feature({
-            geometry: new ol.geom.Point([x, y]),
-            data: {
-                id: id,
-                coordinate: x + "," + y
-            }
-        });
-        point.setStyle(new ol.style.Style({
-            image: new ol.style.Icon({
-                src: '../img/dwpoint3.png'
-            })
-        }));
-        layerMap.getSource().addFeature(point);
-    }
-
-    function setPolygon(coordinates, id) {
-        let Polygon = new ol.Feature({
-            geometry: new ol.geom.Polygon(coordinates),
-            data: {
-                id: id,
-                coordinate: coordinates
-            }
-        });
-        layerMap.getSource().addFeature(Polygon);
     }
 </script>
-<th:block th:include="page/fragments/common :: mapinit_js"/>
 </body>
 </html>
