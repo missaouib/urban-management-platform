@@ -47,7 +47,7 @@ public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoin
             writer.write(objectMapper.writeValueAsString(responseBody));
             writer.close();
         } else {
-            response.sendRedirect(SystemConstant.LOGIN_PAGE);
+            response.sendRedirect(SystemConstant.DEFAULT_LOGIN_PAGE);
         }
     }
 

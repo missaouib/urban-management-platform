@@ -15,6 +15,8 @@ public class SystemConstant {
      */
     public final static String LOGIN_PAGE = "/login";
 
+    public final static String DEFAULT_LOGIN_PAGE = "/defaultlogin";
+
 
     /**
      * Fe,scLoJ07e=DJxo

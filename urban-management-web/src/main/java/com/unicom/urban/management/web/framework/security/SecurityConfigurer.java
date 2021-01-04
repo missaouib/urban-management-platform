@@ -25,8 +25,10 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers(SystemConstant.LOGIN_PAGE).permitAll()
+                .antMatchers(SystemConstant.LOGIN_PAGE, SystemConstant.DEFAULT_LOGIN_PAGE).permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .logout().logoutSuccessUrl(SystemConstant.DEFAULT_LOGIN_PAGE)
                 .and()
                 .headers().frameOptions().sameOrigin()
                 .and()
