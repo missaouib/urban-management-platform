@@ -335,3 +335,28 @@
 	right: 10px;
 	z-index: 20;
 }
+.label,
+.title {
+	background: #000;
+	color: #fff;
+	padding: 3px;
+}
+
+.popup-content {
+	background: #fff;
+	padding: 3px;
+}
+
+.ol-popup-closer {
+	position: absolute;
+	top: 2px;
+	right: 8px;
+}
+
+.ol-popup-closer:after {
+	content: "x";
+	color: #fff;
+}
+.ol-overlay-container{
+	left: 540px!important;
+}
