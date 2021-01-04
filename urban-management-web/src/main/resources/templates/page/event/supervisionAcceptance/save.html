@@ -334,6 +334,10 @@
             alert("附件详情")
         });
 
+        $(document).on('click','.caseLi',function () {
+            $(".address").slideUp(200);
+        })
+
         //日期插件
         $('.form_datetime').datetimepicker({
             language: 'zh-CN',
