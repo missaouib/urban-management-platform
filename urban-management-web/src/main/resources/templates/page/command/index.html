@@ -231,9 +231,9 @@
         });
     })
     $("#reporting").click(function () {
+        layerMap.getSource().clear()
         var timeType = $("#time").val();
         $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "reporting", function (e) {
-            layerMap.getSource().clear()
             var data = e.data;
             for (let i = 0; i < data.length; i++) {
                 $.each(data[i], function (key, value) {
@@ -244,9 +244,9 @@
 
     })
     $("#register").click(function () {
+        layerMap.getSource().clear()
         var timeType = $("#time").val();
         $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "register", function (e) {
-            layerMap.getSource().clear()
             var data = e.data;
             for (let i = 0; i < data.length; i++) {
                 $.each(data[i], function (key, value) {
@@ -257,9 +257,9 @@
 
     })
     $("#caseDispose").click(function () {
+        layerMap.getSource().clear()
         var timeType = $("#time").val();
         $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "caseDispose", function (e) {
-            layerMap.getSource().clear()
             var data = e.data;
             for (let i = 0; i < data.length; i++) {
                 $.each(data[i], function (key, value) {
@@ -269,9 +269,9 @@
         });
     });
     $("#caseclosed").click(function () {
+        layerMap.getSource().clear()
         var timeType = $("#time").val();
         $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "caseclosed", function (e) {
-            layerMap.getSource().clear()
             var data = e.data;
             for (let i = 0; i < data.length; i++) {
                 $.each(data[i], function (key, value) {
@@ -282,12 +282,11 @@
     });
 
         function setPoint(x, y, id) {
-            console.log(x+"-"+y+"-"+id)
             let point = new ol.Feature({
                 geometry: new ol.geom.Point([x, y]),
                 data: {
                     eventId: id,
-                    coordinate2: x + "," + y
+                    coordinate: x + "," + y
                 }
             });
             point.setStyle(new ol.style.Style({
@@ -565,6 +564,7 @@
         var timeType = $("#time").val()
         $.ajaxUtil.get(countUrl + "?timeType=" + timeType, function (e) {
             $("#count").text(e.data.count);
+            $("#dispose").text(e.data.dispose);
             $("#close").text(e.data.close);
             $("#inst").text(e.data.inst);
             $("#eventNum").text(e.data.eventNum);
