@@ -12,6 +12,7 @@
 </head>
 <body style="width: 100vw;height: 100vh;background-color: #031636;">
 <div class="warp">
+    <div class="fullScreen_index"><i class="fa fa-arrows-alt" aria-hidden="true"></i></div>
     <div class="leftWarp">
         <div class="fullMap">
             <div class="map" id="map" style="width: 100%;height: 100%"></div>
@@ -195,12 +196,18 @@
 <th:block th:include="page/fragments/common :: echarts_js"/>
 <th:block th:include="page/fragments/common :: swiper_js"/>
 <th:block th:include="page/fragments/common :: mapinit_js"/>
+<script th:src="@{/js/index.js}"></script>
 <script type="text/javascript" th:inline="javascript">
     var countUrl = /*[[@{/bigscreen/count}]]*/ "/bigscreen/count";
     var showPointsUrl = /*[[@{/bigscreen/showPoints}]]*/ "/bigscreen/showPoints";
     var findHighIncidenceUrl = /*[[@{/commandSubsystem/findHighIncidence}]]*/ "/commandSubsystem/findHighIncidence";
     var getTrendAnalysisUrl = /*[[@{/commandSubsystem/getTrendAnalysis}]]*/ "/commandSubsystem/getTrendAnalysis";
     $(function () {
+
+        //全屏展示
+        $(".fullScreen_index").click(function () {
+            $.learuntab.requestFullScreen();
+        })
 
         var selectSingleClick = new ol.interaction.Select();
         map.addInteraction(selectSingleClick);

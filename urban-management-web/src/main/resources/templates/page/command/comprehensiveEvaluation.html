@@ -12,7 +12,8 @@
 </head>
 
 <body>
-<div class="warp">
+<div class="warp" style="position: relative">
+    <div class="fullScreen_index"><i class="fa fa-arrows-alt" aria-hidden="true"></i></div>
     <div class="leftwarp">
         <div class="inner">
             <div class="group">
@@ -92,6 +93,7 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: swiper_js"/>
+<script th:src="@{/js/index.js}"></script>
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
