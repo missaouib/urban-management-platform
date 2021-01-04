@@ -28,9 +28,9 @@ public class DeptEvaluateController {
 
 
     @GetMapping("/evaluate")
-    public Page<DeptEvaluate> evaluates(String starTime,
+    public Page<DeptEvaluate> evaluates(String startTime,
                                         String endTime, @PageableDefault Pageable pageable) {
-        List<DeptEvaluate> list = evaluateService.deptEvaluates(starTime, endTime);
+        List<DeptEvaluate> list = evaluateService.deptEvaluates(startTime, endTime);
         return new PageImpl<>(list, pageable, 0);
     }
 }
