@@ -124,6 +124,11 @@ public class SupervisionCommandSubsystemController {
         List<Map<String, Object>> caseAnalysis = indexService.caseAnalysisList(eventDTO);
         return Result.success(caseAnalysis);
     }
+    /**
+     * 综合评价
+     *
+     * @return PageImpl
+     */
     @GetMapping("/comprehensiveEvaluationSearch")
     public PageImpl<ComprehensiveVO> comprehensiveEvaluationSearch(String startTime,
                                                                    String endTime, String gridId, @PageableDefault Pageable pageable) {
