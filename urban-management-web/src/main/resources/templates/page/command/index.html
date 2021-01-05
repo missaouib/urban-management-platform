@@ -10,155 +10,12 @@
     <th:block th:include="page/fragments/common :: swiper_css"/>
     <link th:href="@{/css/fullindex.css}" rel="stylesheet" type="text/css">
 </head>
-<body style="width: 100vw;height: 100vh;background-color: #031636;">
+<body style="width: 100vw;height: 100vh;">
 <div class="warp">
     <div class="fullScreen_index"><i class="fa fa-arrows-alt" aria-hidden="true"></i></div>
     <input type="hidden" value="" id="eventId_map">
     <input type="hidden" value="" id="url_map">
-    <div class="leftWarp">
-        <div class="fullMap">
-            <div class="map" id="map" style="width: 100%;height: 100%"></div>
-<!--            <div class="fugai">-->
-                <div class="checkTime">
-                    <div class="timeText">时间</div>
-                    <div class="selectTime">
-                        <select class="timeSelect" id="time" onchange="timeQuery()">
-                            <option value="year" selected>年</option>
-                            <option value="month">月</option>
-                            <option value="day">日</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="numBosen">
-                    <div class="bosenActive" id="reporting">
-                        <span>上报</span>
-                        <span id="count">···</span>
-                    </div>
-                    <div id="register">
-                        <span>立案</span>
-                        <span id="inst">···</span>
-                    </div>
-                    <div id="caseDispose">
-                        <span>处置</span>
-                        <span id="dispose">···</span>
-                    </div>
-                    <div id="caseclosed">
-                        <span>结案</span>
-                        <span id="close">···</span>
-                    </div>
-                    <div id="onwer">
-                        <span>人员</span>
-                        <span>12</span>
-                    </div>
-                    <div id="cars">
-                        <span>车辆</span>
-                        <span>98</span>
-                    </div>
-                    <div id="videos">
-                        <span>视频</span>
-                        <span>6</span>
-                    </div>
-                </div>
-
-                <div class="checkBox">
-                    <div class="mapLayers">
-                        <div class="clickLayer">
-                            <img th:src="@{/img/1.jpg}" alt="">
-                        </div>
-                        <span class="clickName">热力图</span>
-                    </div>
-                </div>
-
-                <div class="viewGroup">
-                    <div class="mapView">
-                        <div class="optionLayers">
-                            <div class="layerGrounp" id="map1">
-                                <div class="layerInfo">
-                                    <img th:src="@{/img/1.jpg}" alt="">
-                                </div>
-                                <span class="layerName">热力图</span>
-                            </div>
-                        </div>
-
-                        <div class="optionLayers">
-                            <div class="layerGrounp" id="map2">
-                                <div class="layerInfo">
-                                    <img th:src="@{/img/2.jpg}" alt="">
-                                </div>
-                                <span class="layerName">人群图</span>
-                            </div>
-                        </div>
-
-
-                        <div class="optionLayers">
-                            <div class="layerGrounp" id="map3">
-                                <div class="layerInfo">
-                                    <img th:src="@{/img/3.jpg}" alt="">
-                                </div>
-                                <span class="layerName">街道图</span>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-<!--            </div>-->
-
-
-        </div>
-        <div class="content_bottom">
-            <div class="bar">
-                <div class="title">事件、部件</div>
-                <div class="barinnner">
-                    <div class="chars bandCha">
-                        <div class="abend">
-                            <div class="meter">
-                                <div id="watch" style="width: 100%;height:100%;"></div>
-                            </div>
-                            <div class="meterText">
-                                <div class="meterNum">
-                                    <span class="did">已处置</span>
-                                    <span class="line"></span>
-                                    <span class="didNum" id="eventDisponse">1121</span>
-                                </div>
-                                <div class="meterNum">
-                                    <span class="did">应处置</span>
-                                    <span class="line"></span>
-                                    <span class="didNum" id="eventNum">1121</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="abend">
-                            <div class="meter">
-                                <div id="watch2" style="width: 100%;height:100%;"></div>
-                            </div>
-                            <div class="meterText">
-                                <div class="meterNum">
-                                    <span class="did">已处置</span>
-                                    <span class="line"></span>
-                                    <span class="didNum" id="unitDisponse">1121</span>
-                                </div>
-                                <div class="meterNum">
-                                    <span class="did">应处置</span>
-                                    <span class="line"></span>
-                                    <span class="didNum" id="unitNum">1121</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="bar barorther">
-                <div class="title titleOrter">问题来源</div>
-                <div class="barinnner">
-                    <div class="chars">
-                        <div id="question" style="width: 100%;height:100%;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="rightWarp">
+    <div class="left">
         <div class="bar barIn">
             <div class="title">高发问题</div>
             <div class="barinnner">
@@ -184,6 +41,151 @@
             </div>
         </div>
     </div>
+    <div class="center">
+        <div class="fullMap">
+            <div class="map" id="map" style="width: 100%;height: 100%"></div>
+            <!--            <div class="fugai">-->
+            <div class="checkTime">
+                <div class="timeText">时间</div>
+                <div class="selectTime">
+                    <select class="timeSelect" id="time" onchange="timeQuery()">
+                        <option value="year" selected>年</option>
+                        <option value="month">月</option>
+                        <option value="day">日</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="numBosen">
+                <div class="" id="reporting">
+                    <span>上报</span>
+                    <span id="count">···</span>
+                </div>
+                <div id="register">
+                    <span>立案</span>
+                    <span id="inst">···</span>
+                </div>
+                <div id="caseDispose">
+                    <span>处置</span>
+                    <span id="dispose">···</span>
+                </div>
+                <div id="caseclosed">
+                    <span>结案</span>
+                    <span id="close">···</span>
+                </div>
+                <!--                    <div id="onwer">-->
+                <!--                        <span>人员</span>-->
+                <!--                        <span>12</span>-->
+                <!--                    </div>-->
+                <!--                    <div id="cars">-->
+                <!--                        <span>车辆</span>-->
+                <!--                        <span>98</span>-->
+                <!--                    </div>-->
+                <!--                    <div id="videos">-->
+                <!--                        <span>视频</span>-->
+                <!--                        <span>6</span>-->
+                <!--                    </div>-->
+            </div>
+
+            <!--                <div class="checkBox">-->
+            <!--                    <div class="mapLayers">-->
+            <!--                        <div class="clickLayer">-->
+            <!--                            <img th:src="@{/img/1.jpg}" alt="">-->
+            <!--                        </div>-->
+            <!--                        <span class="clickName">热力图</span>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+
+            <!--                <div class="viewGroup">-->
+            <!--                    <div class="mapView">-->
+            <!--                        <div class="optionLayers">-->
+            <!--                            <div class="layerGrounp" id="map1">-->
+            <!--                                <div class="layerInfo">-->
+            <!--                                    <img th:src="@{/img/1.jpg}" alt="">-->
+            <!--                                </div>-->
+            <!--                                <span class="layerName">热力图</span>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+
+            <!--                        <div class="optionLayers">-->
+            <!--                            <div class="layerGrounp" id="map2">-->
+            <!--                                <div class="layerInfo">-->
+            <!--                                    <img th:src="@{/img/2.jpg}" alt="">-->
+            <!--                                </div>-->
+            <!--                                <span class="layerName">人群图</span>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+
+
+            <!--                        <div class="optionLayers">-->
+            <!--                            <div class="layerGrounp" id="map3">-->
+            <!--                                <div class="layerInfo">-->
+            <!--                                    <img th:src="@{/img/3.jpg}" alt="">-->
+            <!--                                </div>-->
+            <!--                                <span class="layerName">街道图</span>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+
+
+        </div>
+    </div>
+    <div class="right">
+        <div class="bar">
+            <div class="title titleOrter">事件、部件</div>
+            <div class="barinnner">
+                <div class="chars bandCha">
+                    <div class="abend">
+                        <div class="meter">
+                            <div id="watch" style="width: 100%;height:100%;"></div>
+                        </div>
+                        <div class="meterText">
+                            <div class="meterNum">
+                                <span class="did">已处置</span>
+                                <span class="line"></span>
+                                <span class="didNum" id="eventDisponse">1121</span>
+                            </div>
+                            <div class="meterNum">
+                                <span class="did">应处置</span>
+                                <span class="line"></span>
+                                <span class="didNum" id="eventNum">1121</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="abend">
+                        <div class="meter">
+                            <div id="watch2" style="width: 100%;height:100%;"></div>
+                        </div>
+                        <div class="meterText">
+                            <div class="meterNum">
+                                <span class="did">已处置</span>
+                                <span class="line"></span>
+                                <span class="didNum" id="unitDisponse">1121</span>
+                            </div>
+                            <div class="meterNum">
+                                <span class="did">应处置</span>
+                                <span class="line"></span>
+                                <span class="didNum" id="unitNum">1121</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bar barorther">
+            <div class="title titleOrter">问题来源</div>
+            <div class="barinnner">
+                <div class="chars">
+                    <div id="question" style="width: 100%;height:100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 </div>
 </body>
 
@@ -205,6 +207,10 @@
     var findHighIncidenceUrl = /*[[@{/commandSubsystem/findHighIncidence}]]*/ "/commandSubsystem/findHighIncidence";
     var getTrendAnalysisUrl = /*[[@{/commandSubsystem/getTrendAnalysis}]]*/ "/commandSubsystem/getTrendAnalysis";
     $(function () {
+
+        $(".numBosen div").click(function () {
+            $(this).addClass('bosenActive').siblings(".numBosen div").removeClass("bosenActive")
+        })
 
         //全屏展示
         $(".fullScreen_index").click(function () {
@@ -244,23 +250,24 @@
                     event.preventDefault();
                     info_popup.setPosition(undefined);
                 });// 点击关闭的按钮
-                let eventId = feature.H.data.eventId;
+                let data = feature.H.data;
+                let eventId = data.eventId;
                 if(eventId !== null && eventId !== undefined){
                     let getDetailUrl = /*[[@{/commandSubsystem/toIndexDetails}]]*/ "/commandSubsystem/toIndexDetails";
                     let url = getDetailUrl + "?eventId=" + eventId;
-                    console.log(eventId,url);
                     $("#eventId_map").val(eventId);
                     $("#url_map").val(url);
                 }
-                var name = feature.H.data.eventId;
-                var user_contact = feature.H.data.eventId;
-                var time = feature.H.data.eventId;
-                var speed = feature.H.data.eventId;
-                title.innerHTML = '<div><strong>名字:</strong>京东</div></div>';
+                let name = data.eventId;
+                let user_contact = data.eventId;
+                let time = data.eventId;
+                let speed = data.eventId;
+                console.log("data", data);
+                title.innerHTML = '<div><strong>案件信息</strong></div></div>';
                 content.innerHTML = '<div>' +
-                    '<div>坐 标:'+ name +'</div>' +
-                    '<div>时 刻:'+ user_contact +'</div>' +
-                    '<div>速 度:'+ time +'</div>' +
+                    '<div>案件编号:'+ data.eventCode +'</div>' +
+                    '<div>案件分类:'+ data.eventTypeName +'</div>' +
+                    '<div>问题描述:'+ data.represent +'</div>' +
                     '<div class="details"><span class="">查看详情>></span></div>' +
                     '</div>';
                 info_popup.setPosition(coordinate);
@@ -297,18 +304,18 @@
         // });
 
         count();
+        //
+        // $(".checkBox").click(function () {
+        //     $(this).fadeOut(300);
+        //     $(".viewGroup").fadeIn(300);
+        // });
 
-        $(".checkBox").click(function () {
-            $(this).fadeOut(300);
-            $(".viewGroup").fadeIn(300);
-        });
-
-        $(".layerGrounp").click(function () {
-            $(".clickLayer").html($(this).children(".layerInfo").html())
-            $(".clickName").html($(this).children(".layerName").html())
-            $(".viewGroup").fadeOut(300);
-            $(".checkBox").fadeIn(300);
-        });
+        // $(".layerGrounp").click(function () {
+        //     $(".clickLayer").html($(this).children(".layerInfo").html())
+        //     $(".clickName").html($(this).children(".layerName").html())
+        //     $(".viewGroup").fadeOut(300);
+        //     $(".checkBox").fadeIn(300);
+        // });
     })
     $("#reporting").click(function () {
         layerMap.getSource().clear()
@@ -316,9 +323,9 @@
         $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "reporting", function (e) {
             var data = e.data;
             for (let i = 0; i < data.length; i++) {
-                $.each(data[i], function (key, value) {
-                    setPoint(value.split(" ")[0], value.split(" ")[1], key);
-                });
+                setPoint(data[i].coordinate.split(" ")[0],
+                    data[i].coordinate.split(" ")[1],
+                    data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
             }
         });
 
@@ -329,9 +336,9 @@
         $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "register", function (e) {
             var data = e.data;
             for (let i = 0; i < data.length; i++) {
-                $.each(data[i], function (key, value) {
-                    setPoint(value.split(" ")[0], value.split(" ")[1], key);
-                });
+                setPoint(data[i].coordinate.split(" ")[0],
+                    data[i].coordinate.split(" ")[1],
+                    data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
             }
         });
 
@@ -342,9 +349,9 @@
         $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "caseDispose", function (e) {
             var data = e.data;
             for (let i = 0; i < data.length; i++) {
-                $.each(data[i], function (key, value) {
-                    setPoint(value.split(" ")[0], value.split(" ")[1], key);
-                });
+                setPoint(data[i].coordinate.split(" ")[0],
+                    data[i].coordinate.split(" ")[1],
+                    data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
             }
         });
     });
@@ -354,38 +361,42 @@
         $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "caseclosed", function (e) {
             var data = e.data;
             for (let i = 0; i < data.length; i++) {
-                $.each(data[i], function (key, value) {
-                    setPoint(value.split(" ")[0], value.split(" ")[1], key);
-                });
+                setPoint(data[i].coordinate.split(" ")[0],
+                    data[i].coordinate.split(" ")[1],
+                    data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
             }
         });
     });
 
-        function setPoint(x, y, id) {
-            let point = new ol.Feature({
-                geometry: new ol.geom.Point([x, y]),
-                data: {
-                    eventId: id,
-                    coordinate: x + "," + y
-                }
-            });
-            point.setStyle(new ol.style.Style({
-                image: new ol.style.Icon({
-                    src: '../img/dwpoint3.png'
-                })
-            }));
-            layerMap.getSource().addFeature(point);
-        }
-        //表格
+    function setPoint(x, y, id, eventCode, represent, eventTypeName) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                eventId: id,
+                eventCode: eventCode,
+                represent: represent,
+                eventTypeName: eventTypeName,
+                coordinate: x + "," + y
+            }
+        });
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                src: '../img/dwpoint3.png'
+            })
+        }));
+        layerMap.getSource().addFeature(point);
+    }
 
-        //高发问题
-        findHighIncidence();
-        //高发区域
-        findHighGrid();
-        //问题来源
-        getEventSource();
-        //高发时段趋势分析
-        getTrendAnalysis();
+    //表格
+
+    //高发问题
+    findHighIncidence();
+    //高发区域
+    findHighGrid();
+    //问题来源
+    getEventSource();
+    //高发时段趋势分析
+    getTrendAnalysis();
 
     function findHighGrid(){
         let time = $("#time").val();

@@ -6,6 +6,10 @@ import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.vo.ComprehensiveVO;
 import com.unicom.urban.management.service.comprehensiveevaluation.ComprehensiveEvaluationService;
+import com.unicom.urban.management.pojo.dto.EventDTO;
+import com.unicom.urban.management.service.bigscreen.IndexService;
+import com.unicom.urban.management.service.grid.GridService;
+import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,12 @@ public class SupervisionCommandSubsystemController {
     private StatisticsService statisticsService;
     @Autowired
     private ComprehensiveEvaluationService comprehensiveEvaluationService;
+    @Autowired
+    private IndexService indexService;
+    @Autowired
+    private GridService gridService;
+    @Autowired
+    private KVService kvService;
 
     @GetMapping("/index")
     public ModelAndView index() {
@@ -47,7 +57,12 @@ public class SupervisionCommandSubsystemController {
 
     @GetMapping("/caseAnalysis")
     public ModelAndView caseAnalysis() {
-        return new ModelAndView(SystemConstant.PAGE + "/command/caseAnalysis");
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/command/caseAnalysis");
+        //问题来源
+        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
+        //所属网格
+        modelAndView.addObject("gridList", gridService.searchAll());
+        return modelAndView;
     }
 
     @GetMapping("/comprehensiveEvaluation")
@@ -105,8 +120,8 @@ public class SupervisionCommandSubsystemController {
      * @return list
      */
     @GetMapping("/getCaseAnalysisTitle")
-    public Result getCaseAnalysis() {
-        List<Map<String, Object>> caseAnalysis = statisticsService.getCaseAnalysis();
+    public Result getCaseAnalysis(EventDTO eventDTO) {
+        List<Map<String, Object>> caseAnalysis = indexService.caseAnalysisList(eventDTO);
         return Result.success(caseAnalysis);
     }
     @GetMapping("/comprehensiveEvaluationSearch")

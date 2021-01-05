@@ -170,29 +170,29 @@
                                         <table class="table">
                                             <tbody>
                                             <tr>
-                                                <td><span></span>案卷号</td>
+                                                <td><span></span>案件编号</td>
                                                 <td>
                                                     <input id="eventCode" placeholder="" class="" type="text" readonly="readonly" required>
                                                 </td>
-                                                <td><span></span>案件类型</td>
+                                                <td><span></span>案件分类</td>
                                                 <td>
-                                                    <input id="eventTypeStr" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                                                    <input id="eventTypeStr" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td><span></span>立案区域</td>
                                                 <td>
-                                                    <input id="regionStr" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                                                    <input id="regionStr" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly">
                                                 </td>
                                                 <td><span></span>立案条件</td>
                                                 <td>
-                                                    <input id="conditionValue" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                                                    <input id="conditionValue" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td><span></span>计时等级</td>
                                                 <td>
-                                                    <input id="level" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly" onclick="selectEventTypeTree()">
+                                                    <input id="level" name="eventType" placeholder="" class="" type="text" maxlength="30" required readonly="readonly">
 
                                                 </td>
                                                 <td><span></span>处理时限</td>
@@ -238,7 +238,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><span></span>案件分类</td>
+                                                <td><span></span>案件类型</td>
                                                 <td>
                                                     <input id="recTypeStr" name="recTypeStr" placeholder="" class="" readonly type="text">
 
@@ -256,7 +256,7 @@
 
                                                 </td>
                                                 <td><span></span>联系方式</td>
-                                                <td><input id="petitionerPhone" name="petitionerPhone" type="text" value="15645068888" readonly="readonly"></td>
+                                                <td><input id="petitionerPhone" name="petitionerPhone" type="text" value="" readonly="readonly"></td>
                                             </tr>
                                             <tr>
                                                 <td><span></span>性别</td>
@@ -527,9 +527,6 @@
     $(function () {
 
         $(".ol-full-screen-false").html("全屏")
-        //步骤进行到
-        var bgmNum = 2;
-        setConduct(bgmNum)
 
         queryUserList();
         let eventId = $('#eventIdFromWorkBench').val();

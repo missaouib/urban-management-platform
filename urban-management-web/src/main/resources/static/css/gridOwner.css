@@ -249,6 +249,10 @@ body {
 
 .jobActive {
 	display: block;
+	overflow: auto;
+}
+.node_name{
+	color: white!important;
 }
 
 .titleActive {

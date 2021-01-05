@@ -6,6 +6,7 @@ import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.AreaDTO;
 import com.unicom.urban.management.pojo.dto.GridDTO;
 import com.unicom.urban.management.pojo.vo.GridVO;
+import com.unicom.urban.management.pojo.vo.TreeVO;
 import com.unicom.urban.management.service.grid.GridService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,6 +105,12 @@ public class GridController {
     @PostMapping("/coolocation")
     public void coolocation(AreaDTO areaDTO) {
       gridService.collocation(areaDTO);
+    }
+
+
+    @GetMapping("/gridAndUserTree")
+    public List<TreeVO> gridAndUserTree(){
+        return gridService.searchTreeAndUser();
     }
 
 }
