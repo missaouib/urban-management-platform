@@ -76,16 +76,9 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: swiper_js"/>
 <th:block th:include="page/fragments/common :: arc_js"/>
+<!--<th:block th:include="page/fragments/common :: mapinit_js"/>-->
 <script type="text/javascript" th:inline="javascript">
     $(function () {
-
-        var projection = new ol.proj.Projection({
-            code: 'EPSG:4326',
-            units: 'degrees',
-            axisOrientation: 'neu',
-            global: true
-        });
-
 
 
         var routeCoords = [
@@ -116,7 +109,34 @@
             [595647.7958984375, 5242396.494079589],
             [595586.4040527344, 5242347.07067871],
             [595600.962890625, 5242237.323120116],
-            [595631.51953125, 5242127.011596679]
+            [595631.51953125, 5242127.011596679],
+            [595907.0830078125, 5242189.912902832],
+            [596039.9719238281, 5242193.112976074],
+            [596079.8801269531, 5242053.686767578],
+            [596010.6064453125, 5242019.928344727],
+            [595896.1608886719, 5241958.784301758],
+            [595777.9418945312, 5241903.754150391],
+            [595667.0646972656, 5241801.9140625],
+            [595611.271484375, 5241650.390380859],
+            [595595.2719726562, 5241481.911865234],
+            [595561.5144042969, 5241383.836669922],
+            [595545.5131835938, 5241332.634643555],
+            [595539.1130371094, 5241284.633544922],
+            [595520.4765625, 5241180.722167969],
+            [595504.4770507812, 5241119.919067383],
+            [595504.4770507812, 5241062.316894531],
+            [595501.2761230469, 5240995.114501953],
+            [595488.4758300781, 5240931.111328125],
+            [595466.076171875, 5240854.3095703125],
+            [595450.0749511719, 5240793.507324219],
+            [595440.4755859375, 5240758.306518555],
+            [595405.2739257812, 5240684.703979492],
+            [595398.8737792969, 5240630.301879883],
+            [595341.2724609375, 5240547.099121094],
+            [595334.8723144531, 5240511.8974609375],
+            [595331.6730957031, 5240454.296142578],
+            [595251.1474609375, 5240469.64453125],
+            [595214.1889648438, 5240356.132080078],
         ]
 
         var routeLength = routeCoords.length;
@@ -166,6 +186,78 @@
             source: new ol.source.Vector({})
         });
 
+        var gridsetName = 'EPSG:4552';
+        var gridNames = ['EPSG:4552:0', 'EPSG:4552:1', 'EPSG:4552:2', 'EPSG:4552:3', 'EPSG:4552:4', 'EPSG:4552:5', 'EPSG:4552:6', 'EPSG:4552:7'];
+        var baseUrl = 'http://218.10.223.8:9050/geoserver/gwc/service/wmts';
+        var style = '';
+        var format = 'image/png8';
+        var infoFormat = 'text/html';
+        var layerName = 'hegang:MosaicResult';
+        var projection = new ol.proj.Projection({
+            code: 'EPSG:4552',
+            units: 'm',
+            axisOrientation: 'neu'
+        });
+        var resolutions = [13.999999999999998, 6.999999999999999, 3.4999999999999996, 1.7499999999999998, 0.8749999999999999, 0.43749999999999994, 0.21874999999999997, 0.10937499999999999];
+        baseParams = ['VERSION','LAYER','STYLE','TILEMATRIX','TILEMATRIXSET','SERVICE','FORMAT'];
+
+        params = {
+            'VERSION': '1.0.0',
+            'LAYER': layerName,
+            'STYLE': style,
+            'TILEMATRIX': gridNames,
+            'TILEMATRIXSET': gridsetName,
+            'SERVICE': 'WMTS',
+            'FORMAT': format
+        };
+
+        function constructSource() {
+            var url = baseUrl+'?'
+            for (var param in params) {
+                if (baseParams.indexOf(param.toUpperCase()) < 0) {
+                    url = url + param + '=' + params[param] + '&';
+                }
+            }
+            url = url.slice(0, -1);
+
+            var source = new ol.source.WMTS({
+                url: url,
+                layer: params['LAYER'],
+                matrixSet: params['TILEMATRIXSET'],
+                format: params['FORMAT'],
+                projection: projection,
+                tileGrid: new ol.tilegrid.WMTS({
+                    tileSize: [256,256],
+                    extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
+                    origin: [374503.7646126483, 5570848.560955403],
+                    resolutions: resolutions,
+                    matrixIds: params['TILEMATRIX']
+                }),
+                style: params['STYLE'],
+                wrapX: true
+            });
+            return source;
+        }
+
+        var untiled = new ol.layer.Tile({
+            source: constructSource()
+        });
+
+        var view = new ol.View({
+            center: [0, 0],
+            zoom: 17,
+            resolutions: resolutions,
+            projection: projection,
+            extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403]
+        });
+
+        var map = new ol.Map({
+            layers: [untiled,vectorLayer,vectorLayer2],
+            target: 'map',
+            view: view
+        });
+        map.getView().fit([593489.95, 5237489.95,
+            598010.0499999999, 5247510.05], map.getSize());
 
 
         var startMarker = new ol.Feature({
@@ -251,7 +343,7 @@
                 });
 
                 var arcLine = arcGenerator.Arc(speed, {
-                    offset: 0
+                    offset: 100
                 }); //在两个点之间生成100个点
 
                 var line = new ol.geom.LineString(arcLine.geometries[0].coords);
@@ -357,11 +449,14 @@
             stopAnimation()
         })
 
+        // map.on('click',function (e) {
+        //     console.log(e.coordinate)
+        // })
+
     })
 
 
 </script>
-<th:block th:include="page/fragments/common :: mapinit_js"/>
 
 </body>
 </html>
