@@ -17,8 +17,88 @@
         <div class="once">
             <div class="texts">按条件搜索：</div>
             <div class="searchInput">
-                <input type="text" placeholder="请输入搜索条件" class="searchoption">
+                <input type="text" placeholder="请输入搜索条件" class="searchoption" >
                 <i class="i_mirror"></i>
+            </div>
+            <div class="condition_sear">
+                <form id="userForm">
+                    <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
+                    <input th:name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
+                    <div class="table2_top">
+                        <!--        <div>-->
+                        <div class="top_out">
+                            <table class="table">
+                                <tbody>
+                                <tr>
+                                    <td>问题描述<span></span></td>
+                                    <td>
+                                        <input type="text" class="datepicker" name="represent">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>所在网格<span></span></td>
+                                    <td>
+                                        <select class="form-control" id="grid1" name="grid" onchange="getStreetList()" required>
+                                            <option value="">--请选择--</option>
+                                            <option th:each="as:${gridList}" th:value="${as.id}"
+                                                    th:text="${as.gridName}"></option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>问题来源<span></span></td>
+                                    <td>
+                                        <select class="form-control" id="eventSource" name="eventSourceId" required>
+                                            <option value="">--请选择--</option>
+                                            <option th:each="as:${eventSource}" th:value="${as.id}"
+                                                    th:text="${as.value}"></option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>案件类型<span></span></td>
+                                    <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                        <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
+                                        <input type="hidden" readonly="readonly" id="eventTypeId" name="eventTypeId"
+                                               class="find_input"/>
+                                        <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                            +
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>立案区域<span></span></td>
+                                    <td>
+                                        <select class="form-control" id="eventCondition" name="eventCondition" onchange="getEventCondition()"
+                                                required>
+                                            <option value="">--请选择--</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>立案条件<span></span></td>
+                                    <td>
+                                        <select class="form-control" id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
+                                            <option value="">--请选择--</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>计时等级<span></span></td>
+                                    <td>
+                                        <select class="form-control" id="timeType" name="timeType" required>
+                                            <option value="">--请选择--</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!--    </div>-->
+                </form>
+                <div class="up_condition"><i class="fa fa-caret-up" id="up_condition" aria-hidden="true"></i></div>
             </div>
         </div>
         <div class="onceoption" id="caseAnalysisTitle">
@@ -113,6 +193,13 @@
 <script th:src="@{/js/index.js}"></script>
 <script type="text/javascript" th:inline="javascript">
     $(function () {
+        $("#up_condition").click(function () {
+            $(".condition_sear").slideUp(300)
+        });
+        $(".i_mirror").click(function () {
+            $(".condition_sear").slideDown(300)
+        })
+
         $(".checkBox").click(function() {
             $(this).fadeOut(300);
             $(".viewGroup").fadeIn(300);
@@ -154,7 +241,6 @@
                 untiled
             ],
             view: new ol.View({
-                // projection: projection,
                 center: center,
                 zoom: 17,
                 projection: projection
@@ -193,6 +279,82 @@
         });
     }
 
+
+    function selectEventTypeTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择事件类型',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#eventTypeId").val(body.find('#treeId').val());
+        $("#typeStr").val(body.find('#treeName').val());
+        let eventTypeId = $("#eventTypeId").val();
+        //获取立案区域
+        findEventConditionByEventType(eventTypeId)
+        layer.close(index);
+    }
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+
+    /**
+     * 获取立案区域
+     */
+    function findEventConditionByEventType(eventTypeId) {
+        let url = findEventConditionByEventTypeUrl + "/?eventTypeId=" + eventTypeId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
+                });
+                $("#eventCondition").html(option);
+            }
+        });
+    }
+
+    /**
+     * 立案条件
+     */
+    function getEventCondition() {
+        let eventConditionId = $("#eventCondition").val();
+        let url = "/event/getEventCondition/?conditionId=" + eventConditionId;
+        $.ajaxUtil.get(url, function (e) {
+            $("#eventTerm").empty();
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
+                });
+            }
+            $("#eventTerm").html(option);
+        });
+    }
+
+    /**
+     * 获取立案时限分类
+     */
+    function getTimeTypeList() {
+        let eventTerm = $("#eventTerm").val();
+        let url = "/event/findDeptTimeLimitByCondition/?conditionId=" + eventTerm;
+        $.ajaxUtil.get(url, function (e) {
+            $("#timeType").empty();
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.level + "</option>"
+                });
+            }
+            $("#timeType").html(option);
+        });
+    }
 </script>
 <th:block th:include="page/fragments/common :: mapinit_js"/>
 </body>
