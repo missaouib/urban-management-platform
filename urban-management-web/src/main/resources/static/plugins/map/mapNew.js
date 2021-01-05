@@ -10,6 +10,19 @@ var projection = new ol.proj.Projection({
     units: 'm',
     axisOrientation: 'neu'
 });
+
+
+
+//  styles = new Style({
+//     stroke: new Stroke({
+//         // color: 'blue',
+//         color: 'rgba(30,144,255)',
+//         width: 3
+//     }),
+//     fill: new Fill({
+//         color: 'rgba(0, 0, 255, 0.1)'
+//     })
+// })
 var resolutions = [13.999999999999998, 6.999999999999999, 3.4999999999999996, 1.7499999999999998, 0.8749999999999999, 0.43749999999999994, 0.21874999999999997, 0.10937499999999999];
 baseParams = ['VERSION','LAYER','STYLE','TILEMATRIX','TILEMATRIXSET','SERVICE','FORMAT'];
 

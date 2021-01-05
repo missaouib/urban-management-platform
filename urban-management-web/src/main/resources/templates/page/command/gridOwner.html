@@ -2,7 +2,7 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>热线上报</title>
+    <title>网格人员</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
@@ -278,7 +278,7 @@
 
     $(function () {
 
-        let getEventTypeTreeUrl = /*[[@{/categoryConfiguration/getEventTypeTree}]]*/ "/categoryConfiguration/getEventTypeTree";
+        let gridAndUserTree = /*[[@{/grid/gridAndUserTree}]]*/ "/grid/gridAndUserTree";
 
         let setting = {
             callback: {
@@ -292,7 +292,7 @@
                 simpleData: {
                     enable: true,
                     idKey: 'id',
-                    pIdKey: 'parent'
+                    pIdKey: 'parentId'
                 },
                 key: {
                     name: "name"
@@ -302,17 +302,14 @@
 
 
 
-        function setEventTypeTree() {
-            $.ajaxUtil.get(getEventTypeTreeUrl, function (e) {
+        function gridAndUser() {
+            $.ajaxUtil.get(gridAndUserTree, function (e) {
                 $.fn.zTree.init($("#treeDemo"), setting, e.data);
             });
         }
 
         function zTreeOnClick(event, treeId, treeNode) {
-            $(".humenversion").css("right", "0")
-            $(".directivity").css("display", "block")
-            $(".myhead").html($(this).children(".header").html())
-            $("#am").html($(this).children(".name").html())
+
         }
 
         $(".fenlei").click(function() {
@@ -356,7 +353,7 @@
             $(".i_search").css("display", "block")
         });
 
-        setEventTypeTree()
+        gridAndUser()
 
     })
 

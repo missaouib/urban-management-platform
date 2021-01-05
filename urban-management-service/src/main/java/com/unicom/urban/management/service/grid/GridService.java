@@ -367,6 +367,19 @@ public class GridService {
         List<Grid> grids = gridRepository.findAllByLevelLessThan(level);
         return TreeMapper.INSTANCE.gridListToTreeVOList(grids);
     }
+    public List<TreeVO> searchTreeAndUser() {
+        List<Grid> grids = gridRepository.findAll();
+        List<TreeVO> treeVOS = TreeMapper.INSTANCE.gridListToTreeVOList(grids);
+        grids.forEach(g-> g.getUserList().forEach(u->{
+            TreeVO treeVO = new TreeVO();
+            treeVO.setId(u.getId());
+            treeVO.setParentId(g.getId());
+            treeVO.setName(u.getName());
+            treeVO.setLevelOrNot("user");
+            treeVOS.add(treeVO);
+        }));
+        return treeVOS;
+    }
 
     /**
      * 修改指定网格中的人员
