@@ -228,48 +228,68 @@ public class IndexService {
             return criteriaBuilder.and(list.toArray(p));
         });
 
-        List<Map<String, Object>> mapList = new ArrayList<>();
-        Map<String, Object> map = new HashMap<>(2);
+        List<Map<String, Object>> reportList = new ArrayList<>();
+        List<Map<String, Object>> operateList = new ArrayList<>();
+        List<Map<String, Object>> instList = new ArrayList<>();
+        List<Map<String, Object>> dispatchList = new ArrayList<>();
+        List<Map<String, Object>> checkNumList = new ArrayList<>();
+        List<Map<String, Object>> disposeList = new ArrayList<>();
+        List<Map<String, Object>> closeList = new ArrayList<>();
 
         if (eventList.size() > 0) {
             for (Event event : eventList) {
                 for (Statistics statistics : event.getStatisticsList()) {
                     /* 上报 */
                     if (statistics.getReport() == 1) {
-                        setDataForCaseAnalysisList(map, "report", "上报", mapList, event);
+                        setDataForCaseAnalysisList(reportList, event);
                     }
                     /* 受理 */
                     if (statistics.getOperate() == 1) {
-                        setDataForCaseAnalysisList(map, "operate", "受理", mapList, event);
+                        setDataForCaseAnalysisList(operateList, event);
                     }
                     /* 立案 */
                     if (statistics.getInst() == 1) {
-                        setDataForCaseAnalysisList(map, "inst", "立案", mapList, event);
+                        setDataForCaseAnalysisList(instList, event);
                     }
                     /* 派遣 */
                     if (statistics.getDispatch() == 1) {
-                        setDataForCaseAnalysisList(map, "dispatch", "派遣", mapList, event);
+                        setDataForCaseAnalysisList(dispatchList, event);
                     }
                     /* 核查 */
                     if (statistics.getCheckNum() == 1) {
-                        setDataForCaseAnalysisList(map, "checkNum", "核查", mapList, event);
+                        setDataForCaseAnalysisList(checkNumList, event);
                     }
                     /* 处置 */
                     if (statistics.getDispose() == 1) {
-                        setDataForCaseAnalysisList(map, "dispose", "处置", mapList, event);
+                        setDataForCaseAnalysisList(disposeList, event);
                     }
                     /* 结案 */
                     if (statistics.getClose() == 1) {
-                        setDataForCaseAnalysisList(map, "close", "结案", mapList, event);
+                        setDataForCaseAnalysisList(closeList, event);
                     }
                 }
             }
         }
 
+        List<Map<String, Object>> mapList = new ArrayList<>(7);
+        setListDataForCaseAnalysisList("上报", reportList, mapList);
+        setListDataForCaseAnalysisList("受理", operateList, mapList);
+        setListDataForCaseAnalysisList("立案", instList, mapList);
+        setListDataForCaseAnalysisList("派遣", dispatchList, mapList);
+        setListDataForCaseAnalysisList("核查", checkNumList, mapList);
+        setListDataForCaseAnalysisList("处置", disposeList, mapList);
+        setListDataForCaseAnalysisList("结案", closeList, mapList);
         return mapList;
     }
 
-    private void setDataForCaseAnalysisList(Map<String, Object> map, String key, String name, List<Map<String, Object>> mapList, Event event) {
+    private void setListDataForCaseAnalysisList(String name, List<Map<String, Object>> mapListData, List<Map<String, Object>> mapList){
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("name", name);
+        map.put("data", mapListData);
+        mapList.add(map);
+    }
+
+    private void setDataForCaseAnalysisList(List<Map<String, Object>> mapList, Event event) {
         Map<String, Object> mapData = new HashMap<>(5);
         mapData.put("eventId", event.getId());
         mapData.put("coordinate", event.getX() + " " + event.getY());
@@ -279,9 +299,7 @@ public class IndexService {
         String name2 = event.getEventType().getParent().getName();
         String name3 = event.getEventType().getName();
         mapData.put("eventTypeName", name1 + "-" + name2 + "-" + name3);
-        map.put(key, mapData);
-        map.put("name", name);
-        mapList.add(map);
+        mapList.add(mapData);
     }
 
 }
