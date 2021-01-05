@@ -16,13 +16,10 @@
     <div class="top">
         <div class="once">
             <button class="btn btn-primary loopIcon_search">按条件搜索</button>
-            <button class="btn btn-primary" style="margin-left: 5px"><i class="fa fa-search" aria-hidden="true"></i></button>
+            <button class="btn btn-primary" style="margin-left: 5px" type="button" onclick="getCaseAnalysisTitle()"><i class="fa fa-search" aria-hidden="true"></i></button>
             <div class="condition_sear">
                 <form id="userForm">
-                    <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
-                    <input th:name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
                     <div class="table2_top">
-                        <!--        <div>-->
                         <div class="top_out">
                             <table class="table">
                                 <tbody>
@@ -257,18 +254,16 @@
 
     function getCaseAnalysisTitle() {
         let serialize = $("#userForm").serialize();
-        console.log("serialize", serialize);
         $.ajaxUtil.get(getCaseAnalysisTitleUrl+"?"+serialize, function (e) {
             let data = e.data;
-            console.log("data", data);
             $("#caseAnalysisTitle").empty();
             let html = "";
             if (data.length > 0) {
                 for (let i = 0; i < data.length; i++) {
-                    html += "<div>"
+                    html += "<button type='button' value ='" + JSON.stringify(data[i].data) + "' onclick='setPointAndData(this.value)'>"
                     html += "<span>" + data[i].name + "</span>"
                     html += "<span class='colorRandom'>" + data[i].data.length + "</span>"
-                    html += "</div>"
+                    html += "</button>"
                 }
             } else {
                 html += "<div>"
@@ -279,6 +274,9 @@
         });
     }
 
+    function setPointAndData(data) {
+        console.log("data", $.parseJSON(data));
+    }
 
     function selectEventTypeTree() {
         var treeId = $("#treeId").val();
