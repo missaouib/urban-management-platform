@@ -412,6 +412,17 @@ body{
 	display: block;
 	text-align: center;
 }
+.statis2{
+	width: 25%;
+	height: 50px;
+	margin-top: 15px;
+	float: left;
+}
+.statis2 span{
+	color: #fff;
+	display: block;
+	text-align: center;
+}
 .colorStyle1{
 	color: #48ebfc!important;
 	font-weight: bold;
