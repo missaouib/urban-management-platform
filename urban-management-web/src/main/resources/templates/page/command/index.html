@@ -31,7 +31,7 @@
                 </div>
 
                 <div class="numBosen">
-                    <div class="bosenActive" id="reporting">
+                    <div class="" id="reporting">
                         <span>上报</span>
                         <span id="count">···</span>
                     </div>
@@ -205,6 +205,10 @@
     var findHighIncidenceUrl = /*[[@{/commandSubsystem/findHighIncidence}]]*/ "/commandSubsystem/findHighIncidence";
     var getTrendAnalysisUrl = /*[[@{/commandSubsystem/getTrendAnalysis}]]*/ "/commandSubsystem/getTrendAnalysis";
     $(function () {
+
+        $(".numBosen div").click(function () {
+            $(this).addClass('bosenActive').siblings(".numBosen div").removeClass("bosenActive")
+        })
 
         //全屏展示
         $(".fullScreen_index").click(function () {
