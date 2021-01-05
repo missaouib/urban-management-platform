@@ -44,7 +44,7 @@
                 </span>
                 <span>
                     <div class="chuangmy">位置更新:</div>
-                    <i class="whoMy">南岗区第一</i>
+                    <i class="whoMy" id="halfCheck">南岗区第一</i>
                 </span>
             </div>
         </div>
@@ -309,7 +309,12 @@
         }
 
         function zTreeOnClick(event, treeId, treeNode) {
-
+            $(".humenversion").css("right", "0")
+            $(".directivity").css("display", "block")
+            console.log(treeNode)
+            $(".myhead").html($(this).children(".header").html())
+            $("#am").html(treeNode.name);
+            $("#halfCheck").html(treeNode.id)
         }
 
         $(".fenlei").click(function() {
