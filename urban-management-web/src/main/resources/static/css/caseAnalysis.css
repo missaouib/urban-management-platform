@@ -131,7 +131,8 @@ body {
 	right: 10%;
 }
 
-.onceoption div {
+.onceoption div,.onceoption button {
+	border: none!important;
 	width: 7%;
 	height: 50%;
 	background: url("../img/optionsborder.png");
@@ -143,20 +144,20 @@ body {
 	align-items: center;
 }
 
-.onceoption div span {
+.onceoption div span,.onceoption button span {
 	flex: 1;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 }
 
-.onceoption div span:nth-child(1) {
+.onceoption div span:nth-child(1),.onceoption button span:nth-child(1) {
 	font-family: Microsoft YaHei;
 	font-weight: 400;
 	color: #008CE4;
 }
 
-.onceoption div span:nth-child(2) {
+.onceoption div span:nth-child(2),.onceoption button span:nth-child(2) {
 	font-family: Microsoft YaHei;
 	font-weight: bold;
 	color: #3795FF;
@@ -264,5 +265,26 @@ body {
 	color: #FFBF36!important;
 }
 .onceoption div:nth-child(7) .colorRandom{
+	color: #FF4901!important;
+}
+.onceoption button:nth-child(1) .colorRandom{
+	color: rgb(55, 149, 255) !important;
+}
+.onceoption button:nth-child(2) .colorRandom{
+	color: #00FF4E!important;
+}
+.onceoption button:nth-child(3) .colorRandom{
+	color: #FF6600!important;
+}
+.onceoption button:nth-child(4) .colorRandom{
+	color: #F600FF!important;
+}
+.onceoption button:nth-child(5) .colorRandom{
+	color: #5BFEE5!important;
+}
+.onceoption button:nth-child(6) .colorRandom{
+	color: #FFBF36!important;
+}
+.onceoption button:nth-child(7) .colorRandom{
 	color: #FF4901!important;
 }
