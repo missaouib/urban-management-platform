@@ -61,47 +61,47 @@
 <!--                    </div>-->
                 </div>
 
-                <div class="checkBox">
-                    <div class="mapLayers">
-                        <div class="clickLayer">
-                            <img th:src="@{/img/1.jpg}" alt="">
-                        </div>
-                        <span class="clickName">热力图</span>
-                    </div>
-                </div>
+<!--                <div class="checkBox">-->
+<!--                    <div class="mapLayers">-->
+<!--                        <div class="clickLayer">-->
+<!--                            <img th:src="@{/img/1.jpg}" alt="">-->
+<!--                        </div>-->
+<!--                        <span class="clickName">热力图</span>-->
+<!--                    </div>-->
+<!--                </div>-->
 
-                <div class="viewGroup">
-                    <div class="mapView">
-                        <div class="optionLayers">
-                            <div class="layerGrounp" id="map1">
-                                <div class="layerInfo">
-                                    <img th:src="@{/img/1.jpg}" alt="">
-                                </div>
-                                <span class="layerName">热力图</span>
-                            </div>
-                        </div>
+<!--                <div class="viewGroup">-->
+<!--                    <div class="mapView">-->
+<!--                        <div class="optionLayers">-->
+<!--                            <div class="layerGrounp" id="map1">-->
+<!--                                <div class="layerInfo">-->
+<!--                                    <img th:src="@{/img/1.jpg}" alt="">-->
+<!--                                </div>-->
+<!--                                <span class="layerName">热力图</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
 
-                        <div class="optionLayers">
-                            <div class="layerGrounp" id="map2">
-                                <div class="layerInfo">
-                                    <img th:src="@{/img/2.jpg}" alt="">
-                                </div>
-                                <span class="layerName">人群图</span>
-                            </div>
-                        </div>
+<!--                        <div class="optionLayers">-->
+<!--                            <div class="layerGrounp" id="map2">-->
+<!--                                <div class="layerInfo">-->
+<!--                                    <img th:src="@{/img/2.jpg}" alt="">-->
+<!--                                </div>-->
+<!--                                <span class="layerName">人群图</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
 
 
-                        <div class="optionLayers">
-                            <div class="layerGrounp" id="map3">
-                                <div class="layerInfo">
-                                    <img th:src="@{/img/3.jpg}" alt="">
-                                </div>
-                                <span class="layerName">街道图</span>
-                            </div>
-                        </div>
+<!--                        <div class="optionLayers">-->
+<!--                            <div class="layerGrounp" id="map3">-->
+<!--                                <div class="layerInfo">-->
+<!--                                    <img th:src="@{/img/3.jpg}" alt="">-->
+<!--                                </div>-->
+<!--                                <span class="layerName">街道图</span>-->
+<!--                            </div>-->
+<!--                        </div>-->
 
-                    </div>
-                </div>
+<!--                    </div>-->
+<!--                </div>-->
 <!--            </div>-->
 
 
@@ -297,18 +297,18 @@
         // });
 
         count();
+        //
+        // $(".checkBox").click(function () {
+        //     $(this).fadeOut(300);
+        //     $(".viewGroup").fadeIn(300);
+        // });
 
-        $(".checkBox").click(function () {
-            $(this).fadeOut(300);
-            $(".viewGroup").fadeIn(300);
-        });
-
-        $(".layerGrounp").click(function () {
-            $(".clickLayer").html($(this).children(".layerInfo").html())
-            $(".clickName").html($(this).children(".layerName").html())
-            $(".viewGroup").fadeOut(300);
-            $(".checkBox").fadeIn(300);
-        });
+        // $(".layerGrounp").click(function () {
+        //     $(".clickLayer").html($(this).children(".layerInfo").html())
+        //     $(".clickName").html($(this).children(".layerName").html())
+        //     $(".viewGroup").fadeOut(300);
+        //     $(".checkBox").fadeIn(300);
+        // });
     })
     $("#reporting").click(function () {
         layerMap.getSource().clear()
