@@ -45,4 +45,12 @@ public class ComprehensiveVO {
      * 返工率
      */
     private String reworkRate;
+    /**
+     * 排名
+     */
+    private String index;
+    /**
+     * 趋势
+     */
+    private String patrolReport;
 }

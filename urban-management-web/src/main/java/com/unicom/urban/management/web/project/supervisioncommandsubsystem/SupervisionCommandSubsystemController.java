@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -125,7 +126,7 @@ public class SupervisionCommandSubsystemController {
         return Result.success(caseAnalysis);
     }
     /**
-     * 综合评价
+     * 综合评价-列表
      *
      * @return PageImpl
      */
@@ -134,6 +135,15 @@ public class SupervisionCommandSubsystemController {
                                                                    String endTime, String gridId, @PageableDefault Pageable pageable) {
         List<ComprehensiveVO> list = comprehensiveEvaluationService.search(startTime, endTime,gridId);
         return new PageImpl<ComprehensiveVO>(list, pageable, 0);
+    }
+
+    /**
+     * 综合评价-排行榜
+     * @return
+     */
+    public Map<String,Object> comprehensiveEvaluationRankingList(String startTime,String endTime, String gridId){
+//        Map<String,Object> map = comprehensiveEvaluationService.findRankingList(String startTime,String endTime, String gridId);
+        return new HashMap<>();
     }
 
 }
