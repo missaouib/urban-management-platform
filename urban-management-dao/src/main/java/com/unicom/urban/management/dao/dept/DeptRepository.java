@@ -9,5 +9,7 @@ public interface DeptRepository extends CustomizeRepository<Dept, String> {
 
     List<Dept> findAllByParent_Id(String parentId);
 
+    List<Dept> findAllByGrid_id(String gridId);
+
     List<Dept> findAllByOrderBySortDesc();
 }

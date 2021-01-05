@@ -4,9 +4,14 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.pojo.Result;
+import com.unicom.urban.management.pojo.vo.ComprehensiveVO;
+import com.unicom.urban.management.service.comprehensiveevaluation.ComprehensiveEvaluationService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +32,8 @@ public class SupervisionCommandSubsystemController {
 
     @Autowired
     private StatisticsService statisticsService;
+    @Autowired
+    private ComprehensiveEvaluationService comprehensiveEvaluationService;
 
     @GetMapping("/index")
     public ModelAndView index() {
@@ -102,6 +109,11 @@ public class SupervisionCommandSubsystemController {
         List<Map<String, Object>> caseAnalysis = statisticsService.getCaseAnalysis();
         return Result.success(caseAnalysis);
     }
-
+    @GetMapping("/comprehensiveEvaluationSearch")
+    public PageImpl<ComprehensiveVO> comprehensiveEvaluationSearch(String startTime,
+                                                                   String endTime, String gridId, @PageableDefault Pageable pageable) {
+        List<ComprehensiveVO> list = comprehensiveEvaluationService.search(startTime, endTime,gridId);
+        return new PageImpl<ComprehensiveVO>(list, pageable, 0);
+    }
 
 }

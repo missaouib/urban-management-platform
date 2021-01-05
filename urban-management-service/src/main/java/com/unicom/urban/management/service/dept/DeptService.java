@@ -315,5 +315,8 @@ public class DeptService {
         List<Dept> deptList = deptRepository.findAllByOrderBySortDesc();
         return TreeMapper.INSTANCE.deptListToTreeVOList(deptList);
     }
+    public List<Dept> findAllByGridId(String gridId){
+        return deptRepository.findAllByGrid_id(gridId);
+    }
 
 }

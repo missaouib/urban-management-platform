@@ -16,14 +16,15 @@
     <div class="fullScreen_index"><i class="fa fa-arrows-alt" aria-hidden="true"></i></div>
     <div class="leftwarp">
         <div class="inner">
+            <form id="userForm">
             <div class="group">
                 <div class="grouptitle">考核周期</div>
                 <div class="inputs">
                     <div class="dateIn">
-                        <input size="16" class="form_datetime" type="text" value="" readonly>
+                        <input size="16" class="form_datetime" name="startTime" id="begin" type="text" value="" readonly>
                     </div>
                     <div class="dateIn">
-                        <input size="16" class="form_datetime" type="text" value="" readonly>
+                        <input size="16" class="form_datetime" name="endTime" id="end" type="text" value="" readonly>
                     </div>
                 </div>
             </div>
@@ -31,20 +32,26 @@
                 <div class="grouptitle">区域</div>
                 <div class="inputs">
                     <div class="dateIn">
-                        <select class="girdselect">
-                            <option selected>区域1</option>
-                            <option>区域二</option>
-                            <option>区域三</option>
-                        </select>
+                        <input type="text" readonly="readonly" id="grid" class="find_input"/>
+                        <input type="hidden" readonly="readonly" name="gridId" id="gridId" class="find_input"/>
+                        <button type="button" class="addBtn" onclick="selectGridTree()">
+                            +
+                        </button>
                     </div>
-                    <div class="dateIn">
-                        <div class="search">查询</div>
+                    <div class="notice_check">
+                        <form id="search-form">
+                            <p style="display: flex;justify-content: flex-end">
+                                <input type="button" class="check_btn button_ground closeSearch" onclick="$.table.search()" value="查询">
+                                <input type="button" class="check_btn1 button_ground closeSearch" onclick="$.form.reset()" value="重置">
+                            </p>
+                        </form>
                     </div>
                 </div>
             </div>
             <div class="tablegroup">
                 <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
             </div>
+            </form>
         </div>
     </div>
     <div class="rightwarp">
@@ -83,7 +90,22 @@
     </div>
 </div>
 </body>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">默认窗口</h4>
+            </div>
+            <div class="modal-body">
 
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 </div>
 <th:block th:include="page/fragments/common :: common_js"/>
@@ -93,9 +115,31 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: swiper_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
 <script th:src="@{/js/index.js}"></script>
 <script type="text/javascript" th:inline="javascript">
 
+    /**
+     * 模态窗 selectGridTree
+     */
+    function selectGridTree() {
+        var url = /*[[@{/tree/grid}]]*/ "/tree/grid";
+        var options = {
+            title: '选择区域',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#gridId").val(body.find('#treeId').val());
+        $("#grid").val(body.find('#treeName').val());
+        layer.close(index);
+    }
     $(function () {
         $('.form_datetime').datetimepicker({
             language: 'zh-CN',
@@ -108,17 +152,16 @@
             showMeridian: 1,
             format: "yyyy-mm-dd hh:ii:ss"
         });
-
         queryUserList()
     })
-
+    let searchUrl = /*[[@{/commandSubsystem/comprehensiveEvaluationSearch}]]*/ "/commandSubsystem/comprehensiveEvaluationSearch";
     function queryUserList() {
         var options = {
             // num: num,
             showRefresh: false,
             showColumns: false,
             showToggle: false,
-            // // url: searchUrl,
+            url: searchUrl,
             // createUrl: addUrl,
             // updateUrl: editUrl,
             // removeUrl: removeUrl,
@@ -127,37 +170,27 @@
             sortOrder: "desc",
             modalName: "用户",
             onClickRow: function (row, index) {
-                layerMap.getSource().clear()
-                checkRow(row.id);
             },
             columns: [
-                // {
-                //     field: 'index',
-                //     title: '序号',
-                //     formatter: function (value, row, index) {
-                //         var page = $('#bootstrap-table').bootstrapTable("getPage");
-                //         return page.pageSize * (page.pageNumber - 1) + index + 1;
-                //     }
-                // },
                 {
                     title: '部门名称',
-                    field: 'typeName'
+                    field: 'deptName'
                 },
                 {
                     title: '处置数',
-                    field: 'eventCode'
+                    field: 'disposeNum'
                 },
                 {
                     title: '应处置数',
-                    field: 'codeEvented'
+                    field: 'needDisposeNum'
                 },
                 {
                     title: '超期处置数',
-                    field: 'overTime'
+                    field: 'overtimeDisposeNum'
                 },
                 {
                     title: '返工数',
-                    field: 'reWork'
+                    field: 'reworkNum'
                 },
             ]
         };
