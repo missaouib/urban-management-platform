@@ -299,13 +299,14 @@ body{
 	font-size: 16px;
 }
 .checkTime{
-	width: 14%;
+	width: 22%;
 	height: 4%;
 	position: absolute;
-	top: 5%;
-	right: 3%;
+	top: 1%;
+	right: 2%;
 	display: flex;
-	justify-content: space-between;align-items: center;
+	justify-content: space-between;
+	align-items: center;
 }
 .timeText{
 	width: 30%;
@@ -343,11 +344,11 @@ body{
 	right: 10px;
 	z-index: 20;
 }
-/*.label,*/
-/*.title {*/
-/*	color: #fff;*/
-/*	padding: 3px;*/
-/*}*/
+
+.title_popup {
+	color: #fff;
+	padding: 2px;
+}
 
 .popup-content {
 	background: #fff;
@@ -363,9 +364,6 @@ body{
 .ol-popup-closer:after {
 	content: "x";
 	color: #fff;
-}
-.ol-overlay-container{
-	left: 540px!important;
 }
 .details{
 	cursor: pointer;
@@ -392,4 +390,56 @@ body{
 	height: 100%;
 	float: left;
 	padding: 5px;
+}
+.numStatis{
+	width:70%;
+	height: 80px;
+	background: rgba(0,0,0,0.5);
+	box-shadow: 1px 1px 10px 0px #00c7ff;
+	position: absolute;
+	top: 5%;
+	left: 15%;
+}
+.statis1{
+	width: 25%;
+	height: 50px;
+	margin-top: 15px;
+	float: left;
+	border-right: 1px solid #00c7ff;
+}
+.statis1 span{
+	color: #fff;
+	display: block;
+	text-align: center;
+}
+.statis2{
+	width: 25%;
+	height: 50px;
+	margin-top: 15px;
+	float: left;
+}
+.statis2 span{
+	color: #fff;
+	display: block;
+	text-align: center;
+}
+.colorStyle1{
+	color: #48ebfc!important;
+	font-weight: bold;
+	line-height: 26px;
+}
+.colorStyle2{
+	color: #3cfd3c!important;
+	font-weight: bold;
+	line-height: 26px;
+}
+.colorStyle3{
+	color: #f8d546!important;
+	font-weight: bold;
+	line-height: 26px;
+}
+.colorStyle4{
+	color: #f74242!important;
+	font-weight: bold;
+	line-height: 26px;
 }

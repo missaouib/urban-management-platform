@@ -15,17 +15,11 @@
     <div class="fullScreen_index"><i class="fa fa-arrows-alt" aria-hidden="true"></i></div>
     <div class="top">
         <div class="once">
-            <div class="texts">按条件搜索：</div>
-            <div class="searchInput">
-                <input type="text" placeholder="请输入搜索条件" class="searchoption" >
-                <i class="i_mirror"></i>
-            </div>
+            <button class="btn btn-primary loopIcon_search">按条件搜索</button>
+            <button class="btn btn-primary" style="margin-left: 5px" type="button" onclick="getCaseAnalysisTitle()"><i class="fa fa-search" aria-hidden="true"></i></button>
             <div class="condition_sear">
                 <form id="userForm">
-                    <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
-                    <input th:name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
                     <div class="table2_top">
-                        <!--        <div>-->
                         <div class="top_out">
                             <table class="table">
                                 <tbody>
@@ -119,12 +113,12 @@
                 <span style="color: #F600FF;">···</span>
             </div>
             <div>
-                <span>核查</span>
-                <span style="color: #5BFEE5;">···</span>
-            </div>
-            <div>
                 <span>处置</span>
                 <span style="color: #FFBF36;">···</span>
+            </div>
+            <div>
+                <span>核查</span>
+                <span style="color: #5BFEE5;">···</span>
             </div>
             <div>
                 <span>结案</span>
@@ -135,47 +129,47 @@
     <div class="bottom">
         <div class="map" id="map" style="width: 100%;height: 100%"></div>
 <!--        <div class="show_map">-->
-            <div class="checkBox">
-                <div class="mapLayers">
-                    <div class="clickLayer">
-                        <img th:src="@{/img/1.jpg}" alt="">
-                    </div>
-                    <span class="clickName">热力图</span>
-                </div>
-            </div>
-            <div class="viewGroup">
-                <div class="mapView">
-                    <div class="optionLayers">
-                        <div class="layerGrounp" id="map1">
-                            <div class="layerInfo">
-                                <img th:src="@{/img/1.jpg}" alt="">
-                            </div>
-                            <span class="layerName">热力图</span>
-                        </div>
-                    </div>
+<!--            <div class="checkBox">-->
+<!--                <div class="mapLayers">-->
+<!--                    <div class="clickLayer">-->
+<!--                        <img th:src="@{/img/1.jpg}" alt="">-->
+<!--                    </div>-->
+<!--                    <span class="clickName">热力图</span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="viewGroup">-->
+<!--                <div class="mapView">-->
+<!--                    <div class="optionLayers">-->
+<!--                        <div class="layerGrounp" id="map1">-->
+<!--                            <div class="layerInfo">-->
+<!--                                <img th:src="@{/img/1.jpg}" alt="">-->
+<!--                            </div>-->
+<!--                            <span class="layerName">热力图</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                    <div class="optionLayers">
-                        <div class="layerGrounp" id="map2">
-                            <div class="layerInfo">
-                                <img th:src="@{/img/2.jpg}" alt="">
-                            </div>
-                            <span class="layerName">人群图</span>
-                        </div>
-                    </div>
-
-
-                    <div class="optionLayers">
-                        <div class="layerGrounp" id="map3">
-                            <div class="layerInfo">
-                                <img th:src="@{/img/3.jpg}" alt="">
-                            </div>
-                            <span class="layerName">街道图</span>
-                        </div>
-                    </div>
+<!--                    <div class="optionLayers">-->
+<!--                        <div class="layerGrounp" id="map2">-->
+<!--                            <div class="layerInfo">-->
+<!--                                <img th:src="@{/img/2.jpg}" alt="">-->
+<!--                            </div>-->
+<!--                            <span class="layerName">人群图</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
 
-                </div>
-            </div>
+<!--                    <div class="optionLayers">-->
+<!--                        <div class="layerGrounp" id="map3">-->
+<!--                            <div class="layerInfo">-->
+<!--                                <img th:src="@{/img/3.jpg}" alt="">-->
+<!--                            </div>-->
+<!--                            <span class="layerName">街道图</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+
+<!--                </div>-->
+<!--            </div>-->
 <!--        </div>-->
     </div>
 </div>
@@ -196,8 +190,8 @@
         $("#up_condition").click(function () {
             $(".condition_sear").slideUp(300)
         });
-        $(".i_mirror").click(function () {
-            $(".condition_sear").slideDown(300)
+        $(".loopIcon_search").click(function () {
+            $(".condition_sear").slideToggle(300)
         })
 
         $(".checkBox").click(function() {
@@ -212,45 +206,70 @@
             $(".checkBox").fadeIn(300);
         });
 
-
-        var center = ol.proj.transform([115.62, 41.74], "EPSG:4326", "EPSG:3857");
-        // 沽源地图
-        var center = [115.68192, 41.66462];
-        var projection = new ol.proj.Projection({
-            code: 'EPSG:4326',
-            units: 'degrees',
-            axisOrientation: 'neu',
-            global: true
-        });
-        var untiled = new ol.layer.Image({
-            source: new ol.source.ImageWMS({
-                ratio: 1,
-                url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
-                params: {
-                    'VERSION': '1.1.1',
-                    "LAYERS": 'guyuan20201010:guyuan',
-                    "exceptions": 'application/vnd.ogc.se_inimage',
+        var map_click = map.on('click', function (evt) {
+            var pixel = map.getEventPixel(evt.originalEvent);
+            var feature = map.forEachFeatureAtPixel(pixel, function (feature) {
+                return feature;
+            });
+            //判断当前单击处是否有要素，捕获到要素时弹出popup
+            var coordinate = evt.coordinate;
+            if (feature !== undefined) {
+                removeAllOverlay(map);
+                let popup_element = document.createElement('div');
+                popup_element.className = 'ol-popup';
+                let closer = document.createElement('a');
+                closer.href = '#';
+                closer.className = 'ol-popup-closer';
+                let title = document.createElement('div');
+                title.className = 'title_popup';
+                let content = document.createElement('div');
+                content.className = 'popup-content';
+                $(popup_element).append(closer);
+                $(popup_element).append(title);
+                $(popup_element).append(content);
+                let info_popup = new ol.Overlay(({
+                    element: popup_element,
+                    autoPan: true,
+                    autoPanAnimation: {
+                        duration: 250   //当Popup超出地图边界时，地图移动的速度
+                    }
+                }));
+                map.addOverlay(info_popup);
+                $(closer).on('click', function (event) {
+                    event.preventDefault();
+                    info_popup.setPosition(undefined);
+                });// 点击关闭的按钮
+                let data = feature.H.data;
+                let eventId = data.eventId;
+                if(eventId !== null && eventId !== undefined){
+                    let getDetailUrl = /*[[@{/commandSubsystem/toIndexDetails}]]*/ "/commandSubsystem/toIndexDetails";
+                    let url = getDetailUrl + "?eventId=" + eventId;
+                    $("#eventId_map").val(eventId);
+                    $("#url_map").val(url);
                 }
-            })
+                title.innerHTML = '<div><strong>案件信息</strong></div></div>';
+                content.innerHTML = '<div>' +
+                    '<div>案件编号:'+ data.eventCode +'</div>' +
+                    '<div>案件分类:'+ data.eventTypeName +'</div>' +
+                    '<div>问题描述:'+ data.represent +'</div>' +
+                    '<div class="details"><span class="">查看详情>></span></div>' +
+                    '</div>';
+                info_popup.setPosition(coordinate);
+                //查看详情跳页
+                $(".details").click(function () {
+                    let url = $("#url_map").val();
+                    let eventId = $("#eventId_map").val();
+                    window.parent.$.learuntab.myAddTab('详情', url, 'eventId');
+                })
+            }
         });
-        var source = new ol.source.Vector({wrapX: false});
 
-        var map = new ol.Map({
-            target: 'map',
-            layers: [
-                untiled
-            ],
-            view: new ol.View({
-                center: center,
-                zoom: 17,
-                projection: projection
-            })
-        });
-
-        var layerMap = new ol.layer.Vector({
-            source: new ol.source.Vector(),
-        });
-        map.addLayer(layerMap);
+        // 清空上一个弹框
+        function removeAllOverlay(map) {
+            map.getOverlays().getArray().slice(0).forEach(function (overlay) {
+                map.removeOverlay(overlay);
+            });
+        }
 
         getCaseAnalysisTitle();
 
@@ -260,18 +279,16 @@
 
     function getCaseAnalysisTitle() {
         let serialize = $("#userForm").serialize();
-        console.log("serialize", serialize);
         $.ajaxUtil.get(getCaseAnalysisTitleUrl+"?"+serialize, function (e) {
             let data = e.data;
-            console.log("data", data);
             $("#caseAnalysisTitle").empty();
             let html = "";
             if (data.length > 0) {
                 for (let i = 0; i < data.length; i++) {
-                    html += "<div>"
+                    html += "<button type='button' value ='" + JSON.stringify(data[i].data) + "' onclick='setPointAndData(this.value)'>"
                     html += "<span>" + data[i].name + "</span>"
                     html += "<span class='colorRandom'>" + data[i].data.length + "</span>"
-                    html += "</div>"
+                    html += "</button>"
                 }
             } else {
                 html += "<div>"
@@ -282,6 +299,15 @@
         });
     }
 
+    function setPointAndData(data) {
+        let json = $.parseJSON(data);
+        console.log("data", json);
+        for (let i = 0; i < json.length; i++) {
+            setPoint(json[i].coordinate.split(" ")[0],
+                json[i].coordinate.split(" ")[1],
+                json[i].eventId, json[i].eventCode, json[i].represent, json[i].eventTypeName);
+        }
+    }
 
     function selectEventTypeTree() {
         var treeId = $("#treeId").val();
@@ -358,6 +384,26 @@
             $("#timeType").html(option);
         });
     }
+
+    function setPoint(x, y, id, eventCode, represent, eventTypeName) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                eventId: id,
+                eventCode: eventCode,
+                represent: represent,
+                eventTypeName: eventTypeName,
+                coordinate: x + "," + y
+            }
+        });
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                src: '../img/dwpoint3.png'
+            })
+        }));
+        layerMap.getSource().addFeature(point);
+    }
+
 </script>
 <th:block th:include="page/fragments/common :: mapinit_js"/>
 </body>
