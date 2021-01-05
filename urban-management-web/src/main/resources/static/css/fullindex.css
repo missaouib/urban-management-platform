@@ -344,11 +344,11 @@ body{
 	right: 10px;
 	z-index: 20;
 }
-/*.label,*/
-/*.title {*/
-/*	color: #fff;*/
-/*	padding: 3px;*/
-/*}*/
+
+.title_popup {
+	color: #fff;
+	padding: 2px;
+}
 
 .popup-content {
 	background: #fff;

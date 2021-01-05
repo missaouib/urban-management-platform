@@ -303,3 +303,30 @@ body {
 .onceoption button:nth-child(7) .colorRandom{
 	color: #FF4901!important;
 }
+
+.popup-content {
+	background: #fff;
+	padding: 3px;
+}
+
+.ol-popup-closer {
+	position: absolute;
+	top: 2px;
+	right: 8px;
+}
+
+.ol-popup-closer:after {
+	content: "x";
+	color: #fff;
+}
+.details{
+	cursor: pointer;
+}
+.details:hover{
+	color: #1181FF;
+}
+.label,
+.title_popup {
+	color: #fff;
+	padding: 2px;
+}

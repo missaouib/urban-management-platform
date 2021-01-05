@@ -2420,3 +2420,6 @@ span.search_highlight {
     right: 10px;
     z-index: 20;
 }
+.title_popup{
+    background-color: black;
+}
