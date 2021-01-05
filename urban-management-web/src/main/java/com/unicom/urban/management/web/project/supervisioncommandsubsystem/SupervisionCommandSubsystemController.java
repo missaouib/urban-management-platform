@@ -4,6 +4,8 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.pojo.Result;
+import com.unicom.urban.management.pojo.dto.EventDTO;
+import com.unicom.urban.management.service.bigscreen.IndexService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class SupervisionCommandSubsystemController {
 
     @Autowired
     private StatisticsService statisticsService;
+    @Autowired
+    private IndexService indexService;
 
     @GetMapping("/index")
     public ModelAndView index() {
@@ -98,8 +102,8 @@ public class SupervisionCommandSubsystemController {
      * @return list
      */
     @GetMapping("/getCaseAnalysisTitle")
-    public Result getCaseAnalysis() {
-        List<Map<String, Object>> caseAnalysis = statisticsService.getCaseAnalysis();
+    public Result getCaseAnalysis(EventDTO eventDTO) {
+        List<Map<String, Object>> caseAnalysis = indexService.caseAnalysisList(eventDTO);
         return Result.success(caseAnalysis);
     }
 
