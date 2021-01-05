@@ -244,23 +244,24 @@
                     event.preventDefault();
                     info_popup.setPosition(undefined);
                 });// 点击关闭的按钮
-                let eventId = feature.H.data.eventId;
+                let data = feature.H.data;
+                let eventId = data.eventId;
                 if(eventId !== null && eventId !== undefined){
                     let getDetailUrl = /*[[@{/commandSubsystem/toIndexDetails}]]*/ "/commandSubsystem/toIndexDetails";
                     let url = getDetailUrl + "?eventId=" + eventId;
-                    console.log(eventId,url);
                     $("#eventId_map").val(eventId);
                     $("#url_map").val(url);
                 }
-                var name = feature.H.data.eventId;
-                var user_contact = feature.H.data.eventId;
-                var time = feature.H.data.eventId;
-                var speed = feature.H.data.eventId;
-                title.innerHTML = '<div><strong>名字:</strong>京东</div></div>';
+                let name = data.eventId;
+                let user_contact = data.eventId;
+                let time = data.eventId;
+                let speed = data.eventId;
+                console.log("data", data);
+                title.innerHTML = '<div><strong>案件信息</strong></div></div>';
                 content.innerHTML = '<div>' +
-                    '<div>坐 标:'+ name +'</div>' +
-                    '<div>时 刻:'+ user_contact +'</div>' +
-                    '<div>速 度:'+ time +'</div>' +
+                    '<div>案件编号:'+ data.eventCode +'</div>' +
+                    '<div>案件分类:'+ data.eventTypeName +'</div>' +
+                    '<div>问题描述:'+ data.represent +'</div>' +
                     '<div class="details"><span class="">查看详情>></span></div>' +
                     '</div>';
                 info_popup.setPosition(coordinate);
@@ -316,9 +317,9 @@
         $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "reporting", function (e) {
             var data = e.data;
             for (let i = 0; i < data.length; i++) {
-                $.each(data[i], function (key, value) {
-                    setPoint(value.split(" ")[0], value.split(" ")[1], key);
-                });
+                setPoint(data[i].coordinate.split(" ")[0],
+                    data[i].coordinate.split(" ")[1],
+                    data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
             }
         });
 
@@ -329,9 +330,9 @@
         $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "register", function (e) {
             var data = e.data;
             for (let i = 0; i < data.length; i++) {
-                $.each(data[i], function (key, value) {
-                    setPoint(value.split(" ")[0], value.split(" ")[1], key);
-                });
+                setPoint(data[i].coordinate.split(" ")[0],
+                    data[i].coordinate.split(" ")[1],
+                    data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
             }
         });
 
@@ -342,9 +343,9 @@
         $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "caseDispose", function (e) {
             var data = e.data;
             for (let i = 0; i < data.length; i++) {
-                $.each(data[i], function (key, value) {
-                    setPoint(value.split(" ")[0], value.split(" ")[1], key);
-                });
+                setPoint(data[i].coordinate.split(" ")[0],
+                    data[i].coordinate.split(" ")[1],
+                    data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
             }
         });
     });
@@ -354,38 +355,42 @@
         $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "caseclosed", function (e) {
             var data = e.data;
             for (let i = 0; i < data.length; i++) {
-                $.each(data[i], function (key, value) {
-                    setPoint(value.split(" ")[0], value.split(" ")[1], key);
-                });
+                setPoint(data[i].coordinate.split(" ")[0],
+                    data[i].coordinate.split(" ")[1],
+                    data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
             }
         });
     });
 
-        function setPoint(x, y, id) {
-            let point = new ol.Feature({
-                geometry: new ol.geom.Point([x, y]),
-                data: {
-                    eventId: id,
-                    coordinate: x + "," + y
-                }
-            });
-            point.setStyle(new ol.style.Style({
-                image: new ol.style.Icon({
-                    src: '../img/dwpoint3.png'
-                })
-            }));
-            layerMap.getSource().addFeature(point);
-        }
-        //表格
+    function setPoint(x, y, id, eventCode, represent, eventTypeName) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                eventId: id,
+                eventCode: eventCode,
+                represent: represent,
+                eventTypeName: eventTypeName,
+                coordinate: x + "," + y
+            }
+        });
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                src: '../img/dwpoint3.png'
+            })
+        }));
+        layerMap.getSource().addFeature(point);
+    }
 
-        //高发问题
-        findHighIncidence();
-        //高发区域
-        findHighGrid();
-        //问题来源
-        getEventSource();
-        //高发时段趋势分析
-        getTrendAnalysis();
+    //表格
+
+    //高发问题
+    findHighIncidence();
+    //高发区域
+    findHighGrid();
+    //问题来源
+    getEventSource();
+    //高发时段趋势分析
+    getTrendAnalysis();
 
     function findHighGrid(){
         let time = $("#time").val();

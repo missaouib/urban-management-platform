@@ -120,7 +120,14 @@ public class IndexService {
         if ("reporting".equals(showType)){
             for (Event event : events) {
                 Map<String,String> map1 = new HashMap<>();
-                map1.put(event.getId(),event.getX()+" "+event.getY());
+                map1.put("eventId", event.getId());
+                map1.put("coordinate", event.getX()+" "+ event.getY());
+                map1.put("eventCode", event.getEventCode());
+                map1.put("represent", event.getRepresent());
+                String name1 = event.getEventType().getParent().getParent().getName();
+                String name2 = event.getEventType().getParent().getName();
+                String name3 = event.getEventType().getName();
+                map1.put("eventTypeName", name1 + "-" + name2 + "-" + name3);
                 showPointList.add(map1);
             }
             map.put("reportList", showPointList);
@@ -130,7 +137,14 @@ public class IndexService {
                 for (Statistics statistics : event.getStatisticsList()) {
                     if (statistics.getInst() == 1) {
                         Map<String,String> map1 = new HashMap<>();
-                        map1.put(event.getId(),event.getX()+" "+ event.getY());
+                        map1.put("eventId", event.getId());
+                        map1.put("coordinate", event.getX()+" "+ event.getY());
+                        map1.put("eventCode", event.getEventCode());
+                        map1.put("represent", event.getRepresent());
+                        String name1 = event.getEventType().getParent().getParent().getName();
+                        String name2 = event.getEventType().getParent().getName();
+                        String name3 = event.getEventType().getName();
+                        map1.put("eventTypeName", name1 + "-" + name2 + "-" + name3);
                         showPointList.add(map1);
                     }
                 }
@@ -141,7 +155,14 @@ public class IndexService {
                 for (Statistics statistics : event.getStatisticsList()) {
                     if (statistics.getDispose() == 1) {
                         Map<String,String> map1 = new HashMap<>();
-                        map1.put(event.getId(),event.getX()+" "+ event.getY());
+                        map1.put("eventId", event.getId());
+                        map1.put("coordinate", event.getX()+" "+ event.getY());
+                        map1.put("eventCode", event.getEventCode());
+                        map1.put("represent", event.getRepresent());
+                        String name1 = event.getEventType().getParent().getParent().getName();
+                        String name2 = event.getEventType().getParent().getName();
+                        String name3 = event.getEventType().getName();
+                        map1.put("eventTypeName", name1 + "-" + name2 + "-" + name3);
                         showPointList.add(map1);
                     }
                 }
@@ -152,7 +173,14 @@ public class IndexService {
                 for (Statistics statistics : event.getStatisticsList()) {
                     if (statistics.getClose() == 1) {
                         Map<String,String> map1 = new HashMap<>();
-                        map1.put(event.getId(),event.getX()+" "+ event.getY());
+                        map1.put("eventId", event.getId());
+                        map1.put("coordinate", event.getX()+" "+ event.getY());
+                        map1.put("eventCode", event.getEventCode());
+                        map1.put("represent", event.getRepresent());
+                        String name1 = event.getEventType().getParent().getParent().getName();
+                        String name2 = event.getEventType().getParent().getName();
+                        String name3 = event.getEventType().getName();
+                        map1.put("eventTypeName", name1 + "-" + name2 + "-" + name3);
                         showPointList.add(map1);
                     }
                 }
