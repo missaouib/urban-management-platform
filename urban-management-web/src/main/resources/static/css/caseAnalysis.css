@@ -163,6 +163,21 @@ body {
 	color: #3795FF;
 }
 
+.popup-content {
+	background: #fff;
+	padding: 3px;
+}
+
+.ol-popup-closer {
+	position: absolute;
+	top: 2px;
+	right: 8px;
+}
+
+.ol-popup-closer:after {
+	content: "x";
+	color: #fff;
+}
 
 /* .fullOptionActive span {
     background-color: #0054FF;
