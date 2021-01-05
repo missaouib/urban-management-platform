@@ -364,9 +364,6 @@ body{
 	content: "x";
 	color: #fff;
 }
-.ol-overlay-container{
-	left: 540px!important;
-}
 .details{
 	cursor: pointer;
 }

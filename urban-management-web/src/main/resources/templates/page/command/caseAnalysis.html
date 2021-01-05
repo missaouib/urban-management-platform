@@ -15,11 +15,8 @@
     <div class="fullScreen_index"><i class="fa fa-arrows-alt" aria-hidden="true"></i></div>
     <div class="top">
         <div class="once">
-            <div class="texts">按条件搜索：</div>
-            <div class="searchInput">
-                <input type="text" placeholder="请输入搜索条件" class="searchoption" >
-                <i class="i_mirror"></i>
-            </div>
+            <button class="btn btn-primary loopIcon_search">按条件搜索</button>
+            <button class="btn btn-primary" style="margin-left: 5px"><i class="fa fa-search" aria-hidden="true"></i></button>
             <div class="condition_sear">
                 <form id="userForm">
                     <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
@@ -119,12 +116,12 @@
                 <span style="color: #F600FF;">···</span>
             </div>
             <div>
-                <span>核查</span>
-                <span style="color: #5BFEE5;">···</span>
-            </div>
-            <div>
                 <span>处置</span>
                 <span style="color: #FFBF36;">···</span>
+            </div>
+            <div>
+                <span>核查</span>
+                <span style="color: #5BFEE5;">···</span>
             </div>
             <div>
                 <span>结案</span>
@@ -135,47 +132,47 @@
     <div class="bottom">
         <div class="map" id="map" style="width: 100%;height: 100%"></div>
 <!--        <div class="show_map">-->
-            <div class="checkBox">
-                <div class="mapLayers">
-                    <div class="clickLayer">
-                        <img th:src="@{/img/1.jpg}" alt="">
-                    </div>
-                    <span class="clickName">热力图</span>
-                </div>
-            </div>
-            <div class="viewGroup">
-                <div class="mapView">
-                    <div class="optionLayers">
-                        <div class="layerGrounp" id="map1">
-                            <div class="layerInfo">
-                                <img th:src="@{/img/1.jpg}" alt="">
-                            </div>
-                            <span class="layerName">热力图</span>
-                        </div>
-                    </div>
+<!--            <div class="checkBox">-->
+<!--                <div class="mapLayers">-->
+<!--                    <div class="clickLayer">-->
+<!--                        <img th:src="@{/img/1.jpg}" alt="">-->
+<!--                    </div>-->
+<!--                    <span class="clickName">热力图</span>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="viewGroup">-->
+<!--                <div class="mapView">-->
+<!--                    <div class="optionLayers">-->
+<!--                        <div class="layerGrounp" id="map1">-->
+<!--                            <div class="layerInfo">-->
+<!--                                <img th:src="@{/img/1.jpg}" alt="">-->
+<!--                            </div>-->
+<!--                            <span class="layerName">热力图</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
-                    <div class="optionLayers">
-                        <div class="layerGrounp" id="map2">
-                            <div class="layerInfo">
-                                <img th:src="@{/img/2.jpg}" alt="">
-                            </div>
-                            <span class="layerName">人群图</span>
-                        </div>
-                    </div>
-
-
-                    <div class="optionLayers">
-                        <div class="layerGrounp" id="map3">
-                            <div class="layerInfo">
-                                <img th:src="@{/img/3.jpg}" alt="">
-                            </div>
-                            <span class="layerName">街道图</span>
-                        </div>
-                    </div>
+<!--                    <div class="optionLayers">-->
+<!--                        <div class="layerGrounp" id="map2">-->
+<!--                            <div class="layerInfo">-->
+<!--                                <img th:src="@{/img/2.jpg}" alt="">-->
+<!--                            </div>-->
+<!--                            <span class="layerName">人群图</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
 
 
-                </div>
-            </div>
+<!--                    <div class="optionLayers">-->
+<!--                        <div class="layerGrounp" id="map3">-->
+<!--                            <div class="layerInfo">-->
+<!--                                <img th:src="@{/img/3.jpg}" alt="">-->
+<!--                            </div>-->
+<!--                            <span class="layerName">街道图</span>-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+
+<!--                </div>-->
+<!--            </div>-->
 <!--        </div>-->
     </div>
 </div>
@@ -196,8 +193,8 @@
         $("#up_condition").click(function () {
             $(".condition_sear").slideUp(300)
         });
-        $(".i_mirror").click(function () {
-            $(".condition_sear").slideDown(300)
+        $(".loopIcon_search").click(function () {
+            $(".condition_sear").slideToggle(300)
         })
 
         $(".checkBox").click(function() {
