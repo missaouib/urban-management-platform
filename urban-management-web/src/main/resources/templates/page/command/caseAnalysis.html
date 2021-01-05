@@ -256,23 +256,26 @@
 
     });
 
-    var getCaseAnalysisTitleUrl = /*[[@{/commandSubsystem/getCaseAnalysisTitle}]]*/ "/commandSubsystem/getCaseAnalysisTitle";
+    let getCaseAnalysisTitleUrl = /*[[@{/commandSubsystem/getCaseAnalysisTitle}]]*/ "/commandSubsystem/getCaseAnalysisTitle";
 
     function getCaseAnalysisTitle() {
-        $.ajaxUtil.get(getCaseAnalysisTitleUrl, function (e) {
+        let serialize = $("#userForm").serialize();
+        console.log("serialize", serialize);
+        $.ajaxUtil.get(getCaseAnalysisTitleUrl+"?"+serialize, function (e) {
             let data = e.data;
+            console.log("data", data);
             $("#caseAnalysisTitle").empty();
             let html = "";
             if (data.length > 0) {
                 for (let i = 0; i < data.length; i++) {
                     html += "<div>"
                     html += "<span>" + data[i].name + "</span>"
-                    html += "<span class='colorRandom'>" + data[i].data + "</span>"
+                    html += "<span class='colorRandom'>" + data[i].data.length + "</span>"
                     html += "</div>"
                 }
             } else {
                 html += "<div>"
-                html += "<span>为获取数据</span>"
+                html += "<span>未获取数据</span>"
                 html += "</div>"
             }
             $("#caseAnalysisTitle").html(html);
