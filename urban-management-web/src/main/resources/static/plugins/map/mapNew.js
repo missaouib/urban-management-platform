@@ -2,9 +2,9 @@ var gridsetName = 'EPSG:4552';
 var gridNames = ['EPSG:4552:0', 'EPSG:4552:1', 'EPSG:4552:2', 'EPSG:4552:3', 'EPSG:4552:4', 'EPSG:4552:5', 'EPSG:4552:6', 'EPSG:4552:7'];
 var baseUrl = 'http://218.10.223.8:9050/geoserver/gwc/service/wmts';
 var style = '';
-var format = 'image/png8';
+var format = 'image/png';
 var infoFormat = 'text/html';
-var layerName = 'hegang:MosaicResult';
+var layerName = 'hegang:hegang8';
 var projection = new ol.proj.Projection({
     code: 'EPSG:4552',
     units: 'm',
@@ -13,16 +13,6 @@ var projection = new ol.proj.Projection({
 
 
 
-//  styles = new Style({
-//     stroke: new Stroke({
-//         // color: 'blue',
-//         color: 'rgba(30,144,255)',
-//         width: 3
-//     }),
-//     fill: new Fill({
-//         color: 'rgba(0, 0, 255, 0.1)'
-//     })
-// })
 var resolutions = [13.999999999999998, 6.999999999999999, 3.4999999999999996, 1.7499999999999998, 0.8749999999999999, 0.43749999999999994, 0.21874999999999997, 0.10937499999999999];
 baseParams = ['VERSION','LAYER','STYLE','TILEMATRIX','TILEMATRIXSET','SERVICE','FORMAT'];
 
@@ -52,7 +42,7 @@ function constructSource() {
         format: params['FORMAT'],
         projection: projection,
         tileGrid: new ol.tilegrid.WMTS({
-            tileSize: [256,256],
+            tileSize: [512,512],
             extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
             origin: [374503.7646126483, 5570848.560955403],
             resolutions: resolutions,

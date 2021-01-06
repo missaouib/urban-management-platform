@@ -18,6 +18,8 @@
             <button class="btn btn-primary loopIcon_search">按条件搜索</button>
             <button class="btn btn-primary" style="margin-left: 5px" type="button" onclick="getCaseAnalysisTitle()"><i class="fa fa-search" aria-hidden="true"></i></button>
             <div class="condition_sear">
+                <input type="hidden" value="" id="eventId_map">
+                <input type="hidden" value="" id="url_map">
                 <form id="userForm">
                     <div class="table2_top">
                         <div class="top_out">
@@ -264,20 +266,22 @@
             }
         });
 
-        // 清空上一个弹框
-        function removeAllOverlay(map) {
-            map.getOverlays().getArray().slice(0).forEach(function (overlay) {
-                map.removeOverlay(overlay);
-            });
-        }
-
         getCaseAnalysisTitle();
 
     });
 
+    // 清空上一个弹框
+    function removeAllOverlay(map) {
+        map.getOverlays().getArray().slice(0).forEach(function (overlay) {
+            map.removeOverlay(overlay);
+        });
+    }
+
     let getCaseAnalysisTitleUrl = /*[[@{/commandSubsystem/getCaseAnalysisTitle}]]*/ "/commandSubsystem/getCaseAnalysisTitle";
 
     function getCaseAnalysisTitle() {
+        layerMap.getSource().clear();
+        removeAllOverlay(map);
         let serialize = $("#userForm").serialize();
         $.ajaxUtil.get(getCaseAnalysisTitleUrl+"?"+serialize, function (e) {
             let data = e.data;
@@ -301,7 +305,8 @@
 
     function setPointAndData(data) {
         let json = $.parseJSON(data);
-        console.log("data", json);
+        layerMap.getSource().clear();
+        removeAllOverlay(map);
         for (let i = 0; i < json.length; i++) {
             setPoint(json[i].coordinate.split(" ")[0],
                 json[i].coordinate.split(" ")[1],

@@ -48,9 +48,12 @@ public class SupervisionAcceptanceController {
     @Autowired
     private EventFileService eventFileService;
 
-    @GetMapping("/toSupervisionAcceptanceList")
-    public ModelAndView toSupervisionAcceptanceList(Model model, String eventId) {
-        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/list");
+    /**
+     * 跳转到自处理案件列表
+     */
+    @GetMapping("/toSelfProcessingList")
+    public ModelAndView toSelfProcessingList(Model model, String eventId) {
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/selfProcessing/list");
         //问题来源
         modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
@@ -86,22 +89,22 @@ public class SupervisionAcceptanceController {
     }
 
     /**
-     * 公众信息待办列表
+     * 待办案件列表
      *
      * @return list
      */
-    @GetMapping("/toSelfProcessingList")
-    public ModelAndView toSelfProcessingList(Model model, String eventId) {
+    @GetMapping("/toPendingCasesList")
+    public ModelAndView toPendingCasesList(Model model, String eventId) {
         //问题来源
         model.addAttribute("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
         //所属网格
         model.addAttribute("gridList", gridService.searchAll());
         model.addAttribute("eventId", eventId);
-        return new ModelAndView(SystemConstant.PAGE + "/event/selfProcessing/list");
+        return new ModelAndView(SystemConstant.PAGE + "/event/pendingCases/list");
     }
 
     /**
-     * 待办案件列表
+     * 弃用
      *
      * @return list
      */
@@ -113,7 +116,7 @@ public class SupervisionAcceptanceController {
     }
 
     /**
-     * 案件派核查列表
+     * 弃用
      *
      * @return list
      */

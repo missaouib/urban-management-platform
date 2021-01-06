@@ -2,12 +2,12 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>自处理案件列表</title>
+    <title>待办案件</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
-    <th:block th:include="page/fragments/common :: swiper_css" />
+    <th:block th:include="page/fragments/common :: swiper_css"/>
     <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
 </head>
 <body style="border-radius: 8px;">
@@ -17,7 +17,7 @@
             <div class="selectPoint">
                 <form id="userForm">
                     <input id="eventIdListByBox" name="eventIdListByBox" value="" type="hidden">
-                    <input th:name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
+                    <input name="eventId" th:value="${eventId}" id="eventIdFromWorkBench" type="hidden">
                     <div class="top table2_top xiangqing">
                         <div class="top_out">
                             <table class="table">
@@ -92,14 +92,11 @@
                     </form>
                 </div>
             </div>
-            <div style="width: 100%;width: 100%;display: flex;justify-content: center">
+            <div style="width: 100%;display: flex;justify-content: center">
                 <div class="xiala"><i class="selectmenu"></i></div>
             </div>
             <div class="btn-group-sm" id="toolbar" >
-                <div class="r_right but_p girdBtnGroup" id="eventButton">
-<!--                    不可删除  暂时隐藏-->
-<!--                    <button class="but_save" type="button" style="margin-right: 10px" data-toggle="modal" data-target="#modal-sm">相似案件</button>-->
-                </div>
+                <div class="r_right but_p girdBtnGroup" id="eventButton"></div>
             </div>
             <div class="toop1">
                 <img class="inline" th:src="@{/img/2.png}" width="20px" alt="">
@@ -189,7 +186,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td><span></span>案件等级</td>
+                                                <td><span></span>计时等级</td>
                                                 <td>
                                                     <input id="level" type="text" maxlength="30" required readonly="readonly">
 
@@ -201,7 +198,7 @@
                                             </tr>
                                             <tr>
                                                 <td><span></span>问题描述</td>
-                                                <td colspan="8"><input id="represent" type="text" class="find_input" required readonly></td>
+                                                <td colspan="8"><input id="represent" type="text" class="find_input" readonly>
                                             </tr>
                                             <tr class="col-12">
                                                 <td><span></span>案件地址</td>
@@ -279,21 +276,12 @@
                                                 <td><span></span>纬度</td>
                                                 <td>
                                                     <input id="y" type="text" class="find_input" readonly="readonly" value="">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><span></span>监督员</td>
-                                                <td>
-                                                    <input id="selectUser" type="text" name="safeLevel" class="find_input" onchange="getUserval()"
-                                                           readonly="readonly" value="">
-<!--                                                    <select name="safeLevel" id="selectUser" onchange="getUserval()">-->
-<!--                                                        <option selected>请选择</option>-->
-<!--                                                        <option value="1">超级管理员</option>-->
-<!--                                                    </select>-->
                                                     <input type="hidden" id="userId" value="">
                                                     <input type="hidden" id="eventId" value="">
                                                     <input type="hidden" id="button" value="">
                                                 </td>
+                                            </tr>
+                                            <tr>
                                                 <td class="partCodes">部件编码<span></span></td>
                                                 <td class="partCodes">
                                                     <input type="text" class="find_input" id="objId">
@@ -301,7 +289,10 @@
                                             </tr>
                                             </tbody>
                                         </table>
+
+
                                     </div>
+
                                 </div>
                             </form>
                         </div>
@@ -371,7 +362,6 @@
         </div>
     </div>
     <div class="rightContent">
-
         <div class="tabInfo">
             <div class="search_map">
                 <div class="map_input">
@@ -398,7 +388,7 @@
             </div>
             <div class="tips_sele">Ctrl+鼠标左键可进行地图框选</div>
             <div class="banner blockActive">
-                <div class="map" id="map" style="width: 100%;height: 90%"></div>
+                <div class="map" id="map" style="width: 100%;height: 100%"></div>
                 <div id="popup" class="ol-popup">
                     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                     <div id="popup-content">
@@ -406,19 +396,8 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </div>
-
-
-
-
-
-
-
-
-
     <!--    核实-->
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
@@ -428,19 +407,28 @@
                 </div>
                 <div class="modal-body">
                     <div class="checkMain" style="position: relative">
-                        <span class="sendText" style="width: 120px" id="btnOpinion"><i style="color: red!important;"></i>核实意见</span>
+                        <span class="sendText" style="width: 125px" id="btnOpinion"><i style="color: red!important;"></i></span>
                         <textarea type="text" id="textIdioms" onblur="saveIdioms(this)"></textarea>
-                        <div class="alwaysSay btn btn-primary" id="alwaysSay">惯用语</div>
+                        <div class="alwaysSay btn btn-primary" id="alwaysSay" >惯用语</div>
                         <div id="wordSays" class="wordSays" style="background-color:#fff;">
-                            <ul>
-                                <li class="idioms">请快速处理</li>
-                                <li class="idioms">请认真处理</li>
-                                <li class="idioms">请根据实际情况酌情处置</li>
-                            </ul>
+                        </div>
+                    </div>
+                    <div class="checkMain" style="position: relative;display: block" id="userListDiv">
+                        <div class="sendText" style="float:left;width: 99px">监督员</div>
+                        <select name="safeLevel" id="selectUser" onchange="getUserVal()" type="text" class="find_input">
+
+                        </select>
+                    </div>
+                    <div class="send">
+                        <div class="sendImg">
+                            <div class="sendText" style="width: 99px"><span>多媒体:</span></div>
+                            <div><input id="imageInput" type="file" name="files" multiple="multiple"></div>
+                            <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
+                            <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
+                            <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
                         </div>
                     </div>
                 </div>
-                <input type="hidden" id="imageUrlList" value="">
                 <div class="modal-footer justify-content-between"
                      style="display: flex;justify-content: flex-end!important;">
                     <button type="button" class="btn btn-primary" onclick="completeEvent()" id="underBtn">完成</button>
@@ -448,33 +436,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-<!--    相似案件-->
-    <div class="modal fade" id="modal-sm">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">相似案件</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="such">案件：<a>E0300476522</a></div>
-                    <div class="same">该事件与以下案件相似：</div>
-                    <div class="sameArray">
-                        <ul>
-                            <li>案件：<a>E0300476522</a></li>
-                            <li>案件：<a>E0300476522</a></li>
-                            <li>案件：<a>E0300476522</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
-                </div>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
     </div>
 
     <!--    附件详情弹出的窗口-->
@@ -491,27 +452,45 @@
                 </div>
                 <div class="duck_info">
                     <div class="info_chance blockActive">
-                        <div class="swiper-container sw1">
+                        <div class="swiper-container modelImageBox">
                             <div class="swiper-wrapper" id="modelImageList">
                             </div>
                             <!-- Add Pagination -->
-                            <div class="swiper-pagination pg1"></div>
+                            <div class="swiper-pagination modelImagePage"></div>
                             <!-- Add Arrows -->
                             <div class="swiper-button-next"></div>
                             <div class="swiper-button-prev"></div>
                         </div>
                     </div>
-                    <div class="info_chance">视频
-                        <video style="width: 100%;height: 100%"></video>
+                    <div class="info_chance">
+                        <div class="swiper-container modelVideoBox">
+                            <div class="swiper-wrapper" id="modelVideoList">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination modelVideoPage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
                     </div>
-                    <div class="info_chance">音频</div>
+                    <div class="info_chance">
+                        <div class="swiper-container modelAudioBox">
+                            <div class="swiper-wrapper" id="modelAudioList">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination modelAudioPage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- &lt;!&ndash;  点击图片弹出  &ndash;&gt;-->
-    <div class="duk_duck" id="pictureBoxDuc" style="display: none">
+    <!-- &lt;!&ndash; 处置前 弹出的全屏显示轮播图  &ndash;&gt;-->
+    <div class="duk_duck" id="pictureBoxDuc">
         <div class="duk_box">
             <div class="allTiel" id="allTiel">
                 <div class="fullScreen" id="fullScreen">全屏</div>
@@ -520,24 +499,24 @@
                     <i style="width: 20px;height: 20px"><img src="../img/close_duck.png" style="width: 100%;height: 100%"></i>
                 </div>
                 <div style="width: 100%;height: 100%;padding: 5px">
-                    <div class="swiper-container sw2">
-                        <div class="swiper-wrapper" id="imageDetailList">
-
+                    <div class="info_chance blockActive">
+                        <div class="swiper-container imageDetailBox">
+                            <div class="swiper-wrapper" id="imageDetailList">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination imageDetailPage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
                         </div>
-                        <!-- Add Pagination -->
-                        <div class="swiper-pagination pg2"></div>
-                        <!-- Add Arrows -->
-                        <div class="swiper-button-next"></div>
-                        <div class="swiper-button-prev"></div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 
 </div>
-
-
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
 <th:block th:include="page/fragments/common :: fileUpload_js"/>
@@ -547,30 +526,42 @@
 <th:block th:include="page/fragments/common :: swiper_js"/>
 <script type="text/javascript" th:inline="javascript">
 
+    let multiMediaData = [];
+
     $(function () {
 
-        //搜索重置 关掉搜索条件盒子
-        $(".closeSearch").click(function () {
-            $(".selectPoint").slideUp(300);
-        });
-        $(".doItInner").height($(".bottom_left").height() - $(".doItTitle").height());
-        $(".right_bottomIn").height($(".bottom_right").height() - $(".right_topIn").height());
-
-        $(".do_span").click(function () {
-            $(this).addClass("active").siblings(".do_span").removeClass("active");
-            $(".do_banner").eq($(this).index(".do_span")).addClass("blockActive").siblings(".do_banner").removeClass("blockActive");
-        });
-
-        $(".keep_span").click(function () {
-            $(this).addClass("active").siblings(".keep_span").removeClass("active");
-            $(".banners").eq($(this).index(".keep_span")).addClass("blockActive").siblings(".banners").removeClass("blockActive");
-        })
-
         $(".ol-full-screen-false").html("全屏")
+
+        //附件详情弹出
+        $(".duck_title span").click(function (event) {
+            $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
+            $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
+            event.stopPropagation();
+        });
+
+        $(".duck_close").click(function () {
+            $(".duck_duck").fadeOut(300)
+        });
+
+        $(".banners").on("click", ".enclosure", function () {
+            $(".duck_duck").fadeIn(300)
+        });
 
         $(".tabTitle span").click(function () {
             $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
             $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
+        });
+
+        //选择监督员
+        $("#changeMan").click(function () {
+            $("#selectUser").stop().slideToggle(300)
+        });
+
+        $("#selectUser").on("click", ".monitor", function () {
+            let monitor = $(this).html()
+            $("#userId").val($(this).val())
+            $("#monitor_man").html(monitor);
+            $("#selectUser").slideUp(300)
         });
 
         //惯用语
@@ -596,10 +587,6 @@
 
         $(".duk_close").click(function() {
             $("#pictureBoxDuc").fadeOut(300)
-        });
-
-        $(".banners").on("click", ".innerPic", function() {
-            $("#pictureBoxDuc").fadeIn(300)
         });
 
         $(".do_banner").on("click", "#beforeDisSwiper", function () {
@@ -635,26 +622,27 @@
         });
 
         //全屏
-        $("#fullScreen").click(function() {
+        $("#fullScreen").click(function () {
             $("#allTiel").addClass("allTielFont");
             $("#exitfullScreen").css("display", "block");
             $(this).css("display", "none")
         });
 
-        $("#exitfullScreen").click(function() {
+        $("#exitfullScreen").click(function () {
             $("#allTiel").removeClass("allTielFont");
             $(this).css("display", "none");
             $("#fullScreen").css("display", "block");
         })
         var r = 0;
-        $(".xiala").click(function() {
+        $(".xiala").click(function () {
             r += 180;
             $(".selectPoint").slideToggle(300);
             $(".selectmenu").css('transform', 'rotate(' + r + 'deg)');
         })
 
-        var swiper2 = new Swiper('.sw2', {
-            pagination: '.pg2',
+        /* 详情图片轮播 */
+        var swiperImage1 = new Swiper('.imageDetailBox', {
+            pagination: '.imageDetailPage',
             nextButton: '.swiper-button-next',
             prevButton: '.swiper-button-prev',
             slidesPerView: 1,
@@ -665,8 +653,9 @@
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
 
-        var swiper = new Swiper('.sw1', {
-            pagination: '.pg1',
+        /* 详情视频轮播 */
+        var swiperVideo1 = new Swiper('.videoDetailBox', {
+            pagination: '.videoDetailPage',
             nextButton: '.swiper-button-next',
             prevButton: '.swiper-button-prev',
             slidesPerView: 1,
@@ -677,9 +666,61 @@
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
 
-        //处置前 轮播
-        var beforDisSwiper = new Swiper('#beforDisSwiper', {
-            pagination: '.beforDisPg',
+        /* 详情音频轮播 */
+        var swiperAudio1 = new Swiper('.audioDetailBox', {
+            pagination: '.audioDetailPage',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            // loop: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        /* 时间轴图片轮播 */
+        var swiperImage = new Swiper('.modelImageBox', {
+            pagination: '.modelImagePage',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            // loop: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        /* 时间轴视频轮播 */
+        var swiperVideo = new Swiper('.modelVideoBox', {
+            pagination: '.modelVideoPage',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            // loop: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        /* 时间轴音频轮播 */
+        var swiperAudio = new Swiper('.modelAudioBox', {
+            pagination: '.modelAudioPage',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            // loop: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        //处置后放大 轮播
+        var imageMediailListAfter = new Swiper('#imageMediailListAfter', {
+            pagination: '.imageMediailListAfterPg',
             paginationClickable: true,
             nextButton: '.swiper-button-next',
             prevButton: '.swiper-button-prev',
@@ -688,38 +729,86 @@
             observeParents: true //修改swiper的父元素时，自动初始化swiperd
         });
 
-        //处置后 轮播
-        var afterDisSwiper = new Swiper('#afterDisSwiper', {
-            pagination: '.afterDisPg',
-            paginationClickable: true,
-            nextButton: '.swiper-button-next',
-            prevButton: '.swiper-button-prev',
-            spaceBetween: 30,
-            observer: true, //修改swiper自己或子元素时，自动初始化swiper
-            observeParents: true //修改swiper的父元素时，自动初始化swiperd
-        });
+        $("#imageInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'],       // 接收的文件后缀
+            maxFileCount: 10,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showClose: false,                                   // 右上角的×
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: true,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                  // 按钮样式
+        }).on('change', function (event) {
+            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
+        }).on('fileselect', function (event, numFiles, label) {
+            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
+        }).on("filebatchselected", function (event, files) {
+            $(this).fileinput("upload");
+        }).on("fileuploaded", function (event, data) {
 
-        getIdioms();
-        queryUserList();
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                multiMediaData.push(data);
+                insertMultiMedia(data);
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
+            }
+        }).on('filedeleted', function (event, key) {
+            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
+            console.log('Key = ' + key);
+        }).on('filesuccessremove', function (event, id) {
+            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
+            deleteMultiMedia(id, multiMediaData);
+        }).on('fileclear', function (event) {
+            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
+        }).on('filecleared', function (event) {
+            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
+        }).on('filepredelete', function (event, key) {
+            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
+            console.log('Key = ' + key);
+        });
 
         setModelName();
-        //处置前后为空
-        setMediaBefore();
-        setMediaAfter();
 
+        getIdioms();
+
+        queryUserList();
         let eventId = $('#eventIdFromWorkBench').val();
         if (eventId !== '' && eventId !== undefined){
             checkRow(eventId);
         }
+
+        //处置前后为空
+        setMediaBefore();
+        setMediaAfter();
+
     });
 
-    function setModelName(){
-        $("#eventButton").on("click",".but_save",function () {
+    //回调函数接收查询结果
+    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
+
+    /**
+     * 根据按钮名赋值模态窗标题
+     */
+    function setModelName() {
+        $("#eventButton").on("click", ".but_save", function () {
             $(".modal-title").html($(this).html())
             $("#underBtn").html($(this).html())
-            $("#btnOpinion").html($(this).html()+"意见")
+            $("#btnOpinion").html($(this).html() + "意见")
         })
-    };
+    }
 
     function selectEventTypeTree() {
         var treeId = $("#treeId").val();
@@ -743,8 +832,6 @@
         findEventConditionByEventType(eventTypeId)
         layer.close(index);
     }
-
-    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
 
     /**
      * 获取立案区域
@@ -797,62 +884,45 @@
             $("#timeType").html(option);
         });
     }
-    /*
-    *  userId
-    * */
-    function getUserval(){
+
+    /**
+     * userId
+     */
+    function getUserVal() {
         var options = $("#selectUser option:selected");
-        // alert(options.val());
-        $("#userId").val(options.val())
+        $("#userId").val(options.val());
     }
 
-
-    let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
-    let showUrl = [[${@fastProperties.nginxUrl}]];
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
-    let searchUrl = /*[[@{/event/supervisionAcceptanceList}]]*/ "/event/supervisionAcceptanceList";
-    let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
-    let completeBySelfProcessingAuditUrl = /*[[@{/event/completeBySelfProcessingAudit}]]*/ "/event/completeBySelfProcessingAudit";
-    let claimAndCompleteByReceptionistUrl = /*[[@{/event/claimAndCompleteByReceptionistWithShiftLeader}]]*/ "/event/claimAndCompleteByReceptionistWithShiftLeader";
-    let completeByReceptionistWithSendCheckUrl = /*[[@{/event/completeByReceptionistWithSendCheck}]]*/ "/event/completeByReceptionistWithSendCheck";
-    let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
+    let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
+    let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
     let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
-    let uploadUrl = /*[[@{/common/upload}]]*/ "/common/upload";
-
-
-
-
-
-    //回调函数接收查询结果
-    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
-
-    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
-
+    let searchUrl = /*[[@{/event/selfProcessingList}]]*/ "/event/selfProcessingList";
+    let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
+    let getUserListForSupervisorUrl = /*[[@{/event/getUserListForSupervisor/}]]*/ "/event/getUserListForSupervisor/";
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+    let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
+    let showUrl = [[${@fastProperties.nginxUrl}]];
     let num = 1;
 
     function queryUserList() {
-        var options = {
+        let options = {
             num: num,
             url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
-            // exportUrl: prefix + "/export",
-            // importUrl: prefix + "/importData",
-            // importTemplateUrl: prefix + "/importTemplate",
             uniqueId: "id",
-            sortName: "updateTime",
+            sortName: "createTime",
             sortOrder: "desc",
             modalName: "用户",
-            onClickRow: function (row,index) {
-                layerMap.getSource().clear()
+            onClickRow: function (row, index) {
+                layerMap.getSource().clear();
                 checkRow(row.id);
             },
             onLoadSuccess: function (data) {
-                $('#eventIdFromWorkBench').val('');
-                $("#eventIdListByBox").val("");
+                $('#eventIdFromWorkBench').val("");
+                $('#eventIdListByBox').val("");
                 layerMap.getSource().clear();
                 if(vector !== null && vector !== undefined && vector !== ""){
                     vector.getSource().clear();
@@ -921,7 +991,6 @@
         $.table.init(options);
     }
 
-
     jQuery.extend(jQuery.validator.messages, {
         required: "必填",
         phone: "必填",
@@ -944,7 +1013,6 @@
     });
 
     function checkRow(eventId) {
-        getButton(eventId);
         getTimeAxis(eventId);
         getEventDetail(eventId);
         getNodeName(eventId);
@@ -959,13 +1027,17 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save underbtn' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
                 }
             }
-            $("#eventButton").html(buttonHtml);
+            $("#eventButton").append(buttonHtml);
+            if ($("#eventSourceStr").val() === "监督员上报") {
+                $("#13").remove();
+            }
         });
     }
 
+    /* 时间轴 */
     function getTimeAxis(eventId) {
         $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
             let data = e.data;
@@ -1000,9 +1072,6 @@
                     html += "<div class='endBox'>";
                     html += "回复内容:<em class='roleSize'>"+ data[i].opinions +"</em> ";
                     html += "</div>";
-                    if (data[i].fileName.length > 0) {
-                        html += "<div class='endBox enclosure'><i></i>附件详情</div>";
-                    }
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
@@ -1012,6 +1081,19 @@
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox RecordTime'>";
                     html += "<div>开始时间:<em>"+ data[i].starTime +"</em></div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox RecordTime'>";
+                    html += "结束时间:<em>"+ data[i].endTime +"</em>"
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox' style='display: flex;justify-content: flex-end'>";
+                    html += "<em></em>"
+                    if (data[i].fileName.length > 0) {
+                        html += "<button class='endBox enclosure' type='button' value='" + JSON.stringify(data[i].fileName) + "' onclick='setFileUrl(this)'><i></i>附件详情</button>";
+                    }
                     html += "</div>";
                     html += "</div>";
                     html += "</div>";
@@ -1026,199 +1108,172 @@
         });
     }
 
+    function setFileUrl(data) {
+        let value = $.parseJSON(data.value);
+        if (value.length > 0) {
+            $("#modelImageList").empty();
+            $("#modelVideoList").empty();
+            $("#modelAudioList").empty();
+            let imageHtml = "";
+            let videoHtml = "";
+            let audioHtml = "";
+            for (let i = 0; i < value.length; i++) {
+                if (value[i].type === 1) {
+                    imageHtml += "<div class='swiper-slide'>";
+                    imageHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>";
+                    imageHtml += "</div>";
+                }
+                if (value[i].type === 2) {
+                    videoHtml += "<div class='swiper-slide'>";
+                    videoHtml += "<video style='width: 100%;height: 100%' controls src='" + showUrl + value[i].url + "'></video>";
+                    videoHtml += "</div>";
+                }
+                if (value[i].type === 3) {
+                    audioHtml += "<div class='swiper-slide'>";
+                    audioHtml += "<audio style='width: 100%;height: 100%' controls src='" + showUrl + value[i].url + "'></audio>";
+                    audioHtml += "</div>";
+                }
+            }
+            $("#modelImageList").html(imageHtml);
+            $("#modelVideoList").html(videoHtml);
+            $("#modelAudioList").html(audioHtml);
+        }
+    }
+
     function getEventDetail(eventId) {
         $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
-            eventId = e.data.id;
+            let data = e.data;
+            eventId = data.id;
             /*详情*/
-            $("#eventCode").val(e.data.eventCode);
-            $("#eventTypeStr").val(e.data.eventTypeStr);
-            $("#represent").val(e.data.represent);
-            $("#location").val(e.data.location);
-            $("#regionStr").val(e.data.regionStr);
-            $("#conditionValue").val(e.data.conditionValue);
-            $("#level").val(e.data.level);
-            $("#timeLimitStr").val(e.data.timeLimitStr);
-            $("#girdStr").val(e.data.girdStr);
-            $("#community").val(e.data.community);
-            $("#street").val(e.data.street);
-            $("#eventRegion").val(e.data.eventRegion);
-            $("#x").val(e.data.x);
-            $("#y").val(e.data.y);
-            $("#eventSourceStr").val(e.data.eventSourceStr);
-            $("#cdate").val(e.data.cdate);
-            $("#petitionerSex").val(e.data.petitionerSex);
-            $("#petitionerPhone").val(e.data.petitionerPhone);
-            $("#petitionerName").val(e.data.petitionerName);
-            $("#userName").val(e.data.userName);
-            $("#recTypeStr").val(e.data.recTypeStr);
-            $("#objId").val(e.data.objId);
-            if (e.data.objId == null){
+            $("#eventCode").val(data.eventCode);
+            $("#eventTypeStr").val(data.eventTypeStr);
+            $("#represent").val(data.represent);
+            $("#location").val(data.location);
+            $("#regionStr").val(data.regionStr);
+            $("#conditionValue").val(data.conditionValue);
+            $("#level").val(data.level);
+            $("#timeLimitStr").val(data.timeLimitStr);
+            $("#girdStr").val(data.girdStr);
+            $("#community").val(data.community);
+            $("#street").val(data.street);
+            $("#eventRegion").val(data.eventRegion);
+            $("#x").val(data.x);
+            $("#y").val(data.y);
+            $("#eventSourceStr").val(data.eventSourceStr);
+            $("#cdate").val(data.cdate);
+            $("#petitionerSex").val(data.petitionerSex);
+            $("#petitionerPhone").val(data.petitionerPhone);
+            $("#petitionerName").val(data.petitionerName);
+            $("#userName").val(data.userName);
+            $("#recTypeStr").val(data.recTypeStr);
+            $("#objId").val(data.objId);
+            if (data.objId == null) {
                 $(".partCodes").addClass('roleBox')
-            }else {
+            } else {
                 $(".partCodes").removeClass('roleBox')
             }
+
+            getUserListForSupervisor(data.gridId);
+
             /*流程图*/
-            $("#eventImg").attr('src', img + e.data.processInstanceId);
+            $("#eventImg").attr('src', img + data.processInstanceId);
+
             /* 附件图片回显 */
-            let file = e.data.file;
+            let file = data.file;
             setFileInput(file);
             /* 坐标 */
-            setPoint(e.data.x, e.data.y, e.data.id);
+            setPoint(data.x, data.y, eventId);
             /* 设定中心点和层级 */
-            setCenterAndZoom(e.data.x, e.data.y, map.getView().getZoom() + 4);
+            setCenterAndZoom(data.x, data.y, map.getView().getZoom() + 4);
+            /* 获取按钮 因为在监督员上报的时候不显示重新核实按钮 所以需要在赋值之后调用方法 */
+            getButton(eventId);
+            /*设置转应急按钮*/
+
         });
     }
-
-    /* 完成任务 派核实 监督员 */
-    function setValueForCompleteEvent(data) {
-        $("#textIdioms").empty();
-        $("#eventId").val(data.value)
-        $("#button").val(data.id)
-    }
-
-    function completeEvent() {
-        $.operate.saveAndReload(completeBySelfProcessingAuditUrl, {
-            id: $("#eventId").val(),
-            button: $("#button").val(),
-            imageUrlList: $("#imageUrlList").val()
-        });
-    }
-
+    /* 步骤图 */
     function getNodeName(eventId) {
         $.ajaxUtil.get(getNodeNameUrl + "?eventId=" + eventId, function (e) {
             setConduct(e.data);
         });
     }
 
-    //上传 照片视频音频
-    $(function () {
+    /* 完成任务 派核实 监督员 */
+    function setValueForCompleteEvent(data) {
+        $("#textIdioms").val('');
+        $("#eventId").val(data.value);
+        let id = data.id;
+        $("#button").val(id);
+        if (id === "11" || id === "13" || id === "14" || id === "16") {
+            $("#userListDiv").css("display", "block");
+        } else {
+            $("#userListDiv").css("display", "none");
+        }
+    }
 
-        $("#input-id").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        }).on('change', function (event) {
-            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        }).on('fileselect', function (event, numFiles, label) {
-            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        }).on("filebatchselected", function (event, files) {
-            // $(this).fileinput("upload");
-        }).on("fileuploaded", function (event, data) {
-            console.log('fileuploaded()      ');
-            if (data.response.code === web_status.FAIL) {
-                console.log("上传文件失败");
+    function completeEvent() {
+        let userIdVal = $("#userId").val();
+        let buttonVal = $("#button").val();
+        let idVal = $("#eventId").val();
+        if (buttonVal === "11" || buttonVal === "13" || buttonVal === "14" || buttonVal === "16") {
+            if (userIdVal == null || userIdVal === "") {
+                $.modal.alertError("请选择监督员");
+                return false;
             }
-            console.log(data);
-        }).on('filedeleted', function (event, key) {
-            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            console.log(id);
-        }).on('fileclear', function (event) {
-            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-            console.log(event);
-        }).on('filecleared', function (event) {
-            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-            console.log(event);
-        }).on('filepredelete', function (event, key) {
-            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log('filesuccessremove()   ')
-            console.log(id);
+        }
+        $.operate.saveAndReload(completeByReceptionistUrl, {
+            id: idVal,
+            userId: userIdVal,
+            button: buttonVal,
+            imageUrlList: $("#imageUrlList").val(),
+            videoUrlList: $("#videoUrlList").val(),
+            musicUrlList: $("#musicUrlList").val(),
+            represent: $("#textIdioms").val()
         });
+    }
 
-        $("#videoInput").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        })
-        $("#musicInput").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            // showUpload: true,
-            // previewFileType: 'any',
-            // enableResumableUpload: true,
-            allowedFileExtensions: ['mov', 'mp4', 'mp3'],       // 接收的文件后缀
-            maxFileCount: 2,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: false,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        })
-    })
+    /* 获取有监督员角色的人 */
+    function getUserListForSupervisor(id) {
+        $.ajaxUtil.get(getUserListForSupervisorUrl + "?gridId=" + id, function (e) {
+            $("#selectUser").empty();
+            let userList = e.data;
+            let userHtml = "";
+            if (e.code === 0) {
+                userHtml += "<option selected value=''>--请选择--</option>"
+                $(userList).each(function (index, value) {
+                    userHtml += "<option value='" + value.id + "'>" + value.name + "</option>"
+                });
+            }
+            $("#selectUser").html(userHtml);
+        });
+    }
 
     function setPoint(x, y, id) {
         let point = new ol.Feature({
             geometry: new ol.geom.Point([x, y]),
             data: {
                 id: id,
-                // name: name,
                 coordinate: x + "," + y
             }
         });
-        layerMap.getSource().addFeature(point);
         point.setStyle(new ol.style.Style({
             image: new ol.style.Icon({
                 src: '../img/dwpoint3.png'
             })
         }));
+        layerMap.getSource().addFeature(point);
     }
 
-    function setPolygon(coordinates) {
+    function setPolygon(coordinates, id) {
         let Polygon = new ol.Feature({
             geometry: new ol.geom.Polygon(coordinates),
             data: {
-                // id: id,
-                // name: name,
+                id: id,
                 coordinate: coordinates
             }
         });
         layerMap.getSource().addFeature(Polygon);
     }
-    let url = [[${@geoServerProperties.url}]];
-    let center_x = [[${@geoServerProperties.center_x}]];
-    let center_y = [[${@geoServerProperties.center_y}]];
-    let layers = [[${@geoServerProperties.layers}]];
-    let zoom = [[${@geoServerProperties.zoom}]];
-    let epsg = [[${@geoServerProperties.epsg}]];
-
-
 </script>
 <th:block th:include="page/fragments/common :: mapinit_js"/>
 </body>
