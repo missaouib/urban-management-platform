@@ -39,14 +39,15 @@
                         <tr>
                             <td><span></span>案件编号</td>
                             <td>
-                                <input type="hidden" name="id" th:value="${eventOneVO.id}" />
-                                <input type="text" readonly="readonly" th:name="eventCode" th:value="${eventOneVO.eventCode}" id="eventCode" class="find_input" />
+                                <input type="text" readonly="readonly" th:name="eventCode" id="eventCode"
+                                       class="find_input"/>
                             </td>
-                            <td><span></span>案件分类</td>
+                            <td><span></span>案件类型</td>
                             <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                <input type="text" readonly="readonly" id="typeStr" name="typeStr" th:value="${eventOneVO.eventTypeStr}" class="find_input" />
-                                <input type="hidden" id="eventTypeId" th:name="eventTypeId" th:value="${eventOneVO.eventTypeId}" class="find_input" />
-                                <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
+                                <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId"
+                                       class="find_input"/>
+                                <button type="button" class="addBtn" onclick="">
                                     +
                                 </button>
                                 <!--                                    <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">-->
@@ -55,162 +56,170 @@
                             </td>
                             <td><span>*</span>立案区域</td>
                             <td>
-                                <select id="eventCondition" onchange="getEventCondition()" required>
-                                    <option th:text="${eventOneVO.regionStr}"></option>
+                                <select id="eventCondition" onchange="" required>
+
                                 </select>
-
                             </td>
-
                         </tr>
                         <tr>
                             <td><span>*</span>立案条件</td>
                             <td>
-                                <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
-                                    <option th:value="${eventOneVO.conditionId}" th:text="${eventOneVO.conditionValue}"></option>
+                                <select id="eventTerm" onchange="" name="conditionId" required>
                                 </select>
                             </td>
-
                             <td><span></span>计时等级</td>
                             <td>
-                                <select id="timeType" onchange="getDeptTimeLimitList()" required>
-                                    <option th:text="${eventOneVO.level}"></option>
+                                <select id="timeType" onchange="" required>
+
                                 </select>
                             </td>
-                            <td><span></span>处理时限</td>
+                            <td><span></span>立案时限</td>
                             <td>
-                                <input th:name="timeLimitId" th:value="${eventOneVO.timeLimitId}" type="hidden" id="deptTImeLimitId" />
-                                <input type="text" id="deptTImeLimit" th:value="${eventOneVO.timeLimitStr}" name="timeLimitStr" required readonly/>
+                                <input th:name="timeLimitId" type="hidden" id="deptTImeLimitId"/>
+                                <input type="text" id="deptTImeLimit" required readonly/>
 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span>*</span>诉求人</td>
+                            <td>
+                                <input name="peopleName" type="text" class="" required>
+                            </td>
+                            <td><span></span>性别</td>
+                            <td>
+                                <select name="sex" required>
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                </select>
+                            </td>
+                            <td><span>*</span>联系方式</td>
+                            <td>
+                                <input name="petitionerPhone" type="text" class="" required/>
                             </td>
                         </tr>
                         <tr>
 
+                            <td><span></span>诉求时间</td>
+                            <td>
+                                <input th:name="createTime"
+                                       th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}"
+                                       type="text" class=""/>
+                            </td>
                             <td><span></span>部件编码</td>
                             <td>
-                                <input type="text" readonly id="componentObjId" name="componentObjId" th:value="${eventOneVO.objId}" />
+                                <input type="text" id="componentObjId" name="componentObjId" readonly="readonly">
                                 <input type="hidden" id="layer"  readonly="readonly">
-                                <!--                                <input type="hidden" id="componentObjId1" name="componentObjId" />-->
+                                <!--                                    <input type="hidden" id="componentObjId1" name="componentObjId" readonly="readonly">-->
                             </td>
-                            <td><span></span>案件类型</td>
+                            <td><span></span>案件分类</td>
                             <td>
                                 <select class="form-control" id="recTypeId" th:name="recTypeId" required>
-                                    <option th:value="${eventOneVO.recTypeId}" th:text="${eventOneVO.recTypeStr}"></option>
-                                </select>
-                            </td>
-                            <td><span>*</span>所在区域</td>
-                            <td>
-                                <select class="form-control" id="grid1" onchange="getStreetList()" required>
-                                    <option th:text="${eventOneVO.eventRegion}"></option>
+                                    <option th:each="as:${recType}" th:value="${as.id}"
+                                            th:text="${as.value}"></option>
                                 </select>
                             </td>
                         </tr>
-                        <tr>
 
+                        <tr>
                             <td><span></span>经度</td>
                             <td>
-                                <input type="text" class="" value="" name="x" id="longitude" th:value="${eventOneVO.x}" required readonly/>
-
+                                <input type="text" class="" placeholder="" value="" name="x" id="longitude"
+                                       readonly/>
                             </td>
                             <td><span></span>纬度</td>
                             <td>
-                                <input type="text" class="" value="" name="y" id="latitude" th:value="${eventOneVO.y}" required readonly/>
+                                <input type="text" class="" placeholder="" value="" name="y" id="latitude"
+                                       readonly/>
                             </td>
+                            <td><span>*</span>所在区域</td>
+                            <td>
+                                <select name="required" class="form-control" id="grid1" onchange="getStreetList()"
+                                        required>
+                                    <option>--请选择--</option>
+                                    <option th:each="as:${gridList}" th:value="${as.id}"
+                                            th:text="${as.gridName}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
 
                             <td><span>*</span>所属街道</td>
                             <td>
-                                <select class="form-control" id="grid2" onchange="getCommunityList()" required>
-                                    <option th:text="${eventOneVO.street}"></option>
+                                <select name="phone" class="form-control" id="grid2" onchange=""
+                                        required>
                                 </select>
-
                             </td>
-
-                        </tr>
-
-                        <tr>
-                            <td><span></span>所属社区</td>
+                            <td><span>*</span>所属社区</td>
                             <td>
-                                <select class="form-control" id="grid3" onchange="getGridList()" required>
-                                    <option th:text="${eventOneVO.community}"></option>
+                                <select name="petitonerPhone" class="form-control" id="grid3"
+                                        onchange="getGridList()" required>
+                                </select>
                             </td>
                             <td><span>*</span>所属网格</td>
                             <td>
-                                <select th:name="gridId" id="grid4" onchange="getGridCenter(this)">
-                                    <option th:value="${eventOneVO.gridId}" th:text="${eventOneVO.girdStr}"></option>
+                                <select th:name="gridId" id="grid4" onchange="" required>
                                 </select>
                             </td>
+                        </tr>
+                        <tr>
                             <td><span></span>问题来源</td>
                             <td>
-                                <select class="form-control" id="eventSource" th:name="eventSourceId" required disabled>
-                                    <option th:value="${eventOneVO.eventSourceId}" th:text="${eventOneVO.eventSourceStr}"></option>
+                                <select class="form-control" id="eventSource" th:name="eventSourceId" required
+                                        readonly="readonly">
+                                    <option th:each="as:${eventSource}" th:value="${as.id}"
+                                            th:text="${as.value}"></option>
+                                </select>
+                            </td>
+                            <td><span></span>上报人</td>
+                            <td>
+                                <input type="text" readonly th:value="${#authentication.principal.name}">
+                                <!--<input type="hidden" value="" id="selectDown">
+                                <input value="1" type="hidden" name="userId">-->
+                            </td>
+                            <td><span></span>监督员</td>
+                            <td>
+                                <select class="form-control" id="userId" name="userId" required>
+
                                 </select>
                             </td>
                         </tr>
-                        <tr >
+
+                        <tr>
                             <td><span>*</span>案件地址</td>
-                            <td >
-                                <input id="location" th:name="location" th:value="${eventOneVO.location}" type="text" required>
+                            <td style="position: relative">
+                                <input onmouseover="this.title=this.value" id="location" th:name="location" onkeyup=""
+                                       type="text" class="overInput" required>
+                                <div class="caseSeach" onclick=""><i class="fa fa-search-plus" aria-hidden="true"></i></div>
                             </td>
+
                             <td><span>*</span>问题描述</td>
-                            <td >
-                                <input th:name="represent" th:value="${eventOneVO.represent}" id="problemescription" type="text" class="overInput" onmouseover="this.title=this.value"  required>
+                            <td>
+                                <input onmouseover="this.title=this.value" id="problemescription"
+                                       th:name="represent" type="text" class="overInput" required>
                             </td>
-                            <td><span></span>上报人</td>
-                            <td  style="margin-top:10px;display: flex;justify-content: space-between;align-items: center"><div class="username" th:sec:authentication="principal.name"></div>
-                                <div style="display: flex;align-items: center;justify-content: space-between">
-                                    <div style="color: black!important;">是否自处理</div><input  id="doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
-                                </div>
-                            </td>
-
                         </tr>
-
                         </tbody>
                     </table>
-                    <div style="display: flex;align-items: center;justify-content: center">
-                        <div class="" >
-
-                            <span>处置前</span>
-                            <div class="sendImg">
-
-                                <div><input id="input-id" class="input-id" type="file" name="files" multiple="multiple">
-                                </div>
-                                <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
-                                <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
-                                <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
-                            </div>
-                            <!--                            <div class="sendImg">-->
-                            <!--                                <div class="sendText"><span>视频:</span></div>-->
-                            <!--                                <div><input id="videoInput" class="videoInput" type="file" name="files" multiple="multiple"></div>-->
-                            <!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" />-->
-                            <!--                            </div>-->
-                            <!--                            <div class="sendImg">-->
-                            <!--                                <div class="sendText"><span>音频:</span></div>-->
-                            <!--                                <div><input id="musicInput" class="musicInput" type="file" name="files" multiple="multiple"></div>-->
-                            <!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" />-->
-                            <!--                            </div>-->
+                    <div class="send">
+                        <div class="sendImg">
+                            <div class="sendText"><span></span></div>
+                            <div><input id="imageInput" type="file" name="files" multiple="multiple"></div>
+                            <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
+                            <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
+                            <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
                         </div>
-                        <div class="" id="after" style="display:none;padding-left: 20px">
-                            <span>处置后</span>
-                            <div class="sendImg">
-
-                                <div><input id="input-id-after" type="file" class="input-id" name="files"
-                                            multiple="multiple"></div>
-                                <input type="hidden" id="imageUrlListAfter" name="imageUrlListAfter" value="">
-                                <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter" value="">
-                                <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter" value="">
-                            </div>
-                            <!--                            <div class="sendImg">-->
-                            <!--                                <div class="sendText"><span>视频:</span></div>-->
-                            <!--                                <div><input id="videoInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>-->
-                            <!--                                <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter" value="">-->
-                            <!--                            </div>-->
-                            <!--                            <div class="sendImg">-->
-                            <!--                                <div class="sendText"><span>音频:</span></div>-->
-                            <!--                                <div><input id="musicInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>-->
-                            <!--                                <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter" value="">-->
-                            <!--                            </div>-->
-                        </div>
+                        <!--                            <div class="sendImg">-->
+                        <!--                                <div class="sendText"><span>视频:</span></div>-->
+                        <!--                                <div><input id="videoInput" type="file" name="files" multiple="multiple"></div>-->
+                        <!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" value="">-->
+                        <!--                            </div>-->
+                        <!--                            <div class="sendImg">-->
+                        <!--                                <div class="sendText"><span>音频:</span></div>-->
+                        <!--                                <div><input id="audioInput" type="file" name="files" multiple="multiple"></div>-->
+                        <!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" value="">-->
+                        <!--                            </div>-->
                     </div>
-
                 </div>
 
                 <!--                            按钮-->
@@ -290,69 +299,7 @@
     let removeUrl = /*[[@{/event/remove/{id}}]]*/ "/event/remove/{id}";
     let editUrl = /*[[@{/event/toWirelessAcquisitionUpdate/{id}}]]*/ "/event/toWirelessAcquisitionUpdate/{id}";
     let reportOnListUrl = /*[[@{/event/reportOnList}]]*/ "/event/reportOnList";
-    function queryUserList() {
-        var options = {
-            url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
-            reportUrl: reportOnListUrl,
-            // exportUrl: prefix + "/export",
-            // importUrl: prefix + "/importData",
-            // importTemplateUrl: prefix + "/importTemplate",
-            uniqueId: "id",
-            sortName: "createTime",
-            sortOrder: "desc",
-            modalName: "案件",
-            onClickRow: function (row,index) {
-                layerMap.getSource().clear();
-                setPoint(row.id);
-            },
-            columns: [
-                {
-                    field: 'index',
-                    title: '序号',
-                    class:'index_width',
-                    formatter : function (value, row, index){
-                        var page = $('#bootstrap-table').bootstrapTable("getPage");
-                        return page.pageSize * (page.pageNumber - 1) + index + 1;
-                    }
-                },
-                {
-                    title: '案件编号',
-                    field: 'eventCode',
-                    sortable: true,
-                },
-                {
-                    title: '案件分类',
-                    field: 'recTypeName',
-                    sortable: true,
-                },
-                {
-                    title: '问题描述',
-                    field: 'represent',
-                    class:"problem",
-                    sortable: true,
-                },
-                {
-                    title: '上报人',
-                    field: 'userName',
-                    sortable: true,
-                },
-                {
-                    title: '案件类型',
-                    field: 'eventTypeName',
-                    sortable: true,
-                },
-                {
-                    title: '创建时间',
-                    field: 'createTime',
-                    sortable: true,
-                },
-            ]
-        };
-        $.table.init(options);
-    }
+
     var container = document.getElementById('popup');
     var content = document.getElementById('popup-content');
     var closer = document.getElementById('popup-closer');
@@ -424,140 +371,7 @@
         var data = $('#userForm').serialize();
         $.operate.saveTab(preReportUrl, data);
     }
-    /**
-     * 后台自动生成案卷号
-     * @param eventTypeId
-     */
-    function createEventCode(eventTypeId) {
-        if (eventTypeId !== undefined && eventTypeId !== ''){
-            var url = createEventCodeUrl+"?eventTypeId="+eventTypeId
-            $.ajaxUtil.get(url, function (e) {
-                if (e.code === 0) {
-                    let eventCode = e.data
-                    $("#eventCode").val(eventCode);
-                }
-            })
-        }
 
-    }
-
-    /**
-     * 获取立案区域
-     */
-    function findEventConditionByEventType(eventTypeId){
-        let url = findEventConditionByEventTypeUrl +"?eventTypeId="+ eventTypeId;
-        $.ajaxUtil.get(url, function (e) {
-            let option = "<option>--请选择--</option>";
-            if (e.code === 0) {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
-                });
-                $("#eventCondition").html(option);
-            }
-        });
-    }
-
-    /**
-     * 立案条件
-     */
-    function getEventCondition() {
-        let eventConditionId = $("#eventCondition").val();
-        let url = "/event/getEventCondition?conditionId=" + eventConditionId;
-        $.ajaxUtil.get(url, function (e) {
-            $("#eventTerm").empty();
-            let option = "<option>--请选择--</option>";
-            if (e.code === 0) {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
-                });
-            }
-            $("#eventTerm").html(option);
-        });
-    }
-
-    /**
-     * 获取立案时限分类
-     */
-    function getTimeTypeList() {
-        let eventTerm = $("#eventTerm").val();
-        let url = "/event/findDeptTimeLimitByCondition?conditionId=" + eventTerm;
-        $.ajaxUtil.get(url, function (e) {
-            $("#timeType").empty();
-            let option = "<option>--请选择--</option>";
-            if (e.code === 0) {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.level + "</option>"
-                });
-            }
-            $("#timeType").html(option);
-        });
-    }
-
-    /**
-     * 获取立案时限
-     */
-    function getDeptTimeLimitList() {
-        let deptTimeLimitId = $("#timeType").val();
-        let url = "/event/findDeptTimeLimit?deptTimeLimitId=" + deptTimeLimitId;
-        $.ajaxUtil.get(url, function (e) {
-            if (e.code === 0) {
-                let data = e.data;
-                $("#deptTImeLimitId").val(data.id);
-                $("#deptTImeLimit").val(data.timeLimit + data.timeType);
-            }
-        });
-    }
-
-    /**
-     * 获取街道
-     */
-    function getStreetList(){
-        let parentId = $("#grid1 option:selected").val();
-        let url = "/event/findAllByParentId?parentId="+parentId;
-        $.ajaxUtil.get(url, function (e) {
-            let option="<option>--请选择--</option>";
-            if (e.code === 0) {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
-                });
-                $("#grid2").html(option);
-            }
-        });
-    }
-
-    /**
-     * 获取社区
-     */
-    function getCommunityList(){
-        let parentId = $("#grid2 option:selected").val();
-        let url = "/event/findAllByParentId?parentId="+parentId;
-        $.ajaxUtil.get(url, function (e) {
-            let option="<option>--请选择--</option>";
-            if (e.code === 0) {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
-                });
-                $("#grid3").html(option);
-            }
-        });
-    }
-
-    /**
-     * 获取网格
-     */
-    function getGridList(){
-        let parentId = $("#grid3 option:selected").val();
-        let url = "/event/findAllByParentId?parentId="+parentId;
-        $.ajaxUtil.get(url, function (e) {
-            let option="<option>--请选择--</option>";
-            if (e.code === 0) {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
-                });
-                $("#grid4").html(option);
-            }
-        });
-    }
 
     //模态窗 selectEventTypeTree
     function selectEventTypeTree() {
@@ -741,7 +555,6 @@
 
         $(".ol-full-screen-false").html("全屏");
 
-        queryUserList();
 
         var r = 0;
         $(".xiala").click(function() {
@@ -786,106 +599,7 @@
         $.ajaxUtil.get(componentTypeUrl, function (e) {
             var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
         })
-        $("#input-id").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            uploadAsync: false, //关闭异步上传，改为同步上传。
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'],       // 接收的文件后缀
-            maxFileCount: 10,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: true,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
 
-        }).on('change', function (event) {
-            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        }).on('fileselect', function (event, numFiles, label) {
-            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        }).on("filebatchselected", function (event, files) {
-            $(this).fileinput("upload");
-        }).on("fileuploaded", function (event, data) {
-
-        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
-            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
-            if (data.response.code === web_status.SUCCESS) {
-                multiMediaData.push(data);
-                insertMultiMedia(data);
-                $.modal.alertSuccess('上传成功');
-            } else {
-                $.modal.alertError(data.response.message);
-            }
-        }).on('filedeleted', function (event, key) {
-            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            deleteMultiMedia(id, multiMediaData);
-        }).on('fileclear', function (event) {
-            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-            console.log(event);
-        }).on('filecleared', function (event) {
-            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-            console.log(event);
-        }).on('filepredelete', function (event, key) {
-            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
-            console.log('Key = ' + key);
-        });
-
-        $("#input-id-after").fileinput({
-            language: 'zh',                                     // 设置语言
-            theme: 'fa',
-            uploadUrl: uploadUrl,
-            uploadAsync: false, //关闭异步上传，改为同步上传。
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'],       // 接收的文件后缀
-            maxFileCount: 10,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
-            focusCaptionOnBrowse: false,
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: true,                             // 是否显示拖拽区域
-            // browseClass: "btn btn-primary",                     // 按钮样式
-
-        }).on('change', function (event) {
-            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        }).on('fileselect', function (event, numFiles, label) {
-            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        }).on("filebatchselected", function (event, files) {
-            $(this).fileinput("upload");
-        }).on("fileuploaded", function (event, data) {
-
-        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
-            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
-            if (data.response.code === web_status.SUCCESS) {
-                multiMediaAfterData.push(data);
-                insertMultiMediaAfter(data);
-                $.modal.alertSuccess('上传成功');
-            } else {
-                $.modal.alertError(data.response.message);
-            }
-        }).on('filedeleted', function (event, key) {
-            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
-            console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
-            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
-            deleteMultiMediaAfter(id, multiMediaAfterData);
-        }).on('fileclear', function (event) {
-            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-            console.log(event);
-        }).on('filecleared', function (event) {
-            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-            console.log(event);
-        }).on('filepredelete', function (event, key) {
-            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
-            console.log('Key = ' + key);
-        });
-    })
 
     function Cancel() {
         $.modal.closeLoading();
