@@ -1,10 +1,1329 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>自处理修改</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <!--    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">-->
+    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
-<body>
+<style>
+    .file-drop-zone-title{
+        padding: 68px 55px!important;
+    }
+    .file-drop-zone{
+        min-height: 200px!important;
+    }
+    .file-preview-thumbnails{
+        max-height: 233px!important;
+    }
+    .file-preview{
+        height: 241px!important;
+    }
+</style>
+<body style="border-radius: 8px;">
+<div class="content">
+    <div class="leftContent">
+        <form id="userForm">
+            <div style="width: 100%;display: flex;justify-content: start;">
+                <button style="margin-left: 10px" class="but_save saveTheBtn" type="submit" onclick="submitHandler()">保存</button>
+            </div>
+            <div class="top table2_top">
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span></span>案件编号</td>
+                            <td>
+                                <input type="hidden" name="id" th:value="${eventOneVO.id}" />
+                                <input type="text" readonly="readonly" th:name="eventCode" th:value="${eventOneVO.eventCode}" id="eventCode" class="find_input" />
+                            </td>
+                            <td><span></span>案件分类</td>
+                            <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                <input type="text" readonly="readonly" id="typeStr" name="typeStr" th:value="${eventOneVO.eventTypeStr}" class="find_input" />
+                                <input type="hidden" id="eventTypeId" th:name="eventTypeId" th:value="${eventOneVO.eventTypeId}" class="find_input" />
+                                <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                    +
+                                </button>
+                                <!--                                    <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">-->
+                                <!--                                        +-->
+                                <!--                                    </button>-->
+                            </td>
+                            <td><span>*</span>立案区域</td>
+                            <td>
+                                <select id="eventCondition" onchange="getEventCondition()" required>
+                                    <option th:text="${eventOneVO.regionStr}"></option>
+                                </select>
 
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td><span>*</span>立案条件</td>
+                            <td>
+                                <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
+                                    <option th:value="${eventOneVO.conditionId}" th:text="${eventOneVO.conditionValue}"></option>
+                                </select>
+                            </td>
+
+                            <td><span></span>计时等级</td>
+                            <td>
+                                <select id="timeType" onchange="getDeptTimeLimitList()" required>
+                                    <option th:text="${eventOneVO.level}"></option>
+                                </select>
+                            </td>
+                            <td><span></span>处理时限</td>
+                            <td>
+                                <input th:name="timeLimitId" th:value="${eventOneVO.timeLimitId}" type="hidden" id="deptTImeLimitId" />
+                                <input type="text" id="deptTImeLimit" th:value="${eventOneVO.timeLimitStr}" name="timeLimitStr" required readonly/>
+
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td><span></span>部件编码</td>
+                            <td>
+                                <input type="text" readonly id="componentObjId" name="componentObjId" th:value="${eventOneVO.objId}" />
+                                <input type="hidden" id="layer"  readonly="readonly">
+                                <!--                                <input type="hidden" id="componentObjId1" name="componentObjId" />-->
+                            </td>
+                            <td><span></span>案件类型</td>
+                            <td>
+                                <select class="form-control" id="recTypeId" th:name="recTypeId" required>
+                                    <option th:value="${eventOneVO.recTypeId}" th:text="${eventOneVO.recTypeStr}"></option>
+                                </select>
+                            </td>
+                            <td><span>*</span>所在区域</td>
+                            <td>
+                                <select class="form-control" id="grid1" onchange="getStreetList()" required>
+                                    <option th:text="${eventOneVO.eventRegion}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td><span></span>经度</td>
+                            <td>
+                                <input type="text" class="" value="" name="x" id="longitude" th:value="${eventOneVO.x}" required readonly/>
+
+                            </td>
+                            <td><span></span>纬度</td>
+                            <td>
+                                <input type="text" class="" value="" name="y" id="latitude" th:value="${eventOneVO.y}" required readonly/>
+                            </td>
+
+                            <td><span>*</span>所属街道</td>
+                            <td>
+                                <select class="form-control" id="grid2" onchange="getCommunityList()" required>
+                                    <option th:text="${eventOneVO.street}"></option>
+                                </select>
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td><span></span>所属社区</td>
+                            <td>
+                                <select class="form-control" id="grid3" onchange="getGridList()" required>
+                                    <option th:text="${eventOneVO.community}"></option>
+                            </td>
+                            <td><span>*</span>所属网格</td>
+                            <td>
+                                <select th:name="gridId" id="grid4" onchange="getGridCenter(this)">
+                                    <option th:value="${eventOneVO.gridId}" th:text="${eventOneVO.girdStr}"></option>
+                                </select>
+                            </td>
+                            <td><span></span>问题来源</td>
+                            <td>
+                                <select class="form-control" id="eventSource" th:name="eventSourceId" required disabled>
+                                    <option th:value="${eventOneVO.eventSourceId}" th:text="${eventOneVO.eventSourceStr}"></option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr >
+                            <td><span>*</span>案件地址</td>
+                            <td >
+                                <input id="location" th:name="location" th:value="${eventOneVO.location}" type="text" required>
+                            </td>
+                            <td><span>*</span>问题描述</td>
+                            <td >
+                                <input th:name="represent" th:value="${eventOneVO.represent}" id="problemescription" type="text" class="overInput" onmouseover="this.title=this.value"  required>
+                            </td>
+                            <td><span></span>上报人</td>
+                            <td  style="margin-top:10px;display: flex;justify-content: space-between;align-items: center"><div class="username" th:sec:authentication="principal.name"></div>
+                                <div style="display: flex;align-items: center;justify-content: space-between">
+                                    <div style="color: black!important;">是否自处理</div><input  id="doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <div style="display: flex;align-items: center;justify-content: center">
+                        <div class="" >
+
+                            <span>处置前</span>
+                            <div class="sendImg">
+
+                                <div><input id="input-id" class="input-id" type="file" name="files" multiple="multiple">
+                                </div>
+                                <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
+                                <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
+                                <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
+                            </div>
+                            <!--                            <div class="sendImg">-->
+                            <!--                                <div class="sendText"><span>视频:</span></div>-->
+                            <!--                                <div><input id="videoInput" class="videoInput" type="file" name="files" multiple="multiple"></div>-->
+                            <!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" />-->
+                            <!--                            </div>-->
+                            <!--                            <div class="sendImg">-->
+                            <!--                                <div class="sendText"><span>音频:</span></div>-->
+                            <!--                                <div><input id="musicInput" class="musicInput" type="file" name="files" multiple="multiple"></div>-->
+                            <!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" />-->
+                            <!--                            </div>-->
+                        </div>
+                        <div class="" id="after" style="display:none;padding-left: 20px">
+                            <span>处置后</span>
+                            <div class="sendImg">
+
+                                <div><input id="input-id-after" type="file" class="input-id" name="files"
+                                            multiple="multiple"></div>
+                                <input type="hidden" id="imageUrlListAfter" name="imageUrlListAfter" value="">
+                                <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter" value="">
+                                <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter" value="">
+                            </div>
+                            <!--                            <div class="sendImg">-->
+                            <!--                                <div class="sendText"><span>视频:</span></div>-->
+                            <!--                                <div><input id="videoInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>-->
+                            <!--                                <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter" value="">-->
+                            <!--                            </div>-->
+                            <!--                            <div class="sendImg">-->
+                            <!--                                <div class="sendText"><span>音频:</span></div>-->
+                            <!--                                <div><input id="musicInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>-->
+                            <!--                                <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter" value="">-->
+                            <!--                            </div>-->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!--                            按钮-->
+
+            </div>
+        </form>
+
+
+    </div>
+    <div class="rightContent" style="position: relative">
+        <div class="search_map">
+            <div class="map_input">
+                <input id="sole-input" placeholder="搜索地点" value="" >
+            </div>
+            <div class="map_button"><img th:src="@{/img/search.png}"></div>
+            <div class="place_map">
+                <ul id="place_ul">
+                    <li class="place_li"><i class="fa fa-search place_mirror" aria-hidden="true"></i>哈尔滨南岗区国民街14号奥维斯发展大厦（联通大厦）</li>
+                </ul>
+            </div>
+        </div>
+        <div class="map" id="map" style="width: 100%;height: 100%"></div>
+
+        <div id="popup" class="ol-popup">
+            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+            <div id="popup-content">
+                <ul id="message">
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">默认窗口</h4>
+            </div>
+            <div class="modal-body">
+                <div class="tree">
+                    <div class="treeDemo">
+                        <ul id="treeDemo" class="ztree">zTree</ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="pictureDiv" style="display: none">
+
+</div>
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+<script type="text/javascript" th:inline="javascript">
+    $("#doBySelf").on('click', function () {
+        var after = $("#after");
+        if ($("#doBySelf").is(':checked')) {
+            after.css("display", "block")
+        } else {
+            after.css('display', 'none')
+        }
+    });
+
+    let searchUrl = /*[[@{/event/wirelessAcquisitionList}]]*/ "/event/wirelessAcquisitionList";
+    let addUrl = /*[[@{/event/toWirelessAcquisitionSave}]]*/ "/event/toWirelessAcquisitionSave";
+    let removeUrl = /*[[@{/event/remove/{id}}]]*/ "/event/remove/{id}";
+    let editUrl = /*[[@{/event/toWirelessAcquisitionUpdate/{id}}]]*/ "/event/toWirelessAcquisitionUpdate/{id}";
+    let reportOnListUrl = /*[[@{/event/reportOnList}]]*/ "/event/reportOnList";
+    function queryUserList() {
+        var options = {
+            url: searchUrl,
+            createUrl: addUrl,
+            updateUrl: editUrl,
+            removeUrl: removeUrl,
+            reportUrl: reportOnListUrl,
+            // exportUrl: prefix + "/export",
+            // importUrl: prefix + "/importData",
+            // importTemplateUrl: prefix + "/importTemplate",
+            uniqueId: "id",
+            sortName: "createTime",
+            sortOrder: "desc",
+            modalName: "案件",
+            onClickRow: function (row,index) {
+                layerMap.getSource().clear();
+                setPoint(row.id);
+            },
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class:'index_width',
+                    formatter : function (value, row, index){
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '案件编号',
+                    field: 'eventCode',
+                    sortable: true,
+                },
+                {
+                    title: '案件分类',
+                    field: 'recTypeName',
+                    sortable: true,
+                },
+                {
+                    title: '问题描述',
+                    field: 'represent',
+                    class:"problem",
+                    sortable: true,
+                },
+                {
+                    title: '上报人',
+                    field: 'userName',
+                    sortable: true,
+                },
+                {
+                    title: '案件类型',
+                    field: 'eventTypeName',
+                    sortable: true,
+                },
+                {
+                    title: '创建时间',
+                    field: 'createTime',
+                    sortable: true,
+                },
+            ]
+        };
+        $.table.init(options);
+    }
+    var container = document.getElementById('popup');
+    var content = document.getElementById('popup-content');
+    var closer = document.getElementById('popup-closer');
+    var overlay = new ol.Overlay({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    });
+
+    let updateTempUrl = /*[[@{/event/updateTemp}]]*/ "/event/updateTemp";
+    let receiveUrl = /*[[@{/event/receive}]]*/ "/event/receive";
+    let dispatchUrl = /*[[@{/event/dispatch}]]*/ "/event/dispatch";
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
+    let componentTypeUrl = /*[[@{/allEventType}]]*/ "/allEventType";
+    let createEventCodeUrl = /*[[@{/event/createEventCode}]]*/ "/event/createEventCode";
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+    let getDeptTimeLimitByLevelUrl = /*[[@{/event/getDeptTimeLimitByLevel}]]*/ "/event/getDeptTimeLimitByLevel";
+    let findAllByKvIdUrl = /*[[@{/event/findAllByKvId}]]*/ "/event/findAllByKvId";
+    let saveUrl = /*[[@{/event/save}]]*/ "/event/save";
+    let preReportUrl = /*[[@{/event/preReport}]]*/ "/event/preReport";
+    var setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parent'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+    function zTreeOnClick(event, treeId, treeNode) {
+        $("#typeStr").val(treeNode.name);
+        $("#eventTypeId").val(treeNode.id);
+        $(".closemodal").click();
+        let eventTypeId = $("#eventTypeId").val();
+        createEventCode(eventTypeId);
+        //获取立案区域
+        findEventConditionByEventType(eventTypeId)
+    }
+    /**
+     * 保存
+     */
+    function submitHandler() {
+        $("#eventSource").removeAttr("disabled");
+        var data = $('#userForm').serialize();
+        $.operate.saveTab(updateTempUrl, data);
+    }
+
+    /**
+     * 上报
+     */
+    function reportHandler(){
+        //先校验
+        if (!$("form").valid()) {
+            return;
+        }
+        $("#eventSource").removeAttr("disabled");
+        var data = $('#userForm').serialize();
+        $.operate.saveTab(preReportUrl, data);
+    }
+    /**
+     * 后台自动生成案卷号
+     * @param eventTypeId
+     */
+    function createEventCode(eventTypeId) {
+        if (eventTypeId !== undefined && eventTypeId !== ''){
+            var url = createEventCodeUrl+"?eventTypeId="+eventTypeId
+            $.ajaxUtil.get(url, function (e) {
+                if (e.code === 0) {
+                    let eventCode = e.data
+                    $("#eventCode").val(eventCode);
+                }
+            })
+        }
+
+    }
+
+    /**
+     * 获取立案区域
+     */
+    function findEventConditionByEventType(eventTypeId){
+        let url = findEventConditionByEventTypeUrl +"?eventTypeId="+ eventTypeId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
+                });
+                $("#eventCondition").html(option);
+            }
+        });
+    }
+
+    /**
+     * 立案条件
+     */
+    function getEventCondition() {
+        let eventConditionId = $("#eventCondition").val();
+        let url = "/event/getEventCondition?conditionId=" + eventConditionId;
+        $.ajaxUtil.get(url, function (e) {
+            $("#eventTerm").empty();
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
+                });
+            }
+            $("#eventTerm").html(option);
+        });
+    }
+
+    /**
+     * 获取立案时限分类
+     */
+    function getTimeTypeList() {
+        let eventTerm = $("#eventTerm").val();
+        let url = "/event/findDeptTimeLimitByCondition?conditionId=" + eventTerm;
+        $.ajaxUtil.get(url, function (e) {
+            $("#timeType").empty();
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.level + "</option>"
+                });
+            }
+            $("#timeType").html(option);
+        });
+    }
+
+    /**
+     * 获取立案时限
+     */
+    function getDeptTimeLimitList() {
+        let deptTimeLimitId = $("#timeType").val();
+        let url = "/event/findDeptTimeLimit?deptTimeLimitId=" + deptTimeLimitId;
+        $.ajaxUtil.get(url, function (e) {
+            if (e.code === 0) {
+                let data = e.data;
+                $("#deptTImeLimitId").val(data.id);
+                $("#deptTImeLimit").val(data.timeLimit + data.timeType);
+            }
+        });
+    }
+
+    /**
+     * 获取街道
+     */
+    function getStreetList(){
+        let parentId = $("#grid1 option:selected").val();
+        let url = "/event/findAllByParentId?parentId="+parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option="<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid2").html(option);
+            }
+        });
+    }
+
+    /**
+     * 获取社区
+     */
+    function getCommunityList(){
+        let parentId = $("#grid2 option:selected").val();
+        let url = "/event/findAllByParentId?parentId="+parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option="<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid3").html(option);
+            }
+        });
+    }
+
+    /**
+     * 获取网格
+     */
+    function getGridList(){
+        let parentId = $("#grid3 option:selected").val();
+        let url = "/event/findAllByParentId?parentId="+parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option="<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid4").html(option);
+            }
+        });
+    }
+
+    //模态窗 selectEventTypeTree
+    function selectEventTypeTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择事件类型',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero){
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#eventTypeId").val(body.find('#treeId').val());
+        $("#typeStr").val(body.find('#treeName').val());
+        let eventTypeId = $("#eventTypeId").val();
+        createEventCode(eventTypeId);
+        //获取立案区域
+        findEventConditionByEventType(eventTypeId)
+        //部件获取
+        findUrlListByEventTypeId(eventTypeId);
+        layer.close(index);
+    }
+    function setPoint(x,y) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                // id: data,
+                // name: name,
+                coordinate: x + "," + y
+            }
+        });
+        layerMap.getSource().addFeature(point);
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                src: '../../img/dwpoint3.png'
+            })
+        }));
+    }
+
+    /**
+     * 获取部件的发布图层
+     */
+    let unit = /*[[@{/event/findUnit}]]*/ "/event/findUnit";
+    let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
+    function findUrlListByEventTypeId(eventTypeId) {
+        $.ajaxUtil.get(publishUrl + "?typeId=" + eventTypeId, function (e) {
+            $("#layer").val("");
+            //删除上一个底图
+            let mation = map.getLayerGroup().getLayers().a;
+            console.log(mation)
+            if (mation.length > 2) {
+                mation.splice(1, 1);
+                source.clear();
+                $("#componentObjId").val("")
+                $("#componentObjId").val("")
+            }
+            $(e.data).each(function (index, value) {
+                if (value.url != null) {
+                    $("#layer").val(value.layerId);
+                    let urlParam = value.url.split("?");
+                    let url = urlParam[0];
+                    let param = urlParam[1];
+                    var format = 'image/png';
+                    var ImageVector = new ol.layer.Image({
+                        source: new ol.source.ImageWMS({
+                            url: url,
+                            params: {'FORMAT': format,
+                                'VERSION': '1.1.1',
+                                tiled: true,
+                                "LAYERS": param,
+                                "exceptions": 'application/vnd.ogc.se_inimage'
+                            }
+                        })
+                    });
+
+
+                    let layersArray = map.getLayers();
+                    layersArray.insertAt(1, ImageVector);
+
+
+
+                }
+            })
+        })
+    }
+    let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
+    function success_jsonpCallback1(res) {
+        var features = geojsonFormat.readFeatures(res);
+        if (undefined !== features[0]) {
+            $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function (e) {
+                $("#objId").val(e.data.objId);
+                $("#objId1").val(e.data.id);
+            });
+        }
+    }
+
+
+    //回调函数接收查询结果
+    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
+
+    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
+    function success_jsonpCallback(res) {
+        var features = geojsonFormat.readFeatures(res);
+        var x = $("#longitude").val();
+        var y = $("#latitude").val();
+        $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + x + "&y=" + y, function (e) {
+            let split = e.data.multiPolygon.split(",");
+            let polygonArray = [];
+            let polygonArrayEnd = [];
+            for (let j = 0; j < split.length; j++) {
+                let pointArray = [];
+                pointArray.push(split[j].split(" ")[0]);
+                pointArray.push(split[j].split(" ")[1]);
+                polygonArray.push(pointArray);
+                polygonArrayEnd.push(polygonArray);
+            }
+            setPolygon(polygonArrayEnd);
+            let data = e.data.mapList;
+            for (let i = 0; i < data.length; i++) {
+                switch (data[i].level) {
+                    case 1:
+                        $("#grid1").val(data[i].id);
+                        break;
+                    case 2:
+                        $("#grid2").empty();
+                        let option2 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid2").html(option2);
+                        break;
+                    case 3:
+                        $("#grid3").empty();
+                        let option3 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid3").html(option3);
+                        break;
+                    case 4:
+                        var coordinate = [$("#longitude").val(),
+                            $("#latitude").val()];
+                        overlay.setPosition(coordinate);
+                        $("#popup-content").html(`<div class="demo2">网格名称:`+data[i].name+`
+                                    <em>&#9670;</em>
+                                    <span>&#9670;</span>
+                                    </div>`);
+                        $("#popup").on("click",".closePopup",function (e) {
+                            e.preventDefault();
+                            overlay.setPosition(undefined);
+                        })
+                        $("#grid4").empty();
+                        let option4 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid4").html(option4);
+                        break;
+                    default:
+                        console.log("查询出了网格之外的东西");
+                }
+            }
+            /* todo 上面的方式是单纯的回显 想做一个触发级联之后再赋值的操作 可能需要类似等待的方式 需要执行完一个函数之后通过回调执行下一个 同步 */
+            /*let grid1 = getLevelWithList(data, 1);
+            $("#grid1").val(grid1.id);
+            getStreetList();
+            let grid2 = getLevelWithList(data, 2);
+            $("#grid2").val(grid2.id);
+            getCommunityList();
+            let grid3 = getLevelWithList(data, 3);
+            $("#grid3").val(grid3.id);
+            getGridList();
+            let grid4 = getLevelWithList(data, 4);
+            $("#grid4").val(grid4.id);*/
+        });
+    }
+    let multiMediaData = [];
+    let multiMediaAfterData = [];
+    $(function () {
+        $('#bootstrap-table').on('load-success.bs.table', function (e,data) {
+            let colorIndex =  localStorage.getItem("rowIndex");
+            $('#bootstrap-table tbody tr').eq(colorIndex - 1).addClass('changeColor');
+        });
+
+        $(".ol-full-screen-false").html("全屏");
+
+        queryUserList();
+
+        var r = 0;
+        $(".xiala").click(function() {
+            r += 180;
+            $(".selectPoint").slideToggle(300);
+            $(".selectmenu").css('transform', 'rotate(' + r + 'deg)');
+        })
+        var doBySelf = [[${eventOneVO.doBySelf}]];
+        var eventTypeId = [[${eventOneVO.eventTypeId}]];
+        console.log("eventTypeId",eventTypeId)
+        if (doBySelf){
+            $("#after").css('display','block');
+        }else {
+            $("#after").css('display','none');
+        }
+        findUrlListByEventTypeId(eventTypeId);
+        showImage();
+
+        let eventOneVO = [[${eventOneVO}]];
+        console.log(eventOneVO.x,eventOneVO.y)
+        setPoint(eventOneVO.x,eventOneVO.y);
+
+        $("#doBySelf").on('click',function (){
+            var after=$("#after");
+            if($("#doBySelf").is(':checked')){
+                $("#after").css('display','block');
+                $(".do_span").last().removeClass("noneActivti")
+            }else {
+                $("#after").css('display','none');
+                $(".do_span").last().addClass("noneActivti");
+                $("#doitBefor").addClass("blockActive");
+                $("#doitBeforSpan").addClass("active");
+            }
+        });
+        $(".name").click(function () {
+            $(this).addClass("active").siblings(".name").removeClass("active");
+            $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
+        })
+        $(".enclosure").click(function () {
+            alert("附件详情")
+        })
+        $.ajaxUtil.get(componentTypeUrl, function (e) {
+            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        })
+        $("#input-id").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            uploadAsync: false, //关闭异步上传，改为同步上传。
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'],       // 接收的文件后缀
+            maxFileCount: 10,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: true,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        }).on('change', function (event) {
+            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
+        }).on('fileselect', function (event, numFiles, label) {
+            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
+        }).on("filebatchselected", function (event, files) {
+            $(this).fileinput("upload");
+        }).on("fileuploaded", function (event, data) {
+
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                multiMediaData.push(data);
+                insertMultiMedia(data);
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
+            }
+        }).on('filedeleted', function (event, key) {
+            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
+            console.log('Key = ' + key);
+        }).on('filesuccessremove', function (event, id) {
+            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
+            deleteMultiMedia(id, multiMediaData);
+        }).on('fileclear', function (event) {
+            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
+            console.log(event);
+        }).on('filecleared', function (event) {
+            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
+            console.log(event);
+        }).on('filepredelete', function (event, key) {
+            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
+            console.log('Key = ' + key);
+        });
+
+        $("#input-id-after").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            uploadAsync: false, //关闭异步上传，改为同步上传。
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'],       // 接收的文件后缀
+            maxFileCount: 10,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: true,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                     // 按钮样式
+
+        }).on('change', function (event) {
+            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
+        }).on('fileselect', function (event, numFiles, label) {
+            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
+        }).on("filebatchselected", function (event, files) {
+            $(this).fileinput("upload");
+        }).on("fileuploaded", function (event, data) {
+
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                multiMediaAfterData.push(data);
+                insertMultiMediaAfter(data);
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
+            }
+        }).on('filedeleted', function (event, key) {
+            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
+            console.log('Key = ' + key);
+        }).on('filesuccessremove', function (event, id) {
+            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
+            deleteMultiMediaAfter(id, multiMediaAfterData);
+        }).on('fileclear', function (event) {
+            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
+            console.log(event);
+        }).on('filecleared', function (event) {
+            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
+            console.log(event);
+        }).on('filepredelete', function (event, key) {
+            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
+            console.log('Key = ' + key);
+        });
+    })
+
+    function Cancel() {
+        $.modal.closeLoading();
+    }
+
+    function update() {
+        var data = $('#userForm').serialize();
+        $.operate.saveTab(url, data);
+    }
+
+    function addPicture() {
+        // $.modal.open();
+
+    }
+
+    // 更改校验文字
+    jQuery.extend(jQuery.validator.messages, {
+        required: "必填",
+        phone: "必填",
+        petitonerPhone: "必填",
+        remote: "请修正该字段",
+        email: "请输入正确格式的电子邮件",
+        url: "请输入合法的网址",
+        date: "请输入合法的日期",
+        dateISO: "请输入合法的日期 (ISO).",
+        number: "请输入合法的数字",
+        digits: "只能输入整数",
+        creditcard: "请输入合法的信用卡号",
+        equalTo: "请再次输入相同的值",
+        accept: "请输入拥有合法后缀名的字符串",
+        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
+        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
+        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
+        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
+        min: jQuery.validator.format("请输入一个最小为{0} 的值")
+    });
+
+    $("#userForm").validate({
+        debug: true,
+        ignore: "",
+        submitHandler: function (form) {
+            var params = $(form).serialize(); //串行化表单参数
+            $.post("user", params, function (result) {
+                if (result.ok) {//注册成功
+                    location.href = "register_ok.html";
+                } else {//注册失败
+                    alert(result.msg);
+                    $("#checkImg").click();
+                }
+            }, "json");
+        },
+        rules: {
+            userName: {
+                required: true
+            },
+            loginName: {
+                required: true,
+                // rangelength: [5, 8]
+            },
+            phonenumber: {
+                required: true,
+                // rangelength: [6, 12]
+            },
+            problemescription: {
+                required: true,
+                // rangelength: [6, 12],
+                /*重复密码需要与原密码相同的要求*/
+                // equalTo: "#pwd"
+            },
+            safeLevel: {
+                required: true
+            },
+            findTime: {
+                required: true,
+                // range: [26, 50]
+            },
+            enterprise: {
+                required: true
+            },
+            department: {
+                required: true
+            },
+            handleTime: {
+                required: true
+            }, charge: {
+                required: true
+            },
+            question: {
+                required: true
+            },
+            closeTime: {
+                required: true,
+            },
+        },
+        messages: {
+
+        }
+    });
+    /*手机号格式验证*/
+    $.validator.addMethod("phone", function (value, element, params) {
+        var reg = /^1[34578]\d{9}$/;
+        return reg.test(value);
+    }, "phone error");
+    $.validator.addMethod("petitonerPhone", function (value, element, params) {
+        var reg = /^1[34578]\d{9}$/;
+        return reg.test(value);
+    }, "petitonerPhone error");
+
+    function Cancel() {
+        $.modal.closeLoading();
+    }
+
+    function submitHandler1() {
+        //先校验
+        if (!$("form").valid()) {
+            return;
+        }
+        let data = $('#userForm').serialize();
+        $.operate.saveAndReload(receiveUrl, data, function (e){
+            createEventCode($("#eventTypeId").val());
+        });
+    }
+
+    function submitHandler2() {
+        //先校验
+        if (!$("form").valid()) {
+            return;
+        }
+        let data = $('#userForm').serialize();
+        $.operate.saveAndReload(dispatchUrl, data, function (e){
+            createEventCode($("#eventTypeId").val());
+        });
+    }
+
+    let mapUrl = [[${@geoServerProperties.url}]];
+    let center_x = [[${@geoServerProperties.center_x}]];
+    let center_y = [[${@geoServerProperties.center_y}]];
+    let layers = [[${@geoServerProperties.layers}]];
+    let zoom = [[${@geoServerProperties.zoom}]];
+    let epsg = [[${@geoServerProperties.epsg}]];
+
+    // 地图
+    var gridsetName = 'EPSG:4552';
+    var gridNames = ['EPSG:4552:0', 'EPSG:4552:1', 'EPSG:4552:2', 'EPSG:4552:3', 'EPSG:4552:4', 'EPSG:4552:5', 'EPSG:4552:6', 'EPSG:4552:7'];
+    var baseUrl = 'http://218.10.223.8:9050/geoserver/gwc/service/wmts';
+    var style = '';
+    var format = 'image/png8';
+    var infoFormat = 'text/html';
+    var layerName = 'hegang:MosaicResult';
+    var projection = new ol.proj.Projection({
+        code: 'EPSG:4552',
+        units: 'm',
+        axisOrientation: 'neu'
+    });
+    var resolutions = [13.999999999999998, 6.999999999999999, 3.4999999999999996, 1.7499999999999998, 0.8749999999999999, 0.43749999999999994, 0.21874999999999997, 0.10937499999999999];
+    baseParams = ['VERSION','LAYER','STYLE','TILEMATRIX','TILEMATRIXSET','SERVICE','FORMAT'];
+
+    params = {
+        'VERSION': '1.0.0',
+        'LAYER': layerName,
+        'STYLE': style,
+        'TILEMATRIX': gridNames,
+        'TILEMATRIXSET': gridsetName,
+        'SERVICE': 'WMTS',
+        'FORMAT': format
+    };
+
+    function constructSource() {
+        var url = baseUrl+'?'
+        for (var param in params) {
+            if (baseParams.indexOf(param.toUpperCase()) < 0) {
+                url = url + param + '=' + params[param] + '&';
+            }
+        }
+        url = url.slice(0, -1);
+
+        var source = new ol.source.WMTS({
+            url: url,
+            layer: params['LAYER'],
+            matrixSet: params['TILEMATRIXSET'],
+            format: params['FORMAT'],
+            projection: projection,
+            tileGrid: new ol.tilegrid.WMTS({
+                tileSize: [256,256],
+                extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
+                origin: [374503.7646126483, 5570848.560955403],
+                resolutions: resolutions,
+                matrixIds: params['TILEMATRIX']
+            }),
+            style: params['STYLE'],
+            wrapX: true
+        });
+        return source;
+    }
+
+    var untiled = new ol.layer.Tile({
+        source: constructSource()
+    });
+
+    var view = new ol.View({
+        center: [0, 0],
+        zoom: 17,
+        resolutions: resolutions,
+        projection: projection,
+        extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403]
+    });
+
+    var map = new ol.Map({
+        layers: [untiled],
+        target: 'map',
+        view: view
+    });
+    map.getView().fit([593489.95, 5237489.95,
+        598010.0499999999, 5247510.05], map.getSize());
+    var fullScreenControl = new ol.control.FullScreen();
+
+    map.addControl(fullScreenControl)
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
+    let localReverseGeocoding = /*[[@{/event/localReverseGeocoding}]]*/ "/event/localReverseGeocoding";
+    map.on('singleclick', function (evt) {
+        let t = evt.coordinate;
+        $("#longitude").val(t[0])
+        $("#latitude").val(t[1])
+        $.ajaxUtil.get(localReverseGeocoding + "?x=" + t[0] + "&y=" + t[1], function (e) {
+            $("#location").val(e.data.mongo)
+        })
+        layerMap.getSource().clear()
+        $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + t[0] + "&y=" + t[1], function (e) {
+            let split = e.data.multiPolygon.split(",");
+            let polygonArray = [];
+            let polygonArrayEnd = [];
+            for (let j = 0; j < split.length; j++) {
+                let pointArray = [];
+                pointArray.push(split[j].split(" ")[0]);
+                pointArray.push(split[j].split(" ")[1]);
+                polygonArray.push(pointArray);
+                polygonArrayEnd.push(polygonArray);
+            }
+            setPolygon(polygonArrayEnd);
+            let data = e.data.mapList;
+            for (let i = 0; i < data.length; i++) {
+                switch (data[i].level) {
+                    case 1:
+                        $("#grid1").val(data[i].id);
+                        break;
+                    case 2:
+                        $("#grid2").empty();
+                        let option2 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid2").html(option2);
+                        break;
+                    case 3:
+                        $("#grid3").empty();
+                        let option3 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid3").html(option3);
+                        break;
+                    case 4:
+                        let coordinate = [];
+                        coordinate.push($("#longitude").val());
+                        coordinate.push($("#latitude").val());
+                        overlay.setPosition(coordinate);
+                        let popupContentHtml = "<div class='demo2'>网格名称:" + data[i].name;
+                        popupContentHtml += "<em>&#9670;</em>";
+                        popupContentHtml += "<span>&#9670;</span>";
+                        popupContentHtml += "</div>";
+                        $("#popup-content").html(popupContentHtml);
+                        $("#popup").on("click", ".closePopup", function (e) {
+                            e.preventDefault();
+                            overlay.setPosition(undefined);
+                        })
+
+                        $("#grid4").empty();
+                        let option4 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid4").html(option4);
+                        getUserListForSupervisor(data[i].id);
+                        break;
+                    default:
+                        console.log("查询出了网格之外的东西");
+                }
+            }
+        });
+
+        setPoint(evt.coordinate);
+
+        /**
+         * 获取部件编码
+         */
+        if($("#layer").val()===""||$("#layer").val()===null){
+            $("#componentObjId").val("")
+        }else{
+            let t = evt.coordinate;
+            $.ajaxUtil.get(unit + "?tableName=" + $("#layer").val()+"&x="+t[0]+"&y="+t[1], function (e) {
+                $("#componentObjId").val(e.data.id)
+
+            });
+        }
+    });
+
+
+    /**
+     * 获取网格的中心点
+     */
+    function getGridCenter() {
+        let pointOfCenter = $("#grid4 option:selected").val();
+        let url = "/event/findGeomByGridId?id=" + pointOfCenter;
+        $.ajaxUtil.get(url, function (e) {
+            $(e.data.geom).each(function (index, value) {
+                let split = value.split(",");
+                let polygonArray = [];
+                let polygonArrayEnd = [];
+                for (let j = 0; j < split.length; j++) {
+                    let pointArray = [];
+                    pointArray.push(split[j].split(" ")[0]);
+                    pointArray.push(split[j].split(" ")[1]);
+                    polygonArray.push(pointArray);
+                    polygonArrayEnd.push(polygonArray);
+                }
+                setPolygon(polygonArrayEnd);
+            })
+            var data = e.data.center[0].split(" ");
+            var center = [];
+            center.push(parseFloat(data[0]))
+            center.push(parseFloat(data[1]))
+            setCenterForGrid(center);
+        });
+
+        getUserListForSupervisor(pointOfCenter);
+    }
+    /**
+     * 回显上传照片
+     */
+    function showImage(){
+        let showUrl = [[${@fastProperties.nginxUrl}]];
+        let file = [[${files}]];
+        console.log("file",file)
+        let imageHtml = "";
+        let videoHtml = "";
+        let musicHtml = "";
+        let imageHtmlAfter = "";
+        let videoHtmlAfter = "";
+        let musicHtmlAfter = "";
+        if (file.length > 0) {
+            $("#imageList").empty();
+            $("#videoList").empty();
+            $("#musicList").empty();
+            $("#imageListAfter").empty();
+            $("#videoListAfter").empty();
+            $("#musicListAfter").empty();
+            for (let i = 0; i < file.length; i++) {
+                console.log("filei",file[i])
+                if (file[i].management ==="处置前"){
+                    if (file[i].type=== '图片'){
+                        imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
+                            "</div>";
+                    } else if (file[i].type=== '视频') {
+                        videoHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<video controls src='" + showUrl + file[i].url + "'>" +
+                            "</div>";
+                    } else if (file[i].type=== '音频') {
+                        musicHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<audio controls src='" + showUrl + file[i].url + "'>" +
+                            "</div>";
+                    }
+                }else {
+                    if (file[i].type=== '图片'){
+                        imageHtmlAfter += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
+                            "</div>";
+                    } else if (file[i].type=== '视频') {
+                        videoHtmlAfter += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<video controls src='" + showUrl + file[i].url + "'>" +
+                            "</div>";
+                    } else if (file[i].type=== '音频') {
+                        musicHtmlAfter += "<div class=\"innerPic\" style=\"float:left;\">\n" +
+                            "<audio controls src='" + showUrl + file[i].url + "'>" +
+                            "</div>";
+                    }
+                }
+            }
+        }
+        $("#imageList").html(imageHtml);
+        $("#videoList").html(videoHtml);
+        $("#musicList").html(musicHtml);
+        $("#imageListAfter").html(imageHtmlAfter);
+        $("#videoListAfter").html(videoHtmlAfter);
+        $("#musicListAfter").html(musicHtmlAfter);
+    }
+
+    function setPoints(coor) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point(coor),
+            data: {
+                // id: data,
+                // name: name,
+                // coordinate: x + "," + y
+            }
+        });
+        layerMap.getSource().addFeature(point);
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                src: '../../img/dwpoint3.png'
+            })
+        }));
+    }
+    function setPolygon(Polygons, data) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(Polygons),
+            data: {
+                id: data,
+                // name: name,
+                coordinate: Polygons
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
+    }
+    function setCenterForGrid(data) {
+        map.getView().setCenter(data);
+    }
+    /**
+     * 通过网格id获取符合条件得监督员
+     */
+    let getUserListForSupervisorUrl = /*[[@{/event/getUserListForSupervisor}]]*/ "/event/getUserListForSupervisor";
+    function getUserListForSupervisor(id) {
+        $.ajaxUtil.get(getUserListForSupervisorUrl + "?gridId=" + id, function (e) {
+            let option = "";
+            $("#userId").empty();
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.name + "</option>"
+                });
+                $("#userId").html(option);
+            }
+        });
+    }
+</script>
 </body>
 </html>
