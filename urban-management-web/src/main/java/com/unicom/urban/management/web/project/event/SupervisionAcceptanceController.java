@@ -48,6 +48,9 @@ public class SupervisionAcceptanceController {
     @Autowired
     private EventFileService eventFileService;
 
+    /**
+     * 跳转到自处理案件列表
+     */
     @GetMapping("/toSupervisionAcceptanceList")
     public ModelAndView toSupervisionAcceptanceList(Model model, String eventId) {
         ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/list");
