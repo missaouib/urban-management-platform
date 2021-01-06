@@ -2,8 +2,10 @@ package com.unicom.urban.management.service.comprehensiveevaluation;
 
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.statistics.StatisticsRepository;
+import com.unicom.urban.management.mapper.GridMapper;
 import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.Event;
+import com.unicom.urban.management.pojo.entity.Grid;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.vo.DeptEvaluate;
 import com.unicom.urban.management.pojo.vo.ComprehensiveVO;
@@ -44,6 +46,7 @@ public class ComprehensiveEvaluationService {
     DeptService deptService;
     @Autowired
     StatisticsRepository statisticsRepository;
+
 
     private final NumberFormat nt = NumberFormat.getPercentInstance();
 
@@ -192,7 +195,14 @@ public class ComprehensiveEvaluationService {
             Predicate[] p = new Predicate[list1.size()];
             return criteriaBuilder.and(list1.toArray(p));
         });
-        List<GridVO> gridAll = gridService.findGridAll();
+        List<GridVO> gridAll = new ArrayList<>();
+        if (StringUtils.isNotEmpty(gridId)){
+            Grid grid = gridService.findOne(gridId);
+            gridAll.add(GridMapper.INSTANCE.gridToGridVO(grid));
+        }else {
+            gridAll = gridService.findGridAll();
+        }
+
         /*处置数*/
         List<Statistics> disposeList = all.stream().filter(s -> null != s.getDispose()).filter(s -> 1 == s.getDispose()).collect(Collectors.toList());
         /*应处置数*/
@@ -201,10 +211,10 @@ public class ComprehensiveEvaluationService {
         List<Statistics> inTimeDisposeList = all.stream().filter(s -> null != s.getNeedDispose()).filter(s -> 1 == s.getInTimeDispose()).collect(Collectors.toList());
         /*返工数*/
         List<Statistics> reworkList = all.stream().filter(s -> null != s.getRework()).filter(s -> s.getRework() == 1).collect(Collectors.toList());
-        List<ComprehensiveVO> disposeRanking = disposeRanking(disposeList, gridAll,gridId);
-        List<ComprehensiveVO> disposeRate = disposeRate(disposeList,needDisposeList, gridAll,gridId);
-        List<ComprehensiveVO> inTimeDisposeRate = inTimeDisposeRate(inTimeDisposeList,needDisposeList, gridAll,gridId);
-        List<ComprehensiveVO> reworkRate = reworkRate(reworkList,disposeList, gridAll,gridId);
+        List<ComprehensiveVO> disposeRanking = disposeRanking(disposeList, gridAll);
+        List<ComprehensiveVO> disposeRate = disposeRate(disposeList,needDisposeList, gridAll);
+        List<ComprehensiveVO> inTimeDisposeRate = inTimeDisposeRate(inTimeDisposeList,needDisposeList, gridAll);
+        List<ComprehensiveVO> reworkRate = reworkRate(reworkList,disposeList, gridAll);
 
         map.put("disposeRanking",disposeRanking);
         map.put("disposeRate",disposeRate);
@@ -215,112 +225,77 @@ public class ComprehensiveEvaluationService {
     /**
      * 返工率排行榜
      */
-    private List<ComprehensiveVO> reworkRate(List<Statistics> reworkList,List<Statistics> disposeList, List<GridVO> gridAll, String gridId) {
+    private List<ComprehensiveVO> reworkRate(List<Statistics> reworkList, List<Statistics> disposeList, List<GridVO> gridAll) {
         List<ComprehensiveVO> list = new ArrayList<>();
-        List<ComprehensiveVO> sortedList = new ArrayList<>();;
-        if (StringUtils.isNotEmpty(gridId)) {
-            List<Dept> subDeptList = deptService.findAllByGridId(gridId);
-            for (Dept d : subDeptList) {
+        List<ComprehensiveVO> sortedList = new ArrayList<>();
+        for (GridVO gridVO : gridAll) {
+            for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 ComprehensiveVO c = new ComprehensiveVO();
+                c.setDeptName(d.getDeptName());
                 Integer reworkNum = this.reworkNum(reworkList, d.getId());
                 Integer disposeNum = this.disposeNum(disposeList, d.getId());
-                c.setReworkRateNum(disposeNum == 0 ? 0 : new BigDecimal(reworkNum).divide(new BigDecimal(disposeNum),2, BigDecimal.ROUND_HALF_UP).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
+                c.setReworkRateNum(disposeNum == 0 ? 0 : new BigDecimal(reworkNum).divide(new BigDecimal(disposeNum), 2, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
                 c.setDeptName(d.getDeptName());
                 list.add(c);
-            }
-        }else {
-            for (GridVO gridVO : gridAll) {
-                for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
-                    ComprehensiveVO c = new ComprehensiveVO();
-                    c.setDeptName(d.getDeptName());
-                    Integer reworkNum = this.reworkNum(reworkList, d.getId());
-                    Integer disposeNum = this.disposeNum(disposeList, d.getId());
-                    c.setReworkRateNum(disposeNum == 0 ? 0 : new BigDecimal(reworkNum).divide(new BigDecimal(disposeNum),2, BigDecimal.ROUND_HALF_UP).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
-                    c.setDeptName(d.getDeptName());
-                    list.add(c);
-                }
             }
         }
         //处置数比较排序
         sortedList = list.stream().sorted((s1, s2) -> s1.getReworkRateNum().compareTo(s2.getReworkRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
-            sortedList.get(i).setIndex(String.valueOf(i+1));
-            sortedList.get(i).setReworkRate(sortedList.get(i).getReworkRateNum() == 0 ? "0.0%" : sortedList.get(i).getReworkRateNum()*100 + "%");
+            sortedList.get(i).setIndex(String.valueOf(i + 1));
+            sortedList.get(i).setReworkRate(sortedList.get(i).getReworkRateNum() == 0 ? "0.0%" : sortedList.get(i).getReworkRateNum() * 100 + "%");
         }
         return sortedList;
     }
+
     /**
      * 按时处置率排行榜
      */
-    private List<ComprehensiveVO> inTimeDisposeRate(List<Statistics> inTimeDisposeList,List<Statistics> needDisposeList, List<GridVO> gridAll, String gridId) {
+    private List<ComprehensiveVO> inTimeDisposeRate(List<Statistics> inTimeDisposeList, List<Statistics> needDisposeList, List<GridVO> gridAll) {
         List<ComprehensiveVO> list = new ArrayList<>();
         List<ComprehensiveVO> sortedList = new ArrayList<>();
-        if (StringUtils.isNotEmpty(gridId)) {
-            List<Dept> subDeptList = deptService.findAllByGridId(gridId);
-            for (Dept d : subDeptList) {
+        for (GridVO gridVO : gridAll) {
+            for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 ComprehensiveVO c = new ComprehensiveVO();
                 Integer inTimeDisposeNum = this.inTimeDisposeNum(inTimeDisposeList, d.getId());
                 Integer needDisposeNum = this.needDisposeNum(needDisposeList, d.getId());
-                c.setInTimeDisposeRateNum(needDisposeNum == 0 ? 0 : new BigDecimal(inTimeDisposeNum).divide(new BigDecimal(needDisposeNum),2, BigDecimal.ROUND_HALF_UP).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
+                c.setInTimeDisposeRateNum(needDisposeNum == 0 ? 0 : new BigDecimal(inTimeDisposeNum).divide(new BigDecimal(needDisposeNum), 2, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
                 c.setDeptName(d.getDeptName());
                 list.add(c);
-            }
-        }else {
-            for (GridVO gridVO : gridAll) {
-                for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
-                    ComprehensiveVO c = new ComprehensiveVO();
-                    Integer inTimeDisposeNum = this.inTimeDisposeNum(inTimeDisposeList, d.getId());
-                    Integer needDisposeNum = this.needDisposeNum(needDisposeList, d.getId());
-                    c.setInTimeDisposeRateNum(needDisposeNum == 0 ? 0 : new BigDecimal(inTimeDisposeNum).divide(new BigDecimal(needDisposeNum),2, BigDecimal.ROUND_HALF_UP).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
-                    c.setDeptName(d.getDeptName());
-                    list.add(c);
-                }
             }
         }
         //处置数比较排序
         sortedList = list.stream().sorted((s1, s2) -> s2.getInTimeDisposeRateNum().compareTo(s1.getInTimeDisposeRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
-            sortedList.get(i).setIndex(String.valueOf(i+1));
-            sortedList.get(i).setInTimeDisposeRate(sortedList.get(i).getInTimeDisposeRateNum() == 0 ? "0.0%" : sortedList.get(i).getInTimeDisposeRateNum()*100 + "%");
+            sortedList.get(i).setIndex(String.valueOf(i + 1));
+            sortedList.get(i).setInTimeDisposeRate(sortedList.get(i).getInTimeDisposeRateNum() == 0 ? "0.0%" : sortedList.get(i).getInTimeDisposeRateNum() * 100 + "%");
         }
         return sortedList;
     }
+
     /**
      * 处置率排行榜
      */
-    private List<ComprehensiveVO> disposeRate(List<Statistics> disposeList,List<Statistics> needDisposeList, List<GridVO> gridAll, String gridId) {
+    private List<ComprehensiveVO> disposeRate(List<Statistics> disposeList, List<Statistics> needDisposeList, List<GridVO> gridAll) {
         List<ComprehensiveVO> list = new ArrayList<>();
         List<ComprehensiveVO> sortedList = new ArrayList<>();
-        if (StringUtils.isNotEmpty(gridId)) {
-            List<Dept> subDeptList = deptService.findAllByGridId(gridId);
-            for (Dept d : subDeptList) {
+        for (GridVO gridVO : gridAll) {
+            for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 ComprehensiveVO c = new ComprehensiveVO();
+                c.setDeptName(d.getDeptName());
                 Integer disposeNum = this.disposeNum(disposeList, d.getId());
                 Integer needDisposeNum = this.needDisposeNum(needDisposeList, d.getId());
-                c.setDisposeRateNum(needDisposeNum == 0 ? 0 : new BigDecimal(disposeNum).divide(new BigDecimal(needDisposeNum),2, BigDecimal.ROUND_HALF_UP).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
+                c.setDisposeRateNum(needDisposeNum == 0 ? 0 : new BigDecimal(disposeNum).divide(new BigDecimal(needDisposeNum), 2, BigDecimal.ROUND_HALF_UP).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
                 c.setDeptName(d.getDeptName());
                 c.setDisposeNum(disposeNum);
                 list.add(c);
-            }
-        }else {
-            for (GridVO gridVO : gridAll) {
-                for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
-                    ComprehensiveVO c = new ComprehensiveVO();
-                    c.setDeptName(d.getDeptName());
-                    Integer disposeNum = this.disposeNum(disposeList, d.getId());
-                    Integer needDisposeNum = this.needDisposeNum(needDisposeList, d.getId());
-                    c.setDisposeRateNum(needDisposeNum == 0 ? 0 : new BigDecimal(disposeNum).divide(new BigDecimal(needDisposeNum),2, BigDecimal.ROUND_HALF_UP).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue());
-                    c.setDeptName(d.getDeptName());
-                    c.setDisposeNum(disposeNum);
-                    list.add(c);
-                }
             }
         }
         //处置数比较排序
         sortedList = list.stream().sorted((s1, s2) -> s2.getDisposeRateNum().compareTo(s1.getDisposeRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
-            sortedList.get(i).setIndex(String.valueOf(i+1));
-            sortedList.get(i).setDisposeRate(sortedList.get(i).getDisposeRateNum() == 0 ? "0.0%" :  sortedList.get(i).getDisposeRateNum()*100 + "%");
+            sortedList.get(i).setIndex(String.valueOf(i + 1));
+            sortedList.get(i).setDisposeRate(sortedList.get(i).getDisposeRateNum() == 0 ? "0.0%" : sortedList.get(i).getDisposeRateNum() * 100 + "%");
         }
         return sortedList;
     }
@@ -328,33 +303,23 @@ public class ComprehensiveEvaluationService {
     /**
      * 处置数排行榜
      */
-    private List<ComprehensiveVO> disposeRanking(List<Statistics> disposeList, List<GridVO> gridAll,String gridId) {
+    private List<ComprehensiveVO> disposeRanking(List<Statistics> disposeList, List<GridVO> gridAll) {
         List<ComprehensiveVO> list = new ArrayList<>();
         List<ComprehensiveVO> sortedList = new ArrayList<>();
-        if (StringUtils.isNotEmpty(gridId)) {
-            List<Dept> subDeptList = deptService.findAllByGridId(gridId);
-            subDeptList.forEach(d -> {
+        for (GridVO gridVO : gridAll) {
+            for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 ComprehensiveVO comprehensiveVO = new ComprehensiveVO();
-                Integer disposeNum = this.disposeNum(disposeList, d.getId());
                 comprehensiveVO.setDeptName(d.getDeptName());
-                comprehensiveVO.setDisposeNum(disposeNum);
+                /*处置数*/
+                comprehensiveVO.setDisposeNum(this.disposeNum(disposeList, d.getId()));
                 list.add(comprehensiveVO);
-            });
-        }else {
-            for (GridVO gridVO : gridAll) {
-                for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
-                    ComprehensiveVO comprehensiveVO = new ComprehensiveVO();
-                    comprehensiveVO.setDeptName(d.getDeptName());
-                    /*处置数*/
-                    comprehensiveVO.setDisposeNum(this.disposeNum(disposeList,d.getId()));
-                    list.add(comprehensiveVO);
-                }
             }
         }
+
         //处置数比较排序
         sortedList = list.stream().sorted((s1, s2) -> s2.getDisposeNum().compareTo(s1.getDisposeNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
-            sortedList.get(i).setIndex(String.valueOf(i+1));
+            sortedList.get(i).setIndex(String.valueOf(i + 1));
         }
         return sortedList;
     }
