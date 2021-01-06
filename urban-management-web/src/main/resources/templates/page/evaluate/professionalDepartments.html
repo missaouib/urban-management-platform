@@ -79,6 +79,10 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <script type="text/javascript" th:inline="javascript">
+
+
+
+
     $(function () {
         ////日期插件
         $('.form_datetime').datetimepicker({
@@ -97,18 +101,17 @@
         cleanSearchInput()
 
 
+
+
         var date = new Date();
         //本周
         $("#theWeek").click(function () {
-            // 本周一的日期
-            date.setDate(date.getDate() - date.getDay() + 1);
-            let begin = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " 00:00:00";
-            $("#begin").val(begin)
-            // 本周日的日期
-            date.setDate(date.getDate() + 6);
-            let end = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " 23:59:59";
-            $("#end").val(end)
-            // console.log(begin,end)
+            var getWeekToSearch = new getWeek();
+            var week = getWeekToSearch.init().getWeekType();
+            var endWeek = week.slice(11,21);
+            var starWeek = week.slice(0,10);
+            $("#begin").val(starWeek + ' 00:00:00')
+            $("#end").val(endWeek + ' 23:59:59')
         });
 
         //本月
@@ -127,44 +130,7 @@
 
         //本季
         $("#theuarter").click(function () {
-            function getQuarterMonth(type){
-                var now = new Date();
-                var nowMonth = now.getMonth();
-                var year = now.getFullYear();
-                var quarterStartMonth = 1;
-                if(nowMonth<3){
-                    quarterStartMonth = 1;
-                }
-                if(2<nowMonth && nowMonth<6){
-                    quarterStartMonth = 4;
-                }
-                if(5<nowMonth && nowMonth<9){
-                    quarterStartMonth = 7;
-                }
-                if(nowMonth>8){
-                    quarterStartMonth = 10;
-                }
-                if (type == "s") {
-                    var day = year+"-"+quarterStartMonth+"-01";
-                };
-                if (type == "e") {
-                    if(quarterStartMonth==1){
-                        var day = year+"-"+(quarterStartMonth+2)+"-31";
-                    }
-                    if(quarterStartMonth==10){
-                        var day = year+"-"+(quarterStartMonth+2)+"-31";
-                    }
-                    if(quarterStartMonth==4){
-                        var day = year+"-"+(quarterStartMonth+2)+"-30";
-                    }
-                    if(quarterStartMonth==7){
-                        var day = year+"-"+(quarterStartMonth+2)+"-30";
-                    }
-                };
-                return day;
-            }
-            $("#begin").val(getQuarterMonth("s",1) + " 00:00:00")
-            $("#end").val(getQuarterMonth("e",1) + " 23:59:59")
+           getQuarterMonth()
         });
 
         //本年

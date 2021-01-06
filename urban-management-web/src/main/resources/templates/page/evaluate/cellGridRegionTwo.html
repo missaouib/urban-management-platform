@@ -48,10 +48,10 @@
                     <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                     <!--            </div>-->
                     <div class="r_right but_p btn_search dates">
-                        <button class="check_btn2 ">本周</button>
-                        <button class="check_btn2 ">本月</button>
-                        <button class="check_btn2 ">本季</button>
-                        <button class="check_btn2 ">本年</button>
+                        <button class="check_btn2" type="button" id="theWeek">本周</button>
+                        <button class="check_btn2" type="button" id="theMonth">本月</button>
+                        <button class="check_btn2" type="button" id="theQuarter">本季</button>
+                        <button class="check_btn2" type="button" id="theYear">本年</button>
                     </div>
                 </div>
             </div>
@@ -87,14 +87,12 @@
         var date = new Date();
         //本周
         $("#theWeek").click(function () {
-            // 本周一的日期
-            date.setDate(date.getDate() - date.getDay() + 1);
-            let startTime = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " 00:00:00";
-            $("#startTime").val(startTime)
-            // 本周日的日期
-            date.setDate(date.getDate() + 6);
-            let endTime = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " 23:59:59";
-            $("#endTime").val(endTime)
+            var getWeekToSearch = new getWeek();
+            var week = getWeekToSearch.init().getWeekType();
+            var endWeek = week.slice(11,21);
+            var starWeek = week.slice(0,10);
+            $("#startTime").val(starWeek + ' 00:00:00')
+            $("#endTime").val(endWeek + ' 23:59:59')
         });
 
         //本月
@@ -113,46 +111,25 @@
 
         //本季
         $("#theQuarter").click(function () {
-            function getQuarterMonth(type) {
-                var now = new Date();
-                var nowMonth = now.getMonth();
-                var year = now.getFullYear();
-                var quarterStartMonth = 1;
-                if (nowMonth < 3) {
-                    quarterStartMonth = 1;
-                }
-                if (2 < nowMonth && nowMonth < 6) {
-                    quarterStartMonth = 4;
-                }
-                if (5 < nowMonth && nowMonth < 9) {
-                    quarterStartMonth = 7;
-                }
-                if (nowMonth > 8) {
-                    quarterStartMonth = 10;
-                }
-                if (type == "s") {
-                    var day = year + "-" + quarterStartMonth + "-01";
-                }
-                ;
-                if (type == "e") {
-                    if (quarterStartMonth == 1) {
-                        var day = year + "-" + (quarterStartMonth + 2) + "-31";
-                    }
-                    if (quarterStartMonth == 10) {
-                        var day = year + "-" + (quarterStartMonth + 2) + "-31";
-                    }
-                    if (quarterStartMonth == 4) {
-                        var day = year + "-" + (quarterStartMonth + 2) + "-30";
-                    }
-                    if (quarterStartMonth == 7) {
-                        var day = year + "-" + (quarterStartMonth + 2) + "-30";
-                    }
-                }
-                return day;
+            var now = new Date();
+            var nowMonth = now.getMonth();
+            var year = now.getFullYear();
+            var starQuarte,endQyarte;
+            if(nowMonth>= 0 && nowMonth<= 2){
+                starQuarte = year + '-01-01 00:00:00';
+                endQyarte = year + '-03-31 23:59:59'
+            }else if(nowMonth>= 3 && nowMonth<= 5){
+                starQuarte = year + '-04-01 00:00:00';
+                endQyarte = year + '-06-30 23:59:59'
+            }else if(nowMonth>= 6 && nowMonth<= 8){
+                starQuarte = year + '-07-01 00:00:00';
+                endQyarte = year + '-09-30 23:59:59'
+            }else {
+                starQuarte = year + '-10-01 00:00:00';
+                endQyarte = year + '-12-31 23:59:59'
             }
-
-            $("#startTime").val(getQuarterMonth("s", 1) + " 00:00:00")
-            $("#endTime").val(getQuarterMonth("e", 1) + " 23:59:59")
+            $("#startTime").val(starQuarte)
+            $("#endTime").val(endQyarte)
         });
 
         //本年
