@@ -34,8 +34,14 @@ public class ComprehensiveVO {
      */
     private Integer overtimeDisposeNum;
     /**
+     * 处置率
+     */
+    private Double disposeRateNum;
+    private String disposeRate;
+    /**
      * 按时处置率
      */
+    private Double inTimeDisposeRateNum;
     private String inTimeDisposeRate;
     /**
      * 返工数
@@ -44,6 +50,7 @@ public class ComprehensiveVO {
     /**
      * 返工率
      */
+    private Double reworkRateNum;
     private String reworkRate;
     /**
      * 排名

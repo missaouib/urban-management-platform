@@ -41,7 +41,7 @@
                     <div class="notice_check">
                         <form id="search-form">
                             <p style="display: flex;justify-content: flex-end">
-                                <input type="button" class="check_btn button_ground closeSearch" onclick="$.table.search()" value="查询">
+                                <input type="button" class="check_btn button_ground closeSearch" onclick="search()" value="查询">
                                 <input type="button" class="check_btn1 button_ground closeSearch" onclick="$.form.reset()" value="重置">
                             </p>
                         </form>
@@ -152,10 +152,15 @@
             showMeridian: 1,
             format: "yyyy-mm-dd hh:ii:ss"
         });
-        queryUserList()
+        search();
     })
+    function search(){
+        queryUserList();
+        disposeRankingList()
+    }
     let searchUrl = /*[[@{/commandSubsystem/comprehensiveEvaluationSearch}]]*/ "/commandSubsystem/comprehensiveEvaluationSearch";
     function queryUserList() {
+        disposeRankingList();
         var options = {
             // num: num,
             showRefresh: false,
@@ -195,227 +200,121 @@
             ]
         };
         $.table.init(options);
+
     }
 
-    $('#bootstrap-table-did').bootstrapTable({
-        columns: [
-            {
-                field: 'index',
-                title: '排名',
-                formatter: medal
-            },
-            {
-                title: '考核部门',
-                field: "deptName"
-            },
-            {
-                title: '处置数',
-                field: 'disposeNum',
-            },
-            {
-                field: 'patrolReport',
-                title: '趋势',
-                formatter: trend
-            },
-        ],
-        data: [
-            {
-                index:"1",
-                typename:"道里区执法",
-                gridOnwer:"0",
-                patrolReport:'1'
-            },
-            {
-                index:"2",
-                typename:"南岗区执法",
-                gridOnwer:"0",
-                patrolReport:'2'
-            },
-            {
-                index:"3",
-                typename:"香坊区执法",
-                gridOnwer:"0",
-                patrolReport:'1'
-            },
-            {
-                index:"4",
-                typename:"道外区执法",
-                gridOnwer:"0",
-                patrolReport:'2'
-            },
-            {
-                index:"5",
-                typename:"平方区执法",
-                gridOnwer:"0",
-                patrolReport:'2'
-            }
-        ]
-    });
+    function disposeRankingList() {
 
-    $('#bootstrap-table2').bootstrapTable({
-        columns: [
-            {
-                field: 'index',
-                title: '排名',
-                formatter: medal
-            },
-            {
-                title: '考核部门',
-                field: "typename"
-            },
-            {
-                field: 'gridOnwer',
-                title: '处置率',
-            },
-            {
-                field: 'patrolReport',
-                title: '趋势',
-                formatter: trend
-            },
-        ],
-        data: [
-            {
-                index:"1",
-                typename:"道里区执法",
-                gridOnwer:"0.00%",
-                patrolReport:'1'
-            },
-            {
-                index:"2",
-                typename:"南岗区执法",
-                gridOnwer:"0.00%",
-                patrolReport:'2'
-            },
-            {
-                index:"3",
-                typename:"香坊区执法",
-                gridOnwer:"0.00%",
-                patrolReport:'1'
-            },
-            {
-                index:"4",
-                typename:"道外区执法",
-                gridOnwer:"0.00%",
-                patrolReport:'2'
-            },
-            {
-                index:"5",
-                typename:"平方区执法",
-                gridOnwer:"0",
-                patrolReport:'2'
-            }
-        ]
-    });
+        let startTime = $("#begin").val();
+        let endTime = $("#end").val();
+        let gridId = $("#gridId").val();
+        let url = "/commandSubsystem/comprehensiveEvaluationRankingList"
+        $.ajaxUtil.get(url+"?startTime="+startTime+"&endTime="+endTime+"&gridId="+gridId, function (e) {
+            var disposeRanking = e.data.disposeRanking;
+            var disposeRate = e.data.disposeRate;
+            var inTimeDisposeRate = e.data.inTimeDisposeRate;
+            var reworkRate = e.data.reworkRate;
+            $('#bootstrap-table-did').bootstrapTable({
+                columns: [
+                    {
+                        field: 'index',
+                        title: '排名',
+                        formatter: medal
+                    },
+                    {
+                        title: '考核部门',
+                        field: "deptName"
+                    },
+                    {
+                        title: '处置数',
+                        field: 'disposeNum',
+                    },
+                    // {
+                    //     field: 'patrolReport',
+                    //     title: '趋势',
+                    //     formatter: trend
+                    // },
+                ],
+                data: disposeRanking
+            });
 
-    $('#bootstrap-table3').bootstrapTable({
-        columns: [
-            {
-                field: 'index',
-                title: '排名',
-                formatter: medal
-            },
-            {
-                title: '考核部门',
-                field: "typename"
-            },
-            {
-                field: 'gridOnwer',
-                title: '按期处置率',
-            },
-            {
-                field: 'patrolReport',
-                title: '趋势',
-                formatter: trend
-            },
-        ],
-        data: [
-            {
-                index:"1",
-                typename:"道里区执法",
-                gridOnwer:"0",
-                patrolReport:'1'
-            },
-            {
-                index:"2",
-                typename:"南岗区执法",
-                gridOnwer:"0",
-                patrolReport:'2'
-            },
-            {
-                index:"3",
-                typename:"香坊区执法",
-                gridOnwer:"0",
-                patrolReport:'1'
-            },
-            {
-                index:"4",
-                typename:"道外区执法",
-                gridOnwer:"0",
-                patrolReport:'2'
-            },
-            {
-                index:"5",
-                typename:"平方区执法",
-                gridOnwer:"0",
-                patrolReport:'2'
-            }
-        ]
-    });
+            $('#bootstrap-table2').bootstrapTable({
+                columns: [
+                    {
+                        field: 'index',
+                        title: '排名',
+                        formatter: medal
+                    },
+                    {
+                        title: '考核部门',
+                        field: "deptName"
+                    },
+                    {
+                        title: '处置率',
+                        field: 'disposeRate',
+                    },
+                    // {
+                    //     field: 'patrolReport',
+                    //     title: '趋势',
+                    //     formatter: trend
+                    // },
+                ],
+                data: disposeRate
+            });
 
-    $('#bootstrap-table4').bootstrapTable({
-        columns: [
-            {
-                field: 'index',
-                title: '排名',
-                formatter: medal
-            },
-            {
-                title: '考核部门',
-                field: "typename"
-            },
-            {
-                field: 'gridOnwer',
-                title: '返工率',
-            },
-            {
-                field: 'patrolReport',
-                title: '趋势',
-                formatter: trend
-            },
-        ],
-        data: [
-            {
-                index:"1",
-                typename:"道里区执法",
-                gridOnwer:"0",
-                patrolReport:'1'
-            },
-            {
-                index:"2",
-                typename:"南岗区执法",
-                gridOnwer:"0",
-                patrolReport:'2'
-            },
-            {
-                index:"3",
-                typename:"香坊区执法",
-                gridOnwer:"0",
-                patrolReport:'1'
-            },
-            {
-                index:"4",
-                typename:"道外区执法",
-                gridOnwer:"0",
-                patrolReport:'2'
-            },
-            {
-                index:"5",
-                typename:"平方区执法",
-                gridOnwer:"0",
-                patrolReport:'2'
-            }
-        ]
-    });
+            $('#bootstrap-table3').bootstrapTable({
+                columns: [
+                    {
+                        field: 'index',
+                        title: '排名',
+                        formatter: medal
+                    },
+                    {
+                        title: '考核部门',
+                        field: "deptName"
+                    },
+                    {
+                        title: '按期处置率',
+                        field: 'inTimeDisposeRate',
+                    },
+                    // {
+                    //     field: 'patrolReport',
+                    //     title: '趋势',
+                    //     formatter: trend
+                    // },
+                ],
+                data: inTimeDisposeRate
+            });
+
+            $('#bootstrap-table4').bootstrapTable({
+                columns: [
+                    {
+                        field: 'index',
+                        title: '排名',
+                        formatter: medal
+                    },
+                    {
+                        title: '考核部门',
+                        field: "deptName"
+                    },
+                    {
+                        title: '返工率',
+                        field: 'reworkRate',
+                    },
+                    // {
+                    //     field: 'patrolReport',
+                    //     title: '趋势',
+                    //     formatter: trend
+                    // },
+                ],
+                data: reworkRate
+            });
+        });
+
+    }
+
+
+
 
     //金牌 银牌 铜牌
     function medal(index){

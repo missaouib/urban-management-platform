@@ -141,9 +141,10 @@ public class SupervisionCommandSubsystemController {
      * 综合评价-排行榜
      * @return
      */
+    @GetMapping("/comprehensiveEvaluationRankingList")
     public Map<String,Object> comprehensiveEvaluationRankingList(String startTime,String endTime, String gridId){
-//        Map<String,Object> map = comprehensiveEvaluationService.findRankingList(String startTime,String endTime, String gridId);
-        return new HashMap<>();
+        Map<String,Object> map = comprehensiveEvaluationService.findRankingList(startTime,endTime, gridId);
+        return map;
     }
 
 }
