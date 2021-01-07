@@ -160,3 +160,8 @@ thead th{
 .table-bordered{
 	border: none!important;
 }
+.fixed-table-pagination{
+	position: relative!important;
+	background-color: #2A3051;
+	color: #fff!important;
+}
