@@ -225,7 +225,7 @@ public class GridService {
 
     private boolean ifAreaName(String pid, String gridName, String id) {
         List<Grid> grids = gridRepository.findAllByParent_IdAndGridName(pid, gridName);
-        if (StringUtils.isNotBlank(id)) {
+        if (StringUtils.isBlank(id)) {
             return grids.size() != 0;
         } else {
             return grids.size() != 0 && (grids.size() != 1 || !id.equals(grids.get(0).getId()));
