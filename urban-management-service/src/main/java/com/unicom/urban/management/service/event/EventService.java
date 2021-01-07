@@ -12,10 +12,13 @@ import com.unicom.urban.management.pojo.entity.Process;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
+import com.unicom.urban.management.service.component.ComponentService;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
+import com.unicom.urban.management.service.eventcondition.EventConditionService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.grid.GridService;
+import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.process.ProcessService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.apache.commons.collections.CollectionUtils;
@@ -33,6 +36,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,6 +58,8 @@ public class EventService {
     @Autowired
     private EventConditionRepository eventConditionRepository;
     @Autowired
+    private EventConditionService eventConditionService;
+    @Autowired
     private WorkService workService;
     @Autowired
     private ActivitiService activitiService;
@@ -71,6 +77,10 @@ public class EventService {
     private EventFileService eventFileService;
     @Autowired
     private ProcessService processService;
+    @Autowired
+    private KVService kvService;
+    @Autowired
+    private ComponentService componentService;
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
@@ -437,6 +447,40 @@ public class EventService {
         }
     }
 
+    /**
+     * 案件登记-修改
+     *
+     * @param eventDTO 数据
+     */
+    public void registerUpdate(EventDTO eventDTO){
+        Event one = findOne(eventDTO.getId());
+        one.setRepresent(eventDTO.getRepresent());
+        one.setLocation(eventDTO.getLocation());
+        one.setX(eventDTO.getX());
+        one.setY(eventDTO.getY());
+        Grid grid = gridService.findOne(eventDTO.getGridId());
+        one.setGrid(grid);
+        EventType eventType = eventTypeService.findOne(eventDTO.getEventTypeId());
+        one.setEventType(eventType);
+        DeptTimeLimit deptTimeLimit = deptTimeLimitService.findOne(eventDTO.getTimeLimitId());
+        one.setTimeLimit(deptTimeLimit);
+        EventCondition eventCondition = eventConditionService.findOne(eventDTO.getConditionId());
+        one.setCondition(eventCondition);
+        KV oneById = kvService.findOneById(eventDTO.getRecTypeId());
+        one.setRecType(oneById);
+        one.setComponentObjId(eventDTO.getComponentObjId());
+        List<EventFile> eventFileList = new ArrayList<>();
+        List<EventFile> eventFileListImage = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);
+        List<EventFile> eventFileListVideo = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(), 2);
+        List<EventFile> eventFileListMusic = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(), 3);
+        eventFileList.addAll(eventFileListImage);
+        eventFileList.addAll(eventFileListVideo);
+        eventFileList.addAll(eventFileListMusic);
+        eventFileList.addAll(one.getEventFileList());
+        one.setEventFileList(eventFileList);
+        eventRepository.saveAndFlush(one);
+    }
+
     private boolean existsByEventCode(String eventCode) {
         return eventRepository.existsByEventCode(eventCode);
     }
@@ -564,8 +608,12 @@ public class EventService {
         eventOneVO.setTimeLimitId(one.getTimeLimit().getId());
         eventOneVO.setTimeLimitStr(one.getTimeLimit().getTimeLimit() + one.getTimeLimit().getTimeType().getValue());
         eventOneVO.setCommunity(one.getGrid().getParent().getGridName());
-        eventOneVO.setStreet(one.getGrid().getParent().getGridName());
+        eventOneVO.setCommunityId(one.getGrid().getParent().getId());
+        eventOneVO.setStreet(one.getGrid().getParent().getParent().getGridName());
+        eventOneVO.setStreetId(one.getGrid().getParent().getParent().getId());
         eventOneVO.setEventRegion(one.getGrid().getParent().getParent().getParent().getGridName());
+        eventOneVO.setEventRegionId(one.getGrid().getParent().getParent().getParent().getId());
+        eventOneVO.setRegionIdStr(one.getCondition().getParent().getId());
         eventOneVO.setRegionStr(one.getCondition().getParent().getRegion());
         eventOneVO.setConditionId(one.getCondition().getId());
         eventOneVO.setConditionValue(one.getCondition().getConditionValue());

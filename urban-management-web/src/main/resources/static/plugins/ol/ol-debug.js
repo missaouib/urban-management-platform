@@ -23800,7 +23800,7 @@ goog.require('ol.style.Stroke');
  *
  * @constructor
  * @struct
- * @param {olx.style.StyleOptions=} opt_options Style options.
+ * @param {{image: ol.style.Icon}} opt_options Style options.
  * @api
  */
 ol.style.Style = function(opt_options) {
@@ -54053,7 +54053,7 @@ goog.require('ol.style.Image');
  * Set icon style for vector features.
  *
  * @constructor
- * @param {olx.style.IconOptions=} opt_options Options.
+ * @param {{src: string}} opt_options Options.
  * @extends {ol.style.Image}
  * @api
  */

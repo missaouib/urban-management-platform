@@ -84,7 +84,13 @@ public class SupervisionAcceptanceController {
 
     @GetMapping("/toSupervisionAcceptanceUpdate/{id}")
     public ModelAndView toSupervisionAcceptanceUpdate(@PathVariable String id, Model model) {
-        model.addAttribute("id", id);
+        model.addAttribute("eventId", id);
+        //案件类型
+        model.addAttribute("recType", kvService.findByTableNameAndFieldName("event", "recType"));
+        //所在区域
+        model.addAttribute("gridList", gridService.findAllByParentIsNull());
+        //问题来源
+        model.addAttribute("eventSource", kvService.findByTableNameAndFieldNameAndValue("event", "eventSource", "热线上报"));
         return new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/update");
     }
 
@@ -163,6 +169,17 @@ public class SupervisionAcceptanceController {
     public Result dispatch(@Valid EventDTO eventDTO) {
         eventDTO.setInitSts(3);
         eventService.save(eventDTO);
+        return Result.success();
+    }
+
+    /**
+     * 案件登记-修改
+     *
+     * @return Result
+     */
+    @PostMapping("/registerUpdate")
+    public Result registerUpdate(@Valid EventDTO eventDTO) {
+        eventService.registerUpdate(eventDTO);
         return Result.success();
     }
 

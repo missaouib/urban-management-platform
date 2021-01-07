@@ -34,6 +34,7 @@ public class EventOneVO {
     /**
      * 立案区域
      */
+    private String regionIdStr;
     private String regionStr;
 
     /**
@@ -63,16 +64,19 @@ public class EventOneVO {
      * 所属社区
      */
     private String community;
+    private String communityId;
 
     /**
      * 所属街道
      */
     private String street;
+    private String streetId;
 
     /**
      * 所属区域
      */
     private String eventRegion;
+    private String eventRegionId;
 
 
     /**

@@ -32,16 +32,10 @@
             <form id="userForm">
                 <div class="top table2_top">
                     <div class="r_right but_p girdBtnGroup" style="display: flex;justify-content: start!important;margin: 0!important;padding-left: 10px!important;">
-
-                        <!--                            <button class="but_save" type="button" style="margin-right: 10px" data-toggle="modal"-->
-                        <!--                                    id="similarCasesBtn" onclick="similarCasesForEvent()">相似案件-->
-                        <!--                            </button>-->
-
                         <button class="but_save" type="submit" onclick="submitHandler1()"
                                 style="margin-right: 10px">保存
                         </button>
                         <button class="but_save" type="submit" onclick="submitHandler2()">核实</button>
-                        <!--<button class="but_close" onclick="Cancel()">返回</button>-->
                     </div>
                     <div class="top_out">
                         <table class="table">
@@ -60,9 +54,6 @@
                                     <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                         +
                                     </button>
-                                    <!--                                    <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">-->
-                                    <!--                                        +-->
-                                    <!--                                    </button>-->
                                 </td>
                                 <td><span>*</span>立案区域</td>
                                 <td>
@@ -120,7 +111,6 @@
                                 <td>
                                     <input type="text" id="componentObjId" name="componentObjId" readonly="readonly">
                                     <input type="hidden" id="layer"  readonly="readonly">
-<!--                                    <input type="hidden" id="componentObjId1" name="componentObjId" readonly="readonly">-->
                                 </td>
                                 <td><span></span>案件分类</td>
                                 <td>
@@ -219,16 +209,6 @@
                                 <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
                                 <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
                             </div>
-                            <!--                            <div class="sendImg">-->
-                            <!--                                <div class="sendText"><span>视频:</span></div>-->
-                            <!--                                <div><input id="videoInput" type="file" name="files" multiple="multiple"></div>-->
-                            <!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" value="">-->
-                            <!--                            </div>-->
-                            <!--                            <div class="sendImg">-->
-                            <!--                                <div class="sendText"><span>音频:</span></div>-->
-                            <!--                                <div><input id="audioInput" type="file" name="files" multiple="multiple"></div>-->
-                            <!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" value="">-->
-                            <!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -726,10 +706,10 @@
 
     //模态窗 selectEventTypeTree
     function selectEventTypeTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
-        var options = {
+        let treeId = $("#treeId").val();
+        let deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        let url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        let options = {
             title: '选择事件类型',
             width: "380",
             url: url,
@@ -759,11 +739,6 @@
     function save() {
         var data = $('#userForm').serialize();
         $.operate.saveTab(url, data);
-    }
-
-    function addPicture() {
-        // $.modal.open();
-
     }
 
     // 更改校验文字
