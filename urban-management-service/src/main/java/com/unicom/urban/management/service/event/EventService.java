@@ -961,6 +961,7 @@ public class EventService {
      */
     public void saveTempForApi(EventDTO eventDTO) {
         eventDTO.setSts(0);
+        this.uploadFiles(eventDTO);
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         if (StringUtils.isNotBlank(eventDTO.getObjId())) {
