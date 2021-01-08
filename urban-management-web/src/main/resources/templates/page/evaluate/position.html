@@ -332,6 +332,14 @@
             $("#"+startTime).val(year + "-" + "01-01" + " 00:00:00")
             $("#"+endTime).val(year + "-" + "12-31" + " 23:59:59")
         }
+        switch (startTime) {
+            case ('startTimeOne'): supervisorEvaluationSearch(); break;
+            case ('startTimeTwo'): acceptanceEvaluationSearch(); break;
+            case ('startTimeThree'): shiftForemanEvaluationSearch(); break;
+            case ('startTimeFour'): dispatcherEvaluationSearch(); break;
+            default:
+        }
+
     }
     let supervisorEvaluationUrl = /*[[@{/evaluate/supervisorEvaluation}]]*/ "/evaluate/supervisorEvaluation";
     let acceptanceEvaluationUrl = /*[[@{/evaluate/acceptanceEvaluation}]]*/ "/evaluate/acceptanceEvaluation";
@@ -428,7 +436,6 @@
         });
         $.ajaxUtil.get(supervisorEvaluationUrl + param, function (e) {
             $(e.data).each(function (index, value) {
-                console.log("supervisorEvaluationUrl",value)
                 $('#tables').bootstrapTable('insertRow', {
                     index: index,
                     row: {
@@ -521,9 +528,7 @@
             ]
         });
         $.ajaxUtil.get(acceptanceEvaluationUrl + param, function (e) {
-            console.log("acceptanceEvaluationUrl",e.data)
             $(e.data).each(function (index, value) {
-                console.log("acceptanceEvaluationUrl",value)
                 $('#tableIn').bootstrapTable('insertRow', {
                     index: index,
                     row: {
@@ -619,7 +624,6 @@
         });
         $.ajaxUtil.get(shiftForemanEvaluationUrl + param, function (e) {
             $(e.data).each(function (index, value) {
-                console.log("shiftForemanEvaluationUrl",value)
                 $('#tableOn').bootstrapTable('insertRow', {
                     index: index,
                     row: {
@@ -706,7 +710,6 @@
         });
         $.ajaxUtil.get(dispatcherEvaluationUrl + param, function (e) {
             $(e.data).each(function (index, value) {
-                console.log("dispatcherEvaluationUrl",value)
                 $('#tableOf').bootstrapTable('insertRow', {
                     index: index,
                     row: {
