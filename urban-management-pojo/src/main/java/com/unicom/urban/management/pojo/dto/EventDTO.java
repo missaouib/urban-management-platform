@@ -4,6 +4,7 @@ import com.unicom.urban.management.pojo.entity.EventFile;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class EventDTO {
     /**
      * search 问题描述
      */
+    @NotBlank(message = "问题描述不能为空")
     private String represent;
 
     /**
@@ -33,6 +35,7 @@ public class EventDTO {
      */
     private String grid;
 
+    @NotBlank(message = "案件地址不能为空")
     private String location;
 
     private String userName;
@@ -62,18 +65,22 @@ public class EventDTO {
      */
     private String eventSourceId;
 
+    @NotNull(message = "请选择事件地点，坐标不能为空")
     private Double x;
 
+    @NotNull(message = "请选择事件地点，坐标不能为空")
     private Double y;
 
     private String recTypeId;
 
+    @NotBlank(message = "诉求人不能为空")
     private String peopleName;
 
     private List<EventFile> eventFileList;
 
     private String userId;
 
+    @NotBlank(message = "联系方式不能为空")
     private String petitionerPhone;
 
     private String sex;
