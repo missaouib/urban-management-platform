@@ -45,7 +45,7 @@
                     <!--            <div class="l_left">-->
                     <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                     <!--            </div>-->
-                    <div class="r_right but_p btn_search dates">
+                    <div class="r_right but_p btn_search dates supervisorEvaluationSearch">
                          <button class="check_btn2" type="button"  onclick="setDate('startTimeOne','endTimeOne','theWeek','','','')">本周</button>
                          <button class="check_btn2" type="button"  onclick="setDate('startTimeOne','endTimeOne','','theMonth','','')">本月</button>
                          <button class="check_btn2" type="button"  onclick="setDate('startTimeOne','endTimeOne','','','theQuarter','')">本季</button>
@@ -103,7 +103,7 @@
                     <!--            <div class="l_left">-->
                     <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                     <!--            </div>-->
-                    <div class="r_right but_p btn_search dates">
+                    <div class="r_right but_p btn_search dates acceptanceEvaluationSearch">
                          <button class="check_btn2" type="button"  onclick="setDate('startTimeTwo','endTimeTwo','theWeek','','','')">本周</button>
                          <button class="check_btn2" type="button"  onclick="setDate('startTimeTwo','endTimeTwo','','theMonth','','')">本月</button>
                          <button class="check_btn2" type="button"  onclick="setDate('startTimeTwo','endTimeTwo','','','theQuarter','')">本季</button>
@@ -160,7 +160,7 @@
                     <!--            <div class="l_left">-->
                     <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                     <!--            </div>-->
-                    <div class="r_right but_p btn_search dates">
+                    <div class="r_right but_p btn_search dates shiftForemanEvaluationSearch">
                          <button class="check_btn2" type="button"  onclick="setDate('startTimeThree','endTimeThree','theWeek','','','')">本周</button>
                          <button class="check_btn2" type="button"  onclick="setDate('startTimeThree','endTimeThree','','theMonth','','')">本月</button>
                          <button class="check_btn2" type="button"  onclick="setDate('startTimeThree','endTimeThree','','','theQuarter','')">本季</button>
@@ -215,7 +215,7 @@
 
                 <!--                            按钮-->
                 <div class="notice_bot">
-                    <div class="r_right but_p btn_search dates">
+                    <div class="r_right but_p btn_search dates dispatcherEvaluationSearch">
                          <button class="check_btn2" type="button"  onclick="setDate('startTimeFour','endTimeFour','theWeek','','','')">本周</button>
                          <button class="check_btn2" type="button"  onclick="setDate('startTimeFour','endTimeFour','','theMonth','','')">本月</button>
                          <button class="check_btn2" type="button"  onclick="setDate('startTimeFour','endTimeFour','','','theQuarter','')">本季</button>
@@ -264,6 +264,19 @@
         acceptanceEvaluationSearch();
         shiftForemanEvaluationSearch();
         dispatcherEvaluationSearch();
+
+        $(".supervisorEvaluationSearch button").click(function () {
+            supervisorEvaluationSearch();
+        });
+        $(".acceptanceEvaluationSearch button").click(function () {
+            acceptanceEvaluationSearch();
+        });
+        $(".shiftForemanEvaluationSearch button").click(function () {
+            shiftForemanEvaluationSearch();
+        });
+        $(".dispatcherEvaluationSearch button").click(function () {
+            dispatcherEvaluationSearch();
+        });
     });
     function setDate(startTime,endTime,theWeek,theMonth,theQuarter,theYear){
         ////日期插件

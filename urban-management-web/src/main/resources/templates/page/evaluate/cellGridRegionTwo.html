@@ -34,7 +34,7 @@
                                        readonly>
                             </td>
                             <td style="float: right;margin-right: 5px">
-                                <button class="check_btn">查询</button>
+                                <button class="check_btn" onclick="$.table.search()">查询</button>
                             </td>
                         </tr>
                         </tbody>
@@ -48,10 +48,10 @@
                     <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
                     <!--            </div>-->
                     <div class="r_right but_p btn_search dates">
-                        <button class="check_btn2" type="button" id="theWeek">本周</button>
-                        <button class="check_btn2" type="button" id="theMonth">本月</button>
-                        <button class="check_btn2" type="button" id="theQuarter">本季</button>
-                        <button class="check_btn2" type="button" id="theYear">本年</button>
+                        <button class="check_btn2" type="button" id="theWeek" onclick="$.table.search()">本周</button>
+                        <button class="check_btn2" type="button" id="theMonth" onclick="$.table.search()">本月</button>
+                        <button class="check_btn2" type="button" id="theQuarter" onclick="$.table.search()">本季</button>
+                        <button class="check_btn2" type="button" id="theYear" onclick="$.table.search()">本年</button>
                     </div>
                 </div>
             </div>
