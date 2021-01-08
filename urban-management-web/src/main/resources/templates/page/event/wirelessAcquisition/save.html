@@ -107,12 +107,12 @@
                             </tr>
                             <tr>
 
-                                <td><span></span>经度</td>
+                                <td><span>*</span>经度</td>
                                 <td>
                                     <input type="text" class="" value="" name="x" id="longitude"  required readonly/>
 
                                 </td>
-                                <td><span></span>纬度</td>
+                                <td><span>*</span>纬度</td>
                                 <td>
                                     <input type="text" class="" value="" name="y" id="latitude" required readonly/>
                                 </td>
@@ -794,46 +794,14 @@
                 required: true,
                 // email: true
             },
-            // idcard: {
-            //     card: true
-            // },
-            // phone: {
-            //     phone: true
-            // }
+            x: {
+                required: true
+            },
+            y: {
+                required: true
+            },
         },
         messages: {
-            // realname: {
-            //     required: "真实姓名不能为空"
-            // },
-            // username: {
-            //     required: "登录名不能为空",
-            //     rangelength: "登录名长度要在5-8位之间"
-            // },
-            // pwd: {
-            //     required: "密码不能为空",
-            //     rangelength: "密码长度在6-12位之间"
-            // },
-            // pwd2: {
-            //     required: "重复密码不能为空",
-            //     rangelength: "重复密码长度在6-12位之间",
-            //     equalTo: "重复密码与密码不一致"
-            // },
-            // sex: {
-            //     required: "请选择性别"
-            // },
-            // age: {
-            //     required: "年龄不能为空",
-            //     range: "年龄必须在26-50岁之间"
-            // },
-            // email: {
-            //     email: "请输入有效邮箱"
-            // },
-            // idcard: {
-            //     card: "请输入有效身份证号"
-            // },
-            // phone: {
-            //     phone: "必填"
-            // }
         }
     });
     /*手机号格式验证*/

@@ -121,12 +121,12 @@
                             </tr>
 
                             <tr>
-                                <td><span></span>经度</td>
+                                <td><span>*</span>经度</td>
                                 <td>
                                     <input type="text" class="" placeholder="" value="" name="x" id="longitude"
                                            readonly/>
                                 </td>
-                                <td><span></span>纬度</td>
+                                <td><span>*</span>纬度</td>
                                 <td>
                                     <input type="text" class="" placeholder="" value="" name="y" id="latitude"
                                            readonly/>
@@ -857,7 +857,12 @@
             closeTime: {
                 required: true
             },
-
+            x: {
+                required: true
+            },
+            y: {
+                required: true
+            },
         },
         messages: {
 
