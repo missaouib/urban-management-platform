@@ -406,6 +406,7 @@ body{
 	margin-top: 15px;
 	float: left;
 	border-right: 1px solid #00c7ff;
+	cursor: pointer;
 }
 .statis1 span{
 	color: #fff;
@@ -417,6 +418,7 @@ body{
 	height: 50px;
 	margin-top: 15px;
 	float: left;
+	cursor: pointer;
 }
 .statis2 span{
 	color: #fff;
