@@ -2,13 +2,12 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>自处理修改</title>
+    <title>案件登记修改</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: fileUpload_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
     <th:block th:include="page/fragments/common :: ztree_css"/>
-    <!--    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">-->
     <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
 <style>
@@ -25,230 +24,208 @@
         height: 241px!important;
     }
 </style>
+
 <body style="border-radius: 8px;">
-<div class="content">
-    <div class="leftContent">
-        <form id="userForm">
-            <div style="width: 100%;display: flex;justify-content: start;">
-                <button style="margin-left: 10px" class="but_save saveTheBtn" type="submit" onclick="submitHandler()">保存</button>
-            </div>
-            <div class="top table2_top">
-                <div class="top_out">
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <td><span></span>案件编号</td>
-                            <td>
-                                <input type="text" readonly="readonly" th:name="eventCode" id="eventCode"
-                                       class="find_input"/>
-                            </td>
-                            <td><span></span>案件类型</td>
-                            <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
-                                <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId"
-                                       class="find_input"/>
-                                <button type="button" class="addBtn" onclick="">
-                                    +
-                                </button>
-                                <!--                                    <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">-->
-                                <!--                                        +-->
-                                <!--                                    </button>-->
-                            </td>
-                            <td><span>*</span>立案区域</td>
-                            <td>
-                                <select id="eventCondition" onchange="" required>
+<div class="col-md-12" style="height: 100%">
+    <div class="content">
+        <div class="leftContent">
+            <form id="userForm">
+                <input type="hidden" th:value="${eventId}" id="id" name="id">
+                <div class="top table2_top">
+                    <div class="r_right but_p girdBtnGroup" style="display: flex;justify-content: start!important;margin: 0!important;padding-left: 10px!important;">
+                        <button class="but_save" type="submit" onclick="submitHandler1()"
+                                style="margin-right: 10px">保存
+                        </button>
+                    </div>
+                    <div class="top_out">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td><span></span>案件编号</td>
+                                <td>
+                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode"
+                                           class="find_input"/>
+                                </td>
+                                <td><span></span>案件类型</td>
+                                <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                    <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
+                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId"
+                                           class="find_input"/>
+                                    <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                        +
+                                    </button>
+                                </td>
+                                <td><span>*</span>立案区域</td>
+                                <td>
+                                    <select id="eventCondition" onchange="getEventCondition()" required>
 
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span>*</span>立案条件</td>
-                            <td>
-                                <select id="eventTerm" onchange="" name="conditionId" required>
-                                </select>
-                            </td>
-                            <td><span></span>计时等级</td>
-                            <td>
-                                <select id="timeType" onchange="" required>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>立案条件</td>
+                                <td>
+                                    <select id="conditionId" onchange="getTimeTypeList()" name="conditionId" required>
 
-                                </select>
-                            </td>
-                            <td><span></span>立案时限</td>
-                            <td>
-                                <input th:name="timeLimitId" type="hidden" id="deptTImeLimitId"/>
-                                <input type="text" id="deptTImeLimit" required readonly/>
+                                    </select>
+                                </td>
+                                <td><span></span>计时等级</td>
+                                <td>
+                                    <select id="timeType" onchange="getDeptTimeLimitList()" required>
 
-                            </td>
-                        </tr>
+                                    </select>
+                                    <input th:name="timeLimitId" type="hidden" id="deptTImeLimitId"/>
+                                </td>
+                                <td><span></span>立案时限</td>
+                                <td>
+                                    <input type="text" id="deptTImeLimit" required readonly/>
 
-                        <tr>
-                            <td><span>*</span>诉求人</td>
-                            <td>
-                                <input name="peopleName" type="text" class="" required>
-                            </td>
-                            <td><span></span>性别</td>
-                            <td>
-                                <select name="sex" required>
-                                    <option value="男">男</option>
-                                    <option value="女">女</option>
-                                </select>
-                            </td>
-                            <td><span>*</span>联系方式</td>
-                            <td>
-                                <input name="petitionerPhone" type="text" class="" required/>
-                            </td>
-                        </tr>
-                        <tr>
+                                </td>
+                            </tr>
 
-                            <td><span></span>诉求时间</td>
-                            <td>
-                                <input th:name="createTime"
-                                       th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}"
-                                       type="text" class=""/>
-                            </td>
-                            <td><span></span>部件编码</td>
-                            <td>
-                                <input type="text" id="componentObjId" name="componentObjId" readonly="readonly">
-                                <input type="hidden" id="layer"  readonly="readonly">
-                                <!--                                    <input type="hidden" id="componentObjId1" name="componentObjId" readonly="readonly">-->
-                            </td>
-                            <td><span></span>案件分类</td>
-                            <td>
-                                <select class="form-control" id="recTypeId" th:name="recTypeId" required>
-                                    <option th:each="as:${recType}" th:value="${as.id}"
-                                            th:text="${as.value}"></option>
-                                </select>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td><span>*</span>诉求人</td>
+                                <td>
+                                    <input disabled id="petitionerName" type="text" class="" required>
+                                </td>
+                                <td><span></span>性别</td>
+                                <td>
+                                    <select disabled id="sex" required>
+                                        <option value="男">男</option>
+                                        <option value="女">女</option>
+                                    </select>
+                                </td>
+                                <td><span>*</span>联系方式</td>
+                                <td>
+                                    <input disabled id="petitionerPhone" type="text" class="" required/>
+                                </td>
+                            </tr>
+                            <tr>
 
-                        <tr>
-                            <td><span></span>经度</td>
-                            <td>
-                                <input type="text" class="" placeholder="" value="" name="x" id="longitude"
-                                       readonly/>
-                            </td>
-                            <td><span></span>纬度</td>
-                            <td>
-                                <input type="text" class="" placeholder="" value="" name="y" id="latitude"
-                                       readonly/>
-                            </td>
-                            <td><span>*</span>所在区域</td>
-                            <td>
-                                <select name="required" class="form-control" id="grid1" onchange="getStreetList()"
-                                        required>
-                                    <option>--请选择--</option>
-                                    <option th:each="as:${gridList}" th:value="${as.id}"
-                                            th:text="${as.gridName}"></option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
+                                <td><span></span>诉求时间</td>
+                                <td>
+                                    <input id="createTime" type="text" class=""/>
+                                </td>
+                                <td><span></span>部件编码</td>
+                                <td>
+                                    <input type="text" id="componentObjId" name="componentObjId" readonly="readonly">
+                                    <input type="hidden" id="layer" readonly="readonly">
+                                </td>
+                                <td><span></span>案件分类</td>
+                                <td>
+                                    <select class="form-control" id="recTypeId" th:name="recTypeId" required>
+                                        <option th:each="as:${recType}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
+                                    </select>
+                                </td>
+                            </tr>
 
-                            <td><span>*</span>所属街道</td>
-                            <td>
-                                <select name="phone" class="form-control" id="grid2" onchange=""
-                                        required>
-                                </select>
-                            </td>
-                            <td><span>*</span>所属社区</td>
-                            <td>
-                                <select name="petitonerPhone" class="form-control" id="grid3"
-                                        onchange="getGridList()" required>
-                                </select>
-                            </td>
-                            <td><span>*</span>所属网格</td>
-                            <td>
-                                <select th:name="gridId" id="grid4" onchange="" required>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span></span>问题来源</td>
-                            <td>
-                                <select class="form-control" id="eventSource" th:name="eventSourceId" required
-                                        readonly="readonly">
-                                    <option th:each="as:${eventSource}" th:value="${as.id}"
-                                            th:text="${as.value}"></option>
-                                </select>
-                            </td>
-                            <td><span></span>上报人</td>
-                            <td>
-                                <input type="text" readonly th:value="${#authentication.principal.name}">
-                                <!--<input type="hidden" value="" id="selectDown">
-                                <input value="1" type="hidden" name="userId">-->
-                            </td>
-                            <td><span></span>监督员</td>
-                            <td>
-                                <select class="form-control" id="userId" name="userId" required>
+                            <tr>
+                                <td><span></span>经度</td>
+                                <td>
+                                    <input type="text" class="" placeholder="" value="" name="x" id="longitude"
+                                           readonly/>
+                                </td>
+                                <td><span></span>纬度</td>
+                                <td>
+                                    <input type="text" class="" placeholder="" value="" name="y" id="latitude"
+                                           readonly/>
+                                </td>
+                                <td><span>*</span>所在区域</td>
+                                <td>
+                                    <select class="form-control" id="grid1" onchange="getStreetList()"
+                                            required>
+                                        <option>--请选择--</option>
+                                        <option th:each="as:${gridList}" th:value="${as.id}"
+                                                th:text="${as.gridName}"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
 
-                                </select>
-                            </td>
-                        </tr>
+                                <td><span>*</span>所属街道</td>
+                                <td>
+                                    <select class="form-control" id="grid2" onchange="getCommunityList()"
+                                            required>
+                                    </select>
+                                </td>
+                                <td><span>*</span>所属社区</td>
+                                <td>
+                                    <select class="form-control" id="grid3"
+                                            onchange="getGridList()" required>
+                                    </select>
+                                </td>
+                                <td><span>*</span>所属网格</td>
+                                <td>
+                                    <select th:name="gridId" id="grid4" onchange="getGridCenter(this)" required>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>问题来源</td>
+                                <td>
+                                    <select class="form-control" id="eventSource" required
+                                            readonly="readonly">
+                                        <option th:each="as:${eventSource}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
+                                    </select>
+                                </td>
+                                <td><span></span>上报人</td>
+                                <td>
+                                    <input type="text" readonly id="userName" value="">
+                                </td>
+<!--                                <td><span></span>监督员</td>-->
+<!--                                <td>-->
+<!--                                    <select class="form-control" id="userId" name="userId" required>-->
 
-                        <tr>
-                            <td><span>*</span>案件地址</td>
-                            <td style="position: relative">
-                                <input onmouseover="this.title=this.value" id="location" th:name="location" onkeyup=""
-                                       type="text" class="overInput" required>
-                                <div class="caseSeach" onclick=""><i class="fa fa-search-plus" aria-hidden="true"></i></div>
-                            </td>
-
-                            <td><span>*</span>问题描述</td>
-                            <td>
-                                <input onmouseover="this.title=this.value" id="problemescription"
-                                       th:name="represent" type="text" class="overInput" required>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="send">
-                        <div class="sendImg">
-                            <div class="sendText"><span></span></div>
-                            <div><input id="imageInput" type="file" name="files" multiple="multiple"></div>
-                            <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
-                            <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
-                            <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
+<!--                                    </select>-->
+<!--                                </td>-->
+                                <td><span>*</span>案件地址</td>
+                                <td style="position: relative">
+                                    <input onmouseover="this.title=this.value" id="location" th:name="location" onkeyup="setLocalSearch(this.value)"
+                                           type="text" class="overInput" required>
+                                    <div class="caseSeach" onclick="localGeocoding()"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>问题描述</td>
+                                <td>
+                                    <input onmouseover="this.title=this.value" id="represent"
+                                           th:name="represent" type="text" class="overInput" required>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="send">
+                            <div class="sendImg">
+                                <div class="sendText"><span></span></div>
+                                <div><input id="imageInput" type="file" name="files" multiple="multiple"></div>
+                                <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
+                                <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
+                                <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
+                            </div>
                         </div>
-                        <!--                            <div class="sendImg">-->
-                        <!--                                <div class="sendText"><span>视频:</span></div>-->
-                        <!--                                <div><input id="videoInput" type="file" name="files" multiple="multiple"></div>-->
-                        <!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" value="">-->
-                        <!--                            </div>-->
-                        <!--                            <div class="sendImg">-->
-                        <!--                                <div class="sendText"><span>音频:</span></div>-->
-                        <!--                                <div><input id="audioInput" type="file" name="files" multiple="multiple"></div>-->
-                        <!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" value="">-->
-                        <!--                            </div>-->
                     </div>
                 </div>
-
-                <!--                            按钮-->
-
-            </div>
-        </form>
-
-
-    </div>
-    <div class="rightContent" style="position: relative">
-        <div class="search_map">
-            <div class="map_input">
-                <input id="sole-input" placeholder="搜索地点" value="" >
-            </div>
-            <div class="map_button"><img th:src="@{/img/search.png}"></div>
-            <div class="place_map">
-                <ul id="place_ul">
-                    <li class="place_li"><i class="fa fa-search place_mirror" aria-hidden="true"></i>哈尔滨南岗区国民街14号奥维斯发展大厦（联通大厦）</li>
-                </ul>
-            </div>
+            </form>
         </div>
-        <div class="map" id="map" style="width: 100%;height: 100%"></div>
+        <div class="rightContent" style="position: relative">
+            <div class="search_map">
+                <div class="map_input">
+                    <input id="sole-input" placeholder="搜索地点" value="" onkeyup="setLocalSearch(this.value)">
+                </div>
+                <div class="map_button"><img th:src="@{/img/search.png}"></div>
+                <div class="place_map">
+                    <ul id="place_ul">
 
-        <div id="popup" class="ol-popup">
-            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
-            <div id="popup-content">
-                <ul id="message">
-
-                </ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="map" id="map"></div>
+            <div id="popup" class="ol-popup">
+                <div class="closePopup">×</div>
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
             </div>
         </div>
     </div>
@@ -273,6 +250,25 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-sm">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">相似案件</h4>
+            </div>
+            <div class="modal-body" id="similarCases">
+
+            </div>
+            <div class="modal-footer justify-content-between"
+                 style="display: flex;justify-content: flex-end!important;">
+                <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
 <div id="pictureDiv" style="display: none">
 
 </div>
@@ -285,202 +281,166 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
-    $("#doBySelf").on('click', function () {
-        var after = $("#after");
-        if ($("#doBySelf").is(':checked')) {
-            after.css("display", "block")
-        } else {
-            after.css('display', 'none')
-        }
-    });
 
-    let searchUrl = /*[[@{/event/wirelessAcquisitionList}]]*/ "/event/wirelessAcquisitionList";
-    let addUrl = /*[[@{/event/toWirelessAcquisitionSave}]]*/ "/event/toWirelessAcquisitionSave";
-    let removeUrl = /*[[@{/event/remove/{id}}]]*/ "/event/remove/{id}";
-    let editUrl = /*[[@{/event/toWirelessAcquisitionUpdate/{id}}]]*/ "/event/toWirelessAcquisitionUpdate/{id}";
-    let reportOnListUrl = /*[[@{/event/reportOnList}]]*/ "/event/reportOnList";
+    let multiMediaData = [];
+    let codePopup;
+    let eventId = [[${eventId}]];
 
-    var container = document.getElementById('popup');
-    var content = document.getElementById('popup-content');
-    var closer = document.getElementById('popup-closer');
-    var overlay = new ol.Overlay({
-        element: container,
-        autoPan: true,
-        autoPanAnimation: {
-            duration: 250
-        }
-    });
+    $(function () {
 
-    let updateTempUrl = /*[[@{/event/updateTemp}]]*/ "/event/updateTemp";
-    let receiveUrl = /*[[@{/event/receive}]]*/ "/event/receive";
-    let dispatchUrl = /*[[@{/event/dispatch}]]*/ "/event/dispatch";
-    let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
-    let componentTypeUrl = /*[[@{/allEventType}]]*/ "/allEventType";
-    let createEventCodeUrl = /*[[@{/event/createEventCode}]]*/ "/event/createEventCode";
-    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
-    let getDeptTimeLimitByLevelUrl = /*[[@{/event/getDeptTimeLimitByLevel}]]*/ "/event/getDeptTimeLimitByLevel";
-    let findAllByKvIdUrl = /*[[@{/event/findAllByKvId}]]*/ "/event/findAllByKvId";
-    let saveUrl = /*[[@{/event/save}]]*/ "/event/save";
-    let preReportUrl = /*[[@{/event/preReport}]]*/ "/event/preReport";
-    var setting = {
-        callback: {
-            onClick: zTreeOnClick
-        },
-        data: {//数据加载
-            keep: {
-                parent: true,
-                leaf: true
-            },
-            simpleData: {
-                enable: true,
-                idKey: 'id',
-                pIdKey: 'parent'
-            },
-            key: {
-                name: "name"
-            }
-        }
-    };
-    function zTreeOnClick(event, treeId, treeNode) {
-        $("#typeStr").val(treeNode.name);
-        $("#eventTypeId").val(treeNode.id);
-        $(".closemodal").click();
-        let eventTypeId = $("#eventTypeId").val();
-        createEventCode(eventTypeId);
-        //获取立案区域
-        findEventConditionByEventType(eventTypeId)
-    }
-    /**
-     * 保存
-     */
-    function submitHandler() {
-        $("#eventSource").removeAttr("disabled");
-        var data = $('#userForm').serialize();
-        $.operate.saveTab(updateTempUrl, data);
-    }
+        $(".file-drop-zone").css("min-height","200px")
+        $(".file-drop-zone-title").css("padding","68px 55px")
 
-    /**
-     * 上报
-     */
-    function reportHandler(){
-        //先校验
-        if (!$("form").valid()) {
-            return;
-        }
-        $("#eventSource").removeAttr("disabled");
-        var data = $('#userForm').serialize();
-        $.operate.saveTab(preReportUrl, data);
-    }
+        $(".ol-full-screen-false").html("全屏");
 
-
-    //模态窗 selectEventTypeTree
-    function selectEventTypeTree() {
-        var treeId = $("#treeId").val();
-        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
-        var options = {
-            title: '选择事件类型',
-            width: "380",
-            url: url,
-            callBack: doSubmit
-        };
-        $.modal.openOptions(options);
-    }
-
-    function doSubmit(index, layero){
-        var tree = layero.find("iframe")[0].contentWindow.$._tree;
-        var body = layer.getChildFrame('body', index);
-        $("#eventTypeId").val(body.find('#treeId').val());
-        $("#typeStr").val(body.find('#treeName').val());
-        let eventTypeId = $("#eventTypeId").val();
-        createEventCode(eventTypeId);
-        //获取立案区域
-        findEventConditionByEventType(eventTypeId)
-        //部件获取
-        findUrlListByEventTypeId(eventTypeId);
-        layer.close(index);
-    }
-    function setPoint(x,y) {
-        let point = new ol.Feature({
-            geometry: new ol.geom.Point([x, y]),
-            data: {
-                // id: data,
-                // name: name,
-                coordinate: x + "," + y
-            }
+        $(".name").click(function () {
+            $(this).addClass("active").siblings(".name").removeClass("active");
+            $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
         });
-        layerMap.getSource().addFeature(point);
-        point.setStyle(new ol.style.Style({
-            image: new ol.style.Icon({
-                src: '../../img/dwpoint3.png'
-            })
-        }));
-    }
 
-    /**
-     * 获取部件的发布图层
-     */
-    let unit = /*[[@{/event/findUnit}]]*/ "/event/findUnit";
-    let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
-    function findUrlListByEventTypeId(eventTypeId) {
-        $.ajaxUtil.get(publishUrl + "?typeId=" + eventTypeId, function (e) {
-            $("#layer").val("");
-            //删除上一个底图
-            let mation = map.getLayerGroup().getLayers().a;
-            console.log(mation)
-            if (mation.length > 2) {
-                mation.splice(1, 1);
-                source.clear();
-                $("#componentObjId").val("")
-                $("#componentObjId").val("")
-            }
-            $(e.data).each(function (index, value) {
-                if (value.url != null) {
-                    $("#layer").val(value.layerId);
-                    let urlParam = value.url.split("?");
-                    let url = urlParam[0];
-                    let param = urlParam[1];
-                    var format = 'image/png';
-                    var ImageVector = new ol.layer.Image({
-                        source: new ol.source.ImageWMS({
-                            url: url,
-                            params: {'FORMAT': format,
-                                'VERSION': '1.1.1',
-                                tiled: true,
-                                "LAYERS": param,
-                                "exceptions": 'application/vnd.ogc.se_inimage'
-                            }
-                        })
-                    });
+        $(".enclosure").click(function () {
+            alert("附件详情")
+        });
 
-
-                    let layersArray = map.getLayers();
-                    layersArray.insertAt(1, ImageVector);
-
-
-
-                }
-            })
+        $(document).on('click','.caseLi',function () {
+            $(".address").slideUp(200);
         })
-    }
+
+        //日期插件
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+
+        $("#imageInput").fileinput({
+            language: 'zh',                                     // 设置语言
+            theme: 'fa',
+            uploadUrl: uploadUrl,
+            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
+            // showUpload: true,
+            // previewFileType: 'any',
+            // enableResumableUpload: true,
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'],       // 接收的文件后缀
+            maxFileCount: 10,                                    // 最大文件数量
+            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            focusCaptionOnBrowse: false,
+            showClose: false,                                   // 右上角的×
+            showCaption: false,                                 // 是否显示标题
+            showPreview: true,                                  // 是否显示预览
+            showUpload: false,                                  // 是否显示上传按钮
+            showRemove: true,                                   // 显示移除按钮
+            dropZoneEnabled: true,                             // 是否显示拖拽区域
+            // browseClass: "btn btn-primary",                  // 按钮样式
+        }).on('change', function (event) {
+            console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
+        }).on('fileselect', function (event, numFiles, label) {
+            console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
+        }).on("filebatchselected", function (event, files) {
+            $(this).fileinput("upload");
+        }).on("fileuploaded", function (event, data) {
+
+        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+            console.log('filebatchuploadsuccess() 同步上传返回结果处理')
+            if (data.response.code === web_status.SUCCESS) {
+                multiMediaData.push(data);
+                insertMultiMedia(data);
+                $.modal.alertSuccess('上传成功');
+            } else {
+                $.modal.alertError(data.response.message);
+            }
+        }).on('filedeleted', function (event, key) {
+            console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
+            console.log('Key = ' + key);
+        }).on('filesuccessremove', function (event, id) {
+            console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
+            deleteMultiMedia(id, multiMediaData);
+        }).on('fileclear', function (event) {
+            console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
+        }).on('filecleared', function (event) {
+            console.log("filecleared()        在预览中的文件被清除后触发此事件。");
+        }).on('filepredelete', function (event, key) {
+            console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
+            console.log('Key = ' + key);
+        });
+
+        getEventDetail(eventId);
+
+    });
+
+    let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
+    let unit = /*[[@{/event/findUnit}]]*/ "/event/findUnit";
+    let registerUpdateUrl = /*[[@{/event/registerUpdate}]]*/ "/event/registerUpdate";
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
+    let dispatchUrl = /*[[@{/event/dispatch}]]*/ "/event/dispatch";
     let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
-    function success_jsonpCallback1(res) {
-        var features = geojsonFormat.readFeatures(res);
-        if (undefined !== features[0]) {
-            $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function (e) {
-                $("#objId").val(e.data.objId);
-                $("#objId1").val(e.data.id);
-            });
-        }
+    let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
+    let getEventConditionUrl = /*[[@{/event/getEventCondition}]]*/ "/event/getEventCondition";
+    let findDeptTimeLimitUrl = /*[[@{/event/findDeptTimeLimit}]]*/ "/event/findDeptTimeLimit";
+    let findAllByParentIdUrl = /*[[@{/event/findAllByParentId}]]*/ "/event/findAllByParentId";
+    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
+    let getUserListForSupervisorUrl = /*[[@{/event/getUserListForSupervisor}]]*/ "/event/getUserListForSupervisor";
+    let findDeptTimeLimitByConditionUrl = /*[[@{/event/findDeptTimeLimitByCondition}]]*/ "/event/findDeptTimeLimitByCondition";
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+
+    function getEventDetail(eventId) {
+        $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
+            let data = e.data;
+            console.log("data", data);
+            /* 案件编号 */
+            $("#eventCode").val(data.eventCode);
+            /* 案件类型text */
+            $("#typeStr").val(data.eventTypeStr.split("-")[2]);
+            /* 案件类型id */
+            $("#eventTypeId").val(data.eventTypeId);
+            //获取立案区域
+            findEventConditionByEventType(data.eventTypeId, data.regionIdStr, data.conditionId, data.timeLimitId);
+            //部件获取
+            findUrlListByEventTypeId(data.eventTypeId);
+            /* 立案时限 */
+            $("#deptTImeLimit").val(data.timeLimitStr);
+            /* 诉求人 */
+            $("#petitionerName").val(data.petitionerName);
+            /* 性别 */
+            $("#sex").val(data.petitionerSex);
+            /* 联系方式 */
+            $("#petitionerPhone").val(data.petitionerPhone);
+            /* 诉求时间 */
+            $("#createTime").val(data.cdate);
+            /* 部件编码 */
+            $("#componentObjId").val(data.objId);
+            /* 案件分类 */
+            $("#recTypeId").val(data.recTypeId);
+            /* x */
+            $("#longitude").val(data.x);
+            /* y */
+            $("#latitude").val(data.y);
+            /* 所在区域 */
+            $("#grid1").val(data.eventRegionId);
+            /* 所在街道 所在社区 所在网格 */
+            getStreetList(data.streetId, data.communityId, data.gridId);
+            /* 上报人 */
+            $("#userName").val(data.userName);
+            /* 案件地址 */
+            $("#location").val(data.location);
+            /* 问题描述 */
+            $("#represent").val(data.represent);
+            /* 坐标 */
+            setPoint([data.x, data.y]);
+            /* 设定中心点和层级 */
+            setCenterAndZoom(data.x, data.y, map.getView().getZoom() + 4);
+
+        });
     }
 
-
-    //回调函数接收查询结果
-    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
-
-    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
+    /* 点击网格列表赋值 */
     function success_jsonpCallback(res) {
-        var features = geojsonFormat.readFeatures(res);
         var x = $("#longitude").val();
         var y = $("#latitude").val();
         $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + x + "&y=" + y, function (e) {
@@ -495,6 +455,7 @@
                 polygonArrayEnd.push(polygonArray);
             }
             setPolygon(polygonArrayEnd);
+
             let data = e.data.mapList;
             for (let i = 0; i < data.length; i++) {
                 switch (data[i].level) {
@@ -512,114 +473,322 @@
                         $("#grid3").html(option3);
                         break;
                     case 4:
-                        var coordinate = [$("#longitude").val(),
-                            $("#latitude").val()];
+                        let coordinate = [];
+                        coordinate.push($("#longitude").val());
+                        coordinate.push($("#latitude").val());
                         overlay.setPosition(coordinate);
-                        $("#popup-content").html(`<div class="demo2">网格名称:`+data[i].name+`
-                                    <em>&#9670;</em>
-                                    <span>&#9670;</span>
-                                    </div>`);
-                        $("#popup").on("click",".closePopup",function (e) {
+                        let popupContentHtml = "<div class='demo2'>网格名称:" + data[i].name;
+                        popupContentHtml += "<em>&#9670;</em>";
+                        popupContentHtml += "<span>&#9670;</span>";
+                        popupContentHtml += "</div>";
+                        $("#popup-content").html(popupContentHtml);
+                        $("#popup").on("click", ".closePopup", function (e) {
                             e.preventDefault();
                             overlay.setPosition(undefined);
-                        })
+                        });
                         $("#grid4").empty();
                         let option4 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                         $("#grid4").html(option4);
+                        getUserListForSupervisor(data[i].id);
                         break;
                     default:
                         console.log("查询出了网格之外的东西");
                 }
             }
-            /* todo 上面的方式是单纯的回显 想做一个触发级联之后再赋值的操作 可能需要类似等待的方式 需要执行完一个函数之后通过回调执行下一个 同步 */
-            /*let grid1 = getLevelWithList(data, 1);
-            $("#grid1").val(grid1.id);
-            getStreetList();
-            let grid2 = getLevelWithList(data, 2);
-            $("#grid2").val(grid2.id);
-            getCommunityList();
-            let grid3 = getLevelWithList(data, 3);
-            $("#grid3").val(grid3.id);
-            getGridList();
-            let grid4 = getLevelWithList(data, 4);
-            $("#grid4").val(grid4.id);*/
         });
+
     }
-    let multiMediaData = [];
-    let multiMediaAfterData = [];
-    $(function () {
-        $('#bootstrap-table').on('load-success.bs.table', function (e,data) {
-            let colorIndex =  localStorage.getItem("rowIndex");
-            $('#bootstrap-table tbody tr').eq(colorIndex - 1).addClass('changeColor');
-        });
 
-        $(".ol-full-screen-false").html("全屏");
-
-
-        var r = 0;
-        $(".xiala").click(function() {
-            r += 180;
-            $(".selectPoint").slideToggle(300);
-            $(".selectmenu").css('transform', 'rotate(' + r + 'deg)');
-        })
-        var doBySelf = [[${eventOneVO.doBySelf}]];
-        var eventTypeId = [[${eventOneVO.eventTypeId}]];
-        console.log("eventTypeId",eventTypeId)
-        if (doBySelf){
-            $("#after").css('display','block');
-        }else {
-            $("#after").css('display','none');
+    function getLevelWithList(data, level) {
+        for (let i = 0; i < data.length; i++) {
+            if (data[i].level === level) {
+                return data[i];
+            }
         }
-        findUrlListByEventTypeId(eventTypeId);
-        showImage();
+    }
 
-        let eventOneVO = [[${eventOneVO}]];
-        console.log(eventOneVO.x,eventOneVO.y)
-        setPoint(eventOneVO.x,eventOneVO.y);
+    /**
+     * 获取部件的发布图层
+     */
+    function findUrlListByEventTypeId(eventTypeId) {
+        $.ajaxUtil.get(publishUrl + "?typeId=" + eventTypeId, function (e) {
+            $("#layer").val("");
+            //删除上一个底图
+            let mation = map.getLayerGroup().getLayers().a;
+            if (mation.length > 2) {
+                mation.splice(1, 1);
+                source.clear();
+                $("#componentObjId").val("");
+                layerMap.getSource().clear();
 
-        $("#doBySelf").on('click',function (){
-            var after=$("#after");
-            if($("#doBySelf").is(':checked')){
-                $("#after").css('display','block');
-                $(".do_span").last().removeClass("noneActivti")
-            }else {
-                $("#after").css('display','none');
-                $(".do_span").last().addClass("noneActivti");
-                $("#doitBefor").addClass("blockActive");
-                $("#doitBeforSpan").addClass("active");
+            }
+            $(e.data).each(function (index, value) {
+                if (value.url != null) {
+                    $("#layer").val(value.layerId);
+                    let urlParam = value.url.split("?");
+                    let url = urlParam[0];
+                    let param = urlParam[1];
+                    let format = 'image/png';
+                    let ImageVector = new ol.layer.Image({
+                        source: new ol.source.ImageWMS({
+                            url: url,
+                            params: {'FORMAT': format,
+                                'VERSION': '1.1.1',
+                                tiled: true,
+                                "LAYERS": param,
+                                "exceptions": 'application/vnd.ogc.se_inimage'
+                            }
+                        })
+                    });
+                    let layersArray = map.getLayers();
+                    layersArray.insertAt(1, ImageVector);
+
+                }
+            })
+        })
+    }
+
+    //回调函数接收查询结果
+    let geoJsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
+
+    function success_jsonpCallback1(res) {
+        var features = geoJsonFormat.readFeatures(res);
+        if (undefined !== features[0]) {
+            $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function (e) {
+                $("#objId").val(e.data.objId);
+                $("#objId1").val(e.data.id);
+            });
+        }
+    }
+
+    /**
+     * 获取立案区域
+     */
+    function findEventConditionByEventType(eventTypeId, regionIdStr, conditionId, levelId) {
+        $.ajaxUtil.get(findEventConditionByEventTypeUrl + "?eventTypeId=" + eventTypeId, function (e) {
+            $("#eventCondition").empty();
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
+                });
+                $("#eventCondition").html(option);
+            }
+            if(regionIdStr !== undefined && regionIdStr !== null && regionIdStr !== ""){
+                $("#eventCondition").val(regionIdStr);
+                getEventCondition(conditionId, levelId);
             }
         });
-        $(".name").click(function () {
-            $(this).addClass("active").siblings(".name").removeClass("active");
-            $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
-        })
-        $(".enclosure").click(function () {
-            alert("附件详情")
-        })
-        $.ajaxUtil.get(componentTypeUrl, function (e) {
-            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
-        })
-
-
-    function Cancel() {
-        $.modal.closeLoading();
     }
 
-    function update() {
-        var data = $('#userForm').serialize();
-        $.operate.saveTab(url, data);
+    /**
+     * 立案条件
+     */
+    function getEventCondition(conditionId, levelId) {
+        let eventConditionId = $("#eventCondition").val();
+        $.ajaxUtil.get(getEventConditionUrl + "?conditionId=" + eventConditionId, function (e) {
+            $("#conditionId").empty();
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
+                });
+            }
+            $("#conditionId").html(option);
+            if(conditionId !== undefined && conditionId !== null && conditionId !== ""){
+                $("#conditionId").val(conditionId);
+                getTimeTypeList(levelId);
+            }
+        });
     }
 
-    function addPicture() {
-        // $.modal.open();
+    /**
+     * 获取计时等级
+     */
+    function getTimeTypeList(levelId) {
+        let conditionId = $("#conditionId").val();
+        $.ajaxUtil.get(findDeptTimeLimitByConditionUrl + "?conditionId=" + conditionId, function (e) {
+            $("#timeType").empty();
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.level + "</option>"
+                });
+            }
+            $("#timeType").html(option);
+            if(levelId !== undefined && levelId !== null && levelId !== ""){
+                $("#timeType").val(levelId);
+                getDeptTimeLimitList();
+            }
+        });
+    }
 
+    /**
+     * 获取立案时限
+     */
+    function getDeptTimeLimitList() {
+        let deptTimeLimitId = $("#timeType").val();
+        $.ajaxUtil.get(findDeptTimeLimitUrl + "?deptTimeLimitId=" + deptTimeLimitId, function (e) {
+            if (e.code === 0) {
+                let data = e.data;
+                $("#deptTImeLimitId").val(data.id);
+                $("#deptTImeLimit").val(data.timeLimit + data.timeType);
+            }
+        });
+    }
+
+    /**
+     * 获取街道
+     */
+    function getStreetList(streetId, communityId, gridId) {
+        let parentId = $("#grid1 option:selected").val();
+        $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function (e) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid2").html(option);
+                if(streetId !== undefined && streetId !== null && streetId !== ""){
+                    $("#grid2").val(streetId);
+                    getCommunityList(communityId, gridId);
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取社区
+     */
+    function getCommunityList(communityId, gridId) {
+        let parentId = $("#grid2 option:selected").val();
+        $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function (e) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid3").html(option);
+                if(communityId !== undefined && communityId !== null && communityId !== ""){
+                    $("#grid3").val(communityId);
+                    getGridList(gridId);
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取网格
+     */
+    function getGridList(gridId) {
+        let parentId = $("#grid3 option:selected").val();
+        $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function (e) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid4").html(option);
+                if(gridId !== undefined && gridId !== null && gridId !== ""){
+                    $("#grid4").val(gridId);
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取网格的中心点
+     */
+    function getGridCenter() {
+        let pointOfCenter = $("#grid4 option:selected").val();
+        let url = "/event/findGeomByGridId?id=" + pointOfCenter;
+        $.ajaxUtil.get(url, function (e) {
+            $(e.data.geom).each(function (index, value) {
+                let split = value.split(",");
+                let polygonArray = [];
+                let polygonArrayEnd = [];
+                for (let j = 0; j < split.length; j++) {
+                    let pointArray = [];
+                    pointArray.push(split[j].split(" ")[0]);
+                    pointArray.push(split[j].split(" ")[1]);
+                    polygonArray.push(pointArray);
+                    polygonArrayEnd.push(polygonArray);
+                }
+                setPolygon(polygonArrayEnd);
+            })
+            var data = e.data.center[0].split(" ");
+            var center = [];
+            center.push(parseFloat(data[0]))
+            center.push(parseFloat(data[1]))
+            setCenterForGrid(center);
+        });
+
+        getUserListForSupervisor(pointOfCenter);
+    }
+
+    function setCenterForGrid(data) {
+        map.getView().setCenter(data);
+    }
+
+    function setPolygon(Polygons, data) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(Polygons),
+            data: {
+                id: data,
+                coordinate: Polygons
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
+    }
+
+    /**
+     * 通过网格id获取符合条件得监督员
+     */
+    function getUserListForSupervisor(id) {
+        $.ajaxUtil.get(getUserListForSupervisorUrl + "?gridId=" + id, function (e) {
+            let option = "";
+            $("#userId").empty();
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.name + "</option>"
+                });
+                $("#userId").html(option);
+            }
+        });
+    }
+
+    /**
+     * 模态窗 selectEventTypeTree
+     */
+    function selectEventTypeTree() {
+        var treeId = $("#treeId").val();
+        var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+        var options = {
+            title: '选择事件类型',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#eventTypeId").val(body.find('#treeId').val());
+        $("#typeStr").val(body.find('#treeName').val());
+        let eventTypeId = $("#eventTypeId").val();
+        //获取立案区域
+        findEventConditionByEventType(eventTypeId);
+        //部件获取
+        findUrlListByEventTypeId(eventTypeId);
+        layer.close(index);
     }
 
     // 更改校验文字
     jQuery.extend(jQuery.validator.messages, {
         required: "必填",
-        phone: "必填",
-        petitonerPhone: "必填",
         remote: "请修正该字段",
         email: "请输入正确格式的电子邮件",
         url: "请输入合法的网址",
@@ -658,24 +827,18 @@
             },
             loginName: {
                 required: true,
-                // rangelength: [5, 8]
             },
             phonenumber: {
                 required: true,
-                // rangelength: [6, 12]
             },
-            problemescription: {
+            represent: {
                 required: true,
-                // rangelength: [6, 12],
-                /*重复密码需要与原密码相同的要求*/
-                // equalTo: "#pwd"
             },
             safeLevel: {
                 required: true
             },
             findTime: {
                 required: true,
-                // range: [26, 50]
             },
             enterprise: {
                 required: true
@@ -692,26 +855,14 @@
                 required: true
             },
             closeTime: {
-                required: true,
+                required: true
             },
+
         },
         messages: {
 
         }
     });
-    /*手机号格式验证*/
-    $.validator.addMethod("phone", function (value, element, params) {
-        var reg = /^1[34578]\d{9}$/;
-        return reg.test(value);
-    }, "phone error");
-    $.validator.addMethod("petitonerPhone", function (value, element, params) {
-        var reg = /^1[34578]\d{9}$/;
-        return reg.test(value);
-    }, "petitonerPhone error");
-
-    function Cancel() {
-        $.modal.closeLoading();
-    }
 
     function submitHandler1() {
         //先校验
@@ -719,73 +870,61 @@
             return;
         }
         let data = $('#userForm').serialize();
-        $.operate.saveAndReload(receiveUrl, data, function (e){
-            createEventCode($("#eventTypeId").val());
-        });
+        $.operate.saveAndReload(registerUpdateUrl, data);
     }
 
-    function submitHandler2() {
-        //先校验
-        if (!$("form").valid()) {
-            return;
+    let container = document.getElementById('popup');
+    let content = document.getElementById('popup-content');
+    let closer = document.getElementById('popup-closer');
+    let overlay = new ol.Overlay({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
         }
-        let data = $('#userForm').serialize();
-        $.operate.saveAndReload(dispatchUrl, data, function (e){
-            createEventCode($("#eventTypeId").val());
-        });
-    }
-
-    let mapUrl = [[${@geoServerProperties.url}]];
-    let center_x = [[${@geoServerProperties.center_x}]];
-    let center_y = [[${@geoServerProperties.center_y}]];
-    let layers = [[${@geoServerProperties.layers}]];
-    let zoom = [[${@geoServerProperties.zoom}]];
-    let epsg = [[${@geoServerProperties.epsg}]];
-
-    // 地图
-    var gridsetName = 'EPSG:4552';
-    var gridNames = ['EPSG:4552:0', 'EPSG:4552:1', 'EPSG:4552:2', 'EPSG:4552:3', 'EPSG:4552:4', 'EPSG:4552:5', 'EPSG:4552:6', 'EPSG:4552:7'];
-    var baseUrl = 'http://218.10.223.8:9050/geoserver/gwc/service/wmts';
-    var style = '';
-    var format = 'image/png8';
-    var infoFormat = 'text/html';
-    var layerName = 'hegang:MosaicResult';
-    var projection = new ol.proj.Projection({
+    });
+    /* 沽源地图 */
+    let setGridName = 'EPSG:4552';
+    let gridNames = ['EPSG:4552:0', 'EPSG:4552:1', 'EPSG:4552:2', 'EPSG:4552:3', 'EPSG:4552:4', 'EPSG:4552:5', 'EPSG:4552:6', 'EPSG:4552:7'];
+    let baseUrl = 'http://218.10.223.8:9050/geoserver/gwc/service/wmts';
+    let style = '';
+    let format = 'image/png';
+    let layerName = 'hegang:hegang8';
+    let projection = new ol.proj.Projection({
         code: 'EPSG:4552',
         units: 'm',
         axisOrientation: 'neu'
     });
-    var resolutions = [13.999999999999998, 6.999999999999999, 3.4999999999999996, 1.7499999999999998, 0.8749999999999999, 0.43749999999999994, 0.21874999999999997, 0.10937499999999999];
-    baseParams = ['VERSION','LAYER','STYLE','TILEMATRIX','TILEMATRIXSET','SERVICE','FORMAT'];
-
-    params = {
+    let resolutions = [13.999999999999998, 6.999999999999999, 3.4999999999999996, 1.7499999999999998, 0.8749999999999999, 0.43749999999999994, 0.21874999999999997, 0.10937499999999999];
+    let baseParams = ['VERSION','LAYER','STYLE','TILEMATRIX','TILEMATRIXSET','SERVICE','FORMAT'];
+    let params = {
         'VERSION': '1.0.0',
         'LAYER': layerName,
         'STYLE': style,
         'TILEMATRIX': gridNames,
-        'TILEMATRIXSET': gridsetName,
+        'TILEMATRIXSET': setGridName,
         'SERVICE': 'WMTS',
         'FORMAT': format
     };
 
     function constructSource() {
-        var url = baseUrl+'?'
-        for (var param in params) {
+        let url = baseUrl+'?'
+        for (let param in params) {
             if (baseParams.indexOf(param.toUpperCase()) < 0) {
                 url = url + param + '=' + params[param] + '&';
             }
         }
         url = url.slice(0, -1);
 
-        var source = new ol.source.WMTS({
+        return new ol.source.WMTS({
             url: url,
             layer: params['LAYER'],
             matrixSet: params['TILEMATRIXSET'],
             format: params['FORMAT'],
             projection: projection,
             tileGrid: new ol.tilegrid.WMTS({
-                tileSize: [256,256],
-                extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
+                tileSize: [512, 512],
+                extent: [374503.7646126483, 4581664.560955403, 626817.3646126483, 5570848.560955403],
                 origin: [374503.7646126483, 5570848.560955403],
                 resolutions: resolutions,
                 matrixIds: params['TILEMATRIX']
@@ -793,14 +932,13 @@
             style: params['STYLE'],
             wrapX: true
         });
-        return source;
     }
 
-    var untiled = new ol.layer.Tile({
+    let untiled = new ol.layer.Tile({
         source: constructSource()
     });
 
-    var view = new ol.View({
+    let view = new ol.View({
         center: [0, 0],
         zoom: 17,
         resolutions: resolutions,
@@ -808,7 +946,7 @@
         extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403]
     });
 
-    var map = new ol.Map({
+    let map = new ol.Map({
         layers: [untiled],
         target: 'map',
         view: view
@@ -822,7 +960,12 @@
         source: new ol.source.Vector(),
     });
     map.addLayer(layerMap);
+
+
     let localReverseGeocoding = /*[[@{/event/localReverseGeocoding}]]*/ "/event/localReverseGeocoding";
+    let localGeocodingUrl = /*[[@{/event/localGeocoding}]]*/ "/event/localGeocoding";
+
+
     map.on('singleclick', function (evt) {
         let t = evt.coordinate;
         $("#longitude").val(t[0])
@@ -830,7 +973,9 @@
         $.ajaxUtil.get(localReverseGeocoding + "?x=" + t[0] + "&y=" + t[1], function (e) {
             $("#location").val(e.data.mongo)
         })
-        layerMap.getSource().clear()
+
+        layerMap.getSource().clear();
+
         $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + t[0] + "&y=" + t[1], function (e) {
             let split = e.data.multiPolygon.split(",");
             let polygonArray = [];
@@ -873,7 +1018,6 @@
                             e.preventDefault();
                             overlay.setPosition(undefined);
                         })
-
                         $("#grid4").empty();
                         let option4 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
                         $("#grid4").html(option4);
@@ -885,159 +1029,76 @@
             }
         });
 
-        setPoint(evt.coordinate);
-
         /**
          * 获取部件编码
          */
-        if($("#layer").val()===""||$("#layer").val()===null){
+        if ($("#layer").val() === "" || $("#layer").val() === null) {
             $("#componentObjId").val("")
-        }else{
+        } else {
             let t = evt.coordinate;
-            $.ajaxUtil.get(unit + "?tableName=" + $("#layer").val()+"&x="+t[0]+"&y="+t[1], function (e) {
+            $.ajaxUtil.get(unit + "?tableName=" + $("#layer").val() + "&x=" + t[0] + "&y=" + t[1], function (e) {
                 $("#componentObjId").val(e.data.id)
 
             });
         }
+        setPoint(evt.coordinate)
     });
 
-
-    /**
-     * 获取网格的中心点
-     */
-    function getGridCenter() {
-        let pointOfCenter = $("#grid4 option:selected").val();
-        let url = "/event/findGeomByGridId?id=" + pointOfCenter;
-        $.ajaxUtil.get(url, function (e) {
-            $(e.data.geom).each(function (index, value) {
-                let split = value.split(",");
-                let polygonArray = [];
-                let polygonArrayEnd = [];
-                for (let j = 0; j < split.length; j++) {
-                    let pointArray = [];
-                    pointArray.push(split[j].split(" ")[0]);
-                    pointArray.push(split[j].split(" ")[1]);
-                    polygonArray.push(pointArray);
-                    polygonArrayEnd.push(polygonArray);
+    function localGeocoding() {
+        let location = $("#location").val();
+        if(location === null || location === "" || location === undefined){
+            $.modal.alertError("请填写地址", function (){
+                return;
+            });
+        }else{
+            $.ajaxUtil.get(localGeocodingUrl + "?address=" + location, function (e) {
+                let data = e.data;
+                $("#place_ul").empty();
+                let localGeocoding = "";
+                if(data.length > 0){
+                    for (let i = 0; i < data.length; i++) {
+                        localGeocoding += "<li className='place_li' id='"+ data[i].multiPolygon +"' onclick='setLocationPoint(this)'><i className='fa fa-search place_mirror' aria-hidden='true'></i>"+ data[i].mongo +"</li>";
+                    }
+                }else{
+                    localGeocoding += "<li class='place_li' onclick='setLocationPointClose()'>没有可匹配的地址</li>";
                 }
-                setPolygon(polygonArrayEnd);
+                $("#place_ul").html(localGeocoding);
+                $(".place_map").slideDown(200);
             })
-            var data = e.data.center[0].split(" ");
-            var center = [];
-            center.push(parseFloat(data[0]))
-            center.push(parseFloat(data[1]))
-            setCenterForGrid(center);
-        });
-
-        getUserListForSupervisor(pointOfCenter);
-    }
-    /**
-     * 回显上传照片
-     */
-    function showImage(){
-        let showUrl = [[${@fastProperties.nginxUrl}]];
-        let file = [[${files}]];
-        console.log("file",file)
-        let imageHtml = "";
-        let videoHtml = "";
-        let musicHtml = "";
-        let imageHtmlAfter = "";
-        let videoHtmlAfter = "";
-        let musicHtmlAfter = "";
-        if (file.length > 0) {
-            $("#imageList").empty();
-            $("#videoList").empty();
-            $("#musicList").empty();
-            $("#imageListAfter").empty();
-            $("#videoListAfter").empty();
-            $("#musicListAfter").empty();
-            for (let i = 0; i < file.length; i++) {
-                console.log("filei",file[i])
-                if (file[i].management ==="处置前"){
-                    if (file[i].type=== '图片'){
-                        imageHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
-                            "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
-                            "</div>";
-                    } else if (file[i].type=== '视频') {
-                        videoHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
-                            "<video controls src='" + showUrl + file[i].url + "'>" +
-                            "</div>";
-                    } else if (file[i].type=== '音频') {
-                        musicHtml += "<div class=\"innerPic\" style=\"float:left;\">\n" +
-                            "<audio controls src='" + showUrl + file[i].url + "'>" +
-                            "</div>";
-                    }
-                }else {
-                    if (file[i].type=== '图片'){
-                        imageHtmlAfter += "<div class=\"innerPic\" style=\"float:left;\">\n" +
-                            "<img class='img-rounded' src='" + showUrl + file[i].url + "'>"+
-                            "</div>";
-                    } else if (file[i].type=== '视频') {
-                        videoHtmlAfter += "<div class=\"innerPic\" style=\"float:left;\">\n" +
-                            "<video controls src='" + showUrl + file[i].url + "'>" +
-                            "</div>";
-                    } else if (file[i].type=== '音频') {
-                        musicHtmlAfter += "<div class=\"innerPic\" style=\"float:left;\">\n" +
-                            "<audio controls src='" + showUrl + file[i].url + "'>" +
-                            "</div>";
-                    }
-                }
-            }
         }
-        $("#imageList").html(imageHtml);
-        $("#videoList").html(videoHtml);
-        $("#musicList").html(musicHtml);
-        $("#imageListAfter").html(imageHtmlAfter);
-        $("#videoListAfter").html(videoHtmlAfter);
-        $("#musicListAfter").html(musicHtmlAfter);
     }
 
-    function setPoints(coor) {
+    function setLocalSearch(data) {
+        $("#location").val(data);
+        $("#sole-input").val(data);
+    }
+
+    function setLocationPoint(data) {
+        let x = parseFloat(data.id.split(" ")[0]);
+        let y = parseFloat(data.id.split(" ")[1]);
+        setCenterAndZoom(x, y, map.getView().getZoom() + 2);
+        setPoint([x, y]);
+        setLocationPointClose();
+    }
+
+    function setLocationPointClose() {
+        $(".place_map").slideUp(200);
+    }
+
+    function setPoint(newPoint) {
         let point = new ol.Feature({
-            geometry: new ol.geom.Point(coor),
-            data: {
-                // id: data,
-                // name: name,
-                // coordinate: x + "," + y
-            }
+            geometry: new ol.geom.Point(newPoint),
+            data: {}
         });
-        layerMap.getSource().addFeature(point);
         point.setStyle(new ol.style.Style({
             image: new ol.style.Icon({
-                src: '../../img/dwpoint3.png'
+                src: "../img/dwpoint3.png"
             })
         }));
+        layerMap.getSource().addFeature(point);
     }
-    function setPolygon(Polygons, data) {
-        let Polygon = new ol.Feature({
-            geometry: new ol.geom.Polygon(Polygons),
-            data: {
-                id: data,
-                // name: name,
-                coordinate: Polygons
-            }
-        });
-        layerMap.getSource().addFeature(Polygon);
-    }
-    function setCenterForGrid(data) {
-        map.getView().setCenter(data);
-    }
-    /**
-     * 通过网格id获取符合条件得监督员
-     */
-    let getUserListForSupervisorUrl = /*[[@{/event/getUserListForSupervisor}]]*/ "/event/getUserListForSupervisor";
-    function getUserListForSupervisor(id) {
-        $.ajaxUtil.get(getUserListForSupervisorUrl + "?gridId=" + id, function (e) {
-            let option = "";
-            $("#userId").empty();
-            if (e.code === 0) {
-                $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.name + "</option>"
-                });
-                $("#userId").html(option);
-            }
-        });
-    }
+
+
 </script>
 </body>
 </html>

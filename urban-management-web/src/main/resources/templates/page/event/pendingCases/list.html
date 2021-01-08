@@ -1029,14 +1029,23 @@
             let buttonHtml = "";
             if (button.length > 0) {
                 for (let i = 0; i < button.length; i++) {
-                    buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
+                    buttonHtml += "<button class='but_save' style='margin-right: 10px;' data-toggle='modal' data-target='#modal-default' " +
+                        "value='" + eventId + "' id='" + button[i].id + "' type='button' onclick='setValueForCompleteEvent(this)'>" + button[i].buttonText + "</button>";
+                    if(button[i].id === "11"){
+                        buttonHtml += "<button class='but_save' style='margin-right: 10px;' id='" + eventId + "' onclick='pendingCasesUpdate(this.id)'>修改</button>"
+                    }
                 }
+
             }
             $("#eventButton").append(buttonHtml);
             if ($("#eventSourceStr").val() === "监督员上报") {
                 $("#13").remove();
             }
         });
+    }
+
+    function pendingCasesUpdate(data) {
+        window.parent.$.learuntab.myAddTab('案件登记修改', '/event/toSupervisionAcceptanceUpdate/' + data, 'data_id');
     }
 
     /* 时间轴 */

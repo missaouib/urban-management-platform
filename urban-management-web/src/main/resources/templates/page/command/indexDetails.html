@@ -192,45 +192,6 @@
         </div>
     </div>
 
-    <!--    核实-->
-    <div class="modal fade" id="modal-default">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">核实</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="checkMain" style="position: relative">
-                        <span class="sendText" style="width: 125px" id="btnOpinion"><i style="color: red!important;"></i></span>
-                        <textarea type="text" id="textIdioms" onblur="saveIdioms(this)"></textarea>
-                        <div class="alwaysSay btn btn-primary" id="alwaysSay" >惯用语</div>
-                        <div id="wordSays" class="wordSays" style="background-color:#fff;">
-                        </div>
-                    </div>
-                    <div class="checkMain" style="position: relative;display: block" id="userListDiv">
-                        <div class="sendText" style="float:left;width: 99px">监督员</div>
-                        <select name="safeLevel" id="selectUser" onchange="getUserVal()" type="text" class="find_input">
-
-                        </select>
-                    </div>
-                    <div class="send">
-                        <div class="sendImg">
-                            <div class="sendText" style="width: 99px"><span>多媒体:</span></div>
-                            <div><input id="imageInput" type="file" name="files" multiple="multiple"></div>
-                            <input type="hidden" id="imageUrlList" name="imageUrlList" value="">
-                            <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
-                            <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between"
-                     style="display: flex;justify-content: flex-end!important;">
-                    <button type="button" class="btn btn-primary" onclick="completeEvent()" id="underBtn">完成</button>
-                    <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!--    附件详情弹出的窗口-->
     <div class="duck_duck">
