@@ -2,12 +2,16 @@ package com.unicom.urban.management.api.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
+import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.Result;
+import com.unicom.urban.management.pojo.SecurityUserBean;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
+import com.unicom.urban.management.pojo.dto.TrajectoryDTO;
 import com.unicom.urban.management.pojo.entity.EventFile;
 import com.unicom.urban.management.pojo.entity.KV;
 import com.unicom.urban.management.pojo.entity.Statistics;
+import com.unicom.urban.management.pojo.entity.Trajectory;
 import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
@@ -15,6 +19,7 @@ import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
+import com.unicom.urban.management.service.trajectory.TrajectoryService;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 无线采集子系统
@@ -48,7 +54,8 @@ public class WirelessAcquisitionController {
     private StatisticsService statisticsService;
     @Autowired
     private EventFileService eventFileService;
-
+    @Autowired
+    private TrajectoryService trajectoryService;
     /**
      * 获取案件类型
      *
@@ -289,5 +296,14 @@ public class WirelessAcquisitionController {
         return eventService.search(eventDTO, pageable);
     }
 
-
+    /**
+     * 轨迹记录
+     * @return
+     */
+    @PostMapping("/saveTrajectory")
+    public Result saveTrajectorys(TrajectoryDTO trajectoryDTO){
+        SecurityUserBean user = SecurityUtil.getUser();
+        trajectoryService.saveTrajectory(trajectoryDTO, user.castToUser());
+        return Result.success();
+    }
 }
