@@ -1159,6 +1159,7 @@
      * 获取网格的中心点
      */
     function getGridCenter() {
+        layerMap.getSource().clear();
         let pointOfCenter = $("#grid4 option:selected").val();
         let url = "/event/findGeomByGridId?id=" + pointOfCenter;
         $.ajaxUtil.get(url, function (e) {
