@@ -16,6 +16,8 @@ public class MenuVO {
 
     private String icon;
 
+    private Integer sort;
+
     private String parentId;
 
     private String menuTypeId;
