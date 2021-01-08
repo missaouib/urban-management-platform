@@ -894,6 +894,7 @@
     }
 
     let img = /*[[@{/common/img/}]]*/ "/common/img/";
+    let updateUrl = /*[[@{/event/toSupervisionAcceptanceUpdate/{id}}]]*/ "/event/toSupervisionAcceptanceUpdate";
     let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
     let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
     let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
@@ -915,6 +916,7 @@
         let options = {
             num: num,
             url: searchUrl,
+            updateUrl: updateUrl,
             uniqueId: "id",
             sortName: "createTime",
             sortOrder: "desc",
@@ -1045,7 +1047,8 @@
     }
 
     function pendingCasesUpdate(data) {
-        window.parent.$.learuntab.myAddTab('案件登记修改', '/event/toSupervisionAcceptanceUpdate/' + data, 'data_id');
+        $.operate.editTab(data);
+        // window.parent.$.learuntab.myAddTab('案件登记修改', '/event/toSupervisionAcceptanceUpdate/' + data, 'data_id');
     }
 
     /* 时间轴 */
