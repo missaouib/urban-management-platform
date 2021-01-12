@@ -5,6 +5,7 @@ import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.SecurityUserBean;
+import com.unicom.urban.management.pojo.dto.EventAppDTO;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.dto.TrajectoryDTO;
@@ -21,6 +22,7 @@ import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import com.unicom.urban.management.service.trajectory.TrajectoryService;
 import io.micrometer.core.instrument.util.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -172,10 +174,12 @@ public class WirelessAcquisitionController {
     /**
      * 案件采集保存
      *
-     * @param eventDTO 数据
+     * @param eventAppDTO 数据
      */
     @PostMapping("/saveTemp")
-    public Result saveTemp(@Valid EventDTO eventDTO) {
+    public Result saveTemp(@Valid EventAppDTO eventAppDTO) {
+        EventDTO eventDTO = new EventDTO();
+        BeanUtils.copyProperties(eventAppDTO, eventDTO);
         eventDTO.setSts(EventConstant.SUPERVISE_SAVE);
         eventService.saveTempForApi(eventDTO);
         return Result.success("保存成功");
