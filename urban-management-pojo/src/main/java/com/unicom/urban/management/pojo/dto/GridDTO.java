@@ -64,6 +64,8 @@ public class GridDTO {
 
     private String recordStart;
 
+    private Integer level;
+
 
 
 }

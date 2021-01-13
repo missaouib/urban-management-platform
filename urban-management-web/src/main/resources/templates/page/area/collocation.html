@@ -85,7 +85,7 @@
     function search() {
         $('#table').bootstrapTable('removeAll');
         var count = $('#table').bootstrapTable('getData').length;
-        var param = "?1=1";
+        var param = "?level=4";
         if ($("#gridName").val() !== "" && $("#gridName").val() !== null) {
             param += "&gridName=" + $("#gridName").val();
         }
