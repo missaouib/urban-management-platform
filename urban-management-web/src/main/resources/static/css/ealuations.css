@@ -170,3 +170,44 @@ thead th{
 .pagination-info{
 	color: #FFFFFF!important;
 }
+.seekBos{
+	padding: 5px;
+	width: 100px;
+	height: 200px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	background-color: #fff;
+	border: 1px solid #2A3051;
+	z-index: 9;
+	display: flex;
+	flex-direction: column;
+	align-items: center;justify-content: center;
+}
+.boosLever{
+	width: 100%;
+	flex: 1;
+	margin: 2px 0;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+
+}
+
+.boss{width: 20px;height: 20px;}
+.beats{padding: 2px 3px;border: 1px solid #D9DADF;font-size: 12px}
+.boosLever .boss:nth-child(1){
+	background-color: #2A3051;
+}
+.boosLever:nth-child(2) .boss{
+	background-color: green;
+}
+.boosLever:nth-child(3) .boss{
+	background-color: yellow;
+}
+.boosLever:nth-child(4) .boss{
+	background-color: orange;
+}
+.boosLever:nth-child(5) .boss{
+	background-color: red;
+}
