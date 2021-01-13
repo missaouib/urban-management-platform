@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>热线上报</title>
-    <th:block th:include="page/fragments/common :: common_css"/>
-    <th:block th:include="page/fragments/common :: fileUpload_css"/>
-    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
-    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
-    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <th:block th:include="page/fragments/common :: common_css" />
+    <th:block th:include="page/fragments/common :: fileUpload_css" />
+    <th:block th:include="page/fragments/common :: bootstrap_table_css" />
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css" />
+    <th:block th:include="page/fragments/common :: ztree_css" />
     <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
 <style>
-    .file-drop-zone-title{
+    .file-drop-zone-title {
         padding: 68px 55px!important;
     }
-    .file-drop-zone{
+
+    .file-drop-zone {
         min-height: 200px!important;
     }
-    .file-preview-thumbnails{
+
+    .file-preview-thumbnails {
         max-height: 233px!important;
     }
-    .file-preview{
+
+    .file-preview {
         height: 241px!important;
     }
 </style>
@@ -32,8 +36,7 @@
             <form id="userForm">
                 <div class="top table2_top">
                     <div class="r_right but_p girdBtnGroup" style="display: flex;justify-content: start!important;margin: 0!important;padding-left: 10px!important;">
-                        <button class="but_save" type="submit" onclick="submitHandler1()"
-                                style="margin-right: 10px">保存
+                        <button class="but_save" type="submit" onclick="submitHandler1()" style="margin-right: 10px">保存
                         </button>
                         <button class="but_save" type="submit" onclick="submitHandler2()">核实</button>
                     </div>
@@ -43,21 +46,19 @@
                             <tr>
                                 <td><span></span>案件编号</td>
                                 <td>
-                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode"
-                                           class="find_input"/>
+                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input" />
                                 </td>
                                 <td><span></span>案件类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                    <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
-                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId"
-                                           class="find_input"/>
+                                    <input type="text" readonly="readonly" id="typeStr" name="eventType" class="find_input" />
+                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId" class="find_input" />
                                     <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                         +
                                     </button>
                                 </td>
                                 <td><span>*</span>立案区域</td>
                                 <td>
-                                    <select id="eventCondition" onchange="getEventCondition()" required>
+                                    <select id="eventCondition" onchange="getEventCondition()" required name="casePlace">
 
                                     </select>
                                 </td>
@@ -70,14 +71,14 @@
                                 </td>
                                 <td><span></span>计时等级</td>
                                 <td>
-                                    <select id="timeType" onchange="getDeptTimeLimitList()" required>
+                                    <select id="timeType" onchange="getDeptTimeLimitList()" name="timeLever" required>
 
                                     </select>
                                 </td>
                                 <td><span></span>立案时限</td>
                                 <td>
-                                    <input th:name="timeLimitId" type="hidden" id="deptTImeLimitId"/>
-                                    <input type="text" id="deptTImeLimit" required readonly/>
+                                    <input th:name="timeLimitId" type="hidden" id="deptTImeLimitId" />
+                                    <input type="text" id="deptTImeLimit" name="caseTime" required readonly/>
 
                                 </td>
                             </tr>
@@ -103,14 +104,12 @@
 
                                 <td><span></span>诉求时间</td>
                                 <td>
-                                    <input th:name="createTime"
-                                           th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}"
-                                           type="text" class=""/>
+                                    <input th:name="createTime" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
                                 </td>
                                 <td><span></span>部件编码</td>
                                 <td>
                                     <input type="text" id="componentObjId" name="componentObjId" readonly="readonly">
-                                    <input type="hidden" id="layer"  readonly="readonly">
+                                    <input type="hidden" id="layer" readonly="readonly" name="caseCode">
                                 </td>
                                 <td><span></span>案件分类</td>
                                 <td>
@@ -124,18 +123,15 @@
                             <tr>
                                 <td><span>*</span>经度</td>
                                 <td>
-                                    <input type="text" class="" placeholder="" value="" name="x" id="longitude"
-                                           readonly/>
+                                    <input type="text" class="" placeholder="" value="" name="x" id="longitude" readonly/>
                                 </td>
                                 <td><span>*</span>纬度</td>
                                 <td>
-                                    <input type="text" class="" placeholder="" value="" name="y" id="latitude"
-                                           readonly/>
+                                    <input type="text" class="" placeholder="" value="" name="y" id="latitude" readonly/>
                                 </td>
                                 <td><span>*</span>所在区域</td>
                                 <td>
-                                    <select name="required" class="form-control" id="grid1" onchange="getStreetList()"
-                                            required>
+                                    <select name="required" class="form-control" id="grid1" onchange="getStreetList()" required>
                                         <option>--请选择--</option>
                                         <option th:each="as:${gridList}" th:value="${as.id}"
                                                 th:text="${as.gridName}"></option>
@@ -146,36 +142,33 @@
 
                                 <td><span>*</span>所属街道</td>
                                 <td>
-                                    <select name="phone" class="form-control" id="grid2" onchange="getCommunityList()"
-                                            required>
+                                    <select name="phone" class="form-control" id="grid2" onchange="getCommunityList()" required>
                                     </select>
                                 </td>
                                 <td><span>*</span>所属社区</td>
                                 <td>
-                                    <select name="petitonerPhone" class="form-control" id="grid3"
-                                            onchange="getGridList()" required>
+                                    <select name="petitonerPhone" class="form-control" id="grid3" onchange="getGridList()" required>
                                     </select>
                                 </td>
                                 <td><span>*</span>所属网格</td>
                                 <td>
-                                    <select th:name="gridId" id="grid4" onchange="getGridCenter(this)" required>
+                                    <select th:name="gridId" id="grid4" onchange="getGridCenter(this)" required style="padding-left: 0px!important;">
                                     </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span></span>问题来源</td>
                                 <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required
-                                            readonly="readonly">
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required readonly="readonly">
                                         <option th:each="as:${eventSource}" th:value="${as.id}"
                                                 th:text="${as.value}"></option>
                                     </select>
                                 </td>
                                 <td><span></span>上报人</td>
                                 <td>
-                                    <input type="text" readonly th:value="${#authentication.principal.name}">
+                                    <input type="text" readonly th:value="${#authentication.principal.name}" name="reportMen">
                                     <!--<input type="hidden" value="" id="selectDown">
-                                    <input value="1" type="hidden" name="userId">-->
+                            <input value="1" type="hidden" name="userId">-->
                                 </td>
                                 <td><span></span>监督员</td>
                                 <td>
@@ -188,15 +181,13 @@
                             <tr>
                                 <td><span>*</span>案件地址</td>
                                 <td style="position: relative">
-                                    <input onmouseover="this.title=this.value" id="location" th:name="location" onkeyup="setLocalSearch(this.value)"
-                                           type="text" class="overInput" required>
+                                    <input onmouseover="this.title=this.value" id="location" th:name="location" onkeyup="setLocalSearch(this.value)" type="text" class="overInput">
                                     <div class="caseSeach" onclick="localGeocoding()"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
                                 </td>
 
                                 <td><span>*</span>问题描述</td>
                                 <td>
-                                    <input onmouseover="this.title=this.value" id="problemescription"
-                                           th:name="represent" type="text" class="overInput" required>
+                                    <input onmouseover="this.title=this.value" id="problemescription" th:name="represent" type="text" class="overInput" required>
                                 </td>
                             </tr>
                             </tbody>
@@ -264,8 +255,7 @@
             <div class="modal-body" id="similarCases">
 
             </div>
-            <div class="modal-footer justify-content-between"
-                 style="display: flex;justify-content: flex-end!important;">
+            <div class="modal-footer justify-content-between" style="display: flex;justify-content: flex-end!important;">
                 <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
             </div>
         </div>
@@ -278,35 +268,34 @@
 
 </div>
 
-<th:block th:include="page/fragments/common :: common_js"/>
-<th:block th:include="page/fragments/common :: jquery_validation_js"/>
-<th:block th:include="page/fragments/common :: fileUpload_js"/>
-<th:block th:include="page/fragments/common :: map_js"/>
-<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
-<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
-<th:block th:include="page/fragments/common :: ztree_js"/>
+<th:block th:include="page/fragments/common :: common_js" />
+<th:block th:include="page/fragments/common :: jquery_validation_js" />
+<th:block th:include="page/fragments/common :: fileUpload_js" />
+<th:block th:include="page/fragments/common :: map_js" />
+<th:block th:include="page/fragments/common :: bootstrap_table_js" />
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js" />
+<th:block th:include="page/fragments/common :: ztree_js" />
 <script type="text/javascript" th:inline="javascript">
-
     let multiMediaData = [];
     let codePopup;
 
-    $(function () {
+    $(function() {
 
-        $(".file-drop-zone").css("min-height","200px")
-        $(".file-drop-zone-title").css("padding","68px 55px")
+        $(".file-drop-zone").css("min-height", "200px")
+        $(".file-drop-zone-title").css("padding", "68px 55px")
 
         $(".ol-full-screen-false").html("全屏");
 
-        $(".name").click(function () {
+        $(".name").click(function() {
             $(this).addClass("active").siblings(".name").removeClass("active");
             $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
         });
 
-        $(".enclosure").click(function () {
+        $(".enclosure").click(function() {
             alert("附件详情")
         });
 
-        $(document).on('click','.caseLi',function () {
+        $(document).on('click', '.caseLi', function() {
             $(".address").slideUp(200);
         })
 
@@ -324,33 +313,33 @@
         });
 
         $("#imageInput").fileinput({
-            language: 'zh',                                     // 设置语言
+            language: 'zh', // 设置语言
             theme: 'fa',
             uploadUrl: uploadUrl,
-            uploadAsync: false,                                       //关闭异步上传，改为同步上传。
+            uploadAsync: false, //关闭异步上传，改为同步上传。
             // showUpload: true,
             // previewFileType: 'any',
             // enableResumableUpload: true,
-            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'],       // 接收的文件后缀
-            maxFileCount: 10,                                    // 最大文件数量
-            hideThumbnailContent: false,                        // 上传图片之后 是否隐藏缩略图
+            allowedFileExtensions: ['jpg', 'png', 'gif', 'jpeg', 'mp4', 'mp3'], // 接收的文件后缀
+            maxFileCount: 10, // 最大文件数量
+            hideThumbnailContent: false, // 上传图片之后 是否隐藏缩略图
             focusCaptionOnBrowse: false,
-            showClose: false,                                   // 右上角的×
-            showCaption: false,                                 // 是否显示标题
-            showPreview: true,                                  // 是否显示预览
-            showUpload: false,                                  // 是否显示上传按钮
-            showRemove: true,                                   // 显示移除按钮
-            dropZoneEnabled: true,                             // 是否显示拖拽区域
+            showClose: false, // 右上角的×
+            showCaption: false, // 是否显示标题
+            showPreview: true, // 是否显示预览
+            showUpload: false, // 是否显示上传按钮
+            showRemove: true, // 显示移除按钮
+            dropZoneEnabled: true, // 是否显示拖拽区域
             // browseClass: "btn btn-primary",                  // 按钮样式
-        }).on('change', function (event) {
+        }).on('change', function(event) {
             console.log("change()           只要通过文件浏览按钮在文件输入控件中选择单个文件或多个文件，就会触发此事件。");
-        }).on('fileselect', function (event, numFiles, label) {
+        }).on('fileselect', function(event, numFiles, label) {
             console.log("fileselect()       通过文件浏览按钮在文件输入中选择文件后触发此事件。这与change事件稍有不同，即使文件浏览对话框被取消，它也会被触发");
-        }).on("filebatchselected", function (event, files) {
+        }).on("filebatchselected", function(event, files) {
             $(this).fileinput("upload");
-        }).on("fileuploaded", function (event, data) {
+        }).on("fileuploaded", function(event, data) {
 
-        }).on("filebatchuploadsuccess", function (event, data, previewId, index) {
+        }).on("filebatchuploadsuccess", function(event, data, previewId, index) {
             console.log('filebatchuploadsuccess() 同步上传返回结果处理')
             if (data.response.code === web_status.SUCCESS) {
                 multiMediaData.push(data);
@@ -359,17 +348,17 @@
             } else {
                 $.modal.alertError(data.response.message);
             }
-        }).on('filedeleted', function (event, key) {
+        }).on('filedeleted', function(event, key) {
             console.log('filedeleted()      在删除initialPreview内容集中的每个缩略图文件之后触发此事件');
             console.log('Key = ' + key);
-        }).on('filesuccessremove', function (event, id) {
+        }).on('filesuccessremove', function(event, id) {
             console.log("使用缩略图删除按钮删除成功上传的缩略图后，会触发此事件。");
             deleteMultiMedia(id, multiMediaData);
-        }).on('fileclear', function (event) {
+        }).on('fileclear', function(event) {
             console.log("fileclear()         当文件输入删除按钮或预览窗口关闭图标被按下以清除文件预览时触发此事件。");
-        }).on('filecleared', function (event) {
+        }).on('filecleared', function(event) {
             console.log("filecleared()        在预览中的文件被清除后触发此事件。");
-        }).on('filepredelete', function (event, key) {
+        }).on('filepredelete', function(event, key) {
             console.log('filepredelete()     在删除initialPreview内容集中的每个缩略图文件之前触发此事件。');
             console.log('Key = ' + key);
         });
@@ -392,13 +381,15 @@
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
 
     //回调函数接收查询结果
-    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
+    var geojsonFormat = new ol.format.GeoJSON({
+        defaultDataProjection: "EPSG:4326"
+    });
 
     /* 点击网格列表赋值 */
     function success_jsonpCallback(res) {
         var x = $("#longitude").val();
         var y = $("#latitude").val();
-        $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + x + "&y=" + y, function (e) {
+        $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + x + "&y=" + y, function(e) {
             let split = e.data.multiPolygon.split(",");
             let polygonArray = [];
             let polygonArrayEnd = [];
@@ -437,7 +428,7 @@
                         popupContentHtml += "<span>&#9670;</span>";
                         popupContentHtml += "</div>";
                         $("#popup-content").html(popupContentHtml);
-                        $("#popup").on("click", ".closePopup", function (e) {
+                        $("#popup").on("click", ".closePopup", function(e) {
                             e.preventDefault();
                             overlay.setPosition(undefined);
                         })
@@ -468,7 +459,7 @@
      * @param eventTypeId
      */
     function createEventCode(eventTypeId) {
-        $.ajaxUtil.get(createEventCodeUrl + "?eventTypeId=" + eventTypeId, function (e) {
+        $.ajaxUtil.get(createEventCodeUrl + "?eventTypeId=" + eventTypeId, function(e) {
             if (e.code === 0) {
                 let eventCode = e.data
                 $("#eventCode").val(eventCode);
@@ -481,7 +472,7 @@
      * 获取部件的发布图层
      */
     function findUrlListByEventTypeId(eventTypeId) {
-        $.ajaxUtil.get(publishUrl + "?typeId=" + eventTypeId, function (e) {
+        $.ajaxUtil.get(publishUrl + "?typeId=" + eventTypeId, function(e) {
             $("#layer").val("");
             //删除上一个底图
             let mation = map.getLayerGroup().getLayers().a;
@@ -493,7 +484,7 @@
                 layerMap.getSource().clear();
 
             }
-            $(e.data).each(function (index, value) {
+            $(e.data).each(function(index, value) {
                 if (value.url != null) {
                     $("#layer").val(value.layerId);
                     let urlParam = value.url.split("?");
@@ -503,7 +494,8 @@
                     var ImageVector = new ol.layer.Image({
                         source: new ol.source.ImageWMS({
                             url: url,
-                            params: {'FORMAT': format,
+                            params: {
+                                'FORMAT': format,
                                 'VERSION': '1.1.1',
                                 tiled: true,
                                 "LAYERS": param,
@@ -524,7 +516,7 @@
     function success_jsonpCallback1(res) {
         var features = geojsonFormat.readFeatures(res);
         if (undefined !== features[0]) {
-            $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function (e) {
+            $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function(e) {
                 $("#objId").val(e.data.objId);
                 $("#objId1").val(e.data.id);
             });
@@ -535,10 +527,10 @@
      * 获取立案区域
      */
     function findEventConditionByEventType(eventTypeId) {
-        $.ajaxUtil.get(findEventConditionByEventTypeUrl + "?eventTypeId=" + eventTypeId, function (e) {
+        $.ajaxUtil.get(findEventConditionByEventTypeUrl + "?eventTypeId=" + eventTypeId, function(e) {
             let option = "<option>--请选择--</option>";
             if (e.code === 0) {
-                $(e.data).each(function (index, value) {
+                $(e.data).each(function(index, value) {
                     option += "<option value='" + value.id + "'>" + value.region + "</option>"
                 });
                 $("#eventCondition").html(option);
@@ -551,11 +543,11 @@
      */
     function getEventCondition() {
         let eventConditionId = $("#eventCondition").val();
-        $.ajaxUtil.get(getEventConditionUrl + "?conditionId=" + eventConditionId, function (e) {
+        $.ajaxUtil.get(getEventConditionUrl + "?conditionId=" + eventConditionId, function(e) {
             $("#eventTerm").empty();
             let option = "<option>--请选择--</option>";
             if (e.code === 0) {
-                $(e.data).each(function (index, value) {
+                $(e.data).each(function(index, value) {
                     option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
                 });
             }
@@ -568,11 +560,11 @@
      */
     function getTimeTypeList() {
         let eventTerm = $("#eventTerm").val();
-        $.ajaxUtil.get(findDeptTimeLimitByConditionUrl + "?conditionId=" + eventTerm, function (e) {
+        $.ajaxUtil.get(findDeptTimeLimitByConditionUrl + "?conditionId=" + eventTerm, function(e) {
             $("#timeType").empty();
             let option = "<option>--请选择--</option>";
             if (e.code === 0) {
-                $(e.data).each(function (index, value) {
+                $(e.data).each(function(index, value) {
                     option += "<option value='" + value.id + "'>" + value.level + "</option>"
                 });
             }
@@ -585,7 +577,7 @@
      */
     function getDeptTimeLimitList() {
         let deptTimeLimitId = $("#timeType").val();
-        $.ajaxUtil.get(findDeptTimeLimitUrl + "?deptTimeLimitId=" + deptTimeLimitId, function (e) {
+        $.ajaxUtil.get(findDeptTimeLimitUrl + "?deptTimeLimitId=" + deptTimeLimitId, function(e) {
             if (e.code === 0) {
                 let data = e.data;
                 $("#deptTImeLimitId").val(data.id);
@@ -599,10 +591,10 @@
      */
     function getStreetList() {
         let parentId = $("#grid1 option:selected").val();
-        $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function (e) {
+        $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function(e) {
             let option = "<option>--请选择--</option>";
             if (e.code === 0) {
-                $(e.data).each(function (index, value) {
+                $(e.data).each(function(index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
                 $("#grid2").html(option);
@@ -615,10 +607,10 @@
      */
     function getCommunityList() {
         let parentId = $("#grid2 option:selected").val();
-        $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function (e) {
+        $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function(e) {
             let option = "<option>--请选择--</option>";
             if (e.code === 0) {
-                $(e.data).each(function (index, value) {
+                $(e.data).each(function(index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
                 $("#grid3").html(option);
@@ -631,10 +623,10 @@
      */
     function getGridList() {
         let parentId = $("#grid3 option:selected").val();
-        $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function (e) {
+        $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function(e) {
             let option = "<option>--请选择--</option>";
             if (e.code === 0) {
-                $(e.data).each(function (index, value) {
+                $(e.data).each(function(index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
                 $("#grid4").html(option);
@@ -649,8 +641,8 @@
         layerMap.getSource().clear();
         let pointOfCenter = $("#grid4 option:selected").val();
         let url = "/event/findGeomByGridId?id=" + pointOfCenter;
-        $.ajaxUtil.get(url, function (e) {
-            $(e.data.geom).each(function (index, value) {
+        $.ajaxUtil.get(url, function(e) {
+            $(e.data.geom).each(function(index, value) {
                 let split = value.split(",");
                 let polygonArray = [];
                 let polygonArrayEnd = [];
@@ -693,11 +685,11 @@
      * 通过网格id获取符合条件得监督员
      */
     function getUserListForSupervisor(id) {
-        $.ajaxUtil.get(getUserListForSupervisorUrl + "?gridId=" + id, function (e) {
+        $.ajaxUtil.get(getUserListForSupervisorUrl + "?gridId=" + id, function(e) {
             let option = "";
             $("#userId").empty();
             if (e.code === 0) {
-                $(e.data).each(function (index, value) {
+                $(e.data).each(function(index, value) {
                     option += "<option value='" + value.id + "'>" + value.name + "</option>"
                 });
                 $("#userId").html(option);
@@ -768,12 +760,12 @@
     $("#userForm").validate({
         debug: true,
         ignore: "",
-        submitHandler: function (form) {
+        submitHandler: function(form) {
             var params = $(form).serialize(); //串行化表单参数
-            $.post("user", params, function (result) {
-                if (result.ok) {//注册成功
+            $.post("user", params, function(result) {
+                if (result.ok) { //注册成功
                     location.href = "register_ok.html";
-                } else {//注册失败
+                } else { //注册失败
                     alert(result.msg);
                     $("#checkImg").click();
                 }
@@ -812,7 +804,8 @@
             },
             handleTime: {
                 required: true
-            }, charge: {
+            },
+            charge: {
                 required: true
             },
             question: {
@@ -835,11 +828,11 @@
         }
     });
     /*手机号格式验证*/
-    $.validator.addMethod("phone", function (value, element, params) {
+    $.validator.addMethod("phone", function(value, element, params) {
         var reg = /^1[34578]\d{9}$/;
         return reg.test(value);
     }, "phone error");
-    $.validator.addMethod("petitonerPhone", function (value, element, params) {
+    $.validator.addMethod("petitonerPhone", function(value, element, params) {
         var reg = /^1[34578]\d{9}$/;
         return reg.test(value);
     }, "petitonerPhone error");
@@ -852,12 +845,12 @@
         let longitude = $("#longitude").val();
         let latitude = $("#latitude").val();
         if (!longitude || !latitude) {
-            $.modal.alertError("请填选完整坐标", function (e) {
+            $.modal.alertError("请填选完整坐标", function(e) {
                 console.warn("e", e);
                 return false;
             });
         } else {
-            $.ajaxUtil.get(similarCasesForEventUrl + "?x=" + longitude + "&y=" + latitude, function (e) {
+            $.ajaxUtil.get(similarCasesForEventUrl + "?x=" + longitude + "&y=" + latitude, function(e) {
                 $("#similarCases").empty();
                 let similarCasesHtml = "";
                 if (e.code === 0) {
@@ -891,7 +884,7 @@
             return;
         }
         let data = $('#userForm').serialize();
-        $.operate.saveAndReload(receiveUrl, data, function (e){
+        $.operate.saveAndReload(receiveUrl, data, function(e) {
             createEventCode($("#eventTypeId").val());
         });
 
@@ -903,7 +896,7 @@
             return;
         }
         let data = $('#userForm').serialize();
-        $.operate.saveAndReload(dispatchUrl, data, function (e){
+        $.operate.saveAndReload(dispatchUrl, data, function(e) {
             createEventCode($("#eventTypeId").val());
         });
     }
@@ -940,7 +933,7 @@
         axisOrientation: 'neu'
     });
     var resolutions = [13.999999999999998, 6.999999999999999, 3.4999999999999996, 1.7499999999999998, 0.8749999999999999, 0.43749999999999994, 0.21874999999999997, 0.10937499999999999];
-    baseParams = ['VERSION','LAYER','STYLE','TILEMATRIX','TILEMATRIXSET','SERVICE','FORMAT'];
+    baseParams = ['VERSION', 'LAYER', 'STYLE', 'TILEMATRIX', 'TILEMATRIXSET', 'SERVICE', 'FORMAT'];
 
     params = {
         'VERSION': '1.0.0',
@@ -953,7 +946,7 @@
     };
 
     function constructSource() {
-        var url = baseUrl+'?'
+        var url = baseUrl + '?'
         for (var param in params) {
             if (baseParams.indexOf(param.toUpperCase()) < 0) {
                 url = url + param + '=' + params[param] + '&';
@@ -968,8 +961,8 @@
             format: params['FORMAT'],
             projection: projection,
             tileGrid: new ol.tilegrid.WMTS({
-                tileSize: [512,512],
-                extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
+                tileSize: [512, 512],
+                extent: [374503.7646126483, 4581664.560955403, 626817.3646126483, 5570848.560955403],
                 origin: [374503.7646126483, 5570848.560955403],
                 resolutions: resolutions,
                 matrixIds: params['TILEMATRIX']
@@ -989,7 +982,7 @@
         zoom: 17,
         resolutions: resolutions,
         projection: projection,
-        extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403]
+        extent: [374503.7646126483, 4581664.560955403, 626817.3646126483, 5570848.560955403]
     });
 
     var map = new ol.Map({
@@ -998,7 +991,8 @@
         view: view
     });
     map.getView().fit([593489.95, 5237489.95,
-        598010.0499999999, 5247510.05], map.getSize());
+        598010.0499999999, 5247510.05
+    ], map.getSize());
     var fullScreenControl = new ol.control.FullScreen();
 
     map.addControl(fullScreenControl)
@@ -1012,17 +1006,18 @@
     let localGeocodingUrl = /*[[@{/event/localGeocoding}]]*/ "/event/localGeocoding";
 
 
-    map.on('singleclick', function (evt) {
+    map.on('singleclick', function(evt) {
+        $("#userForm").validate().resetForm();
         let t = evt.coordinate;
         $("#longitude").val(t[0])
         $("#latitude").val(t[1])
-        $.ajaxUtil.get(localReverseGeocoding + "?x=" + t[0] + "&y=" + t[1], function (e) {
+        $.ajaxUtil.get(localReverseGeocoding + "?x=" + t[0] + "&y=" + t[1], function(e) {
             $("#location").val(e.data.mongo)
         })
 
         layerMap.getSource().clear();
 
-        $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + t[0] + "&y=" + t[1], function (e) {
+        $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + t[0] + "&y=" + t[1], function(e) {
             let split = e.data.multiPolygon.split(",");
             let polygonArray = [];
             let polygonArrayEnd = [];
@@ -1060,7 +1055,7 @@
                         popupContentHtml += "<span>&#9670;</span>";
                         popupContentHtml += "</div>";
                         $("#popup-content").html(popupContentHtml);
-                        $("#popup").on("click", ".closePopup", function (e) {
+                        $("#popup").on("click", ".closePopup", function(e) {
                             e.preventDefault();
                             overlay.setPosition(undefined);
                         })
@@ -1080,11 +1075,11 @@
         /**
          * 获取部件编码
          */
-        if($("#layer").val()===""||$("#layer").val()===null){
+        if ($("#layer").val() === "" || $("#layer").val() === null) {
             $("#componentObjId").val("")
-        }else{
+        } else {
             let t = evt.coordinate;
-            $.ajaxUtil.get(unit + "?tableName=" + $("#layer").val()+"&x="+t[0]+"&y="+t[1], function (e) {
+            $.ajaxUtil.get(unit + "?tableName=" + $("#layer").val() + "&x=" + t[0] + "&y=" + t[1], function(e) {
                 $("#componentObjId").val(e.data.id)
 
             });
@@ -1094,20 +1089,20 @@
 
     function localGeocoding() {
         let location = $("#location").val();
-        if(location === null || location === "" || location === undefined){
-            $.modal.alertError("请填写地址", function (){
-               return;
+        if (location === null || location === "" || location === undefined) {
+            $.modal.alertError("请填写地址", function() {
+                return;
             });
-        }else{
-            $.ajaxUtil.get(localGeocodingUrl + "?address=" + location, function (e) {
+        } else {
+            $.ajaxUtil.get(localGeocodingUrl + "?address=" + location, function(e) {
                 let data = e.data;
                 $("#place_ul").empty();
                 let localGeocoding = "";
-                if(data.length > 0){
+                if (data.length > 0) {
                     for (let i = 0; i < data.length; i++) {
-                        localGeocoding += "<li className='place_li' id='"+ data[i].multiPolygon +"' onclick='setLocationPoint(this)'><i className='fa fa-search place_mirror' aria-hidden='true'></i>"+ data[i].mongo +"</li>";
+                        localGeocoding += "<li className='place_li' id='" + data[i].multiPolygon + "' onclick='setLocationPoint(this)'><i className='fa fa-search place_mirror' aria-hidden='true'></i>" + data[i].mongo + "</li>";
                     }
-                }else{
+                } else {
                     localGeocoding += "<li class='place_li' onclick='setLocationPointClose()'>没有可匹配的地址</li>";
                 }
                 $("#place_ul").html(localGeocoding);
@@ -1145,9 +1140,7 @@
             })
         }));
     }
-
-
 </script>
 </body>
-</html>
 
+</html>
