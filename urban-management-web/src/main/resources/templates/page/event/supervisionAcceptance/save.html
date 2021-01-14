@@ -181,7 +181,7 @@
                             <tr>
                                 <td><span>*</span>案件地址</td>
                                 <td style="position: relative">
-                                    <input onmouseover="this.title=this.value" id="location" th:name="location" onkeyup="setLocalSearch(this.value)" type="text" class="overInput">
+                                    <input onmouseover="this.title=this.value" id="location" th:name="location" name="location" onkeyup="setLocalSearch(this.value)" type="text" class="overInput" required>
                                     <div class="caseSeach" onclick="localGeocoding()"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
                                 </td>
 
@@ -821,7 +821,9 @@
             y: {
                 required: true,
             },
-
+            location: {
+                required: true,
+            },
         },
         messages: {
 
@@ -1007,7 +1009,6 @@
 
 
     map.on('singleclick', function(evt) {
-        $("#userForm").validate().resetForm();
         let t = evt.coordinate;
         $("#longitude").val(t[0])
         $("#latitude").val(t[1])
