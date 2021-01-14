@@ -53,7 +53,7 @@ public class CellGridRegionController {
      */
     @GetMapping("/cellGridRegionOne")
     public Page<CellGridRegionVO> cellGridRegionOne(String startTime, String endTime, @PageableDefault Pageable pageable) {
-        return statisticsService.findAllForCellGridRegion(startTime, endTime, pageable);
+        return statisticsService.findAllForCellGridRegion(startTime, endTime, "一类区域", pageable);
     }
 
     /**
@@ -63,7 +63,7 @@ public class CellGridRegionController {
      */
     @GetMapping("/cellGridRegionTwo")
     public Page<CellGridRegionVO> cellGridRegionTwo(String startTime, String endTime, @PageableDefault Pageable pageable) {
-        return statisticsService.findAllForCellGridRegion(startTime, endTime, pageable);
+        return statisticsService.findAllForCellGridRegion(startTime, endTime, "二类区域", pageable);
     }
 
 }

@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class CellGridRegionVO {
 
+    private String gridId;
+
     private String gridName;
 
     /**

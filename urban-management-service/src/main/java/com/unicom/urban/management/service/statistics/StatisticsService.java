@@ -167,11 +167,11 @@ public class StatisticsService {
     }
 
     /**
-     * 区域评价
+     * 区域评价 - 综合评价子系统
      *
      * @return 数据
      */
-    public Page<CellGridRegionVO> findAllForCellGridRegion(String time1, String time2, Pageable pageable) {
+    public Page<CellGridRegionVO> findAllForCellGridRegion(String time1, String time2, String region, Pageable pageable) {
         LocalDateTime startTime = getTimeForBetween(time1, time2).get("startTime");
         LocalDateTime endTime = getTimeForBetween(time1, time2).get("endTime");
         List<Grid> gridList = gridService.allByLevelAndRecordSts();
@@ -183,11 +183,11 @@ public class StatisticsService {
             cellGridRegionVO.setCommunityName(community.getGridName());
             Grid street = community.getParent();
             cellGridRegionVO.setStreetName(street.getGridName());
-            int inTimeCloseSize = statisticsRepository.findAllByInTimeClose(grid.getId(), startTime, endTime).size();
-            int closeSize = statisticsRepository.findAllByClose(grid.getId(), startTime, endTime).size();
-            int closeOrToCloseSize = statisticsRepository.findAllByCloseOrToClose(grid.getId(), startTime, endTime).size();
-            int publicReportAndInstSize = statisticsRepository.findAllByPublicReportAndInst(grid.getId(), startTime, endTime).size();
-            int instSize = statisticsRepository.findAllByInst(grid.getId(), startTime, endTime).size();
+            int inTimeCloseSize = statisticsRepository.findAllByInTimeClose(grid.getId(), startTime, endTime, region).size();
+            int closeSize = statisticsRepository.findAllByClose(grid.getId(), startTime, endTime, region).size();
+            int closeOrToCloseSize = statisticsRepository.findAllByCloseOrToClose(grid.getId(), startTime, endTime, region).size();
+            int publicReportAndInstSize = statisticsRepository.findAllByPublicReportAndInst(grid.getId(), startTime, endTime, region).size();
+            int instSize = statisticsRepository.findAllByInst(grid.getId(), startTime, endTime, region).size();
             /* 按期结案数 */
             cellGridRegionVO.setInTimeCloseSize(inTimeCloseSize);
             /* 结案数 */
@@ -208,17 +208,35 @@ public class StatisticsService {
             double closeRate = 100D - Double.parseDouble(cellGridRegionVO.getCloseRate().split("%")[0]);
             double inTimeCloseRate = 100D - Double.parseDouble(cellGridRegionVO.getInTimeCloseRate().split("%")[0]);
             double instSizeValue;
-            if (instSize == 0) {
-                instSizeValue = 100;
-            } else if (instSize < 3) {
-                instSizeValue = 90;
-            } else if (instSize < 5) {
-                instSizeValue = 75;
-            } else if (instSize < 7) {
-                instSizeValue = 60;
-            } else if (instSize < 9) {
-                instSizeValue = 40;
-            } else {
+            if("一类区域".equals(region)){
+                if (instSize == 0) {
+                    instSizeValue = 100;
+                } else if (instSize < 3) {
+                    instSizeValue = 90;
+                } else if (instSize < 5) {
+                    instSizeValue = 75;
+                } else if (instSize < 7) {
+                    instSizeValue = 60;
+                } else if (instSize < 9) {
+                    instSizeValue = 40;
+                } else {
+                    instSizeValue = 0;
+                }
+            }else if("二类区域".equals(region)){
+                if (instSize == 0) {
+                    instSizeValue = 100;
+                } else if (instSize < 4) {
+                    instSizeValue = 90;
+                } else if (instSize < 6) {
+                    instSizeValue = 75;
+                } else if (instSize < 8) {
+                    instSizeValue = 60;
+                } else if (instSize < 10) {
+                    instSizeValue = 40;
+                } else {
+                    instSizeValue = 0;
+                }
+            }else{
                 instSizeValue = 0;
             }
             double comprehensiveIndexValue = publicReportAndInstRate * 0.1 + instSizeValue * 0.2 + closeRate * 0.3 + inTimeCloseRate * 0.1;
@@ -795,5 +813,84 @@ public class StatisticsService {
         timeArr[0] = startTime;
         timeArr[1] = endTime;
         return timeArr;
+    }
+
+    /**
+     * 区域评价 - 综合评价子系统
+     *
+     * @return 数据
+     */
+    public Page<CellGridRegionVO> findAllForRegionalEvaluation(String time1, String time2, String region, String gridId, Pageable pageable) {
+        LocalDateTime startTime = getTimeForBetween(time1, time2).get("startTime");
+        LocalDateTime endTime = getTimeForBetween(time1, time2).get("endTime");
+        List<Grid> gridList = gridService.searchAllForRegionalEvaluation(gridId);
+        List<CellGridRegionVO> cellGridRegionVOList = new ArrayList<>();
+        for (Grid grid : gridList) {
+            CellGridRegionVO cellGridRegionVO = new CellGridRegionVO();
+            cellGridRegionVO.setGridId(grid.getId());
+            cellGridRegionVO.setGridName(grid.getGridName());
+            int inTimeCloseSize = statisticsRepository.findAllByInTimeClose(grid.getId(), startTime, endTime, region).size();
+            int closeSize = statisticsRepository.findAllByClose(grid.getId(), startTime, endTime, region).size();
+            int closeOrToCloseSize = statisticsRepository.findAllByCloseOrToClose(grid.getId(), startTime, endTime, region).size();
+            int publicReportAndInstSize = statisticsRepository.findAllByPublicReportAndInst(grid.getId(), startTime, endTime, region).size();
+            int instSize = statisticsRepository.findAllByInst(grid.getId(), startTime, endTime, region).size();
+            /* 按期结案数 */
+            cellGridRegionVO.setInTimeCloseSize(inTimeCloseSize);
+            /* 结案数 */
+            cellGridRegionVO.setCloseSize(closeSize);
+            /* 应结案数 */
+            cellGridRegionVO.setCloseOrToCloseSize(closeOrToCloseSize);
+            /* 监督举报核实数 */
+            cellGridRegionVO.setPublicReportAndInstSize(publicReportAndInstSize);
+            /* 立案数 */
+            cellGridRegionVO.setInstSize(instSize);
+            /* 监督举报率：监督举报核实数/立案数×100% */
+            cellGridRegionVO.setPublicReportAndInstRate(getRateByDouble(publicReportAndInstSize, instSize));
+            /* 结案率：结案数/应结案数×100%*/
+            cellGridRegionVO.setCloseRate(getRateByDouble(closeSize, closeOrToCloseSize));
+            /* 按期结案率：按期结案数/应结案数×100%*/
+            cellGridRegionVO.setInTimeCloseRate(getRateByDouble(inTimeCloseSize, closeOrToCloseSize));
+            double publicReportAndInstRate = 100D - Double.parseDouble(cellGridRegionVO.getPublicReportAndInstRate().split("%")[0]);
+            double closeRate = 100D - Double.parseDouble(cellGridRegionVO.getCloseRate().split("%")[0]);
+            double inTimeCloseRate = 100D - Double.parseDouble(cellGridRegionVO.getInTimeCloseRate().split("%")[0]);
+            double instSizeValue;
+            if("一类区域".equals(region)){
+                if (instSize == 0) {
+                    instSizeValue = 100;
+                } else if (instSize < 3) {
+                    instSizeValue = 90;
+                } else if (instSize < 5) {
+                    instSizeValue = 75;
+                } else if (instSize < 7) {
+                    instSizeValue = 60;
+                } else if (instSize < 9) {
+                    instSizeValue = 40;
+                } else {
+                    instSizeValue = 0;
+                }
+            }else if("二类区域".equals(region)){
+                if (instSize == 0) {
+                    instSizeValue = 100;
+                } else if (instSize < 4) {
+                    instSizeValue = 90;
+                } else if (instSize < 6) {
+                    instSizeValue = 75;
+                } else if (instSize < 8) {
+                    instSizeValue = 60;
+                } else if (instSize < 10) {
+                    instSizeValue = 40;
+                } else {
+                    instSizeValue = 0;
+                }
+            }else{
+                instSizeValue = 0;
+            }
+            double comprehensiveIndexValue = publicReportAndInstRate * 0.1 + instSizeValue * 0.2 + closeRate * 0.3 + inTimeCloseRate * 0.1;
+            BigDecimal bigDecimal = BigDecimal.valueOf(comprehensiveIndexValue);
+            double f1 = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+            cellGridRegionVO.setComprehensiveIndexValue(f1);
+            cellGridRegionVOList.add(cellGridRegionVO);
+        }
+        return new PageImpl<>(cellGridRegionVOList, pageable, 0);
     }
 }

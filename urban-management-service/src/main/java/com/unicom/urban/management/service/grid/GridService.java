@@ -29,6 +29,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.util.*;
@@ -128,6 +129,59 @@ public class GridService {
             return criteriaBuilder.and(list.toArray(p));
         });
         return GridMapper.INSTANCE.gridListToGridVOList(gridList);
+    }
+
+    public List<Grid> searchAllForRegionalEvaluation(String gridId) {
+        return gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
+            List<Predicate> list = new ArrayList<>();
+            if (StringUtils.isNotBlank(gridId)) {
+                CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
+                Grid one = this.findOne(gridId);
+                List<String> gridStr = new ArrayList<>();
+                switch (one.getLevel()){
+                    case 1:
+                        List<Grid> gridLevel2 = gridRepository.findAllByParentId(gridId);
+                        for (Grid grid : gridLevel2) {
+                            List<Grid> gridLevel3 = gridRepository.findAllByParentId(grid.getId());
+                            for (Grid grid1 : gridLevel3) {
+                                List<Grid> gridLevel4 = gridRepository.findAllByParentId(grid1.getId());
+                                for (Grid grid2 : gridLevel4) {
+                                    gridStr.add(grid2.getId());
+                                }
+
+                            }
+                        }
+                        break;
+                    case 2:
+                        List<Grid> gridLevel3 = gridRepository.findAllByParentId(gridId);
+                        for (Grid grid1 : gridLevel3) {
+                            List<Grid> gridLevel4 = gridRepository.findAllByParentId(grid1.getId());
+                            for (Grid grid2 : gridLevel4) {
+                                gridStr.add(grid2.getId());
+                            }
+
+                        }
+                        break;
+                    case 3:
+                        List<Grid> gridLevel4 = gridRepository.findAllByParentId(gridId);
+                        for (Grid grid2 : gridLevel4) {
+                            gridStr.add(grid2.getId());
+                        }
+                        break;
+                    default:
+                        gridStr = null;
+                        break;
+                }
+                if (gridStr == null || gridStr.size() == 0) {
+                    gridStr = Collections.singletonList("");
+                }
+                gridStr.forEach(in::value);
+                list.add(in);
+            }
+            list.add(criteriaBuilder.equal(root.get("level").as(Integer.class), 4));
+            Predicate[] p = new Predicate[list.size()];
+            return criteriaBuilder.and(list.toArray(p));
+        });
     }
 
     public GridVO search(String gridId) {
@@ -376,7 +430,7 @@ public class GridService {
      * @return 网格
      */
     public List<Grid> allByLevelAndRecordSts() {
-        return gridRepository.findAllByLevelAndRecord_Sts(4, StsConstant.RELEASE);
+        return gridRepository.findAllByLevel(4);
     }
 
     /**
