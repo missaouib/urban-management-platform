@@ -167,22 +167,30 @@
                 $("#tablesTwo .title").html("有效上报率排行榜");
                 $("#tablesThree .title").html("按期核实率排行榜");
                 $("#tablesFour .title").html("按期核查率排行榜");
+                $('#bootstrap-table').bootstrapTable('destroy');
+                queryUserListIn()
             } else if (selectedOptionNum == 2) {
                 $("#tablesOne .title").html("受理数排行榜");
                 $("#tablesTwo .title").html("按时派发核实率排行榜");
                 $("#tablesThree .title").html("按时派发核查率排行榜");
+                $('#bootstrap-table').bootstrapTable('destroy');
                 $("#tablesFour").addClass("roleBox");
+                queryUserListInfo()
             } else if (selectedOptionNum == 3) {
                 $("#tablesFour").removeClass("roleBox");
                 $("#tablesOne .title").html("立案数排行榜");
                 $("#tablesTwo .title").html("按时立案率排行榜");
                 $("#tablesThree .title").html("准确立案率排行榜");
                 $("#tablesFour .title").html("按时结案率排行榜");
+                $('#bootstrap-table').bootstrapTable('destroy');
+                queryUserListInner()
             } else if (selectedOptionNum == 4) {
                 $("#tablesFour").addClass("roleBox");
                 $("#tablesOne .title").html("派遣数排行榜");
                 $("#tablesTwo .title").html("按时派遣率率排行榜");
                 $("#tablesThree .title").html("准确派遣率排行榜");
+                $('#bootstrap-table').bootstrapTable('destroy');
+                queryUserListIns()
             }
         })
 
@@ -200,42 +208,11 @@
         });
         search();
 
-        var options = {
-            // num: num,
-            showRefresh: false,
-            showColumns: false,
-            showToggle: false,
-            url: searchUrl,
-            // createUrl: addUrl,
-            // updateUrl: editUrl,
-            // removeUrl: removeUrl,
-            uniqueId: "id",
-            sortName: "updateTime",
-            sortOrder: "desc",
-            modalName: "用户",
-            onClickRow: function(row, index) {},
-            columns: [{
-                title: '部门名称',
-                field: 'deptName'
-            }, {
-                title: '处置数',
-                field: 'disposeNum'
-            }, {
-                title: '应处置数',
-                field: 'needDisposeNum'
-            }, {
-                title: '超期处置数',
-                field: 'overtimeDisposeNum'
-            }, {
-                title: '返工数',
-                field: 'reworkNum'
-            }, ]
-        };
-        $.table.init(options);
+        queryUserListIn()
     })
 
     function search() {
-        queryUserList();
+        // queryUserList();
         disposeRankingList();
     }
     let searchUrl = /*[[@{/commandSubsystem/comprehensiveEvaluationSearch}]]*/ "/commandSubsystem/comprehensiveEvaluationSearch";
@@ -370,8 +347,158 @@
 
     }
 
+    function queryUserListIn() {
+        let searchUrlIn = /*[[@{/event/supervisionAcceptanceList}]]*/ "/event/supervisionAcceptanceList";
 
+        var options = {
+            url: searchUrlIn,
+            uniqueId: "id",
+            sortName: "updateTime",
+            sortOrder: "desc",
+            modalName: "用户",
+            columns: [
+                {
+                    title: '人员',
+                    field: 'eventCode',
+                },
+                {
+                    title: '上报数',
+                    field: 'represent',
+                },
+                {
+                    title: '有效上报数',
+                    field: 'taskName'
+                },
+                {
+                    title: '按时核查数',
+                    field: 'eventTypeName',
+                },
+                {
+                    title: '按时核实数',
+                    field: 'createTime',
+                },
+            ]
+        };
+        $.table.init(options);
+    }
 
+    function queryUserListInfo() {
+        let searchUrlIn = /*[[@{/event/supervisionAcceptanceList}]]*/ "/event/supervisionAcceptanceList";
+
+        var options = {
+            url: searchUrlIn,
+            uniqueId: "id",
+            sortName: "updateTime",
+            sortOrder: "desc",
+            modalName: "用户",
+            columns: [
+                {
+                    title: '人员',
+                    field: 'eventCode',
+                    sortable: true
+                },
+                {
+                    title: '受理数',
+                    field: 'represent',
+                },
+                {
+                    title: '按时核实派发数',
+                    field: 'taskName'
+                },
+                {
+                    title: '核实应派发数',
+                    field: 'eventTypeName',
+                },
+                {
+                    title: '按时核查派发数',
+                    field: 'createTime',
+                },
+                {
+                    title: '核查应派发数',
+                    field: 'timeLimitStr'
+                },
+            ]
+        };
+        $.table.init(options);
+    }
+
+    function queryUserListInner() {
+        let searchUrlIn = /*[[@{/event/supervisionAcceptanceList}]]*/ "/event/supervisionAcceptanceList";
+
+        var options = {
+            url: searchUrlIn,
+            uniqueId: "id",
+            sortName: "updateTime",
+            sortOrder: "desc",
+            modalName: "用户",
+            columns: [
+                {
+                    title: '人员',
+                    field: 'eventCode',
+                },
+                {
+                    title: '立案数',
+                    field: 'represent',
+                },
+                {
+                    title: '按时立案数',
+                    field: 'taskName'
+                },
+                {
+                    title: '准确立案数',
+                    field: 'eventTypeName',
+                },
+                {
+                    title: '按时结案数',
+                    field: 'createTime',
+                },
+                {
+                    title: '应结案数',
+                    field: 'timeLimitStr'
+                },
+            ]
+        };
+        $.table.init(options);
+    }
+
+    function queryUserListIns() {
+        let searchUrlIn = /*[[@{/event/supervisionAcceptanceList}]]*/ "/event/supervisionAcceptanceList";
+
+        var options = {
+            url: searchUrlIn,
+            uniqueId: "id",
+            sortName: "updateTime",
+            sortOrder: "desc",
+            modalName: "用户",
+            columns: [
+                {
+                    title: '人员',
+                    field: 'eventCode',
+                },
+                {
+                    title: '派遣数',
+                    field: 'represent',
+                },
+                {
+                    title: '按时派遣数',
+                    field: 'taskName'
+                },
+                {
+                    title: '按时核查数',
+                    field: 'eventTypeName',
+                },
+                {
+                    title: '应派遣数',
+                    field: 'createTime',
+                },
+                {
+                    title: '准确派遣数',
+                    field: 'timeLimitStr'
+                },
+            ]
+        };
+        $.table.init(options);
+    }
 
     //金牌 银牌 铜牌
     function medal(index) {
