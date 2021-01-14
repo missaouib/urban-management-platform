@@ -82,6 +82,31 @@ public class GridService {
         List<GridVO> gridVOList = GridMapper.INSTANCE.gridListToGridVOList(page.getContent());
         return new PageImpl<>(gridVOList, page.getPageable(), page.getTotalElements());
     }
+    public List<GridVO> search(GridDTO gridDTO) {
+        List<Grid> page = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
+            List<Predicate> list = new ArrayList<>();
+            if (StringUtils.isNotEmpty(gridDTO.getGridName())) {
+                list.add(criteriaBuilder.like(root.get("gridName").as(String.class), "%" + gridDTO.getGridName() + "%"));
+            }
+            if (StringUtils.isNotEmpty(gridDTO.getCommunity())) {
+                list.add(criteriaBuilder.equal(root.get("parent").get("id").as(String.class), gridDTO.getCommunity()));
+            }
+            if (StringUtils.isNotEmpty(gridDTO.getStreet())) {
+                list.add(criteriaBuilder.equal(root.get("parent").get("parent").get("id").as(String.class), gridDTO.getStreet()));
+            }
+            if (StringUtils.isNotEmpty(gridDTO.getRegion())) {
+                list.add(criteriaBuilder.equal(root.get("parent").get("parent").get("parent").get("id").as(String.class), gridDTO.getRegion()));
+            }
+            if(gridDTO.getLevel()!=null){
+                list.add(criteriaBuilder.equal(root.get("level").as(Integer.class),gridDTO.getLevel()));
+            }
+//            list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.RELEASE));
+            Predicate[] p = new Predicate[list.size()];
+            return criteriaBuilder.and(list.toArray(p));
+        });
+        List<GridVO> gridVOList = GridMapper.INSTANCE.gridListToGridVOList(page);
+        return gridVOList;
+    }
 
     public List<GridVO> search() {
         List<Grid> gridList = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {

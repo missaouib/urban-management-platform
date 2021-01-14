@@ -9,9 +9,6 @@ import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -48,8 +45,8 @@ public class GridOwnerController {
     }
 
     @GetMapping("/getGridList")
-    public Page<GridVO> getGridList(GridDTO gridDTO, @PageableDefault Pageable pageable) {
-        return gridService.search(gridDTO, pageable);
+    public List<GridVO> getGridList(GridDTO gridDTO) {
+        return gridService.search(gridDTO);
     }
 
     @GetMapping("/getSupervisorUserList")

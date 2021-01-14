@@ -100,7 +100,7 @@
         }
 
         $.ajaxUtil.get(searchUrl + param, function (e) {
-            $(e.data.content).each(function (index, value) {
+            $(e.data).each(function (index, value) {
                 $('#table').bootstrapTable('insertRow', {
                     index: index,
                     row: {
