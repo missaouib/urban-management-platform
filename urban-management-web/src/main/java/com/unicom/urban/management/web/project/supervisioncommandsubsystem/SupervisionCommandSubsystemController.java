@@ -5,6 +5,8 @@ import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.vo.*;
+import com.unicom.urban.management.pojo.vo.CellGridRegionVO;
+import com.unicom.urban.management.pojo.vo.ComprehensiveVO;
 import com.unicom.urban.management.service.comprehensiveevaluation.ComprehensiveEvaluationService;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.service.bigscreen.IndexService;
@@ -13,6 +15,7 @@ import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -91,12 +94,22 @@ public class SupervisionCommandSubsystemController {
 
     @GetMapping("/toIndexDetails")
     public ModelAndView toEventConditionList(String eventId) {
-        if(StringUtils.isBlank(eventId)){
+        if (StringUtils.isBlank(eventId)) {
             throw new DataValidException("数据异常，请先选择事件");
         }
         ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/command/indexDetails");
         modelAndView.addObject("eventId", eventId);
         return modelAndView;
+    }
+
+    @GetMapping("/toRegionalEvaluationOne")
+    public ModelAndView toRegionalEvaluationOne() {
+        return new ModelAndView(SystemConstant.PAGE + "/command/regionalEvaluationOne");
+    }
+
+    @GetMapping("/toRegionalEvaluationTwo")
+    public ModelAndView toRegionalEvaluationTwo() {
+        return new ModelAndView(SystemConstant.PAGE + "/command/regionalEvaluationTwo");
     }
 
     /**
@@ -133,6 +146,7 @@ public class SupervisionCommandSubsystemController {
         List<Map<String, Object>> caseAnalysis = indexService.caseAnalysisList(eventDTO);
         return Result.success(caseAnalysis);
     }
+
     /**
      * 综合评价-列表
      *
@@ -141,17 +155,18 @@ public class SupervisionCommandSubsystemController {
     @GetMapping("/comprehensiveEvaluationSearch")
     public PageImpl<ComprehensiveVO> comprehensiveEvaluationSearch(String startTime,
                                                                    String endTime, String gridId, @PageableDefault Pageable pageable) {
-        List<ComprehensiveVO> list = comprehensiveEvaluationService.search(startTime, endTime,gridId);
+        List<ComprehensiveVO> list = comprehensiveEvaluationService.search(startTime, endTime, gridId);
         return new PageImpl<ComprehensiveVO>(list, pageable, 0);
     }
 
     /**
      * 综合评价-排行榜
+     *
      * @return
      */
     @GetMapping("/comprehensiveEvaluationRankingList")
-    public Map<String,Object> comprehensiveEvaluationRankingList(String startTime,String endTime, String gridId){
-        Map<String,Object> map = comprehensiveEvaluationService.findRankingList(startTime,endTime, gridId);
+    public Map<String, Object> comprehensiveEvaluationRankingList(String startTime, String endTime, String gridId) {
+        Map<String, Object> map = comprehensiveEvaluationService.findRankingList(startTime, endTime, gridId);
         return map;
     }
     /**
@@ -233,4 +248,25 @@ public class SupervisionCommandSubsystemController {
         Map<String,Object> map = comprehensiveEvaluationService.dispatcherEvaluationRankingList(startTime,endTime, gridId);
         return map;
     }
+
+    /**
+     * 区域评价 1类
+     *
+     * @return 数据
+     */
+    @GetMapping("/regionalEvaluationOne")
+    public Page<CellGridRegionVO> cellGridRegionOne(String startTime, String endTime, String gridId, @PageableDefault Pageable pageable) {
+        return statisticsService.findAllForRegionalEvaluation(startTime, endTime, "一类区域", gridId, pageable);
+    }
+
+    /**
+     * 区域评价 2类
+     *
+     * @return 数据
+     */
+    @GetMapping("/regionalEvaluationTwo")
+    public Page<CellGridRegionVO> cellGridRegionTwo(String startTime, String endTime, String gridId, @PageableDefault Pageable pageable) {
+        return statisticsService.findAllForRegionalEvaluation(startTime, endTime, "二类区域", gridId, pageable);
+    }
+
 }

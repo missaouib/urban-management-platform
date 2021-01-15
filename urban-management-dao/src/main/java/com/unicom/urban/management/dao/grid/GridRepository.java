@@ -47,6 +47,14 @@ public interface GridRepository extends CustomizeRepository<Grid, String> {
      */
     List<Grid> findAllByLevelAndRecord_Sts(int level, int sts);
 
+    /**
+     * level 4 目前就是网格
+     *
+     * @param level 网格判断字段
+     * @return 网格
+     */
+    List<Grid> findAllByLevel(int level);
+
 
 
     List<Grid> findAllByParent_IdAndGridName(String pId,String gridName);
