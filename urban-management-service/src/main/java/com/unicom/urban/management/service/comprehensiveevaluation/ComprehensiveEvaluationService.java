@@ -358,9 +358,9 @@ public class ComprehensiveEvaluationService {
                     d.getUserList().forEach(user -> {
                         SupervisorEvaluateVO vo = new SupervisorEvaluateVO();
                         /*上报数*/
-                        vo.setPatrolReport(Math.toIntExact(patrolReportList.stream().filter(s -> s.getReportPatrolName().getId().equals(user.getId())).count()));
+                        vo.setPatrolReport(Math.toIntExact(patrolReportList.stream().filter(s -> null != s.getReportPatrolName()).filter(s -> s.getReportPatrolName().getId().equals(user.getId())).count()));
                         /*有效上报数*/
-                        vo.setValidPatrolReport(Math.toIntExact(validReportList.stream().filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
+                        vo.setValidPatrolReport(Math.toIntExact(validReportList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
                         /*按时核查数*/
                         vo.setInTimeCheck(Math.toIntExact(intimeCheckList.stream().filter(s -> null != s.getOperateHumanName()).filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
                         /*按时核实数*/
@@ -401,13 +401,13 @@ public class ComprehensiveEvaluationService {
                     /*受理数*/
                     vo.setOperate(Math.toIntExact(operateList.stream().filter(s -> null != s.getOperateHumanName()).filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
                     /*按时核实派发数*/
-                    vo.setOperate(Math.toIntExact(inTimeSendVerifyList.stream().filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
+                    vo.setIntimeSendVerify(Math.toIntExact(inTimeSendVerifyList.stream().filter(s -> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
                     /*核实应派发数*/
-                    vo.setOperate(Math.toIntExact(needSendVerifyList.stream().filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
+                    vo.setNeedSendVerify(Math.toIntExact(needSendVerifyList.stream().filter(s -> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
                     /*按时核查派发数*/
-                    vo.setOperate(Math.toIntExact(inTimeSendCheckList.stream().filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
+                    vo.setIntimeSendCheck(Math.toIntExact(inTimeSendCheckList.stream().filter(s -> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
                     /*核查应派发数*/
-                    vo.setOperate(Math.toIntExact(needSendCheckList.stream().filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
+                    vo.setNeedSendCheck(Math.toIntExact(needSendCheckList.stream().filter(s -> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
                     vo.setOperateHumanName(user.getName());
                     list.add(vo);
                 });
@@ -442,7 +442,7 @@ public class ComprehensiveEvaluationService {
      * @param gridId
      * @return
      */
-    public List<ShiftForemanEvaluateVO> ShiftForemanEvaluateVO(String startTime, String endTime, String gridId) {
+    public List<ShiftForemanEvaluateVO> instHumanEvaluationSearch(String startTime, String endTime, String gridId) {
         List<Statistics> all = getStatistics(startTime, endTime);
         List<ShiftForemanEvaluateVO> list = new ArrayList<>();
         /*立案数*/
@@ -453,8 +453,6 @@ public class ComprehensiveEvaluationService {
         List<Statistics> cancelList =  all.stream().filter(s -> null != s.getCancel()).collect(Collectors.toList());
         /*按时结案数*/
         List<Statistics> inTimeCloseList = all.stream().filter(s -> null != s.getInTimeClose()).filter(s -> 1 == s.getInTimeClose()).collect(Collectors.toList());
-        /*结案数*/
-        List<Statistics> colseList = all.stream().filter(s -> null != s.getClose()).filter(s -> 1 == s.getClose()).collect(Collectors.toList());
         /*待结案数*/
         List<Statistics> toColseList = all.stream().filter(s -> null != s.getToClose()).filter(s -> 1 == s.getToClose()).collect(Collectors.toList());
         if (StringUtils.isNotEmpty(gridId)) {
@@ -511,7 +509,7 @@ public class ComprehensiveEvaluationService {
         List<Statistics> all = getStatistics(startTime, endTime);
         List<DispatcherEvaluateVO> list = new ArrayList<>();
         /*派遣数*/
-        List<Statistics> toDispatchList = all.stream().filter(s -> null != s.getToDispatch()).filter(s -> 1 == s.getToDispatch()).collect(Collectors.toList());
+        List<Statistics> toDispatchList = all.stream().filter(s -> null != s.getDispatch()).filter(s -> 1 == s.getDispatch()).collect(Collectors.toList());
         /*按时派遣数*/
         List<Statistics> inTimeDispatchList = all.stream().filter(s -> null != s.getInTimeDispatch()).filter(s -> 1 == s.getInTimeDispatch()).collect(Collectors.toList());
         /*应派遣数*/
@@ -526,11 +524,11 @@ public class ComprehensiveEvaluationService {
                     /*派遣数*/
                     vo.setToDispatch(Math.toIntExact(toDispatchList.stream().filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
                     /*按时派遣数*/
-                    vo.setIntimeDispatch(Math.toIntExact(inTimeDispatchList.stream().filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
+                    vo.setIntimeDispatch(Math.toIntExact(inTimeDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
                     /*应派遣数*/
-                    vo.setNeedDispatch(Math.toIntExact(needDispatchList.stream().filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
+                    vo.setNeedDispatch(Math.toIntExact(needDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
                     /*准确派遣数（派遣数-返工数）*/
-                    vo.setAccuracyDispatch(vo.getToDispatch() - Math.toIntExact(reWorkList.stream().filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
+                    vo.setAccuracyDispatch(vo.getToDispatch() - Math.toIntExact(reWorkList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
                     vo.setDispatch(user.getName());
                     list.add(vo);
                 });
@@ -541,7 +539,7 @@ public class ComprehensiveEvaluationService {
                     d.getUserList().forEach(user -> {
                         DispatcherEvaluateVO vo = new DispatcherEvaluateVO();
                         /*派遣数*/
-                        vo.setToDispatch(Math.toIntExact(toDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
+                        vo.setToDispatch(Math.toIntExact(toDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s-> null != s.getUser()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).filter(s-> s.getUser().getId().equals(user.getId())).count()));
                         /*按时派遣数*/
                         vo.setIntimeDispatch(Math.toIntExact(inTimeDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
                         /*应派遣数*/
@@ -608,8 +606,8 @@ public class ComprehensiveEvaluationService {
                 d.getUserList().forEach(user -> {
                     SupervisorEvaluateVO supervisorEvaluateVO = new SupervisorEvaluateVO();
                     supervisorEvaluateVO.setSupervisorName(user.getName());
-                    Integer intimeCheckNum = Math.toIntExact(intimeCheckList.stream().filter(s -> user.getId().equals(s.getCheckPatrolName().getId())).count());
-                    Integer needCheckNum = Math.toIntExact(needCheckList.stream().filter(s -> user.getId().equals(s.getCheckPatrolName().getId())).count());
+                    Integer intimeCheckNum = Math.toIntExact(intimeCheckList.stream().filter(s-> null != s.getCheckPatrolName()).filter(s -> user.getId().equals(s.getCheckPatrolName().getId())).count());
+                    Integer needCheckNum = Math.toIntExact(needCheckList.stream().filter(s-> null != s.getCheckPatrolName()).filter(s -> user.getId().equals(s.getCheckPatrolName().getId())).count());
                     supervisorEvaluateVO.setInTimeCheckRateNum(getRate2(intimeCheckNum,needCheckNum));
                     list.add(supervisorEvaluateVO);
                 });
@@ -639,8 +637,8 @@ public class ComprehensiveEvaluationService {
                 d.getUserList().forEach(user -> {
                     SupervisorEvaluateVO supervisorEvaluateVO = new SupervisorEvaluateVO();
                     supervisorEvaluateVO.setSupervisorName(user.getName());
-                    Integer intimeVerifyNum = Math.toIntExact(intimeVerifyList.stream().filter(s -> user.getId().equals(s.getVerifyPatrolName().getId())).count());
-                    Integer needVerifyNum = Math.toIntExact(needVerifyList.stream().filter(s -> user.getId().equals(s.getVerifyPatrolName().getId())).count());
+                    Integer intimeVerifyNum = Math.toIntExact(intimeVerifyList.stream().filter(s-> null != s.getVerifyPatrolName()).filter(s -> user.getId().equals(s.getVerifyPatrolName().getId())).count());
+                    Integer needVerifyNum = Math.toIntExact(needVerifyList.stream().filter(s-> null != s.getVerifyPatrolName()).filter(s -> user.getId().equals(s.getVerifyPatrolName().getId())).count());
                     supervisorEvaluateVO.setInTimeVerifyRateNum(getRate2(intimeVerifyNum,needVerifyNum));
                     list.add(supervisorEvaluateVO);
                 });
@@ -993,13 +991,13 @@ public class ComprehensiveEvaluationService {
         }
 
         /*派遣数*/
-        List<Statistics> dispatchList = all.stream().filter(s -> null != s.getDispatch()).filter(s -> 1 == s.getInst()).collect(Collectors.toList());
+        List<Statistics> dispatchList = all.stream().filter(s -> null != s.getDispatch()).filter(s -> 1 == s.getDispatch()).collect(Collectors.toList());
         /*按时派遣数*/
-        List<Statistics> inTimeDispatchList = all.stream().filter(s -> null != s.getInTimeDispatch()).filter(s -> 1 == s.getInst()).collect(Collectors.toList());
+        List<Statistics> inTimeDispatchList = all.stream().filter(s -> null != s.getInTimeDispatch()).filter(s -> 1 == s.getInTimeDispatch()).collect(Collectors.toList());
         /*应派遣数*/
-        List<Statistics> needDispatchList = all.stream().filter(s -> null != s.getNeedDispatch()).filter(s -> 1 == s.getInst()).collect(Collectors.toList());
+        List<Statistics> needDispatchList = all.stream().filter(s -> null != s.getNeedDispatch()).filter(s -> 1 == s.getNeedDispatch()).collect(Collectors.toList());
         /*准确派遣数*/
-        List<Statistics> accuracyDispatchList = all.stream().filter(s -> null != s.getAccuracyDispatch()).filter(s -> 1 == s.getInst()).collect(Collectors.toList());
+        List<Statistics> accuracyDispatchList = all.stream().filter(s -> null != s.getAccuracyDispatch()).filter(s -> 1 == s.getAccuracyDispatch()).collect(Collectors.toList());
 
         /*派遣数排行榜*/
         List<DispatcherEvaluateVO> dispatchRanking = dispatchRanking(dispatchList, gridAll);

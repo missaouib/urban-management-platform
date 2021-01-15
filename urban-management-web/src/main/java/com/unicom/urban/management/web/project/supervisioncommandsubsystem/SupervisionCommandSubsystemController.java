@@ -197,7 +197,7 @@ public class SupervisionCommandSubsystemController {
     @GetMapping("/instHumanEvaluationSearch")
     public PageImpl<ShiftForemanEvaluateVO> instHumanEvaluationSearch(String startTime,
                                                                       String endTime, String gridId, @PageableDefault Pageable pageable) {
-        List<ShiftForemanEvaluateVO> list = comprehensiveEvaluationService.ShiftForemanEvaluateVO(startTime, endTime,gridId);
+        List<ShiftForemanEvaluateVO> list = comprehensiveEvaluationService.instHumanEvaluationSearch(startTime, endTime,gridId);
         return new PageImpl<ShiftForemanEvaluateVO>(list, pageable, 0);
     }
     /**
