@@ -226,7 +226,10 @@ public class GridService {
         if(ifGrid.size()>0){
             throw new DataValidException("区域下有子节点，不能删除");
         }
-        gridRepository.deleteById(id);
+        if(gridRepository.findById(id).isPresent()){
+            gridRepository.deleteById(id);
+        }
+
     }
 
     public Grid findOne(GridDTO gridDTO) {
