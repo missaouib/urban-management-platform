@@ -37,7 +37,7 @@ public interface PositionRepository extends CustomizeRepository<Statistics, Loca
             "            IFNULL((sum(st.verify)/(sum(st.verify)+sum(st.patrol_report))),0) as publicReportRate,\n" +
             "            sum(need_send_check) as needSendCheck \n" +
             "            from grid g,statistics st,`event` ev,sys_user su where  \n" +
-            "            (su.id=st.report_patrol_name_id or su.id=st.check_patrol_id or su.id=st.verify_patrol_name_id) and\n" +
+            "            (su.id=st.report_patrol_name_id or su.id=st.check_patrol_name or su.id=st.verify_patrol_name_id) and\n" +
             "            g.id=ev.grid_id and ev.id=st.event_id  and ev.create_time between ?1 and ?2 GROUP BY su.`name`,g.id \n", nativeQuery = true)
     List<Map<String,Object>> findSupervisorEvaluateByCondition(LocalDateTime startTime, LocalDateTime endTime);
 

@@ -35,6 +35,7 @@ public class  SupervisorEvaluateVO {
     /**
      *监督员有效上报率
      */
+    private Double reportVaildNumRateNum;
     private String reportVaildNumRate;
     /**
      *'按时核实数
@@ -48,6 +49,7 @@ public class  SupervisorEvaluateVO {
     /**
      *'按时核实率
      */
+    private Double inTimeVerifyRateNum;
     private String inTimeVerifyRate;
     /**
      *'按时核查数
@@ -73,4 +75,13 @@ public class  SupervisorEvaluateVO {
      *评价等级
      */
     private String ratingLevel;
+    /**
+     *按时核查率
+     */
+    private Double inTimeCheckRateNum;
+    private String inTimeCheckRate;
+    /**
+     * 排名
+     */
+    private String index;
 }

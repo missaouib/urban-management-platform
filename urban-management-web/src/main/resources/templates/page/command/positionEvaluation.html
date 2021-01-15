@@ -34,7 +34,6 @@
                     <div class="inputs">
                         <div class="dateIn">
                             <select class="girdselect" style="padding: 5px 10px!important;" id="searchPost">
-                                <option selected value="">--请选择--</option>
                                 <option value="1">监督员</option>
                                 <option value="2">受理员</option>
                                 <option value="3">值班长</option>
@@ -168,16 +167,16 @@
                 $("#tablesThree .title").html("按期核实率排行榜");
                 $("#tablesFour .title").html("按期核查率排行榜");
                 $('#bootstrap-table').bootstrapTable('destroy');
-                queryUserListIn();
-                disposeRankingList();
+                supervisorEvaluationSearch();
+                //supervisorEvaluationRankingList();
             } else if (selectedOptionNum == 2) {
                 $("#tablesOne .title").html("受理数排行榜");
                 $("#tablesTwo .title").html("按时派发核实率排行榜");
                 $("#tablesThree .title").html("按时派发核查率排行榜");
                 $('#bootstrap-table').bootstrapTable('destroy');
                 $("#tablesFour").addClass("roleBox");
-                queryUserListInfo();
-                disposeRankingListIn();
+                operatorEvaluationSearch();
+                //operatorEvaluationRankingList();
             } else if (selectedOptionNum == 3) {
                 $("#tablesFour").removeClass("roleBox");
                 $("#tablesOne .title").html("立案数排行榜");
@@ -185,7 +184,7 @@
                 $("#tablesThree .title").html("准确立案率排行榜");
                 $("#tablesFour .title").html("按时结案率排行榜");
                 $('#bootstrap-table').bootstrapTable('destroy');
-                queryUserListInner();
+                instHumanEvaluationSearch();
                 disposeRankingListInfo();
             } else if (selectedOptionNum == 4) {
                 $("#tablesFour").addClass("roleBox");
@@ -193,7 +192,7 @@
                 $("#tablesTwo .title").html("按时派遣率率排行榜");
                 $("#tablesThree .title").html("准确派遣率排行榜");
                 $('#bootstrap-table').bootstrapTable('destroy');
-                queryUserListIns();
+                dispatcherEvaluationSearch();
                 disposeRankingListInner();
             }
         })
@@ -211,42 +210,129 @@
             format: "yyyy-mm-dd hh:ii:ss"
         });
         search();
-
-        queryUserListIn()
     })
 
     function search() {
-        // queryUserList();
-        disposeRankingList();
+        supervisorEvaluationSearch()
+        //supervisorEvaluationRankingList();
     }
-    let searchUrl = /*[[@{/commandSubsystem/comprehensiveEvaluationSearch}]]*/ "/commandSubsystem/comprehensiveEvaluationSearch";
 
-    function queryUserList() {
-        $("#bootstrap-table").bootstrapTable("refresh");
+    /**
+     * 岗位评价-监督员排行榜
+     *
+     * @return
+     */
+    function supervisorEvaluationRankingList() {
         let startTime = $("#begin").val();
         let endTime = $("#end").val();
         let gridId = $("#gridId").val();
-        $.ajaxUtil.get(searchUrl + "?startTime=" + startTime + "&endTime=" + endTime + "&gridId=" + gridId, function(e) {
-            $("#bootstrap-table").bootstrapTable({
-                columns: [{
-                    title: '部门名称',
-                    field: 'deptName'
-                }, {
-                    title: '处置数',
-                    field: 'disposeNum'
-                }, {
-                    title: '应处置数',
-                    field: 'needDisposeNum'
-                }, {
-                    title: '超期处置数',
-                    field: 'overtimeDisposeNum'
-                }, {
-                    title: '返工数',
-                    field: 'reworkNum'
-                }, ],
-                data: e.data.content
+        let url = "/commandSubsystem/supervisorEvaluationRankingList"
+        $.ajaxUtil.get(url+"?startTime="+startTime+"&endTime="+endTime+"&gridId="+gridId, function (e) {
+            var patrolReportRanking = e.data.patrolReportRanking;
+            var reportVaildNumRate = e.data.reportVaildNumRate;
+            var inTimeVerifyRate = e.data.inTimeVerifyRate;
+            var inTimeCheckRate = e.data.inTimeCheckRate;
+            $("#tablesOne").bootstrapTable('load',patrolReportRanking);
+            $("#tablesTwo").bootstrapTable('load',reportVaildNumRate);
+            $("#tablesThree").bootstrapTable('load',inTimeVerifyRate);
+            $("#tablesFour").bootstrapTable('load',inTimeCheckRate);
+            $('#bootstrap-table-did').bootstrapTable({
+                columns: [
+                    {
+                        field: 'index',
+                        title: '排名',
+                        formatter: medal
+                    },
+                    {
+                        title: '考核人员',
+                        field: "supervisorName"
+                    },
+                    {
+                        title: '上报数',
+                        field: 'patrolReport',
+                    },
+                    // {
+                    //     field: 'patrolReport',
+                    //     title: '趋势',
+                    //     formatter: trend
+                    // },
+                ],
+                data: patrolReportRanking
+            });
+
+            $('#bootstrap-table2').bootstrapTable({
+                columns: [
+                    {
+                        field: 'index',
+                        title: '排名',
+                        formatter: medal
+                    },
+                    {
+                        title: '考核人员',
+                        field: "supervisorName"
+                    },
+                    {
+                        title: '有效上报率',
+                        field: 'reportVaildNumRate',
+                    },
+                    // {
+                    //     field: 'patrolReport',
+                    //     title: '趋势',
+                    //     formatter: trend
+                    // },
+                ],
+                data: reportVaildNumRate
+            });
+
+            $('#bootstrap-table3').bootstrapTable({
+                columns: [
+                    {
+                        field: 'index',
+                        title: '排名',
+                        formatter: medal
+                    },
+                    {
+                        title: '考核人员',
+                        field: "supervisorName"
+                    },
+                    {
+                        title: '按期核实率',
+                        field: 'inTimeVerifyRate',
+                    },
+                    // {
+                    //     field: 'patrolReport',
+                    //     title: '趋势',
+                    //     formatter: trend
+                    // },
+                ],
+                data: inTimeVerifyRate
+            });
+
+            $('#bootstrap-table4').bootstrapTable({
+                columns: [
+                    {
+                        field: 'index',
+                        title: '排名',
+                        formatter: medal
+                    },
+                    {
+                        title: '考核人员',
+                        field: "supervisorName"
+                    },
+                    {
+                        title: '按期核查率',
+                        field: 'inTimeCheckRate',
+                    },
+                    // {
+                    //     field: 'patrolReport',
+                    //     title: '趋势',
+                    //     formatter: trend
+                    // },
+                ],
+                data: inTimeCheckRate
             });
         });
+
     }
 
     function disposeRankingList() {
@@ -353,25 +439,24 @@
 
     }
 
-    function disposeRankingListIn() {
+    function operatorEvaluationRankingList() {
         let startTime = $("#begin").val();
         let endTime = $("#end").val();
         let gridId = $("#gridId").val();
-        let url = "/commandSubsystem/comprehensiveEvaluationRankingList"
+        let url = "/commandSubsystem/operatorEvaluationRankingList"
         $.ajaxUtil.get(url + "?startTime=" + startTime + "&endTime=" + endTime + "&gridId=" + gridId, function(e) {
-            var disposeRanking = e.data.disposeRanking;
-            var disposeRate = e.data.disposeRate;
-            var inTimeDisposeRate = e.data.inTimeDisposeRate;
-            var reworkRate = e.data.reworkRate;
+            var operateRanking = e.data.operateRanking;
+            var sendVerifyRate = e.data.sendVerifyRate;
+            var needSendCheckRate = e.data.needSendCheckRate;
 
             $('#bootstrap-table-did').bootstrapTable('destroy');
             $("#bootstrap-table2").bootstrapTable('destroy');
             $("#bootstrap-table3").bootstrapTable('destroy');
             $("#bootstrap-table4").bootstrapTable('destroy');
 
-            $("#bootstrap-table-did").bootstrapTable('load', disposeRanking);
-            $("#bootstrap-table2").bootstrapTable('load', disposeRate);
-            $("#bootstrap-table3").bootstrapTable('load', inTimeDisposeRate);
+            $("#bootstrap-table-did").bootstrapTable('load', operateRanking);
+            $("#bootstrap-table2").bootstrapTable('load', sendVerifyRate);
+            $("#bootstrap-table3").bootstrapTable('load', needSendCheckRate);
             $("#bootstrap-table4").bootstrapTable('load', reworkRate);
             $('#bootstrap-table-did').bootstrapTable({
                 columns: [{
@@ -654,9 +739,39 @@
 
     }
 
-    function queryUserListIn() {
-        let searchUrlIn = /*[[@{/event/supervisionAcceptanceList}]]*/ "/event/supervisionAcceptanceList";
-
+    function supervisorEvaluationSearch() {
+        let searchUrlIn = /*[[@{/commandSubsystem/supervisorEvaluationSearch}]]*/ "/commandSubsystem/supervisorEvaluationSearch";
+        $("#bootstrap-table").bootstrapTable("refresh");
+        let startTime = $("#begin").val();
+        let endTime = $("#end").val();
+        let gridId = $("#gridId").val();
+        $.ajaxUtil.get(searchUrlIn+"?startTime="+startTime+"&endTime="+endTime+"&gridId="+gridId, function (e) {
+            $("#bootstrap-table").bootstrapTable({
+                columns: [
+                    {
+                        title: '人员',
+                        field: 'supervisorName',
+                    },
+                    {
+                        title: '上报数',
+                        field: 'patrolReport',
+                    },
+                    {
+                        title: '有效上报数',
+                        field: 'validPatrolReport'
+                    },
+                    {
+                        title: '按时核查数',
+                        field: 'inTimeCheck',
+                    },
+                    {
+                        title: '按时核实数',
+                        field: 'intimeVerify',
+                    },
+                ],
+                data: e.data.content
+            });
+        });
         var options = {
             url: searchUrlIn,
             uniqueId: "id",
@@ -666,31 +781,69 @@
             columns: [
                 {
                     title: '人员',
-                    field: 'eventCode',
+                    field: 'supervisorName',
                 },
                 {
                     title: '上报数',
-                    field: 'represent',
+                    field: 'patrolReport',
                 },
                 {
                     title: '有效上报数',
-                    field: 'taskName'
+                    field: 'validPatrolReport'
                 },
                 {
                     title: '按时核查数',
-                    field: 'eventTypeName',
+                    field: 'inTimeCheck',
                 },
                 {
                     title: '按时核实数',
-                    field: 'createTime',
+                    field: 'intimeVerify',
                 },
             ]
         };
         $.table.init(options);
+
+
     }
 
-    function queryUserListInfo() {
-        let searchUrlIn = /*[[@{/event/supervisionAcceptanceList}]]*/ "/event/supervisionAcceptanceList";
+    function operatorEvaluationSearch() {
+        let searchUrlIn = /*[[@{/commandSubsystem/operatorEvaluationSearch}]]*/ "/commandSubsystem/operatorEvaluationSearch";
+        $("#bootstrap-table").bootstrapTable("refresh");
+        let startTime = $("#begin").val();
+        let endTime = $("#end").val();
+        let gridId = $("#gridId").val();
+        $.ajaxUtil.get(searchUrlIn+"?startTime="+startTime+"&endTime="+endTime+"&gridId="+gridId, function (e) {
+            $("#bootstrap-table").bootstrapTable({
+                columns: [
+                    {
+                        title: '人员',
+                        field: 'operateHumanName',
+                        sortable: true
+                    },
+                    {
+                        title: '受理数',
+                        field: 'operate',
+                    },
+                    {
+                        title: '按时核实派发数',
+                        field: 'intimeSendVerify'
+                    },
+                    {
+                        title: '核实应派发数',
+                        field: 'needSendVerify',
+                    },
+                    {
+                        title: '按时核查派发数',
+                        field: 'intimeSendCheck',
+                    },
+                    {
+                        title: '核查应派发数',
+                        field: 'needSendCheck'
+                    },
+                ],
+                data: e.data.content
+            });
+        });
 
         var options = {
             url: searchUrlIn,
@@ -701,37 +854,71 @@
             columns: [
                 {
                     title: '人员',
-                    field: 'eventCode',
+                    field: 'operateHumanName',
                     sortable: true
                 },
                 {
                     title: '受理数',
-                    field: 'represent',
+                    field: 'operate',
                 },
                 {
                     title: '按时核实派发数',
-                    field: 'taskName'
+                    field: 'intimeSendVerify'
                 },
                 {
                     title: '核实应派发数',
-                    field: 'eventTypeName',
+                    field: 'needSendVerify',
                 },
                 {
                     title: '按时核查派发数',
-                    field: 'createTime',
+                    field: 'intimeSendCheck',
                 },
                 {
                     title: '核查应派发数',
-                    field: 'timeLimitStr'
+                    field: 'needSendCheck'
                 },
             ]
         };
         $.table.init(options);
     }
 
-    function queryUserListInner() {
-        let searchUrlIn = /*[[@{/event/supervisionAcceptanceList}]]*/ "/event/supervisionAcceptanceList";
-
+    function instHumanEvaluationSearch() {
+        let searchUrlIn = /*[[@{/commandSubsystem/instHumanEvaluationSearch}]]*/ "/commandSubsystem/instHumanEvaluationSearch";
+        $("#bootstrap-table").bootstrapTable("refresh");
+        let startTime = $("#begin").val();
+        let endTime = $("#end").val();
+        let gridId = $("#gridId").val();
+        $.ajaxUtil.get(searchUrlIn+"?startTime="+startTime+"&endTime="+endTime+"&gridId="+gridId, function (e) {
+            $("#bootstrap-table").bootstrapTable({
+                columns: [
+                    {
+                        title: '人员',
+                        field: 'instHumanName',
+                    },
+                    {
+                        title: '立案数',
+                        field: 'inst',
+                    },
+                    {
+                        title: '按时立案数',
+                        field: 'intimeInst'
+                    },
+                    {
+                        title: '准确立案数',
+                        field: 'exactInst',
+                    },
+                    {
+                        title: '按时结案数',
+                        field: 'inTimeClose',
+                    },
+                    {
+                        title: '应结案数',
+                        field: 'close'
+                    },
+                ],
+                data: e.data.content
+            });
+        });
         var options = {
             url: searchUrlIn,
             uniqueId: "id",
@@ -741,36 +928,66 @@
             columns: [
                 {
                     title: '人员',
-                    field: 'eventCode',
+                    field: 'instHumanName',
                 },
                 {
                     title: '立案数',
-                    field: 'represent',
+                    field: 'inst',
                 },
                 {
                     title: '按时立案数',
-                    field: 'taskName'
+                    field: 'intimeInst'
                 },
                 {
                     title: '准确立案数',
-                    field: 'eventTypeName',
+                    field: 'exactInst',
                 },
                 {
                     title: '按时结案数',
-                    field: 'createTime',
+                    field: 'inTimeClose',
                 },
                 {
                     title: '应结案数',
-                    field: 'timeLimitStr'
+                    field: 'close'
                 },
             ]
         };
         $.table.init(options);
     }
 
-    function queryUserListIns() {
-        let searchUrlIn = /*[[@{/event/supervisionAcceptanceList}]]*/ "/event/supervisionAcceptanceList";
-
+    function dispatcherEvaluationSearch() {
+        let searchUrlIn = /*[[@{/commandSubsystem/dispatcherEvaluationSearch}]]*/ "/commandSubsystem/dispatcherEvaluationSearch";
+        $("#bootstrap-table").bootstrapTable("refresh");
+        let startTime = $("#begin").val();
+        let endTime = $("#end").val();
+        let gridId = $("#gridId").val();
+        $.ajaxUtil.get(searchUrlIn+"?startTime="+startTime+"&endTime="+endTime+"&gridId="+gridId, function (e) {
+            $("#bootstrap-table").bootstrapTable({
+                columns: [
+                    {
+                        title: '人员',
+                        field: 'dispatch',
+                    },
+                    {
+                        title: '派遣数',
+                        field: 'toDispatch',
+                    },
+                    {
+                        title: '按时派遣数',
+                        field: 'intimeDispatch'
+                    },
+                    {
+                        title: '应派遣数',
+                        field: 'needDispatch',
+                    },
+                    {
+                        title: '准确派遣数',
+                        field: 'accuracyDispatch'
+                    },
+                ],
+                data: e.data.content
+            });
+        });
         var options = {
             url: searchUrlIn,
             uniqueId: "id",
@@ -780,27 +997,23 @@
             columns: [
                 {
                     title: '人员',
-                    field: 'eventCode',
+                    field: 'dispatch',
                 },
                 {
                     title: '派遣数',
-                    field: 'represent',
+                    field: 'toDispatch',
                 },
                 {
                     title: '按时派遣数',
-                    field: 'taskName'
-                },
-                {
-                    title: '按时核查数',
-                    field: 'eventTypeName',
+                    field: 'intimeDispatch'
                 },
                 {
                     title: '应派遣数',
-                    field: 'createTime',
+                    field: 'needDispatch',
                 },
                 {
                     title: '准确派遣数',
-                    field: 'timeLimitStr'
+                    field: 'accuracyDispatch'
                 },
             ]
         };

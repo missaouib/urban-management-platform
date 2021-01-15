@@ -29,16 +29,18 @@ public class ShiftForemanEvaluateVO {
      */
     private Integer intimeInst;
     /**
-     * 按时立案率
+     * 按时立案率(按时立案数/立案数×100%)
      */
+    private Double intimeInstRateNum;
     private String intimeInstRate;
     /**
      * 准确立案数(立案数  - 作废数)
      */
     private Integer exactInst;
     /**
-     * '准确立案率'
+     * 准确立案率(准确立案数/立案数×100%)
      */
+    private Double exactInstRateNum;
     private String exactInstRate;
     /**
      * '按时结案数'
@@ -49,8 +51,9 @@ public class ShiftForemanEvaluateVO {
      */
     private Integer close;
     /**
-     * 按时结案率
+     * 按时结案率（按时结案数/结案数×100%）
      */
+    private Double inTimeCloseRateNum;
     private String inTimeCloseRate;
     /**
      * 综合指标值
@@ -61,6 +64,11 @@ public class ShiftForemanEvaluateVO {
      *
      */
     private String ratingLevel;
+
+    /**
+     * 排名
+     */
+    private String index;
 
 
 }

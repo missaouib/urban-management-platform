@@ -35,6 +35,7 @@ public class AcceptorEvaluateVO {
     /**
      * 核实按时派发率
      */
+    private Double SendVerifyRateNum;
     private String SendVerifyRate;
     /**
      * 核查按时派发数
@@ -49,6 +50,7 @@ public class AcceptorEvaluateVO {
     /**
      * 核查按时派发率
      */
+    private Double needSendCheckRateNum;
     private String needSendCheckRate;
     /**
      *综合指标值
@@ -58,4 +60,8 @@ public class AcceptorEvaluateVO {
      *评价等级
      */
     private String ratingLevel;
+    /**
+     * 排名
+     */
+    private String index;
 }

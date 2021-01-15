@@ -210,6 +210,7 @@ public class WorkService {
         statistics.setSort(saved.getSort() + 1);
         statistics.setVerify(1);
         statistics.setInTimeVerify(1);
+        statistics.setVerifyPatrolName(SecurityUtil.getUser().castToUser());
         statistics.setToOperate(1);
         statisticsService.save(statistics);
     }
@@ -229,6 +230,7 @@ public class WorkService {
         statistics.setSort(saved.getSort() + 1);
         statistics.setCheckNum(1);
         statistics.setInTimeCheck(1);
+        statistics.setCheckPatrolName(SecurityUtil.getUser().castToUser());
         statistics.setToCloseEvent(1);
         statisticsService.save(statistics);
     }

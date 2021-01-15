@@ -4,7 +4,7 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.pojo.Result;
-import com.unicom.urban.management.pojo.vo.ComprehensiveVO;
+import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.comprehensiveevaluation.ComprehensiveEvaluationService;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.service.bigscreen.IndexService;
@@ -71,6 +71,14 @@ public class SupervisionCommandSubsystemController {
         return new ModelAndView(SystemConstant.PAGE + "/command/comprehensiveEvaluation");
     }
 
+    /**
+     * 岗位评价页面跳转
+     * @return
+     */
+    @GetMapping("/toPositionEvaluation")
+    public ModelAndView toSupervisorEvaluation() {
+        return new ModelAndView(SystemConstant.PAGE + "/command/positionEvaluation");
+    }
     @GetMapping("/trajectory")
     public ModelAndView trajectory() {
         return new ModelAndView(SystemConstant.PAGE + "/command/trajectory");
@@ -146,5 +154,83 @@ public class SupervisionCommandSubsystemController {
         Map<String,Object> map = comprehensiveEvaluationService.findRankingList(startTime,endTime, gridId);
         return map;
     }
+    /**
+     * 岗位评价-监督员列表查询
+     *
+     * @return
+     */
+    @GetMapping("/supervisorEvaluationSearch")
+    public PageImpl<SupervisorEvaluateVO> supervisorEvaluationSearch(String startTime,
+                                                                     String endTime, String gridId, @PageableDefault Pageable pageable) {
+        List<SupervisorEvaluateVO> list = comprehensiveEvaluationService.supervisorEvaluationSearch(startTime, endTime,gridId);
+        return new PageImpl<SupervisorEvaluateVO>(list, pageable, 0);
+    }
+    /**
+     * 岗位评价-受理员列表查询
+     * @return
+     */
+    @GetMapping("/operatorEvaluationSearch")
+    public PageImpl<AcceptorEvaluateVO> operatorEvaluationSearch(String startTime,
+                                                                 String endTime, String gridId, @PageableDefault Pageable pageable) {
+        List<AcceptorEvaluateVO> list = comprehensiveEvaluationService.operatorEvaluationSearch(startTime, endTime,gridId);
+        return new PageImpl<AcceptorEvaluateVO>(list, pageable, 0);
+    }
+    /**
+     * 岗位评价-值班长列表查询
+     * @return
+     */
+    @GetMapping("/instHumanEvaluationSearch")
+    public PageImpl<ShiftForemanEvaluateVO> instHumanEvaluationSearch(String startTime,
+                                                                      String endTime, String gridId, @PageableDefault Pageable pageable) {
+        List<ShiftForemanEvaluateVO> list = comprehensiveEvaluationService.ShiftForemanEvaluateVO(startTime, endTime,gridId);
+        return new PageImpl<ShiftForemanEvaluateVO>(list, pageable, 0);
+    }
+    /**
+     * 岗位评价-派遣员列表查询
+     * @return
+     */
+    @GetMapping("/dispatcherEvaluationSearch")
+    public PageImpl<DispatcherEvaluateVO> dispatcherEvaluationSearch(String startTime,
+                                                                     String endTime, String gridId, @PageableDefault Pageable pageable) {
+        List<DispatcherEvaluateVO> list = comprehensiveEvaluationService.dispatcherEvaluationSearch(startTime, endTime,gridId);
+        return new PageImpl<DispatcherEvaluateVO>(list, pageable, 0);
+    }
 
+    /**
+     * 岗位评价-监督员排行榜
+     *
+     * @return
+     */
+    @GetMapping("/supervisorEvaluationRankingList")
+    public Map<String,Object> supervisorEvaluationRankingList(String startTime,String endTime, String gridId){
+        Map<String,Object> map = comprehensiveEvaluationService.supervisorEvaluationRankingList(startTime,endTime, gridId);
+        return map;
+    }
+    /**
+     * 岗位评价-受理员排行榜
+     * @return
+     */
+    @GetMapping("/operatorEvaluationRankingList")
+    public Map<String,Object> operatorEvaluationRankingList(String startTime,String endTime, String gridId){
+        Map<String,Object> map = comprehensiveEvaluationService.operatorEvaluationRankingList(startTime,endTime, gridId);
+        return map;
+    }
+    /**
+     * 岗位评价-值班长排行榜
+     * @return
+     */
+    @GetMapping("/instHumanEvaluationRankingList")
+    public Map<String,Object> instHumanEvaluationRankingList(String startTime,String endTime, String gridId){
+        Map<String,Object> map = comprehensiveEvaluationService.instHumanEvaluationRankingList(startTime,endTime, gridId);
+        return map;
+    }
+    /**
+     * 岗位评价-派遣员列表查询
+     * @return
+     */
+    @GetMapping("/dispatcherEvaluationRankingList")
+    public Map<String,Object> dispatcherEvaluationRankingList(String startTime,String endTime, String gridId){
+        Map<String,Object> map = comprehensiveEvaluationService.dispatcherEvaluationRankingList(startTime,endTime, gridId);
+        return map;
+    }
 }
