@@ -204,7 +204,26 @@
         let Polygon = new ol.Feature({
             geometry: new ol.geom.Polygon(Polygons)
         });
-        console.log("颜色", getLevelAndColor(data));
+
+        var setColor;
+        if (getLevelAndColor(data) == "A"){
+            setColor = "green"
+        }else if (getLevelAndColor(data) == "B"){
+            setColor = "blue"
+        }else if(getLevelAndColor(data) == "C"){
+            setColor = "yellow"
+        }else if(getLevelAndColor(data) == "D"){
+            setColor = "red"
+        }else if(getLevelAndColor(data) == "E"){
+            setColor = "black"
+        }
+
+        Polygon.setStyle(new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: setColor,
+                width: 3
+            })
+        }));
         layerMap.getSource().addFeature(Polygon);
     }
 

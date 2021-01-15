@@ -197,17 +197,17 @@ thead th{
 .boss{width: 20px;height: 20px;}
 .beats{padding: 2px 3px;border: 1px solid #D9DADF;font-size: 12px}
 .boosLever .boss:nth-child(1){
-	background-color: #2A3051;
+	background-color: green;
 }
 .boosLever:nth-child(2) .boss{
-	background-color: green;
+	background-color: blue;
 }
 .boosLever:nth-child(3) .boss{
 	background-color: yellow;
 }
 .boosLever:nth-child(4) .boss{
-	background-color: orange;
+	background-color: red;
 }
 .boosLever:nth-child(5) .boss{
-	background-color: red;
+	background-color: black;
 }
