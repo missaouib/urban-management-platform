@@ -302,8 +302,8 @@ body{
 	width: 22%;
 	height: 4%;
 	position: absolute;
-	top: 1%;
-	right: 2%;
+	top: 0%;
+	right: 15%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -311,7 +311,7 @@ body{
 .timeText{
 	width: 30%;
 	height: 100%;
-	color: #1181FF;
+	color: #f0f1f3;
 	font-size: 14px;
 	text-align: right;
 	display: flex;
