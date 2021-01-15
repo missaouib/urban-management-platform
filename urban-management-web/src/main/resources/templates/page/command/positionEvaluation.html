@@ -168,7 +168,7 @@
                 $("#tablesFour .title").html("按期核查率排行榜");
                 $('#bootstrap-table').bootstrapTable('destroy');
                 supervisorEvaluationSearch();
-                //supervisorEvaluationRankingList();
+                supervisorEvaluationRankingList();
             } else if (selectedOptionNum == 2) {
                 $("#tablesOne .title").html("受理数排行榜");
                 $("#tablesTwo .title").html("按时派发核实率排行榜");
@@ -176,7 +176,7 @@
                 $('#bootstrap-table').bootstrapTable('destroy');
                 $("#tablesFour").addClass("roleBox");
                 operatorEvaluationSearch();
-                //operatorEvaluationRankingList();
+                operatorEvaluationRankingList();
             } else if (selectedOptionNum == 3) {
                 $("#tablesFour").removeClass("roleBox");
                 $("#tablesOne .title").html("立案数排行榜");
@@ -185,7 +185,7 @@
                 $("#tablesFour .title").html("按时结案率排行榜");
                 $('#bootstrap-table').bootstrapTable('destroy');
                 instHumanEvaluationSearch();
-                disposeRankingListInfo();
+                instHumanEvaluationRankingList();
             } else if (selectedOptionNum == 4) {
                 $("#tablesFour").addClass("roleBox");
                 $("#tablesOne .title").html("派遣数排行榜");
@@ -193,7 +193,7 @@
                 $("#tablesThree .title").html("准确派遣率排行榜");
                 $('#bootstrap-table').bootstrapTable('destroy');
                 dispatcherEvaluationSearch();
-                disposeRankingListInner();
+                dispatcherEvaluationRankingList();
             }
         })
 
@@ -209,12 +209,25 @@
             showMeridian: 1,
             format: "yyyy-mm-dd hh:ii:ss"
         });
-        search();
+        supervisorEvaluationSearch()
+        supervisorEvaluationRankingList();
     })
 
     function search() {
-        supervisorEvaluationSearch()
-        //supervisorEvaluationRankingList();
+        let selectedOptionNum = $("#searchPost option:selected").val();
+        if (selectedOptionNum == 1) {
+            supervisorEvaluationSearch();
+            supervisorEvaluationRankingList();
+        } else if (selectedOptionNum == 2) {
+            operatorEvaluationSearch();
+            operatorEvaluationRankingList();
+        } else if (selectedOptionNum == 3) {
+            instHumanEvaluationSearch();
+            instHumanEvaluationRankingList();
+        } else if (selectedOptionNum == 4) {
+            dispatcherEvaluationSearch();
+            dispatcherEvaluationRankingList();
+        }
     }
 
     /**
@@ -335,110 +348,6 @@
 
     }
 
-    function disposeRankingList() {
-        let startTime = $("#begin").val();
-        let endTime = $("#end").val();
-        let gridId = $("#gridId").val();
-        let url = "/commandSubsystem/comprehensiveEvaluationRankingList"
-        $.ajaxUtil.get(url + "?startTime=" + startTime + "&endTime=" + endTime + "&gridId=" + gridId, function(e) {
-            var disposeRanking = e.data.disposeRanking;
-            var disposeRate = e.data.disposeRate;
-            var inTimeDisposeRate = e.data.inTimeDisposeRate;
-            var reworkRate = e.data.reworkRate;
-
-            $('#bootstrap-table-did').bootstrapTable('destroy');
-
-            $("#bootstrap-table-did").bootstrapTable('load', disposeRanking);
-            $("#bootstrap-table2").bootstrapTable('load', disposeRate);
-            $("#bootstrap-table3").bootstrapTable('load', inTimeDisposeRate);
-            $("#bootstrap-table4").bootstrapTable('load', reworkRate);
-            $('#bootstrap-table-did').bootstrapTable({
-                columns: [{
-                    field: 'index',
-                    title: '排名',
-                    formatter: medal
-                }, {
-                    title: '考核人员',
-                    field: "deptName"
-                }, {
-                    title: '上报数',
-                    field: 'disposeNum',
-                },
-                    // {
-                    //     field: 'patrolReport',
-                    //     title: '趋势',
-                    //     formatter: trend
-                    // },
-                ],
-                data: disposeRanking
-            });
-
-            $('#bootstrap-table2').bootstrapTable({
-                columns: [{
-                    field: 'index',
-                    title: '排名',
-                    formatter: medal
-                }, {
-                    title: '考核人员',
-                    field: "deptName"
-                }, {
-                    title: '有效上报率',
-                    field: 'disposeRate',
-                },
-                    // {
-                    //     field: 'patrolReport',
-                    //     title: '趋势',
-                    //     formatter: trend
-                    // },
-                ],
-                data: disposeRate
-            });
-
-            $('#bootstrap-table3').bootstrapTable({
-                columns: [{
-                    field: 'index',
-                    title: '排名',
-                    formatter: medal
-                }, {
-                    title: '考核人员',
-                    field: "deptName"
-                }, {
-                    title: '按期核实率',
-                    field: 'inTimeDisposeRate',
-                },
-                    // {
-                    //     field: 'patrolReport',
-                    //     title: '趋势',
-                    //     formatter: trend
-                    // },
-                ],
-                data: inTimeDisposeRate
-            });
-
-            $('#bootstrap-table4').bootstrapTable({
-                columns: [{
-                    field: 'index',
-                    title: '排名',
-                    formatter: medal
-                }, {
-                    title: '考核人员',
-                    field: "deptName"
-                }, {
-                    title: '按期核查率',
-                    field: 'reworkRate',
-                },
-                    // {
-                    //     field: 'patrolReport',
-                    //     title: '趋势',
-                    //     formatter: trend
-                    // },
-                ],
-                data: reworkRate
-            });
-        });
-
-    }
-
     function operatorEvaluationRankingList() {
         let startTime = $("#begin").val();
         let endTime = $("#end").val();
@@ -446,7 +355,7 @@
         let url = "/commandSubsystem/operatorEvaluationRankingList"
         $.ajaxUtil.get(url + "?startTime=" + startTime + "&endTime=" + endTime + "&gridId=" + gridId, function(e) {
             var operateRanking = e.data.operateRanking;
-            var sendVerifyRate = e.data.sendVerifyRate;
+            var needSendVerifyRate = e.data.needSendVerifyRate;
             var needSendCheckRate = e.data.needSendCheckRate;
 
             $('#bootstrap-table-did').bootstrapTable('destroy');
@@ -455,9 +364,8 @@
             $("#bootstrap-table4").bootstrapTable('destroy');
 
             $("#bootstrap-table-did").bootstrapTable('load', operateRanking);
-            $("#bootstrap-table2").bootstrapTable('load', sendVerifyRate);
+            $("#bootstrap-table2").bootstrapTable('load', needSendVerifyRate);
             $("#bootstrap-table3").bootstrapTable('load', needSendCheckRate);
-            $("#bootstrap-table4").bootstrapTable('load', reworkRate);
             $('#bootstrap-table-did').bootstrapTable({
                 columns: [{
                     field: 'index',
@@ -465,10 +373,10 @@
                     formatter: medal
                 }, {
                     title: '考核人员',
-                    field: "deptName"
+                    field: "operateHumanName"
                 }, {
                     title: '受理数',
-                    field: 'disposeNum',
+                    field: 'operate',
                 },
                     // {
                     //     field: 'patrolReport',
@@ -476,7 +384,7 @@
                     //     formatter: trend
                     // },
                 ],
-                data: disposeRanking
+                data: operateRanking
             });
 
             $('#bootstrap-table2').bootstrapTable({
@@ -486,10 +394,10 @@
                     formatter: medal
                 }, {
                     title: '考核人员',
-                    field: "deptName"
+                    field: "operateHumanName"
                 }, {
-                    title: '按时派发核查率',
-                    field: 'disposeRate',
+                    title: '按时派发核实率',
+                    field: 'sendVerifyRate',
                 },
                     // {
                     //     field: 'patrolReport',
@@ -497,7 +405,7 @@
                     //     formatter: trend
                     // },
                 ],
-                data: disposeRate
+                data: needSendVerifyRate
             });
 
             $('#bootstrap-table3').bootstrapTable({
@@ -507,10 +415,10 @@
                     formatter: medal
                 }, {
                     title: '考核人员',
-                    field: "deptName"
+                    field: "operateHumanName"
                 }, {
                     title: '按时派发核查率',
-                    field: 'inTimeDisposeRate',
+                    field: 'needSendCheckRate',
                 },
                     // {
                     //     field: 'patrolReport',
@@ -518,53 +426,31 @@
                     //     formatter: trend
                     // },
                 ],
-                data: inTimeDisposeRate
-            });
-
-            $('#bootstrap-table4').bootstrapTable({
-                columns: [{
-                    field: 'index',
-                    title: '排名',
-                    formatter: medal
-                }, {
-                    title: '考核人员',
-                    field: "deptName"
-                }, {
-                    title: '按时派发核查率',
-                    field: 'reworkRate',
-                },
-                    // {
-                    //     field: 'patrolReport',
-                    //     title: '趋势',
-                    //     formatter: trend
-                    // },
-                ],
-                data: reworkRate
+                data: needSendCheckRate
             });
         });
 
     }
 
-    function disposeRankingListInfo() {
+    function instHumanEvaluationRankingList() {
         let startTime = $("#begin").val();
         let endTime = $("#end").val();
         let gridId = $("#gridId").val();
-        let url = "/commandSubsystem/comprehensiveEvaluationRankingList"
+        let url = "/commandSubsystem/instHumanEvaluationRankingList"
         $.ajaxUtil.get(url + "?startTime=" + startTime + "&endTime=" + endTime + "&gridId=" + gridId, function(e) {
-            var disposeRanking = e.data.disposeRanking;
-            var disposeRate = e.data.disposeRate;
-            var inTimeDisposeRate = e.data.inTimeDisposeRate;
-            var reworkRate = e.data.reworkRate;
-
+            var instRanking = e.data.instRanking;
+            var inTimeInstRate = e.data.inTimeInstRate;
+            var exactInstRate = e.data.exactInstRate;
+            var inTimeCloseRate = e.data.inTimeCloseRate;
             $('#bootstrap-table-did').bootstrapTable('destroy');
             $("#bootstrap-table2").bootstrapTable('destroy');
             $("#bootstrap-table3").bootstrapTable('destroy');
             $("#bootstrap-table4").bootstrapTable('destroy');
 
-            $("#bootstrap-table-did").bootstrapTable('load', disposeRanking);
-            $("#bootstrap-table2").bootstrapTable('load', disposeRate);
-            $("#bootstrap-table3").bootstrapTable('load', inTimeDisposeRate);
-            $("#bootstrap-table4").bootstrapTable('load', reworkRate);
+            $("#bootstrap-table-did").bootstrapTable('load', instRanking);
+            $("#bootstrap-table2").bootstrapTable('load', inTimeInstRate);
+            $("#bootstrap-table3").bootstrapTable('load', exactInstRate);
+            $("#bootstrap-table4").bootstrapTable('load', inTimeCloseRate);
             $('#bootstrap-table-did').bootstrapTable({
                 columns: [{
                     field: 'index',
@@ -572,10 +458,10 @@
                     formatter: medal
                 }, {
                     title: '考核人员',
-                    field: "deptName"
+                    field: "instHumanName"
                 }, {
                     title: '立案数',
-                    field: 'disposeNum',
+                    field: 'inst',
                 },
                     // {
                     //     field: 'patrolReport',
@@ -583,7 +469,7 @@
                     //     formatter: trend
                     // },
                 ],
-                data: disposeRanking
+                data: instRanking
             });
 
             $('#bootstrap-table2').bootstrapTable({
@@ -593,10 +479,10 @@
                     formatter: medal
                 }, {
                     title: '考核人员',
-                    field: "deptName"
+                    field: "instHumanName"
                 }, {
                     title: '按时立案率',
-                    field: 'disposeRate',
+                    field: 'intimeInstRate',
                 },
                     // {
                     //     field: 'patrolReport',
@@ -604,7 +490,7 @@
                     //     formatter: trend
                     // },
                 ],
-                data: disposeRate
+                data: inTimeInstRate
             });
 
             $('#bootstrap-table3').bootstrapTable({
@@ -614,10 +500,10 @@
                     formatter: medal
                 }, {
                     title: '考核人员',
-                    field: "deptName"
+                    field: "instHumanName"
                 }, {
                     title: '准确立案率',
-                    field: 'inTimeDisposeRate',
+                    field: 'exactInstRate',
                 },
                     // {
                     //     field: 'patrolReport',
@@ -625,7 +511,7 @@
                     //     formatter: trend
                     // },
                 ],
-                data: inTimeDisposeRate
+                data: exactInstRate
             });
 
             $('#bootstrap-table4').bootstrapTable({
@@ -635,10 +521,10 @@
                     formatter: medal
                 }, {
                     title: '考核人员',
-                    field: "deptName"
+                    field: "instHumanName"
                 }, {
-                    title: '按时核查率',
-                    field: 'reworkRate',
+                    title: '按时结案率',
+                    field: 'inTimeCloseRate',
                 },
                     // {
                     //     field: 'patrolReport',
@@ -646,32 +532,29 @@
                     //     formatter: trend
                     // },
                 ],
-                data: reworkRate
+                data: inTimeCloseRate
             });
         });
 
     }
 
-    function disposeRankingListInner() {
+    function dispatcherEvaluationRankingList() {
         let startTime = $("#begin").val();
         let endTime = $("#end").val();
         let gridId = $("#gridId").val();
-        let url = "/commandSubsystem/comprehensiveEvaluationRankingList"
+        let url = "/commandSubsystem/dispatcherEvaluationRankingList"
         $.ajaxUtil.get(url + "?startTime=" + startTime + "&endTime=" + endTime + "&gridId=" + gridId, function(e) {
-            var disposeRanking = e.data.disposeRanking;
-            var disposeRate = e.data.disposeRate;
-            var inTimeDisposeRate = e.data.inTimeDisposeRate;
-            var reworkRate = e.data.reworkRate;
-
+            var dispatchRanking = e.data.dispatchRanking;
+            var intimeDispatchRate = e.data.intimeDispatchRate;
+            var accuracyDispatchRate = e.data.accuracyDispatchRate;
             $('#bootstrap-table-did').bootstrapTable('destroy');
             $("#bootstrap-table2").bootstrapTable('destroy');
             $("#bootstrap-table3").bootstrapTable('destroy');
             $("#bootstrap-table4").bootstrapTable('destroy');
 
-            $("#bootstrap-table-did").bootstrapTable('load', disposeRanking);
-            $("#bootstrap-table2").bootstrapTable('load', disposeRate);
-            $("#bootstrap-table3").bootstrapTable('load', inTimeDisposeRate);
-            $("#bootstrap-table4").bootstrapTable('load', reworkRate);
+            $("#bootstrap-table-did").bootstrapTable('load', dispatchRanking);
+            $("#bootstrap-table2").bootstrapTable('load', intimeDispatchRate);
+            $("#bootstrap-table3").bootstrapTable('load', accuracyDispatchRate);
             $('#bootstrap-table-did').bootstrapTable({
                 columns: [{
                     field: 'index',
@@ -679,10 +562,10 @@
                     formatter: medal
                 }, {
                     title: '考核人员',
-                    field: "deptName"
+                    field: "dispatch"
                 }, {
                     title: '派遣数',
-                    field: 'disposeNum',
+                    field: 'toDispatch',
                 },
                     // {
                     //     field: 'patrolReport',
@@ -690,7 +573,7 @@
                     //     formatter: trend
                     // },
                 ],
-                data: disposeRanking
+                data: dispatchRanking
             });
 
             $('#bootstrap-table2').bootstrapTable({
@@ -700,10 +583,10 @@
                     formatter: medal
                 }, {
                     title: '考核人员',
-                    field: "deptName"
+                    field: "dispatch"
                 }, {
                     title: '按时派遣率',
-                    field: 'disposeRate',
+                    field: 'intimeDispatchRate',
                 },
                     // {
                     //     field: 'patrolReport',
@@ -711,7 +594,7 @@
                     //     formatter: trend
                     // },
                 ],
-                data: disposeRate
+                data: intimeDispatchRate
             });
 
             $('#bootstrap-table3').bootstrapTable({
@@ -721,10 +604,10 @@
                     formatter: medal
                 }, {
                     title: '考核人员',
-                    field: "deptName"
+                    field: "dispatch"
                 }, {
                     title: '准确派遣率',
-                    field: 'inTimeDisposeRate',
+                    field: 'accuracyDispatchRate',
                 },
                     // {
                     //     field: 'patrolReport',
@@ -732,11 +615,9 @@
                     //     formatter: trend
                     // },
                 ],
-                data: inTimeDisposeRate
+                data: accuracyDispatchRate
             });
-
         });
-
     }
 
     function supervisorEvaluationSearch() {

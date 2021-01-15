@@ -117,6 +117,12 @@ public class ComprehensiveEvaluationService {
         Double closeRate = (double) (num1) / (double) num2;
         return Optional.of(nt.format(closeRate)).filter(s -> !"NaN".equals(s)).orElse("0");
     }
+    private Double getRate2(Integer num1, Integer num2) {
+        if (num2 == 0) {
+            return 0.0;
+        }
+        return (double) (num1) / (double) num2;
+    }
     /**
      * 处置数
      */
@@ -230,7 +236,7 @@ public class ComprehensiveEvaluationService {
         sortedList = list.stream().sorted((s1, s2) -> s1.getReworkRateNum().compareTo(s2.getReworkRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
             sortedList.get(i).setIndex(String.valueOf(i + 1));
-            sortedList.get(i).setReworkRate(sortedList.get(i).getReworkRateNum() == 0 ? "0.0%" : sortedList.get(i).getReworkRateNum() * 100 + "%");
+            sortedList.get(i).setReworkRate(Optional.of(nt.format(sortedList.get(i).getReworkRateNum())).filter(s -> !"NaN".equals(s)).orElse("0"));
         }
         return sortedList;
     }
@@ -255,7 +261,7 @@ public class ComprehensiveEvaluationService {
         sortedList = list.stream().sorted((s1, s2) -> s2.getInTimeDisposeRateNum().compareTo(s1.getInTimeDisposeRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
             sortedList.get(i).setIndex(String.valueOf(i + 1));
-            sortedList.get(i).setInTimeDisposeRate(sortedList.get(i).getInTimeDisposeRateNum() == 0 ? "0.0%" : sortedList.get(i).getInTimeDisposeRateNum() * 100 + "%");
+            sortedList.get(i).setInTimeDisposeRate(Optional.of(nt.format(sortedList.get(i).getInTimeDisposeRateNum())).filter(s -> !"NaN".equals(s)).orElse("0"));
         }
         return sortedList;
     }
@@ -282,7 +288,7 @@ public class ComprehensiveEvaluationService {
         sortedList = list.stream().sorted((s1, s2) -> s2.getDisposeRateNum().compareTo(s1.getDisposeRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
             sortedList.get(i).setIndex(String.valueOf(i + 1));
-            sortedList.get(i).setDisposeRate(sortedList.get(i).getDisposeRateNum() == 0 ? "0.0%" : sortedList.get(i).getDisposeRateNum() * 100 + "%");
+            sortedList.get(i).setDisposeRate(Optional.of(nt.format(sortedList.get(i).getDisposeRateNum())).filter(s -> !"NaN".equals(s)).orElse("0"));
         }
         return sortedList;
     }
@@ -335,13 +341,13 @@ public class ComprehensiveEvaluationService {
                 d.getUserList().forEach(user -> {
                     SupervisorEvaluateVO vo = new SupervisorEvaluateVO();
                     /*上报数*/
-                    vo.setPatrolReport(Math.toIntExact(patrolReportList.stream().filter(s -> s.getReportPatrolName().getId().equals(user.getId())).count()));
+                    vo.setPatrolReport(Math.toIntExact(patrolReportList.stream().filter(s -> null != s.getReportPatrolName()).filter(s -> s.getReportPatrolName().getId().equals(user.getId())).count()));
                     /*有效上报数*/
-                    vo.setValidPatrolReport(Math.toIntExact(validReportList.stream().filter(s -> s.getReportPatrolName().getId().equals(user.getId())).count()));
+                    vo.setValidPatrolReport(Math.toIntExact(validReportList.stream().filter(s -> null != s.getReportPatrolName()).filter(s -> s.getReportPatrolName().getId().equals(user.getId())).count()));
                     /*按时核查数*/
-                    vo.setInTimeCheck(Math.toIntExact(intimeCheckList.stream().filter(s -> s.getCheckPatrolName().getId().equals(user.getId())).count()));
+                    vo.setInTimeCheck(Math.toIntExact(intimeCheckList.stream().filter(s -> null != s.getCheckPatrolName()).filter(s -> s.getCheckPatrolName().getId().equals(user.getId())).count()));
                     /*按时核实数*/
-                    vo.setIntimeVerify(Math.toIntExact(intimeVerifyList.stream().filter(s -> s.getVerifyPatrolName().getId().equals(user.getId())).count()));
+                    vo.setIntimeVerify(Math.toIntExact(intimeVerifyList.stream().filter(s -> null != s.getVerifyPatrolName()).filter(s -> s.getVerifyPatrolName().getId().equals(user.getId())).count()));
                     vo.setSupervisorName(user.getName());
                     list.add(vo);
                 });
@@ -356,9 +362,9 @@ public class ComprehensiveEvaluationService {
                         /*有效上报数*/
                         vo.setValidPatrolReport(Math.toIntExact(validReportList.stream().filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
                         /*按时核查数*/
-                        vo.setInTimeCheck(Math.toIntExact(intimeCheckList.stream().filter(s -> s.getCheckPatrolName().getId().equals(user.getId())).count()));
+                        vo.setInTimeCheck(Math.toIntExact(intimeCheckList.stream().filter(s -> null != s.getOperateHumanName()).filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
                         /*按时核实数*/
-                        vo.setIntimeVerify(Math.toIntExact(intimeVerifyList.stream().filter(s -> s.getVerifyPatrolName().getId().equals(user.getId())).count()));
+                        vo.setIntimeVerify(Math.toIntExact(intimeVerifyList.stream().filter(s -> null != s.getOperateHumanName()).filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
                         vo.setSupervisorName(user.getName());
                         list.add(vo);
                     });
@@ -393,7 +399,7 @@ public class ComprehensiveEvaluationService {
                 d.getUserList().forEach(user -> {
                     AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
                     /*受理数*/
-                    vo.setOperate(Math.toIntExact(operateList.stream().filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
+                    vo.setOperate(Math.toIntExact(operateList.stream().filter(s -> null != s.getOperateHumanName()).filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
                     /*按时核实派发数*/
                     vo.setOperate(Math.toIntExact(inTimeSendVerifyList.stream().filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
                     /*核实应派发数*/
@@ -412,15 +418,15 @@ public class ComprehensiveEvaluationService {
                     d.getUserList().forEach(user -> {
                         AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
                         /*受理数*/
-                        vo.setOperate(Math.toIntExact(operateList.stream().filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
+                        vo.setOperate(Math.toIntExact(operateList.stream().filter(s -> null != s.getOperateHumanName()).filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
                         /*按时核实派发数*/
-                        vo.setIntimeSendVerify(Math.toIntExact(inTimeSendVerifyList.stream().filter(s -> s.getSendVerifyHumanName().getId().equals(user.getId())).count()));
+                        vo.setIntimeSendVerify(Math.toIntExact(inTimeSendVerifyList.stream().filter(s-> null != s.getSendVerifyHumanName()).filter(s-> null != s.getOperateHumanName()).filter(s -> s.getSendVerifyHumanName().getId().equals(user.getId())).count()));
                         /*核实应派发数*/
-                        vo.setNeedSendVerify(Math.toIntExact(needSendVerifyList.stream().filter(s -> s.getSendVerifyHumanName().getId().equals(user.getId())).count()));
+                        vo.setNeedSendVerify(Math.toIntExact(needSendVerifyList.stream().filter(s-> null != s.getSendVerifyHumanName()).filter(s-> null != s.getOperateHumanName()).filter(s -> s.getSendVerifyHumanName().getId().equals(user.getId())).count()));
                         /*按时核查派发数*/
-                        vo.setIntimeSendCheck(Math.toIntExact(inTimeSendCheckList.stream().filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
+                        vo.setIntimeSendCheck(Math.toIntExact(inTimeSendCheckList.stream().filter(s-> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
                         /*核查应派发数*/
-                        vo.setNeedSendCheck(Math.toIntExact(needSendCheckList.stream().filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
+                        vo.setNeedSendCheck(Math.toIntExact(needSendCheckList.stream().filter(s-> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
                         vo.setOperateHumanName(user.getName());
                         list.add(vo);
                     });
@@ -457,15 +463,15 @@ public class ComprehensiveEvaluationService {
                 d.getUserList().forEach(user -> {
                     ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
                     /*立案数*/
-                    vo.setInst(Math.toIntExact(instList.stream().filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
+                    vo.setInst(Math.toIntExact(instList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
                     /*按时立案数*/
-                    vo.setIntimeInst(Math.toIntExact(inTimeInstList.stream().filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
+                    vo.setIntimeInst(Math.toIntExact(inTimeInstList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
                     /*准确立案数(立案数  - 作废数)*/
-                    vo.setExactInst(vo.getInst() - Math.toIntExact(cancelList.stream().filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
+                    vo.setExactInst(vo.getInst() - Math.toIntExact(cancelList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
                     /*按时结案数*/
-                    vo.setInTimeClose(Math.toIntExact(inTimeCloseList.stream().filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
+                    vo.setInTimeClose(Math.toIntExact(inTimeCloseList.stream().filter(s -> null != s.getCloseHumanName()).filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
                     /*应结案数数(按时结案数+待结案数)*/
-                    vo.setClose(vo.getInTimeClose() + Math.toIntExact(toColseList.stream().filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
+                    vo.setClose(vo.getInTimeClose() + Math.toIntExact(toColseList.stream().filter(s -> null != s.getCloseHumanName()).filter(s-> null != s.getCloseHumanName()).filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
                     vo.setInstHumanName(user.getName());
                     list.add(vo);
                 });
@@ -476,15 +482,15 @@ public class ComprehensiveEvaluationService {
                     d.getUserList().forEach(user -> {
                         ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
                         /*立案数*/
-                        vo.setInst(Math.toIntExact(instList.stream().filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
+                        vo.setInst(Math.toIntExact(instList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
                         /*按时立案数*/
-                        vo.setIntimeInst(Math.toIntExact(inTimeInstList.stream().filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
+                        vo.setIntimeInst(Math.toIntExact(inTimeInstList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
                         /*准确立案数(立案数  - 作废数)*/
-                        vo.setExactInst(vo.getInst() - Math.toIntExact(cancelList.stream().filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
+                        vo.setExactInst(vo.getInst() - Math.toIntExact(cancelList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
                         /*按时结案数*/
-                        vo.setInTimeClose(Math.toIntExact(inTimeCloseList.stream().filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
+                        vo.setInTimeClose(Math.toIntExact(inTimeCloseList.stream().filter(s-> null != s.getCloseHumanName()).filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
                         /*应结案数数(按时结案数+待结案数)*/
-                        vo.setClose(vo.getInTimeClose() + Math.toIntExact(toColseList.stream().filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
+                        vo.setClose(vo.getInTimeClose() + Math.toIntExact(toColseList.stream().filter(s -> null != s.getCloseHumanName()).filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
                         vo.setInstHumanName(user.getName());
                         list.add(vo);
                     });
@@ -535,13 +541,13 @@ public class ComprehensiveEvaluationService {
                     d.getUserList().forEach(user -> {
                         DispatcherEvaluateVO vo = new DispatcherEvaluateVO();
                         /*派遣数*/
-                        vo.setToDispatch(Math.toIntExact(toDispatchList.stream().filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
+                        vo.setToDispatch(Math.toIntExact(toDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
                         /*按时派遣数*/
-                        vo.setIntimeDispatch(Math.toIntExact(inTimeDispatchList.stream().filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
+                        vo.setIntimeDispatch(Math.toIntExact(inTimeDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
                         /*应派遣数*/
-                        vo.setNeedDispatch(Math.toIntExact(needDispatchList.stream().filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
+                        vo.setNeedDispatch(Math.toIntExact(needDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
                         /*准确派遣数（派遣数-返工数）*/
-                        vo.setAccuracyDispatch(vo.getToDispatch() - Math.toIntExact(reWorkList.stream().filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
+                        vo.setAccuracyDispatch(vo.getToDispatch() - Math.toIntExact(reWorkList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
                         vo.setDispatch(user.getName());
                         list.add(vo);
                     });
@@ -604,7 +610,7 @@ public class ComprehensiveEvaluationService {
                     supervisorEvaluateVO.setSupervisorName(user.getName());
                     Integer intimeCheckNum = Math.toIntExact(intimeCheckList.stream().filter(s -> user.getId().equals(s.getCheckPatrolName().getId())).count());
                     Integer needCheckNum = Math.toIntExact(needCheckList.stream().filter(s -> user.getId().equals(s.getCheckPatrolName().getId())).count());
-                    supervisorEvaluateVO.setInTimeCheckRateNum(Double.valueOf(getRate(intimeCheckNum,needCheckNum)));
+                    supervisorEvaluateVO.setInTimeCheckRateNum(getRate2(intimeCheckNum,needCheckNum));
                     list.add(supervisorEvaluateVO);
                 });
             }
@@ -613,7 +619,7 @@ public class ComprehensiveEvaluationService {
         sortedList = list.stream().sorted((s1, s2) -> s2.getInTimeCheckRateNum().compareTo(s1.getInTimeCheckRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
             sortedList.get(i).setIndex(String.valueOf(i + 1));
-            sortedList.get(i).setInTimeCheckRate(sortedList.get(i).getInTimeCheckRateNum() == 0 ? "0.0%" : sortedList.get(i).getInTimeCheckRateNum() * 100 + "%");
+            sortedList.get(i).setInTimeCheckRate(Optional.of(nt.format(sortedList.get(i).getInTimeCheckRateNum())).filter(s -> !"NaN".equals(s)).orElse("0"));
         }
         return sortedList;
     }
@@ -635,7 +641,7 @@ public class ComprehensiveEvaluationService {
                     supervisorEvaluateVO.setSupervisorName(user.getName());
                     Integer intimeVerifyNum = Math.toIntExact(intimeVerifyList.stream().filter(s -> user.getId().equals(s.getVerifyPatrolName().getId())).count());
                     Integer needVerifyNum = Math.toIntExact(needVerifyList.stream().filter(s -> user.getId().equals(s.getVerifyPatrolName().getId())).count());
-                    supervisorEvaluateVO.setInTimeVerifyRateNum(Double.valueOf(getRate(intimeVerifyNum,needVerifyNum)));
+                    supervisorEvaluateVO.setInTimeVerifyRateNum(getRate2(intimeVerifyNum,needVerifyNum));
                     list.add(supervisorEvaluateVO);
                 });
             }
@@ -644,7 +650,7 @@ public class ComprehensiveEvaluationService {
         sortedList = list.stream().sorted((s1, s2) -> s2.getInTimeVerifyRateNum().compareTo(s1.getInTimeVerifyRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
             sortedList.get(i).setIndex(String.valueOf(i + 1));
-            sortedList.get(i).setInTimeVerifyRate(sortedList.get(i).getInTimeVerifyRateNum() == 0 ? "0.0%" : sortedList.get(i).getInTimeVerifyRateNum() * 100 + "%");
+            sortedList.get(i).setInTimeVerifyRate(Optional.of(nt.format(sortedList.get(i).getInTimeVerifyRateNum())).filter(s -> !"NaN".equals(s)).orElse("0"));
         }
         return sortedList;
     }
@@ -664,9 +670,9 @@ public class ComprehensiveEvaluationService {
                 d.getUserList().forEach(user -> {
                     SupervisorEvaluateVO supervisorEvaluateVO = new SupervisorEvaluateVO();
                     supervisorEvaluateVO.setSupervisorName(user.getName());
-                    Integer patrolReportNum = Math.toIntExact(patrolReportList.stream().filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count());
-                    Integer validPatrolReportNum = Math.toIntExact(validPatrolReportList.stream().filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count());
-                    supervisorEvaluateVO.setReportVaildNumRateNum(Double.valueOf(getRate(patrolReportNum,validPatrolReportNum)));
+                    Integer patrolReportNum = Math.toIntExact(patrolReportList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count());
+                    Integer validPatrolReportNum = Math.toIntExact(validPatrolReportList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count());
+                    supervisorEvaluateVO.setReportVaildNumRateNum(getRate2(patrolReportNum,validPatrolReportNum));
                     list.add(supervisorEvaluateVO);
                 });
             }
@@ -675,7 +681,7 @@ public class ComprehensiveEvaluationService {
         sortedList = list.stream().sorted((s1, s2) -> s2.getReportVaildNumRateNum().compareTo(s1.getReportVaildNumRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
             sortedList.get(i).setIndex(String.valueOf(i + 1));
-            sortedList.get(i).setReportVaildNumRate(sortedList.get(i).getReportVaildNumRateNum() == 0 ? "0.0%" : sortedList.get(i).getReportVaildNumRateNum() * 100 + "%");
+            sortedList.get(i).setReportVaildNumRate(Optional.of(nt.format(sortedList.get(i).getReportVaildNumRateNum())).filter(s -> !"NaN".equals(s)).orElse("0"));
         }
         return sortedList;
     }
@@ -695,7 +701,7 @@ public class ComprehensiveEvaluationService {
                     SupervisorEvaluateVO supervisorEvaluateVO = new SupervisorEvaluateVO();
                     supervisorEvaluateVO.setSupervisorName(user.getName());
                     /*上报数*/
-                    supervisorEvaluateVO.setPatrolReport(Math.toIntExact(patrolReportList.stream().filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count()));
+                    supervisorEvaluateVO.setPatrolReport(Math.toIntExact(patrolReportList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count()));
                     list.add(supervisorEvaluateVO);
                 });
 
@@ -740,11 +746,11 @@ public class ComprehensiveEvaluationService {
         List<Statistics> needSendCheckList = all.stream().filter(s -> null != s.getNeedSendCheck()).filter(s -> 1 == s.getNeedSendCheck()).collect(Collectors.toList());
 
         List<AcceptorEvaluateVO> operateRanking = operateRanking(operateList, gridAll);
-        List<AcceptorEvaluateVO> sendVerifyRate = sendVerifyRate(inTimeSendVerifyList,needSendVerifyList, gridAll);
+        List<AcceptorEvaluateVO> needSendVerifyRate = needSendVerifyRate(inTimeSendVerifyList,needSendVerifyList, gridAll);
         List<AcceptorEvaluateVO> needSendCheckRate = needSendCheckRate(inTimeSendCheckList,needSendCheckList, gridAll);
 
         map.put("operateRanking",operateRanking);
-        map.put("sendVerifyRate",sendVerifyRate);
+        map.put("needSendVerifyRate",needSendVerifyRate);
         map.put("needSendCheckRate",needSendCheckRate);
         return map;
     }
@@ -757,9 +763,9 @@ public class ComprehensiveEvaluationService {
                 d.getUserList().forEach(user -> {
                     AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
                     vo.setOperateHumanName(user.getName());
-                    Integer num1 = Math.toIntExact(inTimeSendCheckList.stream().filter(s -> user.getId().equals(s.getSendCheckHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(needSendCheckList.stream().filter(s -> user.getId().equals(s.getSendCheckHumanName().getId())).count());
-                    vo.setNeedSendCheckRateNum(Double.valueOf(getRate(num1,num2)));
+                    Integer num1 = Math.toIntExact(inTimeSendCheckList.stream().filter(s-> null != s.getSendCheckHumanName()).filter(s -> user.getId().equals(s.getSendCheckHumanName().getId())).count());
+                    Integer num2 = Math.toIntExact(needSendCheckList.stream().filter(s-> null != s.getSendCheckHumanName()).filter(s -> user.getId().equals(s.getSendCheckHumanName().getId())).count());
+                    vo.setNeedSendCheckRateNum(getRate2(num1,num2));
                     list.add(vo);
                 });
             }
@@ -768,7 +774,7 @@ public class ComprehensiveEvaluationService {
         sortedList = list.stream().sorted((s1, s2) -> s2.getNeedSendCheckRateNum().compareTo(s1.getNeedSendCheckRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
             sortedList.get(i).setIndex(String.valueOf(i + 1));
-            sortedList.get(i).setNeedSendCheckRate(sortedList.get(i).getNeedSendCheckRateNum() == 0 ? "0.0%" : sortedList.get(i).getNeedSendCheckRateNum() * 100 + "%");
+            sortedList.get(i).setNeedSendCheckRate(Optional.of(nt.format(sortedList.get(i).getNeedSendCheckRateNum())).filter(s -> !"NaN".equals(s)).orElse("0"));
         }
         return sortedList;
     }
@@ -780,7 +786,7 @@ public class ComprehensiveEvaluationService {
      * @param gridAll
      * @return
      */
-    private List<AcceptorEvaluateVO> sendVerifyRate(List<Statistics> inTimeSendVerifyList, List<Statistics> needSendVerifyList, List<GridVO> gridAll) {
+    private List<AcceptorEvaluateVO> needSendVerifyRate(List<Statistics> inTimeSendVerifyList, List<Statistics> needSendVerifyList, List<GridVO> gridAll) {
         List<AcceptorEvaluateVO> list = new ArrayList<>();
         List<AcceptorEvaluateVO> sortedList = new ArrayList<>();
         for (GridVO gridVO : gridAll) {
@@ -788,9 +794,9 @@ public class ComprehensiveEvaluationService {
                 d.getUserList().forEach(user -> {
                     AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
                     vo.setOperateHumanName(user.getName());
-                    Integer num1 = Math.toIntExact(inTimeSendVerifyList.stream().filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(needSendVerifyList.stream().filter(s -> user.getId().equals(s.getSendVerifyHumanName().getId())).count());
-                    vo.setSendVerifyRateNum(Double.valueOf(getRate(num1,num2)));
+                    Integer num1 = Math.toIntExact(inTimeSendVerifyList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count());
+                    Integer num2 = Math.toIntExact(needSendVerifyList.stream().filter(s-> null != s.getSendVerifyHumanName()).filter(s -> user.getId().equals(s.getSendVerifyHumanName().getId())).count());
+                    vo.setSendVerifyRateNum(getRate2(num1,num2));
                     list.add(vo);
                 });
             }
@@ -799,7 +805,8 @@ public class ComprehensiveEvaluationService {
         sortedList = list.stream().sorted((s1, s2) -> s2.getSendVerifyRateNum().compareTo(s1.getSendVerifyRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
             sortedList.get(i).setIndex(String.valueOf(i + 1));
-            sortedList.get(i).setSendVerifyRate(sortedList.get(i).getSendVerifyRateNum() == 0 ? "0.0%" : sortedList.get(i).getSendVerifyRateNum() * 100 + "%");
+            sortedList.get(i).setSendVerifyRate(Optional.of(nt.format(sortedList.get(i).getSendVerifyRateNum())).filter(s -> !"NaN".equals(s)).orElse("0"));
+
         }
         return sortedList;
     }
@@ -819,7 +826,7 @@ public class ComprehensiveEvaluationService {
                     AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
                     vo.setOperateHumanName(user.getName());
                     /*受理数*/
-                    vo.setOperate(Math.toIntExact(operateList.stream().filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count()));
+                    vo.setOperate(Math.toIntExact(operateList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count()));
                     list.add(vo);
                 });
 
@@ -888,18 +895,18 @@ public class ComprehensiveEvaluationService {
                 d.getUserList().forEach(user -> {
                     ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
                     vo.setInstHumanName(user.getName());
-                    Integer num1 = Math.toIntExact(inTimeCloseList.stream().filter(s -> user.getId().equals(s.getCloseHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(colseList.stream().filter(s -> user.getId().equals(s.getCloseHumanName().getId())).count());
-                    vo.setInTimeCloseRateNum(Double.valueOf(getRate(num1, num2)));
+                    Integer num1 = Math.toIntExact(inTimeCloseList.stream().filter(s-> null != s.getCloseHumanName()).filter(s -> user.getId().equals(s.getCloseHumanName().getId())).count());
+                    Integer num2 = Math.toIntExact(colseList.stream().filter(s-> null != s.getCloseHumanName()).filter(s -> user.getId().equals(s.getCloseHumanName().getId())).count());
+                    vo.setInTimeCloseRateNum(getRate2(num1, num2));
                     list.add(vo);
                 });
             }
         }
-        //准确立案率比较排序
+        //按时立案率比较排序
         sortedList = list.stream().sorted((s1, s2) -> s2.getInTimeCloseRateNum().compareTo(s1.getInTimeCloseRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
             sortedList.get(i).setIndex(String.valueOf(i + 1));
-            sortedList.get(i).setExactInstRate(sortedList.get(i).getInTimeCloseRateNum() == 0 ? "0.0%" : sortedList.get(i).getInTimeCloseRateNum() * 100 + "%");
+            sortedList.get(i).setInTimeCloseRate(Optional.of(nt.format(sortedList.get(i).getInTimeCloseRateNum())).filter(s -> !"NaN".equals(s)).orElse("0"));
         }
         return sortedList;
     }
@@ -913,9 +920,9 @@ public class ComprehensiveEvaluationService {
                 d.getUserList().forEach(user -> {
                     ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
                     vo.setInstHumanName(user.getName());
-                    Integer num1 = Math.toIntExact(cancelList.stream().filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(instList.stream().filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
-                    vo.setExactInstRateNum(Double.valueOf(getRate(num2-num1,num2)));
+                    Integer num1 = Math.toIntExact(cancelList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
+                    Integer num2 = Math.toIntExact(instList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
+                    vo.setExactInstRateNum(getRate2(num2-num1,num2));
                     list.add(vo);
                 });
             }
@@ -924,7 +931,7 @@ public class ComprehensiveEvaluationService {
         sortedList = list.stream().sorted((s1, s2) -> s2.getExactInstRateNum().compareTo(s1.getExactInstRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
             sortedList.get(i).setIndex(String.valueOf(i + 1));
-            sortedList.get(i).setExactInstRate(sortedList.get(i).getExactInstRateNum() == 0 ? "0.0%" : sortedList.get(i).getExactInstRateNum() * 100 + "%");
+            sortedList.get(i).setExactInstRate(Optional.of(nt.format(sortedList.get(i).getExactInstRateNum())).filter(s -> !"NaN".equals(s)).orElse("0"));
         }
         return sortedList;
     }
@@ -937,9 +944,9 @@ public class ComprehensiveEvaluationService {
                 d.getUserList().forEach(user -> {
                     ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
                     vo.setInstHumanName(user.getName());
-                    Integer num1 = Math.toIntExact(inTimeInstList.stream().filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(instList.stream().filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
-                    vo.setIntimeInstRateNum(Double.valueOf(getRate(num1,num2)));
+                    Integer num1 = Math.toIntExact(inTimeInstList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
+                    Integer num2 = Math.toIntExact(instList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
+                    vo.setIntimeInstRateNum(getRate2(num1,num2));
                     list.add(vo);
                 });
             }
@@ -948,25 +955,31 @@ public class ComprehensiveEvaluationService {
         sortedList = list.stream().sorted((s1, s2) -> s2.getIntimeInstRateNum().compareTo(s1.getIntimeInstRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
             sortedList.get(i).setIndex(String.valueOf(i + 1));
-            sortedList.get(i).setIntimeInstRate(sortedList.get(i).getIntimeInstRateNum() == 0 ? "0.0%" : sortedList.get(i).getIntimeInstRateNum() * 100 + "%");
+            sortedList.get(i).setIntimeInstRate(Optional.of(nt.format(sortedList.get(i).getIntimeInstRateNum())).filter(s -> !"NaN".equals(s)).orElse("0"));
         }
         return sortedList;
     }
 
     private List<ShiftForemanEvaluateVO> instRanking(List<Statistics> instList, List<GridVO> gridAll) {
         List<ShiftForemanEvaluateVO> list = new ArrayList<>();
+        List<ShiftForemanEvaluateVO> sortedList = new ArrayList<>();
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
                     ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
                     vo.setInstHumanName(user.getName());
                     /*立案数*/
-                    vo.setInst(Math.toIntExact(instList.stream().filter(s -> user.getId().equals(s.getInstHumanName().getId())).count()));
+                    vo.setInst(Math.toIntExact(instList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count()));
                     list.add(vo);
                 });
             }
         }
-        return list;
+
+        sortedList = list.stream().sorted((s1, s2) -> s2.getInst().compareTo(s1.getInst())).collect(Collectors.toList());
+        for (int i = 0; i < sortedList.size(); i++) {
+            sortedList.get(i).setIndex(String.valueOf(i + 1));
+        }
+        return sortedList;
     }
     public Map<String, Object> dispatcherEvaluationRankingList(String startTime, String endTime, String gridId) {
         Map<String,Object> map  = new HashMap<>();
@@ -982,7 +995,7 @@ public class ComprehensiveEvaluationService {
         /*派遣数*/
         List<Statistics> dispatchList = all.stream().filter(s -> null != s.getDispatch()).filter(s -> 1 == s.getInst()).collect(Collectors.toList());
         /*按时派遣数*/
-        List<Statistics> inTImeDispatchList = all.stream().filter(s -> null != s.getInTimeDispatch()).filter(s -> 1 == s.getInst()).collect(Collectors.toList());
+        List<Statistics> inTimeDispatchList = all.stream().filter(s -> null != s.getInTimeDispatch()).filter(s -> 1 == s.getInst()).collect(Collectors.toList());
         /*应派遣数*/
         List<Statistics> needDispatchList = all.stream().filter(s -> null != s.getNeedDispatch()).filter(s -> 1 == s.getInst()).collect(Collectors.toList());
         /*准确派遣数*/
@@ -991,12 +1004,12 @@ public class ComprehensiveEvaluationService {
         /*派遣数排行榜*/
         List<DispatcherEvaluateVO> dispatchRanking = dispatchRanking(dispatchList, gridAll);
         /*按时派遣率(按时派遣数/应派遣数×100%)排行榜*/
-        List<DispatcherEvaluateVO> accuracyDispatchRate = accuracyDispatchRate(inTImeDispatchList,needDispatchList, gridAll);
+        List<DispatcherEvaluateVO> intimeDispatchRate = intimeDispatchRate(inTimeDispatchList,needDispatchList, gridAll);
         /*准确派遣率(准确派遣数/应派遣数×100%)排行榜*/
-        List<DispatcherEvaluateVO> intimeDispatchRate = intimeDispatchRate(accuracyDispatchList,needDispatchList, gridAll);
+        List<DispatcherEvaluateVO> accuracyDispatchRate = accuracyDispatchRate(accuracyDispatchList,needDispatchList, gridAll);
         map.put("dispatchRanking",dispatchRanking);
-        map.put("accuracyDispatchRate",accuracyDispatchRate);
         map.put("intimeDispatchRate",intimeDispatchRate);
+        map.put("accuracyDispatchRate",accuracyDispatchRate);
         return map;
     }
 
@@ -1008,18 +1021,18 @@ public class ComprehensiveEvaluationService {
                 d.getUserList().forEach(user -> {
                     DispatcherEvaluateVO vo = new DispatcherEvaluateVO();
                     vo.setDispatch(user.getName());
-                    Integer num1 = Math.toIntExact(accuracyDispatchList.stream().filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(needDispatchList.stream().filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
-                    vo.setAccuracyDispatchRateNum(Double.valueOf(getRate(num1,num2)));
+                    Integer num1 = Math.toIntExact(accuracyDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
+                    Integer num2 = Math.toIntExact(needDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
+                    vo.setIntimeDispatchRateNum(getRate2(num1,num2));
                     list.add(vo);
                 });
             }
         }
         //按时派发核实率比较排序
-        sortedList = list.stream().sorted((s1, s2) -> s2.getAccuracyDispatchRateNum().compareTo(s1.getAccuracyDispatchRateNum())).collect(Collectors.toList());
+        sortedList = list.stream().sorted((s1, s2) -> s2.getIntimeDispatchRateNum().compareTo(s1.getIntimeDispatchRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
             sortedList.get(i).setIndex(String.valueOf(i + 1));
-            sortedList.get(i).setAccuracyDispatchRate(sortedList.get(i).getAccuracyDispatchRateNum() == 0 ? "0.0%" : sortedList.get(i).getAccuracyDispatchRateNum() * 100 + "%");
+            sortedList.get(i).setIntimeDispatchRate(Optional.of(nt.format(sortedList.get(i).getIntimeDispatchRateNum())).filter(s -> !"NaN".equals(s)).orElse("0"));
         }
         return sortedList;
     }
@@ -1032,9 +1045,9 @@ public class ComprehensiveEvaluationService {
                 d.getUserList().forEach(user -> {
                     DispatcherEvaluateVO vo = new DispatcherEvaluateVO();
                     vo.setDispatch(user.getName());
-                    Integer num1 = Math.toIntExact(inTImeDispatchList.stream().filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(needDispatchList.stream().filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
-                    vo.setAccuracyDispatchRateNum(Double.valueOf(getRate(num1,num2)));
+                    Integer num1 = Math.toIntExact(inTImeDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
+                    Integer num2 = Math.toIntExact(needDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
+                    vo.setAccuracyDispatchRateNum(getRate2(num1,num2));
                     list.add(vo);
                 });
             }
@@ -1043,24 +1056,29 @@ public class ComprehensiveEvaluationService {
         sortedList = list.stream().sorted((s1, s2) -> s2.getAccuracyDispatchRateNum().compareTo(s1.getAccuracyDispatchRateNum())).collect(Collectors.toList());
         for (int i = 0; i < sortedList.size(); i++) {
             sortedList.get(i).setIndex(String.valueOf(i + 1));
-            sortedList.get(i).setAccuracyDispatchRate(sortedList.get(i).getAccuracyDispatchRateNum() == 0 ? "0.0%" : sortedList.get(i).getAccuracyDispatchRateNum() * 100 + "%");
+            sortedList.get(i).setAccuracyDispatchRate(Optional.of(nt.format(sortedList.get(i).getAccuracyDispatchRateNum())).filter(s -> !"NaN".equals(s)).orElse("0"));
         }
         return sortedList;
     }
 
     private List<DispatcherEvaluateVO> dispatchRanking(List<Statistics> dispatchList, List<GridVO> gridAll) {
         List<DispatcherEvaluateVO> list = new ArrayList<>();
+        List<DispatcherEvaluateVO> sortedList = new ArrayList<>();
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
                     DispatcherEvaluateVO vo = new DispatcherEvaluateVO();
                     vo.setDispatch(user.getName());
                     /*派遣数*/
-                    vo.setToDispatch(Math.toIntExact(dispatchList.stream().filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count()));
+                    vo.setToDispatch(Math.toIntExact(dispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count()));
                     list.add(vo);
                 });
             }
         }
-        return list;
+        sortedList = list.stream().sorted((s1, s2) -> s2.getToDispatch().compareTo(s1.getToDispatch())).collect(Collectors.toList());
+        for (int i = 0; i < sortedList.size(); i++) {
+            sortedList.get(i).setIndex(String.valueOf(i + 1));
+        }
+        return sortedList;
     }
 }

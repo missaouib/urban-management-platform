@@ -35,8 +35,8 @@ public class AcceptorEvaluateVO {
     /**
      * 核实按时派发率
      */
-    private Double SendVerifyRateNum;
-    private String SendVerifyRate;
+    private Double sendVerifyRateNum;
+    private String sendVerifyRate;
     /**
      * 核查按时派发数
      */
