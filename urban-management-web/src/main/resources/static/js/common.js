@@ -513,6 +513,9 @@ function setFileInput(file) {
 function setPointForList(data) {
     let rowArray = data.rows;
     if(rowArray.length > 0){
+        if(rowArray[0].centerPoint == null){
+            return false;
+        }
         let x = parseFloat(rowArray[0].centerPoint.split("-")[0]);
         let y = parseFloat(rowArray[0].centerPoint.split("-")[1]);
         // setPointForCenter(x, y);
