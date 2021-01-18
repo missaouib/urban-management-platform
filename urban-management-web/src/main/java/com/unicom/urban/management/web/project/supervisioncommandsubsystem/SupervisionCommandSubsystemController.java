@@ -142,7 +142,7 @@ public class SupervisionCommandSubsystemController {
      * @return list
      */
     @GetMapping("/getCaseAnalysisTitle")
-    public Result getCaseAnalysis(EventDTO eventDTO) {
+    public Result getCaseAnalysisTitle(EventDTO eventDTO) {
         List<Map<String, Object>> caseAnalysis = indexService.caseAnalysisList(eventDTO);
         return Result.success(caseAnalysis);
     }

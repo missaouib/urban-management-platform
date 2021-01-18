@@ -276,8 +276,8 @@ public class IndexService {
         setListDataForCaseAnalysisList("受理", operateList, mapList);
         setListDataForCaseAnalysisList("立案", instList, mapList);
         setListDataForCaseAnalysisList("派遣", dispatchList, mapList);
-        setListDataForCaseAnalysisList("核查", checkNumList, mapList);
         setListDataForCaseAnalysisList("处置", disposeList, mapList);
+        setListDataForCaseAnalysisList("核查", checkNumList, mapList);
         setListDataForCaseAnalysisList("结案", closeList, mapList);
         return mapList;
     }
