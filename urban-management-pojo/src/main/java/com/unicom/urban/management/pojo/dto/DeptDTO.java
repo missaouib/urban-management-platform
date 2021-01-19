@@ -31,4 +31,9 @@ public class DeptDTO {
 
     private Integer sort;
 
+    private String type;
+
+    
+    
+
 }

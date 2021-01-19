@@ -79,6 +79,21 @@ public class DeptService {
      */
     public List<DeptVO> getAllAndRoleForTree() {
         List<Dept> deptList = deptRepository.findAll(Sort.by(Sort.Order.asc("sort")));
+        return roleForTree(deptList);
+    }
+
+    /**
+     * 专业部门角色配置结构树
+     *
+     * @return 树结构数据
+     */
+    public List<DeptVO> getDeptAndRoleForTree() {
+        List<Dept> all = deptRepository.findAll(Sort.by(Sort.Order.asc("sort")));
+        List<Dept> deptList = all.stream().filter(d->"2".equals(d.getType())).collect(Collectors.toList());
+        return roleForTree(deptList);
+    }
+
+    private List<DeptVO> roleForTree(List<Dept> deptList){
         List<DeptVO> deptVOList = new ArrayList<>();
         for (Dept dept : deptList) {
             DeptVO deptVO = new DeptVO();
@@ -105,7 +120,7 @@ public class DeptService {
             }
             deptVOList.add(deptVO);
         }
-        deptVOList.sort(Comparator.comparingInt(DeptVO::getSort));
+         deptVOList.sort(Comparator.comparingInt(DeptVO::getSort));
         return deptVOList;
     }
 
@@ -166,6 +181,7 @@ public class DeptService {
                 }else{
                     dept.setSort(deptDTO.getSort());
                 }
+                dept.setType(parent.getType());
             } else {
                 throw new DataValidException("所属部门不存在");
             }

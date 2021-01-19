@@ -26,6 +26,7 @@ public interface TreeMapper {
 
     @Mapping(source = "deptName", target = "name")
     @Mapping(source = "parent.id", target = "parentId")
+    @Mapping(source = "type",target = "dtoType")
     TreeVO deptToTreeVO(Dept dept);
 
     List<TreeVO> gridListToTreeVOList(List<Grid> gridList);

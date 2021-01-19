@@ -33,6 +33,8 @@ public class Dept extends BaseEntity {
 
     private String level;
 
+    private String type;
+
     /**
      * 办公电话
      */
