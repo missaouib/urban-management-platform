@@ -42,4 +42,6 @@ public class DeptVO {
 
     private String iconSkin;
 
+    private String type;
+
 }

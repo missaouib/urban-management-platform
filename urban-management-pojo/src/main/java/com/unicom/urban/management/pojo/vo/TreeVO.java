@@ -15,5 +15,7 @@ public class TreeVO implements Serializable {
 
     private String levelOrNot;
 
+    private String dtoType;
+
 
 }

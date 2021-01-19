@@ -58,6 +58,11 @@ public class RoleSetupController {
         List<DeptVO> allAndRoleForTree = deptService.getAllAndRoleForTree();
         return Result.success(allAndRoleForTree);
     }
+    @GetMapping("/getDeptAndRoleForTree")
+    public Result getDeptAndRoleForTree() {
+        List<DeptVO> allAndRoleForTree = deptService.getDeptAndRoleForTree();
+        return Result.success(allAndRoleForTree);
+    }
 
     @PostMapping("/updateRole")
     public Result updateRoleUrl(@Valid RoleDTO roleDTO) {

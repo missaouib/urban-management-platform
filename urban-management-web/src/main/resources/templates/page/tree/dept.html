@@ -17,6 +17,7 @@
         <!--            <input id="treeName" name="treeName"  type="hidden" th:value="${dept.deptName}"/>-->
         <input id="treeId" name="treeId" type="hidden"/>
         <input id="treeName" name="treeName" type="hidden"/>
+        <input id="type" name="type" type="hidden"/>
 <!--        <div id="search" style="display: flex; justify-content: space-between;">-->
 <!--            <label for="keyword">关键字：</label>-->
 <!--            <input type="text" class="find_input" id="keyword">-->
@@ -49,8 +50,10 @@
     function zTreeOnClick(event, treeId, treeNode) {
         var treeId = treeNode.id;
         var treeName = treeNode.name;
+        var dtoType = treeNode.dtoType;
         $("#treeId").val(treeId);
         $("#treeName").val(treeName);
+        $("#type").val(dtoType);
     }
 
 
