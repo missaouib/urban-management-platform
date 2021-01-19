@@ -339,40 +339,39 @@ public class ComprehensiveEvaluationService {
             List<Dept> subDeptList = deptService.findAllByGridId(gridId);
             subDeptList.forEach(d->{
                 d.getUserList().forEach(user -> {
-                    SupervisorEvaluateVO vo = new SupervisorEvaluateVO();
-                    /*上报数*/
-                    vo.setPatrolReport(Math.toIntExact(patrolReportList.stream().filter(s -> null != s.getReportPatrolName()).filter(s -> s.getReportPatrolName().getId().equals(user.getId())).count()));
-                    /*有效上报数*/
-                    vo.setValidPatrolReport(Math.toIntExact(validReportList.stream().filter(s -> null != s.getReportPatrolName()).filter(s -> s.getReportPatrolName().getId().equals(user.getId())).count()));
-                    /*按时核查数*/
-                    vo.setInTimeCheck(Math.toIntExact(intimeCheckList.stream().filter(s -> null != s.getCheckPatrolName()).filter(s -> s.getCheckPatrolName().getId().equals(user.getId())).count()));
-                    /*按时核实数*/
-                    vo.setIntimeVerify(Math.toIntExact(intimeVerifyList.stream().filter(s -> null != s.getVerifyPatrolName()).filter(s -> s.getVerifyPatrolName().getId().equals(user.getId())).count()));
-                    vo.setSupervisorName(user.getName());
-                    list.add(vo);
+                    getPatroleReportRoleUser(list, patrolReportList, validReportList, intimeCheckList, intimeVerifyList, user);
                 });
             });
         }else {
             for (GridVO gridVO : gridService.findGridAll()) {
                 for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                     d.getUserList().forEach(user -> {
-                        SupervisorEvaluateVO vo = new SupervisorEvaluateVO();
-                        /*上报数*/
-                        vo.setPatrolReport(Math.toIntExact(patrolReportList.stream().filter(s -> null != s.getReportPatrolName()).filter(s -> s.getReportPatrolName().getId().equals(user.getId())).count()));
-                        /*有效上报数*/
-                        vo.setValidPatrolReport(Math.toIntExact(validReportList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
-                        /*按时核查数*/
-                        vo.setInTimeCheck(Math.toIntExact(intimeCheckList.stream().filter(s -> null != s.getOperateHumanName()).filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
-                        /*按时核实数*/
-                        vo.setIntimeVerify(Math.toIntExact(intimeVerifyList.stream().filter(s -> null != s.getOperateHumanName()).filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
-                        vo.setSupervisorName(user.getName());
-                        list.add(vo);
+                        getPatroleReportRoleUser(list, patrolReportList, validReportList, intimeCheckList, intimeVerifyList, user);
                     });
                 }
             }
         }
         return list;
     }
+
+    private void getPatroleReportRoleUser(List<SupervisorEvaluateVO> list, List<Statistics> patrolReportList, List<Statistics> validReportList, List<Statistics> intimeCheckList, List<Statistics> intimeVerifyList, User user) {
+        user.getRoleList().forEach(role -> {
+            if("监督员".equals(role.getName())){
+                SupervisorEvaluateVO vo = new SupervisorEvaluateVO();
+                /*上报数*/
+                vo.setPatrolReport(Math.toIntExact(patrolReportList.stream().filter(s -> null != s.getReportPatrolName()).filter(s -> s.getReportPatrolName().getId().equals(user.getId())).count()));
+                /*有效上报数*/
+                vo.setValidPatrolReport(Math.toIntExact(validReportList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
+                /*按时核查数*/
+                vo.setInTimeCheck(Math.toIntExact(intimeCheckList.stream().filter(s -> null != s.getOperateHumanName()).filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
+                /*按时核实数*/
+                vo.setIntimeVerify(Math.toIntExact(intimeVerifyList.stream().filter(s -> null != s.getOperateHumanName()).filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
+                vo.setSupervisorName(user.getName());
+                list.add(vo);
+            }
+        });
+    }
+
     /**
      *岗位评价-受理员岗位评价列表查询
      * @param startTime
@@ -397,44 +396,41 @@ public class ComprehensiveEvaluationService {
             List<Dept> subDeptList = deptService.findAllByGridId(gridId);
             subDeptList.forEach(d->{
                 d.getUserList().forEach(user -> {
-                    AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
-                    /*受理数*/
-                    vo.setOperate(Math.toIntExact(operateList.stream().filter(s -> null != s.getOperateHumanName()).filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
-                    /*按时核实派发数*/
-                    vo.setIntimeSendVerify(Math.toIntExact(inTimeSendVerifyList.stream().filter(s -> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
-                    /*核实应派发数*/
-                    vo.setNeedSendVerify(Math.toIntExact(needSendVerifyList.stream().filter(s -> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
-                    /*按时核查派发数*/
-                    vo.setIntimeSendCheck(Math.toIntExact(inTimeSendCheckList.stream().filter(s -> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
-                    /*核查应派发数*/
-                    vo.setNeedSendCheck(Math.toIntExact(needSendCheckList.stream().filter(s -> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
-                    vo.setOperateHumanName(user.getName());
-                    list.add(vo);
+                    getOperateRoleUser(list, operateList, inTimeSendVerifyList, needSendVerifyList, inTimeSendCheckList, needSendCheckList, user);
                 });
             });
         }else {
             for (GridVO gridVO : gridService.findGridAll()) {
                 for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                     d.getUserList().forEach(user -> {
-                        AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
-                        /*受理数*/
-                        vo.setOperate(Math.toIntExact(operateList.stream().filter(s -> null != s.getOperateHumanName()).filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
-                        /*按时核实派发数*/
-                        vo.setIntimeSendVerify(Math.toIntExact(inTimeSendVerifyList.stream().filter(s-> null != s.getSendVerifyHumanName()).filter(s-> null != s.getOperateHumanName()).filter(s -> s.getSendVerifyHumanName().getId().equals(user.getId())).count()));
-                        /*核实应派发数*/
-                        vo.setNeedSendVerify(Math.toIntExact(needSendVerifyList.stream().filter(s-> null != s.getSendVerifyHumanName()).filter(s-> null != s.getOperateHumanName()).filter(s -> s.getSendVerifyHumanName().getId().equals(user.getId())).count()));
-                        /*按时核查派发数*/
-                        vo.setIntimeSendCheck(Math.toIntExact(inTimeSendCheckList.stream().filter(s-> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
-                        /*核查应派发数*/
-                        vo.setNeedSendCheck(Math.toIntExact(needSendCheckList.stream().filter(s-> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
-                        vo.setOperateHumanName(user.getName());
-                        list.add(vo);
+                        getOperateRoleUser(list, operateList, inTimeSendVerifyList, needSendVerifyList, inTimeSendCheckList, needSendCheckList, user);
                     });
                 }
             }
         }
         return list;
     }
+
+    private void getOperateRoleUser(List<AcceptorEvaluateVO> list, List<Statistics> operateList, List<Statistics> inTimeSendVerifyList, List<Statistics> needSendVerifyList, List<Statistics> inTimeSendCheckList, List<Statistics> needSendCheckList, User user) {
+        user.getRoleList().forEach(role -> {
+            if ("受理员".equals(role.getName())){
+                AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
+                /*受理数*/
+                vo.setOperate(Math.toIntExact(operateList.stream().filter(s -> null != s.getOperateHumanName()).filter(s -> s.getOperateHumanName().getId().equals(user.getId())).count()));
+                /*按时核实派发数*/
+                vo.setIntimeSendVerify(Math.toIntExact(inTimeSendVerifyList.stream().filter(s-> null != s.getSendVerifyHumanName()).filter(s-> null != s.getOperateHumanName()).filter(s -> s.getSendVerifyHumanName().getId().equals(user.getId())).count()));
+                /*核实应派发数*/
+                vo.setNeedSendVerify(Math.toIntExact(needSendVerifyList.stream().filter(s-> null != s.getSendVerifyHumanName()).filter(s-> null != s.getOperateHumanName()).filter(s -> s.getSendVerifyHumanName().getId().equals(user.getId())).count()));
+                /*按时核查派发数*/
+                vo.setIntimeSendCheck(Math.toIntExact(inTimeSendCheckList.stream().filter(s-> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
+                /*核查应派发数*/
+                vo.setNeedSendCheck(Math.toIntExact(needSendCheckList.stream().filter(s-> null != s.getSendCheckHumanName()).filter(s -> s.getSendCheckHumanName().getId().equals(user.getId())).count()));
+                vo.setOperateHumanName(user.getName());
+                list.add(vo);
+            }
+        });
+    }
+
     /**
      *岗位评价-值班长岗位评价列表查询
      * @param startTime
@@ -459,43 +455,39 @@ public class ComprehensiveEvaluationService {
             List<Dept> subDeptList = deptService.findAllByGridId(gridId);
             subDeptList.forEach(d->{
                 d.getUserList().forEach(user -> {
-                    ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
-                    /*立案数*/
-                    vo.setInst(Math.toIntExact(instList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
-                    /*按时立案数*/
-                    vo.setIntimeInst(Math.toIntExact(inTimeInstList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
-                    /*准确立案数(立案数  - 作废数)*/
-                    vo.setExactInst(vo.getInst() - Math.toIntExact(cancelList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
-                    /*按时结案数*/
-                    vo.setInTimeClose(Math.toIntExact(inTimeCloseList.stream().filter(s -> null != s.getCloseHumanName()).filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
-                    /*应结案数数(按时结案数+待结案数)*/
-                    vo.setClose(vo.getInTimeClose() + Math.toIntExact(toColseList.stream().filter(s -> null != s.getCloseHumanName()).filter(s-> null != s.getCloseHumanName()).filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
-                    vo.setInstHumanName(user.getName());
-                    list.add(vo);
+                    getShiftForemanRoleUser(list, instList, inTimeInstList, cancelList, inTimeCloseList, toColseList, user);
                 });
             });
         }else {
             for (GridVO gridVO : gridService.findGridAll()) {
                 for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                     d.getUserList().forEach(user -> {
-                        ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
-                        /*立案数*/
-                        vo.setInst(Math.toIntExact(instList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
-                        /*按时立案数*/
-                        vo.setIntimeInst(Math.toIntExact(inTimeInstList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
-                        /*准确立案数(立案数  - 作废数)*/
-                        vo.setExactInst(vo.getInst() - Math.toIntExact(cancelList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
-                        /*按时结案数*/
-                        vo.setInTimeClose(Math.toIntExact(inTimeCloseList.stream().filter(s-> null != s.getCloseHumanName()).filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
-                        /*应结案数数(按时结案数+待结案数)*/
-                        vo.setClose(vo.getInTimeClose() + Math.toIntExact(toColseList.stream().filter(s -> null != s.getCloseHumanName()).filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
-                        vo.setInstHumanName(user.getName());
-                        list.add(vo);
+                        getShiftForemanRoleUser(list, instList, inTimeInstList, cancelList, inTimeCloseList, toColseList, user);
                     });
                 }
             }
         }
         return list;
+    }
+
+    private void getShiftForemanRoleUser(List<ShiftForemanEvaluateVO> list, List<Statistics> instList, List<Statistics> inTimeInstList, List<Statistics> cancelList, List<Statistics> inTimeCloseList, List<Statistics> toColseList, User user) {
+        user.getRoleList().forEach(role -> {
+            if ("值班长".equals(role.getName())){
+                ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
+                /*立案数*/
+                vo.setInst(Math.toIntExact(instList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
+                /*按时立案数*/
+                vo.setIntimeInst(Math.toIntExact(inTimeInstList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
+                /*准确立案数(立案数  - 作废数)*/
+                vo.setExactInst(vo.getInst() - Math.toIntExact(cancelList.stream().filter(s -> null != s.getInstHumanName()).filter(s -> s.getInstHumanName().getId().equals(user.getId())).count()));
+                /*按时结案数*/
+                vo.setInTimeClose(Math.toIntExact(inTimeCloseList.stream().filter(s -> null != s.getCloseHumanName()).filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
+                /*应结案数数(按时结案数+待结案数)*/
+                vo.setClose(vo.getInTimeClose() + Math.toIntExact(toColseList.stream().filter(s -> null != s.getCloseHumanName()).filter(s-> null != s.getCloseHumanName()).filter(s -> s.getCloseHumanName().getId().equals(user.getId())).count()));
+                vo.setInstHumanName(user.getName());
+                list.add(vo);
+            }
+        });
     }
 
     /**
@@ -519,7 +511,22 @@ public class ComprehensiveEvaluationService {
         if (StringUtils.isNotEmpty(gridId)) {
             List<Dept> subDeptList = deptService.findAllByGridId(gridId);
             subDeptList.forEach(d->{
-                d.getUserList().forEach(user -> {
+                getDispatcherRoleUser(list, toDispatchList, inTimeDispatchList, needDispatchList, reWorkList, d);
+            });
+        }else {
+            for (GridVO gridVO : gridService.findGridAll()) {
+                for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
+                    getDispatcherRoleUser(list, toDispatchList, inTimeDispatchList, needDispatchList, reWorkList, d);
+                }
+            }
+        }
+        return list;
+    }
+
+    private void getDispatcherRoleUser(List<DispatcherEvaluateVO> list, List<Statistics> toDispatchList, List<Statistics> inTimeDispatchList, List<Statistics> needDispatchList, List<Statistics> reWorkList, Dept d) {
+        d.getUserList().forEach(user -> {
+            user.getRoleList().forEach(role -> {
+                if ("派遣员".equals(role.getName())){
                     DispatcherEvaluateVO vo = new DispatcherEvaluateVO();
                     /*派遣数*/
                     vo.setToDispatch(Math.toIntExact(toDispatchList.stream().filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
@@ -531,28 +538,9 @@ public class ComprehensiveEvaluationService {
                     vo.setAccuracyDispatch(vo.getToDispatch() - Math.toIntExact(reWorkList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
                     vo.setDispatch(user.getName());
                     list.add(vo);
-                });
-            });
-        }else {
-            for (GridVO gridVO : gridService.findGridAll()) {
-                for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
-                    d.getUserList().forEach(user -> {
-                        DispatcherEvaluateVO vo = new DispatcherEvaluateVO();
-                        /*派遣数*/
-                        vo.setToDispatch(Math.toIntExact(toDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s-> null != s.getUser()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).filter(s-> s.getUser().getId().equals(user.getId())).count()));
-                        /*按时派遣数*/
-                        vo.setIntimeDispatch(Math.toIntExact(inTimeDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
-                        /*应派遣数*/
-                        vo.setNeedDispatch(Math.toIntExact(needDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
-                        /*准确派遣数（派遣数-返工数）*/
-                        vo.setAccuracyDispatch(vo.getToDispatch() - Math.toIntExact(reWorkList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> s.getDispatchHumanName().getId().equals(user.getId())).count()));
-                        vo.setDispatch(user.getName());
-                        list.add(vo);
-                    });
                 }
-            }
-        }
-        return list;
+            });
+        });
     }
 
     public Map<String, Object> supervisorEvaluationRankingList(String startTime, String endTime, String gridId) {
@@ -604,12 +592,16 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    SupervisorEvaluateVO supervisorEvaluateVO = new SupervisorEvaluateVO();
-                    supervisorEvaluateVO.setSupervisorName(user.getName());
-                    Integer intimeCheckNum = Math.toIntExact(intimeCheckList.stream().filter(s-> null != s.getCheckPatrolName()).filter(s -> user.getId().equals(s.getCheckPatrolName().getId())).count());
-                    Integer needCheckNum = Math.toIntExact(needCheckList.stream().filter(s-> null != s.getCheckPatrolName()).filter(s -> user.getId().equals(s.getCheckPatrolName().getId())).count());
-                    supervisorEvaluateVO.setInTimeCheckRateNum(getRate2(intimeCheckNum,needCheckNum));
-                    list.add(supervisorEvaluateVO);
+                    user.getRoleList().forEach(role -> {
+                        if ("监督员".equals(role.getName())){
+                            SupervisorEvaluateVO supervisorEvaluateVO = new SupervisorEvaluateVO();
+                            supervisorEvaluateVO.setSupervisorName(user.getName());
+                            Integer intimeCheckNum = Math.toIntExact(intimeCheckList.stream().filter(s-> null != s.getCheckPatrolName()).filter(s -> user.getId().equals(s.getCheckPatrolName().getId())).count());
+                            Integer needCheckNum = Math.toIntExact(needCheckList.stream().filter(s-> null != s.getCheckPatrolName()).filter(s -> user.getId().equals(s.getCheckPatrolName().getId())).count());
+                            supervisorEvaluateVO.setInTimeCheckRateNum(getRate2(intimeCheckNum,needCheckNum));
+                            list.add(supervisorEvaluateVO);
+                        }
+                    });
                 });
             }
         }
@@ -635,12 +627,16 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    SupervisorEvaluateVO supervisorEvaluateVO = new SupervisorEvaluateVO();
-                    supervisorEvaluateVO.setSupervisorName(user.getName());
-                    Integer intimeVerifyNum = Math.toIntExact(intimeVerifyList.stream().filter(s-> null != s.getVerifyPatrolName()).filter(s -> user.getId().equals(s.getVerifyPatrolName().getId())).count());
-                    Integer needVerifyNum = Math.toIntExact(needVerifyList.stream().filter(s-> null != s.getVerifyPatrolName()).filter(s -> user.getId().equals(s.getVerifyPatrolName().getId())).count());
-                    supervisorEvaluateVO.setInTimeVerifyRateNum(getRate2(intimeVerifyNum,needVerifyNum));
-                    list.add(supervisorEvaluateVO);
+                    user.getRoleList().forEach(role -> {
+                        if ("监督员".equals(role.getName())){
+                            SupervisorEvaluateVO supervisorEvaluateVO = new SupervisorEvaluateVO();
+                            supervisorEvaluateVO.setSupervisorName(user.getName());
+                            Integer intimeVerifyNum = Math.toIntExact(intimeVerifyList.stream().filter(s-> null != s.getVerifyPatrolName()).filter(s -> user.getId().equals(s.getVerifyPatrolName().getId())).count());
+                            Integer needVerifyNum = Math.toIntExact(needVerifyList.stream().filter(s-> null != s.getVerifyPatrolName()).filter(s -> user.getId().equals(s.getVerifyPatrolName().getId())).count());
+                            supervisorEvaluateVO.setInTimeVerifyRateNum(getRate2(intimeVerifyNum,needVerifyNum));
+                            list.add(supervisorEvaluateVO);
+                        }
+                    });
                 });
             }
         }
@@ -666,12 +662,16 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    SupervisorEvaluateVO supervisorEvaluateVO = new SupervisorEvaluateVO();
-                    supervisorEvaluateVO.setSupervisorName(user.getName());
-                    Integer patrolReportNum = Math.toIntExact(patrolReportList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count());
-                    Integer validPatrolReportNum = Math.toIntExact(validPatrolReportList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count());
-                    supervisorEvaluateVO.setReportVaildNumRateNum(getRate2(patrolReportNum,validPatrolReportNum));
-                    list.add(supervisorEvaluateVO);
+                    user.getRoleList().forEach(role -> {
+                        if ("监督员".equals(role.getName())){
+                            SupervisorEvaluateVO supervisorEvaluateVO = new SupervisorEvaluateVO();
+                            supervisorEvaluateVO.setSupervisorName(user.getName());
+                            Integer patrolReportNum = Math.toIntExact(patrolReportList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count());
+                            Integer validPatrolReportNum = Math.toIntExact(validPatrolReportList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count());
+                            supervisorEvaluateVO.setReportVaildNumRateNum(getRate2(patrolReportNum,validPatrolReportNum));
+                            list.add(supervisorEvaluateVO);
+                        }
+                    });
                 });
             }
         }
@@ -696,13 +696,16 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    SupervisorEvaluateVO supervisorEvaluateVO = new SupervisorEvaluateVO();
-                    supervisorEvaluateVO.setSupervisorName(user.getName());
-                    /*上报数*/
-                    supervisorEvaluateVO.setPatrolReport(Math.toIntExact(patrolReportList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count()));
-                    list.add(supervisorEvaluateVO);
+                    user.getRoleList().forEach(role -> {
+                        if ("监督员".equals(role.getName())){
+                            SupervisorEvaluateVO supervisorEvaluateVO = new SupervisorEvaluateVO();
+                            supervisorEvaluateVO.setSupervisorName(user.getName());
+                            /*上报数*/
+                            supervisorEvaluateVO.setPatrolReport(Math.toIntExact(patrolReportList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count()));
+                            list.add(supervisorEvaluateVO);
+                        }
+                    });
                 });
-
             }
         }
 
@@ -759,12 +762,16 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
-                    vo.setOperateHumanName(user.getName());
-                    Integer num1 = Math.toIntExact(inTimeSendCheckList.stream().filter(s-> null != s.getSendCheckHumanName()).filter(s -> user.getId().equals(s.getSendCheckHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(needSendCheckList.stream().filter(s-> null != s.getSendCheckHumanName()).filter(s -> user.getId().equals(s.getSendCheckHumanName().getId())).count());
-                    vo.setNeedSendCheckRateNum(getRate2(num1,num2));
-                    list.add(vo);
+                    user.getRoleList().forEach(role -> {
+                        if("受理员".equals(role.getName())){
+                            AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
+                            vo.setOperateHumanName(user.getName());
+                            Integer num1 = Math.toIntExact(inTimeSendCheckList.stream().filter(s-> null != s.getSendCheckHumanName()).filter(s -> user.getId().equals(s.getSendCheckHumanName().getId())).count());
+                            Integer num2 = Math.toIntExact(needSendCheckList.stream().filter(s-> null != s.getSendCheckHumanName()).filter(s -> user.getId().equals(s.getSendCheckHumanName().getId())).count());
+                            vo.setNeedSendCheckRateNum(getRate2(num1,num2));
+                            list.add(vo);
+                        }
+                    });
                 });
             }
         }
@@ -790,12 +797,16 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
-                    vo.setOperateHumanName(user.getName());
-                    Integer num1 = Math.toIntExact(inTimeSendVerifyList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(needSendVerifyList.stream().filter(s-> null != s.getSendVerifyHumanName()).filter(s -> user.getId().equals(s.getSendVerifyHumanName().getId())).count());
-                    vo.setSendVerifyRateNum(getRate2(num1,num2));
-                    list.add(vo);
+                    user.getRoleList().forEach(role -> {
+                        if ("受理员".equals(role.getName())){
+                            AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
+                            vo.setOperateHumanName(user.getName());
+                            Integer num1 = Math.toIntExact(inTimeSendVerifyList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count());
+                            Integer num2 = Math.toIntExact(needSendVerifyList.stream().filter(s-> null != s.getSendVerifyHumanName()).filter(s -> user.getId().equals(s.getSendVerifyHumanName().getId())).count());
+                            vo.setSendVerifyRateNum(getRate2(num1,num2));
+                            list.add(vo);
+                        }
+                    });
                 });
             }
         }
@@ -821,13 +832,16 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
-                    vo.setOperateHumanName(user.getName());
-                    /*受理数*/
-                    vo.setOperate(Math.toIntExact(operateList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count()));
-                    list.add(vo);
+                    user.getRoleList().forEach(role -> {
+                        if ("受理员".equals(role.getName())){
+                            AcceptorEvaluateVO vo = new AcceptorEvaluateVO();
+                            vo.setOperateHumanName(user.getName());
+                            /*受理数*/
+                            vo.setOperate(Math.toIntExact(operateList.stream().filter(s-> null != s.getOperateHumanName()).filter(s -> user.getId().equals(s.getOperateHumanName().getId())).count()));
+                            list.add(vo);
+                        }
+                    });
                 });
-
             }
         }
 
@@ -891,12 +905,16 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
-                    vo.setInstHumanName(user.getName());
-                    Integer num1 = Math.toIntExact(inTimeCloseList.stream().filter(s-> null != s.getCloseHumanName()).filter(s -> user.getId().equals(s.getCloseHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(colseList.stream().filter(s-> null != s.getCloseHumanName()).filter(s -> user.getId().equals(s.getCloseHumanName().getId())).count());
-                    vo.setInTimeCloseRateNum(getRate2(num1, num2));
-                    list.add(vo);
+                    user.getRoleList().forEach(role -> {
+                        if ("值班长".equals(role.getName())) {
+                            ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
+                            vo.setInstHumanName(user.getName());
+                            Integer num1 = Math.toIntExact(inTimeCloseList.stream().filter(s-> null != s.getCloseHumanName()).filter(s -> user.getId().equals(s.getCloseHumanName().getId())).count());
+                            Integer num2 = Math.toIntExact(colseList.stream().filter(s-> null != s.getCloseHumanName()).filter(s -> user.getId().equals(s.getCloseHumanName().getId())).count());
+                            vo.setInTimeCloseRateNum(getRate2(num1, num2));
+                            list.add(vo);
+                        }
+                    });
                 });
             }
         }
@@ -916,12 +934,16 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
-                    vo.setInstHumanName(user.getName());
-                    Integer num1 = Math.toIntExact(cancelList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(instList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
-                    vo.setExactInstRateNum(getRate2(num2-num1,num2));
-                    list.add(vo);
+                    user.getRoleList().forEach(role -> {
+                        if ("值班长".equals(role.getName())) {
+                            ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
+                            vo.setInstHumanName(user.getName());
+                            Integer num1 = Math.toIntExact(cancelList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
+                            Integer num2 = Math.toIntExact(instList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
+                            vo.setExactInstRateNum(getRate2(num2-num1,num2));
+                            list.add(vo);
+                        }
+                    });
                 });
             }
         }
@@ -940,12 +962,16 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
-                    vo.setInstHumanName(user.getName());
-                    Integer num1 = Math.toIntExact(inTimeInstList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(instList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
-                    vo.setIntimeInstRateNum(getRate2(num1,num2));
-                    list.add(vo);
+                    user.getRoleList().forEach(role -> {
+                        if ("值班长".equals(role.getName())){
+                            ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
+                            vo.setInstHumanName(user.getName());
+                            Integer num1 = Math.toIntExact(inTimeInstList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
+                            Integer num2 = Math.toIntExact(instList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count());
+                            vo.setIntimeInstRateNum(getRate2(num1,num2));
+                            list.add(vo);
+                        }
+                    });
                 });
             }
         }
@@ -964,11 +990,15 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
-                    vo.setInstHumanName(user.getName());
-                    /*立案数*/
-                    vo.setInst(Math.toIntExact(instList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count()));
-                    list.add(vo);
+                    user.getRoleList().forEach(role -> {
+                        if ("值班长".equals(role.getName())){
+                            ShiftForemanEvaluateVO vo = new ShiftForemanEvaluateVO();
+                            vo.setInstHumanName(user.getName());
+                            /*立案数*/
+                            vo.setInst(Math.toIntExact(instList.stream().filter(s-> null != s.getInstHumanName()).filter(s -> user.getId().equals(s.getInstHumanName().getId())).count()));
+                            list.add(vo);
+                        }
+                    });
                 });
             }
         }
@@ -1017,12 +1047,16 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    DispatcherEvaluateVO vo = new DispatcherEvaluateVO();
-                    vo.setDispatch(user.getName());
-                    Integer num1 = Math.toIntExact(accuracyDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(needDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
-                    vo.setIntimeDispatchRateNum(getRate2(num1,num2));
-                    list.add(vo);
+                    user.getRoleList().forEach(role -> {
+                        if ("派遣员".equals(role.getName())) {
+                            DispatcherEvaluateVO vo = new DispatcherEvaluateVO();
+                            vo.setDispatch(user.getName());
+                            Integer num1 = Math.toIntExact(accuracyDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
+                            Integer num2 = Math.toIntExact(needDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
+                            vo.setIntimeDispatchRateNum(getRate2(num1,num2));
+                            list.add(vo);
+                        }
+                    });
                 });
             }
         }
@@ -1041,12 +1075,16 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    DispatcherEvaluateVO vo = new DispatcherEvaluateVO();
-                    vo.setDispatch(user.getName());
-                    Integer num1 = Math.toIntExact(inTImeDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
-                    Integer num2 = Math.toIntExact(needDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
-                    vo.setAccuracyDispatchRateNum(getRate2(num1,num2));
-                    list.add(vo);
+                    user.getRoleList().forEach(role -> {
+                        if ("派遣员".equals(role.getName())) {
+                            DispatcherEvaluateVO vo = new DispatcherEvaluateVO();
+                            vo.setDispatch(user.getName());
+                            Integer num1 = Math.toIntExact(inTImeDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
+                            Integer num2 = Math.toIntExact(needDispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count());
+                            vo.setAccuracyDispatchRateNum(getRate2(num1,num2));
+                            list.add(vo);
+                        }
+                    });
                 });
             }
         }
@@ -1065,11 +1103,16 @@ public class ComprehensiveEvaluationService {
         for (GridVO gridVO : gridAll) {
             for (Dept d : deptService.findAllByGridId(gridVO.getId())) {
                 d.getUserList().forEach(user -> {
-                    DispatcherEvaluateVO vo = new DispatcherEvaluateVO();
-                    vo.setDispatch(user.getName());
-                    /*派遣数*/
-                    vo.setToDispatch(Math.toIntExact(dispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count()));
-                    list.add(vo);
+                    user.getRoleList().forEach(role -> {
+                        if ("派遣员".equals(role.getName())) {
+                            DispatcherEvaluateVO vo = new DispatcherEvaluateVO();
+                            vo.setDispatch(user.getName());
+                            /*派遣数*/
+                            vo.setToDispatch(Math.toIntExact(dispatchList.stream().filter(s-> null != s.getDispatchHumanName()).filter(s -> user.getId().equals(s.getDispatchHumanName().getId())).count()));
+                            list.add(vo);
+                        }
+                    });
+
                 });
             }
         }
