@@ -157,6 +157,7 @@ public class DeptService {
                 dept.setDeptPhone(deptDTO.getDeptPhone());
                 dept.setDeptAddress(deptDTO.getDeptAddress());
                 dept.setDescribes(deptDTO.getDescribes());
+                dept.setType(deptDTO.getType());
             }
         }else{
             BeanUtils.copyProperties(deptDTO, dept);
