@@ -1,10 +1,10 @@
 package com.unicom.urban.management.web.project.urbanimport;
 
 
+import cn.hutool.core.io.FileUtil;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
-import com.unicom.urban.management.common.properties.ShpFileProperties;
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.entity.*;
@@ -34,7 +34,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 网格导入管理
@@ -51,8 +53,6 @@ public class ImportController {
     private ComponentService componentService;
     @Autowired
     private GridService gridService;
-    @Autowired
-    private ShpFileProperties shpFileProperties;
     @Autowired
     private RecordService recordService;
     @Autowired
@@ -84,7 +84,7 @@ public class ImportController {
      */
     @RequestMapping("/gridImport")
     public Result gridImport(HttpServletRequest request, String layerName, String layerSettingType, String shpType) throws IOException {
-        String gisShpPath = shpFileProperties.getPath();
+        String gisShpPath = FileUtil.getTmpDirPath();
         if (this.checkPublish(layerName)) {
             return Result.fail(98,"");
         }
@@ -104,7 +104,7 @@ public class ImportController {
             String path = "";
             if (TYPE_SHP.equals(suffix.toUpperCase())) {
                 if (StringUtils.isNotEmpty(gisShpPath)) {
-                    path = gisShpPath + "/" + multipartFile.getOriginalFilename();
+                    path = gisShpPath + multipartFile.getOriginalFilename();
                 } else {
                     path = multipartFile.getOriginalFilename();
                 }
@@ -115,7 +115,7 @@ public class ImportController {
                 FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), shpFile);
             } else {
                 if (StringUtils.isNotEmpty(gisShpPath)) {
-                    path = gisShpPath + "/" + multipartFile.getOriginalFilename();
+                    path = gisShpPath + multipartFile.getOriginalFilename();
                 } else {
                     path = multipartFile.getOriginalFilename();
                 }
@@ -145,7 +145,7 @@ public class ImportController {
      */
     @RequestMapping("/componentImport")
     public Result componentImport(HttpServletRequest request, String layerName, String layerSettingType, String shpType, String componentTypeId) throws IOException {
-        String gisShpPath = shpFileProperties.getPath();
+        String gisShpPath = FileUtil.getTmpDirPath();
         if (this.checkPublish(layerName)){
             return Result.fail(98,"");
         }
@@ -164,7 +164,7 @@ public class ImportController {
             String path = "";
             if (TYPE_SHP.equals(suffix.toUpperCase())) {
                 if (StringUtils.isNotEmpty(gisShpPath)) {
-                    path = gisShpPath + "/" + multipartFile.getOriginalFilename();
+                    path = gisShpPath + multipartFile.getOriginalFilename();
                 } else {
                     path = multipartFile.getOriginalFilename();
                 }
@@ -175,7 +175,7 @@ public class ImportController {
                 FileUtils.copyInputStreamToFile(multipartFile.getInputStream(), shpFile);
             } else {
                 if (StringUtils.isNotEmpty(gisShpPath)) {
-                    path = gisShpPath + "/" + multipartFile.getOriginalFilename();
+                    path = gisShpPath + multipartFile.getOriginalFilename();
                 } else {
                     path = multipartFile.getOriginalFilename();
                 }
