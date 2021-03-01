@@ -13,17 +13,16 @@
 
     <properties>
         <java.version>8</java.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring-boot.version>2.3.6.RELEASE</spring-boot.version>
         <spring-security-oauth2-authorization-server.version>0.0.3</spring-security-oauth2-authorization-server.version>
-        <UserAgentUtils.version>1.21</UserAgentUtils.version>
+        <userAgentUtils.version>1.21</userAgentUtils.version>
         <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
         <fastdfs-client.version>1.27.2</fastdfs-client.version>
         <activiti.version>5.22.0</activiti.version>
         <hutool-all.version>5.4.3</hutool-all.version>
-        <firebirds.version>1.0.0-SNAPSHOT</firebirds.version>
-        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <java-uuid-generator.version>3.1.4</java-uuid-generator.version>
         <jts.version>1.16.0</jts.version>
         <commons-io.version>2.5</commons-io.version>
@@ -76,7 +75,7 @@
             <dependency>
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
-                <version>${UserAgentUtils.version}</version>
+                <version>${userAgentUtils.version}</version>
             </dependency>
 
             <dependency>
@@ -176,31 +175,6 @@
                 <groupId>org.geotools.jdbc</groupId>
                 <artifactId>gt-jdbc-postgis</artifactId>
                 <version>${geotools.version}</version>
-            </dependency>
-
-
-            <dependency>
-                <groupId>cn.unicom.hlj.snr.firebird</groupId>
-                <artifactId>firebirds-eye-starter</artifactId>
-                <version>${firebirds.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.unicom.hlj.snr.firebird</groupId>
-                <artifactId>firebirds-plume-after-login-starter</artifactId>
-                <version>${firebirds.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.unicom.hlj.snr.firebird</groupId>
-                <artifactId>firebirds-pinions-starter</artifactId>
-                <version>${firebirds.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>cn.unicom.hlj.snr.firebird</groupId>
-                <artifactId>firebirds-pinions-web-aop-starter</artifactId>
-                <version>${firebirds.version}</version>
             </dependency>
 
         </dependencies>
