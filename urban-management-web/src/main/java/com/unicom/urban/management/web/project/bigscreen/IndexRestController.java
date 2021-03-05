@@ -1,11 +1,13 @@
 package com.unicom.urban.management.web.project.bigscreen;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.service.bigscreen.IndexService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
@@ -30,5 +32,11 @@ public class IndexRestController {
     @GetMapping("/showPoints")
     public List<Map<String, String>> showPoints(String timeType,String showType){
         return indexService.showPoints(timeType,showType);
+    }
+
+
+    @GetMapping("/index")
+    public ModelAndView toCaseHistoryList() {
+        return new ModelAndView(SystemConstant.PAGE + "/bigscreen/index");
     }
 }
