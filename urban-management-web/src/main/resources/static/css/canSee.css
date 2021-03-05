@@ -190,15 +190,7 @@ body{
     font-weight: 900;
     color: #fff;
 }
-#czl{
-    font-size: 1.1vw;
-    color: #ffffff;
-    /*background: url(../img/czl_chart.png);*/
-    /*background-size: 100% 100%;*/
-    width: 79%;
-    text-align: center;
-    padding-top: 26%;
-}
+
 .echart_here {
     width: 95%;
     height: 90%;
