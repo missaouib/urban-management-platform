@@ -112,7 +112,7 @@
         series: [{
             name: '半径模式',
             type: 'pie',
-            radius: [20, 80],
+            radius: [15, 70],
             center: ['50%', '50%'],
             roseType: 'radius',
             label: {
@@ -282,6 +282,11 @@
             type: 'liquidFill',
             radius: '80%',
             data: [0.5, 0.45, 0.4, 0.3],
+            backgroundStyle: {
+                borderWidth: 5, //内边框宽度
+                color: '#03214F', //背景颜色
+                shadowBlur: 10, //阴影模糊
+            },
             label: {
                 normal: {
                     textStyle: {
