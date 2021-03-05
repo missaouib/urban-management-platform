@@ -180,6 +180,11 @@
 <script type="text/javascript" th:src="@{/plugins/echarts/echarts-liquidfill.min.js}"></script>
 <script th:src="@{/js/index.js}"></script>
 <script type="text/javascript" th:inline="javascript">
+    $(document).keydown(function(e){
+        if(e && e.keyCode == 122){
+            $("#czl").css("padding-top","34%")
+        }
+    })
     $(function () {
 
         $(".fullScreen_queen").click(function () {
@@ -579,7 +584,7 @@
                     splitLine: {
                         show: true,
                         lineStyle: {
-                            color: ['#0396FF'],
+                            color: ['#033b65'],
                             width: 1,
                             type: 'solid'
                         }
