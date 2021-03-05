@@ -243,7 +243,7 @@
                 // data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5', 'rose6', 'rose7', 'rose8']
             },
             toolbox: {
-                show: false,
+                show: true,
                 feature: {
                     mark: {
                         show: true
@@ -289,7 +289,11 @@
                     }
                 },
                 itemStyle: {
-
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: '#ffffff'
+                    },
                     shadowBlur: 10,
                     shadowColor: 'rgba(0, 103, 255, 0.2)',
                     shadowOffsetX: -5,
@@ -317,11 +321,42 @@
                 },
                 data: [{
                     value: 10,
-                    name: '已处置'
+                    name: '已处置',
+                    itemStyle : {
+                        normal : {
+                            //设置渐变色
+                            color : new echarts.graphic.LinearGradient(0, 0, 0, 1, [ {
+                                offset : 0,
+                                color : '#00DB99'
+                            }, {
+                                offset : 0.5,
+                                color : '#00F7E0'
+                            }, {
+                                offset : 1,
+                                color : '#00DB99'
+                            } ])
+                        }
+                    }
                 },
                     {
                         value: 15,
-                        name: '未处置'
+                        name: '未处置',
+                        itemStyle : {
+                            normal : {
+
+                                //设置渐变色
+                                color : new echarts.graphic.LinearGradient(0, 0, 0, 1, [ {
+                                    offset : 0,
+                                    color : '#12BBE4'
+                                }, {
+                                    offset : 0.5,
+                                    color : '#0B8EDB'
+                                }, {
+                                    offset : 1,
+                                    color : '#0252D0'
+                                } ])
+                            }
+                        }
                     },
 
                 ]
