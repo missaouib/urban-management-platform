@@ -2,9 +2,14 @@
     margin: 0;
     padding: 0;
 }
+html{
+    width: 100%;
+    height: 100%;
+}
 body{
     background: url('../img/bg_queen.png');
     background-size: 100% 100%;
+    background-attachment: fixed;
 }
 .big_int {
     display: flex;
@@ -87,14 +92,19 @@ body{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background-image: url('../img/time_queen.png');
+    background-size: 100% 100%;
 }
 
 .zhong_zhong {
-    width: 40px;
-    height: 40px;
+    background: url("../img/zhong_queen.png");
+    width: 30px;
+    height: 30px;
+    background-size: 100% 100%;
 }
 
 .time_yiqi {
+    margin-left: 60px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -103,6 +113,8 @@ body{
 .map_queen {
     width: 35%;
     height: 100%;
+    background-image: url('../img/map_queen.png');
+    background-size: 100% 100%;
 }
 
 .echarts_queen {
@@ -137,13 +149,13 @@ body{
 .picks {
     width: 49%;
     height: 100%;
+    background: url("../img/pick_queen.png");
+    background-size: 100% 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: column;
 }
-
-.chart_third {}
 
 .mac_top {
     width: 100%;
@@ -152,6 +164,8 @@ body{
     align-items: center;
     justify-content: space-between;
     flex-direction: column;
+    background: url("../img/zhu_queen.png");
+    background-size: 100% 100%;
 }
 
 .mac_bottom {
@@ -161,17 +175,27 @@ body{
     align-items: center;
     justify-content: space-between;
     flex-direction: column;
+    background: url("../img/shi_queen.png");
+    background-size: 100% 100%;
 }
 
 .title_queen_keep {
-    padding: 10px 0;
+    padding: 15px 0;
     text-align: center;
     width: 100%;
-    font-size: 20px;
+    font-size: 1.2vw;
     font-weight: 900;
     color: #fff;
 }
-
+#czl{
+    font-size: 1.1vw;
+    color: #ffffff;
+    background: url(../img/czl_chart.png);
+    background-size: 100% 100%;
+    width: 79%;
+    text-align: center;
+    padding-top: 31%;
+}
 .echart_here {
     width: 95%;
     height: 90%;
@@ -183,6 +207,8 @@ body{
     display: flex;
     align-items: center;
     justify-content: center;
+    background: url("../img/xian_queen.png");
+    background-size: 100% 100%;
 }
 
 .base_ne {

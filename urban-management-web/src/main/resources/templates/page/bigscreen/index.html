@@ -1,311 +1,538 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>热线上报</title>
-    <th:block th:include="page/fragments/common :: common_css"/>
-    <th:block th:include="page/fragments/common :: fileUpload_css"/>
-    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
-    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
-    <th:block th:include="page/fragments/common :: ztree_css"/>
-    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
+    <meta charset="utf-8">
+    <title>数字化指挥中心</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/canSee.css}"/>
+    <script type="text/javascript" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/echarts/echarts.min.js}"></script>
+    <script type="text/javascript" th:src="@{/plugins/echarts/echarts-liquidfill.min.js}"></script>
 </head>
-<body style="border-radius: 8px;">
-<div class="content">
-    <div class="areaCenter">
-        <div class="notice_check">
-            <form id="search-form">
+<body>
 
-            </form>
-            <div class="tree">
-                <div class="treeDemo">
-                    <ul id="treeDemo" class="ztree"></ul>
-                </div>
-            </div>
+<div class="big_int">
+    <div class="top_quneen">
+        <div class="left_boxin">
+            <label for="">数字化指挥中心</label>
+            <label for=""></label>
         </div>
-
-
+        <div class="right_boxin">
+            <span></span>
+            <span class="time_queen">
+                    <div class="time_yiqi">
+                        <div class="zhong_zhong">
+                            <img src="" alt="">
+                        </div>
+                        <div class="shi_text" style="margin-left: 10px">时间</div>
+                    </div>
+                    <div class="time_ni">2020.20.20</div>
+                    <div class="time_san">29.00</div>
+            </span>
+        </div>
     </div>
-    <div class="areaCenter">
-        <div class="r_right but_p girdBtnGroup" id="eventButton" style="margin: 0 0 10px 0!important;">
-            <button class="but_save" id="collocation" type="button" style="margin-right: 10px;display: none"
-                    onclick="toCollocation()">
-                配置
-            </button>
-            <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn"
-                    onclick="formReset()">清空
-            </button>
-            <button class="but_save" type="submit" onclick="save()">新增</button>
-
-            <button class="but_save" type="submit" onclick="area()">修改</button>
-            <button class="but_save" type="button" style="margin-right: 10px" id="deleteRoleBtn"
-                    onclick="deleteRole()">删除
-            </button>
-
-        </div>
-
-        <form class="details" id="areaForm">
-            <div class="top table2_top">
-
-                <div class="top_out">
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <td><span>*</span>名称</td>
-                            <td>
-                                <input id="gridName" name="gridName" placeholder="" class="" type="text">
-                                <input id="id" name="gridId" placeholder="" class="" type="hidden">
-                                <input id="level" name="level" placeholder="" class="" type="hidden" value="1">
-                                <input type="hidden" id="ifLevel">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span></span>父节点</td>
-                            <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                <input type="text" id="parentName" readonly="readonly" class="find_input"/>
-                                <input name="pid" type="hidden" readonly="readonly" id="pid" class="find_input"/>
-                                <button type="button" class="addBtn" onclick="selectGridTree()">
-                                    +
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+    <div class="bottom_queen">
+        <div class="math_ranm">
+            <div class="map_queen"></div>
+            <div class="echarts_queen">
+                <div class="chart_first charter">
+                    <div class="picks">
+                        <div class="title_queen_keep">案件处理情况</div>
+                        <div class="echart_here" id="ajcl"></div>
+                    </div>
+                    <div class="picks">
+                        <div class="title_queen_keep">结案率</div>
+                        <div class="echart_here" id="jal"></div>
+                    </div>
                 </div>
-
-
-
+                <div class="chart_second charter">
+                    <div class="picks">
+                        <div class="title_queen_keep">处置率</div>
+                        <div class="echart_here" id="czl">50</div>
+                    </div>
+                    <div class="picks">
+                        <div class="title_queen_keep">作废率</div>
+                        <div class="echart_here" id="zfl"></div>
+                    </div>
+                </div>
+                <div class="chart_third charter">
+                    <div class="title_queen_keep base_ne">事件增长率</div>
+                    <div class="echart_here" id="sjzz"></div>
+                </div>
             </div>
-        </form>
+            <div class="message_queen">
+                <div class="mac_top">
+                    <div class="title_queen_keep">专业部门处置</div>
+                    <div class="echart_here" id="zybm"></div>
+                </div>
+                <div class="mac_bottom">
+                    <div class="title_queen_keep">事件列表</div>
+                    <div class="echart_here"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-
-<th:block th:include="page/fragments/common :: common_js"/>
-<th:block th:include="page/fragments/common :: jquery_validation_js"/>
-<th:block th:include="page/fragments/common :: fileUpload_js"/>
-<th:block th:include="page/fragments/common :: map_js"/>
-<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
-<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
-<th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
-
-    let gridTreeUrl = /*[[@{/grid/getGridTree}]]*/ "/gird/getGridTree";
-    let areaUrl = /*[[@{/grid/area}]]*/ "/gird/area";
-    let delUrl = /*[[@{/grid/gridDelete}]]*/ "/gird/gridDelete";
-
-    let setting = {
-        callback: {
-            onClick: zTreeOnClick
+    var myChart = echarts.init(document.getElementById('ajcl'));
+    option = {
+        color: [ '#00E5FF', '#20B5F1'],
+        backgroundColor: 'rgba(0,20,67,0)',
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
-        data: {
-            keep: {
-                parent: true,
-                leaf: true
-            },
-            simpleData: {
-                enable: true,
-                idKey: 'id',
-                pIdKey: 'parentId'
-            },
-            key: {
-                name: "name"
+        legend: {
+            left: 'center',
+            top: 'bottom',
+            // data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5', 'rose6', 'rose7', 'rose8']
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                mark: {
+                    show: true
+                },
+                dataView: {
+                    show: true,
+                    readOnly: false
+                },
+                magicType: {
+                    show: true,
+                    type: ['pie', 'funnel']
+                },
+                restore: {
+                    show: true
+                },
+                saveAsImage: {
+                    show: true
+                }
             }
+        },
+        series: [{
+            name: '半径模式',
+            type: 'pie',
+            radius: [20, 80],
+            center: ['50%', '50%'],
+            roseType: 'radius',
+            label: {
+                show: false
+            },
+            labelLine: {
+                normal: {
+                    length: 10,
+                    length2: 10,
+                    lineStyle: {
+                        width: 1,
+                        color: '#CDCDCD'
+                    }
+                }
+            },
+            emphasis: {
+                label: {
+                    show: true
+                }
+            },
+            itemStyle: {
+
+                shadowBlur: 10,
+                shadowColor: 'rgba(0, 103, 255, 0.2)',
+                shadowOffsetX: -5,
+                shadowOffsetY: 5,
+                color: function(params) { // 颜色定制显示（按顺序）
+                    var colorList = [['#df2679','#e69029'],['#007be4','#08b7a5'],['#f1d72b','#cf7f14'],['#16e5cc','#139dd6'],['#23a8e6','#4359ea'] ]
+                    let obj = {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: colorList[params.dataIndex][0] // 0% 处的颜色
+                        }, {
+                            offset: 1, color: colorList[params.dataIndex][1] // 100% 处的颜色
+                        }],
+                        global: false // 缺省为 false
+                    }
+                    console.log(obj)
+                    return obj
+
+                }
+
+            },
+            data: [{
+                value: 10,
+                name: '已处置'
+            },
+                {
+                    value: 15,
+                    name: '未处置'
+                },
+
+            ]
+        },
+
+        ]
+    };
+    myChart.setOption(option);
+    var myChart = echarts.init(document.getElementById('jal'));
+    var getname = ['已结案', '未结案'];
+    var getvalue = [180, 200];
+    var indata = [];
+    for (var i = 0; i < getname.length; i++) {
+        indata.push({
+            name: getname[i],
+            value: getvalue[i]
+        })
+    }
+
+    var colorList = ['#16BBFF', '#FB9532']
+    option = {
+        title: {
+            text: '83%',
+            textStyle: {
+                color: '#fcfafa',
+                fontSize: 17
+            },
+
+            subtextStyle: {
+                color: '#717171',
+                fontSize: 15
+            },
+            itemGap: 20,
+            left: 'center',
+            top: '45%'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        series: [{
+            type: 'pie',
+            radius: ['70%', '83%'],
+            center: ["50%", "50%"],
+            clockwise: true,
+            avoidLabelOverlap: true,
+            hoverOffset: 15,
+            itemStyle: {
+                normal: {
+                    color: function(params) {
+                        return colorList[params.dataIndex]
+                    }
+                }
+            },
+            label: {
+                show: true,
+                position: 'outside',
+                formatter: '{a|{b}}\n{b|{c}千瓦时}\n{hr|●}',
+                rich: {
+                    hr: {
+                        width: 6,
+                        height: 6,
+                        padding: [3, -10, 0, -10]
+                    },
+                    a: {
+                        padding: [-30, 15, -40, 15],
+                        color:'#666666',
+                        fontSize:14
+                    },
+                    b: {
+                        padding: [-30, 15, 0, 15],
+                        color:'#666666',
+                        fontSize:14
+                    }
+                }
+            },
+            labelLine: {
+                normal: {
+                    length: 10,
+                    length2: 10,
+                    lineStyle: {
+                        width: 1,
+                        color: '#CDCDCD'
+                    }
+                }
+            },
+            data: indata,
+        },{
+            itemStyle: {
+                normal: {
+                    color: '#22378d',
+                }
+            },
+            type: 'pie',
+            hoverAnimation: false,
+            radius: ['67%', '85%'],
+            center: ["50%", "50%"],
+            label: {
+                normal: {
+                    show:false
+                }
+            },
+            data: [{
+                value: 1,
+            }],
+            z:-1
+        }]
+    };
+    myChart.setOption(option);
+    // 作废率
+    var myChart = echarts.init(document.getElementById('zfl'));
+    var option = {
+        series: [{
+            type: 'liquidFill',
+            radius: '80%',
+            data: [0.5, 0.45, 0.4, 0.3],
+            label: {
+                normal: {
+                    textStyle: {
+                        color: 'red',
+                        insideColor: 'yellow',
+                        fontSize: 50
+                    }
+                }
+            }
+        }]
+    };
+    myChart.setOption(option);
+    // 专业部门
+    var myChart = echarts.init(document.getElementById('zybm'));
+    var option = {
+        title: {
+            x: "left"
+        },
+        legend: {
+            data: [ "立案量"],
+            x: "right",
+            orient: "horizontal",
+            y: "top",
+            textStyle: {
+                color: '#ffffff'//字体颜色
+            }
+        },
+        tooltip: {
+            trigger: "axis"
+        },
+        toolbox: {
+            show: false,
+            feature: {
+                mark: {
+                    show: true
+                },
+                dataView: {
+                    show: true,
+                    readOnly: true
+                },
+                magicType: {
+                    show: false,
+                    type: ["line", "bar"]
+                },
+                restore: {
+                    show: true
+                },
+                saveAsImage: {
+                    show: true
+                }
+            }
+        },
+        calculable: true,
+        xAxis: [
+            {
+                type: "category",
+                data: ["南岗区", "道里区", "香坊区", "道外区", "群里区", "松北区"],
+                splitArea: {
+                    show: false
+                },
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#fff'
+                    },
+                    lineStyle: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 1, 0,
+                            [
+                                {offset: 0, color: '#CE9FFC'},
+                                {offset: 1, color: '#7367F0'}
+                            ]
+                        )
+                    }
+                },
+                position: "bottom",
+                axisTick: {
+                    show: true
+                },
+                splitLine: {
+                    show: false
+                },
+                nameTextStyle: {
+                    color: "#C4EAFC"
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: "value",
+                splitLine: {
+                    show: true
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: ['#0396FF'],
+                        width: 1,
+                        type: 'solid'
+                    }
+                },
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#fff'
+                    },
+                    lineStyle: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 1, 0,
+                            [
+                                {offset: 0, color: '#CE9FFC'},
+                                {offset: 1, color: '#7367F0'}
+                            ]
+                        )
+                    }
+                }
+            }
+        ],
+        series: [
+            {
+                name: "立案量",
+                barWidth: 10,
+                type: "bar",
+                data: [20, 4.9, 30, 23.2, 120, 76.7],
+                itemStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(
+                            0, 0, 1, 0,
+                            [
+                                {offset: 0, color: '#3977E6'},
+                                {offset: 1, color: '#37BBF8'}
+
+                            ]
+                        )
+                    }
+                }
+            },
+
+        ],
+        calculableColor: "rgba(255,165,0,0.6)",
+        animation: true,
+        animationEasing: "ExponentialInOut",
+        grid: {
+            x: 56,
+            x2: 51,
+            y2: 38,
+            y: 38
         }
     };
-
-    function selectGridTree() {
-        var id = $("#id").val();
-        var url = /*[[@{/tree/grid}]]*/ "/tree/grid?num=two";
-        url += "?level=3&id=" + id
-        var options = {
-            title: '请选择区域',
-            width: "380",
-            url: url,
-            callBack: gridDoSubmit
-        };
-        $.modal.openOptions(options);
-    }
-
-    function gridDoSubmit(index, layero) {
-        var body = layer.getChildFrame('body', index);
-        if ($("#ifLevel").val() !== null && $("#ifLevel").val() !== "") {
-            if ((body.find('#treeLevel').val()) !== $("#ifLevel").val()) {
-                $.modal.alertWarning("请选择同级节点");
-                return;
+    myChart.setOption(option);
+    // 事件增长
+    var myChart = echarts.init(document.getElementById('sjzz'));
+    var option = {
+        tooltip: {
+            trigger: "axis"
+        },
+        legend: {
+            data: [ "立案量"],
+            x: "right",
+            orient: "horizontal",
+            y: "top",
+            textStyle:{
+                color: '#ffffff'//字体颜色
             }
-        }
-        console.log(body.find('#treeLevel').val())
-        $("#pid").val(body.find('#treeId').val());
-        $("#parentName").val(body.find('#treeName').val());
-        $("#level").val(parseInt(body.find('#treeLevel').val()) + 1);
-        layer.close(index);
-    }
-
-    $(function () {
-
-        gridTree();
-
-        $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose: true, todayBtn: true, startView: 4, minView: 3});
-        ////日期插件
-        $('.form_datetime').datetimepicker({
-            language: 'zh-CN',
-            weekStart: 1,
-            todayBtn: 1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
-            showMeridian: 1,
-            format: "yyyy-mm-dd hh:ii:ss"
-        });
-
-    });
-
-    function gridTree() {
-        $.ajaxUtil.get(gridTreeUrl, function (e) {
-            $.fn.zTree.init($("#treeDemo"), setting, e.data);
-        });
-    }
-
-
-    function toCollocation() {
-        var id = $("#id").val();
-        window.parent.$.learuntab.myAddTab('配置网格', '/grid/toCollocation?id=' + id, 'data_id')
-    }
-
-    function zTreeOnClick(event, treeId, treeNode) {
-        if (treeNode.level === 2) {
-            $("#collocation").css("display", "block")
-        }
-        $("#ifLevel").val(treeNode.level);
-        $("#id").val(treeNode.id);
-        $("#level").val(treeNode.level + 1);
-        $("#gridName").val(treeNode.name);
-        if (treeNode.getParentNode() !== null) {
-            $("#parentName").val(treeNode.getParentNode().name);
-            $("#pid").val(treeNode.getParentNode().id);
-        } else {
-            $("#parentName").val("");
-            $("#pid").val("");
-        }
-
-
-    }
-
-    function formReset() {
-        $("#id").val("");
-        $("#level").val(1);
-        $("#gridName").val("");
-        $("#parentName").val("");
-        $("#pid").val("");
-        $("#ifLevel").val("");
-    }
-
-    function save() {
-        $("#gridId").val("");
-        area();
-    }
-
-    function area() {
-        let data = $('#areaForm').serialize();
-        $.operate.saveAndReload(areaUrl, data);
-    }
-
-
-    function deleteRole() {
-        let data = $('#areaForm').serialize();
-        $.operate.saveAndReload(delUrl, data);
-    }
-
-
-    jQuery.extend(jQuery.validator.messages, {
-        required: "必填",
-        phone: "必填",
-        remote: "请修正该字段",
-        email: "请输入正确格式的电子邮件",
-        url: "请输入合法的网址",
-        date: "请输入合法的日期",
-        dateISO: "请输入合法的日期 (ISO).",
-        number: "请输入合法的数字",
-        digits: "只能输入整数",
-        creditcard: "请输入合法的信用卡号",
-        equalTo: "请再次输入相同的值",
-        accept: "请输入拥有合法后缀名的字符串",
-        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
-        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
-        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
-        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
-        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
-        min: jQuery.validator.format("请输入一个最小为{0} 的值")
-    });
-
-    $("#areaForm").validate({
-        debug: true,
-        ignore: "",
-        submitHandler: function (form) {
-            var params = $(form).serialize(); //串行化表单参数
-            $.post("user", params, function (result) {
-                if (result.ok) {//注册成功
-                    location.href = "register_ok.html";
-                } else {//注册失败
-                    alert(result.msg);
-                    $("#checkImg").click();
+        },
+        toolbox: {
+            feature: {
+                dataView: {
+                    readOnly: true
+                },
+                magicType: {
+                    type: ["line", "bar"],
+                    show: false
                 }
-            }, "json");
+            }
         },
-        rules: {
-            userName: {
-                required: true
+        calculable: true,
+        xAxis: [
+            {
+                type: "category",
+                data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+                axisTick: {
+                    lineStyle: {
+                        color: "rgb(56, 178, 234)"
+                    },
+                    show: false
+                },
+                splitLine: {
+                    show: false
+                },
+                boundaryGap: false,
+                axisLine: {
+                    show: false
+                },
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#3677FF'
+                    }
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: "value",
+                axisLine: {
+                    show: false
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: "#C4EAFC",
+                        width: 1
+                    }
+                },
+                splitArea: {
+                    show: false
+                },
+                nameTextStyle: {
+                    color: "rgb(20, 159, 224)"
+                },
+                axisLabel: {
+                    show: true,
+                    textStyle: {
+                        color: '#3677FF'
+                    }
+                }
+            }
+        ],
+        series: [
+            {
+                name: "结案量",
+                type: "line",
+                data: [11, 11, 1500, 1300, 1200, 2100, 10],
+                smooth: true,
+                itemStyle:{
+                    normal:{
+                        color:"#71f5eb"
+                    }
+                }
             },
-            loginName: {
-                required: true,
-                // rangelength: [5, 8]
-            },
-            phonenumber: {
-                required: true,
-                // rangelength: [6, 12]
-            },
-            problemescription: {
-                required: true,
-                // rangelength: [6, 12],
-                /*重复密码需要与原密码相同的要求*/
-                // equalTo: "#pwd"
-            },
-            safeLevel: {
-                required: true
-            },
-            findTime: {
-                required: true,
-                // range: [26, 50]
-            },
-            enterprise: {
-                required: true
-            },
-            department: {
-                required: true
-            },
-            handleTime: {
-                required: true
-            }, charge: {
-                required: true
-            },
-            question: {
-                required: true
-            },
-            closeTime: {
-                required: true,
-                // email: true
-            },
-            // idcard: {
-            //     card: true
-            // },
-            // phone: {
-            //     phone: true
-            // }
-        },
-        messages: {}
-    });
+
+        ],
+        grid: {
+            x: 56,
+            x2: 51,
+            y2: 38,
+            y: 38
+        }
+    };
+    myChart.setOption(option);
 </script>
 </body>
 </html>
