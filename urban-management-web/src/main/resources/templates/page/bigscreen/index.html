@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>数字化指挥中心</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/canSee.css}"/>
-    <script type="text/javascript" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/plugins/echarts/echarts.min.js}"></script>
-    <script type="text/javascript" th:src="@{/plugins/echarts/echarts-liquidfill.min.js}"></script>
+    <link th:href="@{/css/gridInformation.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -20,19 +18,21 @@
             <span></span>
             <span class="time_queen">
                     <div class="time_yiqi">
-                        <div class="zhong_zhong">
-                            <img src="" alt="">
-                        </div>
-                        <div class="shi_text" style="margin-left: 10px">时间</div>
+                        <div class="zhong_zhong fullScreen_queen"></div>
+                        <div class="shi_text" style="margin-left: 15px">时间</div>
                     </div>
-                    <div class="time_ni">2020.20.20</div>
-                    <div class="time_san">29.00</div>
+                    <div class="time_ni" id='date'></div>
+                    <div class="time_san" id="time"></div>
             </span>
         </div>
     </div>
     <div class="bottom_queen">
         <div class="math_ranm">
-            <div class="map_queen"></div>
+            <div class="map_queen">
+                <div class="hlj_screen" style="height: 100%;width: 100%;">
+                    <img th:src="@{/img/hlj_queen.png}" style="height: 100%;width: 100%;" alt="">
+                </div>
+            </div>
             <div class="echarts_queen">
                 <div class="chart_first charter">
                     <div class="picks">
@@ -66,478 +66,635 @@
                 </div>
                 <div class="mac_bottom">
                     <div class="title_queen_keep">事件列表</div>
-                    <div class="echart_here"></div>
+                    <div class="echart_here">
+                        <div class="tableTitle" style="background-color:#04577D;padding: 10px 0">
+                            <div class="tabletext">事件名称</div>
+                            <div class="tabletext">事件详情</div>
+                            <div class="tabletext">上报地点</div>
+                            <div class="tabletext">上报时间</div>
+                        </div>
+                        <div class="table" style="height: 90%">
+                            <div id="scroll">
+                                <div id="con1">
+                                    <ul>
+                                        <li class="tableOptions">
+                                            <span>事件1</span>
+                                            <span>
+                                                <a href="">查看详情</a>
+                                            </span>
+                                            <span>南岗区南岗区南岗区南岗区南岗区南岗区</span>
+                                            <span>2020/12/12</span>
+                                        </li>
+                                        <li class="tableOptions">
+                                            <span>事件2</span>
+                                            <span>
+                                                <a href="">查看详情</a>
+                                            </span>
+                                            <span>南岗区花园街奥维斯</span>
+                                            <span>2020/12/12</span>
+                                        </li>
+                                        <li class="tableOptions">
+                                            <span>事件3</span>
+                                            <span>
+                                                <a href="">查看详情</a>
+                                            </span>
+                                            <span>南岗区花园街奥维斯</span>
+                                            <span>2020/12/12</span>
+                                        </li>
+                                        <li class="tableOptions">
+                                            <span>事件4</span>
+                                            <span>
+                                                <a href="">查看详情</a>
+                                            </span>
+                                            <span>南岗区花园街奥维斯</span>
+                                            <span>2020/12/12</span>
+                                        </li>
+                                        <li class="tableOptions">
+                                            <span>事件5</span>
+                                            <span>
+                                                <a href="">查看详情</a>
+                                            </span>
+                                            <span>南岗区花园街奥维斯</span>
+                                            <span>2020/12/12</span>
+                                        </li>
+                                        <li class="tableOptions">
+                                            <span>事件6</span>
+                                            <span>
+                                                <a href="">查看详情</a>
+                                            </span>
+                                            <span>南岗区</span>
+                                            <span>2020/12/12</span>
+                                        </li>
+                                        <li class="tableOptions">
+                                            <span>事件7</span>
+                                            <span>
+                                                <a href="">查看详情</a>
+                                            </span>
+                                            <span>南岗区</span>
+                                            <span>2020/12/12</span>
+                                        </li>
+                                        <li class="tableOptions">
+                                            <span>事件8</span>
+                                            <span>
+                                                <a href="">查看详情</a>
+                                            </span>
+                                            <span>南岗区</span>
+                                            <span>2020/12/12</span>
+                                        </li>
+                                        <li class="tableOptions">
+                                            <span>事件9</span>
+                                            <span>
+                                                <a href="">查看详情</a>
+                                            </span>
+                                            <span>南岗区</span>
+                                            <span>2020/12/12</span>
+                                        </li>
+                                        <li class="tableOptions">
+                                            <span>事件10</span>
+                                            <span>
+                                                <a href="">查看详情</a>
+                                            </span>
+                                            <span>南岗区</span>
+                                            <span>2020/12/12</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="con2"></div>
+                                <div class="con2"></div>
+                                <div class="con2"></div>
+                                <div class="con2"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</body>
 
+<th:block th:include="page/fragments/common :: common_js"/>
+<script th:src="@{/js/index.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/echarts/echarts.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/echarts/echarts-liquidfill.min.js}"></script>
 <script type="text/javascript" th:inline="javascript">
-    var myChart = echarts.init(document.getElementById('ajcl'));
-    option = {
-        color: [ '#00E5FF', '#20B5F1'],
-        backgroundColor: 'rgba(0,20,67,0)',
-        tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
-        },
-        legend: {
-            left: 'center',
-            top: 'bottom',
-            // data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5', 'rose6', 'rose7', 'rose8']
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                mark: {
-                    show: true
-                },
-                dataView: {
-                    show: true,
-                    readOnly: false
-                },
-                magicType: {
-                    show: true,
-                    type: ['pie', 'funnel']
-                },
-                restore: {
-                    show: true
-                },
-                saveAsImage: {
-                    show: true
-                }
+    $(function () {
+
+        $(".fullScreen_queen").click(function () {
+            console.log($.learuntab)
+            $.learuntab.requestFullScreen();
+        })
+        var time = 60;
+        var box = document.getElementById('scroll');
+        var con1 = document.getElementById('con1');
+        var con2 = document.querySelectorAll('.con2');
+        $(".con2").html($("#con1").html())
+
+        function Up() {
+            if (box.scrollTop >= con1.offsetHeight) {
+                box.scrollTop = 0;
+            } else {
+                box.scrollTop++
             }
-        },
-        series: [{
-            name: '半径模式',
-            type: 'pie',
-            radius: [15, 70],
-            center: ['50%', '50%'],
-            roseType: 'radius',
-            label: {
-                show: false
+        }
+
+        var setlId = setInterval(Up, time);
+
+        $("#scroll").mouseover(function () {
+            clearInterval(setlId);
+        })
+
+        $("#scroll").mouseleave(function () {
+            setlId = setInterval(Up, time);
+        })
+
+
+        var date = new Date()
+        let YYYY = date.getFullYear()
+        let dd = date.getMonth()
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        let day = date.getDay()
+        if (day < 10) {
+            day = "0" + day
+        }
+
+        $("#date").html(YYYY + '-' + dd + '-' + day)
+        setInterval(() => {
+            let HH = date.getHours()
+            let mm = date.getMinutes()
+            $("#time").html(HH + ':' + mm)
+        }, 1000);
+
+        var myChart = echarts.init(document.getElementById('ajcl'));
+        option = {
+            color: [ '#00E5FF', '#20B5F1'],
+            backgroundColor: 'rgba(0,20,67,0)',
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
             },
-            labelLine: {
-                normal: {
-                    length: 10,
-                    length2: 10,
-                    lineStyle: {
-                        width: 1,
-                        color: '#CDCDCD'
+            legend: {
+                left: 'center',
+                top: 'bottom',
+                // data: ['rose1', 'rose2', 'rose3', 'rose4', 'rose5', 'rose6', 'rose7', 'rose8']
+            },
+            toolbox: {
+                show: false,
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: false
+                    },
+                    magicType: {
+                        show: true,
+                        type: ['pie', 'funnel']
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
                     }
                 }
             },
-            emphasis: {
+            series: [{
+                name: '半径模式',
+                type: 'pie',
+                radius: [15, 70],
+                center: ['50%', '50%'],
+                roseType: 'radius',
                 label: {
-                    show: true
-                }
-            },
-            itemStyle: {
-
-                shadowBlur: 10,
-                shadowColor: 'rgba(0, 103, 255, 0.2)',
-                shadowOffsetX: -5,
-                shadowOffsetY: 5,
-                color: function(params) { // 颜色定制显示（按顺序）
-                    var colorList = [['#df2679','#e69029'],['#007be4','#08b7a5'],['#f1d72b','#cf7f14'],['#16e5cc','#139dd6'],['#23a8e6','#4359ea'] ]
-                    let obj = {
-                        type: 'linear',
-                        x: 0,
-                        y: 0,
-                        x2: 0,
-                        y2: 1,
-                        colorStops: [{
-                            offset: 0, color: colorList[params.dataIndex][0] // 0% 处的颜色
-                        }, {
-                            offset: 1, color: colorList[params.dataIndex][1] // 100% 处的颜色
-                        }],
-                        global: false // 缺省为 false
-                    }
-                    console.log(obj)
-                    return obj
-
-                }
-
-            },
-            data: [{
-                value: 10,
-                name: '已处置'
-            },
-                {
-                    value: 15,
-                    name: '未处置'
+                    show: false
                 },
+                labelLine: {
+                    normal: {
+                        length: 10,
+                        length2: 10,
+                        lineStyle: {
+                            width: 1,
+                            color: '#CDCDCD'
+                        }
+                    }
+                },
+                emphasis: {
+                    label: {
+                        show: true
+                    }
+                },
+                itemStyle: {
+
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 103, 255, 0.2)',
+                    shadowOffsetX: -5,
+                    shadowOffsetY: 5,
+                    color: function(params) { // 颜色定制显示（按顺序）
+                        var colorList = [['#df2679','#e69029'],['#007be4','#08b7a5'],['#f1d72b','#cf7f14'],['#16e5cc','#139dd6'],['#23a8e6','#4359ea'] ]
+                        let obj = {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0, color: colorList[params.dataIndex][0] // 0% 处的颜色
+                            }, {
+                                offset: 1, color: colorList[params.dataIndex][1] // 100% 处的颜色
+                            }],
+                            global: false // 缺省为 false
+                        }
+                        console.log(obj)
+                        return obj
+
+                    }
+
+                },
+                data: [{
+                    value: 10,
+                    name: '已处置'
+                },
+                    {
+                        value: 15,
+                        name: '未处置'
+                    },
+
+                ]
+            },
 
             ]
-        },
+        };
+        myChart.setOption(option);
+        var myChart = echarts.init(document.getElementById('jal'));
+        var getname = ['已结案', '未结案'];
+        var getvalue = [180, 200];
+        var indata = [];
+        for (var i = 0; i < getname.length; i++) {
+            indata.push({
+                name: getname[i],
+                value: getvalue[i]
+            })
+        }
 
-        ]
-    };
-    myChart.setOption(option);
-    var myChart = echarts.init(document.getElementById('jal'));
-    var getname = ['已结案', '未结案'];
-    var getvalue = [180, 200];
-    var indata = [];
-    for (var i = 0; i < getname.length; i++) {
-        indata.push({
-            name: getname[i],
-            value: getvalue[i]
-        })
-    }
+        var colorList = ['#16BBFF', '#FB9532']
+        option = {
+            title: {
+                text: '83%',
+                textStyle: {
+                    color: '#fcfafa',
+                    fontSize: 17
+                },
 
-    var colorList = ['#16BBFF', '#FB9532']
-    option = {
-        title: {
-            text: '83%',
-            textStyle: {
-                color: '#fcfafa',
-                fontSize: 17
+                subtextStyle: {
+                    color: '#717171',
+                    fontSize: 15
+                },
+                itemGap: 20,
+                left: 'center',
+                top: '45%'
             },
-
-            subtextStyle: {
-                color: '#717171',
-                fontSize: 15
+            tooltip: {
+                trigger: 'item'
             },
-            itemGap: 20,
-            left: 'center',
-            top: '45%'
-        },
-        tooltip: {
-            trigger: 'item'
-        },
-        series: [{
-            type: 'pie',
-            radius: ['70%', '83%'],
-            center: ["50%", "50%"],
-            clockwise: true,
-            avoidLabelOverlap: true,
-            hoverOffset: 15,
-            itemStyle: {
-                normal: {
-                    color: function(params) {
-                        return colorList[params.dataIndex]
-                    }
-                }
-            },
-            label: {
-                show: true,
-                position: 'outside',
-                formatter: '{a|{b}}\n{b|{c}千瓦时}\n{hr|●}',
-                rich: {
-                    hr: {
-                        width: 6,
-                        height: 6,
-                        padding: [3, -10, 0, -10]
-                    },
-                    a: {
-                        padding: [-30, 15, -40, 15],
-                        color:'#666666',
-                        fontSize:14
-                    },
-                    b: {
-                        padding: [-30, 15, 0, 15],
-                        color:'#666666',
-                        fontSize:14
-                    }
-                }
-            },
-            labelLine: {
-                normal: {
-                    length: 10,
-                    length2: 10,
-                    lineStyle: {
-                        width: 1,
-                        color: '#CDCDCD'
-                    }
-                }
-            },
-            data: indata,
-        },{
-            itemStyle: {
-                normal: {
-                    color: '#22378d',
-                }
-            },
-            type: 'pie',
-            hoverAnimation: false,
-            radius: ['67%', '85%'],
-            center: ["50%", "50%"],
-            label: {
-                normal: {
-                    show:false
-                }
-            },
-            data: [{
-                value: 1,
-            }],
-            z:-1
-        }]
-    };
-    myChart.setOption(option);
-    // 作废率
-    var myChart = echarts.init(document.getElementById('zfl'));
-    var option = {
-        series: [{
-            type: 'liquidFill',
-            radius: '80%',
-            data: [0.5, 0.45, 0.4, 0.3],
-            backgroundStyle: {
-                borderWidth: 5, //内边框宽度
-                color: '#03214F', //背景颜色
-                shadowBlur: 10, //阴影模糊
-            },
-            label: {
-                normal: {
-                    textStyle: {
-                        color: 'red',
-                        insideColor: 'yellow',
-                        fontSize: 50
-                    }
-                }
-            }
-        }]
-    };
-    myChart.setOption(option);
-    // 专业部门
-    var myChart = echarts.init(document.getElementById('zybm'));
-    var option = {
-        title: {
-            x: "left"
-        },
-        legend: {
-            data: [ "立案量"],
-            x: "right",
-            orient: "horizontal",
-            y: "top",
-            textStyle: {
-                color: '#ffffff'//字体颜色
-            }
-        },
-        tooltip: {
-            trigger: "axis"
-        },
-        toolbox: {
-            show: false,
-            feature: {
-                mark: {
-                    show: true
-                },
-                dataView: {
-                    show: true,
-                    readOnly: true
-                },
-                magicType: {
-                    show: false,
-                    type: ["line", "bar"]
-                },
-                restore: {
-                    show: true
-                },
-                saveAsImage: {
-                    show: true
-                }
-            }
-        },
-        calculable: true,
-        xAxis: [
-            {
-                type: "category",
-                data: ["南岗区", "道里区", "香坊区", "道外区", "群里区", "松北区"],
-                splitArea: {
-                    show: false
-                },
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#fff'
-                    },
-                    lineStyle: {
-                        color: new echarts.graphic.LinearGradient(
-                            0, 0, 1, 0,
-                            [
-                                {offset: 0, color: '#CE9FFC'},
-                                {offset: 1, color: '#7367F0'}
-                            ]
-                        )
-                    }
-                },
-                position: "bottom",
-                axisTick: {
-                    show: true
-                },
-                splitLine: {
-                    show: false
-                },
-                nameTextStyle: {
-                    color: "#C4EAFC"
-                }
-            }
-        ],
-        yAxis: [
-            {
-                type: "value",
-                splitLine: {
-                    show: true
-                },
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        color: ['#0396FF'],
-                        width: 1,
-                        type: 'solid'
-                    }
-                },
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#fff'
-                    },
-                    lineStyle: {
-                        color: new echarts.graphic.LinearGradient(
-                            0, 0, 1, 0,
-                            [
-                                {offset: 0, color: '#CE9FFC'},
-                                {offset: 1, color: '#7367F0'}
-                            ]
-                        )
-                    }
-                }
-            }
-        ],
-        series: [
-            {
-                name: "立案量",
-                barWidth: 10,
-                type: "bar",
-                data: [20, 4.9, 30, 23.2, 120, 76.7],
+            series: [{
+                type: 'pie',
+                radius: ['70%', '83%'],
+                center: ["50%", "50%"],
+                clockwise: true,
+                avoidLabelOverlap: true,
+                hoverOffset: 15,
                 itemStyle: {
                     normal: {
-                        color: new echarts.graphic.LinearGradient(
-                            0, 0, 1, 0,
-                            [
-                                {offset: 0, color: '#3977E6'},
-                                {offset: 1, color: '#37BBF8'}
-
-                            ]
-                        )
+                        color: function(params) {
+                            return colorList[params.dataIndex]
+                        }
+                    }
+                },
+                label: {
+                    show: true,
+                    position: 'outside',
+                    formatter: '{a|{b}}\n{b|{c}千瓦时}\n{hr|●}',
+                    rich: {
+                        hr: {
+                            width: 6,
+                            height: 6,
+                            padding: [3, -10, 0, -10]
+                        },
+                        a: {
+                            padding: [-30, 15, -40, 15],
+                            color:'#666666',
+                            fontSize:14
+                        },
+                        b: {
+                            padding: [-30, 15, 0, 15],
+                            color:'#666666',
+                            fontSize:14
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        length: 10,
+                        length2: 10,
+                        lineStyle: {
+                            width: 1,
+                            color: '#CDCDCD'
+                        }
+                    }
+                },
+                data: indata,
+            },{
+                itemStyle: {
+                    normal: {
+                        color: '#22378d',
+                    }
+                },
+                type: 'pie',
+                hoverAnimation: false,
+                radius: ['67%', '85%'],
+                center: ["50%", "50%"],
+                label: {
+                    normal: {
+                        show:false
+                    }
+                },
+                data: [{
+                    value: 1,
+                }],
+                z:-1
+            }]
+        };
+        myChart.setOption(option);
+        // 作废率
+        var myChart = echarts.init(document.getElementById('zfl'));
+        var option = {
+            series: [{
+                type: 'liquidFill',
+                radius: '80%',
+                data: [0.5, 0.45, 0.4, 0.3],
+                backgroundStyle: {
+                    borderWidth: 5, //内边框宽度
+                    color: '#03214F', //背景颜色
+                    shadowBlur: 10, //阴影模糊
+                },
+                label: {
+                    normal: {
+                        textStyle: {
+                            color: 'red',
+                            insideColor: 'yellow',
+                            fontSize: 50
+                        }
                     }
                 }
+            }]
+        };
+        myChart.setOption(option);
+        // 专业部门
+        var myChart = echarts.init(document.getElementById('zybm'));
+        var option = {
+            title: {
+                x: "left"
             },
-
-        ],
-        calculableColor: "rgba(255,165,0,0.6)",
-        animation: true,
-        animationEasing: "ExponentialInOut",
-        grid: {
-            x: 56,
-            x2: 51,
-            y2: 38,
-            y: 38
-        }
-    };
-    myChart.setOption(option);
-    // 事件增长
-    var myChart = echarts.init(document.getElementById('sjzz'));
-    var option = {
-        tooltip: {
-            trigger: "axis"
-        },
-        legend: {
-            data: [ "立案量"],
-            x: "right",
-            orient: "horizontal",
-            y: "top",
-            textStyle:{
-                color: '#ffffff'//字体颜色
-            }
-        },
-        toolbox: {
-            feature: {
-                dataView: {
-                    readOnly: true
-                },
-                magicType: {
-                    type: ["line", "bar"],
-                    show: false
+            legend: {
+                data: [ "立案量"],
+                x: "right",
+                orient: "horizontal",
+                y: "top",
+                textStyle: {
+                    color: '#ffffff'//字体颜色
                 }
-            }
-        },
-        calculable: true,
-        xAxis: [
-            {
-                type: "category",
-                data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-                axisTick: {
-                    lineStyle: {
-                        color: "rgb(56, 178, 234)"
+            },
+            tooltip: {
+                trigger: "axis"
+            },
+            toolbox: {
+                show: false,
+                feature: {
+                    mark: {
+                        show: true
                     },
-                    show: false
-                },
-                splitLine: {
-                    show: false
-                },
-                boundaryGap: false,
-                axisLine: {
-                    show: false
-                },
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#3677FF'
-                    }
-                }
-            }
-        ],
-        yAxis: [
-            {
-                type: "value",
-                axisLine: {
-                    show: false
-                },
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        color: "#C4EAFC",
-                        width: 1
-                    }
-                },
-                splitArea: {
-                    show: false
-                },
-                nameTextStyle: {
-                    color: "rgb(20, 159, 224)"
-                },
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: '#3677FF'
-                    }
-                }
-            }
-        ],
-        series: [
-            {
-                name: "结案量",
-                type: "line",
-                data: [11, 11, 1500, 1300, 1200, 2100, 10],
-                smooth: true,
-                itemStyle:{
-                    normal:{
-                        color:"#71f5eb"
+                    dataView: {
+                        show: true,
+                        readOnly: true
+                    },
+                    magicType: {
+                        show: false,
+                        type: ["line", "bar"]
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
                     }
                 }
             },
+            calculable: true,
+            xAxis: [
+                {
+                    type: "category",
+                    data: ["南岗区", "道里区", "香坊区", "道外区", "群里区", "松北区"],
+                    splitArea: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        },
+                        lineStyle: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 1, 0,
+                                [
+                                    {offset: 0, color: '#CE9FFC'},
+                                    {offset: 1, color: '#7367F0'}
+                                ]
+                            )
+                        }
+                    },
+                    position: "bottom",
+                    axisTick: {
+                        show: true
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    nameTextStyle: {
+                        color: "#C4EAFC"
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: "value",
+                    splitLine: {
+                        show: true
+                    },
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: ['#0396FF'],
+                            width: 1,
+                            type: 'solid'
+                        }
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        },
+                        lineStyle: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 1, 0,
+                                [
+                                    {offset: 0, color: '#CE9FFC'},
+                                    {offset: 1, color: '#7367F0'}
+                                ]
+                            )
+                        }
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: "立案量",
+                    barWidth: 10,
+                    type: "bar",
+                    data: [20, 4.9, 30, 23.2, 120, 76.7],
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 1, 0,
+                                [
+                                    {offset: 0, color: '#3977E6'},
+                                    {offset: 1, color: '#37BBF8'}
 
-        ],
-        grid: {
-            x: 56,
-            x2: 51,
-            y2: 38,
-            y: 38
-        }
-    };
-    myChart.setOption(option);
+                                ]
+                            )
+                        }
+                    }
+                },
+
+            ],
+            calculableColor: "rgba(255,165,0,0.6)",
+            animation: true,
+            animationEasing: "ExponentialInOut",
+            grid: {
+                x: 56,
+                x2: 51,
+                y2: 38,
+                y: 38
+            }
+        };
+        myChart.setOption(option);
+        // 事件增长
+        var myChart = echarts.init(document.getElementById('sjzz'));
+        var option = {
+            tooltip: {
+                trigger: "axis"
+            },
+            legend: {
+                data: [ "立案量"],
+                x: "right",
+                orient: "horizontal",
+                y: "top",
+                textStyle:{
+                    color: '#ffffff'//字体颜色
+                }
+            },
+            toolbox: {
+                show:false,
+                feature: {
+                    dataView: {
+                        readOnly: true
+                    },
+                    magicType: {
+                        type: ["line", "bar"],
+                        show: false
+                    }
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: "category",
+                    data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+                    axisTick: {
+                        lineStyle: {
+                            color: "rgb(56, 178, 234)"
+                        },
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    boundaryGap: false,
+                    axisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#3677FF'
+                        }
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: "value",
+                    axisLine: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: "#C4EAFC",
+                            width: 1
+                        }
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    nameTextStyle: {
+                        color: "rgb(20, 159, 224)"
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#3677FF'
+                        }
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: "结案量",
+                    type: "line",
+                    data: [11, 11, 1500, 1300, 1200, 2100, 10],
+                    smooth: true,
+                    itemStyle:{
+                        normal:{
+                            color:"#71f5eb"
+                        }
+                    }
+                },
+
+            ],
+            grid: {
+                x: 56,
+                x2: 51,
+                y2: 38,
+                y: 38
+            }
+        };
+        myChart.setOption(option);
+    })
+
 </script>
-</body>
 </html>
