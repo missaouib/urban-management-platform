@@ -3,8 +3,6 @@ package com.unicom.urban.management.web.framework.security;
 import com.unicom.urban.management.common.exception.authentication.NotDeptException;
 import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.pojo.Delete;
-import com.unicom.urban.management.pojo.SecurityDeptBean;
-import com.unicom.urban.management.pojo.SecurityRoleBean;
 import com.unicom.urban.management.pojo.SecurityUserBean;
 import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.User;
@@ -15,8 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.stream.Collectors;
 
 /**
  * 登录时查询用户
@@ -39,29 +35,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("用户不存在");
         }
 
-        SecurityUserBean userBean = new SecurityUserBean();
-
-        userBean.setId(user.getId());
-        userBean.setName(user.getName());
-        userBean.setUsername(user.getUsername());
-        userBean.setPassword(user.getPassword());
-        userBean.setSts(user.getSts());
-        userBean.setRoleList(user.getRoleList().stream().map(role -> {
-            SecurityRoleBean securityUserBean = new SecurityRoleBean();
-            securityUserBean.setId(role.getId());
-            securityUserBean.setRoleName(role.getName());
-            return securityUserBean;
-        }).collect(Collectors.toSet()));
-
-        SecurityDeptBean deptBean = new SecurityDeptBean();
         Dept dept = user.getDept();
         if (dept == null) {
             throw new NotDeptException("该用户没有配置部门");
         }
-        deptBean.setId(dept.getId());
-        deptBean.setDeptName(dept.getDeptName());
-        userBean.setDept(deptBean);
-        return userBean;
+
+        return new SecurityUserBean(user);
 
     }
 

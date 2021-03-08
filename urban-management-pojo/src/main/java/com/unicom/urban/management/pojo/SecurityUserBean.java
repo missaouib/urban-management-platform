@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * 存放在SpringSecurity中的实体用户对象
@@ -39,6 +40,16 @@ public class SecurityUserBean implements UserDetails {
     public SecurityUserBean(String id, String username) {
         this.id = id;
         this.username = username;
+    }
+
+    public SecurityUserBean(User user) {
+        this.id = user.getId();
+        this.name = user.getName();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.sts = user.getSts();
+        this.roleList = (user.getRoleList().stream().map(SecurityRoleBean::new).collect(Collectors.toSet()));
+        this.dept = new SecurityDeptBean(user.getDept());
     }
 
     @Override

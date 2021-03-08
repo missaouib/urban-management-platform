@@ -1,5 +1,6 @@
 package com.unicom.urban.management.pojo;
 
+import com.unicom.urban.management.pojo.entity.Role;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,5 +23,13 @@ public class SecurityRoleBean implements GrantedAuthority {
         return roleName;
     }
 
+
+    public SecurityRoleBean() {
+    }
+
+    public SecurityRoleBean(Role role) {
+        this.id = role.getId();
+        this.roleName = role.getName();
+    }
 
 }

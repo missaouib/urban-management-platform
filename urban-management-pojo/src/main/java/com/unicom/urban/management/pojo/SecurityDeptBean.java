@@ -1,5 +1,6 @@
 package com.unicom.urban.management.pojo;
 
+import com.unicom.urban.management.pojo.entity.Dept;
 import lombok.Data;
 import lombok.ToString;
 
@@ -16,5 +17,13 @@ public class SecurityDeptBean {
 
     private String deptName;
 
+    public SecurityDeptBean() {
+    }
+
+
+    public SecurityDeptBean(Dept dept) {
+        this.id = dept.getId();
+        this.deptName = dept.getDeptName();
+    }
 
 }
