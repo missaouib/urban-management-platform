@@ -134,8 +134,7 @@ public class UserService {
         Optional<User> ifUser = userRepository.findById(userId);
         if (ifUser.isPresent()) {
             User user = ifUser.get();
-            user.setSts((null == user.getSts() || user.getSts() == 0) ? 1 : 0);
-            userRepository.saveAndFlush(user);
+            user.activation();
         } else {
             throw new DataValidException("用户不存在");
         }
@@ -229,14 +228,11 @@ public class UserService {
      */
     private void checkUser(List<String> ids) {
         for (String id : ids) {
-            if (isAdmin(id)) {
+            User user = new User(id);
+            if (user.isAdmin()) {
                 throw new DataValidException("超级管理员角色不能删除");
             }
         }
-    }
-
-    private boolean isAdmin(String id) {
-        return SystemConstant.ADMIN_USER_ID.equals(id);
     }
 
     public boolean usernameAlreadyExists(String username) {

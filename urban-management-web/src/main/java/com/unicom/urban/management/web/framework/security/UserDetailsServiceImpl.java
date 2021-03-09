@@ -4,7 +4,6 @@ import com.unicom.urban.management.common.exception.authentication.NotDeptExcept
 import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.pojo.Delete;
 import com.unicom.urban.management.pojo.SecurityUserBean;
-import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("用户不存在");
         }
 
-        Dept dept = user.getDept();
-        if (dept == null) {
+        if (user.noDept()) {
             throw new NotDeptException("该用户没有配置部门");
         }
 
