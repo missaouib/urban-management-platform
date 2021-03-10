@@ -1,5 +1,7 @@
 package com.unicom.urban.management.service.activiti;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import com.unicom.urban.management.web.WebApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.HistoryService;
@@ -159,6 +161,23 @@ public class ActivitiServiceImplTest {
         Map<String, Object> variables = new HashMap<>();
         variables.put("userList", "liukai");
         ProcessInstance eventListener = runtimeService.startProcessInstanceByKey("event_listener", variables);
+
+
+    }
+
+    @Test
+    public void time() {
+
+        String dateStr1 = "2017-03-01 22:33:23";
+        Date starTime = DateUtil.parse(dateStr1);
+
+        String dateStr2 = "2017-04-01 23:34:50";
+        Date endTime = DateUtil.parse(dateStr2);
+
+
+        long hour = DateUtil.between(starTime, endTime, DateUnit.MINUTE);
+
+        System.out.println(hour);
 
 
     }
