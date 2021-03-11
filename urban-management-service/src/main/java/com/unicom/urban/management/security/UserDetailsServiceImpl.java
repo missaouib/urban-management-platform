@@ -1,4 +1,4 @@
-package com.unicom.urban.management.web.framework.security;
+package com.unicom.urban.management.security;
 
 import com.unicom.urban.management.common.exception.authentication.NotDeptException;
 import com.unicom.urban.management.dao.user.UserRepository;
@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 /**
  * 登录时查询用户
@@ -28,11 +30,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsernameAndDeleted(username, Delete.NORMAL);
+        Optional<User> optionalUser = userRepository.findByUsernameAndDeleted(username, Delete.NORMAL);
 
-        if (user == null) {
-            throw new UsernameNotFoundException("用户不存在");
-        }
+        User user = optionalUser.orElseThrow(() -> new UsernameNotFoundException("用户不存在"));
 
         if (user.noDept()) {
             throw new NotDeptException("该用户没有配置部门");
@@ -41,6 +41,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new SecurityUserBean(user);
 
     }
-
 
 }

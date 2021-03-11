@@ -41,11 +41,9 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(rollbackOn = Exception.class)
 public class UserService {
-    private final static DateTimeFormatter df;
     private final static DateTimeFormatter fmt;
 
     static {
-        df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     }
 
@@ -174,19 +172,20 @@ public class UserService {
     }
 
     public void changePassword(ChangePasswordDTO changePasswordDTO) {
-        User user = userRepository.findByUsernameAndDeleted(SecurityUtil.getUsername(), Delete.NORMAL);
+        Optional<User> optionalUser = userRepository.findByUsernameAndDeleted(SecurityUtil.getUsername(), Delete.NORMAL);
 
-        if (!passwordService.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
-            throw new BadPasswordException("密码错误");
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (!passwordService.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
+                throw new BadPasswordException("密码错误");
+            }
+            if (changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfigNewPassword())) {
+                throw new BadPasswordException("两次输入的密码不一致");
+            }
+            user.setPassword(passwordService.encode(changePasswordDTO.getNewPassword()));
+            userRepository.save(user);
         }
 
-        if (changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfigNewPassword())) {
-            throw new BadPasswordException("两次输入的密码不一致");
-        }
-
-        user.setPassword(passwordService.encode(changePasswordDTO.getNewPassword()));
-
-        userRepository.save(user);
 
     }
 
