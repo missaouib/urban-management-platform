@@ -161,7 +161,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.unicom.urban.management.web.WebApplication</mainClass>
+                    <mainClass>com.unicom.urban.management.WebApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

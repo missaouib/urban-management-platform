@@ -85,7 +85,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <version>${spring-boot.version}</version>
                 <configuration>
-                    <mainClass>com.unicom.urban.management.api.ApiApplication</mainClass>
+                    <mainClass>com.unicom.urban.management.ApiApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

@@ -3,7 +3,7 @@ package com.unicom.urban.management.process;
 import com.unicom.urban.management.annotation.WithMockCustomUser;
 import com.unicom.urban.management.dao.process.ProcessRepository;
 import com.unicom.urban.management.pojo.entity.Process;
-import com.unicom.urban.management.web.WebApplication;
+import com.unicom.urban.management.WebApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
