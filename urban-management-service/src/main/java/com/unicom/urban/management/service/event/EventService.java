@@ -83,7 +83,7 @@ public class EventService {
     private ComponentService componentService;
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
-        Page<Event> page = eventRepository.findAll((Specification<Event>) (root, query, criteriaBuilder) -> {
+        Specification<Event> specification = (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
             if (eventDTO.getClose() != null) {
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("eventSate").get("id"));
@@ -211,10 +211,12 @@ public class EventService {
             }
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
-        }, pageable);
+        };
+        Page<Event> page = eventRepository.findAll(specification, pageable);
         List<EventVO> eventVOList = new ArrayList<>();
         DateTimeFormatter simpleDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         List<Coordinate> coordinateList = new ArrayList<>();
+        List<Process> processes = processService.findAll();
         /*循环添加vo*/
         page.getContent().forEach(e -> {
             EventVO eventVO = EventMapper.INSTANCE.eventToEventVO(e);
@@ -307,7 +309,6 @@ public class EventService {
                 }
             }
             if (eventVO.getTaskName() != null) {
-                List<Process> processes = processService.findAll();
                 List<String> urls = processes.stream().filter(p -> eventVO.getTaskName().equals(p.getNodeName())).map(Process::getUrl).collect(Collectors.toList());
                 if (urls.size() > 0) {
                     eventVO.setUrl(urls.get(0));
