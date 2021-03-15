@@ -25,5 +25,10 @@ public @interface WithMockCustomUser {
      */
     String username() default "";
 
+    /**
+     * 姓名
+     */
+    String name() default "";
+
 
 }

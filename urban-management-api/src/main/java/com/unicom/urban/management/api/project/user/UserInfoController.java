@@ -1,4 +1,4 @@
-package com.unicom.urban.management.api.project;
+package com.unicom.urban.management.api.project.user;
 
 import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.SecurityUserBean;

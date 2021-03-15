@@ -1,5 +1,6 @@
 package com.unicom.urban.management.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.unicom.urban.management.pojo.entity.User;
 import lombok.Data;
 import lombok.ToString;
@@ -37,9 +38,10 @@ public class SecurityUserBean implements UserDetails {
 
     }
 
-    public SecurityUserBean(String id, String username) {
+    public SecurityUserBean(String id, String username, String name) {
         this.id = id;
         this.username = username;
+        this.name = name;
     }
 
     public SecurityUserBean(User user) {
@@ -64,6 +66,7 @@ public class SecurityUserBean implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -74,21 +77,25 @@ public class SecurityUserBean implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }

@@ -1,9 +1,9 @@
 package com.unicom.urban.management.process;
 
+import com.unicom.urban.management.WebApplication;
 import com.unicom.urban.management.annotation.WithMockCustomUser;
 import com.unicom.urban.management.dao.process.ProcessRepository;
 import com.unicom.urban.management.pojo.entity.Process;
-import com.unicom.urban.management.WebApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +19,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @Slf4j
-@WithMockCustomUser(id = "1", username = "admin")
+@WithMockCustomUser(id = "1", username = "admin", name = "超级管理员")
 public class ProcessRepositoryTest {
 
     @Autowired

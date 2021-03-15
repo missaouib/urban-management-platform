@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @Slf4j
-@WithMockCustomUser(id = "1", username = "admin")
+@WithMockCustomUser(id = "1", username = "admin", name = "超级管理员")
 public class MenuServiceTest {
 
     @Autowired
