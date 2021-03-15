@@ -2,7 +2,6 @@ package com.unicom.urban.management.service.user;
 
 import com.unicom.urban.management.common.annotations.Log;
 import com.unicom.urban.management.common.constant.KvConstant;
-import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.exception.BadPasswordException;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.SecurityUtil;
@@ -91,7 +90,7 @@ public class UserService {
                 roles.append(",").append(role.getName());
             }
             v.setRoles(roles.toString().length() > 0 ? roles.toString().substring(1) : "");
-            if (user.getId().equals(SystemConstant.ADMIN_USER_ID)) {
+            if (user.isAdmin()) {
                 v.setSystem("1");
             }
             v.setSts(user.getSts());

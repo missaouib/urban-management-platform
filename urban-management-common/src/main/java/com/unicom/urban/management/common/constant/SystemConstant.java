@@ -25,12 +25,4 @@ public class SystemConstant {
      */
     public final static String DEFAULT_PASSWORD = "Fe,scLoJ07e=DJxo";
 
-    /**
-     * 超级管理员的ID
-     */
-    public final static String ADMIN_USER_ID = "1";
-
-//    public final static String URL_PREFIX = "";
-
-
 }

@@ -8,6 +8,7 @@ import com.unicom.urban.management.common.util.SecurityUtil;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.EventFile;
+import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.EventOneVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
@@ -253,7 +254,7 @@ public class SupervisionAcceptanceController {
     @GetMapping("/superviseCasesList")
     public Page<EventVO> superviseCasesList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
         Stream<String> stream = SecurityUtil.getRoleId().stream();
-        if (stream.anyMatch(r -> r.equals(KvConstant.DISPATCHER_ROLE)||r.equals(SystemConstant.ADMIN_USER_ID))) {
+        if (stream.anyMatch(r -> r.equals(KvConstant.DISPATCHER_ROLE) || r.equals(User.ADMIN_USER_ID))) {
             eventDTO.setSupervision("1");
         }
         eventDTO.setTaskName(Collections.singletonList(EventConstant.PROFESSIONAL_AGENCY));
