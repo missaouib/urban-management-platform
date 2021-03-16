@@ -18,7 +18,7 @@ public interface UserMapper {
 
 
     @Mappings({
-            @Mapping(target = "phone", expression = "java(com.unicom.urban.management.common.util.AESUtil.decrypt(user.getPhone()))"),
+            @Mapping(target = "phone", expression = "java(user.getRawPhone())"),
             @Mapping(source = "dept.deptName", target = "deptName")
     })
     UserVO convert(User user);

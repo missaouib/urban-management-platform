@@ -30,6 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         Optional<User> optionalUser = userRepository.findByUsernameAndDeleted(username, Delete.NORMAL);
 
         User user = optionalUser.orElseThrow(() -> new UsernameNotFoundException("用户不存在"));

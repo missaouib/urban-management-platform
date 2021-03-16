@@ -4,6 +4,7 @@ import com.unicom.urban.management.common.annotations.Log;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.exception.BadPasswordException;
 import com.unicom.urban.management.common.exception.DataValidException;
+import com.unicom.urban.management.common.util.AESUtil;
 import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.mapper.UserMapper;
@@ -138,25 +139,6 @@ public class UserService {
     }
 
 
-    /**
-     * 持久化user对象
-     */
-    private void persistUser(UserDTO userDTO) {
-        String deptId = userDTO.getDeptId();
-        Dept dept = new Dept();
-        dept.setId(deptId);
-
-        User user = new User();
-        user.setName(userDTO.getName());
-        user.setUsername(userDTO.getUsername());
-        user.setPhone(userDTO.getMobileNumber());
-        user.setProfilePhotoUrl("http://www.baidu.com/");
-//        user.setDept(dept);
-        initPassword(user);
-
-        userRepository.save(user);
-    }
-
     @Log(name = "用户管理-修改")
     public void updateUser(User user) {
 
@@ -164,7 +146,7 @@ public class UserService {
 
         userFormDatabase.setName(user.getName());
 
-        userFormDatabase.setPhone(user.getPhone());
+        userFormDatabase.setPhone(AESUtil.encrypt(user.getPhone()));
 
         userRepository.save(userFormDatabase);
 
@@ -261,7 +243,7 @@ public class UserService {
             throw new DataValidException("登录名不能重复");
         }
         user.setEmail(userDTO.getEmail());
-        user.setPhone(userDTO.getMobileNumber());
+        user.setPhone(AESUtil.encrypt(userDTO.getMobileNumber()));
         user.setOfficePhone(userDTO.getOfficePhone());
         user.setPost(userDTO.getPost());
         initPassword(user);
@@ -272,7 +254,6 @@ public class UserService {
             LocalDate birth = LocalDate.parse(userDTO.getBirth(), fmt);
             user.setBirth(birth);
         }
-        user.setPhone(userDTO.getMobileNumber());
         if (userDTO.getSts() == null) {
             user.setSts(User.DISABLED);
         } else {
@@ -315,7 +296,7 @@ public class UserService {
             LocalDate birth = LocalDate.parse(userDTO.getBirth(), fmt);
             user.setBirth(birth);
         }
-        user.setPhone(userDTO.getMobileNumber());
+        user.setPhone(AESUtil.encrypt(userDTO.getMobileNumber()));
         if (StringUtils.isNotBlank(userDTO.getDeptId())) {
             Dept dept = deptService.findOne(userDTO.getDeptId());
             user.setDept(dept);

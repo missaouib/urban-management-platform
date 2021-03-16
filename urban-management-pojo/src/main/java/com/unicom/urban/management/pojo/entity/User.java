@@ -1,6 +1,8 @@
 package com.unicom.urban.management.pojo.entity;
 
+import com.unicom.urban.management.common.util.AESUtil;
 import com.unicom.urban.management.pojo.Delete;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
@@ -152,6 +154,17 @@ public class User {
         return ADMIN_USER_ID.equals(id);
     }
 
+    /**
+     * 获取未加密的电话号码
+     */
+    @Transient
+    public String getRawPhone() {
+        if (StringUtils.isNotEmpty(phone)) {
+            return AESUtil.decrypt(phone);
+        }
+        return phone;
+    }
+
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -164,7 +177,7 @@ public class User {
         this.id = id;
     }
 
-    @Column(nullable = false, columnDefinition = "varchar(15)")
+    @Column
     public String getName() {
         return name;
     }
@@ -173,7 +186,7 @@ public class User {
         this.name = name;
     }
 
-    @Column(nullable = false, unique = false)
+    @Column
     public String getUsername() {
         return username;
     }
@@ -182,7 +195,7 @@ public class User {
         this.username = username;
     }
 
-    @Column(nullable = false, columnDefinition = "char(60)")
+    @Column
     public String getPassword() {
         return password;
     }
@@ -191,7 +204,7 @@ public class User {
         this.password = password;
     }
 
-    @Column(nullable = false, columnDefinition = "char(11)")
+    @Column
     public String getPhone() {
         return phone;
     }
@@ -208,7 +221,7 @@ public class User {
         this.officePhone = officePhone;
     }
 
-    @Column(columnDefinition = "varchar(50)")
+    @Column
     public String getEmail() {
         return email;
     }
@@ -217,7 +230,7 @@ public class User {
         this.email = email;
     }
 
-    @Column(columnDefinition = "char(1)")
+    @Column
     public String getSex() {
         return sex;
     }
@@ -242,7 +255,7 @@ public class User {
         this.birth = birth;
     }
 
-    @Column(columnDefinition = "tinyint")
+    @Column
     public Integer getSts() {
         return sts;
     }
@@ -251,7 +264,7 @@ public class User {
         this.sts = sts;
     }
 
-    @Column(nullable = false)
+    @Column
     public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }
@@ -302,7 +315,7 @@ public class User {
 
     @CreatedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
+    @Column
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -314,7 +327,7 @@ public class User {
 
     @LastModifiedDate
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
+    @Column
     public LocalDateTime getUpdateTime() {
         return updateTime;
     }
@@ -347,7 +360,7 @@ public class User {
     }
 
 
-    @Column(nullable = false, columnDefinition = "tinyint")
+    @Column
     public String getDeleted() {
         return deleted;
     }
