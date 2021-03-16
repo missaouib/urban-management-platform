@@ -16,6 +16,7 @@ import com.unicom.urban.management.pojo.entity.Dept;
 import com.unicom.urban.management.pojo.entity.Grid;
 import com.unicom.urban.management.pojo.entity.Role;
 import com.unicom.urban.management.pojo.entity.User;
+import com.unicom.urban.management.pojo.vo.AddressBookVO;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.dept.DeptService;
 import com.unicom.urban.management.service.grid.GridService;
@@ -408,6 +409,24 @@ public class UserService {
             }
         }
         return false;
+    }
+
+    /**
+     * 手机端 获取通讯录
+     *
+     * @return 通讯录
+     */
+    public List<AddressBookVO> getAddressBook() {
+        List<User> userList = findAll();
+        List<AddressBookVO> addressBookVOList = new ArrayList<>(userList.size());
+        for (User user : userList) {
+            AddressBookVO addressBookVO = new AddressBookVO();
+            addressBookVO.setId(user.getId());
+            addressBookVO.setName(user.getName());
+            addressBookVO.setPhone(user.getPhone());
+            addressBookVOList.add(addressBookVO);
+        }
+        return addressBookVOList;
     }
 
 }

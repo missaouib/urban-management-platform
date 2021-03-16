@@ -2,7 +2,9 @@ package com.unicom.urban.management.api.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
-import com.unicom.urban.management.util.SecurityUtil;
+import com.unicom.urban.management.common.properties.GisServiceProperties;
+import com.unicom.urban.management.common.util.RestTemplateUtil;
+import com.unicom.urban.management.pojo.RestReturn;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.SecurityUserBean;
 import com.unicom.urban.management.pojo.dto.EventAppDTO;
@@ -10,6 +12,7 @@ import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.dto.TrajectoryDTO;
 import com.unicom.urban.management.pojo.entity.EventFile;
+import com.unicom.urban.management.pojo.entity.Grid;
 import com.unicom.urban.management.pojo.entity.KV;
 import com.unicom.urban.management.pojo.entity.Statistics;
 import com.unicom.urban.management.pojo.vo.*;
@@ -17,20 +20,23 @@ import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import com.unicom.urban.management.service.grid.GridService;
+import com.unicom.urban.management.service.idioms.IdiomsService;
 import com.unicom.urban.management.service.kv.KVService;
+import com.unicom.urban.management.service.process.ProcessService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import com.unicom.urban.management.service.trajectory.TrajectoryService;
+import com.unicom.urban.management.util.SecurityUtil;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * 无线采集子系统
@@ -56,21 +62,28 @@ public class WirelessAcquisitionController {
     private EventFileService eventFileService;
     @Autowired
     private TrajectoryService trajectoryService;
+    @Autowired
+    private GisServiceProperties gisServiceProperties;
+    @Autowired
+    private ProcessService processService;
+    @Autowired
+    private IdiomsService idiomsService;
+
     /**
      * 获取案件类型
      *
      * @return 地址
      */
     @GetMapping("/allEventType")
-    public List<EventTypeVO> aLLeventType() {
+    public List<EventTypeVO> allEventType() {
         return eventTypeService.getEventTypeList(2);
     }
 
     /**
      * 生成案卷号（案卷号：系统自动生成，生成规则：部件（简称C）或事件（E）+大类代码+小类代码+××××××××××（年：4位，月：2位，日：2位，序号：2位）即C01012019041101）
      *
-     * @param eventTypeId
-     * @return
+     * @param eventTypeId id
+     * @return 案卷号
      */
     @GetMapping("/createEventCode")
     public Result createEventCode(String eventTypeId) {
@@ -84,8 +97,8 @@ public class WirelessAcquisitionController {
     /**
      * 获取立案区域
      *
-     * @param eventTypeId
-     * @return
+     * @param eventTypeId id
+     * @return 立案区域
      */
     @GetMapping("/findEventConditionByEventType")
     public Result findEventConditionByEventType(String eventTypeId) {
@@ -96,8 +109,8 @@ public class WirelessAcquisitionController {
     /**
      * 获取立案时限分类
      *
-     * @param conditionId
-     * @return
+     * @param conditionId id
+     * @return 立案时限分类
      */
     @GetMapping("/findDeptTimeLimitByCondition")
     public Result findDeptTimeLimitByCondition(String conditionId) {
@@ -109,7 +122,7 @@ public class WirelessAcquisitionController {
      * 获取立案条件
      *
      * @param conditionId id
-     * @return
+     * @return 立案条件
      */
     @GetMapping("/getEventCondition")
     public Result getEventCondition(String conditionId) {
@@ -120,8 +133,8 @@ public class WirelessAcquisitionController {
     /**
      * 获取立案时限
      *
-     * @param deptTimeLimitId
-     * @return
+     * @param deptTimeLimitId id
+     * @return 立案时限
      */
     @GetMapping("/findDeptTimeLimit")
     public Result findDeptTimeLimit(String deptTimeLimitId) {
@@ -253,7 +266,7 @@ public class WirelessAcquisitionController {
     /**
      * 监督员案件核查
      *
-     * @param statisticsDTO
+     * @param statisticsDTO 数据
      */
     @PostMapping("/completeByInspect")
     public Result completeByInspect(StatisticsDTO statisticsDTO) {
@@ -300,12 +313,118 @@ public class WirelessAcquisitionController {
 
     /**
      * 轨迹记录
-     * @return
+     *
+     * @return 成功
      */
-    @PostMapping("/saveTrajectory")
-    public Result saveTrajectorys(TrajectoryDTO trajectoryDTO){
+    @PostMapping("/saveTrackLog")
+    public Result saveTrackLog(TrajectoryDTO trajectoryDTO) {
         SecurityUserBean user = SecurityUtil.getUser();
         trajectoryService.saveTrajectory(trajectoryDTO, user.castToUser());
-        return Result.success();
+        return Result.success("成功");
     }
+
+    /**
+     * 逆地理编码
+     */
+    @GetMapping("localReverseGeocoding")
+    public Map<String, String> localReverseGeocoding(double x, double y) throws DataAccessException {
+        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/restApi/LocalReverseGeocoding?x=" + x + "&y=" + y, RestReturn.class).getBody();
+        assert body != null;
+        return (Map<String, String>) body.getData();
+    }
+
+    /**
+     * 点击网格反差信息
+     */
+    @GetMapping("/getGridByCheckLayer")
+    public Result getGridByCheckLayer(String x, String y) {
+        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/queryGridByXY?x=" + x + "&y=" + y, RestReturn.class).getBody();
+        Map<String, String> dataMap = (Map<String, String>) body.getData();
+        String objId = dataMap.get("id");
+        String multiPolygon = dataMap.get("multiPolygon");
+        Grid byGridCode = gridService.findByGridCode(objId);
+        List<Map<String, Object>> mapList = new ArrayList<>(4);
+        Map<String, Object> map = new HashMap<>(3);
+        map.put("id", byGridCode.getId());
+        map.put("name", byGridCode.getGridName());
+        map.put("level", byGridCode.getLevel());
+        map.put("user", SecurityUtil.getUsername());
+        mapList.add(map);
+        gridService.addMapToList(byGridCode, mapList);
+        Map<String, Object> newMap = new HashMap<>(2);
+        newMap.put("multiPolygon", multiPolygon);
+        newMap.put("mapList", mapList);
+        return Result.success(newMap);
+    }
+
+    /**
+     * 获取草稿箱列表
+     *
+     * @param eventDTO 查询条件
+     * @param pageable 分页
+     * @return page
+     */
+    @GetMapping("/wirelessAcquisitionList")
+    public Page<EventVO> wirelessAcquisitionList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setSts(EventConstant.SUPERVISE_SAVE);
+        return eventService.search(eventDTO, pageable);
+    }
+
+    /**
+     * 案件采集修改
+     *
+     * @param eventDTO 修改数据
+     */
+    @PostMapping("/updateTemp")
+    public Result updateTemp(EventDTO eventDTO) {
+        eventService.uploadFiles(eventDTO);
+        eventService.updateTemp(eventDTO);
+        return Result.success("修改成功");
+    }
+
+    /**
+     * 案件采集批量删除
+     *
+     * @param ids id
+     */
+    @PostMapping("/remove")
+    public Result remove(String ids) {
+        eventService.remove(ids);
+        return Result.success("删除成功");
+    }
+
+    /**
+     * 获取流转记录
+     *
+     * @param eventId eventId
+     * @return list
+     */
+    @GetMapping("/byEventId")
+    public Result statistics(String eventId) {
+        List<StatisticsVO> statisticsVO = statisticsService.findByEventId(eventId);
+        return Result.success(statisticsVO);
+    }
+
+    /**
+     * 获取阶段图
+     *
+     * @return 编号
+     */
+    @GetMapping("/getNodeName")
+    public Result getNodeName(String eventId) {
+        int nodeName = processService.findAllByNodeNameAndParentIsNotNull(eventId);
+        return Result.success(nodeName);
+    }
+
+    /**
+     * 惯用语
+     *
+     * @return list
+     */
+    @GetMapping("/getIdioms")
+    public Result getIdiomsList() {
+        List<String> list = idiomsService.findAllIdiomsValue();
+        return Result.success(list);
+    }
+
 }

@@ -147,9 +147,9 @@ public class EventController {
     }
 
     /**
-     * 获取有监督员角色的人
+     * 获取阶段图
      *
-     * @return 人
+     * @return 编号
      */
     @GetMapping("/getNodeName")
     public Result getNodeName(String eventId) {
