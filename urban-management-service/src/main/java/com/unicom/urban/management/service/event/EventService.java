@@ -1,7 +1,7 @@
 package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.exception.DataValidException;
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventRepository;
 import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
 import com.unicom.urban.management.mapper.EventButtonMapper;
@@ -36,7 +36,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

@@ -2,7 +2,7 @@ package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.exception.DataValidException;
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;

@@ -1,6 +1,6 @@
 package com.unicom.urban.management.api.project.user;
 
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.pojo.SecurityUserBean;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

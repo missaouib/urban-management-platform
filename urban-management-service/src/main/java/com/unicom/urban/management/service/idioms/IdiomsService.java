@@ -1,7 +1,7 @@
 package com.unicom.urban.management.service.idioms;
 
 import com.unicom.urban.management.common.exception.DataValidException;
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.idioms.IdiomsRepository;
 import com.unicom.urban.management.mapper.IdiomsMapper;
 import com.unicom.urban.management.pojo.entity.Idioms;

@@ -1,7 +1,7 @@
 package com.unicom.urban.management.service.menu;
 
 import com.unicom.urban.management.common.exception.DataValidException;
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.menu.MenuRepository;
 import com.unicom.urban.management.dao.menu.MenuTypeRepository;
 import com.unicom.urban.management.dao.role.RoleRepository;
@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

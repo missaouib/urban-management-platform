@@ -1,7 +1,7 @@
 package com.unicom.urban.management.service.supervise;
 
 import com.unicom.urban.management.common.exception.DataValidException;
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.supervise.SuperviseRepository;
 import com.unicom.urban.management.pojo.dto.SuperviseDTO;
 import com.unicom.urban.management.pojo.entity.Event;

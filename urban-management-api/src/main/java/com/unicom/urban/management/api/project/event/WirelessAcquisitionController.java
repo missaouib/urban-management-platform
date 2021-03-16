@@ -2,7 +2,7 @@ package com.unicom.urban.management.api.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.SecurityUserBean;
 import com.unicom.urban.management.pojo.dto.EventAppDTO;
@@ -12,7 +12,6 @@ import com.unicom.urban.management.pojo.dto.TrajectoryDTO;
 import com.unicom.urban.management.pojo.entity.EventFile;
 import com.unicom.urban.management.pojo.entity.KV;
 import com.unicom.urban.management.pojo.entity.Statistics;
-import com.unicom.urban.management.pojo.entity.Trajectory;
 import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 无线采集子系统

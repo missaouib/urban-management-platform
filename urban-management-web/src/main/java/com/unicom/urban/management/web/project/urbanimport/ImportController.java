@@ -5,7 +5,7 @@ import cn.hutool.core.io.FileUtil;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.SystemConstant;
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.service.component.ComponentService;

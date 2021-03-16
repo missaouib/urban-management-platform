@@ -2,7 +2,7 @@ package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.exception.DataValidException;
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventButtonRepository;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.entity.*;

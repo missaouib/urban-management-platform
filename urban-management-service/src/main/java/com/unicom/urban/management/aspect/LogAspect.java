@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unicom.urban.management.common.annotations.Log;
 import com.unicom.urban.management.common.util.IPUtil;
 import com.unicom.urban.management.common.util.RequestContext;
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.common.util.UserAgentUtil;
 import com.unicom.urban.management.pojo.entity.OperateLog;
 import com.unicom.urban.management.service.log.OperateLogService;

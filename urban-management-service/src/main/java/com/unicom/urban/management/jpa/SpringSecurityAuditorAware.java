@@ -1,7 +1,7 @@
-package com.unicom.urban.management.common.configurer.jpa;
+package com.unicom.urban.management.jpa;
 
 
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.pojo.entity.User;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;

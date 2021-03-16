@@ -1,7 +1,7 @@
 package com.unicom.urban.management.web.project.home;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.vo.EventVO;

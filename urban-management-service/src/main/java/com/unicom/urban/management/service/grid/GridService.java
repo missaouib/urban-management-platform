@@ -3,7 +3,7 @@ package com.unicom.urban.management.service.grid;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.StsConstant;
 import com.unicom.urban.management.common.exception.DataValidException;
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.grid.GridRepository;
 import com.unicom.urban.management.mapper.GridMapper;
 import com.unicom.urban.management.mapper.TreeMapper;

@@ -4,7 +4,7 @@ import com.unicom.urban.management.common.annotations.Log;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.exception.BadPasswordException;
 import com.unicom.urban.management.common.exception.DataValidException;
-import com.unicom.urban.management.common.util.SecurityUtil;
+import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.Delete;

@@ -1,4 +1,4 @@
-package com.unicom.urban.management.common.util;
+package com.unicom.urban.management.util;
 
 import com.unicom.urban.management.pojo.SecurityRoleBean;
 import com.unicom.urban.management.pojo.SecurityUserBean;

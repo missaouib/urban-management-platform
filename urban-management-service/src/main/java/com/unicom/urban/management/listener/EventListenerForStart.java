@@ -1,4 +1,4 @@
-package com.unicom.urban.management.common.listener;
+package com.unicom.urban.management.listener;
 
 import com.unicom.urban.management.common.constant.EventSourceConstant;
 import com.unicom.urban.management.common.exception.BusinessException;
