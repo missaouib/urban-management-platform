@@ -81,7 +81,7 @@ public class RoleService {
                 userList.add(user);
             }
         }
-        return UserMapper.INSTANCE.userListToUserVOList(userList);
+        return UserMapper.INSTANCE.convertList(userList);
     }
 
     private boolean isGridOwnerOrNot(User user, String gridId) {

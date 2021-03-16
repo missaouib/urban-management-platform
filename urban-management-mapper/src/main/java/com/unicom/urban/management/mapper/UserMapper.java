@@ -4,6 +4,7 @@ import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -13,9 +14,13 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    List<UserVO> userListToUserVOList(List<User> userList);
+    List<UserVO> convertList(List<User> userList);
 
-    @Mapping(source = "dept.deptName", target = "deptName")
-    UserVO userToUserVO(User user);
+
+    @Mappings({
+            @Mapping(target = "phone", expression = "java(com.unicom.urban.management.common.util.AESUtil.decrypt(user.getPhone()))"),
+            @Mapping(source = "dept.deptName", target = "deptName")
+    })
+    UserVO convert(User user);
 
 }

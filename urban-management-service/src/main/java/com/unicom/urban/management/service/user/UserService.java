@@ -82,7 +82,7 @@ public class UserService {
         Page<User> page = userRepository.findAll(specification, pageable);
 
         List<User> content = page.getContent();
-        List<UserVO> userVOList = UserMapper.INSTANCE.userListToUserVOList(content);
+        List<UserVO> userVOList = UserMapper.INSTANCE.convertList(content);
         userVOList.forEach(v -> {
             User user = content.stream().filter(c -> c.getId().equals(v.getId())).collect(Collectors.toList()).get(0);
             StringBuilder roles = new StringBuilder();
