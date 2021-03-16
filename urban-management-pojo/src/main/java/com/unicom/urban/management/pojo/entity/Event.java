@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 @SQLDelete(sql = "update event set deleted = " + Delete.DELETE + " where id = ?")
 @Where(clause = "deleted = " + Delete.NORMAL)
-public class Event extends BaseEntity {
+public class Event extends AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")

@@ -21,7 +21,7 @@ import java.util.List;
 @Entity
 @SQLDelete(sql = "update grid set deleted = " + Delete.DELETE + " where id = ?")
 @Where(clause = "deleted = " + Delete.NORMAL)
-public class Grid extends BaseEntity {
+public class Grid extends AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")

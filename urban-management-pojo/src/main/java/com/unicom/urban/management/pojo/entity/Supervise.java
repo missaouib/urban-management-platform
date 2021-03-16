@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-public class Supervise extends BaseEntity {
+public class Supervise extends AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")

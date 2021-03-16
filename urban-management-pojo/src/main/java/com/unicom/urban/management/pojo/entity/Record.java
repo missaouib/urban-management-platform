@@ -17,7 +17,7 @@ import javax.persistence.*;
 @Entity
 @SQLDelete(sql = "update record set deleted = " + Delete.DELETE + " where id = ?")
 @Where(clause = "deleted = " + Delete.NORMAL)
-public class Record extends BaseEntity {
+public class Record extends AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")

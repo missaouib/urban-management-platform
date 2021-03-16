@@ -21,7 +21,7 @@ import java.util.List;
 @SQLDelete(sql = "update sys_menu set deleted = " + Delete.DELETE + " where id = ?")
 @Where(clause = "deleted = " + Delete.NORMAL)
 @Table(name = "sys_menu")
-public class Menu extends BaseEntity {
+public class Menu extends AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")

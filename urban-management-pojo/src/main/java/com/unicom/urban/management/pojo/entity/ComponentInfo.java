@@ -25,7 +25,7 @@ import java.time.LocalDate;
 @Entity
 @SQLDelete(sql = "update component_info set deleted = " + Delete.DELETE + " where id = ?")
 @Where(clause = "deleted = " + Delete.NORMAL)
-public class ComponentInfo extends BaseEntity {
+public class ComponentInfo extends AbstractEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")

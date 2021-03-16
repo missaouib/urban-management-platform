@@ -19,7 +19,7 @@ import java.util.List;
 @Where(clause = "deleted = " + Delete.NORMAL)
 @Entity
 @Table(name = "sys_dept")
-public class Dept extends BaseEntity {
+public class Dept extends AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")

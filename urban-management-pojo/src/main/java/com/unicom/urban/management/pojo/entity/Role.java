@@ -23,7 +23,7 @@ import java.util.List;
 @Table(name = "sys_role")
 @SQLDelete(sql = "update sys_role set deleted = " + Delete.DELETE + " where id = ?")
 @Where(clause = "deleted = " + Delete.NORMAL)
-public class Role extends BaseEntity {
+public class Role extends AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")

@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-public class Process extends BaseEntity {
+public class Process extends AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")

@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 @EntityListeners(AuditingEntityListener.class)
-public class BaseEntity implements Serializable {
+public abstract class AbstractEntity implements Serializable {
 
 
     @CreatedDate

@@ -20,7 +20,7 @@ import javax.persistence.Id;
 @Getter
 @Entity
 @Where(clause = "deleted = " + Delete.NORMAL)
-public class EventButton extends BaseEntity {
+public class EventButton extends AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")

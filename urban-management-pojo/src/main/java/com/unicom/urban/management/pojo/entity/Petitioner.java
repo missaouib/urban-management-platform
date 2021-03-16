@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name = "event_petitioner")
-public class Petitioner extends BaseEntity {
+public class Petitioner extends AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")

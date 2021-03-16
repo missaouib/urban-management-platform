@@ -22,7 +22,7 @@ import javax.persistence.*;
 @Entity
 @SQLDelete(sql = "update component set deleted = " + Delete.DELETE + " where id = ?")
 @Where(clause = "deleted = " + Delete.NORMAL)
-public class Component extends BaseEntity {
+public class Component extends AbstractEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
