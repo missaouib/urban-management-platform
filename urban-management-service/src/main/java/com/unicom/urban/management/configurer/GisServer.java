@@ -1,4 +1,4 @@
-package com.unicom.urban.management.common.configurer;
+package com.unicom.urban.management.configurer;
 
 import org.mitre.dsmiley.httpproxy.ProxyServlet;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;

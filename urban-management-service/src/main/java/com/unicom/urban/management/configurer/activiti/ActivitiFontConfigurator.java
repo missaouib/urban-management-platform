@@ -1,4 +1,4 @@
-package com.unicom.urban.management.common.configurer.activiti;
+package com.unicom.urban.management.configurer.activiti;
 
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.cfg.AbstractProcessEngineConfigurator;

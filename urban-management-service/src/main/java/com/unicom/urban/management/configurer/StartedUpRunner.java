@@ -1,4 +1,4 @@
-package com.unicom.urban.management.common.configurer;
+package com.unicom.urban.management.configurer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

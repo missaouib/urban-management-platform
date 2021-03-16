@@ -25,6 +25,11 @@
             <scope>provided</scope>
         </dependency>
 
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+        </dependency>
+
         <!--        <dependency>-->
         <!--            <groupId>cn.unicom.hlj.snr.firebird</groupId>-->
         <!--            <artifactId>firebirds-pinions-web-aop-starter</artifactId>-->
