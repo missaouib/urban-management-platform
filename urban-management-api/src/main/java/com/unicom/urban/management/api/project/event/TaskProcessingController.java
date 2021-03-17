@@ -24,6 +24,11 @@ public class TaskProcessingController {
     @Autowired
     private DeptService deptService;
 
+    /**
+     * 授权审批 案件处理 挂账恢复
+     *
+     * @param statisticsDTO 参数
+     */
     @PostMapping("/processing")
     public void processing(@RequestBody StatisticsDTO statisticsDTO){
         taskProcessingService.handle(statisticsDTO.getEventId(),statisticsDTO.getButtonId(),statisticsDTO);
