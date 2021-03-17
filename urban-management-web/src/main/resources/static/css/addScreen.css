@@ -32,6 +32,8 @@
 }
 
 .bottom {
+    background-image: url("../img/n-border.png");
+    background-size: 100% 100%;
     width: 100%;
     height: 90%;
     padding: 20px;
@@ -43,6 +45,25 @@
 .top .time {
     width: 33.2%;
     height: 100%;
+    position: relative;
+}
+.n-title-left{
+    background-image: url("../img/n-title-left.png")!important;
+    background-size: 100% 100%!important;
+    width: 346px;
+    height: 18px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.n-title-right{
+    background-image: url("../img/n-title-right.png")!important;
+    background-size: 100% 100%!important;
+    width: 346px;
+    height: 27px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
 }
 .title-center{
     background-image: url("../img/n-title.png")!important;
@@ -94,17 +115,42 @@
     height: 100%;
     justify-content: space-between!important;
 }
-
-.charTitle {
+.n-title{
     width: 100%;
     height: 10%;
+}
+
+.charTitle {
+    margin-top: 10px;
+    width: 30%;
+    height: 10%;
+    float: left;
     justify-content: start;
     padding-left: 30px;
     font-family: Source Han Sans CN;
     font-weight: bold;
     color: #FFFFFF;
 }
-
+.n-title1{
+    background: url("../img/n-s-title1.png");
+    width: 25px;
+    height: 24px;
+    float: left;
+}
+.n-title2{
+    background: url("../img/n-s-title2.png");
+    width: 225px;
+    height: 10px;
+    float: left;
+}
+.n-title3{
+    background: url(../img/n-s-title2.png);
+    width: 117px;
+    height: 10px;
+    float: left;
+    margin-top: 10px;
+    background-size: 100% 100%;
+}
 .chart {
     width: 100%;
     height: 90%;
@@ -143,7 +189,7 @@
 }
 
 .ctrl_top {
-    width: 100%;
+    width: 80%;
     position: absolute;
     top: 20px;
     z-index: 1;
@@ -163,11 +209,13 @@
 }
 
 .text_ctrl {
+    width: 70px;
+    height: 35px;
     border: 1px solid #5AABEF;
     border-radius: 10px;
     padding: 10px;
     cursor: pointer;
-    background-color: rgba(248, 248, 255, 0.5);
+    background-color: #2B5085;
 }
 
 .text_ctrl span,
@@ -212,15 +260,21 @@
 }
 
 .left_ctrl_box:nth-child(1) {
-    background: linear-gradient(0deg, #00C6FF, rgba(0, 198, 255, 0));
+    background: url("../img/n-people.png");
+    background-size: 100% 100%;
+    /*background: linear-gradient(0deg, #00C6FF, rgba(0, 198, 255, 0));*/
 }
 
 .left_ctrl_box:nth-child(2) {
-    background: linear-gradient(0deg, #2ABA28, rgba(42, 186, 40, 0));
+    background: url("../img/n-car.png");
+    background-size: 100% 100%;
+    /*background: linear-gradient(0deg, #2ABA28, rgba(42, 186, 40, 0));*/
 }
 
 .left_ctrl_box:nth-child(3) {
-    background: linear-gradient(0deg, #B79D25, rgba(183, 157, 37, 0));
+    background: url("../img/n-camera.png");
+    background-size: 100% 100%;
+    /*background: linear-gradient(0deg, #B79D25, rgba(183, 157, 37, 0));*/
 }
 
 .dateText {
@@ -237,8 +291,8 @@
     font-family: hzgb;
     font-weight: 400;
     color: #00FDF6;
-    background: linear-gradient(0deg, #06296A, rgba(6, 41, 106, 0));
-    border: 1px solid;
+    background: linear-gradient(0deg, #0294D2, rgba(6, 41, 106, 0));
+    border: 1px solid #0294D3;
     /* border-image: linear-gradient(0deg, rgba(0, 182, 255, 0.8), rgba(0, 182, 255, 0.8)) 1 1; */
     border-radius: 5px;
     overflow: hidden;
