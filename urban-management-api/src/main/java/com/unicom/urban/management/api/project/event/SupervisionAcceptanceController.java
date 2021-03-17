@@ -3,7 +3,6 @@ package com.unicom.urban.management.api.project.event;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.constant.KvConstant;
-import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.entity.EventFile;
@@ -13,17 +12,16 @@ import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
-import com.unicom.urban.management.service.grid.GridService;
-import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.role.RoleService;
 import com.unicom.urban.management.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -45,100 +43,9 @@ public class SupervisionAcceptanceController {
     @Autowired
     private EventService eventService;
     @Autowired
-    private KVService kvService;
-    @Autowired
-    private GridService gridService;
-    @Autowired
     private EventFileService eventFileService;
     @Autowired
     private RoleService roleService;
-
-    /**
-     * 跳转到自处理案件列表
-     */
-    @GetMapping("/toSelfProcessingList")
-    public ModelAndView toSelfProcessingList(Model model, String eventId) {
-        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/event/selfProcessing/list");
-        //问题来源
-        modelAndView.addObject("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
-        //所属网格
-        modelAndView.addObject("gridList", gridService.searchAll());
-        // 从工作台跳转过来传递的eventId
-        model.addAttribute("eventId", eventId);
-        return modelAndView;
-    }
-
-    /**
-     * 跳转到案件受理页面
-     */
-    @GetMapping("/toSupervisionAcceptanceSave")
-    public ModelAndView toSupervisionAcceptanceSave() {
-        ModelAndView model = new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/save");
-        //案件等级
-        model.addObject("level", kvService.findByTableNameAndFieldName("deptTimeLimit", "level"));
-        //所属区域
-        model.addObject("region", kvService.findByTableNameAndFieldName("event", "region"));
-        //问题来源
-        model.addObject("eventSource", kvService.findByTableNameAndFieldNameAndValue("event", "eventSource", "热线上报"));
-        //案件类型
-        model.addObject("recType", kvService.findByTableNameAndFieldName("event", "recType"));
-        //所在区域
-        model.addObject("gridList", gridService.findAllByParentIsNull());
-        return model;
-    }
-
-    @GetMapping("/toSupervisionAcceptanceUpdate/{id}")
-    public ModelAndView toSupervisionAcceptanceUpdate(@PathVariable String id, Model model) {
-        model.addAttribute("eventId", id);
-        //案件类型
-        model.addAttribute("recType", kvService.findByTableNameAndFieldName("event", "recType"));
-        //所在区域
-        model.addAttribute("gridList", gridService.findAllByParentIsNull());
-        //问题来源
-        model.addAttribute("eventSource", kvService.findByTableNameAndFieldNameAndValue("event", "eventSource", "热线上报"));
-        return new ModelAndView(SystemConstant.PAGE + "/event/supervisionAcceptance/update");
-    }
-
-    /**
-     * 待办案件列表
-     *
-     * @return list
-     */
-    @GetMapping("/toPendingCasesList")
-    public ModelAndView toPendingCasesList(Model model, String eventId) {
-        //问题来源
-        model.addAttribute("eventSource", kvService.findByTableNameAndFieldName("event", "eventSource"));
-        //所属网格
-        model.addAttribute("gridList", gridService.searchAll());
-        model.addAttribute("eventId", eventId);
-        return new ModelAndView(SystemConstant.PAGE + "/event/pendingCases/list");
-    }
-
-    /**
-     * 弃用
-     *
-     * @return list
-     */
-    @GetMapping("/toSendVerificationList")
-    public ModelAndView toSendVerificationList(Model model, String eventId) {
-        // 从工作台跳转过来传递的eventId
-        model.addAttribute("eventId", eventId);
-        return new ModelAndView(SystemConstant.PAGE + "/event/sendVerification/list");
-    }
-
-    /**
-     * 弃用
-     *
-     * @return list
-     */
-    @GetMapping("/toSendCheckList")
-    public ModelAndView toSendCheckList(Model model, String eventId) {
-        // 从工作台跳转过来传递的eventId
-        model.addAttribute("eventId", eventId);
-        return new ModelAndView(SystemConstant.PAGE + "/event/sendCheck/list");
-    }
-
-    /* ----------------------------------------------------------------- */
 
     /**
      * 登记
