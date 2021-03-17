@@ -417,7 +417,7 @@
         legend: {
             data:['上报','立案','处置','结案'],
             textStyle: {
-                color: 'rgba(55,255,249,1)'
+                color: '#fff'
             }
         },
         grid: {
@@ -435,11 +435,11 @@
                 },
                 axisLine: {
                     lineStyle: {
-                        color: 'rgba(55,255,249,1)',
+                        color: '#fff',
                     }
                 },
                 axisLabel: {
-                    color: 'rgba(55,255,249,1)'
+                    color: '#fff'
                 }
             }
         ],
@@ -451,7 +451,7 @@
                 },
                 axisLine: {
                     lineStyle: {
-                        color: 'rgba(55,255,249,1)',
+                        color: '#fff',
                     }
                 }
             }
@@ -554,7 +554,7 @@
         legend: {
             data:['上报','立案','处置','结案'],
             textStyle: {
-                color: 'rgba(55,255,249,1)'
+                color: '#fff'
             }
         },
         grid: {
@@ -572,11 +572,11 @@
                 },
                 axisLine: {
                     lineStyle: {
-                        color: 'rgba(55,255,249,1)',
+                        color: '#fff',
                     }
                 },
                 axisLabel: {
-                    color: 'rgba(55,255,249,1)'
+                    color: '#fff'
                 }
             }
         ],
@@ -588,7 +588,7 @@
                 },
                 axisLine: {
                     lineStyle: {
-                        color: 'rgba(55,255,249,1)',
+                        color: '#fff',
                     }
                 }
             }
@@ -684,8 +684,8 @@
     var  getlkrs=[686,703,788,882];
     option= {
         grid: {
-            top: '20%',
-            left: '7%',
+            top: '10%',
+            left: '2%',
             right: '2%',
             bottom: '3%',
             containLabel: true
@@ -750,10 +750,10 @@
                     normal: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 0,
-                            color: '#3FFFEA' // 0% 处的颜色
+                            color: 'rgba(63, 255, 234, 0.82)' // 0% 处的颜色
                         }, {
                             offset: 1,
-                            color: 'transparent' // 100% 处的颜色
+                            color: 'rgba(0, 126, 255, 0.2)' // 100% 处的颜色
                         }], false),
                         barBorderRadius: [30, 30, 0, 0],
                     }
@@ -767,10 +767,10 @@
                     normal: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 0,
-                            color: '#FFEA00' // 0% 处的颜色
+                            color: 'rgba(255, 234, 0, 1)' // 0% 处的颜色
                         }, {
                             offset: 1,
-                            color: '#FFA11A' // 100% 处的颜色
+                            color: 'rgba(255, 161, 26, 0.2)' // 100% 处的颜色
                         }], false),
                         barBorderRadius: [30, 30, 0, 0],
                     }
@@ -852,10 +852,10 @@
                     normal: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 0,
-                            color: '#3FFFEA' // 0% 处的颜色
+                            color: 'rgba(63, 255, 234, 0.82)' // 0% 处的颜色
                         }, {
                             offset: 1,
-                            color: 'transparent' // 100% 处的颜色
+                            color: 'rgba(0, 126, 255, 0.2)' // 100% 处的颜色
                         }], false),
                         barBorderRadius: [30, 30, 0, 0],
                     }
@@ -869,10 +869,10 @@
                     normal: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 0,
-                            color: '#FFEA00' // 0% 处的颜色
+                            color: 'rgba(255, 234, 0, 1)' // 0% 处的颜色
                         }, {
                             offset: 1,
-                            color: '#FFA11A' // 100% 处的颜色
+                            color: 'rgba(255, 161, 26, 0.2)' // 100% 处的颜色
                         }], false),
                         barBorderRadius: [30, 30, 0, 0],
                     }
@@ -966,7 +966,7 @@
                         areaStyle: {
                             type: "default"
                         },
-                        color:'#FF7882'
+                        color:'#F07C88'
                     }
                 },
                 data: [10, 12, 21, 54, 260, 830, 710]
@@ -981,7 +981,7 @@
                         areaStyle: {
                             type: "default"
                         },
-                        color:'#00F8F2'
+                        color:'#4477C9'
                     }
                 },
                 data: [30, 182, 434, 791, 390, 30, 10]
@@ -996,22 +996,24 @@
                         areaStyle: {
                             type: "default"
                         },
-                        color: "rgb(187, 134, 244)"
+                        color: "#1FD8EE"
                     }
                 },
                 data: [320, 132, 61, 234, 120, 90, 20]
             },
             {
+                name: "上报",
                 type: "line",
                 symbol: "none",
                 itemStyle: {
                     normal: {
                         areaStyle: {
                             type: "default"
-                        }
+                        },
+                        color: "#A282E4"
                     }
                 },
-                name: "上报",
+
                 data: [260, 132, 61, 234, 390, 30, 10]
             }
         ],
@@ -1052,7 +1054,7 @@
             axisLabel: {
                 show: true,
                 textStyle: {
-                    color: 'rgba(111, 132, 189, 1)'
+                    color: '#fff'
                 },
             },
             splitLine: {
@@ -1127,7 +1129,7 @@
             axisLabel: {
                 show: true,
                 textStyle: {
-                    color: 'rgba(111, 132, 189, 1)'
+                    color: '#fff'
                 },
             },
             splitLine: {
