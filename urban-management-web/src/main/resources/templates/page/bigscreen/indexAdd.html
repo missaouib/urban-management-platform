@@ -11,20 +11,20 @@
     <div class="top flex">
         <div class="date flex">
             <div class="n-title-left"></div>
-            <span class="dateNum" id="year"></span><span class="dateText">年</span>
-            <span class="dateNum" id="mon"></span><span class="dateText">月</span>
-            <span class="dateNum" id="day"></span><span class="dateText">日</span>
-            <span class="dateText">气温</span><span class="dateNum" id="hot"></span>
+            <span class="dateNum flex" id="year"></span><span class="dateText">年</span>
+            <span class="dateNum flex" id="mon"></span><span class="dateText">月</span>
+            <span class="dateNum flex" id="day"></span><span class="dateText">日</span>
+            <span class="dateText">气温</span><span class="dateNum flex" id="hot"></span>
         </div>
         <div class="title flex title-center">
             <img th:src="@{/img/n-title.png}" style="width: 100%;height: 100%;">
         </div>
         <div class="time flex">
             <div class="n-title-right"></div>
-            <span class="dateText" id="apm"></span><span class="dateNum" id="hour"></span>
-            <span class="dateText">点</span><span class="dateNum" id="min"></span>
+            <span class="dateText flex" id="apm"></span><span class="dateNum flex" id="hour"></span>
+            <span class="dateText">点</span><span class="dateNum flex" id="min"></span>
             <span class="dateText">分</span><span class="dateText">星期</span>
-            <span class="dateNum" id="week"></span>
+            <span class="dateNum flex" id="week"></span>
         </div>
     </div>
     <div class="bottom flex">
@@ -195,7 +195,7 @@
                         <div class="n-title3"></div>
                     </div>
                     <!-- 表格 -->
-                    <div class="chart"></div>
+                    <div class="chart" id="ajqs"></div>
                 </div>
             </div>
         </div>
@@ -881,5 +881,137 @@
         ]
     }
     myChart.setOption(option);
+
+    // 案件趋势
+    var caseTrend = echarts.init(document.getElementById('ajqs'));
+    optionCaseTrend = {
+        tooltip: {
+            trigger: "axis",
+            show: true,
+            textStyle: {
+                color: "rgb(255, 255, 255)"
+            }
+        },
+        legend: {
+            data: ["结案", "立案", "处置", "上报"],
+            textStyle: {
+                color: "rgb(255, 255, 255)"
+            }
+        },
+        toolbox: {
+            show: false,
+            feature: {
+                mark: {
+                    show: true
+                },
+                dataView: {
+                    show: true,
+                    readOnly: true
+                },
+                magicType: {
+                    show: false,
+                    type: ["line", "bar", "stack", "tiled"]
+                },
+                restore: {
+                    show: true
+                },
+                saveAsImage: {
+                    show: true
+                }
+            }
+        },
+        calculable: true,
+        xAxis: [
+            {
+                type: "category",
+                boundaryGap: false,
+                data: ["3月11日", "3月12日", "3月13日", "3月14日", "3月15日", "3月16日", "3月17日"],
+                splitLine: {
+                    show: false
+                },
+                nameTextStyle: {
+                    color: "rgb(255, 255, 255)"
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: "rgba(255, 255, 255, 0.6)"
+                    }
+                }
+            }
+        ],
+        yAxis: [
+            {
+                type: "value",
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: "#C4EAFC"
+                    }
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: "rgba(255, 255, 255, 0.6)"
+                    }
+                }
+            }
+        ],
+        series: [
+            {
+                name: "结案",
+                type: "line",
+                smooth: true,
+                itemStyle: {
+                    normal: {
+                        areaStyle: {
+                            type: "default"
+                        }
+                    }
+                },
+                data: [10, 12, 21, 54, 260, 830, 710]
+            },
+            {
+                name: "立案",
+                type: "line",
+                smooth: true,
+                itemStyle: {
+                    normal: {
+                        areaStyle: {
+                            type: "default"
+                        }
+                    }
+                },
+                data: [30, 182, 434, 791, 390, 30, 10]
+            },
+            {
+                name: "处置",
+                type: "line",
+                smooth: true,
+                itemStyle: {
+                    normal: {
+                        areaStyle: {
+                            type: "default"
+                        }
+                    }
+                },
+                data: [320, 132, 61, 234, 120, 90, 20]
+            },
+            {
+                type: "line",
+                itemStyle: {
+                    normal: {
+                        areaStyle: {
+                            type: "default"
+                        }
+                    }
+                },
+                name: "上报",
+                data: [260, 132, 61, 234, 390, 30, 10]
+            }
+        ],
+        grid: {
+            borderWidth: 1
+        }
+    }
+    caseTrend.setOption(optionCaseTrend);
 </script>
 </html>
