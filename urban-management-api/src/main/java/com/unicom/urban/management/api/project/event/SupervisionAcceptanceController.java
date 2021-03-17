@@ -10,10 +10,12 @@ import com.unicom.urban.management.pojo.entity.EventFile;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.EventOneVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
+import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
+import com.unicom.urban.management.service.role.RoleService;
 import com.unicom.urban.management.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,6 +50,8 @@ public class SupervisionAcceptanceController {
     private GridService gridService;
     @Autowired
     private EventFileService eventFileService;
+    @Autowired
+    private RoleService roleService;
 
     /**
      * 跳转到自处理案件列表
@@ -184,6 +188,13 @@ public class SupervisionAcceptanceController {
         return Result.success();
     }
 
+    /**
+     * 获取自处理案件集合
+     *
+     * @param eventDTO 查询条件
+     * @param pageable 分页
+     * @return page
+     */
     @GetMapping("/supervisionAcceptanceList")
     public Page<EventVO> supervisionAcceptanceList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
         eventDTO.setTaskName(Collections.singletonList(EventConstant.SELF_PROCESSING_AUDIT));
@@ -377,6 +388,17 @@ public class SupervisionAcceptanceController {
                 return Result.fail(500, "未检测到应有的步骤");
         }
         return Result.success();
+    }
+
+    /**
+     * 获取有监督员角色的人
+     *
+     * @return 人
+     */
+    @GetMapping("/getUserListForSupervisor")
+    public Result getUserListForSupervisor(String gridId) {
+        List<UserVO> userList = roleService.findUserListForSupervision(KvConstant.SUPERVISOR_ROLE, gridId);
+        return Result.success(userList);
     }
 
 }
