@@ -15,7 +15,9 @@
             <span class="dateNum">4</span><span class="dateText">日</span>
             <span class="dateText">气温</span><span class="dateNum">1℃</span>
         </div>
-        <div class="title flex title-center"></div>
+        <div class="title flex title-center">
+            <img th:src="@{/img/n-title.png}" style="width: 100%;height: 100%;">
+        </div>
         <div class="time flex">
             <span class="dateText">上午</span><span class="dateNum">9</span>
             <span class="dateText">点</span><span class="dateNum">3</span>
@@ -127,6 +129,28 @@
 <script type="text/javascript" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
 <script th:src="@{/js/index.js}"></script>
 <script>
+    $(function () {
+
+        // function getDate() {
+            var d=new Date();
+            var year = d.getFullYear();      //年
+            var month = d.getMonth();       // 月
+            var myDate = d.getDate();      //日
+            var day = d.getDay();           //星期
+            var hours = d.getHours();      //时
+            var minutes = d.getMinutes();      //分
+            var seconds = d.getSeconds();      //秒
+            setInterval(() => {
+                hours = d.getHours();      //时
+                minutes = d.getMinutes();      //分
+                seconds = d.getSeconds();      //秒     //秒
+            }, 1000);
+            console.log(year,month,myDate,hours,minutes,seconds,day)
+
+        // }
+        // getDate()
+
+    })
 
 </script>
 </html>
