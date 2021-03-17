@@ -280,7 +280,7 @@
 }
 
 .dateText {
-    font-size: 25px;
+    font-size: 1.3vw;
     font-family: Source Han Sans CN;
     font-weight: 500;
     color: #4185F0;
@@ -289,7 +289,7 @@
 
 .dateNum {
     padding: 3px 5px;
-    font-size: 30px;
+    font-size: 1.2vw;
     font-family: hzgb;
     font-weight: 400;
     color: #00FDF6;
