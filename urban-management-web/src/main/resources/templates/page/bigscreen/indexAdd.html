@@ -460,7 +460,7 @@
             {
                 name:'上报',
                 type:'bar',
-                barWidth: 20,
+                barWidth: 13,
                 itemStyle: {
                     barBorderRadius: [5, 5, 0, 0],
                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -479,7 +479,7 @@
             {
                 name:'立案',
                 type:'bar',
-                barWidth: 20,
+                 barWidth : 13,
                 barGap: '-100%',
                 stack: '广告',
                 itemStyle: {
@@ -499,7 +499,7 @@
             {
                 name:'处置',
                 type:'bar',
-                barWidth: 20,
+                 barWidth : 13,
                 barGap: '-100%',
                 stack: '广告',
                 itemStyle: {
@@ -519,7 +519,7 @@
             {
                 name:'结案',
                 type:'bar',
-                barWidth: 20,
+                 barWidth : 13,
                 barGap: '-100%',
                 stack: '广告',
                 itemStyle: {
@@ -597,7 +597,7 @@
             {
                 name:'上报',
                 type:'bar',
-                barWidth: 20,
+                 barWidth : 13,
                 itemStyle: {
                     barBorderRadius: 5,
                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
@@ -615,7 +615,7 @@
             {
                 name:'立案',
                 type:'bar',
-                barWidth: 20,
+                 barWidth : 13,
                 barGap: '-100%',
                 stack: '广告',
                 itemStyle: {
@@ -635,7 +635,7 @@
             {
                 name:'处置',
                 type:'bar',
-                barWidth: 20,
+                 barWidth : 13,
                 barGap: '-100%',
                 stack: '广告',
                 itemStyle: {
@@ -655,7 +655,7 @@
             {
                 name:'结案',
                 type:'bar',
-                barWidth: 20,
+                 barWidth : 13,
                 barGap: '-100%',
                 stack: '广告',
                 itemStyle: {
@@ -750,7 +750,7 @@
                     normal: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 0,
-                            color: 'rgba(85,244,255,0.9)' // 0% 处的颜色
+                            color: '#3FFFEA' // 0% 处的颜色
                         }, {
                             offset: 1,
                             color: 'transparent' // 100% 处的颜色
@@ -767,10 +767,10 @@
                     normal: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 0,
-                            color: 'rgba(85,101,255,0.9)' // 0% 处的颜色
+                            color: '#FFEA00' // 0% 处的颜色
                         }, {
                             offset: 1,
-                            color: 'transparent' // 100% 处的颜色
+                            color: '#FFA11A' // 100% 处的颜色
                         }], false),
                         barBorderRadius: [30, 30, 0, 0],
                     }
@@ -852,7 +852,7 @@
                     normal: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 0,
-                            color: 'rgba(85,244,255,0.9)' // 0% 处的颜色
+                            color: '#3FFFEA' // 0% 处的颜色
                         }, {
                             offset: 1,
                             color: 'transparent' // 100% 处的颜色
@@ -869,10 +869,10 @@
                     normal: {
                         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                             offset: 0,
-                            color: 'rgba(85,101,255,0.9)' // 0% 处的颜色
+                            color: '#FFEA00' // 0% 处的颜色
                         }, {
                             offset: 1,
-                            color: 'transparent' // 100% 处的颜色
+                            color: '#FFA11A' // 100% 处的颜色
                         }], false),
                         barBorderRadius: [30, 30, 0, 0],
                     }
@@ -959,12 +959,14 @@
             {
                 name: "结案",
                 type: "line",
+                symbol: "none",
                 smooth: true,
                 itemStyle: {
                     normal: {
                         areaStyle: {
                             type: "default"
-                        }
+                        },
+                        color:'#FF7882'
                     }
                 },
                 data: [10, 12, 21, 54, 260, 830, 710]
@@ -972,12 +974,14 @@
             {
                 name: "立案",
                 type: "line",
+                symbol: "none",
                 smooth: true,
                 itemStyle: {
                     normal: {
                         areaStyle: {
                             type: "default"
-                        }
+                        },
+                        color:'#00F8F2'
                     }
                 },
                 data: [30, 182, 434, 791, 390, 30, 10]
@@ -985,18 +989,21 @@
             {
                 name: "处置",
                 type: "line",
+                symbol: "none",
                 smooth: true,
                 itemStyle: {
                     normal: {
                         areaStyle: {
                             type: "default"
-                        }
+                        },
+                        color: "rgb(187, 134, 244)"
                     }
                 },
                 data: [320, 132, 61, 234, 120, 90, 20]
             },
             {
                 type: "line",
+                symbol: "none",
                 itemStyle: {
                     normal: {
                         areaStyle: {
