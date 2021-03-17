@@ -415,10 +415,22 @@
             }
         },
         legend: {
-            data:['上报','立案','处置','结案'],
+            itemHeight: 15,
+            itemWidth: 15,
+            data:[
+                { name: "上报", icon: "roundRect" },
+                { name: "立案", icon: "roundRect" },
+                { name: "处置", icon: "roundRect" },
+                { name: "结案", icon: "roundRect" },
+                ],
+            orient: "vertical",
             textStyle: {
-                color: '#fff'
-            }
+                fontSize: 12,
+                color: "#ffffff",
+                fontFamily: "SourceHanSansCN-Regular"
+            },
+            y: "bottom",
+            x: "right",
         },
         grid: {
             left: '3%',
@@ -537,7 +549,15 @@
                 data:[220, 182, 191, 234, 290, 330, 310]
             }
 
-        ]
+        ],
+        grid: {
+            left: '3%',
+            bottom: '3',
+            // right: '5%',
+            containLabel: true,
+            width:'92%', // grid 组件的宽度。默认自适应。
+            height:'95%'
+        },
     };
     myChart.setOption(option);
 
@@ -552,16 +572,32 @@
             }
         },
         legend: {
-            data:['上报','立案','处置','结案'],
+            itemHeight: 15,
+            itemWidth: 15,
+            data:[
+                { name: "上报", icon: "roundRect" },
+                { name: "立案", icon: "roundRect" },
+                { name: "处置", icon: "roundRect" },
+                { name: "结案", icon: "roundRect" },
+            ],
+
+
+            orient: "vertical",
             textStyle: {
-                color: '#fff'
-            }
+                fontSize: 12,
+                color: "#ffffff",
+                fontFamily: "SourceHanSansCN-Regular"
+            },
+            y: "bottom",
+            x: "right",
         },
         grid: {
             left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
+            bottom: '3',
+            // right: '5%',
+            containLabel: true,
+            width:'90%', // grid 组件的宽度。默认自适应。
+            height:'95%'
         },
         xAxis : [
             {
@@ -691,7 +727,13 @@
             containLabel: true
         },
         legend: {
-            data: ['本期','同期'],
+            itemHeight: 15,
+            itemWidth: 15,
+            data:[
+                { name: "本期", icon: "roundRect" },
+                { name: "同期", icon: "roundRect" },
+
+            ],
             right: "3%",
             top:"4%",
             textStyle: {
@@ -1035,6 +1077,18 @@
             top: '2%',
             containLabel: true
         },
+        legend: {
+            show:true,
+            data:['部门1','部门2','部门3','部门4'],
+            orient: "vertical",
+            textStyle: {
+                fontSize: 12,
+                color: "#ffffff",
+                fontFamily: "SourceHanSansCN-Regular"
+            },
+            y: "bottom",
+            x: "right",
+        },
         tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -1084,7 +1138,7 @@
                     }]),
                 },
             },
-            barWidth: 15,
+            barWidth: 13,
             data: data,
             label: {
                 normal: {
@@ -1109,6 +1163,18 @@
             bottom: '2%',
             top: '2%',
             containLabel: true
+        },
+        legend: {
+            show:true,
+            data:['人员1','人员2','人员3','人员4'],
+            orient: "vertical",
+            textStyle: {
+                fontSize: 12,
+                color: "#ffffff",
+                fontFamily: "SourceHanSansCN-Regular"
+            },
+            y: "bottom",
+            x: "right",
         },
         tooltip: {
             trigger: 'axis',
@@ -1159,7 +1225,7 @@
                     }]),
                 },
             },
-            barWidth: 15,
+            barWidth: 13,
             data: data,
             label: {
                 normal: {
@@ -1182,6 +1248,26 @@
             y: 'center',
             textStyle: {
                 fontSize: 20
+            }
+        },
+        grid: {
+            x2: 97
+        },
+        legend: {
+            show:true,
+            orient: "vertical",
+            itemHeight: 15,
+            itemWidth: 15,
+            data:[
+                { name: "巡查上报", icon: "roundRect" },
+                { name: "热线上报", icon: "roundRect" },
+                { name: "领导交办", icon: "roundRect" },
+                { name: "物联感知", icon: "roundRect" },
+            ],
+            y: "bottom",
+            x: "right",
+            textStyle: {
+                color: "rgb(255, 255, 255)"
             }
         },
         tooltip: {
@@ -1265,19 +1351,23 @@
             bottom: "1%"
         },
         legend: {
+            itemHeight: 15,
+            itemWidth: 15,
             data: [
-                { name: "待审核", icon: "circle" },
-                { name: "审核通过", icon: "circle" }
+                { name: "待审核", icon: "roundRect" },
+                { name: "审核通过", icon: "roundRect" }
             ],
             // 大小 和位置 文字样式
             itemGap: 12,
-            right: 0,
-            top:-5,
+            orient: "vertical",
             textStyle: {
                 fontSize: 12,
                 color: "#ffffff",
                 fontFamily: "SourceHanSansCN-Regular"
-            }
+            },
+            y: "bottom",
+            x: "right",
+
         },
         xAxis: [
             {
@@ -1362,7 +1452,7 @@
                 name: "待审核",
                 type: "bar",
                 // 宽度
-                barWidth: "16",
+                barWidth: "13",
                 // 堆叠
                 stack: "总量",
                 showBackground: true,
@@ -1403,7 +1493,7 @@
                 name: "审核通过",
                 type: "bar",
                 // 宽度
-                barWidth: "16",
+                barWidth: "13",
                 // 堆叠
                 stack: "总量",
                 showBackground: true,
