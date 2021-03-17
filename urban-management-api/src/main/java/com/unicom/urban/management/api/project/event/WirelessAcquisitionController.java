@@ -427,4 +427,17 @@ public class WirelessAcquisitionController {
         return Result.success(list);
     }
 
+
+    /**
+     * 设置转应急状态
+     *
+     * @param eventId
+     * @return
+     */
+    @PostMapping("/urgent")
+    public Result changeUrgentUrl(String eventId) {
+        eventService.changeUrgent(eventId);
+        return Result.success();
+    }
+
 }
