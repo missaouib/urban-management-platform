@@ -39,4 +39,10 @@ public class IndexRestController {
     public ModelAndView toCaseHistoryList() {
         return new ModelAndView(SystemConstant.PAGE + "/bigscreen/index");
     }
+
+
+    @GetMapping("/indexAdd")
+    public ModelAndView toCaseHistoryListAdd() {
+        return new ModelAndView(SystemConstant.PAGE + "/bigscreen/indexAdd");
+    }
 }

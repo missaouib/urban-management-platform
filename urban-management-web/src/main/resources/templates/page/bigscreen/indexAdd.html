@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>数字化指挥中心</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/addScreen.css}"/>
+    <link th:href="@{/css/gridInformation.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="screen flexC">
+    <div class="top flex">
+        <div class="date flex">
+            <span class="dateNum">2012</span><span class="dateText">年</span>
+            <span class="dateNum">5</span><span class="dateText">月</span>
+            <span class="dateNum">4</span><span class="dateText">日</span>
+            <span class="dateText">气温</span><span class="dateNum">1℃</span>
+        </div>
+        <div class="title flex">城市综合服务管理平台</div>
+        <div class="time flex">
+            <span class="dateText">上午</span><span class="dateNum">9</span>
+            <span class="dateText">点</span><span class="dateNum">3</span>
+            <span class="dateText">分</span><span class="dateText">星期</span>
+            <span class="dateNum">2</span>
+        </div>
+    </div>
+    <div class="bottom flex">
+        <div class="le flexC">
+            <div class="mathBox flexC">
+                <div class="charTitle flex">高发区域</div>
+                <!-- 表格 -->
+                <div class="chart"></div>
+            </div>
+            <div class="mathBox flexC">
+                <div class="charTitle flex">高发类型</div>
+                <!-- 表格 -->
+                <div class="chart"></div>
+            </div>
+            <div class="lessBox flex">
+                <div class="hug flexC">
+                    <div class="charTitle flex">同比分析</div>
+                    <!-- 表格 -->
+                    <div class="chart"></div>
+                </div>
+                <div class="hug flexC">
+                    <div class="charTitle flex">环比分析</div>
+                    <!-- 表格 -->
+                    <div class="chart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="center flexC">
+            <div class="maps flex">
+                <!-- 上报立案处置结案 -->
+                <div class="ctrl_top flex">
+                    <div class="text_ctrl flexC">
+                        <span class="topVtrl_title">上报</span><span>100个</span>
+                    </div>
+                    <div class="text_ctrl flexC">
+                        <span class="topVtrl_title">立案</span><span>100个</span>
+                    </div>
+                    <div class="text_ctrl flexC">
+                        <span class="topVtrl_title">处置</span><span>100个</span>
+                    </div>
+                    <div class="text_ctrl flexC">
+                        <span class="topVtrl_title">结案</span><span>100个</span>
+                    </div>
+                </div>
+                <!-- 人员车辆摄像头 -->
+                <div class="ctrl_left flexC">
+                    <div class="left_ctrl_box flexC">
+                        <div class="ship"></div>
+                        <div class="ship_text">人员</div>
+                    </div>
+                    <div class="left_ctrl_box flexC">
+                        <div class="ship"></div>
+                        <div class="ship_text">车辆</div>
+                    </div>
+                    <div class="left_ctrl_box flexC">
+                        <div class="ship"></div>
+                        <div class="ship_text">摄像头</div>
+                    </div>
+                </div>
+            </div>
+            <div class="chearts flex">
+                <div class="dom_pach flexC">
+                    <div class="charTitle flex">案件动态</div>
+                    <!-- 表格 -->
+                    <div class="chart"></div>
+                </div>
+                <div class="dom_pach flexC">
+                    <div class="charTitle flex">案件趋势</div>
+                    <!-- 表格 -->
+                    <div class="chart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ri flexC">
+            <div class="ri_much flexC">
+                <div class="charTitle flex">人员管理</div>
+                <!-- 表格 -->
+                <div class="chart"></div>
+            </div>
+            <div class="ri_much flexC">
+                <div class="charTitle flex">问题来源</div>
+                <!-- 表格 -->
+                <div class="chart"></div>
+            </div>
+            <div class="ri_much flexC">
+                <div class="charTitle flex">部门考核</div>
+                <!-- 表格 -->
+                <div class="chart"></div>
+            </div>
+            <div class="ri_much flexC">
+                <div class="charTitle flex">人员考核</div>
+                <!-- 表格 -->
+                <div class="chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+<!--<th:block th:include="page/fragments/common :: common_js"/>-->
+<th:block th:include="page/fragments/common :: echarts_js"/>
+<th:block th:include="page/fragments/common :: echarts_liquidfill_js"/>
+<script type="text/javascript" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
+<script th:src="@{/js/index.js}"></script>
+<script>
+
+</script>
+</html>

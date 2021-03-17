@@ -1,0 +1,240 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flexC {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.screen {
+    width: 100vw;
+    height: 100vh;
+    padding: 0 20px 20px 20px;
+    box-sizing: border-box;
+}
+
+.top {
+    width: 100%;
+    height: 10%;
+    justify-content: space-between!important;
+}
+
+.bottom {
+    width: 100%;
+    height: 90%;
+    padding: 20px;
+    justify-content: space-between!important;
+}
+
+.top .date,
+.top .title,
+.top .time {
+    width: 33.2%;
+    height: 100%;
+}
+
+.title {
+    flex-wrap: nowrap!important;
+    font-size: 38px!important;
+    font-family: Source Han Sans CN!important;
+    font-weight: bold!important;
+    color: #B5C1FF!important;
+    background: linear-gradient(0deg, #FFFFFF 0%, #ACF0FF 100%)!important;
+    -webkit-background-clip: text!important;
+    -webkit-text-fill-color: transparent!important;
+    padding-left: 0!important;
+}
+
+.bottom .le,
+.bottom .ri {
+    width: 29.9%;
+    height: 100%;
+}
+
+.bottom .center {
+    width: 38.9%;
+    height: 100%;
+}
+
+.le {
+    justify-content: space-between!important;
+}
+
+.mathBox {
+    width: 100%;
+    height: 35%;
+    justify-content: space-between!important;
+}
+
+.lessBox {
+    width: 100%;
+    height: 29%;
+    justify-content: space-between!important;
+    flex-wrap: nowrap;
+}
+
+.hug {
+    width: 49.5%;
+    height: 100%;
+    justify-content: space-between!important;
+}
+
+.charTitle {
+    width: 100%;
+    height: 10%;
+    justify-content: start;
+    padding-left: 30px;
+    font-family: Source Han Sans CN;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+.chart {
+    width: 100%;
+    height: 90%;
+}
+
+.ri_much {
+    width: 100%;
+    height: 25%;
+    justify-content: space-between!important;
+}
+
+.ri,
+.chearts,
+.dom_pach,
+.center {
+    justify-content: space-between!important;
+}
+
+.maps {
+    width: 100%;
+    height: 67%;
+}
+
+.chearts {
+    width: 100%;
+    height: 33%;
+}
+
+.dom_pach {
+    width: 49.5%;
+    height: 100%;
+}
+
+.maps {
+    position: relative;
+}
+
+.ctrl_top {
+    width: 100%;
+    position: absolute;
+    top: 20px;
+    z-index: 1;
+}
+
+.ctrl_left {
+    height: 60%;
+    position: absolute;
+    left: 0;
+    bottom: 20%;
+    z-index: 2;
+}
+
+.ctrl_top,
+.ctrl_left {
+    justify-content: space-around!important;
+}
+
+.text_ctrl {
+    border: 1px solid #5AABEF;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: rgba(248, 248, 255, 0.5);
+}
+
+.text_ctrl span,
+.ship_text {
+    color: #fff;
+    font-size: 14px;
+}
+
+.topVtrl_title {
+    margin-bottom: 6px;
+}
+
+.text_ctrl:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.text_ctrl:nth-child(1) .topVtrl_title {
+    color: #5AABEF;
+}
+
+.text_ctrl:nth-child(2) .topVtrl_title {
+    color: #FF7757;
+}
+
+.text_ctrl:nth-child(3) .topVtrl_title {
+    color: #FFC11E;
+}
+
+.text_ctrl:nth-child(4) .topVtrl_title {
+    color: #91FC6E;
+}
+
+.ship {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 6px;
+}
+
+.left_ctrl_box {
+    cursor: pointer;
+    padding: 7px;
+}
+
+.left_ctrl_box:nth-child(1) {
+    background: linear-gradient(0deg, #00C6FF, rgba(0, 198, 255, 0));
+}
+
+.left_ctrl_box:nth-child(2) {
+    background: linear-gradient(0deg, #2ABA28, rgba(42, 186, 40, 0));
+}
+
+.left_ctrl_box:nth-child(3) {
+    background: linear-gradient(0deg, #B79D25, rgba(183, 157, 37, 0));
+}
+
+.dateText {
+    font-size: 25px;
+    font-family: Source Han Sans CN;
+    font-weight: 500;
+    color: #4185F0;
+    margin-right: 10px;
+}
+
+.dateNum {
+    padding: 3px 5px;
+    font-size: 30px;
+    font-family: hzgb;
+    font-weight: 400;
+    color: #00FDF6;
+    background: linear-gradient(0deg, #06296A, rgba(6, 41, 106, 0));
+    border: 1px solid;
+    /* border-image: linear-gradient(0deg, rgba(0, 182, 255, 0.8), rgba(0, 182, 255, 0.8)) 1 1; */
+    border-radius: 5px;
+    overflow: hidden;
+    margin-right: 10px;
+}
