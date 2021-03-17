@@ -21,6 +21,8 @@
     height: 100vh;
     padding: 0 20px 20px 20px;
     box-sizing: border-box;
+    background-image: url("../img/n-bg.png");
+    background-size: 100% 100%;
 }
 
 .top {
@@ -42,14 +44,18 @@
     width: 33.2%;
     height: 100%;
 }
-
+.title-center{
+    background-image: url("../img/n-title.png")!important;
+    background-size: 100% 100%!important;
+}
 .title {
+
     flex-wrap: nowrap!important;
     font-size: 38px!important;
     font-family: Source Han Sans CN!important;
     font-weight: bold!important;
     color: #B5C1FF!important;
-    background: linear-gradient(0deg, #FFFFFF 0%, #ACF0FF 100%)!important;
+    /*background: linear-gradient(0deg, #FFFFFF 0%, #ACF0FF 100%)!important;*/
     -webkit-background-clip: text!important;
     -webkit-text-fill-color: transparent!important;
     padding-left: 0!important;
