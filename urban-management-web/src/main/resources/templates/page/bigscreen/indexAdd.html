@@ -4,27 +4,27 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>数字化指挥中心</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/addScreen.css}"/>
-<!--    <link th:href="@{/css/gridInformation.css}" rel="stylesheet" type="text/css">-->
+    <link th:href="@{/css/gridInformation.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="screen flexC">
     <div class="top flex">
         <div class="date flex">
             <div class="n-title-left"></div>
-            <span class="dateNum">2012</span><span class="dateText">年</span>
-            <span class="dateNum">5</span><span class="dateText">月</span>
-            <span class="dateNum">4</span><span class="dateText">日</span>
-            <span class="dateText">气温</span><span class="dateNum">1℃</span>
+            <span class="dateNum" id="year"></span><span class="dateText">年</span>
+            <span class="dateNum" id="mon"></span><span class="dateText">月</span>
+            <span class="dateNum" id="day"></span><span class="dateText">日</span>
+            <span class="dateText">气温</span><span class="dateNum" id="hot"></span>
         </div>
         <div class="title flex title-center">
             <img th:src="@{/img/n-title.png}" style="width: 100%;height: 100%;">
         </div>
         <div class="time flex">
             <div class="n-title-right"></div>
-            <span class="dateText">上午</span><span class="dateNum">9</span>
-            <span class="dateText">点</span><span class="dateNum">3</span>
+            <span class="dateText" id="apm"></span><span class="dateNum" id="hour"></span>
+            <span class="dateText">点</span><span class="dateNum" id="min"></span>
             <span class="dateText">分</span><span class="dateText">星期</span>
-            <span class="dateNum">2</span>
+            <span class="dateNum" id="week"></span>
         </div>
     </div>
     <div class="bottom flex">
@@ -70,20 +70,20 @@
             </div>
         </div>
         <div class="center flexC">
-            <div class="maps flex">
+            <div class="maps flex"  id="map" >
                 <!-- 上报立案处置结案 -->
                 <div class="ctrl_top flex">
-                    <div class="text_ctrl flexC">
-                        <span class="topVtrl_title">上报</span><span>100个</span>
+                    <div class="text_ctrl flexC" id="reporting">
+                        <span class="topVtrl_title">上报</span><span>78个</span>
                     </div>
-                    <div class="text_ctrl flexC">
-                        <span class="topVtrl_title">立案</span><span>100个</span>
+                    <div class="text_ctrl flexC" id="register">
+                        <span class="topVtrl_title">立案</span><span>23个</span>
                     </div>
-                    <div class="text_ctrl flexC">
-                        <span class="topVtrl_title">处置</span><span>100个</span>
+                    <div class="text_ctrl flexC" id="caseclosed">
+                        <span class="topVtrl_title">处置</span><span>3个</span>
                     </div>
-                    <div class="text_ctrl flexC">
-                        <span class="topVtrl_title">结案</span><span>100个</span>
+                    <div class="text_ctrl flexC" id="caseDispose">
+                        <span class="topVtrl_title">结案</span><span>46个</span>
                     </div>
                 </div>
                 <!-- 人员车辆摄像头 -->
@@ -110,7 +110,83 @@
                         <div class="n-title3"></div>
                     </div>
                     <!-- 表格 -->
-                    <div class="chart"></div>
+                    <div class="chart">
+                        <div class="tableTitle">
+                            <div class="tabletext">
+                                <span class="text_inner_info">实时情况</span>
+                            </div>
+                            <div class="tabletext">
+                                <span class="text_inner_info">案件编号</span>
+                            </div>
+                            <div class="tabletext">
+                                <span class="text_inner_info">类型</span>
+                            </div>
+                            <div class="tabletext">
+                                <span class="text_inner_info">地区</span>
+                            </div>
+                        </div>
+                        <div class="table"  style="height: 100%;margin-top: 10px">
+                            <div id="scroll">
+                                <div id="con1">
+                                    <ul>
+                                        <li class="tableOptions mach_opt">
+                                            <span class="mach_img">
+                                                <img th:src="@{/img/bg_queen.png}">
+                                            </span>
+                                            <span class="over_ell">2300213123333333333335</span>
+                                            <span class="over_ell">南岗</span>
+                                            <span class="over_ell">202</span>
+                                        </li>
+                                        <li class="tableOptions mach_opt">
+                                            <span class="mach_img">
+                                                <img th:src="@{/img/bg_queen.png}">
+                                            </span>
+                                            <span class="over_ell">23001572762</span>
+                                            <span class="over_ell">南岗区花园街</span>
+                                            <span class="over_ell">2</span>
+                                        </li>
+                                        <li class="tableOptions mach_opt">
+                                            <span class="mach_img">
+                                                <img th:src="@{/img/bg_queen.png}">
+                                            </span>
+                                            <span class="over_ell">1223318988123</span>
+                                            <span class="over_ell">南岗区儿童公园</span>
+                                            <span class="over_ell">1</span>
+                                        </li>
+                                        <li class="tableOptions mach_opt">
+                                            <span class="mach_img">
+                                                <img th:src="@{/img/bg_queen.png}">
+                                            </span>
+                                            <span class="over_ell">2300213123333333333335</span>
+                                            <span class="over_ell">香坊区文正街</span>
+                                            <span class="over_ell">12</span>
+                                        </li>
+                                        <li class="tableOptions mach_opt">
+                                            <span class="mach_img">
+                                                <img th:src="@{/img/bg_queen.png}">
+                                            </span>
+                                            <span class="over_ell">2300213123333333333335</span>
+                                            <span class="over_ell">道里区花园街</span>
+                                            <span class="over_ell">202</span>
+                                        </li>
+                                        <li class="tableOptions mach_opt">
+                                            <span class="mach_img">
+                                                <img th:src="@{/img/bg_queen.png}">
+                                            </span>
+                                            <span class="over_ell">2300213123333333333335</span>
+                                            <span class="over_ell">道里区中央大街</span>
+                                            <span class="over_ell">202</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="con2"></div>
+                                <div class="con2"></div>
+                                <div class="con2"></div>
+                                <div class="con2"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="dom_pach flexC">
                     <div class="n-title">
@@ -166,34 +242,166 @@
 
 </body>
 
-<!--<th:block th:include="page/fragments/common :: common_js"/>-->
+<th:block th:include="page/fragments/common :: common_js"/>
 <!--<th:block th:include="page/fragments/common :: echarts_js"/>-->
 <!--<script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js" type="text/javascript"></script>-->
 <!--<th:block th:include="page/fragments/common :: echarts_liquidfill_js"/>-->
 <script type="text/javascript" th:src="@{/plugins/echarts/newEcharts.min.js}"></script>
-<script type="text/javascript" th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: mapinit_js"/>
 <script th:src="@{/js/index.js}"></script>
+<script src="https://pv.sohu.com/cityjson?ie=utf-8" type="text/javascript"></script>
 <script>
+    var countUrl = /*[[@{/bigscreen/count}]]*/ "/bigscreen/count";
+    var showPointsUrl = /*[[@{/bigscreen/showPoints}]]*/ "/bigscreen/showPoints";
+    var findHighIncidenceUrl = /*[[@{/commandSubsystem/findHighIncidence}]]*/ "/commandSubsystem/findHighIncidence";
+    var getTrendAnalysisUrl = /*[[@{/commandSubsystem/getTrendAnalysis}]]*/ "/commandSubsystem/getTrendAnalysis";
+
     $(function () {
 
-        // function getDate() {
-            var d=new Date();
-            var year = d.getFullYear();      //年
-            var month = d.getMonth();       // 月
-            var myDate = d.getDate();      //日
-            var day = d.getDay();           //星期
-            var hours = d.getHours();      //时
-            var minutes = d.getMinutes();      //分
-            var seconds = d.getSeconds();      //秒
-            setInterval(() => {
-                hours = d.getHours();      //时
-                minutes = d.getMinutes();      //分
-                seconds = d.getSeconds();      //秒     //秒
-            }, 1000);
-            console.log(year,month,myDate,hours,minutes,seconds,day)
 
-        // }
-        // getDate()
+        var date = new Date()
+        let YYYY = date.getFullYear()
+        $("#year").html(YYYY)
+        let dd = date.getMonth()
+        $("#mon").html(dd)
+        let myday = date.getDate()
+        $("#day").html(myday)
+        let day = date.getDay()
+        $("#week").html(day)
+        setInterval(() => {
+            let HH = date.getHours()
+            if (HH >= 12){
+                $("#apm").html('下午')
+            }else {
+                $("#apm").html('上午')
+            }
+            let mm = date.getMinutes()
+            $("#hour").html(HH)
+            $("#min").html(mm)
+        }, 1000);
+
+
+        getWeather();
+        function getWeather() {
+            jQuery.support.cors = true;
+            $.ajax({
+                url: "http://wthrcdn.etouch.cn/weather_mini",
+                type: "GET",
+                dataType: 'json',
+                data: {city: (returnCitySN.cname).split('省')[1]}, //(returnCitySN.cname).split('省')[1]：获取所在的市
+
+                success: function (res) {
+                    //var res=JSON.parse(res);
+                    var city = res.data.city;//所在城市
+                    var maxTemperature = res.data.forecast[0].high;//最高温度
+                    var minTemperature = res.data.forecast[0].low;//最低温度
+                    var weather = minTemperature.split(' ')[1] + '~' + maxTemperature.split(' ')[1];
+                    var type = res.data.forecast[0].type;//天气状态
+                    $("#hot").html(maxTemperature.slice(3))
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            });
+        }
+
+        var time = 60;
+        var box = document.getElementById('scroll');
+        var con1 = document.getElementById('con1');
+        var con2 = document.querySelectorAll('.con2');
+        $(".con2").html($("#con1").html())
+
+        function Up() {
+            if (box.scrollTop >= con1.offsetHeight) {
+                box.scrollTop = 0;
+            } else {
+                box.scrollTop++
+            }
+        }
+
+        var setlId = setInterval(Up, time);
+
+        $("#scroll").mouseover(function () {
+            clearInterval(setlId);
+        })
+
+        $("#scroll").mouseleave(function () {
+            setlId = setInterval(Up, time);
+        })
+
+        $("#reporting").click(function () {
+            layerMap.getSource().clear()
+            var timeType = 'year';
+            $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "reporting", function (e) {
+                var data = e.data;
+                for (let i = 0; i < data.length; i++) {
+                    setPoint(data[i].coordinate.split(" ")[0],
+                        data[i].coordinate.split(" ")[1],
+                        data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
+                }
+            });
+
+        })
+        $("#register").click(function () {
+            layerMap.getSource().clear()
+            var timeType = 'year';
+            $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "register", function (e) {
+                var data = e.data;
+                for (let i = 0; i < data.length; i++) {
+                    setPoint(data[i].coordinate.split(" ")[0],
+                        data[i].coordinate.split(" ")[1],
+                        data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
+                }
+            });
+
+        })
+        $("#caseDispose").click(function () {
+            layerMap.getSource().clear()
+            var timeType = 'year';
+            $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "caseDispose", function (e) {
+                var data = e.data;
+                for (let i = 0; i < data.length; i++) {
+                    setPoint(data[i].coordinate.split(" ")[0],
+                        data[i].coordinate.split(" ")[1],
+                        data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
+                }
+            });
+        });
+        $("#caseclosed").click(function () {
+            layerMap.getSource().clear()
+            var timeType = 'year';
+            $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "caseclosed", function (e) {
+                var data = e.data;
+                for (let i = 0; i < data.length; i++) {
+                    setPoint(data[i].coordinate.split(" ")[0],
+                        data[i].coordinate.split(" ")[1],
+                        data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
+                }
+            });
+        });
+
+
+        function setPoint(x, y, id, eventCode, represent, eventTypeName) {
+            let point = new ol.Feature({
+                geometry: new ol.geom.Point([x, y]),
+                data: {
+                    eventId: id,
+                    eventCode: eventCode,
+                    represent: represent,
+                    eventTypeName: eventTypeName,
+                    coordinate: x + "," + y
+                }
+            });
+            point.setStyle(new ol.style.Style({
+                image: new ol.style.Icon({
+                    src: '../img/dwpoint3.png'
+                })
+            }));
+            layerMap.getSource().addFeature(point);
+        }
+
+
 
     })
     // 高发区域
