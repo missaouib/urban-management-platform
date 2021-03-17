@@ -2,7 +2,6 @@ package com.unicom.urban.management.api.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
-import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.service.event.EventService;
@@ -13,11 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,12 +31,6 @@ public class CooperativeWorkController {
 
     @Autowired
     private EventService eventService;
-    @Autowired
-    private KVService kvService;
-    @Autowired
-    private GridService gridService;
-    @Autowired
-    private TaskProcessingService taskProcessingService;
 
     @GetMapping("/cooperativeWorkList")
     public Page<EventVO> wirelessAcquisitionList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
