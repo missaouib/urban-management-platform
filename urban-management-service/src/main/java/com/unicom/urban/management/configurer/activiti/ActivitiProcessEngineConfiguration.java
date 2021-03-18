@@ -41,7 +41,7 @@ public class ActivitiProcessEngineConfiguration extends AbstractProcessEngineAut
                                                                              PlatformTransactionManager transactionManager,
                                                                              SpringAsyncExecutor springAsyncExecutor) throws IOException {
 
-        SpringProcessEngineConfiguration config = this.baseSpringProcessEngineConfiguration(dataSource, transactionManager, springAsyncExecutor);
+        SpringProcessEngineConfiguration config = super.baseSpringProcessEngineConfiguration(dataSource, transactionManager, springAsyncExecutor);
         config.setJpaEntityManagerFactory(entityManagerFactory);
         config.setTransactionManager(transactionManager);
         config.setJpaHandleTransaction(false);
