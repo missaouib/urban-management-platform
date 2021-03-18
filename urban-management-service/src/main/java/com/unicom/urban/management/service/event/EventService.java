@@ -684,7 +684,7 @@ public class EventService {
         List<Statistics> statisticsList = statisticsService.findAllByEventIdOrderBySort(eventId);
         if (statisticsList.size() > 1) {
             Statistics statistics = statisticsList.get(1);
-            if ("派遣员-申请延时".equals(statisticsList.get(0).getTaskName())) {
+            if ("派遣员-延时审批".equals(statisticsList.get(0).getTaskName())) {
                 eventOneVO.setDelayedHours(statistics.getDelayedHours());
             }
             if ("值班长-作废审批".equals(statisticsList.get(0).getTaskName())) {
