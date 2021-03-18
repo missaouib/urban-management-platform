@@ -17,12 +17,22 @@
 }
 
 .screen {
+    position: relative;
     width: 100vw;
     height: 100vh;
     padding: 0 20px 10px 20px;
     box-sizing: border-box;
     background-image: url("../img/n-bg.png");
     background-size: 100% 100%;
+}
+.n-map{
+    background-size: 100% 100%;
+    background-image: url(../img/n-map.png);
+    width: 74%;
+    height: 74%;
+    position: absolute;
+    top: 18%;
+    left: 11%;
 }
 
 .top {
