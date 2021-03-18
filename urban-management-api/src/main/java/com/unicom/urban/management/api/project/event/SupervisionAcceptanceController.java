@@ -11,6 +11,7 @@ import com.unicom.urban.management.pojo.vo.EventOneVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.event.EventService;
+import com.unicom.urban.management.service.event.TaskProcessingService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.role.RoleService;
 import com.unicom.urban.management.util.SecurityUtil;
@@ -46,6 +47,8 @@ public class SupervisionAcceptanceController {
     private EventFileService eventFileService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private TaskProcessingService taskProcessingService;
 
     /**
      * 登记
@@ -306,6 +309,15 @@ public class SupervisionAcceptanceController {
     public Result getUserListForSupervisor(String gridId) {
         List<UserVO> userList = roleService.findUserListForSupervision(KvConstant.SUPERVISOR_ROLE, gridId);
         return Result.success(userList);
+    }
+
+
+    /**
+     * 获取环节名称
+     */
+    @GetMapping("/getTaskName")
+    public Result getTaskName(){
+        return Result.success(taskProcessingService.findTaskNames());
     }
 
 }
