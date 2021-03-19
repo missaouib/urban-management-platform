@@ -1,4 +1,4 @@
-package com.unicom.urban.management.pojo.entity;
+package com.unicom.urban.management.pojo.entity.time;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
  * @author liukai
  */
 @Entity
+@Table(name = "time_plan")
 public class TimePlan {
 
     private String id;

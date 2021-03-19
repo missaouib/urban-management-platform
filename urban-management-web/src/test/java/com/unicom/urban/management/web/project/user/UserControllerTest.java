@@ -1,7 +1,7 @@
 package com.unicom.urban.management.web.project.user;
 
-import com.unicom.urban.management.dao.timeplan.TimePlanRepository;
-import com.unicom.urban.management.pojo.entity.TimePlan;
+import com.unicom.urban.management.dao.time.TimePlanRepository;
+import com.unicom.urban.management.pojo.entity.time.TimePlan;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
