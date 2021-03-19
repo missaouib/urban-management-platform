@@ -1,5 +1,7 @@
 package com.unicom.urban.management.service.activiti;
 
+import cn.hutool.core.date.DateUnit;
+import cn.hutool.core.date.DateUtil;
 import com.unicom.urban.management.common.constant.EventSourceConstant;
 import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.common.exception.DataValidException;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -258,4 +261,10 @@ public class ActivitiServiceImpl implements ActivitiService {
         return eventButtonRepository.findByTaskNameOrderBySort(taskName);
     }
 
+    @Override
+    public Long xxxx(LocalDateTime startTime, LocalDateTime endTime) {
+        DateUtil.between(new Date(), new Date(), DateUnit.MINUTE);
+
+        return null;
+    }
 }

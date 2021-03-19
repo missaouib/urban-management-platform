@@ -1,5 +1,7 @@
 package com.unicom.urban.management.web.project.user;
 
+import com.unicom.urban.management.dao.timeplan.TimePlanRepository;
+import com.unicom.urban.management.pojo.entity.TimePlan;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -26,6 +29,9 @@ public class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private TimePlanRepository timePlanRepository;
+
     @Test
     @Transactional
     public void saveUser() throws Exception {
@@ -37,6 +43,17 @@ public class UserControllerTest {
         )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value("0"));
+    }
+
+    @Test
+    public void saveTimePlan() {
+        TimePlan timePlan = new TimePlan();
+        timePlan.setStartTime(LocalDateTime.now());
+        timePlan.setEndTime(LocalDateTime.now());
+        timePlan.setSts(TimePlan.Status.ENABLE);
+
+        timePlanRepository.save(timePlan);
+
     }
 
 }

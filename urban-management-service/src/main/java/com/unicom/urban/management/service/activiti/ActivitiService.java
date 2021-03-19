@@ -5,6 +5,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ActivitiService {
@@ -137,6 +138,15 @@ public interface ActivitiService {
      * @param buttonId 页面点击的哪个按钮ID
      */
     void complete(String taskId, List<String> userList, String buttonId);
+
+
+    /**
+     * 计算时间差值
+     *
+     * @param startTime 环节的开始时间
+     * @param endTime   环节的结束时间
+     */
+    Long xxxx(LocalDateTime startTime, LocalDateTime endTime);
 
 
 }
