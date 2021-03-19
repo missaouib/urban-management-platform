@@ -25,6 +25,9 @@ public class ActivitiController {
     @Autowired
     private RepositoryService repositoryService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     /**
      * 创建模型
      */
@@ -33,9 +36,6 @@ public class ActivitiController {
         String name = modelDTO.getName();
 
         String description = modelDTO.getDescription();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
 
         ObjectNode stencilSetNode = objectMapper.createObjectNode();
         stencilSetNode.put("namespace", "http://b3mn.org/stencilset/bpmn2.0#");

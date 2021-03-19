@@ -20,11 +20,14 @@ public class ActivitiIdConfigurator extends AbstractProcessEngineConfigurator {
         return 2;
     }
 
+    @Override
+    public void beforeInit(ProcessEngineConfigurationImpl processEngineConfiguration) {
+        StrongUuidGenerator uuidGenerator = new StrongUuidGenerator();
+        processEngineConfiguration.setIdGenerator(uuidGenerator);
+    }
 
     @Override
     public void configure(ProcessEngineConfigurationImpl processEngineConfiguration) {
-        StrongUuidGenerator uuidGenerator = new StrongUuidGenerator();
-        processEngineConfiguration.setIdGenerator(uuidGenerator);
-        processEngineConfiguration.getDbSqlSessionFactory().setIdGenerator(uuidGenerator);
+
     }
 }

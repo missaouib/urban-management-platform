@@ -45,6 +45,7 @@ public class ActivitiProcessEngineConfiguration extends AbstractProcessEngineAut
         config.setJpaEntityManagerFactory(entityManagerFactory);
         config.setTransactionManager(transactionManager);
         config.setJpaHandleTransaction(false);
+        config.setUseClassForNameClassLoading(false);
         config.setJpaCloseEntityManager(false);
         config.addConfigurator(activitiFontConfigurator).addConfigurator(activitiIdConfigurator);
         config.setProcessEngineLifecycleListener(processEngineLifecycleListener);
