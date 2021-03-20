@@ -3,7 +3,6 @@ package com.unicom.urban.management.configurer.activiti;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngineLifecycleListener;
-import org.springframework.stereotype.Component;
 
 /**
  * 流程引擎生命周期监听器
@@ -11,8 +10,8 @@ import org.springframework.stereotype.Component;
  * @author liukai
  */
 @Slf4j
-@Component
 public class ActivitiProcessEngineLifecycleListener implements ProcessEngineLifecycleListener {
+
     @Override
     public void onProcessEngineBuilt(ProcessEngine processEngine) {
         log.debug("processEngines built success");
@@ -22,4 +21,5 @@ public class ActivitiProcessEngineLifecycleListener implements ProcessEngineLife
     public void onProcessEngineClosed(ProcessEngine processEngine) {
         log.debug("processEngines close success");
     }
+
 }

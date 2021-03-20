@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.cfg.AbstractProcessEngineConfigurator;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
 import org.activiti.engine.impl.persistence.StrongUuidGenerator;
-import org.springframework.stereotype.Component;
 
 /**
  * 配置Activiti id生成器
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
  * @author liukai
  */
 @Slf4j
-@Component(value = "activitiIdConfigurator")
 public class ActivitiIdConfigurator extends AbstractProcessEngineConfigurator {
 
     @Override

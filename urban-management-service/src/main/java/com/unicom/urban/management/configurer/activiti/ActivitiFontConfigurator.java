@@ -3,7 +3,6 @@ package com.unicom.urban.management.configurer.activiti;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.cfg.AbstractProcessEngineConfigurator;
 import org.activiti.engine.impl.cfg.ProcessEngineConfigurationImpl;
-import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.io.IOException;
@@ -15,7 +14,6 @@ import java.io.InputStream;
  * @author liukai
  */
 @Slf4j
-@Component(value = "activitiFontConfigurator")
 public class ActivitiFontConfigurator extends AbstractProcessEngineConfigurator {
 
     private static final String FONT_PATH_WQY = "fonts/Arial Unicode.ttf";
