@@ -1,5 +1,9 @@
 package com.unicom.urban.management.pojo.entity.time;
 
+import com.unicom.urban.management.common.exception.BusinessException;
+import com.unicom.urban.management.pojo.entity.BaseEnum;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -11,6 +15,8 @@ import java.time.LocalDateTime;
  * @author liukai
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "time_plan")
 public class TimePlan {
 
@@ -27,7 +33,7 @@ public class TimePlan {
     private LocalDateTime endTime;
 
     /**
-     * 状态 0启用 1未启用
+     * 状态
      */
     private Status sts;
 
@@ -58,7 +64,7 @@ public class TimePlan {
         this.endTime = endTime;
     }
 
-    @Enumerated(EnumType.ORDINAL)
+    @Convert(converter = StatusConverter.class)
     public Status getSts() {
         return sts;
     }
@@ -68,24 +74,63 @@ public class TimePlan {
     }
 
 
-    public enum Status {
+    /**
+     * 一定要实现BaseEnum
+     *
+     * @author liukai
+     */
+    public enum Status implements BaseEnum {
 
-        ENABLE("启用"),
-        DISABLE("未启用");
+        ENABLE(0, "启用"),
+        DISABLE(1, "未启用");
 
-        Status(String type) {
-            this.type = type;
+        Status(Integer value, String description) {
+            this.value = value;
+            this.description = description;
         }
 
-        private String type;
+        private Integer value;
+        private String description;
 
-        public String getType() {
-            return type;
+        @Override
+        public Integer getValue() {
+            return value;
         }
 
-        public void setType(String type) {
-            this.type = type;
+        public void setValue(Integer value) {
+            this.value = value;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
         }
     }
+
+    public static class StatusConverter implements AttributeConverter<Status, Integer> {
+
+        @Override
+        public Integer convertToDatabaseColumn(Status attribute) {
+            if (attribute == null) {
+                throw new BusinessException("Unknown status text  ");
+            }
+            return attribute.getValue();
+
+        }
+
+        @Override
+        public Status convertToEntityAttribute(Integer dbData) {
+            for (Status status : Status.values()) {
+                if (status.getValue().equals(dbData)) {
+                    return status;
+                }
+            }
+            throw new BusinessException("Unknown status text : " + dbData);
+        }
+    }
+
 }
 
