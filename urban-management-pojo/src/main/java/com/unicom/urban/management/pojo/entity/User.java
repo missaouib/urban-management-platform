@@ -12,7 +12,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -177,7 +176,6 @@ public class User {
         this.id = id;
     }
 
-    @Column
     public String getName() {
         return name;
     }
@@ -186,7 +184,6 @@ public class User {
         this.name = name;
     }
 
-    @Column
     public String getUsername() {
         return username;
     }
@@ -195,7 +192,6 @@ public class User {
         this.username = username;
     }
 
-    @Column
     public String getPassword() {
         return password;
     }
@@ -204,7 +200,6 @@ public class User {
         this.password = password;
     }
 
-    @Column
     public String getPhone() {
         return phone;
     }
@@ -221,7 +216,6 @@ public class User {
         this.officePhone = officePhone;
     }
 
-    @Column
     public String getEmail() {
         return email;
     }
@@ -230,7 +224,6 @@ public class User {
         this.email = email;
     }
 
-    @Column
     public String getSex() {
         return sex;
     }
@@ -255,7 +248,6 @@ public class User {
         this.birth = birth;
     }
 
-    @Column
     public Integer getSts() {
         return sts;
     }
@@ -264,7 +256,6 @@ public class User {
         this.sts = sts;
     }
 
-    @Column
     public String getProfilePhotoUrl() {
         return profilePhotoUrl;
     }
@@ -314,8 +305,6 @@ public class User {
     }
 
     @CreatedDate
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -326,8 +315,6 @@ public class User {
 
 
     @LastModifiedDate
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column
     public LocalDateTime getUpdateTime() {
         return updateTime;
     }
@@ -360,7 +347,6 @@ public class User {
     }
 
 
-    @Column
     public String getDeleted() {
         return deleted;
     }
