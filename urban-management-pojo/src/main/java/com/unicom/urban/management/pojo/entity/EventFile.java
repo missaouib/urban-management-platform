@@ -1,9 +1,7 @@
 package com.unicom.urban.management.pojo.entity;
 
-import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,7 +11,6 @@ import javax.persistence.Id;
  *
  * @author jiangwen
  */
-@Data
 @Entity
 public class EventFile {
 
@@ -23,19 +20,57 @@ public class EventFile {
 
     public final static Integer AUDIO = 3;
 
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
     private String fileName;
 
-    @Column(columnDefinition = "tinyint")
     private Integer fileType;
 
     private String filePath;
 
-    @Column(columnDefinition = "tinyint")
     private Integer management;
 
+
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public Integer getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(Integer fileType) {
+        this.fileType = fileType;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public Integer getManagement() {
+        return management;
+    }
+
+    public void setManagement(Integer management) {
+        this.management = management;
+    }
 }

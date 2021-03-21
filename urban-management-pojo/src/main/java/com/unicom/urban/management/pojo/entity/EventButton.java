@@ -1,12 +1,9 @@
 package com.unicom.urban.management.pojo.entity;
 
 import com.unicom.urban.management.pojo.Delete;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,15 +13,10 @@ import javax.persistence.Id;
  *
  * @author liukai
  */
-@Setter
-@Getter
 @Entity
 @Where(clause = "deleted = " + Delete.NORMAL)
-public class EventButton extends AbstractEntity {
+public class EventButton {
 
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
     /**
@@ -32,10 +24,53 @@ public class EventButton extends AbstractEntity {
      */
     private String taskName;
 
-    @Column(columnDefinition = "TINYINT(1)")
     private Integer sort;
 
     private String buttonText;
 
+    private String deleted = Delete.NORMAL;
+
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public String getButtonText() {
+        return buttonText;
+    }
+
+    public void setButtonText(String buttonText) {
+        this.buttonText = buttonText;
+    }
+
+    public String getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(String deleted) {
+        this.deleted = deleted;
+    }
 
 }
