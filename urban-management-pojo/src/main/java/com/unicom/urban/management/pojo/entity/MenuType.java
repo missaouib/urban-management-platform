@@ -1,7 +1,5 @@
 package com.unicom.urban.management.pojo.entity;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
@@ -14,8 +12,6 @@ import javax.persistence.Table;
  *
  * @author liubozhi
  */
-@Setter
-@Getter
 @Entity
 @Table(name = "sys_menu_type")
 public class MenuType {
