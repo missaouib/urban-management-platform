@@ -1,9 +1,7 @@
 package com.unicom.urban.management.pojo.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -17,17 +15,10 @@ import java.time.LocalDateTime;
 @Entity
 public class EventPhase {
 
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
     private Event eventId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
     private User userId;
 
     /**
@@ -48,26 +39,114 @@ public class EventPhase {
     /**
      * 附件
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
     private EventFile eventFileId;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
     private LocalDateTime starTime;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
     private LocalDateTime endTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
     private DeptTimeLimit deptTimeLimit;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
     private ProcessTimeLimit processTimeLimit;
 
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    public Event getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Event eventId) {
+        this.eventId = eventId;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    public User getUserId() {
+        return userId;
+    }
+
+    public void setUserId(User userId) {
+        this.userId = userId;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public String getOpinions() {
+        return opinions;
+    }
+
+    public void setOpinions(String opinions) {
+        this.opinions = opinions;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    public EventFile getEventFileId() {
+        return eventFileId;
+    }
+
+    public void setEventFileId(EventFile eventFileId) {
+        this.eventFileId = eventFileId;
+    }
+
+    public LocalDateTime getStarTime() {
+        return starTime;
+    }
+
+    public void setStarTime(LocalDateTime starTime) {
+        this.starTime = starTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    public DeptTimeLimit getDeptTimeLimit() {
+        return deptTimeLimit;
+    }
+
+    public void setDeptTimeLimit(DeptTimeLimit deptTimeLimit) {
+        this.deptTimeLimit = deptTimeLimit;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    public ProcessTimeLimit getProcessTimeLimit() {
+        return processTimeLimit;
+    }
+
+    public void setProcessTimeLimit(ProcessTimeLimit processTimeLimit) {
+        this.processTimeLimit = processTimeLimit;
+    }
 }

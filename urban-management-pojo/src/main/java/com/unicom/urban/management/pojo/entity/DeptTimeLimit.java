@@ -14,17 +14,10 @@ import javax.persistence.*;
 @Entity
 public class DeptTimeLimit {
 
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
     private EventCondition eventCondition;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
     private KV level;
 
     /**
@@ -32,7 +25,54 @@ public class DeptTimeLimit {
      */
     private int timeLimit;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     private KV timeType;
+
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    public EventCondition getEventCondition() {
+        return eventCondition;
+    }
+
+    public void setEventCondition(EventCondition eventCondition) {
+        this.eventCondition = eventCondition;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    public KV getLevel() {
+        return level;
+    }
+
+    public void setLevel(KV level) {
+        this.level = level;
+    }
+
+    public int getTimeLimit() {
+        return timeLimit;
+    }
+
+    public void setTimeLimit(int timeLimit) {
+        this.timeLimit = timeLimit;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    public KV getTimeType() {
+        return timeType;
+    }
+
+    public void setTimeType(KV timeType) {
+        this.timeType = timeType;
+    }
 
 }

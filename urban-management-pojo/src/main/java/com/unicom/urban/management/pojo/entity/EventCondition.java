@@ -14,22 +14,70 @@ import javax.persistence.*;
 @Entity
 public class EventCondition {
 
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
     private String region;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     private EventCondition parent;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
     private EventType eventType;
 
     private String conditionValue;
 
     private int type;
 
+
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    public EventCondition getParent() {
+        return parent;
+    }
+
+    public void setParent(EventCondition parent) {
+        this.parent = parent;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    public EventType getEventType() {
+        return eventType;
+    }
+
+    public void setEventType(EventType eventType) {
+        this.eventType = eventType;
+    }
+
+    public String getConditionValue() {
+        return conditionValue;
+    }
+
+    public void setConditionValue(String conditionValue) {
+        this.conditionValue = conditionValue;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 }
