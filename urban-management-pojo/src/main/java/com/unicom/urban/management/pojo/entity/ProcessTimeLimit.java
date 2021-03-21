@@ -14,18 +14,12 @@ import javax.persistence.*;
 @Entity
 public class ProcessTimeLimit {
 
-    @Id
-    @GeneratedValue(generator = "uuid2")
-    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
     private String taskName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn
     private KV level;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     private KV timeType;
 
     /**
@@ -33,4 +27,49 @@ public class ProcessTimeLimit {
      */
     private int timeLimit;
 
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    @JoinColumn
+    @ManyToOne(fetch = FetchType.LAZY)
+    public KV getLevel() {
+        return level;
+    }
+
+    public void setLevel(KV level) {
+        this.level = level;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    public KV getTimeType() {
+        return timeType;
+    }
+
+    public void setTimeType(KV timeType) {
+        this.timeType = timeType;
+    }
+
+    public int getTimeLimit() {
+        return timeLimit;
+    }
+
+    public void setTimeLimit(int timeLimit) {
+        this.timeLimit = timeLimit;
+    }
 }
