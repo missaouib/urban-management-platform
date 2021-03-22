@@ -36,6 +36,7 @@ public class UserInfoController {
     public Result getUser() {
         SecurityUserBean user = SecurityUtil.getUser();
         UserVO user1 = userService.getUser(user.getId());
+        user1.setUsername(null);
         return Result.success(user1);
     }
 
