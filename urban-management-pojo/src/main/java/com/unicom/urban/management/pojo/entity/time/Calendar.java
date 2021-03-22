@@ -19,9 +19,14 @@ public class Calendar {
     private String id;
 
     /**
-     * 是否为工作日
+     * 工作日还是节假日
      */
     private WorkDayMark workDayMark;
+
+    /**
+     * 是否上班
+     */
+    private Work work;
 
 
     private LocalDate calendar;
@@ -52,6 +57,15 @@ public class Calendar {
 
     public void setCalendar(LocalDate calendar) {
         this.calendar = calendar;
+    }
+
+    @Convert(converter = WorkConverter.class)
+    public Work getWork() {
+        return work;
+    }
+
+    public void setWork(Work work) {
+        this.work = work;
     }
 
     public enum WorkDayMark implements BaseEnum {
@@ -102,6 +116,62 @@ public class Calendar {
             for (WorkDayMark dayMark : WorkDayMark.values()) {
                 if (dayMark.getValue().equals(dbData)) {
                     return dayMark;
+                }
+            }
+            throw new BusinessException("Unknown workDayMark text : " + dbData);
+        }
+    }
+
+
+    public enum Work implements BaseEnum {
+
+        WORK(0, "上班"),
+        NON_WORK(1, "休息");
+
+        Work(Integer value, String description) {
+            this.value = value;
+            this.description = description;
+        }
+
+        private Integer value;
+        private String description;
+
+        @Override
+        public Integer getValue() {
+            return value;
+        }
+
+        public void setValue(Integer value) {
+            this.value = value;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+    }
+
+
+    public static class WorkConverter implements AttributeConverter<Work, Integer> {
+
+        @Override
+        public Integer convertToDatabaseColumn(Work attribute) {
+            if (attribute == null) {
+                throw new BusinessException("Unknown workDayMark text  ");
+            }
+            return attribute.getValue();
+
+        }
+
+        @Override
+        public Work convertToEntityAttribute(Integer dbData) {
+            for (Work work : Work.values()) {
+                if (work.getValue().equals(dbData)) {
+                    return work;
                 }
             }
             throw new BusinessException("Unknown workDayMark text : " + dbData);

@@ -146,7 +146,7 @@ public interface ActivitiService {
      * @param startTime 环节的开始时间
      * @param endTime   环节的结束时间
      */
-    Long xxxx(LocalDateTime startTime, LocalDateTime endTime);
+    Long between(LocalDateTime startTime, LocalDateTime endTime);
 
 
 }

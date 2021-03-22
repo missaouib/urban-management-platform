@@ -1,7 +1,5 @@
 package com.unicom.urban.management.service.activiti;
 
-import cn.hutool.core.date.DateUnit;
-import cn.hutool.core.date.DateUtil;
 import com.unicom.urban.management.WebApplication;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.HistoryService;
@@ -18,6 +16,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @SpringBootTest(classes = WebApplication.class)
@@ -166,18 +165,18 @@ public class ActivitiServiceImplTest {
     }
 
     @Test
-    public void time() {
+    @Transactional
+    public void between() {
 
-        String dateStr1 = "2017-03-01 22:33:23";
-        Date starTime = DateUtil.parse(dateStr1);
+        LocalDateTime startTime = LocalDateTime.parse("2021-01-01T10:15:30");
 
-        String dateStr2 = "2017-04-01 23:34:50";
-        Date endTime = DateUtil.parse(dateStr2);
+        LocalDateTime endTime = LocalDateTime.parse("2021-01-01T09:16:30");
+
+        Long time = activitiService.between(startTime, endTime);
+
+        System.out.println(time);
 
 
-        long hour = DateUtil.between(starTime, endTime, DateUnit.MINUTE);
-
-        System.out.println(hour);
 
 
     }

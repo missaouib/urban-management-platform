@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 计时管理方案实体类
@@ -32,10 +33,25 @@ public class TimePlan {
      */
     private LocalDateTime endTime;
 
+    private List<Calendar> calendarList;
+
+    private List<TimeScheme> timeSchemeList;
+
     /**
      * 状态
      */
     private Status sts;
+
+    @Override
+    public String toString() {
+        return "TimePlan{" +
+                "id='" + id + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", calendarList=" + calendarList +
+                ", sts=" + sts +
+                '}';
+    }
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -71,6 +87,26 @@ public class TimePlan {
 
     public void setSts(Status sts) {
         this.sts = sts;
+    }
+
+    @JoinColumn(name = "time_plan_id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    public List<Calendar> getCalendarList() {
+        return calendarList;
+    }
+
+    public void setCalendarList(List<Calendar> calendarList) {
+        this.calendarList = calendarList;
+    }
+
+    @JoinColumn(name = "time_plan_id")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    public List<TimeScheme> getTimeSchemeList() {
+        return timeSchemeList;
+    }
+
+    public void setTimeSchemeList(List<TimeScheme> timeSchemeList) {
+        this.timeSchemeList = timeSchemeList;
     }
 
 

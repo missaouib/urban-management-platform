@@ -1,12 +1,14 @@
 package com.unicom.urban.management.service.activiti;
 
-import cn.hutool.core.date.DateUnit;
-import cn.hutool.core.date.DateUtil;
 import com.unicom.urban.management.common.constant.EventSourceConstant;
 import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.event.EventButtonRepository;
+import com.unicom.urban.management.dao.time.TimePlanRepository;
 import com.unicom.urban.management.pojo.entity.EventButton;
+import com.unicom.urban.management.pojo.entity.time.Calendar;
+import com.unicom.urban.management.pojo.entity.time.TimePlan;
+import com.unicom.urban.management.pojo.entity.time.TimeScheme;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -44,6 +47,9 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     @Autowired
     private EventButtonRepository eventButtonRepository;
+
+    @Autowired
+    private TimePlanRepository timePlanRepository;
 
     private final static String EVENT_KEY = "event";
 
@@ -262,9 +268,35 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
-    public Long xxxx(LocalDateTime startTime, LocalDateTime endTime) {
-        DateUtil.between(new Date(), new Date(), DateUnit.MINUTE);
+    public Long between(LocalDateTime startTime, LocalDateTime endTime) {
 
-        return null;
+        if (endTime.isBefore(startTime)) {
+            throw new BusinessException("结束时间不可在开始时间之前");
+        }
+
+
+        // 总共差了多少分钟
+
+        long totalMinute = Duration.between(startTime, endTime).toMinutes();
+
+        Optional<TimePlan> optionalTimePlan = timePlanRepository.getBySts(TimePlan.Status.ENABLE);
+
+        TimePlan timePlan = optionalTimePlan.orElseThrow(() -> new BusinessException("未找到可用的时间计划"));
+        List<Calendar> calendarList = timePlan.getCalendarList();
+        List<TimeScheme> timeSchemeList = timePlan.getTimeSchemeList();
+
+        doSomething(startTime, endTime, timePlan);
+
+
+        System.out.println(timePlan.toString());
+
+
+        return totalMinute;
     }
+
+    private void doSomething(LocalDateTime startTime, LocalDateTime endTime, TimePlan timePlan) {
+
+    }
+
+
 }
