@@ -275,7 +275,7 @@ public class User {
         this.roleList = roleList;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "dept_id")
     public Dept getDept() {
         return dept;

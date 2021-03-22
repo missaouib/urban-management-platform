@@ -80,6 +80,8 @@ public class UserVO {
         this.phone = StringUtils.isNotBlank(user.getPhone())? AESUtil.decrypt(user.getPhone()):"";
         this.profilePhotoUrl = user.getProfilePhotoUrl();
         this.sex = user.getSex();
+        this.deptId = user.getDept().getId();
+        this.deptName = user.getDept().getDeptName();
     }
 
     public UserVO() {
