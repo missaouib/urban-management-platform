@@ -1,6 +1,6 @@
 package com.unicom.urban.management.service.timeplan;
 
-import com.unicom.urban.management.dao.time.CalendarRepository;
+import com.unicom.urban.management.dao.time.DayRepository;
 import com.unicom.urban.management.dao.time.TimePlanRepository;
 import com.unicom.urban.management.pojo.dto.TimePlanDTO;
 import com.unicom.urban.management.pojo.entity.time.TimePlan;
@@ -14,7 +14,7 @@ public class TimePlanService {
     private TimePlanRepository timePlanRepository;
 
     @Autowired
-    private CalendarRepository calendarRepository;
+    private DayRepository calendarRepository;
 
 
     public void save(TimePlanDTO timePlanDTO) {

@@ -14,7 +14,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Table(name = "time_calendar")
-public class Calendar {
+public class Day {
 
     private String id;
 
@@ -30,6 +30,28 @@ public class Calendar {
 
 
     private LocalDate calendar;
+
+    /**
+     * 是否为工作日
+     */
+    @Transient
+    public boolean isWorkDay() {
+        return WorkDayMark.WORKDAY.equals(this.workDayMark);
+    }
+
+
+    /**
+     * 上班
+     */
+    @Transient
+    public boolean isWork() {
+        return Work.WORK.equals(this.work);
+    }
+
+    @Transient
+    public boolean isNotWork() {
+        return Work.NON_WORK.equals(this.work);
+    }
 
     @Id
     @GeneratedValue(generator = "uuid2")

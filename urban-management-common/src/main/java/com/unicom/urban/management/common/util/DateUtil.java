@@ -1,0 +1,46 @@
+package com.unicom.urban.management.common.util;
+
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class DateUtil extends cn.hutool.core.date.DateUtil {
+
+    /**
+     * 一天的分钟数
+     */
+    public static final long ONE_DAY_MINUTE = 60L * 24;
+
+
+    /**
+     * 计算经过了哪些日期
+     *
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @return 经过了哪些日期
+     */
+    public static List<LocalDate> between(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        LocalDate startDate = startDateTime.toLocalDate();
+        LocalDate endDate = endDateTime.toLocalDate();
+        List<LocalDate> localDateList = new ArrayList<>();
+        // 如果为同一天
+        if (startDate.equals(endDate)) {
+            localDateList.add(startDate);
+            return localDateList;
+        }
+        long day = startDate.until(endDate, ChronoUnit.DAYS);
+        for (long i = 0; i <= day; i++) {
+            localDateList.add(startDate.plusDays(i));
+        }
+        return localDateList;
+    }
+
+
+    public static boolean isWeekDay(LocalDate localDate) {
+        return DayOfWeek.SATURDAY.equals(localDate.getDayOfWeek()) || DayOfWeek.SUNDAY.equals(localDate.getDayOfWeek());
+    }
+
+}

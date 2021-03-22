@@ -2,6 +2,7 @@ package com.unicom.urban.management.pojo.entity.time;
 
 import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.pojo.entity.BaseEnum;
+import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,6 +17,7 @@ import java.util.List;
  * @author liukai
  */
 @Entity
+@ToString
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "time_plan")
@@ -33,7 +35,7 @@ public class TimePlan {
      */
     private LocalDateTime endTime;
 
-    private List<Calendar> calendarList;
+    private List<Day> dayList;
 
     private List<TimeScheme> timeSchemeList;
 
@@ -42,16 +44,6 @@ public class TimePlan {
      */
     private Status sts;
 
-    @Override
-    public String toString() {
-        return "TimePlan{" +
-                "id='" + id + '\'' +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", calendarList=" + calendarList +
-                ", sts=" + sts +
-                '}';
-    }
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -91,12 +83,12 @@ public class TimePlan {
 
     @JoinColumn(name = "time_plan_id")
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
-    public List<Calendar> getCalendarList() {
-        return calendarList;
+    public List<Day> getDayList() {
+        return dayList;
     }
 
-    public void setCalendarList(List<Calendar> calendarList) {
-        this.calendarList = calendarList;
+    public void setDayList(List<Day> dayList) {
+        this.dayList = dayList;
     }
 
     @JoinColumn(name = "time_plan_id")

@@ -141,10 +141,11 @@ public interface ActivitiService {
 
 
     /**
-     * 计算时间差值
+     * 计算时间差值(去掉系统设置的节假日的时间)
      *
-     * @param startTime 环节的开始时间
-     * @param endTime   环节的结束时间
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return 分钟
      */
     Long between(LocalDateTime startTime, LocalDateTime endTime);
 

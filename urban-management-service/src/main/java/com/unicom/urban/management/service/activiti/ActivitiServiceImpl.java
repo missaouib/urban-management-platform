@@ -3,10 +3,12 @@ package com.unicom.urban.management.service.activiti;
 import com.unicom.urban.management.common.constant.EventSourceConstant;
 import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.common.exception.DataValidException;
+import com.unicom.urban.management.common.util.DateUtil;
 import com.unicom.urban.management.dao.event.EventButtonRepository;
+import com.unicom.urban.management.dao.time.DayRepository;
 import com.unicom.urban.management.dao.time.TimePlanRepository;
 import com.unicom.urban.management.pojo.entity.EventButton;
-import com.unicom.urban.management.pojo.entity.time.Calendar;
+import com.unicom.urban.management.pojo.entity.time.Day;
 import com.unicom.urban.management.pojo.entity.time.TimePlan;
 import com.unicom.urban.management.pojo.entity.time.TimeScheme;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +25,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,6 +54,9 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     @Autowired
     private TimePlanRepository timePlanRepository;
+
+    @Autowired
+    private DayRepository dayRepository;
 
     private final static String EVENT_KEY = "event";
 
@@ -276,26 +283,83 @@ public class ActivitiServiceImpl implements ActivitiService {
 
 
         // 总共差了多少分钟
-
         long totalMinute = Duration.between(startTime, endTime).toMinutes();
 
         Optional<TimePlan> optionalTimePlan = timePlanRepository.getBySts(TimePlan.Status.ENABLE);
 
         TimePlan timePlan = optionalTimePlan.orElseThrow(() -> new BusinessException("未找到可用的时间计划"));
-        List<Calendar> calendarList = timePlan.getCalendarList();
-        List<TimeScheme> timeSchemeList = timePlan.getTimeSchemeList();
 
-        doSomething(startTime, endTime, timePlan);
+        return totalMinute - getMinute(startTime, endTime, timePlan);
 
-
-        System.out.println(timePlan.toString());
-
-
-        return totalMinute;
     }
 
-    private void doSomething(LocalDateTime startTime, LocalDateTime endTime, TimePlan timePlan) {
+    /**
+     * 计算需要扣除多少分钟=总时间-休息日的总分钟-工作日的休息时间
+     */
+    private long getMinute(LocalDateTime startDateTime, LocalDateTime endDateTime, TimePlan timePlan) {
+        List<LocalDate> localDateList = DateUtil.between(startDateTime, endDateTime);
 
+
+
+
+        // 周六周天的天数
+        long weekDayCount = getWeekDay(localDateList);
+        // 计算周六周天的总分钟
+        long minute = weekDayCount * DateUtil.ONE_DAY_MINUTE;
+
+        // 工作日的休息时间
+        long workDayMinute = getWorkDayMinute(timePlan) * (localDateList.size() - weekDayCount);
+        return minute + workDayMinute;
+
+    }
+
+    /**
+     * 计算工作日中的休息时间
+     *
+     * @return 分钟
+     */
+    private long getWorkDayMinute(TimePlan timePlan) {
+        List<TimeScheme> timeSchemeList = timePlan.getTimeSchemeList();
+        long workMinute = 0L;
+        for (TimeScheme timeScheme : timeSchemeList) {
+            LocalTime startTime = timeScheme.getStartTime();
+            LocalTime endTime = timeScheme.getEndTime();
+            long minutes = Duration.between(startTime, endTime).toMinutes();
+            workMinute = workMinute + minutes;
+        }
+        return DateUtil.ONE_DAY_MINUTE - workMinute;
+    }
+
+    /**
+     * 计算经过了多少个周六周天
+     *
+     * @return 分钟
+     */
+    private long getWeekDay(List<LocalDate> localDateList) {
+        List<Day> dayList = dayRepository.findByCalendarIn(localDateList);
+        Map<String, LocalDate> map = new HashMap<>();
+        int dayCount = 0;
+        for (Day day : dayList) {
+            if (day.isNotWork()) {
+                map.put(day.getCalendar().toString(), day.getCalendar());
+                dayCount = dayCount + 1;
+            }
+        }
+
+        for (LocalDate localDate : localDateList) {
+            // 如果为周六或周日
+            if (DateUtil.isWeekDay(localDate)) {
+                if (systemNoSet(map, localDate)) {
+                    dayCount = dayCount + 1;
+                }
+            }
+        }
+        return dayCount;
+
+    }
+
+    private boolean systemNoSet(Map<String, LocalDate> map, LocalDate localDate) {
+        return map.get(localDate.toString()) == null;
     }
 
 
