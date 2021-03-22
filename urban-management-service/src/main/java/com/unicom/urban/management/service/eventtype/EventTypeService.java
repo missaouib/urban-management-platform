@@ -51,9 +51,9 @@ public class EventTypeService {
     }
 
     public EventTypeVO getEventType(ComponentTypeDTO componentTypeDTO) {
-        Optional<EventType> ifnull = eventTypeRepository.findById(componentTypeDTO.getId());
-        if (ifnull.isPresent()) {
-            EventType eventType = ifnull.get();
+        Optional<EventType> ifNull = eventTypeRepository.findById(componentTypeDTO.getId());
+        if (ifNull.isPresent()) {
+            EventType eventType = ifNull.get();
             return EventTypeMapper.INSTANCE.EventTypeToEventTypeVO(eventType);
         }
         throw new DataValidException("没有该分类");

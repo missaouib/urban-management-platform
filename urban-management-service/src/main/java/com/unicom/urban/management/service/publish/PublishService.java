@@ -211,10 +211,6 @@ public class PublishService {
 
     public boolean findByName(String name) {
         Publish publish = publishRepository.findByName(name);
-        if (publish == null){
-            return false;
-        }else {
-            return true;
-        }
+        return publish != null;
     }
 }

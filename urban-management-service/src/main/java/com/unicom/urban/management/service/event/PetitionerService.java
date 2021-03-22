@@ -16,7 +16,8 @@ import javax.transaction.Transactional;
 @Transactional(rollbackOn = Exception.class)
 public class PetitionerService {
     @Autowired
-    PetitionerRepository petitionerRepository;
+    private PetitionerRepository petitionerRepository;
+
     public Petitioner save(Petitioner petitioner){
         return petitionerRepository.save(petitioner);
     }

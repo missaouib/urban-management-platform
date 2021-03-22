@@ -803,7 +803,7 @@ public class EventService {
     /**
      * 案件采集删除
      *
-     * @param ids
+     * @param ids 主键数组
      */
     public void remove(String ids) {
         String[] idList = ids.split(",");
@@ -961,10 +961,6 @@ public class EventService {
         eventDTO.setEventFileList(eventFileList);
     }
 
-    public void saveVerification(Event event) {
-        eventRepository.saveAndFlush(event);
-    }
-
     public EventVO getShowPoint(String eventId) {
         Event event = this.findOne(eventId);
         return EventMapper.INSTANCE.eventToEventVO(event);
@@ -1043,7 +1039,8 @@ public class EventService {
      */
     public int findUrgent(String eventId) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
-        if ("值班长-立案".equals(statistics.getTaskName())) {
+        String taskName = "值班长-立案";
+        if (taskName.equals(statistics.getTaskName())) {
             Event event = this.findOne(eventId);
             return event.getUrgent() == null ? 0 : event.getUrgent();
         } else {

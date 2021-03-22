@@ -52,8 +52,6 @@ public class GridService {
     @Autowired
     private KVService kvService;
     @Autowired
-    private UserService userService;
-    @Autowired
     private GridService gridService;
     @Autowired
     private EventService eventService;
@@ -76,13 +74,13 @@ public class GridService {
             if(gridDTO.getLevel()!=null){
                 list.add(criteriaBuilder.equal(root.get("level").as(Integer.class),gridDTO.getLevel()));
             }
-//            list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.RELEASE));
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
         List<GridVO> gridVOList = GridMapper.INSTANCE.gridListToGridVOList(page.getContent());
         return new PageImpl<>(gridVOList, page.getPageable(), page.getTotalElements());
     }
+
     public List<GridVO> search(GridDTO gridDTO) {
         List<Grid> page = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
@@ -101,12 +99,10 @@ public class GridService {
             if(gridDTO.getLevel()!=null){
                 list.add(criteriaBuilder.equal(root.get("level").as(Integer.class),gridDTO.getLevel()));
             }
-//            list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.RELEASE));
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         });
-        List<GridVO> gridVOList = GridMapper.INSTANCE.gridListToGridVOList(page);
-        return gridVOList;
+        return GridMapper.INSTANCE.gridListToGridVOList(page);
     }
 
     public List<GridVO> search() {
@@ -123,7 +119,6 @@ public class GridService {
     public List<GridVO> searchAll() {
         List<Grid> gridList = gridRepository.findAll((Specification<Grid>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
-//            list.add(criteriaBuilder.equal(root.get("record").get("sts").as(Integer.class), StsConstant.RELEASE));
             list.add(criteriaBuilder.equal(root.get("level").as(Integer.class), 4));
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
@@ -214,9 +209,6 @@ public class GridService {
         Grid grid = GridMapper.INSTANCE.gridDTOToGrid(gridDTO);
         grid.setLevel(4);
         grid.setPublish(savePublish);
-        String userId = SecurityUtil.getUserId();
-        User user = userService.findOne(userId);
-//        grid.setDept(user.getDept());
         grid.setRecord(saveRecord);
         gridRepository.save(grid);
     }
@@ -238,7 +230,9 @@ public class GridService {
     }
 
     public Grid findOne(String id) {
-        if(StringUtils.isBlank(id))throw new DataValidException("选择区域没有网格");
+        if(StringUtils.isBlank(id)) {
+            throw new DataValidException("选择区域没有网格");
+        }
         return gridRepository.getOne(id);
     }
     public Integer getLevel(String id) {
@@ -333,8 +327,8 @@ public class GridService {
     /**
      * 查询网格列表
      *
-     * @param parentId
-     * @return
+     * @param parentId id
+     * @return list
      */
     public List<GridVO> findAllByParentId(String parentId) {
         List<Grid> gridList = gridRepository.findAllByParentId(parentId);
@@ -344,7 +338,7 @@ public class GridService {
     /**
      * 获取所在区域
      *
-     * @return
+     * @return list
      */
     public List<GridVO> findAllByParentIsNull() {
         List<Grid> gridList = gridRepository.findAllByParentIsNull();
@@ -361,7 +355,6 @@ public class GridService {
         Grid grid = this.findOne(gridId);
         String coordinate = grid.getRecord().getCoordinate();
         List<Coordinate> coordinateList = new ArrayList<>();
-        /* CoordinateList.add(new Coordinate("经度","纬度")); */
         String regex = "-";
         String regex1 = ",";
         for (String s : coordinate.split(regex)) {
@@ -380,8 +373,8 @@ public class GridService {
      * 得到多点内心
      * Point pt = morePoint.getInteriorPoint();
      *
-     * @param coordinateList
-     * @return
+     * @param coordinateList list
+     * @return 坐标点
      */
     private String getCenterOfGravityPoint4(List<Coordinate> coordinateList) {
         Coordinate[] coordinates = new Coordinate[coordinateList.size()];
@@ -403,7 +396,9 @@ public class GridService {
     }
 
     public Grid findByGridCode(String gridCode) {
-        if(StringUtils.isBlank(gridCode))throw new DataValidException("选择区域没有网格");
+        if(StringUtils.isBlank(gridCode)) {
+            throw new DataValidException("选择区域没有网格");
+        }
         return gridRepository.findById(gridCode).orElse(new Grid());
     }
 

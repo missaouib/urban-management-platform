@@ -44,8 +44,6 @@ public class TaskProcessingService {
     @Autowired
     private RoleService roleService;
     @Autowired
-    private DeptService deptService;
-    @Autowired
     private EventButtonRepository eventButtonRepository;
     @Autowired
     private EventFileService eventFileService;
@@ -412,15 +410,12 @@ public class TaskProcessingService {
                 newStatistics.setHang(1);
                 newStatistics.setHangDate(LocalDateTime.now());
                 newStatistics.setSpecialStartTime(LocalDateTime.now());
-                newStatistics.setSort(statistics.getSort() + 1);
             } else {
                 newStatistics = this.copy(oldStatistics);
                 Task task = activitiService.getTaskByProcessInstanceId(event.getProcessInstanceId());
                 newStatistics.setTaskId(task.getId());
-                newStatistics.setSort(statistics.getSort() + 1);
-
             }
-
+            newStatistics.setSort(statistics.getSort() + 1);
             statisticsService.save(newStatistics);
         }
 
@@ -611,10 +606,14 @@ public class TaskProcessingService {
 
     public List<String> getUsers(String roleId) {
         Role one = roleService.findOne(roleId);
-        if(one==null)throw new DataValidException("角色不存在，请选择角色");
+        if(one==null) {
+            throw new DataValidException("角色不存在，请选择角色");
+        }
         List<String> user = new ArrayList<>();
         one.getUserList().forEach(u -> user.add(u.getId()));
-        if(user.size()==0)throw new DataValidException("角色下没有人员");
+        if(user.size()==0) {
+            throw new DataValidException("角色下没有人员");
+        }
         return user;
     }
 

@@ -2,7 +2,6 @@ package com.unicom.urban.management.service.eventfile;
 
 import com.unicom.urban.management.dao.eventfile.EventFileRepository;
 import com.unicom.urban.management.pojo.entity.EventFile;
-import com.unicom.urban.management.service.kv.KVService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +21,6 @@ public class EventFileService {
 
     @Autowired
     private EventFileRepository eventFileRepository;
-    @Autowired
-    private KVService kvService;
 
     public EventFile save(EventFile eventFile) {
         return eventFileRepository.save(eventFile);

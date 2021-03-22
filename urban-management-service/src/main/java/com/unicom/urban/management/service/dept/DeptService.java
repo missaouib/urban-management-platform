@@ -34,12 +34,12 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(rollbackOn = Exception.class)
 public class DeptService {
-    private final static DateTimeFormatter df;
-    private final static DateTimeFormatter fmt;
+    private final static DateTimeFormatter DF;
+    private final static DateTimeFormatter FMT;
 
     static {
-        df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DF = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     }
 
     @Autowired
@@ -53,15 +53,15 @@ public class DeptService {
 
     public List<DeptVO> getAll() {
         List<Dept> all = deptRepository.findAllByOrderBySortDesc();
-        List<DeptVO> deptVOS = new ArrayList<>();
+        List<DeptVO> deptVOList = new ArrayList<>();
         all.forEach(d -> {
             DeptVO deptVO = DeptVO.builder()
                     .id(d.getId())
                     .parentId(d.getParent() != null ? d.getParent().getId() : null)
                     .deptName(d.getDeptName()).build();
-            deptVOS.add(deptVO);
+            deptVOList.add(deptVO);
         });
-        return deptVOS;
+        return deptVOList;
     }
 
     public Dept findOne(String deptId) {
@@ -110,7 +110,7 @@ public class DeptService {
                     roleVO.setDeptName(role.getName());
                     roleVO.setIconSkin("treeRole");
                     roleVO.setDescribes(role.getDescribes());
-                    roleVO.setCreateTime(df.format(role.getCreateTime()));
+                    roleVO.setCreateTime(DF.format(role.getCreateTime()));
                     roleVO.setParentId(dept.getId());
                     roleVO.setParentName(dept.getDeptName());
                     roleVO.setSort(role.getSort() != null ? role.getSort() : 0);
@@ -136,7 +136,7 @@ public class DeptService {
             deptVO.setGridId(one.getGrid().getId());
             deptVO.setGridName(one.getGrid().getGridName());
         }
-        deptVO.setCreateTime(df.format(one.getCreateTime()));
+        deptVO.setCreateTime(DF.format(one.getCreateTime()));
 
         return deptVO;
     }
@@ -144,7 +144,7 @@ public class DeptService {
     /**
      * 新增
      *
-     * @param deptDTO
+     * @param deptDTO 数据
      */
     public void save(DeptDTO deptDTO) {
         Dept dept = new Dept();
@@ -164,7 +164,7 @@ public class DeptService {
         }
         dept.setGrid(grid);
         if(StringUtils.isNotBlank(deptDTO.getCdate())){
-            dept.setCreateTime(LocalDateTime.parse(deptDTO.getCdate(),df));
+            dept.setCreateTime(LocalDateTime.parse(deptDTO.getCdate(), DF));
         }
         if (StringUtils.isNotBlank(deptDTO.getParentId())) {
             Optional<Dept> ifParentDept = deptRepository.findById(deptDTO.getParentId());
@@ -172,9 +172,9 @@ public class DeptService {
                 Dept parent = ifParentDept.get();
                 dept.setParent(parent);
                 if (deptDTO.getSort() == null) {
-                    List<Dept> depts = deptRepository.findAllByParent_Id(parent.getId());
-                    if (depts.size() != 0) {
-                        Integer sort = depts.stream().map(Dept::getSort).max(Integer::compareTo).get();
+                    List<Dept> deptList = deptRepository.findAllByParent_Id(parent.getId());
+                    if (deptList.size() != 0) {
+                        Integer sort = deptList.stream().map(Dept::getSort).max(Integer::compareTo).get();
                         dept.setSort(sort + 10);
                     } else {
                         dept.setSort(10);
@@ -215,10 +215,11 @@ public class DeptService {
      * @return 排序值
      */
     public Integer getUserSortByDeptId(String deptId) {
-        Dept one = deptRepository.getOne(deptId);
-        if (one == null) {
+        if (StringUtils.isBlank(deptId)) {
             throw new DataValidException("请选择正确的部门");
         }
+        Dept one = deptRepository.getOne(deptId);
+
         List<User> userList = one.getUserList();
         if (userList.size() > 0) {
             List<Integer> numList = userList.stream().map(User::getSort).filter(Objects::nonNull).distinct().collect(Collectors.toList());
@@ -256,7 +257,7 @@ public class DeptService {
                     userVO.setDeptName(user.getName());
                     userVO.setIconSkin("treeUser");
                     userVO.setParentId(dept.getId());
-                    userVO.setCreateTime(df.format(user.getCreateTime()));
+                    userVO.setCreateTime(DF.format(user.getCreateTime()));
                     userVO.setSort(user.getSort());
                     userVO.setLevelOrNot("user");
                     UserVO newUserVO = new UserVO();
@@ -270,7 +271,7 @@ public class DeptService {
                     newUserVO.setSts(user.getSts());
                     newUserVO.setPhone(user.getPhone());
                     if (user.getBirth() != null) {
-                        newUserVO.setBirth(user.getBirth().format(fmt));
+                        newUserVO.setBirth(user.getBirth().format(FMT));
                     }
                     if (user.getDept() != null) {
                         newUserVO.setDeptId(user.getDept().getId());
@@ -299,7 +300,7 @@ public class DeptService {
     /**
      * 删除
      *
-     * @param id
+     * @param id 主键
      */
     public void del(String id) {
         Optional<Dept> dept = deptRepository.findById(id);

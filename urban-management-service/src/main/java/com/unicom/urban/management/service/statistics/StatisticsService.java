@@ -155,14 +155,6 @@ public class StatisticsService {
         Statistics statistics = statisticsRepository.findById(statisticsId).orElse(new Statistics());
         StatisticsVO statisticsVO = new StatisticsVO();
         statisticsVO.setOpinions(statistics.getOpinions());
-        //TODO 等OperateHumanName有值时再测试
-//        if (statistics.getUser() != null) {
-//            statisticsVO.setUserName(statistics.getOperateHumanName().getName() == null ? "" : statistics.getOperateHumanName().getName());
-//            if (statistics.getOperateHumanName().getId() != null) {
-//                String userId = statistics.getOperateHumanName().getId();
-//                statisticsVO.setDeptName(userService.findOne(userId).getDeptList().get(0).getDeptName());
-//            }
-//        }
         return statisticsVO;
     }
 
@@ -293,8 +285,8 @@ public class StatisticsService {
             List<GridVO> gridList = gridService.findAllByParentIsNull();
 
             Map<String, Object> hotMap = new HashMap<>(3);
-            Integer totalInst = 0;
-            Integer totalClose = 0;
+            int totalInst = 0;
+            int totalClose = 0;
             for (GridVO vo : gridList) {
                 String gridName = vo.getGridName();
                 for (Map<String, Object> map : mapList) {
@@ -657,11 +649,11 @@ public class StatisticsService {
     /**
      * 问题来源（大屏）
      *
-     * @return
+     * @return map
      */
     public Map<String, String> findEventSource(String time) {
         LocalDateTime[] timeArr = this.getStartEndTime(time);
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(3);
         Integer reportPatrolNum = statisticsRepository.findReportPatrolNum(timeArr[0], timeArr[1]);
         Integer reportSelfNum = statisticsRepository.findReportSelfNum(timeArr[0], timeArr[1]);
         Integer findHotReportNum = statisticsRepository.findHotReportNum(timeArr[0], timeArr[1]);

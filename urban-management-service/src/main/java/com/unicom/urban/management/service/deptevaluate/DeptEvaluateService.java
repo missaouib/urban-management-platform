@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -68,7 +65,7 @@ public class DeptEvaluateService {
             Predicate[] p = new Predicate[list1.size()];
             return criteriaBuilder.and(list1.toArray(p));
         });
-        /*endtime不等于null的*/
+        /*endTime不等于null的*/
         List<Statistics> endTimeIsNotNull = all.stream().filter(s -> s.getEndTime() != null).collect(Collectors.toList());
         /*结案数*/
         List<Statistics> closeNumList = all.stream().filter(s -> null != s.getClose()).filter(s -> 1 == s.getClose()).collect(Collectors.toList());
@@ -114,7 +111,7 @@ public class DeptEvaluateService {
     }
 
     private String comprehensive(Integer registerNum, String closeRateStr, String onTimeManagementRateStr, String reworkRateStr) {
-        double register = 0.0;
+        double register;
         if (registerNum <= 50) {
             register = 10.0;
         } else if (registerNum <= 100) {

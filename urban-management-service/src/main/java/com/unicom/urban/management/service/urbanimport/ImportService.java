@@ -104,7 +104,7 @@ public class ImportService {
 
                 //坐标系转换
                 Geometry geometry = (Geometry) next.getDefaultGeometry();
-                // Point MultiPoint Polygon MutiPolygon LineString  MultiLineString
+                // Point MultiPoint Polygon MultiPolygon LineString  MultiLineString
                 return geometry.getGeometryType();
             }
         } catch (Exception e) {

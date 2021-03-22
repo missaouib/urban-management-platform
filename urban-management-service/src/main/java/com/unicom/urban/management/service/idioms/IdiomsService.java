@@ -23,6 +23,7 @@ import java.util.List;
 @Service
 @Transactional(rollbackOn = Exception.class)
 public class IdiomsService {
+
     @Autowired
     private IdiomsRepository idiomsRepository;
     public void saveIdioms(IdiomsVO idiomsVO){
@@ -30,11 +31,10 @@ public class IdiomsService {
         char[] c = value.toCharArray();
         StringBuilder stringBuilder = new StringBuilder();
         //去除数字字母汉字以外的字符。
-        for (int i = 0; i < c.length; i++) {
-            if (String.valueOf(c[i]).matches("[0-9a-zA-Z\u4e00-\u9fa5]")){
-                stringBuilder.append(c[i]);
+        for (char item : c) {
+            if (String.valueOf(item).matches("[0-9a-zA-Z\u4e00-\u9fa5]")) {
+                stringBuilder.append(item);
             }
-
         }
         String idiomsValue = stringBuilder.toString();
         if (idiomsRepository.existsByIdiomsValue(idiomsValue)) {

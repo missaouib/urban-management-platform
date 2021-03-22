@@ -396,8 +396,8 @@ public class WorkService {
     /**
      * 测试期间 直接完结statistics表
      *
-     * @param eventId
-     * @return
+     * @param eventId 主键
+     * @return 任务id
      */
     public String testFinish(String eventId) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
@@ -409,8 +409,8 @@ public class WorkService {
     /**
      * 测试期间 直接完结statistics表
      *
-     * @param eventId
-     * @return
+     * @param eventId 主键
+     * @return 环节
      */
     public Statistics statisticsFinish(String eventId) {
         Statistics statistics = statisticsService.findByEventIdAndEndTimeIsNull(eventId);
@@ -438,7 +438,6 @@ public class WorkService {
         DeptTimeLimit timeLimit = event.getTimeLimit();
         DeptTimeLimit one = deptTimeLimitService.findOne(timeLimit.getId());
         ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId(task.getName(), one.getLevel().getId());
-//        ProcessTimeLimit processTimeLimit = processTimeLimitService.findByTaskNameAndLevelId("值班长-立案", "28526efe-3db5-415b-8c7a-d0e3a49cab8f");
         statistics.setProcessTimeLimit(processTimeLimit);
         statistics.setSort(sort + 1);
         return statisticsService.save(statistics);
@@ -481,7 +480,7 @@ public class WorkService {
     /**
      * 上报自处理事件
      *
-     * @param eventId
+     * @param eventId 主键
      */
     public void saveAutoReport(String eventId) {
         List<String> users = this.getUsers(KvConstant.RECEPTIONIST_ROLE);
@@ -503,7 +502,7 @@ public class WorkService {
     /**
      * 上报事件
      *
-     * @param eventId
+     * @param eventId 主键
      */
     public void superviseReporting(String eventId) {
         List<String> users = this.getUsers(KvConstant.RECEPTIONIST_ROLE);

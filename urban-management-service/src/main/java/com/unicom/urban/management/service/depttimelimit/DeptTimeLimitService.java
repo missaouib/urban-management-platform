@@ -23,14 +23,6 @@ public class DeptTimeLimitService {
     @Autowired
     private DeptTimeLimitRepository deptTimeLimitRepository;
 
-    public Integer findByEventType_IdAndLevel_Id(String eventTypeId, String levelId) {
-        DeptTimeLimit deptTimeLimit = null;
-        if (deptTimeLimit == null){
-            return 0;
-        }
-        return deptTimeLimit.getTimeLimit();
-    }
-
     public List<DeptTimeLimitVO> findDeptTimeLimitByCondition(String condition) {
         List<DeptTimeLimit> list = deptTimeLimitRepository.findAllByEventCondition_Id(condition);
         if (list != null) {

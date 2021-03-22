@@ -32,9 +32,9 @@ public class PositionService {
     /**
      * 监督员岗位评价
      *
-     * @param time1
-     * @param time2
-     * @return
+     * @param time1 时间1
+     * @param time2 时间2
+     * @return list
      */
     public List<SupervisorEvaluateVO> findSupervisorEvaluateByCondition(String time1, String time2) {
         LocalDateTime startTime = getTimeForBetween(time1, time2).get("startTime");
@@ -49,14 +49,14 @@ public class PositionService {
                 sVO.setPatrolReport(map.get("patrolReport") == null ? 0 : (Integer.parseInt(map.get("patrolReport").toString())));
                 sVO.setGridOnwer(map.get("gridOnwer") == null ? "" : (map.get("gridOnwer").toString()));
                 //监督员有效上报数
-                Integer validPatrolReport=0;
-                String SupervisorName = sVO.getSupervisorName();
-                String gridOnwer =sVO.getGridOnwer();
+                int validPatrolReport = 0;
+                String supervisorName = sVO.getSupervisorName();
+                String gridOwner =sVO.getGridOnwer();
                 BigDecimal temp = new BigDecimal(0);
                 for (Map<String, Object> stringObjectMap : validPatrolReportList) {
                     String userName = stringObjectMap.get("userName").toString();
                     String gridName = stringObjectMap.get("gridName").toString();
-                    if (SupervisorName.equals(userName) && gridOnwer.equals(gridName)){
+                    if (supervisorName.equals(userName) && gridOwner.equals(gridName)){
                         validPatrolReport = Integer.parseInt(stringObjectMap.get("validPatrolReport").toString());
                     }
                 }
@@ -98,9 +98,9 @@ public class PositionService {
     /**
      * 受理员岗位评价
      *
-     * @param time1
-     * @param time2
-     * @return
+     * @param time1 时间1
+     * @param time2 时间2
+     * @return list
      */
     public List<AcceptorEvaluateVO> findAcceptorEvaluateByCondition(String time1, String time2) {
         LocalDateTime startTime = getTimeForBetween(time1, time2).get("startTime");
@@ -120,8 +120,8 @@ public class PositionService {
                 sVO.setNeedSendCheck(map.get("needSendCheck") == null ? 0 : (Integer.parseInt(map.get("needSendCheck").toString())));
                 sVO.setNeedSendCheckRate(map.get("needSendCheckRate") == null ? "0.0%" : ((new BigDecimal(Float.parseFloat(map.get("needSendCheckRate").toString()) * 100).setScale(2,BigDecimal.ROUND_HALF_UP).floatValue())) + "%");
                 //计算受理数分值
-                Integer operate = Integer.parseInt(map.get("operate").toString());
-                Integer operateFen = 0;
+                int operate = Integer.parseInt(map.get("operate").toString());
+                int operateFen;
                 if (operate >= 2001) {
                     operateFen = 100;
                 } else if (operate >= 1201) {
@@ -152,9 +152,9 @@ public class PositionService {
     /**
      * 值班长岗位评价
      *
-     * @param time1
-     * @param time2
-     * @return
+     * @param time1 时间1
+     * @param time2 时间2
+     * @return list
      */
     public List<ShiftForemanEvaluateVO> findShiftForemanEvaluateByCondition(String time1, String time2) {
         LocalDateTime startTime = getTimeForBetween(time1, time2).get("startTime");
@@ -185,9 +185,9 @@ public class PositionService {
     /**
      * 派遣员岗位评价
      *
-     * @param time1
-     * @param time2
-     * @return
+     * @param time1 时间1
+     * @param time2 时间2
+     * @return list
      */
     public List<DispatcherEvaluateVO> findDispatcherEvaluateByCondition(String time1, String time2) {
         LocalDateTime startTime = getTimeForBetween(time1, time2).get("startTime");
@@ -229,16 +229,16 @@ public class PositionService {
     }
     /**
      * 计算评价等级
-     * @return
+     * @return 等级
      */
-    private String getRatingLevel(Integer aggregativeIndicator){
-        if (aggregativeIndicator >= 90) {
+    private String getRatingLevel(Integer fraction){
+        if (fraction >= 90) {
             return "A";
-        } else if (aggregativeIndicator >= 75) {
+        } else if (fraction >= 75) {
             return "B";
-        } else if (aggregativeIndicator >= 60) {
+        } else if (fraction >= 60) {
             return "C";
-        } else if (aggregativeIndicator >= 40) {
+        } else if (fraction >= 40) {
             return "D";
         } else {
             return "E";

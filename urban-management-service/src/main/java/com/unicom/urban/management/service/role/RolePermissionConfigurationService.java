@@ -1,7 +1,5 @@
 package com.unicom.urban.management.service.role;
 
-import com.unicom.urban.management.pojo.entity.EventType;
-import com.unicom.urban.management.pojo.entity.Menu;
 import com.unicom.urban.management.pojo.vo.MenuVO;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +17,6 @@ import java.util.List;
 public class RolePermissionConfigurationService {
 
     public List<MenuVO> findMenuTree(String eventTypeId){
-        List<MenuVO> menuVOList = new ArrayList<>();
-        return menuVOList;
+        return new ArrayList<>();
     }
 }

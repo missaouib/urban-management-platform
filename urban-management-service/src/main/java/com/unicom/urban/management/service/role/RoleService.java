@@ -143,22 +143,20 @@ public class RoleService {
 
     /**
      * 保存角色和菜单关系
-     * @param roleMenuDTO
+     * @param roleMenuDTO 参数
      */
     public void saveRoleAndMenu(RoleMenuDTO roleMenuDTO) {
         Role one = this.findOne(roleMenuDTO.getId());
         List<String> menuIdList = roleMenuDTO.getMenuIdList();
         List<Menu> menuList = new ArrayList<>();
-        if (CollectionUtils.isEmpty(menuIdList)){
-            one.setMenuList(menuList);
-        }else {
+        if (!CollectionUtils.isEmpty(menuIdList)) {
             for (String s : menuIdList) {
                 Menu m = new Menu();
                 m.setId(s);
                 menuList.add(m);
             }
-            one.setMenuList(menuList);
         }
+        one.setMenuList(menuList);
         roleRepository.saveAndFlush(one);
     }
 
@@ -166,24 +164,24 @@ public class RoleService {
         List<User> userList = userService.findAll();
         List<UserVO> list = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(userList)) {
-            for (int i = 0; i < userList.size(); i++) {
+            for (User user : userList) {
                 boolean flag = false;
                 UserVO vo = new UserVO();
-                if (CollectionUtils.isNotEmpty(userList.get(i).getRoleList())) {
-                    for (Role role : userList.get(i).getRoleList()){
+                if (CollectionUtils.isNotEmpty(user.getRoleList())) {
+                    for (Role role : user.getRoleList()) {
                         if (role.getId().equals(roleId)) {
                             flag = true;
                             break;
                         }
                     }
                 }
-                if (flag){
+                if (flag) {
                     vo.setCheckbox(1);
-                }else {
+                } else {
                     vo.setCheckbox(0);
                 }
-                vo.setId(userList.get(i).getId());
-                vo.setName(userList.get(i).getName());
+                vo.setId(user.getId());
+                vo.setName(user.getName());
                 list.add(vo);
             }
         }
@@ -197,13 +195,10 @@ public class RoleService {
             for (Map<String, Object> map : mapList) {
                 String userId = map.get("id").toString();
                 User user = new User();
-                Integer checkbox = Integer.parseInt(map.get("checkbox").toString());
+                int checkbox = Integer.parseInt(map.get("checkbox").toString());
                 if (checkbox == 1) {
                     user.setId(userId);
                 }
-//                else {
-//                    user.setId(null);
-//                }
                 userList.add(user);
             }
             role.setUserList(userList);

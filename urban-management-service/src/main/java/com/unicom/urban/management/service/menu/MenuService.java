@@ -63,25 +63,31 @@ public class MenuService {
 
     @Transactional(rollbackFor = Exception.class)
     public void save(MenuDTO menuDTO) {
-        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), null)) throw new DataValidException("菜单名重复");
+        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), null)) {
+            throw new DataValidException("菜单名重复");
+        }
         Menu menu = new Menu();
         BeanUtils.copyProperties(menuDTO,menu);
         menuTypeRepository.findById(menuDTO.getMenuTypeId()).ifPresent(menu::setMenuType);
         menuRepository.findById(menuDTO.getParentId()).ifPresent(menu::setParent);
         if(menu.getParent()!=null){
-            if(!menu.getParent().getPurpose().equals(menu.getPurpose())) throw new DataValidException("应用类型与上级菜单不符");
+            if(!menu.getParent().getPurpose().equals(menu.getPurpose())) {
+                throw new DataValidException("应用类型与上级菜单不符");
+            }
         }
         menuRepository.save(menu);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void update(MenuDTO menuDTO) {
-        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), menuDTO.getId())) throw new DataValidException("菜单名重复");
-        Optional<Menu> ifmenu = menuRepository.findById(menuDTO.getId());
-        if(!ifmenu.isPresent()){
+        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), menuDTO.getId())) {
+            throw new DataValidException("菜单名重复");
+        }
+        Optional<Menu> isMenu = menuRepository.findById(menuDTO.getId());
+        if(!isMenu.isPresent()){
             throw new DataValidException("菜单不存在");
         }
-        Menu menu = ifmenu.get();
+        Menu menu = isMenu.get();
         menu.setName(menuDTO.getName());
         menu.setIcon(menuDTO.getIcon());
         menu.setSort(menuDTO.getSort());

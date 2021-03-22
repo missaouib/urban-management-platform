@@ -30,9 +30,6 @@ public class LoginLogService {
     public Page<LoginLogVO> search(LoginLogDTO loginLogDTO, Pageable pageable) {
         Page<LoginLog> page = loginLogRepository.findAll((Specification<LoginLog>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
-//            if (StringUtils.isNotEmpty(loginLog.getCreateTime())) {
-//                list.add(criteriaBuilder.equal(root.get("createTime").as(String.class), loginLog.getCreateTime()));
-//            }
             if (StringUtils.isNotEmpty(loginLogDTO.getUsername())) {
                 list.add(criteriaBuilder.equal(root.get("username").as(String.class), loginLogDTO.getUsername()));
             }
@@ -42,6 +39,5 @@ public class LoginLogService {
         List<LoginLogVO> list = LogMapper.INSTANCE.loginLogListToLoginLogVOList(page.getContent());
         return new PageImpl<>(list, page.getPageable(), page.getTotalElements());
     }
-
 
 }
