@@ -429,4 +429,10 @@ public class UserService {
         return addressBookVOList;
     }
 
+
+    public UserVO getUser(String id){
+        User user = userRepository.findById(id).orElse(new User());
+        return new UserVO(user);
+    }
+
 }
