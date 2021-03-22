@@ -46,9 +46,11 @@ public class MenuService {
 //            if (StringUtils.isNotEmpty(menuDTO.getName())) {
 //                list.add(criteriaBuilder.equal(root.get("name").as(String.class), menuDTO.getName()));
 //            }
-//            if (StringUtils.isNotEmpty(menuDTO.getUsername())) {
-//                list.add(criteriaBuilder.equal(root.get("username").as(String.class), menuDTO.getUsername()));
-//            }
+            if (menuDTO.getPurpose() != null) {
+                list.add(criteriaBuilder.equal(root.get("purpose").as(Integer.class), menuDTO.getPurpose()));
+            }else{
+                throw new DataValidException("功能列表code码错误");
+            }
             Join<Menu,Role> join = root.join("roleList", JoinType.LEFT);
             list.add(criteriaBuilder.equal(join.get("id").as(String.class),SecurityUtil.getRoleId().get(0)));
 
@@ -59,6 +61,22 @@ public class MenuService {
         List<MenuVO> menuList = MenuMapper.INSTANCE.menuListToMenuVOList(page.getContent());
 
         return new PageImpl<>(menuList, page.getPageable(), page.getTotalElements());
+    }
+
+    public List<MenuVO> searchAll(MenuDTO menuDTO) {
+        List<Menu> listAll = menuRepository.findAll((Specification<Menu>) (root, query, criteriaBuilder) -> {
+            List<Predicate> list = new ArrayList<>();
+            if (menuDTO.getPurpose() != null) {
+                list.add(criteriaBuilder.equal(root.get("purpose").as(Integer.class), menuDTO.getPurpose()));
+            }
+            Join<Menu,Role> join = root.join("roleList", JoinType.LEFT);
+            list.add(criteriaBuilder.equal(join.get("id").as(String.class),SecurityUtil.getRoleId().get(0)));
+
+            Predicate[] p = new Predicate[list.size()];
+            return criteriaBuilder.and(list.toArray(p));
+        });
+
+        return MenuMapper.INSTANCE.menuListToMenuVOList(listAll);
     }
 
     @Transactional(rollbackFor = Exception.class)
