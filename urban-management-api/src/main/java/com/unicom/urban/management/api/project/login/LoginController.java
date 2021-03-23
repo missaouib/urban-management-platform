@@ -1,6 +1,7 @@
 package com.unicom.urban.management.api.project.login;
 
 import com.unicom.urban.management.api.framework.security.JwtTokenManager;
+import com.unicom.urban.management.common.enums.ErrorCodeEnum;
 import com.unicom.urban.management.pojo.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,7 +41,7 @@ public class LoginController {
             String token = jwtTokenManager.createToken(authentication);
             return Result.success(token);
         } catch (AuthenticationException e) {
-            return Result.fail(11, "账号或密码错误");
+            return Result.fail(ErrorCodeEnum.AUTHENTICATION_FAIL);
         }
 
     }
