@@ -1,6 +1,8 @@
 package com.unicom.urban.management.service.menu;
 
 import com.unicom.urban.management.common.exception.DataValidException;
+import com.unicom.urban.management.pojo.entity.User;
+import com.unicom.urban.management.service.user.UserService;
 import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.menu.MenuRepository;
 import com.unicom.urban.management.dao.menu.MenuTypeRepository;
@@ -22,12 +24,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @javax.transaction.Transactional(rollbackOn = Exception.class)
@@ -39,6 +41,8 @@ public class MenuService {
     private RoleRepository roleRepository;
     @Autowired
     private MenuTypeRepository menuTypeRepository;
+    @Autowired
+    private UserService userService;
 
     public Page<MenuVO> search(MenuDTO menuDTO, Pageable pageable) {
         Page<Menu> page = menuRepository.findAll((Specification<Menu>) (root, query, criteriaBuilder) -> {
@@ -70,13 +74,19 @@ public class MenuService {
                 list.add(criteriaBuilder.equal(root.get("purpose").as(Integer.class), menuDTO.getPurpose()));
             }
             Join<Menu,Role> join = root.join("roleList", JoinType.LEFT);
-            list.add(criteriaBuilder.equal(join.get("id").as(String.class),SecurityUtil.getRoleId().get(0)));
-
+//            list.add(criteriaBuilder.equal(join.get("id").as(String.class),SecurityUtil.getRoleId().get(0)));
+            CriteriaBuilder.In<Object> in = criteriaBuilder.in(join.get("id"));
+            User user = userService.findOne(SecurityUtil.getUserId());
+            List<String> type = user.getRoleList().stream().map(Role::getId).distinct().collect(Collectors.toList());
+            type.forEach(in::value);
+            list.add(in);
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         });
 
-        return MenuMapper.INSTANCE.menuListToMenuVOList(listAll);
+        List<MenuVO> menuVOList = MenuMapper.INSTANCE.menuListToMenuVOList(listAll);
+        return menuVOList.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(
+                () -> new TreeSet<>(Comparator.comparing(MenuVO::getId))), ArrayList::new));
     }
 
     @Transactional(rollbackFor = Exception.class)
