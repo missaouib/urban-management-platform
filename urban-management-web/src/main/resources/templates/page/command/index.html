@@ -43,6 +43,8 @@
     </div>
     <div class="center">
         <div class="fullMap" style="background-color:#17335b94;">
+            <div class="mengBan"></div>
+            <div id="container" style="width: 100%;height: 100%;"></div>
             <div class="map" id="map" style="width: 100%;height: 100%"></div>
             <!--            <div class="fugai">-->
             <div class="checkTime">
@@ -191,6 +193,7 @@
 <th:block th:include="page/fragments/common :: echarts_js"/>
 <th:block th:include="page/fragments/common :: swiper_js"/>
 <th:block th:include="page/fragments/common :: mapinit_js"/>
+<th:block th:include="page/fragments/common :: bmap_js" />
 <script th:src="@{/js/index.js}"></script>
 <script type="text/javascript" th:inline="javascript">
     var countUrl = /*[[@{/bigscreen/count}]]*/ "/bigscreen/count";

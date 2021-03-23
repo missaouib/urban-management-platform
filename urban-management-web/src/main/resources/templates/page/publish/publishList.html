@@ -24,7 +24,9 @@
 
             </div>
     </div>
-    <div class="maps">
+    <div class="maps" style="position: relative">
+        <div class="mengBan"></div>
+        <div id="container" style="width: 100%;height: 100%;"></div>
         <div class="map" id="map" style="width: 100%;height: 100%"></div>
     </div>
 </div>
@@ -40,7 +42,7 @@
 <th:block th:include="page/fragments/common :: fileUpload_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
-
+<th:block th:include="page/fragments/common :: bmap_js" />
 <script type="text/javascript" th:inline="javascript">
 
 

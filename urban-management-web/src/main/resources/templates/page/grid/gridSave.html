@@ -84,6 +84,8 @@
         </div>
     </div>
     <div class="rightContent" style="position: relative">
+        <div class="mengBan"></div>
+        <div id="container" style="width: 100%;height: 100%;"></div>
         <!--                <div class="card" style="margin-top: 0px">-->
         <!--                    <div class="card-body" >-->
         <div class="titlenav">
@@ -118,6 +120,7 @@
 <th:block th:include="page/fragments/common :: fileUpload_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: bmap_js" />
 <script type="text/javascript" th:inline="javascript">
 
     let url = /*[[@{/user/save}]]*/ "/json/unit.json";

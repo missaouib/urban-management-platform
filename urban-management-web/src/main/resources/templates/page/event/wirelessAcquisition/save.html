@@ -228,6 +228,8 @@
 
         </div>
         <div class="rightContent" style="position: relative">
+            <div class="mengBan"></div>
+            <div id="container" style="width: 100%;height: 100%;"></div>
             <div class="search_map">
                 <div class="map_input">
                     <input id="sole-input" placeholder="搜索地点" value="" onkeyup="setLocalSearch(this.value)">
@@ -279,6 +281,7 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
+<th:block th:include="page/fragments/common :: bmap_js" />
 <script type="text/javascript" th:inline="javascript">
     $("#doBySelf").on('click', function () {
         var after = $("#after");

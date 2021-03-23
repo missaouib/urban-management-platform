@@ -12,3 +12,6 @@
     width: 70%;
     height: 100%;
 }
+.ol-mouse-position{
+    display: none!important;
+}

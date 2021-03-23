@@ -494,3 +494,5 @@ $(".clean_cejv").click(function() {
     ranging.getSource().clear();
     $(".ol-overlay-container").remove()
 })
+
+

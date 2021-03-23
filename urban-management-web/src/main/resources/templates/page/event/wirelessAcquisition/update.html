@@ -232,6 +232,8 @@
                 </ul>
             </div>
         </div>
+        <div class="mengBan"></div>
+        <div id="container" style="width: 100%;height: 100%;"></div>
         <div class="map" id="map" style="width: 100%;height: 100%"></div>
 
         <div id="popup" class="ol-popup">
@@ -275,6 +277,7 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
+<th:block th:include="page/fragments/common :: bmap_js" />
 <script type="text/javascript" th:inline="javascript">
     $("#doBySelf").on('click', function () {
         var after = $("#after");

@@ -307,6 +307,7 @@ body{
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	z-index: 15;
 }
 .timeText{
 	width: 30%;
@@ -399,6 +400,7 @@ body{
 	position: absolute;
 	top: 5%;
 	left: 15%;
+	z-index: 15;
 }
 .statis1{
 	width: 25%;

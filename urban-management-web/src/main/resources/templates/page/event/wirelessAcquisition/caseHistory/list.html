@@ -352,6 +352,8 @@
     </div>
     <div class="rightContent">
         <div class="tabInfo">
+            <div class="mengBan"></div>
+            <div id="container" style="width: 100%;height: 100%;"></div>
             <div class="search_map">
                 <div class="map_input">
                     <input id="sole-input" placeholder="搜索地点" value="" >
@@ -377,7 +379,7 @@
             </div>
             <div class="tips_sele">Ctrl+鼠标左键可进行地图框选</div>
             <div class="banner blockActive">
-                <div class="map" id="map" style="width: 100%;height: 90%"></div>
+                <div class="map" id="map" style="width: 100%;height: 100%"></div>
                 <div id="popup" class="ol-popup">
                     <a href="#" id="popup-closer" class="ol-popup-closer"></a>
                     <div id="popup-content">
@@ -455,7 +457,6 @@
 
 
 
-
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
 <th:block th:include="page/fragments/common :: fileUpload_js"/>
@@ -463,7 +464,10 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: swiper_js"/>
+<th:block th:include="page/fragments/common :: bmap_js"/>
 <script type="text/javascript" th:inline="javascript">
+
+
     let showUrl = [[${@fastProperties.nginxUrl}]];
     let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
     function getNodeName(eventId) {
