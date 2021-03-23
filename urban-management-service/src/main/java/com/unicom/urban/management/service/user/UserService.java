@@ -161,7 +161,7 @@ public class UserService {
             if (!passwordService.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
                 throw new BadPasswordException("密码错误");
             }
-            if (changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfigNewPassword())) {
+            if (!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfigNewPassword())) {
                 throw new BadPasswordException("两次输入的密码不一致");
             }
             user.setPassword(passwordService.encode(changePasswordDTO.getNewPassword()));

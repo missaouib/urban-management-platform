@@ -197,7 +197,7 @@ public class MenuService {
                 }else {
                     flag = true;
                 }
-                if (flag){
+                if (flag && m.getPurpose() == 1){
                     MenuVO vo = new MenuVO();
                     vo.setId(m.getId());
                     vo.setParentId(m.getParent() == null ? "" : m.getParent().getId());
