@@ -170,7 +170,7 @@ public class ActivitiServiceImplTest {
 
         LocalDateTime startTime = LocalDateTime.parse("2021-01-01T10:15:30");
 
-        LocalDateTime endTime = LocalDateTime.parse("2021-01-05T23:16:30");
+        LocalDateTime endTime = LocalDateTime.parse("2021-01-01T23:16:30");
 
         Long time = activitiService.between(startTime, endTime);
 

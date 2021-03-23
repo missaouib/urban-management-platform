@@ -141,6 +141,7 @@ public interface ActivitiService {
 
 
     /**
+     * 消耗多少工时
      * 计算时间差值(去掉系统设置的节假日的时间)
      *
      * @param startTime 开始时间

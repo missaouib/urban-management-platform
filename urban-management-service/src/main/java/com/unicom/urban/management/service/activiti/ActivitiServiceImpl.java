@@ -3,7 +3,7 @@ package com.unicom.urban.management.service.activiti;
 import com.unicom.urban.management.common.constant.EventSourceConstant;
 import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.common.exception.DataValidException;
-import com.unicom.urban.management.common.util.DateUtil;
+import com.unicom.urban.management.common.util.LocalDateTimeUtil;
 import com.unicom.urban.management.dao.event.EventButtonRepository;
 import com.unicom.urban.management.dao.time.DayRepository;
 import com.unicom.urban.management.dao.time.TimePlanRepository;
@@ -297,15 +297,34 @@ public class ActivitiServiceImpl implements ActivitiService {
      * 计算需要扣除多少分钟=总时间-休息日的总分钟-工作日的休息时间
      */
     private long getMinute(LocalDateTime startDateTime, LocalDateTime endDateTime, TimePlan timePlan) {
-        List<LocalDate> localDateList = DateUtil.between(startDateTime, endDateTime);
+        // 开始日期和结束日期为同一天
+        if (startDateTime.toLocalDate().equals(endDateTime.toLocalDate())) {
+            Optional<Day> optionalDay = dayRepository.getByCalendar(startDateTime.toLocalDate());
+            if (optionalDay.isPresent()) {
+                Day day = optionalDay.get();
+                if (day.isWork()) {
+                    List<TimeScheme> timeSchemeList = timePlan.getTimeSchemeList();
+                    for (TimeScheme timeScheme : timeSchemeList) {
+
+                    }
+
+                } else {
+                    return Duration.between(startDateTime, endDateTime).toMinutes();
+                }
+            } else {
+                LocalDateTimeUtil.isWeekDay(startDateTime.toLocalDate());
+            }
+
+        }
 
 
+        List<LocalDate> localDateList = LocalDateTimeUtil.between(startDateTime, endDateTime);
 
 
         // 周六周天的天数
         long weekDayCount = getWeekDay(localDateList);
         // 计算周六周天的总分钟
-        long minute = weekDayCount * DateUtil.ONE_DAY_MINUTE;
+        long minute = weekDayCount * LocalDateTimeUtil.ONE_DAY_MINUTE;
 
         // 工作日的休息时间
         long workDayMinute = getWorkDayMinute(timePlan) * (localDateList.size() - weekDayCount);
@@ -327,7 +346,7 @@ public class ActivitiServiceImpl implements ActivitiService {
             long minutes = Duration.between(startTime, endTime).toMinutes();
             workMinute = workMinute + minutes;
         }
-        return DateUtil.ONE_DAY_MINUTE - workMinute;
+        return LocalDateTimeUtil.ONE_DAY_MINUTE - workMinute;
     }
 
     /**
@@ -348,7 +367,7 @@ public class ActivitiServiceImpl implements ActivitiService {
 
         for (LocalDate localDate : localDateList) {
             // 如果为周六或周日
-            if (DateUtil.isWeekDay(localDate)) {
+            if (LocalDateTimeUtil.isWeekDay(localDate)) {
                 if (systemNoSet(map, localDate)) {
                     dayCount = dayCount + 1;
                 }

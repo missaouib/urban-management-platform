@@ -1,5 +1,7 @@
 package com.unicom.urban.management.common.util;
 
+import cn.hutool.core.date.DateUtil;
+
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -7,7 +9,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class DateUtil extends cn.hutool.core.date.DateUtil {
+public abstract class LocalDateTimeUtil extends DateUtil {
 
     /**
      * 一天的分钟数
@@ -39,8 +41,18 @@ public abstract class DateUtil extends cn.hutool.core.date.DateUtil {
     }
 
 
+    /**
+     * 判断是否为周六周天
+     */
     public static boolean isWeekDay(LocalDate localDate) {
         return DayOfWeek.SATURDAY.equals(localDate.getDayOfWeek()) || DayOfWeek.SUNDAY.equals(localDate.getDayOfWeek());
+    }
+
+    /**
+     * 当前还剩下多少分钟
+     */
+    public static long remainingMinute(LocalDateTime localDateTime) {
+        return ChronoUnit.MINUTES.between(localDateTime, localDateTime.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0));
     }
 
 }
