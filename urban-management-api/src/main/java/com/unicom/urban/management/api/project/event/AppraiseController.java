@@ -1,12 +1,12 @@
 package com.unicom.urban.management.api.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
-import com.unicom.urban.management.pojo.vo.*;
+import com.unicom.urban.management.pojo.Result;
+import com.unicom.urban.management.pojo.vo.DeptEvaluate;
 import com.unicom.urban.management.service.deptevaluate.DeptEvaluateService;
 import com.unicom.urban.management.service.evaluate.PositionService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -42,10 +42,10 @@ public class AppraiseController {
      * @return 列表
      */
     @GetMapping("/evaluate")
-    public Page<DeptEvaluate> evaluates(String startTime,
-                                        String endTime, @PageableDefault Pageable pageable) {
+    public Result evaluates(String startTime,
+                            String endTime, @PageableDefault Pageable pageable) {
         List<DeptEvaluate> list = evaluateService.deptEvaluates(startTime, endTime);
-        return new PageImpl<>(list, pageable, 0);
+        return Result.success(new PageImpl<>(list, pageable, 0));
     }
 
     /**
@@ -56,8 +56,8 @@ public class AppraiseController {
      * @return list
      */
     @GetMapping("/supervisorEvaluation")
-    public List<SupervisorEvaluateVO> supervisorEvaluation(String startTime, String endTime) {
-        return positionService.findSupervisorEvaluateByCondition(startTime, endTime);
+    public Result supervisorEvaluation(String startTime, String endTime) {
+        return Result.success(positionService.findSupervisorEvaluateByCondition(startTime, endTime));
     }
 
     /**
@@ -68,8 +68,8 @@ public class AppraiseController {
      * @return list
      */
     @GetMapping("/acceptanceEvaluation")
-    public List<AcceptorEvaluateVO> acceptanceEvaluation(String startTime, String endTime) {
-        return positionService.findAcceptorEvaluateByCondition(startTime, endTime);
+    public Result acceptanceEvaluation(String startTime, String endTime) {
+        return Result.success(positionService.findAcceptorEvaluateByCondition(startTime, endTime));
     }
 
     /**
@@ -80,8 +80,8 @@ public class AppraiseController {
      * @return list
      */
     @GetMapping("/shiftForemanEvaluation")
-    public List<ShiftForemanEvaluateVO> shiftForemanEvaluation(String startTime, String endTime) {
-        return positionService.findShiftForemanEvaluateByCondition(startTime, endTime);
+    public Result shiftForemanEvaluation(String startTime, String endTime) {
+        return Result.success(positionService.findShiftForemanEvaluateByCondition(startTime, endTime));
     }
 
     /**
@@ -92,8 +92,8 @@ public class AppraiseController {
      * @return list
      */
     @GetMapping("/dispatcherEvaluation")
-    public List<DispatcherEvaluateVO> dispatcherEvaluation(String startTime, String endTime) {
-        return positionService.findDispatcherEvaluateByCondition(startTime, endTime);
+    public Result dispatcherEvaluation(String startTime, String endTime) {
+        return Result.success(positionService.findDispatcherEvaluateByCondition(startTime, endTime));
     }
 
     /**
@@ -102,8 +102,8 @@ public class AppraiseController {
      * @return 数据
      */
     @GetMapping("/cellGridRegionOne")
-    public Page<CellGridRegionVO> cellGridRegionOne(String startTime, String endTime, @PageableDefault Pageable pageable) {
-        return statisticsService.findAllForCellGridRegion(startTime, endTime, "一类区域", pageable);
+    public Result cellGridRegionOne(String startTime, String endTime, @PageableDefault Pageable pageable) {
+        return Result.success(statisticsService.findAllForCellGridRegion(startTime, endTime, "一类区域", pageable));
     }
 
     /**
@@ -112,8 +112,8 @@ public class AppraiseController {
      * @return 数据
      */
     @GetMapping("/cellGridRegionTwo")
-    public Page<CellGridRegionVO> cellGridRegionTwo(String startTime, String endTime, @PageableDefault Pageable pageable) {
-        return statisticsService.findAllForCellGridRegion(startTime, endTime, "二类区域", pageable);
+    public Result cellGridRegionTwo(String startTime, String endTime, @PageableDefault Pageable pageable) {
+        return Result.success(statisticsService.findAllForCellGridRegion(startTime, endTime, "二类区域", pageable));
     }
 
 }
