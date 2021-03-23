@@ -1,6 +1,13 @@
 package com.unicom.urban.management.api.framework.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.unicom.urban.management.common.enums.ErrorCodeEnum;
+import com.unicom.urban.management.common.util.ResponseUtil;
+import com.unicom.urban.management.pojo.Result;
+import io.jsonwebtoken.ExpiredJwtException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,11 +23,14 @@ import java.io.IOException;
  *
  * @author liukai
  */
+@Slf4j
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     private static final String TOKEN_PREFIX = "Bearer ";
 
     private final JwtTokenManager tokenManager;
+
+    private ObjectMapper objectMapper;
 
     public JwtAuthenticationTokenFilter(JwtTokenManager tokenManager) {
         this.tokenManager = tokenManager;
@@ -32,11 +42,18 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         String jwt = resolveToken(request);
 
         if (StringUtils.isNotBlank(jwt)) {
-            tokenManager.validateToken(jwt);
+            try {
+                tokenManager.validateToken(jwt);
+            } catch (ExpiredJwtException e) {
+                log.debug("token已经过期", e);
+                ResponseUtil.write(response, objectMapper.writeValueAsString(Result.fail(ErrorCodeEnum.TOKEN_EXPIRED)), MediaType.APPLICATION_JSON_VALUE);
+                return;
+            }
             Authentication authentication = tokenManager.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+            chain.doFilter(request, response);
         }
-        chain.doFilter(request, response);
+
     }
 
     /**
@@ -52,5 +69,13 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             return jwt;
         }
         return null;
+    }
+
+    public ObjectMapper getObjectMapper() {
+        return objectMapper;
+    }
+
+    public void setObjectMapper(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
     }
 }

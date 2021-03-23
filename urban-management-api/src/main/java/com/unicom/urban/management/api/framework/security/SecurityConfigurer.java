@@ -1,5 +1,6 @@
 package com.unicom.urban.management.api.framework.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtTokenManager tokenProvider;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -38,7 +42,13 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .sessionManagement().disable()
-                .addFilterBefore(new JwtAuthenticationTokenFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+    }
+
+    private JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
+        JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter = new JwtAuthenticationTokenFilter(tokenProvider);
+        jwtAuthenticationTokenFilter.setObjectMapper(objectMapper);
+        return jwtAuthenticationTokenFilter;
     }
 
     @Override
