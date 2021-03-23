@@ -1,6 +1,7 @@
 package com.unicom.urban.management.web.framework.security;
 
 import com.unicom.urban.management.common.util.IPUtil;
+import com.unicom.urban.management.common.util.ResponseUtil;
 import com.unicom.urban.management.common.util.UserAgentUtil;
 import com.unicom.urban.management.pojo.entity.LoginLog;
 import com.unicom.urban.management.service.log.LoginLogService;
@@ -10,7 +11,6 @@ import org.springframework.http.MediaType;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.time.LocalDateTime;
 
 /**
@@ -25,11 +25,7 @@ public abstract class AbstractAuthenticationHandler {
      * 返回给前台JSON
      */
     protected void handleResponse(HttpServletRequest request, HttpServletResponse response, String responseBody) throws IOException {
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
-        PrintWriter writer = response.getWriter();
-        writer.write(responseBody);
-        writer.close();
+        ResponseUtil.write(response, responseBody, MediaType.APPLICATION_JSON_VALUE);
     }
 
 
