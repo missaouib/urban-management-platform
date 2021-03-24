@@ -293,6 +293,7 @@ public class EventService {
                 }
                 eventVO.setTimeLimitStr(time + timeType);
                 eventVO.setDeptName(Optional.ofNullable(statistics.getDisposeUnit()).map(Dept::getDeptName).orElse(""));
+                eventVO.setTimeLimitLong(taskProcessingService.betWeenTime(startTime,LocalDateTime.now(),timeType,timeLimit,0)[1]);
             } else {
                 /*如果事件步骤没有endTime为null的  证明事件已经完成 获取结束时间最近的那条步骤 附加到vo信息*/
                 List<Statistics> collect = e.getStatisticsList().stream()

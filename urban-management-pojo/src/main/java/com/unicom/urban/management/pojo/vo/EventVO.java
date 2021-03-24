@@ -72,7 +72,7 @@ public class EventVO {
     /**
      * 警示灯 时长
      */
-    private Long timeLimitLong;
+    private int timeLimitLong;
 
     /**
      * 时限单位

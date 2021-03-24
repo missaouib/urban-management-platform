@@ -589,7 +589,7 @@ public class ActivitiServiceImpl implements ActivitiService {
             }
 
         } else {
-            throw new BusinessException("位置日期");
+            throw new BusinessException("未知日期");
         }
     }
 

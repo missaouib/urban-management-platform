@@ -2,50 +2,52 @@
 * 时限判断
 * */
 function setTimeLimit(row, index) {
-    var date = new Date();
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDate();
-    var hh = date.getHours();
-    var mm = date.getMinutes();
-    var ss = date.getSeconds();
-    if (mm < 10) {
-        var MM = "0" + mm;
-    } else {
-        MM = mm
-    }
-    if (hh < 10) {
-        var HH = "0" + hh;
-    } else {
-        HH = hh
-    }
-    if (ss < 10) {
-        var SS = "0" + ss;
-    } else {
-        SS = ss
-    }
-    var nowTime = year + "-" + month + "-" + day + " " + HH + ":" + MM + ":" + SS;
-    var nowTimes = new Date(nowTime);
-    var staTime = new Date(index.startTime)
-    var lessNum = nowTimes - staTime;
-    var num;
-    if (index.timeType === "分钟") {
-        num = lessNum / 60000
-    } else if (index.timeType === "天" || index.timeType === "工作日") {
-        num = lessNum / (24 * 60000 * 60)
-    } else if (index.timeType === "小时" || index.timeType === "工作时") {
-        num = lessNum / (60000 * 60)
-    }
-    if (num > index.timeLimit) {
-        var demo = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
-            "<img src='../img/0.png' style='width: 100%;height: 100%'></div>";
-    } else if (num < (index.timeLimit) / 0.8) {
-        var demo = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
-            "<img src='../img/2.png' style='width: 100%;height: 100%'></div>";
-    } else {
-        var demo = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
-            "<img src='../img/1.png' style='width: 100%;height: 100%'></div>";
-    }
+    // var date = new Date();
+    // var year = date.getFullYear();
+    // var month = date.getMonth() + 1;
+    // var day = date.getDate();
+    // var hh = date.getHours();
+    // var mm = date.getMinutes();
+    // var ss = date.getSeconds();
+    // if (mm < 10) {
+    //     var MM = "0" + mm;
+    // } else {
+    //     MM = mm
+    // }
+    // if (hh < 10) {
+    //     var HH = "0" + hh;
+    // } else {
+    //     HH = hh
+    // }
+    // if (ss < 10) {
+    //     var SS = "0" + ss;
+    // } else {
+    //     SS = ss
+    // }
+    // var nowTime = year + "-" + month + "-" + day + " " + HH + ":" + MM + ":" + SS;
+    // var nowTimes = new Date(nowTime);
+    // var staTime = new Date(index.startTime)
+    // var lessNum = nowTimes - staTime;
+    // var num;
+    // if (index.timeType === "分钟") {
+    //     num = lessNum / 60000
+    // } else if (index.timeType === "天" || index.timeType === "工作日") {
+    //     num = lessNum / (24 * 60000 * 60)
+    // } else if (index.timeType === "小时" || index.timeType === "工作时") {
+    //     num = lessNum / (60000 * 60)
+    // }
+    // if (num > index.timeLimit) {
+    //     var demo = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
+    //         "<img src='../img/0.png' style='width: 100%;height: 100%'></div>";
+    // } else if (num < (index.timeLimit) / 0.8) {
+    //     var demo = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
+    //         "<img src='../img/2.png' style='width: 100%;height: 100%'></div>";
+    // } else {
+    //     var demo = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
+    //         "<img src='../img/1.png' style='width: 100%;height: 100%'></div>";
+    // }
+    var demo = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
+        "<img src='../img/"+index.timeLimitLong+".png' style='width: 100%;height: 100%'></div>";
     return demo;
 }
 
