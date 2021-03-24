@@ -579,11 +579,10 @@ public class TaskProcessingService {
     }
 
     public int[] betWeenTime(LocalDateTime startTime, LocalDateTime endTime, String timeType, int timeLimit, int hangDuation) {
-        //todo 等数据完善的
-//        Long between1 = activitiService.between(startTime, endTime);
-//        long millis = between1 * 60 * 1000;
-        Duration between = Duration.between(startTime, endTime);
-        long millis = between.toMillis();
+        Long between1 = activitiService.between(startTime, endTime);
+        long millis = between1 * 60 * 1000;
+//        Duration between = Duration.between(startTime, endTime);
+//        long millis = between.toMillis();
         switch (timeType) {
             case KvConstant.TASK_DAY:
                 timeLimit = (timeLimit * 24 * 60 * 60 * 1000) + hangDuation;
