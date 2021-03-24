@@ -48,10 +48,10 @@ public class TaskProcessingService {
     @Autowired
     private EventFileService eventFileService;
 
-    public List<String> findTaskNames() {
+    public List<String> findTaskNames(){
         List<EventButton> all = eventButtonRepository.findAll();
-        List<String> buttonText = new ArrayList<>();
-        all.forEach(b -> buttonText.add(b.getTaskName()));
+        List<String>  buttonText = new ArrayList<>();
+        all.forEach(b->buttonText.add(b.getTaskName()));
         return buttonText.stream().distinct().collect(Collectors.toList());
     }
 
@@ -72,9 +72,9 @@ public class TaskProcessingService {
 
             this.shiftLeader(eventId, users, eventButton, statisticsDTO);
         } else if ("派遣员-派遣".equals(statistics.getTaskName())) {
-            if ("申请作废".equals(eventButton.getButtonText())) {
+            if("申请作废".equals(eventButton.getButtonText())){
                 this.backOff(eventId, eventButton, statisticsDTO);
-            } else {
+            }else{
                 List<String> users = this.getUsers(statisticsDTO.getDeptId());
                 this.dispatcher(eventId, users, buttonId, statisticsDTO);
             }
@@ -579,8 +579,11 @@ public class TaskProcessingService {
     }
 
     public int[] betWeenTime(LocalDateTime startTime, LocalDateTime endTime, String timeType, int timeLimit, int hangDuation) {
-        Long between1 = activitiService.between(startTime, endTime);
-        long millis = between1 * 60 * 1000;
+        //todo 等数据完善的
+//        Long between1 = activitiService.between(startTime, endTime);
+//        long millis = between1 * 60 * 1000;
+        Duration between = Duration.between(startTime, endTime);
+        long millis = between.toMillis();
         switch (timeType) {
             case KvConstant.TASK_DAY:
                 timeLimit = (timeLimit * 24 * 60 * 60 * 1000) + hangDuation;
@@ -609,12 +612,12 @@ public class TaskProcessingService {
 
     public List<String> getUsers(String roleId) {
         Role one = roleService.findOne(roleId);
-        if (one == null) {
+        if(one==null) {
             throw new DataValidException("角色不存在，请选择角色");
         }
         List<String> user = new ArrayList<>();
         one.getUserList().forEach(u -> user.add(u.getId()));
-        if (user.size() == 0) {
+        if(user.size()==0) {
             throw new DataValidException("角色下没有人员");
         }
         return user;
