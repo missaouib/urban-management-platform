@@ -440,4 +440,10 @@ public class WirelessAcquisitionController {
         return Result.success();
     }
 
+    @GetMapping("/findUrgent")
+    public Result findUrgent(String eventId) {
+        int type = eventService.findUrgent(eventId);
+        return Result.success(type);
+    }
+
 }

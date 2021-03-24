@@ -1,7 +1,6 @@
 package com.unicom.urban.management.common.util;
 
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,6 +10,8 @@ import java.security.NoSuchAlgorithmException;
  * @date 2021/3/23-17:36
  */
 public class FastdfsToken {
+
+    private static final String TOKENKEY = "1234567890";
 
     public static String md5(byte[] source) throws NoSuchAlgorithmException {
         char[] hexDigits = new char[]{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
@@ -28,9 +29,9 @@ public class FastdfsToken {
         return new String(str);
     }
 
-    public static String getToken(String remote_filename, int ts, String secret_key) throws  Exception {
+    public static String getToken(String remote_filename, int ts) throws  Exception {
         byte[] bsFilename = remote_filename.getBytes(StandardCharsets.UTF_8);
-        byte[] bsKey = secret_key.getBytes(StandardCharsets.UTF_8);
+        byte[] bsKey = TOKENKEY.getBytes(StandardCharsets.UTF_8);
         byte[] bsTimestamp = (new Integer(ts)).toString().getBytes(StandardCharsets.UTF_8);
         byte[] buff = new byte[bsFilename.length + bsKey.length + bsTimestamp.length];
         System.arraycopy(bsFilename, 0, buff, 0, bsFilename.length);
@@ -43,7 +44,7 @@ public class FastdfsToken {
             int ts = (int) (System.currentTimeMillis() / 1000);
             String remoteFilename = "M00/00/07/wKgYy2BQcaaAKTvmAAC0SsNiwOU799.jpg";
             System.out.println("lts="+ts);
-            String token = FastdfsToken.getToken(remoteFilename, ts, "1234567890");
+            String token = FastdfsToken.getToken(remoteFilename, ts);
             System.out.println("token="+token);
             System.out.println("http://192.168.24.203:8090/group1/"+remoteFilename+"?token="+token+"&ts="+ts);
 
