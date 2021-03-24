@@ -289,96 +289,308 @@ public class ActivitiServiceImpl implements ActivitiService {
 
         TimePlan timePlan = optionalTimePlan.orElseThrow(() -> new BusinessException("未找到可用的时间计划"));
 
-        return totalMinute - getMinute(startTime, endTime, timePlan);
+        List<TimeScheme> timeSchemeList = timePlan.getTimeSchemeList();
 
+
+        if (CollectionUtils.isEmpty(timeSchemeList)) {
+            throw new BusinessException("未设置时间");
+        }
+
+        List<TempTime> tempTimeList = buildTempTimeList(timeSchemeList);
+
+
+        // 总时间-休息时间
+        return totalMinute - getMinute(startTime, endTime, tempTimeList);
+
+    }
+
+    /**
+     * 重新构建一个List 包含休息时间和工作时间
+     */
+    private List<TempTime> buildTempTimeList(List<TimeScheme> oldList) {
+        // TODO 这里可能会有BUG
+//        if (oldList.size() == 1) {
+//            TempTime tempTime = new TempTime();
+//            tempTime.setStartTime(oldList.get(0).getStartTime());
+//            tempTime.setEndTime(oldList.get(0).getEndTime());
+//            tempTime.setFlag(true);
+//            newList.add(tempTime);
+//            return newList;
+//        }
+
+
+        List<TempTime> newList1 = buildNewList(oldList, new ArrayList<TempTime>());
+
+        List<TempTime> newList2 = new ArrayList<>();
+
+        //补头
+        newList2.add(TempTime.builder()
+                .startTime(LocalTime.MIN)
+                .endTime(oldList.get(0).getStartTime())
+                .build());
+
+        // 补尾
+        newList2.add(TempTime.builder()
+                .startTime(oldList.get(oldList.size() - 1).getEndTime())
+                .endTime(LocalTime.MAX)
+                .build());
+
+        for (int i = 0; i < newList1.size(); i++) {
+            if (i != newList1.size() - 1) {
+                TempTime tempTime = new TempTime();
+                tempTime.setStartTime(newList1.get(i).getEndTime());
+                tempTime.setEndTime(newList1.get(i + 1).getStartTime());
+                tempTime.setFlag(false);
+                newList2.add(tempTime);
+            }
+        }
+
+        newList1.addAll(newList2);
+
+        for (TempTime tempTime : newList1) {
+            tempTime.setTotalMinute(Duration.between(tempTime.getStartTime(), tempTime.getEndTime()).toMinutes());
+        }
+
+        return newList1.stream().sorted(Comparator.comparing(TempTime::getStartTime, Comparator.naturalOrder())).collect(Collectors.toList());
+    }
+
+    private List<TempTime> buildNewList(List<TimeScheme> oldList, List<TempTime> newList) {
+        TempTime tempTime = null;
+
+        int i = -1;
+        do {
+            i++;
+            tempTime = new TempTime();
+            tempTime.setStartTime(oldList.get(0).getStartTime());
+            tempTime.setEndTime(oldList.get(i).getEndTime());
+            tempTime.setFlag(true);
+
+        } while (oldList.size() > 1 && oldList.get(i).getEndTime().equals(oldList.get(i + 1).getStartTime()));
+
+        newList.add(tempTime);
+        List<TimeScheme> newOldList = new ArrayList<>();
+        for (int i1 = i + 1; i1 < oldList.size(); i1++) {
+            newOldList.add(oldList.get(i1));
+
+        }
+        if (newOldList.size() > 0) {
+            return buildNewList(newOldList, newList);
+        } else {
+            return newList;
+        }
     }
 
     /**
      * 计算需要扣除多少分钟=总时间-休息日的总分钟-工作日的休息时间
      */
-    private long getMinute(LocalDateTime startDateTime, LocalDateTime endDateTime, TimePlan timePlan) {
+    private long getMinute(LocalDateTime startDateTime, LocalDateTime endDateTime, List<TempTime> tempTimeList) {
         // 开始日期和结束日期为同一天
         if (startDateTime.toLocalDate().equals(endDateTime.toLocalDate())) {
-            Optional<Day> optionalDay = dayRepository.getByCalendar(startDateTime.toLocalDate());
-            if (optionalDay.isPresent()) {
-                Day day = optionalDay.get();
-                if (day.isWork()) {
-                    List<TimeScheme> timeSchemeList = timePlan.getTimeSchemeList();
-                    for (TimeScheme timeScheme : timeSchemeList) {
+            return oneDay(startDateTime, endDateTime, tempTimeList);
+        } else {
+            List<LocalDate> localDateList = LocalDateTimeUtil.between(startDateTime, endDateTime);
 
+            Optional<Day> startDay = dayRepository.getByCalendar(localDateList.get(0));
+
+            long startMin = 0;
+
+            if (startDay.isPresent()) {
+                if (startDay.get().isWork()) {
+                    int startIndex = -1;
+
+                    for (int i = tempTimeList.size() - 1; i >= 0; i--) {
+                        if ((startDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime()))
+                                && (startDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
+                            startIndex = i;
+                            break;
+                        }
+                    }
+                    TempTime startTempTime = tempTimeList.get(startIndex);
+
+
+                    if (startTempTime.isFlag()) {
+                        startIndex = startIndex + 1;
+                    } else {
+                        startMin = startMin + Duration.between(startDateTime.toLocalTime(), tempTimeList.get(startIndex).getEndTime()).toMinutes();
+                        startIndex = startIndex + 1;
+                    }
+
+                    for (int i = startIndex; i < tempTimeList.size(); i++) {
+                        if (!tempTimeList.get(i).isFlag()) {
+                            startMin = startMin + tempTimeList.get(i).getTotalMinute();
+                        }
                     }
 
                 } else {
-                    return Duration.between(startDateTime, endDateTime).toMinutes();
+                    startMin = startMin + Duration.between(LocalTime.MAX, startDateTime.toLocalTime()).toMinutes();
                 }
+            }
+
+
+            Optional<Day> endDay = dayRepository.getByCalendar(localDateList.get(localDateList.size() - 1));
+
+            long endMin = 0;
+
+            if (endDay.isPresent()) {
+                if (endDay.get().isWork()) {
+
+                    int endIndex = -1;
+
+                    for (int i = 0; i < tempTimeList.size(); i++) {
+                        if ((endDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime()))
+                                && (endDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
+                            endIndex = i;
+                            break;
+                        }
+                    }
+
+
+                    TempTime endTempTime = tempTimeList.get(endIndex);
+
+
+                    if (endTempTime.isFlag()) {
+                        endIndex = endIndex - 1;
+                    } else {
+                        endMin = endMin + Duration.between(tempTimeList.get(endIndex).getStartTime(), endDateTime.toLocalTime()).toMinutes();
+                        endIndex = endIndex - 1;
+                    }
+
+
+                    for (int i = 0; i < endIndex; i++) {
+                        if (!tempTimeList.get(i).isFlag()) {
+                            endMin = endMin + tempTimeList.get(i).getTotalMinute();
+                        }
+                    }
+
+                } else {
+                    endMin = endMin + Duration.between(LocalTime.MIN, endDateTime.toLocalTime()).toMinutes();
+                }
+            }
+
+
+            long totalMinute = startMin + endMin;
+
+
+            for (int i = 1; i < localDateList.size() - 1; i++) {
+                Optional<Day> optionalDay = dayRepository.getByCalendar(localDateList.get(i));
+
+                if (optionalDay.isPresent()) {
+                    Day day = optionalDay.get();
+                    if (day.isWork()) {
+                        totalMinute = totalMinute + getRestMinute(tempTimeList);
+                    } else {
+                        totalMinute = totalMinute + LocalDateTimeUtil.ONE_DAY_MINUTE;
+                    }
+                }
+
+            }
+
+
+            return totalMinute;
+
+        }
+
+    }
+
+    /**
+     * 计算一天当中休息多少分钟
+     */
+    private long getRestMinute(List<TempTime> tempTimeList) {
+        long minute = 0;
+        for (TempTime tempTime : tempTimeList) {
+            if (!tempTime.isFlag()) {
+                minute = minute + tempTime.getTotalMinute();
+            }
+        }
+        return minute;
+    }
+
+
+    /**
+     * 计算一天当中工作多少分钟
+     */
+    private long getWorkMinute(List<TempTime> tempTimeList) {
+        long minute = 0;
+        for (TempTime tempTime : tempTimeList) {
+            if (tempTime.isFlag()) {
+                minute = minute + tempTime.getTotalMinute();
+            }
+        }
+        return minute;
+    }
+
+    private long oneDay(LocalDateTime startDateTime, LocalDateTime endDateTime, List<TempTime> tempTimeList) {
+        Optional<Day> optionalDay = dayRepository.getByCalendar(startDateTime.toLocalDate());
+        if (optionalDay.isPresent()) {
+            Day day = optionalDay.get();
+            if (day.isWork()) {
+                int startIndex = -1;
+                int endIndex = -1;
+                for (int i = tempTimeList.size() - 1; i >= 0; i--) {
+                    if ((startDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime()))
+                            && (startDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
+                        startIndex = i;
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < tempTimeList.size(); i++) {
+                    if ((endDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime()))
+                            && (endDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
+                        endIndex = i;
+                        break;
+                    }
+                }
+
+
+                // 在同一个区间里面
+                if (startIndex == endIndex) {
+                    TempTime tempTime = tempTimeList.get(startIndex);
+                    // 上班区间
+                    if (tempTime.isFlag()) {
+                        return 0;
+                    } else {
+                        // 休息时间
+                        return Duration.between(startDateTime, endDateTime).toMinutes();
+                    }
+                } else {
+                    TempTime startTempTime = tempTimeList.get(startIndex);
+                    TempTime endTempTime = tempTimeList.get(endIndex);
+
+
+                    long min = 0;
+                    if (startTempTime.isFlag()) {
+                        startIndex = startIndex + 1;
+                    } else {
+                        min = min + Duration.between(startDateTime.toLocalTime(), tempTimeList.get(startIndex).getEndTime()).toMinutes();
+                        startIndex = startIndex + 1;
+                    }
+
+                    if (endTempTime.isFlag()) {
+                        endIndex = endIndex - 1;
+                    } else {
+                        min = min + Duration.between(tempTimeList.get(endIndex).getStartTime(), endDateTime.toLocalTime()).toMinutes();
+                        endIndex = endIndex - 1;
+                    }
+
+
+                    for (int i = startIndex; i <= endIndex; i++) {
+
+                        if (!tempTimeList.get(i).isFlag()) {
+                            min = min + tempTimeList.get(i).getTotalMinute();
+                        }
+                    }
+                    return min;
+                }
+
+
             } else {
-                LocalDateTimeUtil.isWeekDay(startDateTime.toLocalDate());
+                return Duration.between(startDateTime, endDateTime).toMinutes();
             }
 
+        } else {
+            throw new BusinessException("位置日期");
         }
-
-
-        List<LocalDate> localDateList = LocalDateTimeUtil.between(startDateTime, endDateTime);
-
-
-        // 周六周天的天数
-        long weekDayCount = getWeekDay(localDateList);
-        // 计算周六周天的总分钟
-        long minute = weekDayCount * LocalDateTimeUtil.ONE_DAY_MINUTE;
-
-        // 工作日的休息时间
-        long workDayMinute = getWorkDayMinute(timePlan) * (localDateList.size() - weekDayCount);
-        return minute + workDayMinute;
-
-    }
-
-    /**
-     * 计算工作日中的休息时间
-     *
-     * @return 分钟
-     */
-    private long getWorkDayMinute(TimePlan timePlan) {
-        List<TimeScheme> timeSchemeList = timePlan.getTimeSchemeList();
-        long workMinute = 0L;
-        for (TimeScheme timeScheme : timeSchemeList) {
-            LocalTime startTime = timeScheme.getStartTime();
-            LocalTime endTime = timeScheme.getEndTime();
-            long minutes = Duration.between(startTime, endTime).toMinutes();
-            workMinute = workMinute + minutes;
-        }
-        return LocalDateTimeUtil.ONE_DAY_MINUTE - workMinute;
-    }
-
-    /**
-     * 计算经过了多少个周六周天
-     *
-     * @return 分钟
-     */
-    private long getWeekDay(List<LocalDate> localDateList) {
-        List<Day> dayList = dayRepository.findByCalendarIn(localDateList);
-        Map<String, LocalDate> map = new HashMap<>();
-        int dayCount = 0;
-        for (Day day : dayList) {
-            if (day.isNotWork()) {
-                map.put(day.getCalendar().toString(), day.getCalendar());
-                dayCount = dayCount + 1;
-            }
-        }
-
-        for (LocalDate localDate : localDateList) {
-            // 如果为周六或周日
-            if (LocalDateTimeUtil.isWeekDay(localDate)) {
-                if (systemNoSet(map, localDate)) {
-                    dayCount = dayCount + 1;
-                }
-            }
-        }
-        return dayCount;
-
-    }
-
-    private boolean systemNoSet(Map<String, LocalDate> map, LocalDate localDate) {
-        return map.get(localDate.toString()) == null;
     }
 
 

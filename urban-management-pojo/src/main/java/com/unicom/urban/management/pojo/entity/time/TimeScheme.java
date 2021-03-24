@@ -1,5 +1,6 @@
 package com.unicom.urban.management.pojo.entity.time;
 
+import lombok.ToString;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
@@ -11,6 +12,7 @@ import javax.persistence.Table;
 import java.time.LocalTime;
 
 @Entity
+@ToString
 @DynamicInsert
 @DynamicUpdate
 @Table(name = "time_scheme")

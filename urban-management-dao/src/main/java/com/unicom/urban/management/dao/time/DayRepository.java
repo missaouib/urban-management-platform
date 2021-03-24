@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface DayRepository extends CustomizeRepository<Day, String> {
 
-    List<Day> findByCalendarIn(List<LocalDate> localDateList);
+    List<Day> findByCalendarInOrderByCalendar(List<LocalDate> localDateList);
 
     Optional<Day> getByCalendar(LocalDate localDate);
 

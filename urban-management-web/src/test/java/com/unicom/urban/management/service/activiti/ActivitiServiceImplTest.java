@@ -168,9 +168,9 @@ public class ActivitiServiceImplTest {
     @Transactional
     public void between() {
 
-        LocalDateTime startTime = LocalDateTime.parse("2021-01-01T10:15:30");
+        LocalDateTime startTime = LocalDateTime.parse("2021-01-05T15:50:00");
 
-        LocalDateTime endTime = LocalDateTime.parse("2021-01-01T23:16:30");
+        LocalDateTime endTime = LocalDateTime.parse("2021-01-09T17:15:00");
 
         Long time = activitiService.between(startTime, endTime);
 

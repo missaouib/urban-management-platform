@@ -91,6 +91,7 @@ public class TimePlan {
         this.dayList = dayList;
     }
 
+    @OrderBy("startTime ASC")
     @JoinColumn(name = "time_plan_id")
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     public List<TimeScheme> getTimeSchemeList() {

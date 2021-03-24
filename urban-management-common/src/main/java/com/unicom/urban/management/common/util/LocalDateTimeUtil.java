@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,10 @@ public abstract class LocalDateTimeUtil extends DateUtil {
      */
     public static long remainingMinute(LocalDateTime localDateTime) {
         return ChronoUnit.MINUTES.between(localDateTime, localDateTime.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0));
+    }
+
+    public static LocalTime getTodayStart() {
+        return LocalTime.MIN;
     }
 
 }
