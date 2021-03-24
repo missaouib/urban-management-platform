@@ -599,6 +599,17 @@ public class TaskProcessingService {
             case KvConstant.HOUR:
                 timeLimit = (timeLimit * 60 * 60 * 1000) + hangDuation;
                 break;
+            case "工作日":
+            case "天":
+                timeLimit = (timeLimit * 24 * 60 * 60 * 1000) + hangDuation;
+                break;
+            case "工作时":
+            case "小时":
+                timeLimit = (timeLimit * 60 * 60 * 1000) + hangDuation;
+                break;
+            case "分钟":
+                timeLimit = (timeLimit * 60 * 1000) + hangDuation;
+                break;
             default:
                 throw new DataValidException("Read time out");
         }
