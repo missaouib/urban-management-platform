@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.exception.DataValidException;
+import com.unicom.urban.management.common.util.FastdfsToken;
 import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventRepository;
 import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
@@ -452,7 +453,7 @@ public class EventService {
      *
      * @param eventDTO 数据
      */
-    public void registerUpdate(EventDTO eventDTO){
+    public void registerUpdate(EventDTO eventDTO) {
         Event one = findOne(eventDTO.getId());
         one.setRepresent(eventDTO.getRepresent());
         one.setLocation(eventDTO.getLocation());
@@ -600,6 +601,7 @@ public class EventService {
      * @return 事件
      */
     public EventOneVO findOneToVo(String eventId) {
+        int ts = (int) (System.currentTimeMillis() / 1000);
         Event one = eventRepository.findById(eventId).orElse(new Event());
         EventOneVO eventOneVO = EventMapper.INSTANCE.eventToEventOneVO(one);
         eventOneVO.setId(eventId);
@@ -643,7 +645,7 @@ public class EventService {
         List<Map<String, Object>> fileList = new ArrayList<>();
         one.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
-            map.put("url", f.getFilePath());
+            map.put("url", f.getFilePath() + "?token=" + FastdfsToken.getToken(f.getFilePath().substring(f.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
             map.put("type", f.getFileType());
             map.put("taskName", "上报");
             map.put("management", f.getManagement());
@@ -652,7 +654,7 @@ public class EventService {
         /*处置前*/
         one.getStatisticsList().stream().filter(s -> taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getStartTime)).forEach(s -> s.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
-            map.put("url", f.getFilePath());
+            map.put("url", f.getFilePath() + "?token=" + FastdfsToken.getToken(f.getFilePath().substring(f.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
             map.put("type", f.getFileType());
             map.put("taskName", s.getTaskName());
             map.put("management", 1);
@@ -661,7 +663,7 @@ public class EventService {
         /*处置后*/
         one.getStatisticsList().stream().filter(s -> !taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getStartTime)).forEach(s -> s.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
-            map.put("url", f.getFilePath());
+            map.put("url", f.getFilePath() + "?token=" + FastdfsToken.getToken(f.getFilePath().substring(f.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
             map.put("type", f.getFileType());
             map.put("taskName", s.getTaskName());
             map.put("management", 0);

@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.statistics;
 
 import com.unicom.urban.management.common.exception.DataValidException;
+import com.unicom.urban.management.common.util.FastdfsToken;
 import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.statistics.StatisticsRepository;
 import com.unicom.urban.management.pojo.entity.Event;
@@ -65,6 +66,7 @@ public class StatisticsService {
     }
 
     public List<StatisticsVO> findByEventId(String eventId) {
+        int ts = (int) (System.currentTimeMillis() / 1000);
         /*查询流程数据*/
         List<Statistics> statisticsList = statisticsRepository.findAllByEvent_IdOrderBySortDesc(eventId);
         List<StatisticsVO> statisticsVOList = new ArrayList<>();
@@ -82,7 +84,7 @@ public class StatisticsService {
             List<Map<String, Object>> stringList = new ArrayList<>();
             statistics.getEventFileList().forEach(eventFile -> {
                 Map<String, Object> map = new HashMap<>(3);
-                map.put("url", eventFile.getFilePath());
+                map.put("url", eventFile.getFilePath() + "?token=" + FastdfsToken.getToken(eventFile.getFilePath().substring(eventFile.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
                 map.put("type", eventFile.getFileType());
                 map.put("management", eventFile.getManagement());
                 stringList.add(map);
@@ -110,7 +112,7 @@ public class StatisticsService {
         List<Map<String, Object>> mapArrayList = new ArrayList<>();
         event.getEventFileList().forEach(eventFile -> {
             Map<String, Object> map = new HashMap<>(3);
-            map.put("url", eventFile.getFilePath());
+            map.put("url", eventFile.getFilePath() + "?token=" + FastdfsToken.getToken(eventFile.getFilePath().substring(eventFile.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
             map.put("type", eventFile.getFileType());
             map.put("management", eventFile.getManagement());
             mapArrayList.add(map);

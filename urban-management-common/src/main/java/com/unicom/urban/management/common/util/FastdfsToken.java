@@ -21,7 +21,7 @@ public class FastdfsToken {
         char[] str = new char[32];
         int k = 0;
 
-        for(int i = 0; i < 16; ++i) {
+        for (int i = 0; i < 16; ++i) {
             str[k++] = hexDigits[tmp[i] >>> 4 & 15];
             str[k++] = hexDigits[tmp[i] & 15];
         }
@@ -29,24 +29,29 @@ public class FastdfsToken {
         return new String(str);
     }
 
-    public static String getToken(String remote_filename, int ts) throws  Exception {
-        byte[] bsFilename = remote_filename.getBytes(StandardCharsets.UTF_8);
-        byte[] bsKey = TOKENKEY.getBytes(StandardCharsets.UTF_8);
-        byte[] bsTimestamp = (new Integer(ts)).toString().getBytes(StandardCharsets.UTF_8);
-        byte[] buff = new byte[bsFilename.length + bsKey.length + bsTimestamp.length];
-        System.arraycopy(bsFilename, 0, buff, 0, bsFilename.length);
-        System.arraycopy(bsKey, 0, buff, bsFilename.length, bsKey.length);
-        System.arraycopy(bsTimestamp, 0, buff, bsFilename.length + bsKey.length, bsTimestamp.length);
-        return md5(buff);
+    public static String getToken(String remote_filename, int ts) {
+        try {
+            byte[] bsFilename = remote_filename.getBytes(StandardCharsets.UTF_8);
+            byte[] bsKey = TOKENKEY.getBytes(StandardCharsets.UTF_8);
+            byte[] bsTimestamp = (new Integer(ts)).toString().getBytes(StandardCharsets.UTF_8);
+            byte[] buff = new byte[bsFilename.length + bsKey.length + bsTimestamp.length];
+            System.arraycopy(bsFilename, 0, buff, 0, bsFilename.length);
+            System.arraycopy(bsKey, 0, buff, bsFilename.length, bsKey.length);
+            System.arraycopy(bsTimestamp, 0, buff, bsFilename.length + bsKey.length, bsTimestamp.length);
+
+            return md5(buff);
+        } catch (NoSuchAlgorithmException e) {
+            return "获取token失败";
+        }
     }
 
-    public static void main(String[] args) throws Exception{
-            int ts = (int) (System.currentTimeMillis() / 1000);
-            String remoteFilename = "M00/00/07/wKgYy2BQcaaAKTvmAAC0SsNiwOU799.jpg";
-            System.out.println("lts="+ts);
-            String token = FastdfsToken.getToken(remoteFilename, ts);
-            System.out.println("token="+token);
-            System.out.println("http://192.168.24.203:8090/group1/"+remoteFilename+"?token="+token+"&ts="+ts);
+    public static void main(String[] args) throws Exception {
+        int ts = (int) (System.currentTimeMillis() / 1000);
+        String remoteFilename = "M00/00/07/wKgYy2BalsaAR9UOAAS8ZjkOiZA476.jpg";
+        System.out.println("lts=" + ts);
+        String token = FastdfsToken.getToken(remoteFilename, ts);
+        System.out.println("token=" + token);
+        System.out.println("http://192.168.24.203:8090/group1/" + remoteFilename + "?token=" + token + "&ts=" + ts);
 
     }
 }
