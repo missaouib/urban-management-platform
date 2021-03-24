@@ -80,7 +80,7 @@ public class EventService {
     @Autowired
     private KVService kvService;
     @Autowired
-    private ComponentService componentService;
+    private TaskProcessingService taskProcessingService;
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Specification<Event> specification = (root, query, criteriaBuilder) -> {

@@ -70,6 +70,11 @@ public class EventVO {
     private Integer timeLimit;
 
     /**
+     * 警示灯 时长
+     */
+    private Long timeLimitLong;
+
+    /**
      * 时限单位
      */
     private String timeType;
