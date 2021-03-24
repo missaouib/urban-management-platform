@@ -1,5 +1,6 @@
 package com.unicom.urban.management.api.framework.security;
 
+import com.unicom.urban.management.pojo.SecurityRoleBean;
 import com.unicom.urban.management.pojo.SecurityUserBean;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -12,8 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * JWT token manager.
@@ -47,6 +47,7 @@ public class JwtTokenManager {
         claims.put("id", securityUserBean.getId());
         claims.put("username", securityUserBean.getUsername());
         claims.put("name", securityUserBean.getName());
+        claims.put("roleList", securityUserBean.getRoleList());
         return Jwts.builder().setClaims(claims).setExpiration(validity).signWith(Keys.hmacShaKeyFor(authConfigs.getSecretKeyBytes()), SignatureAlgorithm.HS256).compact();
     }
 
@@ -81,7 +82,17 @@ public class JwtTokenManager {
         String userId = (String) claims.get("id");
         String name = (String) claims.get("name");
         String username = (String) claims.get("username");
-        SecurityUserBean securityUserBean = new SecurityUserBean(userId, username, name);
+        List<Map<String, String>> roleList = (ArrayList<Map<String, String>>) claims.get("roleList");
+        Set<SecurityRoleBean> roles = new HashSet<>();
+        for (Map<String, String> stringStringMap : roleList) {
+            SecurityRoleBean roleBean = new SecurityRoleBean();
+            roleBean.setId(stringStringMap.get("id"));
+            roleBean.setRoleName(stringStringMap.get("roleName"));
+            roles.add(roleBean);
+        }
+
+
+        SecurityUserBean securityUserBean = new SecurityUserBean(userId, username, name, roles);
         return new UsernamePasswordAuthenticationToken(securityUserBean, "", authorities);
     }
 

@@ -3,7 +3,6 @@ package com.unicom.urban.management.pojo;
 import com.unicom.urban.management.pojo.entity.Role;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.security.core.GrantedAuthority;
 
 /**
  * 存放在SpringSecurity中的实体角色对象
@@ -12,19 +11,14 @@ import org.springframework.security.core.GrantedAuthority;
  */
 @Data
 @ToString
-public class SecurityRoleBean implements GrantedAuthority {
+public class SecurityRoleBean {
 
     private String id;
 
     private String roleName;
 
-    @Override
-    public String getAuthority() {
-        return roleName;
-    }
-
-
     public SecurityRoleBean() {
+
     }
 
     public SecurityRoleBean(Role role) {
