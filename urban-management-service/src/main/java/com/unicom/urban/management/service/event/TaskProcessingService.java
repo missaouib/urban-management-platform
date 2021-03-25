@@ -611,7 +611,7 @@ public class TaskProcessingService {
                 timeLimit = (timeLimit * 60 * 1000) + hangDuation;
                 break;
             default:
-                throw new DataValidException("Read time out");
+                return new int[]{0,0};
         }
         int[] i = new int[2];
         i[0] = millis <= timeLimit ? 1 : 0;
