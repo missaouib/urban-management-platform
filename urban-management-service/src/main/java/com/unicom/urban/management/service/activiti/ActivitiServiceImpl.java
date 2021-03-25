@@ -390,97 +390,87 @@ public class ActivitiServiceImpl implements ActivitiService {
         } else {
             List<LocalDate> localDateList = LocalDateTimeUtil.between(startDateTime, endDateTime);
 
-            Optional<Day> startDay = dayRepository.getByCalendar(localDateList.get(0));
+            List<Day> dayList = dayRepository.findByCalendarInOrderByCalendar(localDateList);
+
 
             long startMin = 0;
 
-            if (startDay.isPresent()) {
-                if (startDay.get().isWork()) {
-                    int startIndex = -1;
+            if (dayList.get(0).isWork()) {
+                int startIndex = -1;
 
-                    for (int i = tempTimeList.size() - 1; i >= 0; i--) {
-                        if ((startDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime()))
-                                && (startDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
-                            startIndex = i;
-                            break;
-                        }
+                for (int i = tempTimeList.size() - 1; i >= 0; i--) {
+                    if ((startDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime()))
+                            && (startDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
+                        startIndex = i;
+                        break;
                     }
-                    TempTime startTempTime = tempTimeList.get(startIndex);
-
-
-                    if (startTempTime.isFlag()) {
-                        startIndex = startIndex + 1;
-                    } else {
-                        startMin = startMin + Duration.between(startDateTime.toLocalTime(), tempTimeList.get(startIndex).getEndTime()).toMinutes();
-                        startIndex = startIndex + 1;
-                    }
-
-                    for (int i = startIndex; i < tempTimeList.size(); i++) {
-                        if (!tempTimeList.get(i).isFlag()) {
-                            startMin = startMin + tempTimeList.get(i).getTotalMinute();
-                        }
-                    }
-
-                } else {
-                    startMin = startMin + Duration.between(LocalTime.MAX, startDateTime.toLocalTime()).toMinutes();
                 }
+                TempTime startTempTime = tempTimeList.get(startIndex);
+
+
+                if (startTempTime.isFlag()) {
+                    startIndex = startIndex + 1;
+                } else {
+                    startMin = startMin + Duration.between(startDateTime.toLocalTime(), tempTimeList.get(startIndex).getEndTime()).toMinutes();
+                    startIndex = startIndex + 1;
+                }
+
+                for (int i = startIndex; i < tempTimeList.size(); i++) {
+                    if (!tempTimeList.get(i).isFlag()) {
+                        startMin = startMin + tempTimeList.get(i).getTotalMinute();
+                    }
+                }
+
+            } else {
+                startMin = startMin + Duration.between(LocalTime.MAX, startDateTime.toLocalTime()).toMinutes();
             }
-
-
-            Optional<Day> endDay = dayRepository.getByCalendar(localDateList.get(localDateList.size() - 1));
 
             long endMin = 0;
 
-            if (endDay.isPresent()) {
-                if (endDay.get().isWork()) {
+            if (dayList.get(dayList.size() - 1).isWork()) {
 
-                    int endIndex = -1;
+                int endIndex = -1;
 
-                    for (int i = 0; i < tempTimeList.size(); i++) {
-                        if ((endDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime()))
-                                && (endDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
-                            endIndex = i;
-                            break;
-                        }
+                for (int i = 0; i < tempTimeList.size(); i++) {
+                    if ((endDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime()))
+                            && (endDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
+                        endIndex = i;
+                        break;
                     }
-
-
-                    TempTime endTempTime = tempTimeList.get(endIndex);
-
-
-                    if (endTempTime.isFlag()) {
-                        endIndex = endIndex - 1;
-                    } else {
-                        endMin = endMin + Duration.between(tempTimeList.get(endIndex).getStartTime(), endDateTime.toLocalTime()).toMinutes();
-                        endIndex = endIndex - 1;
-                    }
-
-
-                    for (int i = 0; i < endIndex; i++) {
-                        if (!tempTimeList.get(i).isFlag()) {
-                            endMin = endMin + tempTimeList.get(i).getTotalMinute();
-                        }
-                    }
-
-                } else {
-                    endMin = endMin + Duration.between(LocalTime.MIN, endDateTime.toLocalTime()).toMinutes();
                 }
+
+
+                TempTime endTempTime = tempTimeList.get(endIndex);
+
+
+                if (endTempTime.isFlag()) {
+                    endIndex = endIndex - 1;
+                } else {
+                    endMin = endMin + Duration.between(tempTimeList.get(endIndex).getStartTime(), endDateTime.toLocalTime()).toMinutes();
+                    endIndex = endIndex - 1;
+                }
+
+
+                for (int i = 0; i < endIndex; i++) {
+                    if (!tempTimeList.get(i).isFlag()) {
+                        endMin = endMin + tempTimeList.get(i).getTotalMinute();
+                    }
+                }
+
+            } else {
+                endMin = endMin + Duration.between(LocalTime.MIN, endDateTime.toLocalTime()).toMinutes();
             }
 
 
             long totalMinute = startMin + endMin;
 
 
-            for (int i = 1; i < localDateList.size() - 1; i++) {
-                Optional<Day> optionalDay = dayRepository.getByCalendar(localDateList.get(i));
-
-                if (optionalDay.isPresent()) {
-                    Day day = optionalDay.get();
-                    if (day.isWork()) {
-                        totalMinute = totalMinute + getRestMinute(tempTimeList);
-                    } else {
-                        totalMinute = totalMinute + LocalDateTimeUtil.ONE_DAY_MINUTE;
-                    }
+            for (int i = 1; i < dayList.size() - 1; i++) {
+                Day day = dayList.get(i);
+                if (day.isWork()) {
+                    totalMinute = totalMinute + getRestMinute(tempTimeList);
+                } else {
+                    totalMinute = totalMinute + LocalDateTimeUtil.ONE_DAY_MINUTE;
                 }
 
             }
