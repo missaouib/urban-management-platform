@@ -202,10 +202,11 @@ public class WirelessAcquisitionController {
      * @param eventDTO 参数
      */
     @PostMapping("/saveTemp")
-    public void saveTemp(EventDTO eventDTO){
+    public Result saveTemp(EventDTO eventDTO){
         eventDTO.setSts(EventConstant.SUPERVISE_SAVE);
         eventService.uploadFiles(eventDTO);
         eventService.saveTemp(eventDTO);
+        return Result.success("保存成功");
     }
 
     /**
