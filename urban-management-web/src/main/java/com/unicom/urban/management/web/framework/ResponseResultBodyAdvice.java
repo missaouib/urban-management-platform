@@ -2,6 +2,7 @@ package com.unicom.urban.management.web.framework;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.common.enums.ErrorCodeEnum;
 import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.HttpUtil;
@@ -59,7 +60,7 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(Exception.class)
     public Result exception(Exception exception) {
         log.error("exception", exception);
-        return Result.fail(500, ExceptionUtils.getStackTrace(exception));
+        return Result.fail(ErrorCodeEnum.SERVER_ERROR);
     }
 
 
@@ -70,7 +71,7 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
     public Object runtimeException(RuntimeException exception, HttpServletRequest request, HttpServletResponse response) {
         log.error("系统发生异常", exception);
         if (HttpUtil.isAjaxRequest(request)) {
-            return Result.fail(500, ExceptionUtils.getStackTrace(exception));
+            return Result.fail(ErrorCodeEnum.SERVER_ERROR);
         }
         return new ModelAndView(SystemConstant.PAGE + "/error/500");
     }
@@ -80,7 +81,7 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
      */
     @ExceptionHandler(BusinessException.class)
     public Result businessException(BusinessException exception) {
-        return Result.fail(500, ExceptionUtils.getStackTrace(exception));
+        return Result.fail(ErrorCodeEnum.SERVER_ERROR.getCode(), ExceptionUtils.getStackTrace(exception));
     }
 
 
@@ -90,7 +91,7 @@ public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
     @ExceptionHandler(BindException.class)
     public Result validatedBindException(BindException e) {
         String message = e.getAllErrors().get(0).getDefaultMessage();
-        return Result.fail(400, message);
+        return Result.fail(ErrorCodeEnum.FIELD_VALIDATED_FAIL.getCode(), ErrorCodeEnum.FIELD_VALIDATED_FAIL.getMessage() + message);
     }
 
 

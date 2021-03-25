@@ -8,6 +8,8 @@ public enum ErrorCodeEnum {
     AUTHENTICATION_FAIL(10001, "账号或密码错误"),
     TOKEN_EXPIRED(10002, "授权已经过期"),
 
+    FIELD_VALIDATED_FAIL(10003, "参数校验异常"),
+
     // 2开头为服务端错误
     SERVER_ERROR(20001, "服务器出现异常");
 
