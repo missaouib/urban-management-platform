@@ -334,6 +334,16 @@ public class WirelessAcquisitionController {
     }
 
     /**
+     * 地理编码
+     */
+    @GetMapping("localGeocoding")
+    public Object localGeocoding(String address) throws DataAccessException {
+        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/restApi/LocalGeocoding?address=" + address, RestReturn.class).getBody();
+        assert body != null;
+        return body.getData();
+    }
+
+    /**
      * 点击网格反差信息
      */
     @GetMapping("/getGridByCheckLayer")
