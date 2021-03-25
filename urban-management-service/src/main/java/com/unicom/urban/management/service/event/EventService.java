@@ -431,9 +431,9 @@ public class EventService {
         event.setPetitioner(saveP);
 
         List<EventFile> eventFileList = new ArrayList<>();
-        List<EventFile> eventFileListImage = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);
-        List<EventFile> eventFileListVideo = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(), 2);
-        List<EventFile> eventFileListMusic = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(), 3);
+        List<EventFile> eventFileListImage = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), EventFile.FileType.IMAGE);
+        List<EventFile> eventFileListVideo = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(), EventFile.FileType.VIDEO);
+        List<EventFile> eventFileListMusic = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(), EventFile.FileType.AUDIO);
         eventFileList.addAll(eventFileListImage);
         eventFileList.addAll(eventFileListVideo);
         eventFileList.addAll(eventFileListMusic);
@@ -475,9 +475,9 @@ public class EventService {
         one.setRecType(oneById);
         one.setComponentObjId(eventDTO.getComponentObjId());
         List<EventFile> eventFileList = new ArrayList<>();
-        List<EventFile> eventFileListImage = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);
-        List<EventFile> eventFileListVideo = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(), 2);
-        List<EventFile> eventFileListMusic = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(), 3);
+        List<EventFile> eventFileListImage = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), EventFile.FileType.IMAGE);
+        List<EventFile> eventFileListVideo = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(), EventFile.FileType.VIDEO);
+        List<EventFile> eventFileListMusic = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(), EventFile.FileType.AUDIO);
         eventFileList.addAll(eventFileListImage);
         eventFileList.addAll(eventFileListVideo);
         eventFileList.addAll(eventFileListMusic);
@@ -650,7 +650,7 @@ public class EventService {
         one.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
             map.put("url", f.getFilePath() + "?token=" + FastdfsToken.getToken(f.getFilePath().substring(f.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
-            map.put("type", f.getFileType());
+            map.put("type", f.getFileType().getValue());
             map.put("taskName", "上报");
             map.put("management", f.getManagement());
             fileList.add(map);
@@ -659,7 +659,7 @@ public class EventService {
         one.getStatisticsList().stream().filter(s -> taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getStartTime)).forEach(s -> s.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
             map.put("url", f.getFilePath() + "?token=" + FastdfsToken.getToken(f.getFilePath().substring(f.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
-            map.put("type", f.getFileType());
+            map.put("type", f.getFileType().getValue());
             map.put("taskName", s.getTaskName());
             map.put("management", 1);
             fileList.add(map);
@@ -668,7 +668,7 @@ public class EventService {
         one.getStatisticsList().stream().filter(s -> !taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getStartTime)).forEach(s -> s.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
             map.put("url", f.getFilePath() + "?token=" + FastdfsToken.getToken(f.getFilePath().substring(f.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
-            map.put("type", f.getFileType());
+            map.put("type", f.getFileType().getValue());
             map.put("taskName", s.getTaskName());
             map.put("management", 0);
             fileList.add(map);
@@ -901,30 +901,30 @@ public class EventService {
 
             //处置前的图片上传
             if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlList())) {
-                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), EventFile.FileType.IMAGE);
                 eventFileList.addAll(fileList);
             }
             //处置前的视频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getVideoUrlList())) {
-                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(), 2);
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(), EventFile.FileType.VIDEO);
                 eventFileList.addAll(fileList);
             }
             //处置前的视频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getMusicUrlList())) {
-                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(), 3);
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(), EventFile.FileType.AUDIO);
                 eventFileList.addAll(fileList);
             }
             //处置后的图片上传
             if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlListAfter())) {
-                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getImageUrlListAfter(), 1);
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getImageUrlListAfter(), EventFile.FileType.IMAGE);
                 eventFileList.addAll(eventFileListAfter);
             }//处置后的视频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getVideoUrlListAfter())) {
-                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getVideoUrlListAfter(), 2);
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getVideoUrlListAfter(), EventFile.FileType.VIDEO);
                 eventFileList.addAll(eventFileListAfter);
             }//处置后的音频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getMusicUrlListAfter())) {
-                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getMusicUrlListAfter(), 3);
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getMusicUrlListAfter(), EventFile.FileType.AUDIO);
                 eventFileList.addAll(eventFileListAfter);
             }
             Event event = eventRepository.findById(eventDTO.getId()).orElse(new Event());
@@ -935,32 +935,32 @@ public class EventService {
         } else {/*新增*/
             //处置前的图片上传
             if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlList())) {
-                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), 1);
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getImageUrlList(), EventFile.FileType.IMAGE);
                 eventFileList.addAll(fileList);
             }
             //处置前的视频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getVideoUrlList())) {
-                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(), 2);
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getVideoUrlList(), EventFile.FileType.VIDEO);
                 eventFileList.addAll(fileList);
             }
             //处置前的音频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getMusicUrlList())) {
-                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(), 3);
+                List<EventFile> fileList = eventFileService.joinEventFileListToObjet(eventDTO.getMusicUrlList(), EventFile.FileType.AUDIO);
                 eventFileList.addAll(fileList);
             }
             //处置后的图片上传
             if (CollectionUtils.isNotEmpty(eventDTO.getImageUrlListAfter())) {
-                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getImageUrlListAfter(), 1);
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getImageUrlListAfter(), EventFile.FileType.IMAGE);
                 eventFileList.addAll(eventFileListAfter);
             }
             //处置后的视频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getVideoUrlListAfter())) {
-                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getVideoUrlListAfter(), 2);
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getVideoUrlListAfter(), EventFile.FileType.VIDEO);
                 eventFileList.addAll(eventFileListAfter);
             }
             //处置后的音频上传
             if (CollectionUtils.isNotEmpty(eventDTO.getMusicUrlListAfter())) {
-                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getMusicUrlListAfter(), 3);
+                List<EventFile> eventFileListAfter = eventFileService.joinEventFileListToObjetAfter(eventDTO.getMusicUrlListAfter(), EventFile.FileType.AUDIO);
                 eventFileList.addAll(eventFileListAfter);
             }
         }

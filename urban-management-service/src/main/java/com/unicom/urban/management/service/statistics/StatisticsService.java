@@ -85,7 +85,7 @@ public class StatisticsService {
             statistics.getEventFileList().forEach(eventFile -> {
                 Map<String, Object> map = new HashMap<>(3);
                 map.put("url", eventFile.getFilePath() + "?token=" + FastdfsToken.getToken(eventFile.getFilePath().substring(eventFile.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
-                map.put("type", eventFile.getFileType());
+                map.put("type", eventFile.getFileType().getValue());
                 map.put("management", eventFile.getManagement());
                 stringList.add(map);
             });
@@ -113,7 +113,7 @@ public class StatisticsService {
         event.getEventFileList().forEach(eventFile -> {
             Map<String, Object> map = new HashMap<>(3);
             map.put("url", eventFile.getFilePath() + "?token=" + FastdfsToken.getToken(eventFile.getFilePath().substring(eventFile.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
-            map.put("type", eventFile.getFileType());
+            map.put("type", eventFile.getFileType().getValue());
             map.put("management", eventFile.getManagement());
             mapArrayList.add(map);
         });

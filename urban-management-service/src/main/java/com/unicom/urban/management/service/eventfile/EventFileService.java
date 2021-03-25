@@ -30,7 +30,7 @@ public class EventFileService {
         return eventFileRepository.saveAll(eventFileList);
     }
 
-    public List<EventFile> joinEventFileListToObjet(List<String> fileUrlList, Integer fileType) {
+    public List<EventFile> joinEventFileListToObjet(List<String> fileUrlList, EventFile.FileType fileType) {
         List<EventFile> eventFileList = new ArrayList<>(fileUrlList.size());
         if (CollectionUtils.isNotEmpty(fileUrlList)) {
             for (String s : fileUrlList) {
@@ -45,7 +45,7 @@ public class EventFileService {
         return this.saveAll(eventFileList);
     }
 
-    public List<EventFile> joinEventFileListToObjetAfter(List<String> fileUrlListUrlListAfter, Integer fileType) {
+    public List<EventFile> joinEventFileListToObjetAfter(List<String> fileUrlListUrlListAfter, EventFile.FileType fileType) {
         List<EventFile> eventFileList = new ArrayList<>(fileUrlListUrlListAfter.size());
         if (CollectionUtils.isNotEmpty(fileUrlListUrlListAfter)) {
             for (String s : fileUrlListUrlListAfter) {
