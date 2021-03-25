@@ -6,20 +6,23 @@ import com.unicom.urban.management.dao.time.DayRepository;
 import com.unicom.urban.management.dao.time.TimePlanRepository;
 import com.unicom.urban.management.pojo.dto.AttendanceDTO;
 import com.unicom.urban.management.pojo.dto.AttendanceSchemeDTO;
-import com.unicom.urban.management.pojo.entity.Attendance;
-import com.unicom.urban.management.pojo.entity.AttendanceScheme;
-import com.unicom.urban.management.pojo.entity.Dept;
-import com.unicom.urban.management.pojo.entity.User;
+import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.entity.time.Day;
 import com.unicom.urban.management.pojo.entity.time.TimePlan;
 import com.unicom.urban.management.pojo.entity.time.TimeScheme;
 import com.unicom.urban.management.pojo.vo.AttendanceSchemeVO;
+import com.unicom.urban.management.pojo.vo.EventVO;
 import com.unicom.urban.management.util.SecurityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -49,10 +52,11 @@ public class AttendanceSchemeService {
     private AttendanceSchemeRepository attendanceSchemeRepository;
 
 
-    public void save(AttendanceSchemeDTO attendanceSchemeDTO){
+    public void saveAndFlush(AttendanceSchemeDTO attendanceSchemeDTO){
         Dept dept = new Dept();
         dept.setId(attendanceSchemeDTO.getDeptId());
         AttendanceScheme attendanceScheme = AttendanceScheme.builder()
+                .id(attendanceSchemeDTO.getId())
                 .address(attendanceSchemeDTO.getAddress())
                 .dept(dept)
                 .x(attendanceSchemeDTO.getX())
@@ -60,11 +64,11 @@ public class AttendanceSchemeService {
                 .sts("0")
                 .radius(attendanceSchemeDTO.getRadius())
                 .build();
-        attendanceSchemeRepository.save(attendanceScheme);
+        attendanceSchemeRepository.saveAndFlush(attendanceScheme);
     }
 
 
-    public List<AttendanceSchemeVO> getAllByDetp(){
+    public List<AttendanceSchemeVO> getAllByDept(){
         String deptId = SecurityUtil.getDeptId();
         List<AttendanceScheme> attendanceSchemes = attendanceSchemeRepository.findAllByDept_IdAndSts(deptId, "0");
         List<AttendanceSchemeVO> attendanceSchemeVOS = new ArrayList<>();
@@ -81,5 +85,31 @@ public class AttendanceSchemeService {
             attendanceSchemeVOS.add(attendanceSchemeVO);
         });
         return attendanceSchemeVOS;
+    }
+
+    public Page<AttendanceSchemeVO> getAllByPage(AttendanceSchemeDTO attendanceSchemeDTO, Pageable pageable){
+        Specification<AttendanceScheme> specification = (root, query, criteriaBuilder) -> {
+            List<Predicate> list = new ArrayList<>();
+            if(StringUtils.isNotBlank(attendanceSchemeDTO.getDeptId())){
+                list.add(criteriaBuilder.equal(root.get("dept").get("id").as(String.class), attendanceSchemeDTO.getDeptId()));
+            }
+            Predicate[] p = new Predicate[list.size()];
+            return criteriaBuilder.and(list.toArray(p));
+        };
+        Page<AttendanceScheme> page = attendanceSchemeRepository.findAll(specification, pageable);
+        List<AttendanceSchemeVO> attendanceSchemeVOS = new ArrayList<>();
+        page.getContent().forEach(a->{
+            AttendanceSchemeVO attendanceSchemeVO = AttendanceSchemeVO.builder()
+                    .deptId(a.getDept().getId())
+                    .deptName(a.getDept().getDeptName())
+                    .x(a.getX())
+                    .y(a.getY())
+                    .id(a.getId())
+                    .address(a.getAddress())
+                    .radius(a.getRadius())
+                    .build();
+            attendanceSchemeVOS.add(attendanceSchemeVO);
+        });
+        return new PageImpl<>(attendanceSchemeVOS, page.getPageable(), page.getTotalElements());
     }
 }
