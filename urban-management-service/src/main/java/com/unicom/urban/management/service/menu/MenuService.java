@@ -108,28 +108,25 @@ public class MenuService {
 
     @Transactional(rollbackFor = Exception.class)
     public void update(MenuDTO menuDTO) {
-        if(existsMenuName(menuDTO.getParentId(), menuDTO.getName(), menuDTO.getId())) {
+        if (existsMenuName(menuDTO.getParentId(), menuDTO.getName(), menuDTO.getId())) {
             throw new DataValidException("菜单名重复");
         }
-        Optional<Menu> isMenu = menuRepository.findById(menuDTO.getId());
-        if(!isMenu.isPresent()){
-            throw new DataValidException("菜单不存在");
-        }
-        Menu menu = isMenu.get();
+        Optional<Menu> optionMenu = menuRepository.findById(menuDTO.getId());
+        Menu menu = optionMenu.orElseThrow(() -> new DataValidException("菜单不存在"));
         menu.setName(menuDTO.getName());
         menu.setIcon(menuDTO.getIcon());
         menu.setSort(menuDTO.getSort());
-        menuTypeRepository.findById(menuDTO.getMenuTypeId()).ifPresent(menu::setMenuType);
-        if(menu.getParent()!=null){
-           menu.setPurpose(menu.getParent().getPurpose());
+        menu.setMenuType(new MenuType(menuDTO.getMenuTypeId()));
+        if (menu.getParent() != null) {
+            menu.setPurpose(menu.getParent().getPurpose());
         }
-        menu.getChild().forEach(m->{
-            if(!m.getPurpose().equals(menu.getPurpose())){
+        menu.getChild().forEach(m -> {
+            if (!m.getPurpose().equals(menu.getPurpose())) {
                 m.setPurpose(menu.getPurpose());
-                menuRepository.saveAndFlush(menu);
+                menuRepository.save(menu);
             }
         });
-        menuRepository.saveAndFlush(menu);
+        menuRepository.save(menu);
     }
 
     private boolean existsMenuName(String pid, String name, String id) {
