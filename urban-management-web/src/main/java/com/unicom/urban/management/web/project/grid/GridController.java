@@ -46,6 +46,21 @@ public class GridController {
         return new ModelAndView(SystemConstant.PAGE + "/area/area");
     }
 
+    @GetMapping("/toWorkAttendance")
+    public ModelAndView toWorkAttendance() {
+        return new ModelAndView(SystemConstant.PAGE + "/area/workAttendance");
+    }
+
+    @GetMapping("/toWorkAdd")
+    public ModelAndView toWorkAdd() {
+        return new ModelAndView(SystemConstant.PAGE + "/area/workAdd");
+    }
+
+    @GetMapping("/toWorkUpdate")
+    public ModelAndView toWorkUpdate() {
+        return new ModelAndView(SystemConstant.PAGE + "/area/workUpdate");
+    }
+
     @GetMapping("/toCollocation")
     public ModelAndView toCollocation(Model model, String id) {
         model.addAttribute("id", id);
@@ -112,5 +127,7 @@ public class GridController {
     public List<TreeVO> gridAndUserTree(){
         return gridService.searchTreeAndUser();
     }
+
+
 
 }
