@@ -2,7 +2,6 @@ package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.FastdfsToken;
-import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventRepository;
 import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
 import com.unicom.urban.management.mapper.EventButtonMapper;
@@ -13,7 +12,6 @@ import com.unicom.urban.management.pojo.entity.Process;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
-import com.unicom.urban.management.service.component.ComponentService;
 import com.unicom.urban.management.service.depttimelimit.DeptTimeLimitService;
 import com.unicom.urban.management.service.eventcondition.EventConditionService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
@@ -22,6 +20,7 @@ import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.process.ProcessService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
+import com.unicom.urban.management.util.SecurityUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.locationtech.jts.geom.Coordinate;
@@ -35,6 +34,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.text.DecimalFormat;
@@ -84,6 +84,9 @@ public class EventService {
 
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Specification<Event> specification = (root, query, criteriaBuilder) -> {
+            if (!query.getResultType().equals(Long.class)) {
+                root.fetch("eventType", JoinType.LEFT);
+            }
             List<Predicate> list = new ArrayList<>();
             if (eventDTO.getClose() != null) {
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("eventSate").get("id"));
