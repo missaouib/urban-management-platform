@@ -183,17 +183,39 @@ public class WirelessAcquisitionController {
     }
 
     /**
-     * 案件采集保存
+     * 案件采集保存 - 弃用
      *
      * @param eventAppDTO 数据
      */
-    @PostMapping("/saveTemp")
+    @PostMapping("/delete/saveTemp")
     public Result saveTemp(@Valid EventAppDTO eventAppDTO) {
         EventDTO eventDTO = new EventDTO();
         BeanUtils.copyProperties(eventAppDTO, eventDTO);
         eventDTO.setSts(EventConstant.SUPERVISE_SAVE);
         eventService.saveTempForApi(eventDTO);
         return Result.success("保存成功");
+    }
+
+    /**
+     * 案件采集保存
+     *
+     * @param eventDTO 参数
+     */
+    @PostMapping("/saveTemp")
+    public void saveTemp(EventDTO eventDTO){
+        eventDTO.setSts(EventConstant.SUPERVISE_SAVE);
+        eventService.uploadFiles(eventDTO);
+        eventService.saveTemp(eventDTO);
+    }
+
+    /**
+     * 列表页案件采集上报
+     * @param ids 主键集合
+     */
+    @PostMapping("/reportOnList")
+    public Result reportOnList(String ids){
+        eventService.reportOnList(ids);
+        return Result.success("上报成功");
     }
 
     /**
@@ -324,7 +346,7 @@ public class WirelessAcquisitionController {
     }
 
     /**
-     * 逆地理编码
+     * 逆地理编码 - 本地库
      */
     @GetMapping("localReverseGeocoding")
     public Map<String, String> localReverseGeocoding(double x, double y) throws DataAccessException {
@@ -334,7 +356,7 @@ public class WirelessAcquisitionController {
     }
 
     /**
-     * 地理编码
+     * 地理编码 - 本地库
      */
     @GetMapping("localGeocoding")
     public Object localGeocoding(String address) throws DataAccessException {
