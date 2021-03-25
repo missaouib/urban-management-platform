@@ -1,5 +1,6 @@
 package com.unicom.urban.management.pojo.entity;
 
+import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.pojo.Delete;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -76,9 +77,14 @@ public class Event extends AbstractEntity {
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
+    @Deprecated
     private KV eventSource;
 
-    private Integer source;
+    /**
+     * 由于KV使用问题 把eventSource替换掉
+     */
+    @Convert(converter = SourceConverter.class)
+    private Source source;
 
     private Double x;
 
@@ -87,7 +93,6 @@ public class Event extends AbstractEntity {
     /**
      * 案件状态 比如挂账
      */
-    @Column(columnDefinition = "TINYINT(1)")
     private Integer sts;
 
     /**
@@ -145,5 +150,64 @@ public class Event extends AbstractEntity {
      * 临时字段 演示之后删除
      */
     private String componentObjId;
+
+
+    /**
+     * 一定要实现BaseEnum
+     *
+     * @author liukai
+     */
+    public enum Source implements BaseEnum {
+
+        SUPERVISOR(0, "监督员上报"),
+        HOT_LINE(1, "热线上报");
+
+        Source(Integer value, String description) {
+            this.value = value;
+            this.description = description;
+        }
+
+        private Integer value;
+        private String description;
+
+        @Override
+        public Integer getValue() {
+            return value;
+        }
+
+        public void setValue(Integer value) {
+            this.value = value;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+    }
+
+    public static class SourceConverter implements AttributeConverter<Event.Source, Integer> {
+
+        @Override
+        public Integer convertToDatabaseColumn(Event.Source attribute) {
+            if (attribute == null) {
+                throw new BusinessException("Unknown source text  ");
+            }
+            return attribute.getValue();
+
+        }
+
+        @Override
+        public Event.Source convertToEntityAttribute(Integer dbData) {
+            for (Event.Source source : Event.Source.values()) {
+                if (source.getValue().equals(dbData)) {
+                    return source;
+                }
+            }
+            throw new BusinessException("Unknown source text : " + dbData);
+        }
+    }
 
 }
