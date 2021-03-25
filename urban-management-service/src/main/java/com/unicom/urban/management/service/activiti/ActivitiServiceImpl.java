@@ -19,6 +19,7 @@ import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 import org.activiti.engine.task.TaskQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -307,7 +308,8 @@ public class ActivitiServiceImpl implements ActivitiService {
     /**
      * 重新构建一个List 包含休息时间和工作时间
      */
-    private List<TempTime> buildTempTimeList(List<TimeScheme> oldList) {
+    @Cacheable(value = "activiti_build_value")
+    public List<TempTime> buildTempTimeList(List<TimeScheme> oldList) {
         // TODO 这里可能会有BUG
 //        if (oldList.size() == 1) {
 //            TempTime tempTime = new TempTime();

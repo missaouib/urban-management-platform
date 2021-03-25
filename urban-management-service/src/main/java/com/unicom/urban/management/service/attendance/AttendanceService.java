@@ -63,7 +63,7 @@ public class AttendanceService {
         Attendance attendance;
         /*判断如果是下班卡 看是不是已经打过下班卡了如果打过了就更新下班打卡数据*/
         if("1".equals(attendanceDTO.getAttendanceType())){
-            Attendance attendances = attendanceRepository.findByUser_IdAndAttendanceDateIsBeforeAndAttendanceType(user.getId(),LocalDateTime.of(LocalDate.now(), LocalTime.MAX),"1");
+            Attendance attendances = attendanceRepository.findByUser_IdAndAttendanceDateIsAfterAndAttendanceType(user.getId(),LocalDateTime.of(LocalDate.now(), LocalTime.MAX),"1");
             if(attendances!=null){
                 attendance = Attendance.builder()
                         .id(attendances.getId())
@@ -135,7 +135,7 @@ public class AttendanceService {
 
     public String isCommuting(){
         User user = SecurityUtil.getUser().castToUser();
-        Attendance attendance = attendanceRepository.findByUser_IdAndAttendanceDateIsBeforeAndAttendanceType(user.getId(),LocalDateTime.of(LocalDate.now(), LocalTime.MAX), "0");
+        Attendance attendance = attendanceRepository.findByUser_IdAndAttendanceDateIsAfterAndAttendanceType(user.getId(),LocalDateTime.of(LocalDate.now(), LocalTime.MAX), "0");
         if(attendance == null){
             return "0";
         }else{

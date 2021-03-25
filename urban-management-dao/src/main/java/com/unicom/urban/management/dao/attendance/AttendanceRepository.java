@@ -13,6 +13,6 @@ import java.util.List;
  * @date 2021/3/23-8:50
  */
 public interface AttendanceRepository extends CustomizeRepository<Attendance, String> {
-    Attendance findByUser_IdAndAttendanceDateIsBeforeAndAttendanceType(String user, LocalDateTime localDateTime, String attendanceType);
+    Attendance findByUser_IdAndAttendanceDateIsAfterAndAttendanceType(String user, LocalDateTime localDateTime, String attendanceType);
 
 }

@@ -1,5 +1,6 @@
 package com.unicom.urban.management.api.framework.security;
 
+import com.unicom.urban.management.pojo.SecurityDeptBean;
 import com.unicom.urban.management.pojo.SecurityRoleBean;
 import com.unicom.urban.management.pojo.SecurityUserBean;
 import io.jsonwebtoken.Claims;
@@ -48,6 +49,7 @@ public class JwtTokenManager {
         claims.put("username", securityUserBean.getUsername());
         claims.put("name", securityUserBean.getName());
         claims.put("roleList", securityUserBean.getRoleList());
+        claims.put("detp", securityUserBean.getDept());
         return Jwts.builder().setClaims(claims).setExpiration(validity).signWith(Keys.hmacShaKeyFor(authConfigs.getSecretKeyBytes()), SignatureAlgorithm.HS256).compact();
     }
 
@@ -83,6 +85,10 @@ public class JwtTokenManager {
         String name = (String) claims.get("name");
         String username = (String) claims.get("username");
         List<Map<String, String>> roleList = (ArrayList<Map<String, String>>) claims.get("roleList");
+        Map<String, String> deptBean = (Map<String, String>) claims.get("detp");
+        SecurityDeptBean dept = new SecurityDeptBean();
+        dept.setDeptName(deptBean.get("deptName"));
+        dept.setId(deptBean.get("id"));
         Set<SecurityRoleBean> roles = new HashSet<>();
         for (Map<String, String> stringStringMap : roleList) {
             SecurityRoleBean roleBean = new SecurityRoleBean();
@@ -92,7 +98,7 @@ public class JwtTokenManager {
         }
 
 
-        SecurityUserBean securityUserBean = new SecurityUserBean(userId, username, name, roles);
+        SecurityUserBean securityUserBean = new SecurityUserBean(userId, username, name, roles, dept);
         return new UsernamePasswordAuthenticationToken(securityUserBean, "", authorities);
     }
 

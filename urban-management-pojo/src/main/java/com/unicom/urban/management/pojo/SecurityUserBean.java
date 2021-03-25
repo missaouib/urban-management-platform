@@ -50,11 +50,12 @@ public class SecurityUserBean implements UserDetails {
         this.name = name;
     }
 
-    public SecurityUserBean(String id, String username, String name, Set<SecurityRoleBean> roles) {
+    public SecurityUserBean(String id, String username, String name, Set<SecurityRoleBean> roles,SecurityDeptBean dept) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.roleList = roles;
+        this.dept = dept;
     }
 
     public SecurityUserBean(User user) {
