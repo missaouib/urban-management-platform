@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>计时管理</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<div class="notice_main ">
+    <h6>计时管理</h6>
+    <div style="border-bottom: 1px #ccc solid;padding-bottom: 8px">
+        <p style="line-height: 24px;font-size: 14px;padding: 4px 0 0 36px ;color:#bb8940;background-image: url(img/ts_03.png);background-repeat: no-repeat;background-position: 10px 8px;font-weight: bold">
+            温馨提示</p>
+        <ul class="ts">
+            <li><span>*</span>该页面主要显示的是计时管理查询界面。</li>
+        </ul>
+    </div>
+
+
+    <form id="userForm">
+        <div class="top table2_top">
+            <div class="top_out">
+                <table class="table">
+                    <tbody>
+<!--                    <tr>-->
+<!--                        <td>姓名<span></span></td>-->
+<!--                        <td>-->
+<!--                            <input type="text" class="find_input" name="name" autocomplete="off">-->
+<!--                        </td>-->
+<!--                        <td>角色<span></span></td>-->
+<!--                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">-->
+<!--                            <input type="text" readonly="readonly" id="role" class="find_input"/>-->
+<!--                            <input type="hidden" readonly="readonly" id="roleId" name="roleId"-->
+<!--                                   class="find_input"/>-->
+<!--                            <button type="button" class="addBtn" onclick="selectDeptRoleTree()">-->
+<!--                                +-->
+<!--                            </button>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <td>所属组织<span></span></td>-->
+<!--                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">-->
+<!--                            <input type="text" readonly="readonly" id="dept" class="find_input"/>-->
+<!--                            <input type="hidden" readonly="readonly" id="deptId" name="deptId"-->
+<!--                                   class="find_input"/>-->
+<!--                            <button type="button" class="addBtn" onclick="selectDeptTree()">-->
+<!--                                +-->
+<!--                            </button>-->
+<!--                        </td>-->
+<!--                        <td>状态<span></span></td>-->
+<!--                        <td>-->
+<!--                            <select name="sts">-->
+<!--                                <option value="3">&#45;&#45;请选择&#45;&#45;</option>-->
+<!--                                <option value="0">激活</option>-->
+<!--                                <option value="1">未激活</option>-->
+<!--                            </select>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <div class="notice_check">
+        <form id="search-form">
+            <p style="display: flex;justify-content: flex-end">
+                <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
+                <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">
+            </p>
+        </form>
+    </div>
+
+
+    <div class="clear"></div>
+
+
+    <div class="btn-group-sm" id="toolbar">
+        <a class="btn btn-success" onclick="$.operate.addTab()">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+
+    </div>
+
+
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        search();
+    })
+
+    let searchUrl = /*[[@{/time/search}]]*/ "/json/unit.json";
+
+    let addUrl = /*[[@{/time/add}]]*/ "/time/add";
+
+    let removeUrl = /*[[@{/time/remove}]]*/ "/time/remove";
+
+    let editUrl = /*[[@{/time/edit/{id}}]]*/ "/time/remove";
+
+    let activationUrl = /*[[@{/time/activation}]]*/ "/time/activation";
+
+    let initializationUrl = /*[[@{/time/initialization}]]*/ "/time/initialization";
+
+    function search() {
+        var options = {
+            url: searchUrl,
+            createUrl: addUrl,
+            updateUrl: editUrl,
+            removeUrl: removeUrl,
+            uniqueId: "id",
+            sortName: "id",
+            sortOrder: "desc",
+            modalName: "用户",
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class:'index_width',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '开始时间',
+                    field: 'startTime'
+                },
+
+                {
+                    title: '结束时间',
+                    field: 'endTime'
+                },
+                {
+                    title: '操作',
+                    field: '',
+                    class: 'radios',
+                    formatter: function (value, row) {
+                        var e = "<label class='toggle-switch switch-solid' style='margin: 0 5px'>\n";
+                        if (row.sts === 0) {
+                            e += "<input type='checkbox' id='status' checked onclick='activation(\"" + row.id + "\")'>\n"
+                        } else {
+                            e += "<input type='checkbox' id='status'  onclick='activation(\"" + row.id + "\")'>\n"
+                        }
+                        e += "<span></span>\n</label>";
+                        e +=  "<a href='#' title='' style='margin-right: 5px' onclick='$.operate.editTab(\"" + row.id + "\")'>修改</a>";
+                        if (row.system !== "1") {
+                            e +="<a href='#' title='' style='margin-right: 5px' onclick='$.operate.remove(\"" + row.id + "\")' >删除</a>";
+                        }
+                        e += "<a href='#' title='' onclick='initialization(\"" + row.id + "\")'>重置密码</a>"
+                        return e;
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    }
+
+    function activation(obj) {
+        $.ajax({
+            type: "GET",
+            url: activationUrl + "?id=" + obj
+        });
+    }
+
+    function initialization(obj) {
+        $.ajax({
+            type: "GET",
+            url: initializationUrl + "?id=" + obj,
+            success: function (result) {
+                if(result.code === 0){
+                    $.modal.alertSuccess("重置密码成功")
+                }
+            }
+        });
+    }
+
+
+
+</script>
+</body>
+</html>

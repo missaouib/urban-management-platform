@@ -1510,7 +1510,7 @@ modal_status = {
 /** 消息状态码 */
 web_status = {
     SUCCESS: 0,
-    FAIL: 500,
+    FAIL: 20001,
     WARNING: 301,
     NEED_LOGIN: 403
 };
