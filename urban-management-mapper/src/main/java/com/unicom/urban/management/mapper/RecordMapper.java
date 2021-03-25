@@ -24,7 +24,7 @@ public interface RecordMapper {
      * @param recordList list
      * @return vo
      */
-    List<RecordVO> RecordListToRecordVOList(List<Record> recordList);
+    List<RecordVO> convertList(List<Record> recordList);
 
     /**
      * 转
@@ -33,6 +33,6 @@ public interface RecordMapper {
      * @return vo
      */
     @Mapping(source = "publish.kv.value", target = "type")
-    RecordVO RecordToRecordVO(Record record);
+    RecordVO convert(Record record);
 
 }
