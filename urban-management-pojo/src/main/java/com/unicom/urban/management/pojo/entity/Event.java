@@ -67,8 +67,6 @@ public class Event extends AbstractEntity {
     @JoinColumn
     private User user;
 
-    private String phone;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "component_id")
     private Component component;
@@ -79,6 +77,8 @@ public class Event extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private KV eventSource;
+
+    private Integer source;
 
     private Double x;
 
