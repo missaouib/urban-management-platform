@@ -1,9 +1,6 @@
 package com.unicom.urban.management.service.menu;
 
 import com.unicom.urban.management.common.exception.DataValidException;
-import com.unicom.urban.management.pojo.entity.User;
-import com.unicom.urban.management.service.user.UserService;
-import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.menu.MenuRepository;
 import com.unicom.urban.management.dao.menu.MenuTypeRepository;
 import com.unicom.urban.management.dao.role.RoleRepository;
@@ -12,7 +9,10 @@ import com.unicom.urban.management.pojo.dto.MenuDTO;
 import com.unicom.urban.management.pojo.entity.Menu;
 import com.unicom.urban.management.pojo.entity.MenuType;
 import com.unicom.urban.management.pojo.entity.Role;
+import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.MenuVO;
+import com.unicom.urban.management.service.user.UserService;
+import com.unicom.urban.management.util.SecurityUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -91,15 +91,15 @@ public class MenuService {
 
     @Transactional(rollbackFor = Exception.class)
     public void save(MenuDTO menuDTO) {
-        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), null)) {
+        if (existsMenuName(menuDTO.getParentId(), menuDTO.getName(), null)) {
             throw new DataValidException("菜单名重复");
         }
         Menu menu = new Menu();
-        BeanUtils.copyProperties(menuDTO,menu);
-        menuTypeRepository.findById(menuDTO.getMenuTypeId()).ifPresent(menu::setMenuType);
+        BeanUtils.copyProperties(menuDTO, menu);
+        menu.setMenuType(new MenuType(menuDTO.getMenuTypeId()));
         menuRepository.findById(menuDTO.getParentId()).ifPresent(menu::setParent);
-        if(menu.getParent()!=null){
-            if(!menu.getParent().getPurpose().equals(menu.getPurpose())) {
+        if (menu.getParent() != null) {
+            if (!menu.getParent().getPurpose().equals(menu.getPurpose())) {
                 throw new DataValidException("应用类型与上级菜单不符");
             }
         }
@@ -108,7 +108,7 @@ public class MenuService {
 
     @Transactional(rollbackFor = Exception.class)
     public void update(MenuDTO menuDTO) {
-        if(ifMenu(menuDTO.getParentId(), menuDTO.getName(), menuDTO.getId())) {
+        if(existsMenuName(menuDTO.getParentId(), menuDTO.getName(), menuDTO.getId())) {
             throw new DataValidException("菜单名重复");
         }
         Optional<Menu> isMenu = menuRepository.findById(menuDTO.getId());
@@ -132,12 +132,11 @@ public class MenuService {
         menuRepository.saveAndFlush(menu);
     }
 
-    private boolean ifMenu(String pid,String name,String id){
-        List<Menu> menus = menuRepository.findAllByParent_IdAndName(pid, name);
-        if(StringUtils.isBlank(id)){
-            return menus.size() != 0;
-        }else{
-           return menus.size() != 0 && (menus.size() != 1 || !id.equals(menus.get(0).getId()));
+    private boolean existsMenuName(String pid, String name, String id) {
+        if (StringUtils.isNotEmpty(id)) {
+            return menuRepository.existsByParentAndNameAndIdNot(new Menu(pid), name, id);
+        } else {
+            return menuRepository.existsByParentAndName(new Menu(pid), name);
         }
     }
 
