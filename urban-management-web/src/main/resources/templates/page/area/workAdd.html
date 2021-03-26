@@ -41,14 +41,14 @@
                                 <td><span></span>案件分类</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
-                                    <input type="hidden" readonly="readonly" id="eventTypeId" th:name="eventTypeId" class="find_input" />
+                                    <input type="hidden" readonly="readonly" id="deptId" th:name="deptId" class="find_input" />
                                     <button type="button" class="addBtn" onclick="selectDeptTree()">
                                         +
                                     </button>
                                 </td>
                                 <td><span>*</span>半径</td>
                                 <td>
-                                    <input type="text" class="" value="" name="radio" id="radio"  required readonly/>
+                                    <input type="text" class="" value="" name="radius" id="radius"/>
                                 </td>
                             </tr>
                             <tr>
@@ -64,7 +64,7 @@
                             <tr>
                                 <td><span>*</span>位置</td>
                                 <td>
-                                    <input type="text" class="" value="" name="address" id="address"  required readonly/>
+                                    <input type="text" class="" value="" name="address" id="address"/>
                                 </td>
                             </tr>
                             </tbody>
@@ -137,26 +137,6 @@
     $(function () {
         $(".ol-full-screen-false").html("全屏");
 
-        $(".name").click(function () {
-            $(this).addClass("active").siblings(".name").removeClass("active");
-            $(".tree").eq($(this).index(".name")).addClass("treeActive").siblings(".tree").removeClass("treeActive");
-        })
-        $(".enclosure").click(function () {
-            alert("附件详情")
-        })
-
-        ////日期插件
-        $('.form_datetime').datetimepicker({
-            language: 'zh-CN',
-            weekStart: 1,
-            todayBtn: 1,
-            autoclose: 1,
-            todayHighlight: 1,
-            startView: 2,
-            forceParse: 0,
-            showMeridian: 1,
-            format: "yyyy-mm-dd hh:ii:ss"
-        });
 
         $.ajaxUtil.get(componentTypeUrl, function (e) {
             $.fn.zTree.init($("#treeDemo"), setting, e.data);
@@ -181,6 +161,7 @@
     function deptDoSubmit(index, layero) {
         var body = layer.getChildFrame('body', index);
         $("#typeStr").val(body.find('#treeName').val());
+        $("#deptId").val(body.find('#treeId').val());
         layer.close(index);
     }
     let url = /*[[@{/event/register}]]*/ "/event/register";
@@ -193,7 +174,7 @@
     let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
     let getDeptTimeLimitByLevelUrl = /*[[@{/event/getDeptTimeLimitByLevel}]]*/ "/event/getDeptTimeLimitByLevel";
     let findAllByKvIdUrl = /*[[@{/event/findAllByKvId}]]*/ "/event/findAllByKvId";
-    let saveUrl = /*[[@{/event/saveTemp}]]*/ "/event/saveTemp";
+    let saveUrl = /*[[@{/attendanceScheme/attendanceScheme}]]*/ "/event/saveTemp";
     let preReportUrl = /*[[@{/event/preReport}]]*/ "/event/preReport";
     let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
     let setting = {
@@ -235,7 +216,6 @@
             return;
 
         }
-        $("#eventSource").removeAttr("disabled");
         var data = $('#userForm').serialize();
         $.operate.saveTab(saveUrl, data);
     }

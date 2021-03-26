@@ -1,10 +1,20 @@
 package com.unicom.urban.management.pojo.entity.notice;
 
+import com.unicom.urban.management.pojo.Delete;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@DynamicInsert
+@DynamicUpdate
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "message_notice")
 public class Notice {
 
@@ -15,6 +25,12 @@ public class Notice {
     private NoticeType noticeType;
 
     private String content;
+
+    private LocalDateTime createTime;
+
+    private LocalDateTime updateTime;
+
+    private String deleted = Delete.NORMAL;
 
 
     @Id
@@ -53,4 +69,31 @@ public class Notice {
     public void setContent(String content) {
         this.content = content;
     }
+
+    @CreatedDate
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
+    @LastModifiedDate
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(String deleted) {
+        this.deleted = deleted;
+    }
+
 }
