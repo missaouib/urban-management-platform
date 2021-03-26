@@ -1,10 +1,236 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <title>流程定义管理</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+
 </head>
-<body>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
+<div class="notice_main ">
+    <h6>流程定义管理</h6>
+    <div style="border-bottom: 1px #ccc solid;padding-bottom: 8px">
+        <p style="line-height: 24px;font-size: 14px;padding: 4px 0 0 36px ;color:#bb8940;background-image: url(img/ts_03.png);background-repeat: no-repeat;background-position: 10px 8px;font-weight: bold">温馨提示</p>
+        <ul class="ts">
+            <li><span>*</span>该页面主要显示的是流程定义查询界面。</li>
+        </ul>
+    </div>
+
+
+
+
+<!--    <div class="notice_check">-->
+<!--        <form id="search-form">-->
+<!--            <p>-->
+<!--                <label class="">账号：</label>-->
+<!--                <input type="text" class="find_input" name="username">-->
+<!--                <input type="button" class="check_btn" onclick="$.table.search()" value="查询">-->
+<!--                <input type="button" class="check_btn1" onclick="$.form.reset()" value="重置">-->
+<!--            </p>-->
+<!--        </form>-->
+<!--    </div>-->
+
+    <div class="clear"></div>
+
+
+    <div class="btn-group-sm" id="toolbar">
+        <a class="btn btn-success" onclick="add()">
+            <i class="fa fa-plus"></i> 绘制流程图
+        </a>
+<!--        <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">-->
+<!--            <i class="fa fa-edit"></i> 修改-->
+<!--        </a>-->
+<!--        <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">-->
+<!--            <i class="fa fa-edit"></i> 修改-->
+<!--        </a>-->
+<!--        <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">-->
+<!--            <i class="fa fa-remove"></i> 删除-->
+<!--        </a>-->
+<!--        <a class="btn btn-info" onclick="importFile()">-->
+<!--            <i class="fa fa-upload"></i> 导入-->
+<!--        </a>-->
+        <!--    <a class="btn btn-warning" onclick="$.table.exportExcel()">-->
+        <!--        <i class="fa fa-download"></i> 导出-->
+        <!--    </a>-->
+    </div>
+
+<!--    <form method="post" action="/deployment/file" enctype="multipart/form-data">-->
+<!--        <input type="file" name="file">-->
+<!--        <input type="submit" value="提交">-->
+<!--    </form>-->
+
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+</div>
+
+<script id="modelDiv" type="text/template">
+    <form action="" method="post" id="modelForm">
+        <div class="modelBox">
+            <label class="modelTitle" style="margin-top: 10px">名称:</label>
+            <div class="tan">!</div>
+            <input type="text" required="required" name="name" id="name" style="width: 70%">
+        </div>
+        <div class="modelBox">
+            <label class="modelTitle" style="margin-top: 10px">描述:</label>
+            <textarea type="text" cols="8" rows="3" required="required" name="description" style="width: 70%" id="description"></textarea>
+        </div>
+    </form>
+</script>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 
 </body>
 </html>
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        search();
+    })
+
+
+    let searchUrl = /*[[@{/processdef/search}]]*/ "/json/unit.json";
+
+    let addUrl = /*[[@{/processdef/model}]]*/ "/processdef/model";
+
+    let editUrl = /*[[@{/modeler.html?modelId={id}}]]*/ "/modeler.html";
+
+    let removeUrl = /*[[@{/processdef/remove}]]*/ "/processdef/remove";
+
+    let activitiUrl = /*[[@{/activiti/create}]]*/ "/deployment/file";
+
+    let modelUrl = /*[[@{/modeler.html?modelId=}]]*/ "/modeler.html";
+
+
+
+    // let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
+
+    function doSubmit(index, layero) {
+        console.log(index);
+        console.log(layero);
+    }
+
+    function search() {
+        var options = {
+            url: searchUrl,
+            createUrl: addUrl,
+            updateUrl: editUrl,
+            removeUrl: removeUrl,
+            sidePagination: "client",
+            uniqueId: "deploymentId",
+            modalName: "流程定义",
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class:'index_width',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    checkbox: true
+                },
+                {
+                    title: '流程定义ID',
+                    field: 'id',
+                    sortable: true,
+                },
+                {
+                    title: '部署ID',
+                    field: 'deploymentId',
+                    sortable: true,
+                },
+                {
+                    title: '名称',
+                    field: 'name',
+                    sortable: true,
+                },
+                {
+                    title: 'KEY',
+                    field: 'key',
+                    sortable: true,
+                },
+                {
+                    title: '模型ID',
+                    field: 'modelerId',
+                    sortable: true,
+                },
+                {
+                    title: '资源名称',
+                    field: 'resourceName',
+                    sortable: true,
+                },
+                {
+                    title: '版本',
+                    field: 'version',
+                    sortable: true,
+                },
+                {
+                    title: '操作',
+                    field: '',
+                    formatter: function (value, row) {
+                        var a = '<a  href="#" title="" onclick="$.operate.editTab(\'' + row.modelerId + '\')">编辑</a> ';
+                        var b = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.deploymentId + '\')">删除</a> ';
+                        return a + b;
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    }
+
+
+    function add() {
+        layer.open({
+            type: 1,
+            area: ['400px', '300px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '新增流程定义',
+            content: $('#modelDiv').html(),
+            btn: ['<i class="fa fa-check"></i> 创建', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: false,
+            btn1: function(index, layero){
+                // var index = layer.load(2, {shade: false});
+                // // $.modal.disable();
+                // var formData = new FormData(layero.find('form')[0]);
+                let formData = $('#modelForm').serialize();
+
+                $.ajax({
+                    url: activitiUrl,
+                    data: formData,
+                    cache: false,
+                    // contentType: false,
+                    processData: false,
+
+                    type: 'POST',
+                    success: function (result) {
+                        console.log(result);
+                        if (result.code === web_status.SUCCESS) {
+                            layer.close(index);
+                            // $.modal.alertSuccess(result.message);
+                            // $.table.refresh();
+                            $.modal.openTab('流程图绘制', modelUrl + result.data.modelId);
+                        } else if (result.code === web_status.WARNING) {
+                            // layer.close(index);
+                            // $.modal.enable();
+                            // $.modal.alertWarning(result.message)
+                        } else {
+                            // layer.close(index);
+                            // $.modal.enable();
+                            $.modal.alertError(result.message);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
+
+</script>
