@@ -2,6 +2,7 @@ package com.unicom.urban.management.api.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.util.FileUploadUtil;
+import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.vo.DeptVO;
 import com.unicom.urban.management.service.dept.DeptService;
@@ -64,18 +65,19 @@ public class TaskProcessingController {
      * @param statisticsDTO 参数
      */
     @PostMapping("/processing")
-    public void processing(@RequestBody StatisticsDTO statisticsDTO){
+    public Result processing(@RequestBody StatisticsDTO statisticsDTO){
         taskProcessingService.handle(statisticsDTO.getEventId(),statisticsDTO.getButtonId(),statisticsDTO);
+        return Result.success("成功");
     }
 
 
     @GetMapping("/dept")
-    public List<DeptVO> dept(){
-        return deptService.getAll();
+    public Result dept(){
+        return Result.success(deptService.getAll());
     }
 
     @PostMapping("/common/uploads")
-    public List<Map<String, Object>> uploadFiles(MultipartFile[] files) throws Exception {
+    public Result uploadFiles(MultipartFile[] files) throws Exception {
         List<Map<String, Object>> list = new ArrayList<>();
         for (MultipartFile file : files) {
             Map<String, Object> map = new HashMap<>(3);
@@ -84,7 +86,7 @@ public class TaskProcessingController {
             map.put("fileName", file.getOriginalFilename());
             list.add(map);
         }
-        return list;
+        return Result.success(list);
     }
 
     @GetMapping("/common/img/{id}")

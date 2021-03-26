@@ -60,7 +60,7 @@ public class SupervisionAcceptanceController {
         event.setSts(2);
         eventService.save(event);
 
-        return Result.success();
+        return Result.success("成功");
     }
 
     /**
@@ -72,7 +72,7 @@ public class SupervisionAcceptanceController {
     public Result receive(@Valid EventDTO eventDTO) {
         eventDTO.setInitSts(2);
         eventService.save(eventDTO);
-        return Result.success();
+        return Result.success("成功");
     }
 
     /**
@@ -84,7 +84,7 @@ public class SupervisionAcceptanceController {
     public Result dispatch(@Valid EventDTO eventDTO) {
         eventDTO.setInitSts(3);
         eventService.save(eventDTO);
-        return Result.success();
+        return Result.success("成功");
     }
 
     /**
@@ -95,7 +95,7 @@ public class SupervisionAcceptanceController {
     @PostMapping("/registerUpdate")
     public Result registerUpdate(@Valid EventDTO eventDTO) {
         eventService.registerUpdate(eventDTO);
-        return Result.success();
+        return Result.success("成功");
     }
 
     /**
@@ -113,8 +113,8 @@ public class SupervisionAcceptanceController {
 
 
     @GetMapping("/findOne")
-    public EventOneVO findOne(String eventId) {
-        return eventService.findOneToVo(eventId);
+    public Result findOne(String eventId) {
+        return Result.success(eventService.findOneToVo(eventId));
     }
 
     /**
@@ -274,7 +274,7 @@ public class SupervisionAcceptanceController {
             default:
                 return Result.fail(500, "未检测到应有的步骤");
         }
-        return Result.success();
+        return Result.success("成功");
     }
 
     /**
@@ -297,7 +297,7 @@ public class SupervisionAcceptanceController {
             default:
                 return Result.fail(500, "未检测到应有的步骤");
         }
-        return Result.success();
+        return Result.success("成功");
     }
 
     /**
