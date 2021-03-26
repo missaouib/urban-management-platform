@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -44,17 +43,6 @@ public class UserControllerTest {
         )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value("0"));
-    }
-
-    @Test
-    public void saveTimePlan() {
-        TimePlan timePlan = new TimePlan();
-        timePlan.setStartTime(LocalDateTime.now());
-        timePlan.setEndTime(LocalDateTime.now());
-        timePlan.setSts(TimePlan.Status.ENABLE);
-
-        timePlanRepository.save(timePlan);
-
     }
 
     @Test

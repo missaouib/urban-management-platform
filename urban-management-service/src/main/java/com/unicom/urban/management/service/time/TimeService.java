@@ -30,5 +30,12 @@ public class TimeService {
         return new PageImpl<>(timeList, page.getPageable(), page.getTotalElements());
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void save() {
+        TimePlan timePlan = new TimePlan();
+//        timePlan.setStartTime();
+//        timePlan.setEndTime();
+        timePlanRepository.save(timePlan);
+    }
 
 }

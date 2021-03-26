@@ -3,7 +3,7 @@ package com.unicom.urban.management.pojo.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 public class TimeVO {
@@ -13,14 +13,14 @@ public class TimeVO {
     /**
      * 方案开始时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate startTime;
 
     /**
      * 方案结束时间
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime endTime;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate endTime;
 
     private Integer status;
 

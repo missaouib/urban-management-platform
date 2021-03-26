@@ -8,7 +8,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -28,12 +28,12 @@ public class TimePlan {
     /**
      * 方案开始时间
      */
-    private LocalDateTime startTime;
+    private LocalDate startTime;
 
     /**
      * 方案结束时间
      */
-    private LocalDateTime endTime;
+    private LocalDate endTime;
 
     private List<Day> dayList;
 
@@ -56,19 +56,19 @@ public class TimePlan {
         this.id = id;
     }
 
-    public LocalDateTime getStartTime() {
+    public LocalDate getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(LocalDate startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public LocalDate getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(LocalDate endTime) {
         this.endTime = endTime;
     }
 
