@@ -1,5 +1,6 @@
 package com.unicom.urban.management.pojo.entity.notice;
 
+import com.unicom.urban.management.pojo.Delete;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Entity;
@@ -19,6 +20,8 @@ public class NoticeType {
     private String id;
 
     private String name;
+
+    private String deleted = Delete.NORMAL;
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -40,4 +43,11 @@ public class NoticeType {
     }
 
 
+    public String getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(String deleted) {
+        this.deleted = deleted;
+    }
 }
