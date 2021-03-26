@@ -84,7 +84,7 @@ public class Event extends AbstractEntity {
      * 由于KV使用问题 把eventSource替换掉
      */
     @Convert(converter = SourceConverter.class)
-    private Source source;
+    private Source source = Source.SUPERVISOR;
 
     private Double x;
 

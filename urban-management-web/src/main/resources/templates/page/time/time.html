@@ -138,7 +138,14 @@
                 },
                 {
                     title: '状态',
-                    field: 'endTime'
+                    field: 'status',
+                    formatter: function (value, row, index) {
+                        if (row.status === 0) {
+                            return '启用中';
+                        }else{
+                            return '未启用';
+                        }
+                    }
                 },
                 {
                     title: '操作',
