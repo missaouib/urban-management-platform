@@ -36,8 +36,13 @@ public class NoticeController {
     private NoticeService noticeService;
 
     @GetMapping("/toNoticeList")
-    public ModelAndView grid() {
+    public ModelAndView toNoticeList() {
         return new ModelAndView(SystemConstant.PAGE + "/notice/informNotice");
+    }
+
+    @GetMapping("/toNoticeTypeList")
+    public ModelAndView toNoticeTypeList() {
+        return new ModelAndView(SystemConstant.PAGE + "/notice/informNoticeType");
     }
 
     @GetMapping("/search")
