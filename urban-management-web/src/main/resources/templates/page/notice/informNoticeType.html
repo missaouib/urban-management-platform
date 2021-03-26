@@ -1,10 +1,185 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <title>通知公告维护</title>
+    <th:block th:include="page/fragments/common :: common_css" />
+    <th:block th:include="page/fragments/common :: bootstrap_table_css" />
+
 </head>
-<body>
-1111111111111111111111111111111
+
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+    <div class="notice_main ">
+        <div class="clear"></div>
+
+        <div class="btn-group-sm" id="toolbar">
+            <a class="btn btn-success" onclick="add()">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+        </div>
+        <table id="bootstrap-table" class="table_style" style="margin: 0 auto"> </table>
+    </div>
+
+    <script id="modelDiv" type="text/template">
+    <form action="" method="post" id="modelForm">
+        <div class="modelBox">
+            <label class="modelTitle" style="margin-top: 10px">名称:</label>
+            <div class="tan">!</div>
+            <input type="text" required="required" name="name" id="name" style="width: 70%">
+        </div>
+    </form>
+</script>
+
+
+    <th:block th:include="page/fragments/common :: common_js" />
+    <th:block th:include="page/fragments/common :: bootstrap_table_js" />
+
 </body>
+
 </html>
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        search();
+    })
+
+
+    let searchUrl = /*[[@{/processdef/search}]]*/ "/json/unit.json";
+
+    let addUrl = /*[[@{/processdef/model}]]*/ "/processdef/model";
+
+    let editUrl = /*[[@{/modeler.html?modelId={id}}]]*/ "/modeler.html";
+
+    let removeUrl = /*[[@{/processdef/remove}]]*/ "/processdef/remove";
+
+    let activitiUrl = /*[[@{/activiti/create}]]*/ "/deployment/file";
+
+    let modelUrl = /*[[@{/modeler.html?modelId=}]]*/ "/modeler.html";
+
+
+
+    // let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
+
+    function doSubmit(index, layero) {
+        console.log(index);
+        console.log(layero);
+    }
+
+    function search() {
+        var options = {
+            url: searchUrl,
+            createUrl: addUrl,
+            updateUrl: editUrl,
+            removeUrl: removeUrl,
+            sidePagination: "client",
+            uniqueId: "deploymentId",
+            modalName: "流程定义",
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class: 'index_width',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    checkbox: true
+                },
+                {
+                    title: '流程定义ID',
+                    field: 'id',
+                    sortable: true,
+                },
+                {
+                    title: '部署ID',
+                    field: 'deploymentId',
+                    sortable: true,
+                },
+                {
+                    title: '名称',
+                    field: 'name',
+                    sortable: true,
+                },
+                {
+                    title: 'KEY',
+                    field: 'key',
+                    sortable: true,
+                },
+                {
+                    title: '模型ID',
+                    field: 'modelerId',
+                    sortable: true,
+                },
+                {
+                    title: '资源名称',
+                    field: 'resourceName',
+                    sortable: true,
+                },
+                {
+                    title: '版本',
+                    field: 'version',
+                    sortable: true,
+                },
+                {
+                    title: '操作',
+                    field: '',
+                    formatter: function (value, row) {
+                        var a = '<a  href="#" title="" onclick="edit(1)">编辑</a> ';
+                        var b = '<a  href="#" title="" onclick="deleteFn(1)">删除</a> ';
+                        return a + b;
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    }
+    function deleteFn(id) {
+        console.log('删除')
+    }
+    function edit(id) {
+        layer.open({
+            type: 1,
+            area: ['400px', '300px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '编辑',
+            content: $('#modelDiv').html(),
+            btn: ['<i class="fa fa-check"></i> 保存', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: false,
+            btn1: function (index, layero) {
+                // var index = layer.load(2, {shade: false});
+                // // $.modal.disable();
+                // var formData = new FormData(layero.find('form')[0]);
+                let formData = $('#modelForm').serialize();
+                console.log('编辑')
+            }
+        });
+    }
+    function add() {
+        layer.open({
+            type: 1,
+            area: ['400px', '300px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '新增',
+            content: $('#modelDiv').html(),
+            btn: ['<i class="fa fa-check"></i> 保存', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: false,
+            btn1: function (index, layero) {
+                let formData = $('#modelForm').serialize();
+                console.log('111111')
+            }
+        });
+    }
+
+
+</script>
