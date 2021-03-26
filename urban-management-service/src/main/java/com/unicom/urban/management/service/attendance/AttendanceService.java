@@ -48,7 +48,8 @@ public class AttendanceService {
 
     public void save(AttendanceDTO attendanceDTO) {
         LocalDateTime now = LocalDateTime.now();
-        List<TimePlan> timePlans = timePlanRepository.findAllByStartTimeIsBeforeAndEndTimeIsAfterAndSts(now, now, TimePlan.Status.ENABLE);
+        LocalDate localDate = now.toLocalDate();
+        List<TimePlan> timePlans = timePlanRepository.findAllByStartTimeIsBeforeAndEndTimeIsAfterAndSts(localDate, localDate, TimePlan.Status.ENABLE);
         if (timePlans.size() == 0) {
             throw new RuntimeException("今日时间不在计时规范中");
         }
