@@ -78,6 +78,24 @@ public class AttendanceSchemeService {
         }
     }
 
+    public AttendanceSchemeVO getOne(String id){
+        Optional<AttendanceScheme> byId = attendanceSchemeRepository.findById(id);
+        boolean present = byId.isPresent();
+        if(present){
+            AttendanceScheme attendanceScheme = byId.get();
+            return AttendanceSchemeVO.builder()
+                    .radius(attendanceScheme.getRadius())
+                    .address(attendanceScheme.getAddress())
+                    .x(attendanceScheme.getX())
+                    .y(attendanceScheme.getY())
+                    .deptName(attendanceScheme.getDept().getDeptName())
+                    .deptId(attendanceScheme.getDept().getId())
+                    .id(attendanceScheme.getId())
+                    .build();
+        }
+        return null;
+    }
+
 
     public List<AttendanceSchemeVO> getAllByDept(){
         String deptId = SecurityUtil.getDeptId();
@@ -104,6 +122,7 @@ public class AttendanceSchemeService {
             if(StringUtils.isNotBlank(attendanceSchemeDTO.getDeptId())){
                 list.add(criteriaBuilder.equal(root.get("dept").get("id").as(String.class), attendanceSchemeDTO.getDeptId()));
             }
+            list.add(criteriaBuilder.equal(root.get("sts").as(String.class), "0"));
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         };

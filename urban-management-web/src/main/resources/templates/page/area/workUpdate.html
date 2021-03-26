@@ -38,33 +38,33 @@
                             <tbody>
                             <tr>
 
-                                <td><span></span>案件分类</td>
+                                <td><span></span>所属部门</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
-                                    <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
-                                    <input type="hidden" readonly="readonly" id="deptId" th:name="deptId" class="find_input" />
+                                    <input type="text" th:value="${attendanceScheme.deptName}" readonly="readonly" id="typeStr" class="find_input"/>
+                                    <input type="hidden" th:value="${attendanceScheme.deptId}" readonly="readonly" id="deptId" th:name="deptId" class="find_input" />
                                     <button type="button" class="addBtn" onclick="selectDeptTree()">
                                         +
                                     </button>
                                 </td>
                                 <td><span>*</span>半径</td>
                                 <td>
-                                    <input type="text" class="" value="" name="radius" id="radius"/>
+                                    <input type="text" th:value="${attendanceScheme.radius}" class="" value="" name="radius" id="radius"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span>*</span>经度</td>
                                 <td>
-                                    <input type="text" class="" value="" name="x" id="longitude"  required readonly/>
+                                    <input type="text" th:value="${attendanceScheme.x}" class=""  name="x" id="longitude"  required readonly/>
                                 </td>
                                 <td><span>*</span>纬度</td>
                                 <td>
-                                    <input type="text" class="" value="" name="y" id="latitude" required readonly/>
+                                    <input type="text"  th:value="${attendanceScheme.y}" class=""  name="y" id="latitude" required readonly/>
                                 </td>
                             </tr>
                             <tr>
                                 <td><span>*</span>位置</td>
                                 <td>
-                                    <input type="text" class="" value="" name="address" id="address"/>
+                                    <input type="text" class="" th:value="${attendanceScheme.address}"  name="address" id="address"/>
                                 </td>
                             </tr>
                             </tbody>

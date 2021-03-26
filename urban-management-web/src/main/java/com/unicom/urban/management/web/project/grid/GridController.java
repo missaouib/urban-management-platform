@@ -7,8 +7,10 @@ import com.unicom.urban.management.pojo.dto.AreaDTO;
 import com.unicom.urban.management.pojo.dto.GridDTO;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.pojo.vo.TreeVO;
+import com.unicom.urban.management.service.attendance.AttendanceSchemeService;
 import com.unicom.urban.management.service.grid.GridService;
 import org.apache.commons.lang3.StringUtils;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +32,8 @@ public class GridController {
 
     @Autowired
     private GridService gridService;
+    @Autowired
+    private AttendanceSchemeService attendanceSchemeService;
 
     @GetMapping("/grid")
     public ModelAndView grid() {
@@ -58,7 +62,8 @@ public class GridController {
 
     @GetMapping("/toWorkUpdate/{id}")
     public ModelAndView toWorkUpdate(@PathVariable String id,Model model) {
-        model.addAttribute("id", id);
+
+        model.addAttribute("attendanceScheme",  attendanceSchemeService.getOne(id));
         return new ModelAndView(SystemConstant.PAGE + "/area/workUpdate");
     }
 
