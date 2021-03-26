@@ -14,14 +14,14 @@
 <body style="border-radius: 8px;">
 <div class="content">
     <div class="btn-group-sm" id="toolbar" >
-        <a class="btn btn-primary" onclick="window.parent.$.learuntab.myAddTab('新增', '/area/workAdd', 'data_id')">
+        <a class="btn btn-primary" onclick="window.parent.$.learuntab.myAddTab('新增', '/grid/toWorkAdd')">
             <i class="fa fa-plus"></i> 新增
         </a>
 <!--        <a class="btn btn-primary" onclick="$.operate.report()">-->
 <!--            <i class="fa fa-paper-plane"></i> 上报-->
 <!--        </a>-->
-        <a class="btn btn-primary" onclick="window.parent.$.learuntab.myAddTab('修改', '/area/workUpdate', 'data_id')">
-            <i class="fa fa-edit"></i> 修改
+<!--        <a class="btn btn-primary" onclick="window.parent.$.learuntab.myAddTab('修改', '/area/workUpdate', 'data_id')">-->
+<!--            <i class="fa fa-edit"></i> 修改-->
         </a>
         <!--                <a class="btn btn-danger" style="color: #ffffff" onclick="serRowIdDel()">-->
         <!--                    <i class="fa fa-remove"></i> 删除-->
@@ -47,10 +47,9 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
-        let searchUrl = /*[[@{/home/eventListByToDoWithIndex}]]*/ "/home/eventListByToDoWithIndex";
-        let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
-        let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
-        let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
+        let searchUrl = /*[[@{/attendanceScheme/attendanceScheme}]]*/ "/home/eventListByToDoWithIndex";
+        let removeUrl = /*[[@{/attendanceScheme/del/{id}}]]*/ "/user/remove";
+        let editUrl = /*[[@{/grid/toWorkUpdate/{id}}]]*/ "/user/remove";
 
         queryUserList()
         function queryUserList() {
@@ -59,20 +58,11 @@
                 showColumns: false,
                 showToggle: false,
                 url: searchUrl,
-                createUrl: addUrl,
                 updateUrl: editUrl,
                 pageSize: 10,
                 removeUrl: removeUrl,
-                // exportUrl: prefix + "/export",
-                // importUrl: prefix + "/importData",
-                // importTemplateUrl: prefix + "/importTemplate",
                 uniqueId: "id",
-                sortName: "createTime",
-                sortOrder: "desc",
-                modalName: "待办事件",
-                onClickRow: function (row, index) {
-                    console.log(row)
-                },
+                modalName: "考勤规范",
                 columns: [
                     {
                         field: 'index',
@@ -84,59 +74,31 @@
                         }
                     },
                     {
-                        title: '示警灯',
-                        field: '',
-                        class:'time_width',
-                        formatter: setTimeLimit
-                    },
-                    {
-                        title: '案件编号',
-                        field: 'eventCode',
+                        title: '考勤地址',
+                        field: 'address',
                         sortable: true,
                     },
                     {
-                        title: '问题描述',
-                        field: 'represent',
-                        // sortable: true,
-                    },
-                    {
-                        title: '当前阶段',
-                        field: 'taskName',
-                        // sortable: true,
-                        // formatter: function (value, row, index) {
-                        //     return row.taskName;
-                        // },
-
-                    },
-                    {
-                        title: '案件分类',
-                        field: 'eventTypeName',
-                        sortable: true,
-                    },
-                    {
-                        title: '案件类型',
-                        field: 'recTypeId',
-                        sortable: true,
-                        formatter: function (value,row){
-                            return row.recTypeName;
+                        title: '半径范围',
+                        field: 'radius',
+                        formatter: function (value, row) {
+                            return row.radius+"米";
                         }
                     },
                     {
-                        title: '创建日期',
-                        field: 'createTime',
-                        sortable: true,
-                    },
-                    {
-                        title: '处置时限',
-                        field: 'timeLimitStr',
-                        // sortable: true,
-                    },
-                    {
-                        title: '截止日期',
-                        field: 'endTimeStr',
-                        // sortable: true,
-                    },
+                        title: '考勤部门',
+                        field: 'deptName',
 
+                    },
+                    {
+                        title: '操作',
+                        field: '',
+                        formatter: function (value, row) {
+                            var a = '<a  href="#" title="" onclick="$.operate.editTab(\'' + row.id + '\')">编辑</a> ';
+                            var b = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
+                            return a + b;
+                        }
+                    }
                 ]
             };
             $.table.init(options);

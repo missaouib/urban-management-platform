@@ -7,10 +7,7 @@ import com.unicom.urban.management.service.attendance.AttendanceSchemeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 顾志杰
@@ -36,8 +33,8 @@ public class AttendanceSchemeController {
         return Result.success();
     }
 
-    @PostMapping("/del")
-    public Result del(String id){
+    @PostMapping("/del/{id}")
+    public Result del(@PathVariable String id){
         attendanceSchemeService.del(id);
         return Result.success();
     }
