@@ -2443,3 +2443,12 @@ span.search_highlight {
     position: absolute;
     top: 0;left: 0;z-index: 1;
 }
+.sendText{
+    width: 84px ;
+    padding-right: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 14px;
+    color: #354e85;
+}
