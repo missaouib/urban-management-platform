@@ -121,6 +121,8 @@
             $.fn.zTree.init($("#treeDemo"), setting, e.data);
         });
 
+        console.log($("#longitude").val(),$("#latitude").val())
+        setPoint($("#longitude").val(),$("#latitude").val())
 
     })
     /**
@@ -175,6 +177,9 @@
             }
         }
     };
+    // setPoint(596459.8984375,5245954.445312499)
+    //
+
 
     function zTreeOnClick(event, treeId, treeNode) {
         $("#typeStr").val(treeNode.name);
@@ -501,6 +506,8 @@
 
 
         layerMap.getSource().clear()
+        setPoint(t[0],t[1])
+
         $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + t[0] + "&y=" + t[1], function (e) {
             let split = e.data.multiPolygon.split(",");
             let polygonArray = [];
@@ -554,7 +561,6 @@
             }
         });
 
-        setPoint(evt.coordinate)
 
 
 
@@ -725,6 +731,17 @@
     }
     function setCenterForGrid(data) {
         map.getView().setCenter(data);
+    }
+    function setPoint(x, y) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+        });
+        layerMap.getSource().addFeature(point);
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                src: '../../img/dwpoint3.png'
+            })
+        }));
     }
 
 
