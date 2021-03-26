@@ -1,10 +1,14 @@
 package com.unicom.urban.management.pojo.entity.notice;
 
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "message_notice")
 public class Notice {
 
