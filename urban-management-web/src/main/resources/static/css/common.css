@@ -2452,3 +2452,16 @@ span.search_highlight {
     font-size: 14px;
     color: #354e85;
 }
+.onner_warp{
+    display: flex;align-items: center;
+    justify-content: start;
+    flex-wrap: wrap;
+}
+.onner_warp_inner{
+    width: 16.5%;
+    height: 35px;
+    display: flex;align-items: center;justify-content: center;
+}
+.time_warp_inners{
+    margin-left: 10px;
+}

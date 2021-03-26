@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>计时设置</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<div class="notice_main ">
+    <h6>计时新增</h6>
+    <div style="border-bottom: 1px #ccc solid;padding-bottom: 8px">
+        <p style="line-height: 24px;font-size: 14px;padding: 4px 0 0 36px ;color:#bb8940;background-image: url(img/ts_03.png);background-repeat: no-repeat;background-position: 10px 8px;font-weight: bold">
+            温馨提示</p>
+        <ul class="ts">
+            <li><span>*</span>该页面主要显示的是计时新增列表。</li>
+        </ul>
+    </div>
+
+
+    <form id="userForm" style="margin-top: 10px">
+        <div class="top table2_top">
+            <div class="top_out">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td><span></span>方案名称</td>
+                        <td>
+                            <input id="petitionerSex" name="petitionerSex" placeholder="" class="" readonly type="text">
+                        </td>
+                        <td><span></span>开始时间</td>
+                        <td>
+                            <input size="16" class="form_datetime"  name="startTime" id="begin" type="text" value="" readonly>
+                        </td>
+                        <td><span></span>结束时间</td>
+                        <td>
+                            <input size="16" class="form_datetime"  name="endTime" id="end" type="text" value="" readonly>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <div class="notice_check">
+        <form id="search-form">
+            <p style="display: flex;justify-content: flex-end">
+                <input type="button" class="check_btn button_ground butn" onclick="$.table.search()" value="保存">
+            </p>
+        </form>
+    </div>
+
+
+    <div class="clear"></div>
+
+
+
+
+
+    <div class="onner_warp" id="onner_warp">
+        <!--        <span class="onner_warp_inner">-->
+        <!--            <input type="checkbox">-->
+        <!--            <span class="time_warp_inners">00:00</span>-->
+        <!--        </span>-->
+    </div>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+
+        search();
+        var html = "";
+        $('#onner_warp').html(``)
+
+        let timeList = [
+            {time:"00:00"},
+            {time:"00:30"},
+            {time:"01:00"},
+            {time:"01:30"},
+            {time:"02:00"},
+            {time:"02:30"},
+            {time:"03:00"},
+            {time:"03:30"},
+            {time:"04:00"},
+            {time:"04:30"},
+            {time:"05:00"},
+            {time:"05:30"},
+            {time:"06:00"},
+            {time:"06:30"},
+            {time:"07:00"},
+            {time:"07:30"},
+            {time:"08:00"},
+            {time:"08:30"},
+            {time:"09:00"},
+            {time:"09:30"},
+            {time:"10:00"},
+            {time:"10:30"},
+            {time:"11:00"},
+            {time:"11:30"},
+            {time:"12:00"},
+            {time:"12:30"},
+            {time:"13:00"},
+            {time:"13:30"},
+            {time:"14:00"},
+            {time:"14:30"},
+            {time:"15:00"},
+            {time:"15:30"},
+            {time:"16:00"},
+            {time:"16:30"},
+            {time:"17:00"},
+            {time:"17:30"},
+            {time:"18:00"},
+            {time:"18:30"},
+            {time:"19:00"},
+            {time:"19:30"},
+            {time:"20:00"},
+            {time:"20:30"},
+            {time:"21:00"},
+            {time:"21:30"},
+            {time:"22:00"},
+            {time:"22:30"},
+            {time:"23:00"},
+            {time:"23:30"},
+        ]
+        for (let i=0;i<timeList.length;i++){
+            html += `
+                <span class="onner_warp_inner">
+                    <input type="checkbox" name="addCheckBox">
+                    <span class="time_warp_inners">${timeList[i].time}</span>
+                </span>
+            `
+        }
+        $('#onner_warp').html(html)
+
+
+
+
+        var addList=[];
+
+        $('.butn').click(function () {
+            $("input[name ='addCheckBox']").each(function(index,value){
+                let map = {};
+                if($(value).prop("checked") === true){
+                    map.checkbox = 1;
+                    map.id=$(value).val();
+                    addList.push(map);
+                }
+            });
+            console.log(addList)
+        })
+
+    })
+
+    let searchUrl = /*[[@{/time/search}]]*/ "/json/unit.json";
+
+    let addUrl = /*[[@{/time/add}]]*/ "/time/add";
+
+    let removeUrl = /*[[@{/time/remove}]]*/ "/time/remove";
+
+    let editUrl = /*[[@{/time/edit/{id}}]]*/ "/time/remove";
+
+    let activationUrl = /*[[@{/time/activation}]]*/ "/time/activation";
+
+    let initializationUrl = /*[[@{/time/initialization}]]*/ "/time/initialization";
+
+    function search() {
+        var options = {
+            url: searchUrl,
+            createUrl: addUrl,
+            updateUrl: editUrl,
+            removeUrl: removeUrl,
+            uniqueId: "id",
+            sortName: "id",
+            sortOrder: "desc",
+            modalName: "用户",
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class:'index_width',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '计时方案',
+                    field: 'startTime'
+                },
+                {
+                    title: '开始时间',
+                    field: 'startTime'
+                },
+                {
+                    title: '结束时间',
+                    field: 'endTime'
+                },
+                {
+                    title: '状态',
+                    field: 'endTime'
+                },
+                {
+                    title: '操作',
+                    field: '',
+                    class: 'radios',
+                    formatter: function (value, row) {
+                        var e = "<label class='toggle-switch switch-solid' style='margin: 0 5px'>\n";
+                        if (row.sts === 0) {
+                            e += "<input type='checkbox' id='status' checked onclick='activation(\"" + row.id + "\")'>\n"
+                        } else {
+                            e += "<input type='checkbox' id='status'  onclick='activation(\"" + row.id + "\")'>\n"
+                        }
+                        e += "<span></span>\n</label>";
+                        e +=  "<a href='#' title='' style='margin-right: 5px' onclick='$.operate.editTab(\"" + row.id + "\")'>修改</a>";
+                        if (row.system !== "1") {
+                            e +="<a href='#' title='' style='margin-right: 5px' onclick='$.operate.remove(\"" + row.id + "\")' >删除</a>";
+                        }
+                        e += "<a href='#' title='' onclick='initialization(\"" + row.id + "\")'>重置密码</a>"
+                        return e;
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    }
+
+    function activation(obj) {
+        $.ajax({
+            type: "GET",
+            url: activationUrl + "?id=" + obj
+        });
+    }
+
+    function initialization(obj) {
+        $.ajax({
+            type: "GET",
+            url: initializationUrl + "?id=" + obj,
+            success: function (result) {
+                if(result.code === 0){
+                    $.modal.alertSuccess("重置密码成功")
+                }
+            }
+        });
+    }
+
+
+
+</script>
+</body>
+</html>
