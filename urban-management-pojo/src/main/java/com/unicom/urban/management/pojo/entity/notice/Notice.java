@@ -11,6 +11,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * 通知详情
+ *
+ * @author liukai
+ */
 @Entity
 @DynamicInsert
 @DynamicUpdate

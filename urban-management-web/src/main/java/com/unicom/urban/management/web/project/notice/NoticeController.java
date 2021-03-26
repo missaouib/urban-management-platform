@@ -1,11 +1,12 @@
 package com.unicom.urban.management.web.project.notice;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.pojo.Result;
-import com.unicom.urban.management.pojo.dto.NoticeTypeDTO;
-import com.unicom.urban.management.pojo.vo.NoticeTypeVO;
-import com.unicom.urban.management.service.notice.NoticeTypeService;
+import com.unicom.urban.management.pojo.dto.NoticeDTO;
+import com.unicom.urban.management.pojo.vo.NoticeVO;
+import com.unicom.urban.management.service.notice.NoticeService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -27,40 +29,40 @@ import java.util.List;
  */
 @RestController
 @ResponseResultBody
-@RequestMapping("/noticeType")
-public class NoticeTypeController {
+@RequestMapping("/notice")
+public class NoticeController {
 
     @Autowired
-    private NoticeTypeService noticeTypeService;
+    private NoticeService noticeService;
 
-    @GetMapping("/getNoticeTypeList")
-    public List<NoticeTypeVO> getNoticeTypeList() {
-        return noticeTypeService.findAll();
+    @GetMapping("/toNoticeList")
+    public ModelAndView grid() {
+        return new ModelAndView(SystemConstant.PAGE + "/notice/informNotice");
     }
 
     @GetMapping("/search")
-    public Page<NoticeTypeVO> search(NoticeTypeDTO noticeTypeDTO, @PageableDefault Pageable pageable) {
-        return noticeTypeService.search(noticeTypeDTO, pageable);
+    public Page<NoticeVO> search(NoticeDTO noticeDTO, @PageableDefault Pageable pageable) {
+        return noticeService.search(noticeDTO, pageable);
     }
 
-    @PostMapping("/noticeTypeSave")
-    public Result noticeTypeSave(@Valid NoticeTypeDTO noticeTypeDTO) {
-        noticeTypeService.save(noticeTypeDTO);
+    @PostMapping("/noticeSave")
+    public Result noticeSave(@Valid NoticeDTO noticeDTO) {
+        noticeService.save(noticeDTO);
         return Result.success("新增成功");
     }
 
-    @PostMapping("/noticeTypeUpdate")
-    public Result noticeTypeUpdate(@Valid NoticeTypeDTO noticeTypeDTO) {
-        if (StringUtils.isBlank(noticeTypeDTO.getId())) {
+    @PostMapping("/noticeUpdate")
+    public Result noticeUpdate(@Valid NoticeDTO noticeDTO) {
+        if (StringUtils.isBlank(noticeDTO.getId())) {
             throw new DataValidException("主键不能为空");
         }
-        noticeTypeService.update(noticeTypeDTO);
+        noticeService.update(noticeDTO);
         return Result.success("修改成功");
     }
 
-    @PostMapping("/noticeTypeDelete")
-    public Result noticeTypeDelete(@NotNull String id) {
-        noticeTypeService.delete(id);
+    @PostMapping("/noticeDelete")
+    public Result noticeDelete(@NotNull String id) {
+        noticeService.delete(id);
         return Result.success("删除成功");
     }
 

@@ -1,12 +1,11 @@
 package com.unicom.urban.management.pojo.entity.notice;
 
 import com.unicom.urban.management.pojo.Delete;
+import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * 通知公告类型实体
@@ -21,7 +20,17 @@ public class NoticeType {
 
     private String name;
 
+    private List<Notice> noticeList;
+
     private String deleted = Delete.NORMAL;
+
+    /**
+     * 判断此类别下是否有通知公告
+     */
+    @Transient
+    public boolean hasNotice() {
+        return CollectionUtils.isNotEmpty(this.noticeList);
+    }
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -49,5 +58,15 @@ public class NoticeType {
 
     public void setDeleted(String deleted) {
         this.deleted = deleted;
+    }
+
+    @JoinColumn
+    @OneToMany(fetch = FetchType.LAZY)
+    public List<Notice> getNoticeList() {
+        return noticeList;
+    }
+
+    public void setNoticeList(List<Notice> noticeList) {
+        this.noticeList = noticeList;
     }
 }
