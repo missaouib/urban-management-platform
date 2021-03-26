@@ -56,8 +56,9 @@ public class GridController {
         return new ModelAndView(SystemConstant.PAGE + "/area/workAdd");
     }
 
-    @GetMapping("/toWorkUpdate")
-    public ModelAndView toWorkUpdate() {
+    @GetMapping("/toWorkUpdate/{id}")
+    public ModelAndView toWorkUpdate(@PathVariable String id,Model model) {
+        model.addAttribute("id", id);
         return new ModelAndView(SystemConstant.PAGE + "/area/workUpdate");
     }
 
