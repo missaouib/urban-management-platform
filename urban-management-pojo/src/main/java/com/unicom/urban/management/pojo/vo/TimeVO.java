@@ -10,6 +10,8 @@ public class TimeVO {
 
     private String id;
 
+    private String name;
+
     /**
      * 方案开始时间
      */

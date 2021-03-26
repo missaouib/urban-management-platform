@@ -26,6 +26,11 @@ public class TimePlan {
     private String id;
 
     /**
+     * 方案名称
+     */
+    private String name;
+
+    /**
      * 方案开始时间
      */
     private LocalDate startTime;
@@ -54,6 +59,14 @@ public class TimePlan {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public LocalDate getStartTime() {

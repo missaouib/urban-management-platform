@@ -3,6 +3,7 @@ package com.unicom.urban.management.service.time;
 import com.unicom.urban.management.dao.time.DayRepository;
 import com.unicom.urban.management.dao.time.TimePlanRepository;
 import com.unicom.urban.management.mapper.TimeMapper;
+import com.unicom.urban.management.pojo.dto.TimePlanDTO;
 import com.unicom.urban.management.pojo.entity.time.TimePlan;
 import com.unicom.urban.management.pojo.vo.TimeVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +32,11 @@ public class TimeService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void save() {
+    public void save(TimePlanDTO timePlanDTO) {
         TimePlan timePlan = new TimePlan();
-//        timePlan.setStartTime();
-//        timePlan.setEndTime();
+        timePlan.setStartTime(timePlanDTO.getStartTime());
+        timePlan.setEndTime(timePlanDTO.getEndTime());
+        timePlan.setSts(TimePlan.Status.DISABLE);
         timePlanRepository.save(timePlan);
     }
 

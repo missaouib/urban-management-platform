@@ -1,6 +1,5 @@
 package com.unicom.urban.management.pojo.dto;
 
-import com.unicom.urban.management.pojo.entity.time.TimePlan;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +14,5 @@ public class TimePlanDTO {
     private LocalDate startTime;
 
     private LocalDate endTime;
-
-    private TimePlan.Status status;
 
 }
