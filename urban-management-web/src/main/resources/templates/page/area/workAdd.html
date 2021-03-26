@@ -96,29 +96,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="modal-default">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">默认窗口</h4>
-            </div>
-            <div class="modal-body">
-                <div class="tree">
-                    <div class="treeDemo">
-                        <ul id="treeDemo" class="ztree">zTree</ul>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary">确认</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div id="pictureDiv" style="display: none">
 
-</div>
+
 
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: jquery_validation_js"/>
@@ -214,23 +193,12 @@
         //先校验
         if (!$("form").valid()) {
             return;
-
         }
         var data = $('#userForm').serialize();
-        $.operate.saveTab(saveUrl, data);
+        $.operate.saveAndReload(saveUrl, data);
+        // $.operate.saveTab(saveUrl, data);
     }
 
-    /**
-     * 上报
-     */
-    function reportHandler(){
-        //先校验
-        if (!$("form").valid()) {
-            return;
-        }
-        var data = $('#userForm').serialize();
-        $.operate.saveTab(preReportUrl, data);
-    }
 
     /**
      * 后台自动生成案卷号
@@ -326,8 +294,8 @@
     // 更改校验文字
     jQuery.extend(jQuery.validator.messages, {
         required: "必填",
-        phone: "必填",
-        radio: "必填",
+        x: "必填",
+        y: "必填",
         address: "必填",
         email: "请输入正确格式的电子邮件",
         url: "请输入合法的网址",
@@ -422,29 +390,6 @@
         var reg = /^1[34578]\d{9}$/;
         return reg.test(value);
     }, "petitonerPhone error");
-
-    function submitHandler1() {
-        //先校验
-        if (!$("form").valid()) {
-            return;
-        }
-        let data = $('#userForm').serialize();
-        $.operate.saveAndReload(receiveUrl, data, function (e){
-            createEventCode($("#eventTypeId").val());
-        });
-    }
-
-    function submitHandler2() {
-        //先校验
-        if (!$("form").valid()) {
-            return;
-        }
-        let data = $('#userForm').serialize();
-        $.operate.saveAndReload(dispatchUrl, data, function (e){
-            createEventCode($("#eventTypeId").val());
-        });
-    }
-
 
     var container = document.getElementById('popup');
     var content = document.getElementById('popup-content');
