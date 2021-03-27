@@ -17,7 +17,7 @@ public class NoticeVO {
 
     private String title;
 
-    private NoticeType noticeType;
+    private String noticeTypeName;
 
     private String content;
 
