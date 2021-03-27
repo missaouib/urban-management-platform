@@ -8,6 +8,7 @@ import com.unicom.urban.management.pojo.entity.notice.Notice;
 import com.unicom.urban.management.pojo.entity.notice.NoticeType;
 import com.unicom.urban.management.pojo.vo.NoticeTypeVO;
 import com.unicom.urban.management.pojo.vo.NoticeVO;
+import com.unicom.urban.management.util.SecurityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ public class NoticeService {
     public void save(NoticeDTO noticeDTO) {
         Notice notice = new Notice();
         BeanUtils.copyProperties(noticeDTO, notice);
+        notice.setCreateBy(SecurityUtil.getUser().castToUser());
+        notice.setUpdateBy(SecurityUtil.getUser().castToUser());
         noticeRepository.save(notice);
     }
 
@@ -51,6 +54,7 @@ public class NoticeService {
         notice.setTitle(noticeDTO.getTitle());
         notice.setContent(noticeDTO.getContent());
         notice.setNoticeType(noticeDTO.getNoticeType());
+        notice.setUpdateBy(SecurityUtil.getUser().castToUser());
         noticeRepository.saveAndFlush(notice);
     }
 

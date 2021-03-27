@@ -1,10 +1,13 @@
 package com.unicom.urban.management.pojo.entity.notice;
 
 import com.unicom.urban.management.pojo.Delete;
+import com.unicom.urban.management.pojo.entity.User;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -34,6 +37,18 @@ public class Notice {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
+
+    /**
+     * 创建用户
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User createBy;
+
+    /**
+     * 修改用户
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User updateBy;
 
     private String deleted = Delete.NORMAL;
 
@@ -101,4 +116,21 @@ public class Notice {
         this.deleted = deleted;
     }
 
+    @CreatedBy
+    public User getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(User createBy) {
+        this.createBy = createBy;
+    }
+
+    @LastModifiedBy
+    public User getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(User updateBy) {
+        this.updateBy = updateBy;
+    }
 }
