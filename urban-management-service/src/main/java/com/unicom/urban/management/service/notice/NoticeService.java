@@ -2,6 +2,7 @@ package com.unicom.urban.management.service.notice;
 
 import com.unicom.urban.management.common.annotations.Log;
 import com.unicom.urban.management.dao.notice.NoticeRepository;
+import com.unicom.urban.management.pojo.Delete;
 import com.unicom.urban.management.pojo.dto.NoticeDTO;
 import com.unicom.urban.management.pojo.entity.notice.Notice;
 import com.unicom.urban.management.pojo.entity.notice.NoticeType;
@@ -77,6 +78,7 @@ public class NoticeService {
             if (StringUtils.isNotEmpty(noticeDTO.getContent())) {
                 list.add(criteriaBuilder.like(root.get("content").as(String.class), "%" + noticeDTO.getContent() + "%"));
             }
+            list.add(criteriaBuilder.equal(root.get("deleted").as(String.class), Delete.NORMAL));
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);

@@ -2,7 +2,9 @@ package com.unicom.urban.management.service.notice;
 
 import com.unicom.urban.management.common.annotations.Log;
 import com.unicom.urban.management.common.exception.DataValidException;
+import com.unicom.urban.management.dao.notice.NoticeRepository;
 import com.unicom.urban.management.dao.notice.NoticeTypeRepository;
+import com.unicom.urban.management.pojo.Delete;
 import com.unicom.urban.management.pojo.dto.NoticeTypeDTO;
 import com.unicom.urban.management.pojo.entity.notice.NoticeType;
 import com.unicom.urban.management.pojo.vo.NoticeTypeVO;
@@ -30,6 +32,8 @@ public class NoticeTypeService {
 
     @Autowired
     private NoticeTypeRepository noticeTypeRepository;
+    @Autowired
+    private NoticeRepository noticeRepository;
 
     @Log(name = "通知公告类型-新增")
     public void save(NoticeTypeDTO noticeTypeDTO) {
@@ -52,7 +56,7 @@ public class NoticeTypeService {
     @Log(name = "通知公告类型-删除")
     public void delete(String id) {
         NoticeType noticeType = findOne(id);
-        if (noticeType.hasNotice()) {
+        if (noticeRepository.existsAllByDeletedAndNoticeType_Id(Delete.NORMAL, id)) {
             throw new DataValidException("该类型下有消息无法删除");
         }
         noticeType.setDeleted("1");
@@ -73,6 +77,7 @@ public class NoticeTypeService {
     public Page<NoticeTypeVO> search(NoticeTypeDTO noticeTypeDTO, Pageable pageable) {
         Page<NoticeType> page = noticeTypeRepository.findAll((Specification<NoticeType>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
+            list.add(criteriaBuilder.equal(root.get("deleted").as(String.class), Delete.NORMAL));
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
