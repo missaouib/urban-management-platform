@@ -29,6 +29,14 @@
         <div class="modelBox">
             <label class="modelTitle" style="margin-top: 10px">名称:</label>
             <input type="text" required="required" name="title" id="title" style="width: 70%">
+
+        </div>
+        <div class="modelBox">
+            <label class="modelTitle" style="margin-top: 10px">类别:</label>
+            <!--            <input type="text" required="required" name="title" id="title" style="width: 70%">-->
+            <select id="titleType" style="width: 70%">
+
+            </select>
         </div>
         <div class="modelBox">
             <label class="modelTitle" style="margin-top: 10px">描述:</label>
@@ -49,16 +57,18 @@
 
     $(function () {
         search();
+
     })
 
 
     let searchUrl = /*[[@{/notice/search}]]*/ "/notice/search";
 
+
     let addUrl = /*[[@{/notice/noticeSave}]]*/ "/notice/noticeSave";
 
-    let editUrl = /*[[@{/modeler.html?modelId={id}}]]*/ "/modeler.html";
+    let editUrl = /*[[@{/notice/noticeUpdate}]]*/ "/modeler.html";
 
-    let removeUrl = /*[[@{/processdef/remove}]]*/ "/processdef/remove";
+    let removeUrl = /*[[@{/notice/noticeDelete}]]*/ "/processdef/remove";
 
     let activitiUrl = /*[[@{/activiti/create}]]*/ "/deployment/file";
 
@@ -103,8 +113,8 @@
                     title: '操作',
                     field: '',
                     formatter: function (value, row) {
-                        var a = '<a  href="#" title="" onclick="edit(1)">编辑</a> ';
-                        var b = '<a  href="#" title="" onclick="deleteFn(1)">删除</a> ';
+                        var a = '<a  href="#" title=" '+ row.id +' " onclick="edit(this)">编辑</a> ';
+                        var b = '<a  href="#" title=" '+ row.id +' " onclick="deleteFn(this)">删除</a> ';
                         return a + b;
                     }
                 }
@@ -114,10 +124,11 @@
     }
 
     function deleteFn(id) {
-        console.log('删除')
+        $.operate.saveAndReload(removeUrl, {id:id.title.trim()});
     }
 
     function edit(id) {
+        getSelectType()
         layer.open({
             type: 1,
             area: ['400px', '300px'],
@@ -131,13 +142,20 @@
             // 弹层外区域关闭
             shadeClose: false,
             btn1: function (index, layero) {
-                let noticeData = $('#noticeForm').serialize();
-                console.log('noticeData', noticeData);
+                let myId = $("#titleType option:selected").val();
+                let params = {
+                    noticeTypeId:myId,
+                    title:$('#title').val(),
+                    content:$('#content').val(),
+                    id:id.title.trim()
+                }
+                $.operate.saveAndReload(editUrl, {...params});
             }
         });
     }
 
     function add() {
+        getSelectType()
         layer.open({
             type: 1,
             area: ['400px', '300px'],
@@ -151,9 +169,40 @@
             // 弹层外区域关闭
             shadeClose: false,
             btn1: function (index, layero) {
-                let noticeData = $('#noticeForm').serialize();
-                console.log('noticeData', noticeData);
-                $.operate.saveAndReload(addUrl, noticeData);
+                let myId = $("#titleType option:selected").val();
+                let params = {
+                    noticeTypeId:myId,
+                    title:$('#title').val(),
+                    content:$('#content').val()
+                }
+                $.operate.saveAndReload(addUrl, {...params});
+            }
+        });
+    }
+    function getSelectType() {
+        let getNoticeTypeListUrl = /*[[@{/noticeType/getNoticeTypeList}]]*/ "/json/unit.json";
+        $('#titleType').html(``)
+        $.ajax({
+            url: getNoticeTypeListUrl,
+            type: 'GET',
+            async: true,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                // console.log('ddd',data.data)
+                let html = '';
+                for (let i=0;i<data.data.length;i++){
+                    html += `
+                            <option value="${data.data[i].id}">${data.data[i].name}</option>
+                        `
+                }
+                $('#titleType').html(html)
+
+            },
+            error: function (data) {
+                $.modal.alertError(data.message,function () {
+                });
             }
         });
     }
