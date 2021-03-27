@@ -2,45 +2,45 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
     <title>通知公告</title>
-    <th:block th:include="page/fragments/common :: common_css" />
-    <th:block th:include="page/fragments/common :: bootstrap_table_css" />
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
 
 </head>
 
 <body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
-    <div class="notice_main ">
-        <div class="clear"></div>
+<div class="notice_main ">
+    <div class="clear"></div>
 
-        <div class="btn-group-sm" id="toolbar">
-            <a class="btn btn-success" onclick="add()">
-                <i class="fa fa-plus"></i> 添加
-            </a>
-            <a class="btn btn-success" onclick="goTypeClassify()">
-                <i class="fa fa-plus"></i> 通知公告维护
-            </a>
-        </div>
-        <table id="bootstrap-table" class="table_style" style="margin: 0 auto"> </table>
+    <div class="btn-group-sm" id="toolbar">
+        <a class="btn btn-success" onclick="add()">
+            <i class="fa fa-plus"></i> 添加
+        </a>
+        <a class="btn btn-success" onclick="goTypeClassify()">
+            <i class="fa fa-plus"></i> 通知公告维护
+        </a>
     </div>
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+</div>
 
-    <script id="modelDiv" type="text/template">
-    <form action="" method="post" id="modelForm">
+<script id="modelDiv" type="text/template">
+    <form action="" method="post" id="noticeForm">
         <div class="modelBox">
             <label class="modelTitle" style="margin-top: 10px">名称:</label>
-            <div class="tan">!</div>
-            <input type="text" required="required" name="name" id="name" style="width: 70%">
+            <input type="text" required="required" name="title" id="title" style="width: 70%">
         </div>
         <div class="modelBox">
             <label class="modelTitle" style="margin-top: 10px">描述:</label>
-            <textarea type="text" cols="8" rows="6" required="required" name="description" style="width: 70%;height:120px;" id="description"></textarea>
+            <textarea type="text" cols="8" rows="6" required="required" name="content"
+                      style="width: 70%;height:120px;" id="content"></textarea>
         </div>
     </form>
 </script>
 
 
-    <th:block th:include="page/fragments/common :: common_js" />
-    <th:block th:include="page/fragments/common :: bootstrap_table_js" />
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 
 </body>
 
@@ -52,9 +52,9 @@
     })
 
 
-    let searchUrl = /*[[@{/processdef/search}]]*/ "/json/unit.json";
+    let searchUrl = /*[[@{/notice/search}]]*/ "/notice/search";
 
-    let addUrl = /*[[@{/processdef/model}]]*/ "/processdef/model";
+    let addUrl = /*[[@{/notice/noticeSave}]]*/ "/notice/noticeSave";
 
     let editUrl = /*[[@{/modeler.html?modelId={id}}]]*/ "/modeler.html";
 
@@ -63,7 +63,6 @@
     let activitiUrl = /*[[@{/activiti/create}]]*/ "/deployment/file";
 
     let modelUrl = /*[[@{/modeler.html?modelId=}]]*/ "/modeler.html";
-
 
 
     // let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
@@ -76,15 +75,10 @@
     function goTypeClassify() {
         window.parent.$.learuntab.myAddTab('通知公告类型', '/notice/toNoticeTypeList', 'data_id')
     }
+
     function search() {
         var options = {
             url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
-            sidePagination: "client",
-            uniqueId: "deploymentId",
-            modalName: "流程定义",
             columns: [
                 {
                     field: 'index',
@@ -96,21 +90,13 @@
                     }
                 },
                 {
-                    checkbox: true
-                },
-                {
-                    title: '流程定义ID',
-                    field: 'id',
+                    title: '标题',
+                    field: 'title',
                     sortable: true,
                 },
                 {
-                    title: '部署ID',
-                    field: 'deploymentId',
-                    sortable: true,
-                },
-                {
-                    title: '名称',
-                    field: 'name',
+                    title: '内容',
+                    field: 'content',
                     sortable: true,
                 },
                 {
@@ -126,9 +112,11 @@
         };
         $.table.init(options);
     }
-    function deleteFn(id){
+
+    function deleteFn(id) {
         console.log('删除')
     }
+
     function edit(id) {
         layer.open({
             type: 1,
@@ -143,14 +131,12 @@
             // 弹层外区域关闭
             shadeClose: false,
             btn1: function (index, layero) {
-                // var index = layer.load(2, {shade: false});
-                // // $.modal.disable();
-                // var formData = new FormData(layero.find('form')[0]);
-                let formData = $('#modelForm').serialize();
-                console.log('1111111111')
+                let noticeData = $('#noticeForm').serialize();
+                console.log('noticeData', noticeData);
             }
         });
     }
+
     function add() {
         layer.open({
             type: 1,
@@ -165,11 +151,9 @@
             // 弹层外区域关闭
             shadeClose: false,
             btn1: function (index, layero) {
-                // var index = layer.load(2, {shade: false});
-                // // $.modal.disable();
-                // var formData = new FormData(layero.find('form')[0]);
-                let formData = $('#modelForm').serialize();
-                console.log('1111111111')
+                let noticeData = $('#noticeForm').serialize();
+                console.log('noticeData', noticeData);
+                $.operate.saveAndReload(addUrl, noticeData);
             }
         });
     }

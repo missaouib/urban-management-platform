@@ -22,10 +22,10 @@
     </div>
 
     <script id="modelDiv" type="text/template">
-    <form action="" method="post" id="modelForm">
+    <form action="" method="post" id="noticeTypeForm">
         <div class="modelBox">
             <label class="modelTitle" style="margin-top: 10px">名称:</label>
-            <div class="tan">!</div>
+            <input type="text" id="id" name="id">
             <input type="text" required="required" name="name" id="name" style="width: 70%">
         </div>
     </form>
@@ -45,9 +45,9 @@
     })
 
 
-    let searchUrl = /*[[@{/processdef/search}]]*/ "/json/unit.json";
+    let searchUrl = /*[[@{/noticeType/search}]]*/ "/json/unit.json";
 
-    let addUrl = /*[[@{/processdef/model}]]*/ "/processdef/model";
+    let addUrl = /*[[@{/noticeType/noticeTypeSave}]]*/ "/processdef/model";
 
     let editUrl = /*[[@{/modeler.html?modelId={id}}]]*/ "/modeler.html";
 
@@ -69,12 +69,6 @@
     function search() {
         var options = {
             url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
-            sidePagination: "client",
-            uniqueId: "deploymentId",
-            modalName: "流程定义",
             columns: [
                 {
                     field: 'index',
@@ -86,48 +80,15 @@
                     }
                 },
                 {
-                    checkbox: true
-                },
-                {
-                    title: '流程定义ID',
-                    field: 'id',
-                    sortable: true,
-                },
-                {
-                    title: '部署ID',
-                    field: 'deploymentId',
-                    sortable: true,
-                },
-                {
                     title: '名称',
                     field: 'name',
-                    sortable: true,
-                },
-                {
-                    title: 'KEY',
-                    field: 'key',
-                    sortable: true,
-                },
-                {
-                    title: '模型ID',
-                    field: 'modelerId',
-                    sortable: true,
-                },
-                {
-                    title: '资源名称',
-                    field: 'resourceName',
-                    sortable: true,
-                },
-                {
-                    title: '版本',
-                    field: 'version',
                     sortable: true,
                 },
                 {
                     title: '操作',
                     field: '',
                     formatter: function (value, row) {
-                        var a = '<a  href="#" title="" onclick="edit(1)">编辑</a> ';
+                        var a = '<a  href="#" title="'+ 111 +'" onclick="edit(this)">编辑</a> ';
                         var b = '<a  href="#" title="" onclick="deleteFn(1)">删除</a> ';
                         return a + b;
                     }
@@ -136,10 +97,8 @@
         };
         $.table.init(options);
     }
-    function deleteFn(id) {
-        console.log('删除')
-    }
-    function edit(id) {
+
+    function edit(data) {
         layer.open({
             type: 1,
             area: ['400px', '300px'],
@@ -153,14 +112,13 @@
             // 弹层外区域关闭
             shadeClose: false,
             btn1: function (index, layero) {
-                // var index = layer.load(2, {shade: false});
-                // // $.modal.disable();
-                // var formData = new FormData(layero.find('form')[0]);
-                let formData = $('#modelForm').serialize();
-                console.log('编辑')
+
             }
         });
+        console.log("data", data);
+        $("#id").val("11111");
     }
+
     function add() {
         layer.open({
             type: 1,
@@ -175,8 +133,9 @@
             // 弹层外区域关闭
             shadeClose: false,
             btn1: function (index, layero) {
-                let formData = $('#modelForm').serialize();
-                console.log('111111')
+                let noticeTypeData = $('#noticeTypeForm').serialize();
+                console.log('noticeTypeData', noticeTypeData);
+                $.operate.saveAndReload(addUrl, noticeTypeData);
             }
         });
     }

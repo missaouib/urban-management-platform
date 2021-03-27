@@ -3,9 +3,6 @@ package com.unicom.urban.management.pojo.vo;
 import com.unicom.urban.management.pojo.entity.notice.NoticeType;
 import lombok.Data;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
-
 /**
  * 通知公告类型
  *

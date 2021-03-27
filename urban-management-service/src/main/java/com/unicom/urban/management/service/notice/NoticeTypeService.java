@@ -74,6 +74,11 @@ public class NoticeTypeService {
         }, pageable);
         List<NoticeTypeVO> noticeTypeVOList = new ArrayList<>(page.getContent().size());
         BeanUtils.copyProperties(page.getContent(), noticeTypeVOList);
+        for (NoticeType noticeType : page.getContent()) {
+            NoticeTypeVO noticeTypeVO = new NoticeTypeVO();
+            BeanUtils.copyProperties(noticeType, noticeTypeVO);
+            noticeTypeVOList.add(noticeTypeVO);
+        }
         return new PageImpl<>(noticeTypeVOList, page.getPageable(), page.getTotalElements());
     }
 

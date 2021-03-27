@@ -74,7 +74,11 @@ public class NoticeService {
             return criteriaBuilder.and(list.toArray(p));
         }, pageable);
         List<NoticeVO> noticeVOList = new ArrayList<>(page.getContent().size());
-        BeanUtils.copyProperties(page.getContent(), noticeVOList);
+        for (Notice notice : page.getContent()) {
+            NoticeVO noticeVO = new NoticeVO();
+            BeanUtils.copyProperties(notice, noticeVO);
+            noticeVOList.add(noticeVO);
+        }
         return new PageImpl<>(noticeVOList, page.getPageable(), page.getTotalElements());
     }
 
