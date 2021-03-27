@@ -60,7 +60,7 @@ public class NoticeType {
         this.deleted = deleted;
     }
 
-    @JoinColumn
+    @JoinColumn(name = "notice_type_id")
     @OneToMany(fetch = FetchType.LAZY)
     public List<Notice> getNoticeList() {
         return noticeList;
