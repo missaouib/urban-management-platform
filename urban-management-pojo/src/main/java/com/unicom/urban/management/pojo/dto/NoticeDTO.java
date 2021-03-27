@@ -1,10 +1,8 @@
 package com.unicom.urban.management.pojo.dto;
 
-import com.unicom.urban.management.pojo.entity.notice.NoticeType;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -20,7 +18,7 @@ public class NoticeDTO {
     @NotBlank(message = "标题不能为空")
     private String title;
 
-    private NoticeType noticeType;
+    private String noticeTypeId;
 
     @NotBlank(message = "内容不能为空")
     @Length(max = 500, message = "内容长读不能超过500")

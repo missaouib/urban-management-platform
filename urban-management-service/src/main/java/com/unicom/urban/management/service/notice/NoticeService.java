@@ -34,11 +34,15 @@ public class NoticeService {
 
     @Autowired
     private NoticeRepository noticeRepository;
+    @Autowired
+    private NoticeTypeService noticeTypeService;
 
     @Log(name = "通知公告-新增")
     public void save(NoticeDTO noticeDTO) {
         Notice notice = new Notice();
         BeanUtils.copyProperties(noticeDTO, notice);
+        NoticeType noticeType = noticeTypeService.findOne(noticeDTO.getNoticeTypeId());
+        notice.setNoticeType(noticeType);
         notice.setCreateBy(SecurityUtil.getUser().castToUser());
         notice.setUpdateBy(SecurityUtil.getUser().castToUser());
         noticeRepository.save(notice);
@@ -53,7 +57,8 @@ public class NoticeService {
         Notice notice = findOne(noticeDTO.getId());
         notice.setTitle(noticeDTO.getTitle());
         notice.setContent(noticeDTO.getContent());
-        notice.setNoticeType(noticeDTO.getNoticeType());
+        NoticeType noticeType = noticeTypeService.findOne(noticeDTO.getNoticeTypeId());
+        notice.setNoticeType(noticeType);
         notice.setUpdateBy(SecurityUtil.getUser().castToUser());
         noticeRepository.saveAndFlush(notice);
     }
