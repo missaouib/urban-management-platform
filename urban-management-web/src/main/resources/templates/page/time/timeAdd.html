@@ -45,7 +45,7 @@
     <div class="notice_check">
         <form id="search-form">
             <p style="display: flex;justify-content: flex-end">
-<!--                <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">-->
+                <input type="button" class="check_btn2 button_ground" data-toggle='modal' data-target='#modal-default' value="新增">
 <!--                <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="保存方案">-->
             </p>
         </form>
@@ -54,6 +54,34 @@
 
     <div class="clear"></div>
     <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <P style="display: flex;align-items:center;justify-content:center;margin: 5px 0">
+                        <span class="sendText" style="width: 20%"><i style="color: red!important;"></i>日期</span>
+                        <input size="16" class="form_datetime" name="startTime" id="begin" type="text" value="" readonly style="width: 80%">
+                    </P>
+                    <P style="display: flex;align-items:center;justify-content:center">
+                        <span class="sendText" style="width: 20%"><i style="color: red!important;"></i>标识</span>
+                        <select style="width: 80%" type="text" class="find_input">
+                            <option>工作日</option>
+                            <option>非工作日</option>
+                        </select>
+                    </P>
+                </div>
+                <input type="hidden" id="imageUrlList" value="">
+                <div class="modal-footer justify-content-between"
+                     style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary" onclick="" id="underBtn">完成</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -77,6 +105,7 @@
         });
 
         search();
+
     })
 
     let searchUrl = /*[[@{/time/day/search}]]*/ "/json/unit.json";
