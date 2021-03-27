@@ -2,7 +2,9 @@ package com.unicom.urban.management.mapper;
 
 import com.unicom.urban.management.pojo.entity.time.Day;
 import com.unicom.urban.management.pojo.entity.time.TimePlan;
+import com.unicom.urban.management.pojo.entity.time.TimeScheme;
 import com.unicom.urban.management.pojo.vo.DayVo;
+import com.unicom.urban.management.pojo.vo.TimeSchemeVO;
 import com.unicom.urban.management.pojo.vo.TimeVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -31,5 +33,7 @@ public interface TimeMapper {
             @Mapping(target = "work", expression = "java(day.getWork().getValue())")
     })
     DayVo convert(Day day);
+
+    List<TimeSchemeVO> convertSchemeList(List<TimeScheme> timeSchemeList);
 
 }

@@ -6,6 +6,7 @@ import com.unicom.urban.management.pojo.dto.DayDTO;
 import com.unicom.urban.management.pojo.dto.TimePlanDTO;
 import com.unicom.urban.management.pojo.entity.time.TimePlan;
 import com.unicom.urban.management.pojo.vo.DayVo;
+import com.unicom.urban.management.pojo.vo.TimeSchemeVO;
 import com.unicom.urban.management.pojo.vo.TimeVO;
 import com.unicom.urban.management.service.time.TimeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 /**
  * 计时管理
@@ -79,6 +82,25 @@ public class TimeController {
     @PostMapping("/updateday")
     public void updateDay(DayDTO dayDTO) {
         timeService.updateDay(dayDTO);
+    }
+
+    /**
+     * 设置时间
+     *
+     * @param id   计时方案id
+     * @param time 时间 逗号分割
+     */
+    @PostMapping("/settime")
+    public void setTime(@RequestParam(name = "id") String id, @RequestParam(name = "time") String time) {
+        timeService.setTime(id, time);
+    }
+
+    /**
+     * 设置时间查询
+     */
+    @GetMapping("/settime")
+    public List<TimeSchemeVO> setTime(@RequestParam(name = "id") String id) {
+        return timeService.queryTimeScheme(id);
     }
 
     @GetMapping("/edit/{id}")

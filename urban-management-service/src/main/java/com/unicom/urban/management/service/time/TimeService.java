@@ -8,7 +8,9 @@ import com.unicom.urban.management.pojo.dto.DayDTO;
 import com.unicom.urban.management.pojo.dto.TimePlanDTO;
 import com.unicom.urban.management.pojo.entity.time.Day;
 import com.unicom.urban.management.pojo.entity.time.TimePlan;
+import com.unicom.urban.management.pojo.entity.time.TimeScheme;
 import com.unicom.urban.management.pojo.vo.DayVo;
+import com.unicom.urban.management.pojo.vo.TimeSchemeVO;
 import com.unicom.urban.management.pojo.vo.TimeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +18,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.time.LocalTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,17 +80,16 @@ public class TimeService {
 
     @Transactional(rollbackFor = Exception.class)
     public void saveDay(DayDTO dayDTO) {
-        Optional<TimePlan> optional = timePlanRepository.findById(dayDTO.getTimePlanId());
-        if (optional.isPresent()) {
-            if (optional.get().hasDay(dayDTO.getCalendar())) {
-                throw new DataValidException(dayDTO.getCalendar() + " 日期已经设置 不可再次设置");
-            }
-            Day day = new Day();
-            day.setCalendar(dayDTO.getCalendar());
-            day.setWorkDayMark(dayDTO.getWorkDayMark());
-            day.setWork(dayDTO.getWork());
-            optional.get().addDay(day);
+        if (dayRepository.existsByCalendarAndTimePlan(dayDTO.getCalendar(), new TimePlan(dayDTO.getTimePlanId()))) {
+            throw new DataValidException(dayDTO.getCalendar() + " 日期已经设置 不可再次设置");
         }
+        Day day = new Day();
+        day.setTimePlan(new TimePlan(dayDTO.getTimePlanId()));
+        day.setCalendar(dayDTO.getCalendar());
+        day.setWorkDayMark(dayDTO.getWorkDayMark());
+        day.setWork(dayDTO.getWork());
+        dayRepository.save(day);
+
     }
 
 
@@ -96,6 +100,33 @@ public class TimeService {
             Day day = optional.get();
             day.setWork(dayDTO.getWork());
             day.setWorkDayMark(dayDTO.getWorkDayMark());
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public List<TimeSchemeVO> queryTimeScheme(String id) {
+        Optional<TimePlan> optional = timePlanRepository.findById(id);
+        if (optional.isPresent()) {
+            List<TimeScheme> timeSchemeList = optional.get().getTimeSchemeList();
+            return TimeMapper.INSTANCE.convertSchemeList(timeSchemeList);
+
+        }
+        return Collections.emptyList();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void setTime(String id, String time) {
+        String[] timeStr = StringUtils.delimitedListToStringArray(time, ",");
+        Optional<TimePlan> optional = timePlanRepository.findById(id);
+        if (optional.isPresent()) {
+            optional.get().cleanTimeScheme();
+            for (String str : timeStr) {
+                LocalTime startTime = LocalTime.parse(str);
+                TimeScheme timeScheme = new TimeScheme();
+                timeScheme.setStartTime(startTime);
+                timeScheme.setEndTime(startTime.plusMinutes(30));
+                optional.get().addTimeScheme(timeScheme);
+            }
         }
     }
 

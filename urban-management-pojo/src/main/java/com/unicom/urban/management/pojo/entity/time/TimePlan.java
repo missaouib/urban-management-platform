@@ -44,7 +44,8 @@ public class TimePlan {
     private List<Day> dayList = new ArrayList<>();
 
 
-    private List<TimeScheme> timeSchemeList;
+    private List<TimeScheme> timeSchemeList = new ArrayList<>();
+
 
     /**
      * 状态
@@ -61,6 +62,16 @@ public class TimePlan {
     @Transient
     public void addDay(Day day) {
         this.dayList.add(day);
+    }
+
+    @Transient
+    public void addTimeScheme(TimeScheme timeScheme) {
+        this.timeSchemeList.add(timeScheme);
+    }
+
+    @Transient
+    public void cleanTimeScheme() {
+        this.timeSchemeList = new ArrayList<>();
     }
 
 

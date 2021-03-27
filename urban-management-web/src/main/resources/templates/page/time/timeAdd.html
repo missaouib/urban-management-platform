@@ -22,7 +22,7 @@
 
 
     <form id="userForm" style="margin-top: 10px">
-        <input type="radio" name="id" th:value="${id}" checked style="display: none">
+        <input type="radio" name="id" th:value="${id}" id="timePlanId" checked style="display: none">
         <div class="top table2_top">
             <div class="top_out">
 <!--                <table class="table">-->
@@ -116,35 +116,37 @@
 
     })
 
-    function saveTab() {
-        let date = $("#begin").val();
-        let orWork = $("#work option:selected").val();
-        let orWorkDay = $("#workDay option:selected").val();
-        let params = {
-            date:date,
-            orWork:orWork,
-            orWorkDay:orWorkDay
-        }
-        console.log(params)
-        // $.operate.saveAndReload(editUrl, {...params});
-    }
     let searchUrl = /*[[@{/time/day/search}]]*/ "/json/unit.json";
 
     let addUrl = /*[[@{/time/add}]]*/ "/time/add";
 
     let removeUrl = /*[[@{/time/remove}]]*/ "/time/remove";
 
-    let editUrl = /*[[@{/time/edit/{id}}]]*/ "/time/remove";
+    let saveUrl = /*[[@{/time/addday}]]*/ "/time/remove";
 
     let activationUrl = /*[[@{/time/activation}]]*/ "/time/activation";
 
-    let initializationUrl = /*[[@{/time/initialization}]]*/ "/time/initialization";
+
+    function saveTab() {
+        let date = $("#begin").val();
+        let orWork = $("#work option:selected").val();
+        let orWorkDay = $("#workDay option:selected").val();
+        let timePlanId = $("#timePlanId").val();
+        let params = {
+            calendar: date,
+            workDayMark: orWork,
+            work: orWorkDay,
+            timePlanId: timePlanId
+        }
+        console.log(params)
+        $.operate.saveAndReload(saveUrl, params);
+    }
+
 
     function search() {
         var options = {
             url: searchUrl,
             createUrl: addUrl,
-            updateUrl: editUrl,
             removeUrl: removeUrl,
             uniqueId: "id",
             sortName: "id",
