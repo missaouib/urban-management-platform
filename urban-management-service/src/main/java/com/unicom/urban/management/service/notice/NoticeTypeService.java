@@ -64,7 +64,7 @@ public class NoticeTypeService {
     }
 
     public List<NoticeTypeVO> findAll() {
-        List<NoticeType> noticeTypeList = noticeTypeRepository.findAll();
+        List<NoticeType> noticeTypeList = noticeTypeRepository.findAllByDeleted(Delete.NORMAL);
         List<NoticeTypeVO> noticeTypeVOList = new ArrayList<>(noticeTypeList.size());
         for (NoticeType noticeType : noticeTypeList) {
             NoticeTypeVO noticeTypeVO = new NoticeTypeVO();
