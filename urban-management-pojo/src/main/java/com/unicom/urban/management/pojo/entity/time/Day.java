@@ -31,6 +31,8 @@ public class Day {
 
     private LocalDate calendar;
 
+    private TimePlan timePlan;
+
     /**
      * 是否为工作日
      */
@@ -88,6 +90,15 @@ public class Day {
 
     public void setWork(Work work) {
         this.work = work;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    public TimePlan getTimePlan() {
+        return timePlan;
+    }
+
+    public void setTimePlan(TimePlan timePlan) {
+        this.timePlan = timePlan;
     }
 
     public enum WorkDayMark implements BaseEnum {

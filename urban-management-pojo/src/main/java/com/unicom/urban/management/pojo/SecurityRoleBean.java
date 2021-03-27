@@ -4,6 +4,8 @@ import com.unicom.urban.management.pojo.entity.Role;
 import lombok.Data;
 import lombok.ToString;
 
+import java.io.Serializable;
+
 /**
  * 存放在SpringSecurity中的实体角色对象
  *
@@ -11,7 +13,7 @@ import lombok.ToString;
  */
 @Data
 @ToString
-public class SecurityRoleBean {
+public class SecurityRoleBean implements Serializable {
 
     private String id;
 

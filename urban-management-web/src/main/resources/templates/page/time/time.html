@@ -94,7 +94,7 @@
 
     let searchUrl = /*[[@{/time/search}]]*/ "/json/unit.json";
 
-    let addUrl = /*[[@{/time/addday}]]*/ "/time/add";
+    let addUrl = /*[[@{/time/add}]]*/ "/time/add";
 
     let removeUrl = /*[[@{/time/remove}]]*/ "/time/remove";
 
@@ -125,8 +125,8 @@
                     }
                 },
                 {
-                    title: '计时方案',
-                    field: 'startTime'
+                    title: '方案名称',
+                    field: 'name'
                 },
                 {
                     title: '开始时间',
@@ -153,10 +153,10 @@
                     class: 'radios',
                     formatter: function (value, row) {
                         var e = "<label class='toggle-switch switch-solid' style='margin: 0 5px'>\n";
-                        if (row.sts === 0) {
-                            e += "<input type='checkbox' id='status' checked onclick='activation(\"" + row.id + "\")'>\n"
+                        if (row.status === 0) {
+                            e += "<input type='checkbox' id='status' checked onclick='disables(\"" + row.id + "\")'>\n"
                         } else {
-                            e += "<input type='checkbox' id='status'  onclick='activation(\"" + row.id + "\")'>\n"
+                            e += "<input type='checkbox' id='status'  onclick='enable(\"" + row.id + "\")'>\n"
                         }
                         e += "<span></span>\n</label>";
                         e +=  "<a href='#' title='' style='margin-right: 5px' onclick='$.operate.editTab(\"" + row.id + "\")'>设置计时</a>";
@@ -168,26 +168,21 @@
         $.table.init(options);
     }
 
-    function activation(obj) {
-        $.ajax({
-            type: "GET",
-            url: activationUrl + "?id=" + obj
-        });
-    }
-
-    function initialization(obj) {
-        $.ajax({
-            type: "GET",
-            url: initializationUrl + "?id=" + obj,
-            success: function (result) {
-                if(result.code === 0){
-                    $.modal.alertSuccess("重置密码成功")
-                }
+    function enable(obj) {
+        $.ajaxUtil.get(activationUrl + "?id=" + obj + "&status=" + 0, function (result) {
+            if (result.code === 0) {
+                $.table.refresh();
             }
         });
     }
 
-
+    function disables(obj) {
+        $.ajaxUtil.get(activationUrl + "?id=" + obj + "&status=" + 1, function (result) {
+            if (result.code === 0) {
+                $.table.refresh();
+            }
+        });
+    }
 
 </script>
 </body>

@@ -3,16 +3,17 @@ package com.unicom.urban.management.web.project.time;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.dto.TimePlanDTO;
+import com.unicom.urban.management.pojo.entity.time.TimePlan;
+import com.unicom.urban.management.pojo.vo.DayVo;
 import com.unicom.urban.management.pojo.vo.TimeVO;
 import com.unicom.urban.management.service.time.TimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -41,12 +42,44 @@ public class TimeController {
 
     @GetMapping("/add")
     public ModelAndView add() {
-        return new ModelAndView(SystemConstant.PAGE + "/time/time");
+        return new ModelAndView(SystemConstant.PAGE + "/time/add");
     }
 
-    @PostMapping("/save")
-    public void save(TimePlanDTO timePlanDTO) {
+    /**
+     * 跳转到新增计时管理页面
+     */
+    @GetMapping("/addtime")
+    public ModelAndView addTime() {
+        return new ModelAndView(SystemConstant.PAGE + "/time/addtime");
+    }
+
+
+    /**
+     * 新增计时管理
+     */
+    @PostMapping("/addtime")
+    public void save(@Validated TimePlanDTO timePlanDTO) {
         timeService.save(timePlanDTO);
+    }
+
+    /**
+     * 启用或禁用
+     */
+    @GetMapping("/activation")
+    public void activation(String id, TimePlan.Status status) {
+        timeService.activation(id, status);
+    }
+
+    @GetMapping("/edit/{id}")
+    public ModelAndView edit(@PathVariable("id") String id, Model model) {
+        model.addAttribute("id", id);
+        return new ModelAndView(SystemConstant.PAGE + "/time/timeAdd");
+    }
+
+
+    @GetMapping("/day/search")
+    public Page<DayVo> search(String id, @PageableDefault Pageable pageable) {
+        return timeService.search(id, pageable);
     }
 
     @GetMapping("/addday")

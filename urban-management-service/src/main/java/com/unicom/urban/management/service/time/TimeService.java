@@ -4,7 +4,9 @@ import com.unicom.urban.management.dao.time.DayRepository;
 import com.unicom.urban.management.dao.time.TimePlanRepository;
 import com.unicom.urban.management.mapper.TimeMapper;
 import com.unicom.urban.management.pojo.dto.TimePlanDTO;
+import com.unicom.urban.management.pojo.entity.time.Day;
 import com.unicom.urban.management.pojo.entity.time.TimePlan;
+import com.unicom.urban.management.pojo.vo.DayVo;
 import com.unicom.urban.management.pojo.vo.TimeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TimeService {
@@ -34,10 +37,39 @@ public class TimeService {
     @Transactional(rollbackFor = Exception.class)
     public void save(TimePlanDTO timePlanDTO) {
         TimePlan timePlan = new TimePlan();
+        timePlan.setName(timePlanDTO.getName());
         timePlan.setStartTime(timePlanDTO.getStartTime());
         timePlan.setEndTime(timePlanDTO.getEndTime());
         timePlan.setSts(TimePlan.Status.DISABLE);
         timePlanRepository.save(timePlan);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Page<DayVo> search(String timeId, Pageable pageable) {
+        Page<Day> page = dayRepository.findByTimePlanOrderByCalendar(new TimePlan(timeId), pageable);
+        List<DayVo> list = TimeMapper.INSTANCE.convertDayList(page.getContent());
+        return new PageImpl<>(list, page.getPageable(), page.getTotalElements());
+
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void activation(String id, TimePlan.Status status) {
+        if (TimePlan.Status.ENABLE.equals(status)) {
+            List<TimePlan> timePlanList = timePlanRepository.findAll();
+            for (TimePlan timePlan : timePlanList) {
+                if (id.equals(timePlan.getId())) {
+                    timePlan.setSts(TimePlan.Status.ENABLE);
+                } else {
+                    timePlan.setSts(TimePlan.Status.DISABLE);
+                }
+            }
+        } else {
+            Optional<TimePlan> option = timePlanRepository.findById(id);
+            option.ifPresent(TimePlan::disable);
+        }
+
+
+    }
+
 
 }

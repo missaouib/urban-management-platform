@@ -49,6 +49,22 @@ public class TimePlan {
      */
     private Status sts;
 
+    public TimePlan() {
+    }
+
+    public TimePlan(String id) {
+        this.id = id;
+    }
+
+    @Transient
+    public void enable() {
+        this.sts = Status.ENABLE;
+    }
+
+    @Transient
+    public void disable() {
+        this.sts = Status.DISABLE;
+    }
 
     @Id
     @GeneratedValue(generator = "uuid2")
