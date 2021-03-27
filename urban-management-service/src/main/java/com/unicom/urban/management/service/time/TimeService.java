@@ -1,8 +1,10 @@
 package com.unicom.urban.management.service.time;
 
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.time.DayRepository;
 import com.unicom.urban.management.dao.time.TimePlanRepository;
 import com.unicom.urban.management.mapper.TimeMapper;
+import com.unicom.urban.management.pojo.dto.DayDTO;
 import com.unicom.urban.management.pojo.dto.TimePlanDTO;
 import com.unicom.urban.management.pojo.entity.time.Day;
 import com.unicom.urban.management.pojo.entity.time.TimePlan;
@@ -71,5 +73,30 @@ public class TimeService {
 
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void saveDay(DayDTO dayDTO) {
+        Optional<TimePlan> optional = timePlanRepository.findById(dayDTO.getTimePlanId());
+        if (optional.isPresent()) {
+            if (optional.get().hasDay(dayDTO.getCalendar())) {
+                throw new DataValidException(dayDTO.getCalendar() + " 日期已经设置 不可再次设置");
+            }
+            Day day = new Day();
+            day.setCalendar(dayDTO.getCalendar());
+            day.setWorkDayMark(dayDTO.getWorkDayMark());
+            day.setWork(dayDTO.getWork());
+            optional.get().addDay(day);
+        }
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    public void updateDay(DayDTO dayDTO) {
+        Optional<Day> optional = dayRepository.findById(dayDTO.getId());
+        if (optional.isPresent()) {
+            Day day = optional.get();
+            day.setWork(dayDTO.getWork());
+            day.setWorkDayMark(dayDTO.getWorkDayMark());
+        }
+    }
 
 }

@@ -2,6 +2,7 @@ package com.unicom.urban.management.web.project.time;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.pojo.dto.DayDTO;
 import com.unicom.urban.management.pojo.dto.TimePlanDTO;
 import com.unicom.urban.management.pojo.entity.time.TimePlan;
 import com.unicom.urban.management.pojo.vo.DayVo;
@@ -68,6 +69,16 @@ public class TimeController {
     @GetMapping("/activation")
     public void activation(String id, TimePlan.Status status) {
         timeService.activation(id, status);
+    }
+
+    @PostMapping("/addday")
+    public void addDay(DayDTO dayDTO) {
+        timeService.saveDay(dayDTO);
+    }
+
+    @PostMapping("/updateday")
+    public void updateDay(DayDTO dayDTO) {
+        timeService.updateDay(dayDTO);
     }
 
     @GetMapping("/edit/{id}")

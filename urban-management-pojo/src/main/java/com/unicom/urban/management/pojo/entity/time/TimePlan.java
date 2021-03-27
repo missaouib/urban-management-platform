@@ -9,6 +9,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,7 +41,8 @@ public class TimePlan {
      */
     private LocalDate endTime;
 
-    private List<Day> dayList;
+    private List<Day> dayList = new ArrayList<>();
+
 
     private List<TimeScheme> timeSchemeList;
 
@@ -54,6 +56,20 @@ public class TimePlan {
 
     public TimePlan(String id) {
         this.id = id;
+    }
+
+    @Transient
+    public void addDay(Day day) {
+        this.dayList.add(day);
+    }
+
+
+    /**
+     * 判断此日期是否已经设置
+     */
+    @Transient
+    public boolean hasDay(LocalDate localDate) {
+        return dayList.stream().anyMatch(day -> day.getCalendar().equals(localDate));
     }
 
     @Transient

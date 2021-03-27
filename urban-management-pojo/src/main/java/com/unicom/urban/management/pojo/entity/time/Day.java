@@ -2,6 +2,8 @@ package com.unicom.urban.management.pojo.entity.time;
 
 import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.pojo.entity.BaseEnum;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -13,6 +15,8 @@ import java.time.LocalDate;
  * @author liukai
  */
 @Entity
+@DynamicInsert
+@DynamicUpdate
 @Table(name = "time_calendar")
 public class Day {
 
@@ -53,6 +57,22 @@ public class Day {
     @Transient
     public boolean isNotWork() {
         return Work.NON_WORK.equals(this.work);
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (this.getClass() != obj.getClass()) {
+            return false;
+        }
+        Day day = (Day) obj;
+        return this.calendar.equals(day.getCalendar());
     }
 
     @Id

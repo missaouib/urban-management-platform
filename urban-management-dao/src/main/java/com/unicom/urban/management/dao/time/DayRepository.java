@@ -18,4 +18,6 @@ public interface DayRepository extends CustomizeRepository<Day, String> {
 
     Page<Day> findByTimePlanOrderByCalendar(TimePlan timePlan, Pageable pageable);
 
+    boolean existsByCalendarAndTimePlan(LocalDate calendar, TimePlan timePlan);
+
 }
