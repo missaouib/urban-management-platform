@@ -63,20 +63,27 @@
                 <div class="modal-body">
                     <P style="display: flex;align-items:center;justify-content:center;margin: 5px 0">
                         <span class="sendText" style="width: 20%"><i style="color: red!important;"></i>日期</span>
-                        <input size="16" class="form_datetime" name="startTime" id="begin" type="text" value="" readonly style="width: 80%">
+                        <input size="16" class="find_input form_date" name="startTime" id="begin" type="text" value="" readonly style="width: 80%">
                     </P>
                     <P style="display: flex;align-items:center;justify-content:center">
                         <span class="sendText" style="width: 20%"><i style="color: red!important;"></i>标识</span>
-                        <select style="width: 80%" type="text" class="find_input">
-                            <option>工作日</option>
-                            <option>非工作日</option>
+                        <select style="width: 80%" type="text" class="find_input" id="work">
+                            <option value="0">工作日</option>
+                            <option value="1">非工作日</option>
+                        </select>
+                    </P>
+                    <P style="display: flex;align-items:center;justify-content:center;margin-top: 5px">
+                        <span class="sendText" style="width: 20%"><i style="color: red!important;"></i>是否上班</span>
+                        <select style="width: 80%" type="text" class="find_input" id="workDay">
+                            <option value="1">休息</option>
+                            <option value="0">上班</option>
                         </select>
                     </P>
                 </div>
                 <input type="hidden" id="imageUrlList" value="">
                 <div class="modal-footer justify-content-between"
                      style="display: flex;justify-content: flex-end!important;">
-                    <button type="button" class="btn btn-primary" onclick="" id="underBtn">完成</button>
+                    <button type="button" class="btn btn-primary" onclick="saveTab()" id="underBtn">完成</button>
                     <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
                 </div>
             </div>
@@ -91,23 +98,36 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
-
-        $('.form_datetime').datetimepicker({
-            language: 'zh-CN',
+        $('.form_date').datetimepicker({
+            language: 'fr',
             weekStart: 1,
             todayBtn: 1,
             autoclose: 1,
             todayHighlight: 1,
             startView: 2,
+            minView: 2,
             forceParse: 0,
-            showMeridian: 1,
-            format: "yyyy-mm-dd hh:ii:ss"
+            language: 'zh-CN', //语言
+            format: "yyyy-mm-dd"
         });
 
         search();
 
+
     })
 
+    function saveTab() {
+        let date = $("#begin").val();
+        let orWork = $("#work option:selected").val();
+        let orWorkDay = $("#workDay option:selected").val();
+        let params = {
+            date:date,
+            orWork:orWork,
+            orWorkDay:orWorkDay
+        }
+        console.log(params)
+        // $.operate.saveAndReload(editUrl, {...params});
+    }
     let searchUrl = /*[[@{/time/day/search}]]*/ "/json/unit.json";
 
     let addUrl = /*[[@{/time/add}]]*/ "/time/add";
