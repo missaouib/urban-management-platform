@@ -62,7 +62,11 @@ public class NoticeTypeService {
     public List<NoticeTypeVO> findAll() {
         List<NoticeType> noticeTypeList = noticeTypeRepository.findAll();
         List<NoticeTypeVO> noticeTypeVOList = new ArrayList<>(noticeTypeList.size());
-        BeanUtils.copyProperties(noticeTypeList, noticeTypeVOList);
+        for (NoticeType noticeType : noticeTypeList) {
+            NoticeTypeVO noticeTypeVO = new NoticeTypeVO();
+            BeanUtils.copyProperties(noticeType, noticeTypeVO);
+            noticeTypeVOList.add(noticeTypeVO);
+        }
         return noticeTypeVOList;
     }
 
