@@ -279,7 +279,7 @@ public class ActivitiServiceImpl implements ActivitiService {
     public Long between(LocalDateTime startTime, LocalDateTime endTime) {
 
         if (endTime.isBefore(startTime)) {
-            throw new BusinessException("结束时间不可在开始时间之前");
+            throw new BusinessException("结束时间不可在开始时间之前 startTime: " + startTime + " endTime: " + endTime);
         }
 
 
