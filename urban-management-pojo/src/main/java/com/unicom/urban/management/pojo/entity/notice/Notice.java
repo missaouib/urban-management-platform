@@ -41,13 +41,11 @@ public class Notice {
     /**
      * 创建用户
      */
-    @ManyToOne(fetch = FetchType.LAZY)
     private User createBy;
 
     /**
      * 修改用户
      */
-    @ManyToOne(fetch = FetchType.LAZY)
     private User updateBy;
 
     private String deleted = Delete.NORMAL;
@@ -117,6 +115,8 @@ public class Notice {
     }
 
     @CreatedBy
+    @JoinColumn(name = "create_by")
+    @ManyToOne(fetch = FetchType.LAZY)
     public User getCreateBy() {
         return createBy;
     }
@@ -126,6 +126,8 @@ public class Notice {
     }
 
     @LastModifiedBy
+    @JoinColumn(name = "update_by")
+    @ManyToOne(fetch = FetchType.LAZY)
     public User getUpdateBy() {
         return updateBy;
     }

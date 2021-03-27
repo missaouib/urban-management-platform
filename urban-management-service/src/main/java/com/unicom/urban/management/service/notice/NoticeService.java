@@ -81,6 +81,7 @@ public class NoticeService {
         for (Notice notice : page.getContent()) {
             NoticeVO noticeVO = new NoticeVO();
             BeanUtils.copyProperties(notice, noticeVO);
+            noticeVO.setCreateUserName(notice.getCreateBy().getName());
             noticeVOList.add(noticeVO);
         }
         return new PageImpl<>(noticeVOList, page.getPageable(), page.getTotalElements());
