@@ -88,6 +88,8 @@
                     title: '操作',
                     field: '',
                     formatter: function (value, row) {
+                        console.log("value", value);
+                        console.log("row", row);
                         var a = '<a  href="#" title="'+ 111 +'" onclick="edit(this)">编辑</a> ';
                         var b = '<a  href="#" title="" onclick="deleteFn(1)">删除</a> ';
                         return a + b;
@@ -116,7 +118,7 @@
             }
         });
         console.log("data", data);
-        $("#id").val("11111");
+        $("#id").val(data.title);
     }
 
     function add() {
