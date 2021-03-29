@@ -96,11 +96,13 @@ public class TimeController {
     }
 
     /**
-     * 设置时间查询
+     * 跳转到设置时间页面
      */
     @GetMapping("/settime")
-    public List<TimeSchemeVO> setTime(@RequestParam(name = "id") String id) {
-        return timeService.queryTimeScheme(id);
+    public ModelAndView setTime(@RequestParam(name = "id") String id, Model model) {
+        List<TimeSchemeVO> timeSchemeVOS = timeService.queryTimeScheme(id);
+        model.addAttribute("list", timeSchemeVOS);
+        return new ModelAndView(SystemConstant.PAGE + "/time/timeSet");
     }
 
     @GetMapping("/edit/{id}")

@@ -12,36 +12,11 @@
 <body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
 <div class="notice_main ">
     <h6>计时新增</h6>
-    <div style="border-bottom: 1px #ccc solid;padding-bottom: 8px">
-        <p style="line-height: 24px;font-size: 14px;padding: 4px 0 0 36px ;color:#bb8940;background-image: url(img/ts_03.png);background-repeat: no-repeat;background-position: 10px 8px;font-weight: bold">
-            温馨提示</p>
-        <ul class="ts">
-            <li><span>*</span>该页面主要显示的是计时新增列表。</li>
-        </ul>
-    </div>
 
 
     <form id="userForm" style="margin-top: 10px">
         <div class="top table2_top">
             <div class="top_out">
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <td><span></span>方案名称</td>
-                        <td>
-                            <input id="petitionerSex" name="petitionerSex" placeholder="" class="" readonly type="text">
-                        </td>
-                        <td><span></span>开始时间</td>
-                        <td>
-                            <input size="16" class="form_datetime"  name="startTime" id="begin" type="text" value="" readonly>
-                        </td>
-                        <td><span></span>结束时间</td>
-                        <td>
-                            <input size="16" class="form_datetime"  name="endTime" id="end" type="text" value="" readonly>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </form>
@@ -74,6 +49,8 @@
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <script type="text/javascript" th:inline="javascript">
 
+    var list = [[${list}]];
+
     $(function () {
 
         $('.form_datetime').datetimepicker({
@@ -88,7 +65,6 @@
             format: "yyyy-mm-dd hh:ii:ss"
         });
 
-        search();
         var html = "";
         $('#onner_warp').html(``)
 
@@ -170,99 +146,6 @@
         })
 
     })
-
-    let searchUrl = /*[[@{/time/search}]]*/ "/json/unit.json";
-
-    let addUrl = /*[[@{/time/add}]]*/ "/time/add";
-
-    let removeUrl = /*[[@{/time/remove}]]*/ "/time/remove";
-
-    let editUrl = /*[[@{/time/edit/{id}}]]*/ "/time/remove";
-
-    let activationUrl = /*[[@{/time/activation}]]*/ "/time/activation";
-
-    let initializationUrl = /*[[@{/time/initialization}]]*/ "/time/initialization";
-
-    function search() {
-        var options = {
-            url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
-            uniqueId: "id",
-            sortName: "id",
-            sortOrder: "desc",
-            modalName: "用户",
-            columns: [
-                {
-                    field: 'index',
-                    title: '序号',
-                    class:'index_width',
-                    formatter: function (value, row, index) {
-                        var page = $('#bootstrap-table').bootstrapTable("getPage");
-                        return page.pageSize * (page.pageNumber - 1) + index + 1;
-                    }
-                },
-                {
-                    title: '计时方案',
-                    field: 'startTime'
-                },
-                {
-                    title: '开始时间',
-                    field: 'startTime'
-                },
-                {
-                    title: '结束时间',
-                    field: 'endTime'
-                },
-                {
-                    title: '状态',
-                    field: 'endTime'
-                },
-                {
-                    title: '操作',
-                    field: '',
-                    class: 'radios',
-                    formatter: function (value, row) {
-                        var e = "<label class='toggle-switch switch-solid' style='margin: 0 5px'>\n";
-                        if (row.sts === 0) {
-                            e += "<input type='checkbox' id='status' checked onclick='activation(\"" + row.id + "\")'>\n"
-                        } else {
-                            e += "<input type='checkbox' id='status'  onclick='activation(\"" + row.id + "\")'>\n"
-                        }
-                        e += "<span></span>\n</label>";
-                        e +=  "<a href='#' title='' style='margin-right: 5px' onclick='$.operate.editTab(\"" + row.id + "\")'>修改</a>";
-                        if (row.system !== "1") {
-                            e +="<a href='#' title='' style='margin-right: 5px' onclick='$.operate.remove(\"" + row.id + "\")' >删除</a>";
-                        }
-                        e += "<a href='#' title='' onclick='initialization(\"" + row.id + "\")'>重置密码</a>"
-                        return e;
-                    }
-                }
-            ]
-        };
-        $.table.init(options);
-    }
-
-    function activation(obj) {
-        $.ajax({
-            type: "GET",
-            url: activationUrl + "?id=" + obj
-        });
-    }
-
-    function initialization(obj) {
-        $.ajax({
-            type: "GET",
-            url: initializationUrl + "?id=" + obj,
-            success: function (result) {
-                if(result.code === 0){
-                    $.modal.alertSuccess("重置密码成功")
-                }
-            }
-        });
-    }
-
 
 
 </script>

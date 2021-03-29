@@ -12,14 +12,6 @@
 <body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
 <div class="notice_main ">
     <h6>计时新增</h6>
-    <div style="border-bottom: 1px #ccc solid;padding-bottom: 8px">
-        <p style="line-height: 24px;font-size: 14px;padding: 4px 0 0 36px ;color:#bb8940;background-image: url(img/ts_03.png);background-repeat: no-repeat;background-position: 10px 8px;font-weight: bold">
-            温馨提示</p>
-        <ul class="ts">
-            <li><span>*</span>该页面主要显示的是计时新增列表。</li>
-        </ul>
-    </div>
-
 
     <form id="userForm" style="margin-top: 10px">
         <div class="top table2_top">
@@ -102,8 +94,6 @@
 
     let activationUrl = /*[[@{/time/activation}]]*/ "/time/activation";
 
-    let initializationUrl = /*[[@{/time/initialization}]]*/ "/time/initialization";
-
     function search() {
         var options = {
             url: searchUrl,
@@ -159,7 +149,8 @@
                             e += "<input type='checkbox' id='status'  onclick='enable(\"" + row.id + "\")'>\n"
                         }
                         e += "<span></span>\n</label>";
-                        e +=  "<a href='#' title='' style='margin-right: 5px' onclick='$.operate.editTab(\"" + row.id + "\")'>设置计时</a>";
+                        e +=  "<a href='#' title='' style='margin-right: 5px' onclick='$.operate.editTab(\"" + row.id + "\")'>设置天数</a>";
+                        e +=  "<a href='#' title='' style='margin-right: 5px' onclick='setTime(\"" + row.id + "\")'>设置小时</a>";
                         return e;
                     }
                 }
@@ -183,6 +174,17 @@
             }
         });
     }
+
+
+
+
+    let setTimeUrl = /*[[@{/time/settime?id=}]]*/ "/time/settime";
+
+    function setTime(id) {
+        $.modal.openTab("修改" + table.options.modalName, setTimeUrl + id);
+    }
+
+
 
 </script>
 </body>

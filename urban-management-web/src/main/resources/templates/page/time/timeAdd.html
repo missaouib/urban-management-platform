@@ -240,7 +240,7 @@
                     formatter: function (value, row) {
                         var e = "";
                         e +=  "<a href='#' title='' style='margin-right: 5px' data-toggle='modal' data-target='#modal-defaultedi' onclick='edit(\"" + row.id + "\")'>修改</a>";
-                        e +="<a href='#' title='' style='margin-right: 5px' onclick='$.operate.remove(\"" + row.id + "\")' >删除</a>";
+                        // e +="<a href='#' title='' style='margin-right: 5px' onclick='$.operate.remove(\"" + row.id + "\")' >删除</a>";
                         return e;
                     }
                 }
@@ -263,9 +263,8 @@
             calendar: date,
             workDayMark: orWork,
             work: orWorkDay,
-            timePlanId: timePlanId
+            id: timePlanId
         }
-        console.log(params)
         $.operate.saveAndReload(editUrl, params);
     }
     function activation(obj) {
