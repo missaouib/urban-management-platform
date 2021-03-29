@@ -696,7 +696,8 @@ public class StatisticsService {
                 endTime = LocalDateTime.of(LocalDate.from(now), LocalTime.MAX);
                 break;
             default:
-                throw new DataValidException("请正确选择日期");
+                startTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.firstDayOfYear())), LocalTime.MIN).minusYears(5);
+                endTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.lastDayOfYear())), LocalTime.MAX);
         }
         List<Map<String, String>> highIncidenceByInst = findHighIncidenceByInst(startTime, endTime);
         List<Map<String, String>> highIncidenceByInst2 = new ArrayList<>(highIncidenceByInst.size());
@@ -728,7 +729,9 @@ public class StatisticsService {
         for (Map<String, String> map : mapList) {
             Map<String, String> newMap = new HashMap<>(map);
             Map<String, String> highIncidenceByClose = statisticsRepository.findHighIncidenceByClose(newMap.get("id"));
+            Map<String, String> highIncidenceByDispose = statisticsRepository.findHighIncidenceByDispose(newMap.get("id"));
             map.put("totalClose", highIncidenceByClose.get("totalClose"));
+            map.put("totalDispose", highIncidenceByDispose.get("totalDispose"));
         }
     }
 
