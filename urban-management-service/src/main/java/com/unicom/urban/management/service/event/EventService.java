@@ -234,7 +234,7 @@ public class EventService {
                 eventVO.setSupSts("0");
             }
             eventVO.setEventTypeName(e.getEventType().getParent().getParent().getName() + "-" + e.getEventType().getParent().getName() + "-" + e.getEventType().getName());
-            /*查询事件步骤endtime为null的  如果有取出这条 附加到vo信息*/
+            /*查询事件步骤endTime为null的  如果有取出这条 附加到vo信息*/
             List<Statistics> collect1 = e.getStatisticsList().stream().filter(s -> s.getEndTime() == null).collect(Collectors.toList());
             if (collect1.size() > 0) {
                 Statistics statistics = collect1.get(0);
@@ -324,6 +324,7 @@ public class EventService {
                     eventVO.setStatisticsId(s.getId());
                 }
             }
+
             eventVOList.add(eventVO);
         });
         if (coordinateList.size() > 0) {
@@ -1052,6 +1053,25 @@ public class EventService {
         } else {
             return 9;
         }
-
     }
+
+    /**
+     * 大屏 问题来源
+     * 上报来源
+     *
+     * @return 数量
+     */
+    public Map<String, Object> getCountByEventSource(){
+        long countByEventSourceKey0 = getCountByEventSourceKey(0);
+        long countByEventSourceKey1 = getCountByEventSourceKey(1);
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("监督员上报", countByEventSourceKey0);
+        map.put("热线上报", countByEventSourceKey1);
+        return map;
+    }
+
+    private long getCountByEventSourceKey(int key){
+        return eventRepository.countEventByEventSource_FieldNameAndEventSource_TableNameAndEventSource_Key("eventSource", "event", key);
+    }
+
 }

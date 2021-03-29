@@ -2,10 +2,22 @@ package com.unicom.urban.management.web.project.bigscreen;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.pojo.Result;
+import com.unicom.urban.management.pojo.dto.EventDTO;
+import com.unicom.urban.management.pojo.vo.DeptEvaluate;
+import com.unicom.urban.management.pojo.vo.EventOneVO;
+import com.unicom.urban.management.pojo.vo.EventVO;
+import com.unicom.urban.management.pojo.vo.SupervisorEvaluateVO;
 import com.unicom.urban.management.service.bigscreen.IndexService;
+import com.unicom.urban.management.service.deptevaluate.DeptEvaluateService;
+import com.unicom.urban.management.service.evaluate.PositionService;
+import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import com.unicom.urban.management.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,9 +41,14 @@ public class IndexRestController {
 
     @Autowired
     private IndexService indexService;
-
     @Autowired
     private StatisticsService statisticsService;
+    @Autowired
+    private EventService eventService;
+    @Autowired
+    private DeptEvaluateService evaluateService;
+    @Autowired
+    private PositionService positionService;
 
     @Autowired
     private UserService userService;
@@ -138,4 +155,64 @@ public class IndexRestController {
         map.put("seven", statisticsService.getIndexValueByWeek(monday.minusDays(6), sunday));
         return map;
     }
+
+    /**
+     * 案件动态
+     * 案件照片（无照片就默认图前端判断）、案件编号、类型、所属地区
+     *
+     * @return list
+     */
+    @GetMapping("/eventList")
+    public Page<EventVO> eventList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        Page<EventVO> search = eventService.search(eventDTO, pageable);
+        for (EventVO eventVO : search.getContent()) {
+            EventOneVO oneToVo = eventService.findOneToVo(eventVO.getId());
+            eventVO.setEventRegion(oneToVo.getEventRegion());
+            eventVO.setFile(oneToVo.getFile());
+        }
+        return search;
+    }
+
+    /**
+     * 部门考核
+     * 查询考核评分前四部门 此处查询所有 应为是公用的接口，需要前端自行选取前四
+     *
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @param pageable 无用
+     * @return list
+     */
+    @GetMapping("/evaluate")
+    public Page<DeptEvaluate> evaluates(String startTime,
+                                        String endTime, @PageableDefault Pageable pageable) {
+        List<DeptEvaluate> list = evaluateService.deptEvaluates(startTime, endTime);
+        return new PageImpl<>(list, pageable, 0);
+    }
+
+    /**
+     * 人员考核
+     * 监督员岗位考核人员前四 此处查询所有 应为是公用的接口，需要前端自行选取前四
+     *
+     * @param startTime 开始时间
+     * @param endTime 结束时间
+     * @return list
+     */
+    @GetMapping("/supervisorEvaluation")
+    public Result supervisorEvaluation(String startTime, String endTime) {
+        List<SupervisorEvaluateVO> list = positionService.findSupervisorEvaluateByCondition(startTime, endTime);
+        return Result.success(list);
+    }
+
+    /**
+     * 大屏 问题来源
+     * 上报来源
+     *
+     * @return 数量
+     */
+    @GetMapping("/getCountByEventSource")
+    public Result getCountByEventSource(){
+        Map<String, Object> countByEventSource = eventService.getCountByEventSource();
+        return Result.success(countByEventSource);
+    }
+
 }

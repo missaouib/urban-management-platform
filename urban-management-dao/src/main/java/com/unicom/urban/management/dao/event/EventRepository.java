@@ -22,4 +22,15 @@ public interface EventRepository extends CustomizeRepository<Event, String> {
      * @return 是否重复
      */
     boolean existsByEventCode(String eventCode);
+
+    /**
+     * 大屏 问题来源
+     * 上报来源
+     *
+     * @param fieldName 字段名
+     * @param tableName 表名
+     * @param key key
+     * @return 数量
+     */
+    long countEventByEventSource_FieldNameAndEventSource_TableNameAndEventSource_Key(String fieldName, String tableName, Integer key);
 }

@@ -5,6 +5,8 @@ import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 事件VO
@@ -115,5 +117,15 @@ public class EventVO {
     private Integer urgent;
 
     private String centerPoint;
+
+    /**
+     * 大屏 所属地区
+     */
+    private String eventRegion;
+
+    /**
+     * 大屏 附件
+     */
+    private List<Map<String,Object>> file;
 
 }
