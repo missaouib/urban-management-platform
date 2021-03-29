@@ -289,6 +289,7 @@ public class StatisticsService {
             Map<String, Object> hotMap = new HashMap<>(3);
             int totalInst = 0;
             int totalClose = 0;
+            int totalDispose = 0;
             for (GridVO vo : gridList) {
                 String gridName = vo.getGridName();
                 for (Map<String, Object> map : mapList) {
@@ -296,10 +297,12 @@ public class StatisticsService {
                     if (gridName.equals(gridN)) {
                         totalInst += Integer.parseInt(map.get("totalInst").toString());
                         totalClose += Integer.parseInt(map.get("totalClose").toString());
+                        totalDispose += Integer.parseInt(map.get("totalDispose").toString());
                     }
                 }
                 hotMap.put("totalInst", totalInst);
                 hotMap.put("totalClose", totalClose);
+                hotMap.put("totalDispose", totalDispose);
                 hotMap.put("gridName", gridName);
                 hotGridList.add(hotMap);
             }
@@ -717,7 +720,11 @@ public class StatisticsService {
      * @return list
      */
     private List<Map<String, String>> findHighIncidenceByInst(LocalDateTime startTime, LocalDateTime endTime) {
-        return statisticsRepository.findHighIncidenceByInst(startTime, endTime);
+        List<Map<String, String>> highIncidenceByInst = statisticsRepository.findHighIncidenceByInst(startTime, endTime);
+        if(highIncidenceByInst.size()>5){
+            return highIncidenceByInst.subList(0, 4);
+        }
+        return highIncidenceByInst;
     }
 
     /**
@@ -808,7 +815,8 @@ public class StatisticsService {
                 endTime = LocalDateTime.of(LocalDate.from(now), LocalTime.MAX);
                 break;
             default:
-                throw new DataValidException("请正确选择日期");
+                startTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.firstDayOfYear())), LocalTime.MIN).minusYears(5);
+                endTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.lastDayOfYear())), LocalTime.MAX);
         }
         LocalDateTime[] timeArr = new LocalDateTime[2];
         timeArr[0] = startTime;

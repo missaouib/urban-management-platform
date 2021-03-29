@@ -58,4 +58,32 @@ public class IndexRestController {
         Map<String, Object> indexValueByWeek = statisticsService.getIndexValueByWeek(monday,sunday);
         return Result.success(indexValueByWeek);
     }
+
+
+    /**
+     * 大屏 高发问题
+     *  name: "污水口监测站"
+     * totalClose: 结案数
+     * totalDispose: 处置数
+     * totalInst: 立案数
+     * @return list
+     */
+    @GetMapping("/findHighIncidence")
+    public Result findHighIncidence() {
+        List<Map<String, String>> highIncidence = statisticsService.findHighIncidence("");
+        return Result.success(highIncidence);
+    }
+
+    /**
+     * 高发区域（大屏）
+     * gridName: "污水口监测站"
+     * totalClose: 结案数
+     * totalDispose: 处置数
+     * totalInst: 立案数
+     * @return
+     */
+    @GetMapping("/findHotGrid")
+    public List<Map<String,Object>> findHotGrid(){
+        return statisticsService.findHotGrid("");
+    }
 }
