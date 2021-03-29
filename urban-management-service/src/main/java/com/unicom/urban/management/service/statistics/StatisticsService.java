@@ -623,10 +623,15 @@ public class StatisticsService {
         int disposeSize = statisticsRepository.findByDispose(monday, sunday).size();
         Map<String, Object> map = new HashMap<>(4);
         map.put("report", reportSize);
+        //上报数
         map.put("inst", instSize);
+        //派遣数
         map.put("dispatch", dispatchSize);
+        //结案数
         map.put("close", closeSize);
+        //上报数
         map.put("operate", operateSize);
+        //处置数
         map.put("dispose", disposeSize);
         return map;
     }
