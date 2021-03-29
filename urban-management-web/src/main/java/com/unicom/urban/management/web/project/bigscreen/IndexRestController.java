@@ -37,13 +37,13 @@ public class IndexRestController {
     private UserService userService;
 
     @GetMapping("/count")
-    public Map<String,Object> count(String timeType){
+    public Map<String, Object> count(String timeType) {
         return indexService.count(timeType);
     }
 
     @GetMapping("/showPoints")
-    public List<Map<String, String>> showPoints(String timeType,String showType){
-        return indexService.showPoints(timeType,showType);
+    public List<Map<String, String>> showPoints(String timeType, String showType) {
+        return indexService.showPoints(timeType, showType);
     }
 
     /**
@@ -54,6 +54,7 @@ public class IndexRestController {
      * close 结案数
      * operate 上报数
      * dispose 处置数
+     *
      * @return 数据
      */
     @GetMapping("/getIndexValue")
@@ -61,17 +62,18 @@ public class IndexRestController {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime monday = now.with(TemporalAdjusters.previous(DayOfWeek.SUNDAY)).minusYears(5).withHour(0).withMinute(0).withSecond(0);
         LocalDateTime sunday = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).minusDays(1).withHour(23).withMinute(59).withSecond(59);
-        Map<String, Object> indexValueByWeek = statisticsService.getIndexValueByWeek(monday,sunday);
+        Map<String, Object> indexValueByWeek = statisticsService.getIndexValueByWeek(monday, sunday);
         return Result.success(indexValueByWeek);
     }
 
 
     /**
      * 大屏 高发问题
-     *  name: "污水口监测站"
+     * name: "污水口监测站"
      * totalClose: 结案数
      * totalDispose: 处置数
      * totalInst: 立案数
+     *
      * @return list
      */
     @GetMapping("/findHighIncidence")
@@ -86,10 +88,11 @@ public class IndexRestController {
      * totalClose: 结案数
      * totalDispose: 处置数
      * totalInst: 立案数
+     *
      * @return
      */
     @GetMapping("/findHotGrid")
-    public List<Map<String,Object>> findHotGrid(){
+    public List<Map<String, Object>> findHotGrid() {
         return statisticsService.findHotGrid("");
     }
 
@@ -100,10 +103,11 @@ public class IndexRestController {
      * shiftLeader: 值班长
      * dispatcher: 派遣员
      * receptionist: 受理员
+     *
      * @return
      */
     @GetMapping("/findRoleCount")
-    public Map<String, Object> findRoleCount(){
+    public Map<String, Object> findRoleCount() {
         return userService.getUserCount();
     }
 
@@ -116,22 +120,22 @@ public class IndexRestController {
      * close 结案数
      * operate 上报数
      * dispose 处置数
+     *
      * @return 数据
      */
     @GetMapping("/getIndexValueByDay")
-    public List<Map<String, Object>> getIndexValueByDay() {
-        List<Map<String, Object>> list = new ArrayList<>();
+    public Map<String, Map<String, Object>> getIndexValueByDay() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime monday = now.withHour(0).withMinute(0).withSecond(0);
         LocalDateTime sunday = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).minusDays(1).withHour(23).withMinute(59).withSecond(59);
         Map<String, Map<String, Object>> map = new HashMap<>();
-        list.add(map.put("one",statisticsService.getIndexValueByWeek(monday,sunday)));
-        list.add(map.put("two",statisticsService.getIndexValueByWeek(monday.minusDays(1),sunday)));
-        list.add(map.put("three",statisticsService.getIndexValueByWeek(monday.minusDays(2),sunday)));
-        list.add(map.put("four",statisticsService.getIndexValueByWeek(monday.minusDays(3),sunday)));
-        list.add(map.put("five",statisticsService.getIndexValueByWeek(monday.minusDays(4),sunday)));
-        list.add(map.put("six",statisticsService.getIndexValueByWeek(monday.minusDays(5),sunday)));
-        list.add(map.put("seven",statisticsService.getIndexValueByWeek(monday.minusDays(6),sunday)));
-        return list;
+        map.put("one", statisticsService.getIndexValueByWeek(monday, sunday));
+        map.put("two", statisticsService.getIndexValueByWeek(monday.minusDays(1), sunday));
+        map.put("three", statisticsService.getIndexValueByWeek(monday.minusDays(2), sunday));
+        map.put("four", statisticsService.getIndexValueByWeek(monday.minusDays(3), sunday));
+        map.put("five", statisticsService.getIndexValueByWeek(monday.minusDays(4), sunday));
+        map.put("six", statisticsService.getIndexValueByWeek(monday.minusDays(5), sunday));
+        map.put("seven", statisticsService.getIndexValueByWeek(monday.minusDays(6), sunday));
+        return map;
     }
 }
