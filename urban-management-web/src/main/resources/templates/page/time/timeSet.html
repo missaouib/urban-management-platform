@@ -65,10 +65,63 @@
             format: "yyyy-mm-dd hh:ii:ss"
         });
 
+        let timeArr = []
+        list.map(r =>{
+            timeArr.push(r.startTime)
+        })
+        console.log(timeArr)
         var html = "";
         $('#onner_warp').html(``)
 
-        let timeList = [
+        var timeList2 = [
+            '00:00:00','00:30:00','01:00:00','01:30:00','02:00:00','02:30:00','03:00:00','03:30:00','04:00:00','04:30:00','05:00:00','05:30:00','06:00:00','06:30:00','07:00:00','07:30:00','08:00:00','08:30:00','09:00:00','09:30:00','10:00:00','10:30:00','11:00:00','11:30:00','12:00:00','12:30:00','13:00:00','13:30:00','14:00:00','14:30:00','15:00:00','15:30:00','16:00:00','16:30:00','17:00:00','17:30:00','18:00:00','18:30:00','19:00:00','19:30:00','20:00:00','20:30:00','21:00:00','21:30:00','22:00:00','22:30:00','23:00:00','23:30:00'
+        ]
+        let indexTime = getInclude(timeList2, timeArr);
+        for (let i=0;i<timeList2.length;i++){
+            html += `
+                <span class="onner_warp_inner">
+                    <input type="checkbox" class="chexkBox" name="addCheckBox" value="${timeList2[i]}">
+                    <span class="time_warp_inners">${timeList2[i]}</span>
+                </span>
+            `
+        }
+        $('#onner_warp').html(html)
+
+
+        var x = document.querySelectorAll(".chexkBox");
+        indexTime.map(j =>{
+            x[j].checked = true
+        })
+
+
+        function  getInclude(arr1, arr2) {
+            let temp = []
+
+            for (const item of arr2) {
+                // arr1.findIndex(i => i === item) !== -1 ? temp.push(item) : ''
+                temp.push(arr1.findIndex(i => i === item))
+            }
+            return temp
+        }
+
+
+        var addList=[];
+
+        $('.butn').click(function () {
+            $("input[name ='addCheckBox']").each(function(index,value){
+                let map = {};
+                if($(value).prop("checked") === true){
+                    map.checkbox = 1;
+                    map.id=$(value).val();
+                    addList.push(map);
+                }
+            });
+            console.log(addList)
+        })
+
+
+
+        var  timeList = [
             {time:"00:00"},
             {time:"00:30"},
             {time:"01:00"},
@@ -115,35 +168,10 @@
             {time:"21:30"},
             {time:"22:00"},
             {time:"22:30"},
-            {time:"23:00"},
             {time:"23:30"},
+            {time:"23:00"},
         ]
-        for (let i=0;i<timeList.length;i++){
-            html += `
-                <span class="onner_warp_inner">
-                    <input type="checkbox" name="addCheckBox">
-                    <span class="time_warp_inners">${timeList[i].time}</span>
-                </span>
-            `
-        }
-        $('#onner_warp').html(html)
 
-
-
-
-        var addList=[];
-
-        $('.butn').click(function () {
-            $("input[name ='addCheckBox']").each(function(index,value){
-                let map = {};
-                if($(value).prop("checked") === true){
-                    map.checkbox = 1;
-                    map.id=$(value).val();
-                    addList.push(map);
-                }
-            });
-            console.log(addList)
-        })
 
     })
 
