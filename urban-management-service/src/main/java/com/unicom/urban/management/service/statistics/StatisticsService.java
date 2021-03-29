@@ -613,10 +613,8 @@ public class StatisticsService {
      *
      * @return map
      */
-    public Map<String, Object> getIndexValueByWeek() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime monday = now.with(TemporalAdjusters.previous(DayOfWeek.SUNDAY)).plusDays(1).withHour(0).withMinute(0).withSecond(0);
-        LocalDateTime sunday = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).minusDays(1).withHour(23).withMinute(59).withSecond(59);
+    public Map<String, Object> getIndexValueByWeek(LocalDateTime monday,LocalDateTime sunday) {
+
         int reportSize = statisticsRepository.findByReport(monday, sunday).size();
         int instSize = statisticsRepository.findByInst(monday, sunday).size();
         int dispatchSize = statisticsRepository.findByDispatch(monday, sunday).size();
@@ -624,11 +622,17 @@ public class StatisticsService {
         int operateSize = statisticsRepository.findByOperate(monday, sunday).size();
         int disposeSize = statisticsRepository.findByDispose(monday, sunday).size();
         Map<String, Object> map = new HashMap<>(4);
+        //上报数
         map.put("report", reportSize);
+        //立案数
         map.put("inst", instSize);
+        //派遣数
         map.put("dispatch", dispatchSize);
+        //结案数
         map.put("close", closeSize);
+        //上报数
         map.put("operate", operateSize);
+        //处置数
         map.put("dispose", disposeSize);
         return map;
     }
@@ -692,7 +696,8 @@ public class StatisticsService {
                 endTime = LocalDateTime.of(LocalDate.from(now), LocalTime.MAX);
                 break;
             default:
-                throw new DataValidException("请正确选择日期");
+                startTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.firstDayOfYear())), LocalTime.MIN).minusYears(5);
+                endTime = LocalDateTime.of(LocalDate.from(now.with(TemporalAdjusters.lastDayOfYear())), LocalTime.MAX);
         }
         List<Map<String, String>> highIncidenceByInst = findHighIncidenceByInst(startTime, endTime);
         List<Map<String, String>> highIncidenceByInst2 = new ArrayList<>(highIncidenceByInst.size());
@@ -724,7 +729,9 @@ public class StatisticsService {
         for (Map<String, String> map : mapList) {
             Map<String, String> newMap = new HashMap<>(map);
             Map<String, String> highIncidenceByClose = statisticsRepository.findHighIncidenceByClose(newMap.get("id"));
+            Map<String, String> highIncidenceByDispose = statisticsRepository.findHighIncidenceByDispose(newMap.get("id"));
             map.put("totalClose", highIncidenceByClose.get("totalClose"));
+            map.put("totalDispose", highIncidenceByDispose.get("totalDispose"));
         }
     }
 
