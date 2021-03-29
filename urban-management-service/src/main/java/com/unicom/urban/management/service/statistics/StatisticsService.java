@@ -622,8 +622,9 @@ public class StatisticsService {
         int operateSize = statisticsRepository.findByOperate(monday, sunday).size();
         int disposeSize = statisticsRepository.findByDispose(monday, sunday).size();
         Map<String, Object> map = new HashMap<>(4);
-        map.put("report", reportSize);
         //上报数
+        map.put("report", reportSize);
+        //立案数
         map.put("inst", instSize);
         //派遣数
         map.put("dispatch", dispatchSize);
