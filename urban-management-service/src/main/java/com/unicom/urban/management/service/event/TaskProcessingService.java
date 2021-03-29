@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.constant.KvConstant;
+import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventButtonRepository;
@@ -12,10 +13,12 @@ import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.processtimelimit.ProcessTimeLimitService;
 import com.unicom.urban.management.service.role.RoleService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
+import lombok.extern.slf4j.Slf4j;
 import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.plaf.nimbus.NimbusStyle;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
  * @author 顾志杰
  * @date 2020/11/4-10:24
  */
+@Slf4j
 @Service
 @Transactional(rollbackOn = Exception.class)
 public class TaskProcessingService {
@@ -48,10 +52,10 @@ public class TaskProcessingService {
     @Autowired
     private EventFileService eventFileService;
 
-    public List<String> findTaskNames(){
+    public List<String> findTaskNames() {
         List<EventButton> all = eventButtonRepository.findAll();
-        List<String>  buttonText = new ArrayList<>();
-        all.forEach(b->buttonText.add(b.getTaskName()));
+        List<String> buttonText = new ArrayList<>();
+        all.forEach(b -> buttonText.add(b.getTaskName()));
         return buttonText.stream().distinct().collect(Collectors.toList());
     }
 
@@ -72,9 +76,9 @@ public class TaskProcessingService {
 
             this.shiftLeader(eventId, users, eventButton, statisticsDTO);
         } else if ("派遣员-派遣".equals(statistics.getTaskName())) {
-            if("申请作废".equals(eventButton.getButtonText())){
+            if ("申请作废".equals(eventButton.getButtonText())) {
                 this.backOff(eventId, eventButton, statisticsDTO);
-            }else{
+            } else {
                 List<String> users = this.getUsers(statisticsDTO.getDeptId());
                 this.dispatcher(eventId, users, buttonId, statisticsDTO);
             }
@@ -611,7 +615,7 @@ public class TaskProcessingService {
                 timeLimit = (timeLimit * 60 * 1000) + hangDuation;
                 break;
             default:
-                return new int[]{0,0};
+                return new int[]{0, 0};
         }
         int[] i = new int[2];
         i[0] = millis <= timeLimit ? 1 : 0;
@@ -622,12 +626,12 @@ public class TaskProcessingService {
 
     public List<String> getUsers(String roleId) {
         Role one = roleService.findOne(roleId);
-        if(one==null) {
+        if (one == null) {
             throw new DataValidException("角色不存在，请选择角色");
         }
         List<String> user = new ArrayList<>();
         one.getUserList().forEach(u -> user.add(u.getId()));
-        if(user.size()==0) {
+        if (user.size() == 0) {
             throw new DataValidException("角色下没有人员");
         }
         return user;

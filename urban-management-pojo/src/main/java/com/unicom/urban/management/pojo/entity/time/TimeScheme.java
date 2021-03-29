@@ -5,10 +5,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalTime;
 
 @Entity
@@ -23,6 +20,8 @@ public class TimeScheme {
     private LocalTime startTime;
 
     private LocalTime endTime;
+
+    private TimePlan timePlan;
 
 
     @Id
@@ -52,5 +51,15 @@ public class TimeScheme {
         this.endTime = endTime;
     }
 
+
+    @JoinColumn(name = "time_plan_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    public TimePlan getTimePlan() {
+        return timePlan;
+    }
+
+    public void setTimePlan(TimePlan timePlan) {
+        this.timePlan = timePlan;
+    }
 
 }

@@ -28,6 +28,7 @@
         </form>
     </div>
 
+    <input type="hidden" name="id" id="id" th:value="${id}">
 
     <div class="clear"></div>
 
@@ -50,7 +51,7 @@
 <script type="text/javascript" th:inline="javascript">
 
     var list = [[${list}]];
-
+    let saveUrl = /*[[@{/time/settime}]]*/ "/time/settime";
     $(function () {
 
         $('.form_datetime').datetimepicker({
@@ -93,7 +94,7 @@
         })
 
 
-        function  getInclude(arr1, arr2) {
+        function getInclude(arr1, arr2) {
             let temp = []
             for (const item of arr2) {
                 temp.push(arr1.findIndex(i => i === item))
@@ -102,18 +103,27 @@
         }
 
 
-        var addList=[];
-
         $('.butn').click(function () {
-            $("input[name ='addCheckBox']").each(function(index,value){
-                let map = {};
-                if($(value).prop("checked") === true){
-                    map.checkbox = 1;
-                    map.id=$(value).val();
-                    addList.push(map);
+            let addList = [];
+            $("input[name ='addCheckBox']").each(function (index, value) {
+                if ($(value).prop("checked") === true) {
+                    addList.push($(value).val());
                 }
             });
-            console.log(addList)
+
+            var id = $('#id').val();
+            var time = addList.join(',');
+            let param = {
+                id: id,
+                time: time
+            };
+            $.operate.saveTab(saveUrl,param);
+
+
+
+
+
+
         })
 
 

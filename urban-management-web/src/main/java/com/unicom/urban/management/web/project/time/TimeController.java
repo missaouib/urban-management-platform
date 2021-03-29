@@ -85,7 +85,7 @@ public class TimeController {
     }
 
     /**
-     * 设置时间
+     * 保存设置时间
      *
      * @param id   计时方案id
      * @param time 时间 逗号分割
@@ -102,6 +102,7 @@ public class TimeController {
     public ModelAndView setTime(@RequestParam(name = "id") String id, Model model) {
         List<TimeSchemeVO> timeSchemeVOS = timeService.queryTimeScheme(id);
         model.addAttribute("list", timeSchemeVOS);
+        model.addAttribute("id", id);
         return new ModelAndView(SystemConstant.PAGE + "/time/timeSet");
     }
 

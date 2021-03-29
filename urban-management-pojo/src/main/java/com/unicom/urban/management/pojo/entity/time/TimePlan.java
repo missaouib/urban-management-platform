@@ -71,7 +71,7 @@ public class TimePlan {
 
     @Transient
     public void cleanTimeScheme() {
-        this.timeSchemeList = new ArrayList<>();
+        this.timeSchemeList.clear();
     }
 
 
@@ -149,7 +149,7 @@ public class TimePlan {
 
     @OrderBy("startTime ASC")
     @JoinColumn(name = "time_plan_id")
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
     public List<TimeScheme> getTimeSchemeList() {
         return timeSchemeList;
     }

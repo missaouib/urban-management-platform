@@ -3,6 +3,7 @@ package com.unicom.urban.management.service.time;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.time.DayRepository;
 import com.unicom.urban.management.dao.time.TimePlanRepository;
+import com.unicom.urban.management.dao.time.TimeSchemeRepository;
 import com.unicom.urban.management.mapper.TimeMapper;
 import com.unicom.urban.management.pojo.dto.DayDTO;
 import com.unicom.urban.management.pojo.dto.TimePlanDTO;
@@ -30,6 +31,9 @@ public class TimeService {
 
     @Autowired
     private TimePlanRepository timePlanRepository;
+
+    @Autowired
+    private TimeSchemeRepository timeSchemeRepository;
 
     @Autowired
     private DayRepository dayRepository;
@@ -119,12 +123,13 @@ public class TimeService {
         String[] timeStr = StringUtils.delimitedListToStringArray(time, ",");
         Optional<TimePlan> optional = timePlanRepository.findById(id);
         if (optional.isPresent()) {
-            optional.get().cleanTimeScheme();
+            timeSchemeRepository.deleteByTimePlan(optional.get());
             for (String str : timeStr) {
                 LocalTime startTime = LocalTime.parse(str);
                 TimeScheme timeScheme = new TimeScheme();
                 timeScheme.setStartTime(startTime);
                 timeScheme.setEndTime(startTime.plusMinutes(30));
+                timeScheme.setTimePlan(optional.get());
                 optional.get().addTimeScheme(timeScheme);
             }
         }
