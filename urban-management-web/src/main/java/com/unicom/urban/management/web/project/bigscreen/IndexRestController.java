@@ -19,7 +19,7 @@ import java.util.Map;
  * @author 顾志杰
  * @date 2020/11/25-14:43
  */
-@RequestMapping("/bigscreen")
+@RequestMapping("/bigScreen")
 @RestController
 @ResponseResultBody
 public class IndexRestController {
