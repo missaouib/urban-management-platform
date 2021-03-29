@@ -97,7 +97,7 @@ public class IndexRestController {
     }
 
     /**
-     * 高发区域（大屏）
+     * 角色数量（大屏）
      * professionalDepartments: 专业部门
      * supervisor: 监督员
      * shiftLeader: 值班长
