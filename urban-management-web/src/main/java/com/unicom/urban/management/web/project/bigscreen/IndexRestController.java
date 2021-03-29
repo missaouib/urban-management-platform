@@ -110,7 +110,11 @@ public class IndexRestController {
      */
     @GetMapping("/findHotGrid")
     public List<Map<String, Object>> findHotGrid() {
-        return statisticsService.findHotGrid("");
+        List<Map<String, Object>> hotGrid = statisticsService.findHotGrid("");
+        if (hotGrid.size()>5){
+            return hotGrid.subList(0,4);
+        }
+        return hotGrid;
     }
 
     /**

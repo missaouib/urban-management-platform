@@ -286,11 +286,11 @@ public class StatisticsService {
         if (mapList != null && mapList.size() > 0) {
             List<GridVO> gridList = gridService.findAllByParentIsNull();
 
-            Map<String, Object> hotMap = new HashMap<>(3);
-            int totalInst = 0;
-            int totalClose = 0;
-            int totalDispose = 0;
             for (GridVO vo : gridList) {
+                Map<String, Object> hotMap = new HashMap<>(3);
+                int totalInst = 0;
+                int totalClose = 0;
+                int totalDispose = 0;
                 String gridName = vo.getGridName();
                 for (Map<String, Object> map : mapList) {
                     String gridN = findFirstGrid(map.get("gridId").toString());
@@ -307,6 +307,7 @@ public class StatisticsService {
                 hotGridList.add(hotMap);
             }
         }
+        hotGridList.sort((a, b) -> b.get("totalInst").toString().compareTo(a.get("totalInst").toString()));
         return hotGridList;
     }
 
