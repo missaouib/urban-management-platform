@@ -430,9 +430,37 @@ public class UserService {
     }
 
 
-    public UserVO getUser(String id){
+    public UserVO getUser(String id) {
         User user = userRepository.findById(id).orElse(new User());
         return new UserVO(user);
+    }
+
+    /**
+     * 获取个角色人数
+     */
+    public Map<String, Object> getUserCount() {
+        List<User> all = userRepository.findAll();
+        Map<String, Object> map = new HashMap<>();
+        // 专业部门
+        long professionalDepartments = this.roleCount(KvConstant.PROFESSIONAL_DEPARTMENTS_ROLE, all);
+        // 监督员
+        long supervisor = this.roleCount(KvConstant.SUPERVISOR_ROLE, all);
+        // 值班长
+        long shiftLeader = this.roleCount(KvConstant.SHIFT_LEADER_ROLE, all);
+        // 派遣员
+        long dispatcher = this.roleCount(KvConstant.DISPATCHER_ROLE, all);
+        // 受理员
+        long receptionist = this.roleCount(KvConstant.RECEPTIONIST_ROLE, all);
+        map.put("professionalDepartments", professionalDepartments);
+        map.put("supervisor", supervisor);
+        map.put("shiftLeader", shiftLeader);
+        map.put("dispatcher", dispatcher);
+        map.put("receptionist", receptionist);
+        return map;
+    }
+
+    private long roleCount(String role, List<User> users) {
+        return users.stream().filter(u -> u.getRoleList().stream().anyMatch(r -> r.getId().equals(role))).count();
     }
 
 }

@@ -4,6 +4,7 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.service.bigscreen.IndexService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
+import com.unicom.urban.management.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,9 @@ public class IndexRestController {
 
     @Autowired
     private StatisticsService statisticsService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/count")
     public Map<String,Object> count(String timeType){
@@ -85,5 +89,19 @@ public class IndexRestController {
     @GetMapping("/findHotGrid")
     public List<Map<String,Object>> findHotGrid(){
         return statisticsService.findHotGrid("");
+    }
+
+    /**
+     * 高发区域（大屏）
+     * professionalDepartments: 专业部门
+     * supervisor: 监督员
+     * shiftLeader: 值班长
+     * dispatcher: 派遣员
+     * receptionist: 受理员
+     * @return
+     */
+    @GetMapping("/findRoleCount")
+    public Map<String, Object> findRoleCount(){
+        return userService.getUserCount();
     }
 }
