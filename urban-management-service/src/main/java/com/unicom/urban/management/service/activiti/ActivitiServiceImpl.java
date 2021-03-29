@@ -367,7 +367,7 @@ public class ActivitiServiceImpl implements ActivitiService {
             tempTime.setEndTime(oldList.get(i).getEndTime());
             tempTime.setFlag(true);
 
-        } while (oldList.size() > 1 && oldList.get(i).getEndTime().equals(oldList.get(i + 1).getStartTime()));
+        } while (oldList.size() - 1 != i && oldList.get(i).getEndTime().equals(oldList.get(i + 1).getStartTime()));
 
         newList.add(tempTime);
         List<TimeScheme> newOldList = new ArrayList<>();
