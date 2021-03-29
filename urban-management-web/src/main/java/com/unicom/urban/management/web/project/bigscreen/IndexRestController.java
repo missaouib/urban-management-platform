@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,7 +57,7 @@ public class IndexRestController {
      * @return 数据
      */
     @GetMapping("/getIndexValue")
-    public Result getIndexValueByWeek() {
+    public Result getIndexValue() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime monday = now.with(TemporalAdjusters.previous(DayOfWeek.SUNDAY)).minusYears(5).withHour(0).withMinute(0).withSecond(0);
         LocalDateTime sunday = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).minusDays(1).withHour(23).withMinute(59).withSecond(59);
@@ -103,5 +105,33 @@ public class IndexRestController {
     @GetMapping("/findRoleCount")
     public Map<String, Object> findRoleCount(){
         return userService.getUserCount();
+    }
+
+
+    /**
+     * 案件趋势
+     * report 上报数
+     * inst 立案数
+     * dispatch 派遣数
+     * close 结案数
+     * operate 上报数
+     * dispose 处置数
+     * @return 数据
+     */
+    @GetMapping("/getIndexValueByDay")
+    public List<Map<String, Object>> getIndexValueByDay() {
+        List<Map<String, Object>> list = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime monday = now.withHour(0).withMinute(0).withSecond(0);
+        LocalDateTime sunday = now.with(TemporalAdjusters.next(DayOfWeek.MONDAY)).minusDays(1).withHour(23).withMinute(59).withSecond(59);
+        Map<String, Map<String, Object>> map = new HashMap<>();
+        list.add(map.put("one",statisticsService.getIndexValueByWeek(monday,sunday)));
+        list.add(map.put("two",statisticsService.getIndexValueByWeek(monday.minusDays(1),sunday)));
+        list.add(map.put("three",statisticsService.getIndexValueByWeek(monday.minusDays(2),sunday)));
+        list.add(map.put("four",statisticsService.getIndexValueByWeek(monday.minusDays(3),sunday)));
+        list.add(map.put("five",statisticsService.getIndexValueByWeek(monday.minusDays(4),sunday)));
+        list.add(map.put("six",statisticsService.getIndexValueByWeek(monday.minusDays(5),sunday)));
+        list.add(map.put("seven",statisticsService.getIndexValueByWeek(monday.minusDays(6),sunday)));
+        return list;
     }
 }
