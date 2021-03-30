@@ -28,15 +28,26 @@ public abstract class LocalDateTimeUtil extends DateUtil {
     public static List<LocalDate> between(LocalDateTime startDateTime, LocalDateTime endDateTime) {
         LocalDate startDate = startDateTime.toLocalDate();
         LocalDate endDate = endDateTime.toLocalDate();
+        return between(startDate, endDate);
+    }
+
+    /**
+     * 计算经过了哪些日期
+     *
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @return 经过了哪些日期
+     */
+    public static List<LocalDate> between(LocalDate startDateTime, LocalDate endDateTime) {
         List<LocalDate> localDateList = new ArrayList<>();
         // 如果为同一天
-        if (startDate.equals(endDate)) {
-            localDateList.add(startDate);
+        if (startDateTime.equals(endDateTime)) {
+            localDateList.add(startDateTime);
             return localDateList;
         }
-        long day = startDate.until(endDate, ChronoUnit.DAYS);
+        long day = startDateTime.until(endDateTime, ChronoUnit.DAYS);
         for (long i = 0; i <= day; i++) {
-            localDateList.add(startDate.plusDays(i));
+            localDateList.add(startDateTime.plusDays(i));
         }
         return localDateList;
     }

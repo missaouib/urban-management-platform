@@ -47,6 +47,9 @@ public class TimeService {
 
     @Transactional(rollbackFor = Exception.class)
     public void save(TimePlanDTO timePlanDTO) {
+        if (timePlanDTO.getEndTime().isBefore(timePlanDTO.getStartTime())) {
+            throw new DataValidException("结束时间不可在开始时间之前");
+        }
         TimePlan timePlan = new TimePlan();
         timePlan.setName(timePlanDTO.getName());
         timePlan.setStartTime(timePlanDTO.getStartTime());
@@ -65,18 +68,24 @@ public class TimeService {
 
     @Transactional(rollbackFor = Exception.class)
     public void activation(String id, TimePlan.Status status) {
+        // 激活
         if (TimePlan.Status.ENABLE.equals(status)) {
-            List<TimePlan> timePlanList = timePlanRepository.findAll();
-            for (TimePlan timePlan : timePlanList) {
-                if (id.equals(timePlan.getId())) {
-                    timePlan.setSts(TimePlan.Status.ENABLE);
-                } else {
-                    timePlan.setSts(TimePlan.Status.DISABLE);
-                }
-            }
+//            TimePlan timePlan = timePlanRepository.findById(id).orElseThrow(() -> new DataValidException("数据不存在"));
+//            List<LocalDate> between = LocalDateTimeUtil.between(timePlan.getStartTime(), timePlan.getEndTime());
+//
+//            List<Day> dayList = dayRepository.findByTimePlanOrderByCalendar(new TimePlan(id));
+//
+//            if (between.size() != dayList.size()) {
+//
+//                for (int i = 0; i < dayList.size(); i++) {
+//
+//                }
+//
+//            }
+            timePlanRepository.updateStatus(TimePlan.Status.DISABLE);
+            timePlanRepository.updateStatus(TimePlan.Status.ENABLE, id);
         } else {
-            Optional<TimePlan> option = timePlanRepository.findById(id);
-            option.ifPresent(TimePlan::disable);
+            timePlanRepository.updateStatus(TimePlan.Status.DISABLE, id);
         }
 
 

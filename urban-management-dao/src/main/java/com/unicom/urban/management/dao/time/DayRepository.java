@@ -14,6 +14,8 @@ public interface DayRepository extends CustomizeRepository<Day, String> {
 
     List<Day> findByCalendarInAndTimePlanOrderByCalendar(List<LocalDate> localDateList, TimePlan timePlan);
 
+    List<Day> findByTimePlanOrderByCalendar(TimePlan timePlan);
+
     Optional<Day> getByCalendar(LocalDate localDate);
 
     Page<Day> findByTimePlanOrderByCalendar(TimePlan timePlan, Pageable pageable);
