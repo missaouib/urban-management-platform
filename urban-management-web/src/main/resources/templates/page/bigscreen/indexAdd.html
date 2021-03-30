@@ -201,6 +201,7 @@
 <!--<script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js" type="text/javascript"></script>-->
 <!--<th:block th:include="page/fragments/common :: echarts_liquidfill_js"/>-->
 <script type="text/javascript" th:src="@{/plugins/echarts/newEcharts.min.js}"></script>
+<script type="text/javascript" th:src="@{/plugins/moment/moment.js}"></script>
 <th:block th:include="page/fragments/common :: map_js"/>
 <th:block th:include="page/fragments/common :: mapinit_js"/>
 <script th:src="@{/js/index.js}"></script>
@@ -213,6 +214,7 @@
     var getIndexValue = /*[[@{/bigScreen/getIndexValue}]]*/ "/bigScreen/getIndexValue";
     var findHotGrid = /*[[@{/bigScreen/getIndexValue}]]*/ "/bigScreen/findHotGrid";//高发区域
     var findHighIncidence = /*[[@{/bigScreen/findHighIncidence}]]*/ "/bigScreen/findHighIncidence";//高发类型
+    var getIndexValueByDay = /*[[@{/bigScreen/getIndexValueByDay}]]*/ "/bigScreen/getIndexValueByDay";//案件趋势
     //高发区域
     findHighGrid();
     function findHighGrid(){
@@ -537,7 +539,168 @@
         })
 
     }
+    // 案件趋势
+    indexValueByDay();
+    function indexValueByDay(){
+        var myChart3 = echarts.init(document.getElementById('ajqs'));
+        $.ajaxUtil.get(getIndexValueByDay,function (e){
+            if(e.code==0){
+               var momentList=[];
+                for(var i=0;i<7;i++){
+                    var last7 = moment().subtract('days',i).format('YYYY-MM-DD');
+                    momentList.push(last7)
+                    console.log(momentList)
+                }
+                let close=[e.data.seven.close,e.data.six.close,e.data.five.close,e.data.four.close,e.data.three.close,e.data.two.close,e.data.one.close];
+                let inst=[e.data.seven.inst,e.data.six.inst,e.data.five.inst,e.data.four.inst,e.data.three.inst,e.data.two.inst,e.data.one.inst];
+                let dispose=[e.data.seven.dispose,e.data.six.dispose,e.data.five.dispose,e.data.four.dispose,e.data.three.dispose,e.data.two.dispose,e.data.one.dispose];
+                let report=[e.data.seven.report,e.data.six.report,e.data.five.report,e.data.four.report,e.data.three.report,e.data.two.report,e.data.one.report];
+                let dispatch=[];
+                let operate=[];
+                let data=e.data;
+                console.log(data)
+                var optionCaseTrend = {
+                    tooltip: {
+                        trigger: "axis",
+                        show: true,
+                        textStyle: {
+                            color: "rgb(255, 255, 255)"
+                        }
+                    },
+                    legend: {
+                        data: ["结案数","立案数","处置数","上报数"],
+                        textStyle: {
+                            color: "rgb(255, 255, 255)"
+                        }
+                    },
+                    toolbox: {
+                        show: false,
+                        feature: {
+                            mark: {
+                                show: true
+                            },
+                            dataView: {
+                                show: true,
+                                readOnly: true
+                            },
+                            magicType: {
+                                show: false,
+                                type: ["line", "bar", "stack", "tiled"]
+                            },
+                            restore: {
+                                show: true
+                            },
+                            saveAsImage: {
+                                show: true
+                            }
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: "category",
+                            boundaryGap: false,
+                            data: momentList,
+                            splitLine: {
+                                show: false
+                            },
+                            nameTextStyle: {
+                                color: "rgb(255, 255, 255)"
+                            },
+                            axisLabel: {
+                                textStyle: {
+                                    color: "rgba(255, 255, 255, 0.6)"
+                                }
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: "value",
+                            splitLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: "#C4EAFC"
+                                }
+                            },
+                            axisLabel: {
+                                textStyle: {
+                                    color: "rgba(255, 255, 255, 0.6)"
+                                }
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: "结案数",
+                            type: "line",
+                            symbol: "none",
+                            smooth: true,
+                            itemStyle: {
+                                normal: {
+                                    areaStyle: {
+                                        type: "default"
+                                    },
+                                    color:'#F07C88'
+                                }
+                            },
+                            data: close
+                        },
+                        {
+                            name: "立案数",
+                            type: "line",
+                            symbol: "none",
+                            smooth: true,
+                            itemStyle: {
+                                normal: {
+                                    areaStyle: {
+                                        type: "default"
+                                    },
+                                    color:'#4477C9'
+                                }
+                            },
+                            data: inst
+                        },
 
+                        {
+                            name: "处置数",
+                            type: "line",
+                            symbol: "none",
+                            itemStyle: {
+                                normal: {
+                                    areaStyle: {
+                                        type: "default"
+                                    },
+                                    color: "#A282E4"
+                                }
+                            },
+
+                            data: dispose
+                        },
+                        {
+                            name: "上报数",
+                            type: "line",
+                            symbol: "none",
+                            itemStyle: {
+                                normal: {
+                                    areaStyle: {
+                                        type: "default"
+                                    },
+                                    color: "#82c2e4"
+                                }
+                            },
+
+                            data: report
+                        }
+                    ],
+                    grid: {
+                        borderWidth: 1
+                    }
+                }
+                myChart3.setOption(optionCaseTrend);
+            }
+        })
+    }
     $(function () {
         $.ajaxUtil.get(getIndexValue, function (e) {
             let data = e.data;
@@ -941,146 +1104,6 @@
     }
     myChart.setOption(option);
 
-    // 案件趋势
-    var caseTrend = echarts.init(document.getElementById('ajqs'));
-    optionCaseTrend = {
-        tooltip: {
-            trigger: "axis",
-            show: true,
-            textStyle: {
-                color: "rgb(255, 255, 255)"
-            }
-        },
-        legend: {
-            data: ["结案", "立案", "处置", "上报"],
-            textStyle: {
-                color: "rgb(255, 255, 255)"
-            }
-        },
-        toolbox: {
-            show: false,
-            feature: {
-                mark: {
-                    show: true
-                },
-                dataView: {
-                    show: true,
-                    readOnly: true
-                },
-                magicType: {
-                    show: false,
-                    type: ["line", "bar", "stack", "tiled"]
-                },
-                restore: {
-                    show: true
-                },
-                saveAsImage: {
-                    show: true
-                }
-            }
-        },
-        calculable: true,
-        xAxis: [
-            {
-                type: "category",
-                boundaryGap: false,
-                data: ["3月11日", "3月12日", "3月13日", "3月14日", "3月15日", "3月16日", "3月17日"],
-                splitLine: {
-                    show: false
-                },
-                nameTextStyle: {
-                    color: "rgb(255, 255, 255)"
-                },
-                axisLabel: {
-                    textStyle: {
-                        color: "rgba(255, 255, 255, 0.6)"
-                    }
-                }
-            }
-        ],
-        yAxis: [
-            {
-                type: "value",
-                splitLine: {
-                    show: true,
-                    lineStyle: {
-                        color: "#C4EAFC"
-                    }
-                },
-                axisLabel: {
-                    textStyle: {
-                        color: "rgba(255, 255, 255, 0.6)"
-                    }
-                }
-            }
-        ],
-        series: [
-            {
-                name: "结案",
-                type: "line",
-                symbol: "none",
-                smooth: true,
-                itemStyle: {
-                    normal: {
-                        areaStyle: {
-                            type: "default"
-                        },
-                        color:'#F07C88'
-                    }
-                },
-                data: [10, 12, 21, 54, 260, 830, 710]
-            },
-            {
-                name: "立案",
-                type: "line",
-                symbol: "none",
-                smooth: true,
-                itemStyle: {
-                    normal: {
-                        areaStyle: {
-                            type: "default"
-                        },
-                        color:'#4477C9'
-                    }
-                },
-                data: [30, 182, 434, 791, 390, 30, 10]
-            },
-            {
-                name: "处置",
-                type: "line",
-                symbol: "none",
-                smooth: true,
-                itemStyle: {
-                    normal: {
-                        areaStyle: {
-                            type: "default"
-                        },
-                        color: "#1FD8EE"
-                    }
-                },
-                data: [320, 132, 61, 234, 120, 90, 20]
-            },
-            {
-                name: "上报",
-                type: "line",
-                symbol: "none",
-                itemStyle: {
-                    normal: {
-                        areaStyle: {
-                            type: "default"
-                        },
-                        color: "#A282E4"
-                    }
-                },
-
-                data: [260, 132, 61, 234, 390, 30, 10]
-            }
-        ],
-        grid: {
-            borderWidth: 1
-        }
-    }
-    caseTrend.setOption(optionCaseTrend);
 
     // 部门考核
     let bmkhUrl = /*[[@{/bigScreen/evaluate}]]*/ "/bigScreen/evaluate";
