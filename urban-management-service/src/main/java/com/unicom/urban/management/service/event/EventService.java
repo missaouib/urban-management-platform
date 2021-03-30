@@ -1065,8 +1065,8 @@ public class EventService {
         long countByEventSourceKey0 = getCountByEventSourceKey(0);
         long countByEventSourceKey1 = getCountByEventSourceKey(1);
         Map<String, Object> map = new HashMap<>(2);
-        map.put("监督员上报", countByEventSourceKey0);
-        map.put("热线上报", countByEventSourceKey1);
+        map.put("supervise", countByEventSourceKey0);
+        map.put("hotline", countByEventSourceKey1);
         return map;
     }
 

@@ -138,7 +138,7 @@ public class IndexRestController {
      * inst 立案数
      * dispatch 派遣数
      * close 结案数
-     * operate 上报数
+     * operate 受理数
      * dispose 处置数
      *
      * @return 数据
