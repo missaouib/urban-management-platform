@@ -27,11 +27,11 @@
                     <tr>
                         <td>开始时间</td>
                         <td>
-                            <input type="text" id="startTime" class="form_date find_input" name="startTime" readonly/>
+                            <input type="text" id="startTime" class="form_date find_input" name="startTime" readonly required/>
                         </td>
                         <td>结束时间<span></span></td>
                         <td>
-                            <input type="text" id="endTime" class="form_date find_input" name="endTime" readonly/>
+                            <input type="text" id="endTime" class="form_date find_input" name="endTime" readonly required/>
                         </td>
                     </tr>
                     </tbody>
@@ -137,12 +137,12 @@
             //     required: true,
             //     range: [26, 50]
             // },
-            // email: {
-            //     email: true
-            // },
-            // idcard: {
-            //     card: true
-            // },
+            startTime: {
+                required: true
+            },
+            endTime: {
+                required: true
+            },
             mobileNumber: {
                 mobileNumber: true
             }

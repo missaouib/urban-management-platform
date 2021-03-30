@@ -205,7 +205,7 @@
 <th:block th:include="page/fragments/common :: mapinit_js"/>
 <script th:src="@{/js/index.js}"></script>
 <script src="https://pv.sohu.com/cityjson?ie=utf-8" type="text/javascript"></script>
-<script>
+<script type="text/javascript" th:inline="javascript">
     var countUrl = /*[[@{/bigscreen/count}]]*/ "/bigscreen/count";
     var showPointsUrl = /*[[@{/bigscreen/showPoints}]]*/ "/bigscreen/showPoints";
     var findHighIncidenceUrl = /*[[@{/commandSubsystem/findHighIncidence}]]*/ "/commandSubsystem/findHighIncidence";
@@ -399,7 +399,6 @@
                 let totalName=[];
                 let data = e.data;
                 for (let i=0; i< data.length; i++){
-                    console.log("aaa"+data[i])
                     totalClose.push(data[i].totalClose);
                     totalDispose.push(data[i].totalDispose);
                     totalInst.push(data[i].totalInst);
@@ -541,7 +540,6 @@
 
     $(function () {
         $.ajaxUtil.get(getIndexValue, function (e) {
-            console.log(e)
             let data = e.data;
             $("#report").text(data.report);
             $("#inst").text(data.inst);
@@ -597,56 +595,62 @@
         }
 
 
-         //案件动态表格
+        let showUrl = [[${@fastProperties.nginxUrl}]];
+        //案件动态表格
         let eventListUrl = /*[[@{/bigScreen/eventList}]]*/ "/bigScreen/eventList";
-        let img = /*[[@{/common/img/}]]*/ "/common/img/";
-            // <img src="${r.file[0]}">
+        // let showUrl = /*[[@{/common/img/}]]*/ "/common/img/";
+        // let showUrl = 'http://192.168.24.203:8090/'
+        $.ajaxUtil.get(eventListUrl,function (res) {
+            let data = res.data.content
+            let ajqsHtml = ''
+            $("#con1 ul").html(``)
+            data.map(r =>{
+                ajqsHtml += "<li class=\"tableOptions mach_opt\">";
+                ajqsHtml += "<span class=\"mach_img\">";
+                if(r.file.length == 0){
+                    ajqsHtml += "暂无";
+                }else {
+                    ajqsHtml += "<img src='" + showUrl + r.file[0].url + "'>";
+                }
+                ajqsHtml += "</span>";
+                ajqsHtml += "<span class=\"over_ell\">" + r.eventCode + "</span>";
+                ajqsHtml += "<span class=\"over_ell\">" + r.eventTypeName + "</span>";
+                ajqsHtml += "<span class=\"over_ell\">" + r.eventRegion + "</span>";
+                ajqsHtml += "</li>";
+            })
+            $("#con1 ul").html(ajqsHtml)
 
-        //     $.ajaxUtil.get(eventListUrl,function (res) {
-        //     let data = res.data.content
-        //     console.log(data)
-        //     let ajqsHtml = ''
-        //     $("#con1 ul").html(``)
-        //     data.map(r =>{
-        //         ajqsHtml +=`
-        //                 <li class="tableOptions mach_opt">
-        //                      <span class="mach_img">
-        //                       </span>
-        //                       <span class="over_ell">${r.eventCode}</span>
-        //                       <span class="over_ell">${r.eventTypeName}</span>
-        //                       <span class="over_ell">${r.eventRegion}</span>
-        //                 </li>
-        //         `
-        //     })
-        //     $("#con1 ul").html(ajqsHtml)
-        //
-        // })
 
-        var time = 60;
-        var box = document.getElementById('scroll');
-        var con1 = document.getElementById('con1');
-        var con2 = document.querySelectorAll('.con2');
-        $(".con2").html($("#con1").html())
+            var time = 60;
+            var box = document.getElementById('scroll');
+            var con1 = document.getElementById('con1');
+            var con2 = document.querySelectorAll('.con2');
+            $(".con2").html($("#con1").html())
 
-        function Up() {
-            if (box.scrollTop >= con1.offsetHeight) {
-                box.scrollTop = 0;
-            } else {
-                box.scrollTop++
+            function Up() {
+                if (box.scrollTop >= con1.offsetHeight) {
+                    box.scrollTop = 0;
+                } else {
+                    box.scrollTop++
+                }
             }
-        }
 
 
 
-        var setlId = setInterval(Up, time);
+            var setlId = setInterval(Up, time);
 
-        $("#scroll").mouseover(function () {
-            clearInterval(setlId);
+            $("#scroll").mouseover(function () {
+                clearInterval(setlId);
+            })
+
+            $("#scroll").mouseleave(function () {
+                setlId = setInterval(Up, time);
+            })
         })
 
-        $("#scroll").mouseleave(function () {
-            setlId = setInterval(Up, time);
-        })
+
+
+
 
         $("#reporting").click(function () {
             layerMap.getSource().clear()
@@ -1208,7 +1212,7 @@
                     data: bmkhSerData,
                     barGap: "53%",
                     barMinHeight: 12,
-                    barWidth: 15
+                    barWidth: 11
                 }
             ],
             grid: {
@@ -1344,6 +1348,31 @@
                             },
                             color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
                                 offset: 0,
+                                color: '#6A16D9'
+                            }, {
+                                offset: 1,
+                                color: '#8152F5'
+                            }]),
+                        }
+                    },
+                    data: bmkhSerData,
+                    barGap: "53%",
+                    barMinHeight: 12,
+                    barWidth: 11
+                }
+                {
+                    name: "得分",
+                    type: "bar",
+                    stack: "总量",
+                    itemStyle: {
+                        normal: {
+                            barBorderRadius: [30, 30, 30, 30],
+                            label: {
+                                show: true,
+                                position: "inside"
+                            },
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                offset: 0,
                                 color: '#0ED7EE'
                             }, {
                                 offset: 1,
@@ -1354,7 +1383,7 @@
                     data: rykhSerData,
                     barGap: "53%",
                     barMinHeight: 12,
-                    barWidth: 13
+                    barWidth: 11
                 }
             ],
             grid: {
