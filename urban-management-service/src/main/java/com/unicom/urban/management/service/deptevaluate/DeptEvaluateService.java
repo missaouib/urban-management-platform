@@ -13,6 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.Predicate;
+import javax.transaction.Transactional;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
  * @date 2020/11/17-18:21
  */
 @Service
+@Transactional(rollbackOn = Exception.class)
 public class DeptEvaluateService {
 
 

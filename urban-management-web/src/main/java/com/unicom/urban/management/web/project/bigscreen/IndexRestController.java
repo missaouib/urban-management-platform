@@ -212,6 +212,15 @@ public class IndexRestController {
     }
 
     /**
+     * 事件部件统计
+     * @return
+     */
+    @GetMapping("/countByEventType")
+    public Result countByEventType() {
+        return Result.success(evaluateService.countByEventType());
+    }
+
+    /**
      * 大屏 问题来源
      * 上报来源
      *
@@ -234,4 +243,6 @@ public class IndexRestController {
     public ModelAndView toCaseHistoryListAdd() {
         return new ModelAndView(SystemConstant.PAGE + "/bigscreen/indexAdd");
     }
+
+
 }
