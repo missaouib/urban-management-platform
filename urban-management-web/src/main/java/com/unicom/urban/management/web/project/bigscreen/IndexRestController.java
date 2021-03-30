@@ -1,6 +1,7 @@
 package com.unicom.urban.management.web.project.bigscreen;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.EventDTO;
 import com.unicom.urban.management.pojo.vo.DeptEvaluate;
@@ -21,11 +22,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -219,4 +220,16 @@ public class IndexRestController {
         return Result.success(countByEventSource);
     }
 
+
+
+    @GetMapping("/index")
+    public ModelAndView toCaseHistoryList() {
+        return new ModelAndView(SystemConstant.PAGE + "/bigscreen/index");
+    }
+
+
+    @GetMapping("/indexAdd")
+    public ModelAndView toCaseHistoryListAdd() {
+        return new ModelAndView(SystemConstant.PAGE + "/bigscreen/indexAdd");
+    }
 }

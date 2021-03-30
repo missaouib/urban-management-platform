@@ -88,6 +88,9 @@ body{
     height: 100%;
 }
 
+.tableOptions a{
+    color: skyblue;
+}
 .time_queen {
     display: flex;
     align-items: center;
@@ -214,4 +217,28 @@ body{
 .base_ne {
     position: absolute;
     top: 5px;
+}
+.tabletext{
+    background: none!important;
+}
+.tabletext:nth-child(1){
+    width: 20% !important;
+}
+.tableOptions:nth-child(2n){
+    background-color: #073E68;
+}
+#scroll li{
+    margin: 0!important;
+    padding: 10px 0;
+}
+.tabletext{
+    width: 23% !important;
+}
+.tableOptions span{
+    width: 23% !important;
+    overflow:hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    display: block!important;
+    font-size: 14px!important;
 }
