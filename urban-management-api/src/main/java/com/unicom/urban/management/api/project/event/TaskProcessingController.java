@@ -1,6 +1,7 @@
 package com.unicom.urban.management.api.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.common.properties.FastProperties;
 import com.unicom.urban.management.common.util.FileUploadUtil;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
@@ -34,29 +35,25 @@ import java.util.*;
 @RequestMapping("/api/task")
 @ResponseResultBody
 public class TaskProcessingController {
+
     @Autowired
     private TaskProcessingService taskProcessingService;
-
     @Autowired
     private DeptService deptService;
-
     @Autowired
     private FileUploadUtil fileUploadUtil;
-
     @Autowired
     private RuntimeService runtimeService;
-
     @Autowired
     private HistoryService historyService;
-
     @Autowired
     private RepositoryService repositoryService;
-
     @Autowired
     private ProcessEngine processEngine;
-
     @Autowired
     private ProcessEngineConfiguration processEngineConfiguration;
+    @Autowired
+    private FastProperties fastProperties;
 
     /**
      * 授权审批 案件处理 挂账恢复
@@ -86,6 +83,12 @@ public class TaskProcessingController {
             list.add(map);
         }
         return Result.success(list);
+    }
+
+    @GetMapping("/common/showUrl")
+    public Result showUrl() {
+        String nginxUrl = fastProperties.getNginxUrl();
+        return Result.success(nginxUrl);
     }
 
     @GetMapping("/common/img/{id}")
