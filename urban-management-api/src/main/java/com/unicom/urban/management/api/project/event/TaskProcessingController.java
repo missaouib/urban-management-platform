@@ -85,6 +85,11 @@ public class TaskProcessingController {
         return Result.success(list);
     }
 
+    /**
+     * 附件回显地址
+     *
+     * @return 地址 ip+port
+     */
     @GetMapping("/common/showUrl")
     public Result showUrl() {
         String nginxUrl = fastProperties.getNginxUrl();
