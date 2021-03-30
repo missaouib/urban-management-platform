@@ -113,6 +113,7 @@ public class Day {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "time_plan_id")
     public TimePlan getTimePlan() {
         return timePlan;
     }

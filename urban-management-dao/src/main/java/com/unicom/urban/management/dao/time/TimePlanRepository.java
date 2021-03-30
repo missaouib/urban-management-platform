@@ -24,5 +24,8 @@ public interface TimePlanRepository extends CustomizeRepository<TimePlan, String
     @Query(value = "update TimePlan  set sts = ?1 where id = ?2")
     void updateStatus(TimePlan.Status status, String id);
 
+    @Modifying
+    @Query(value = "delete from TimePlan where id = ?1")
+    void deleteById(String id);
 
 }

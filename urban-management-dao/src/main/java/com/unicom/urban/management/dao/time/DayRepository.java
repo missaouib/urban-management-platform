@@ -5,6 +5,8 @@ import com.unicom.urban.management.pojo.entity.time.Day;
 import com.unicom.urban.management.pojo.entity.time.TimePlan;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,5 +23,9 @@ public interface DayRepository extends CustomizeRepository<Day, String> {
     Page<Day> findByTimePlanOrderByCalendar(TimePlan timePlan, Pageable pageable);
 
     boolean existsByCalendarAndTimePlan(LocalDate calendar, TimePlan timePlan);
+
+    @Modifying
+    @Query(value = "delete from Day where timePlan = ?1")
+    void deleteByTimePlan(TimePlan timePlan);
 
 }

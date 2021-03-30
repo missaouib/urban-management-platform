@@ -159,7 +159,9 @@ public class TimeService {
             if (optional.get().isEnable()) {
                 throw new DataValidException("启用中 不可被删除");
             }
-            timePlanRepository.delete(optional.get());
+            dayRepository.deleteByTimePlan(new TimePlan(id));
+            timeSchemeRepository.deleteByTimePlan(new TimePlan(id));
+            timePlanRepository.deleteById(id);
         }
 
     }
