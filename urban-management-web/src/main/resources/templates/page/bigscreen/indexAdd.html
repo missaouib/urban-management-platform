@@ -212,7 +212,7 @@
     var findHighIncidenceUrl = /*[[@{/commandSubsystem/findHighIncidence}]]*/ "/commandSubsystem/findHighIncidence";
     var getTrendAnalysisUrl = /*[[@{/commandSubsystem/getTrendAnalysis}]]*/ "/commandSubsystem/getTrendAnalysis";
     var getIndexValue = /*[[@{/bigScreen/getIndexValue}]]*/ "/bigScreen/getIndexValue";
-    var findHotGrid = /*[[@{/bigScreen/getIndexValue}]]*/ "/bigScreen/findHotGrid";//高发区域
+    var findHotGrid = /*[[@{/bigScreen/findHotGrid}]]*/ "/bigScreen/findHotGrid";//高发区域
     var findHighIncidence = /*[[@{/bigScreen/findHighIncidence}]]*/ "/bigScreen/findHighIncidence";//高发类型
     var getIndexValueByDay = /*[[@{/bigScreen/getIndexValueByDay}]]*/ "/bigScreen/getIndexValueByDay";//案件趋势
     //高发区域
@@ -544,7 +544,6 @@
                 for(var i=0;i<7;i++){
                     var last7 = moment().subtract('days',i).format('YYYY-MM-DD');
                     momentList.push(last7)
-                    console.log(momentList)
                 }
                 let close=[e.data.seven.close,e.data.six.close,e.data.five.close,e.data.four.close,e.data.three.close,e.data.two.close,e.data.one.close];
                 let inst=[e.data.seven.inst,e.data.six.inst,e.data.five.inst,e.data.four.inst,e.data.three.inst,e.data.two.inst,e.data.one.inst];
