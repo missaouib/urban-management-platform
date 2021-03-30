@@ -83,14 +83,25 @@ public class TimePlan {
         return dayList.stream().anyMatch(day -> day.getCalendar().equals(localDate));
     }
 
+    /**
+     * 设置为启用
+     */
     @Transient
     public void enable() {
         this.sts = Status.ENABLE;
     }
 
+    /**
+     * 设置为禁用
+     */
     @Transient
     public void disable() {
         this.sts = Status.DISABLE;
+    }
+
+    @Transient
+    public boolean isEnable() {
+        return Status.ENABLE.equals(this.sts);
     }
 
     @Id

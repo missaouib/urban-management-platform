@@ -58,6 +58,11 @@ public class TimeController {
     }
 
 
+    @PostMapping("/remove")
+    public void remove(String ids) {
+        timeService.remove(ids);
+    }
+
     /**
      * 新增计时管理
      */

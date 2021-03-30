@@ -135,4 +135,16 @@ public class TimeService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    public void remove(String id) {
+        Optional<TimePlan> optional = timePlanRepository.findById(id);
+
+        if (optional.isPresent()) {
+            if (optional.get().isEnable()) {
+                throw new DataValidException("启用中 不可被删除");
+            }
+            timePlanRepository.delete(optional.get());
+        }
+
+    }
 }
