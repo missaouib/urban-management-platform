@@ -64,7 +64,7 @@ public class SupervisionAcceptanceController {
     }
 
     /**
-     * 案件受理-核实
+     * 案件受理-保存
      *
      * @return Result
      */
@@ -76,7 +76,7 @@ public class SupervisionAcceptanceController {
     }
 
     /**
-     * 案件受理-保存
+     * 案件受理-核实
      *
      * @return Result
      */
