@@ -900,6 +900,7 @@
             containLabel: true
         },
         legend: {
+            show:false,
             itemHeight: 15,
             itemWidth: 15,
             data:[
@@ -955,38 +956,36 @@
                 }
             }
         }],
-        series: [
-            {
-                name: "本期",
-                type: 'bar',
-                data: getwkrs,
-                barWidth: '12px',
-                itemStyle: {
-                    normal: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                            offset: 0,
-                            color: 'rgba(63, 255, 234, 0.82)' // 0% 处的颜色
-                        }, {
-                            offset: 1,
-                            color: 'rgba(0, 126, 255, 0.2)' // 100% 处的颜色
-                        }], false),
-                        barBorderRadius: [30, 30, 0, 0],
-                    }
-                },
-            },{
+        series: [{
                 name: "同期",
                 type: 'bar',
                 data: getlkrs,
                 barWidth: '12px',
                 itemStyle: {
                     normal: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                            offset: 0,
-                            color: 'rgba(255, 234, 0, 1)' // 0% 处的颜色
-                        }, {
-                            offset: 1,
-                            color: 'rgba(255, 161, 26, 0.2)' // 100% 处的颜色
-                        }], false),
+                        color: function(params){
+                            console.log(params);
+                            var colorList = [
+                                ['#0F5C7F','#99DFFF'],
+                                ['#8D3510','#FFA783'],
+                                ['#651180','#D099FF'],
+                                ['#4B8D10','#83FFC0'],
+                                ['#8D104B','#FF83D8'],
+                                ['#7F610F','#FFE899'],
+                                ['#108D89','#83FFE9']
+                            ];
+                            var colorItem = colorList[params.dataIndex];
+                            return new echarts.graphic.LinearGradient(0,1,0,0,[
+                                {
+                                    offset:0,
+                                    color: colorItem[0]
+                                },
+                                {
+                                    offset:1,
+                                    color: colorItem[1]
+                                }
+                            ],false);
+                        },
                         barBorderRadius: [30, 30, 0, 0],
                     }
                 },
@@ -1008,6 +1007,7 @@
             containLabel: true
         },
         legend: {
+            show:false,
             data: ['本期','同期'],
             right: "3%",
             top:"4%",
@@ -1065,31 +1065,37 @@
                 barWidth: '12px',
                 itemStyle: {
                     normal: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                            offset: 0,
-                            color: 'rgba(63, 255, 234, 0.82)' // 0% 处的颜色
-                        }, {
-                            offset: 1,
-                            color: 'rgba(0, 126, 255, 0.2)' // 100% 处的颜色
-                        }], false),
+                        // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        //     offset: 0,
+                        //     color: 'rgba(63, 255, 234, 0.82)' // 0% 处的颜色
+                        // }, {
+                        //     offset: 1,
+                        //     color: 'rgba(0, 126, 255, 0.2)' // 100% 处的颜色
+                        // }], false),
                         barBorderRadius: [30, 30, 0, 0],
-                    }
-                },
-            },{
-                name: "同期",
-                type: 'bar',
-                data: getlkrs,
-                barWidth: '12px',
-                itemStyle: {
-                    normal: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                            offset: 0,
-                            color: 'rgba(255, 234, 0, 1)' // 0% 处的颜色
-                        }, {
-                            offset: 1,
-                            color: 'rgba(255, 161, 26, 0.2)' // 100% 处的颜色
-                        }], false),
-                        barBorderRadius: [30, 30, 0, 0],
+                        color: function(params){
+                            console.log(params);
+                            var colorList = [
+                                ['#0F5C7F','#99DFFF'],
+                                ['#8D3510','#FFA783'],
+                                ['#651180','#D099FF'],
+                                ['#4B8D10','#83FFC0'],
+                                ['#8D104B','#FF83D8'],
+                                ['#7F610F','#FFE899'],
+                                ['#108D89','#83FFE9']
+                            ];
+                            var colorItem = colorList[params.dataIndex];
+                            return new echarts.graphic.LinearGradient(0,1,0,0,[
+                                {
+                                    offset:0,
+                                    color: colorItem[0]
+                                },
+                                {
+                                    offset:1,
+                                    color: colorItem[1]
+                                }
+                            ],false);
+                        }
                     }
                 },
             }
