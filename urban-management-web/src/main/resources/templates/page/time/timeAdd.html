@@ -159,7 +159,7 @@
 
     let addUrl = /*[[@{/time/add}]]*/ "/time/add";
 
-    let removeUrl = /*[[@{/time/remove}]]*/ "/time/remove";
+    let removeUrl = /*[[@{/time/removeday}]]*/ "/time/remove";
 
     let saveUrl = /*[[@{/time/addday}]]*/ "/time/remove";
 
@@ -240,7 +240,7 @@
                     formatter: function (value, row) {
                         var e = "";
                         e +=  "<a href='#' title='' style='margin-right: 5px' data-toggle='modal' data-target='#modal-defaultedi' onclick='edit(\"" + row.id + "\")'>修改</a>";
-                        // e +="<a href='#' title='' style='margin-right: 5px' onclick='$.operate.remove(\"" + row.id + "\")' >删除</a>";
+                        e +=  "<a href='#' title='' style='margin-right: 5px' onclick='$.operate.remove(\"" + row.id + "\")'>删除</a>";
                         return e;
                     }
                 }

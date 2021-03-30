@@ -392,7 +392,7 @@ public class ActivitiServiceImpl implements ActivitiService {
     private long getMinute(LocalDateTime startDateTime, LocalDateTime endDateTime, List<TempTime> tempTimeList, TimePlan timePlan) {
         // 开始日期和结束日期为同一天
         if (startDateTime.toLocalDate().equals(endDateTime.toLocalDate())) {
-            return oneDay(startDateTime, endDateTime, tempTimeList);
+            return oneDay(startDateTime, endDateTime, tempTimeList, timePlan);
         } else {
             List<LocalDate> localDateList = LocalDateTimeUtil.between(startDateTime, endDateTime);
 
@@ -514,8 +514,8 @@ public class ActivitiServiceImpl implements ActivitiService {
         return minute;
     }
 
-    private long oneDay(LocalDateTime startDateTime, LocalDateTime endDateTime, List<TempTime> tempTimeList) {
-        Optional<Day> optionalDay = dayRepository.getByCalendar(startDateTime.toLocalDate());
+    private long oneDay(LocalDateTime startDateTime, LocalDateTime endDateTime, List<TempTime> tempTimeList, TimePlan timePlan) {
+        Optional<Day> optionalDay = dayRepository.getByCalendarAndTimePlan(startDateTime.toLocalDate(), timePlan);
         if (optionalDay.isPresent()) {
             Day day = optionalDay.get();
             if (day.isWork()) {

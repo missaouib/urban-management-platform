@@ -63,6 +63,11 @@ public class TimeController {
         timeService.remove(ids);
     }
 
+    @PostMapping("/removeday")
+    public void removeDay(String ids) {
+        timeService.removeDay(ids);
+    }
+
     /**
      * 新增计时管理
      */

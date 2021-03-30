@@ -20,6 +20,8 @@ public interface DayRepository extends CustomizeRepository<Day, String> {
 
     Optional<Day> getByCalendar(LocalDate localDate);
 
+    Optional<Day> getByCalendarAndTimePlan(LocalDate localDate, TimePlan timePlan);
+
     Page<Day> findByTimePlanOrderByCalendar(TimePlan timePlan, Pageable pageable);
 
     boolean existsByCalendarAndTimePlan(LocalDate calendar, TimePlan timePlan);
@@ -27,5 +29,9 @@ public interface DayRepository extends CustomizeRepository<Day, String> {
     @Modifying
     @Query(value = "delete from Day where timePlan = ?1")
     void deleteByTimePlan(TimePlan timePlan);
+
+    @Modifying
+    @Query(value = "delete from Day where id = ?1")
+    void deleteById(String id);
 
 }

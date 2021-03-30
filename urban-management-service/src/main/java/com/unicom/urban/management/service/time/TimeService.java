@@ -165,4 +165,9 @@ public class TimeService {
         }
 
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void removeDay(String id) {
+        dayRepository.deleteById(id);
+    }
 }
