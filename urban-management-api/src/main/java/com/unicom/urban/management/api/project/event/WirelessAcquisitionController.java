@@ -182,6 +182,12 @@ public class WirelessAcquisitionController {
         return Result.success(getEventSourceForWirelessAcquisition);
     }
 
+    @GetMapping("/getEventSourceForHotLine")
+    public Result getEventSourceForHotLine() {
+        List<KV> getEventSourceForWirelessAcquisition = kvService.findByTableNameAndFieldNameAndValue("event", "eventSource", "热线上报");
+        return Result.success(getEventSourceForWirelessAcquisition);
+    }
+
     /**
      * 案件采集保存 - 弃用
      *
