@@ -124,7 +124,7 @@ public class DeptEvaluateService {
         long unitNeedDispose = all.stream().filter(s -> null != s.getNeedDispose()).filter(s -> 1 == s.getNeedDispose()).filter(s -> KvConstant.UNIT.equals(s.getEvent().getEventType().getParent().getParent().getId())).count();
         String unitNeedDisposeRateStr = "0";
         if (unitNeedDispose != 0) {
-            unitNeedDisposeRateStr = df.format((double) unitDispose / (double) unitNeedDispose);
+            unitNeedDisposeRateStr = df.format(((double) unitDispose / (double) unitNeedDispose)*100);
         }
         Map<String, Object> unitMap = new HashMap<>();
         unitMap.put("unitDispose", unitDispose);
@@ -139,12 +139,12 @@ public class DeptEvaluateService {
         long eventNeedDispose = all.stream().filter(s -> null != s.getNeedDispose()).filter(s -> 1 == s.getNeedDispose()).filter(s -> KvConstant.EVENT.equals(s.getEvent().getEventType().getParent().getParent().getId())).count();
         String eventNeedDisposeRateStr = "0";
         if (eventNeedDispose != 0) {
-            eventNeedDisposeRateStr = df.format((double) eventDispose / (double) eventNeedDispose);
+            eventNeedDisposeRateStr = df.format(((double) eventDispose / (double) eventNeedDispose)*100);
         }
         Map<String, Object> eventMap = new HashMap<>();
-        unitMap.put("eventDispose", eventDispose);
-        unitMap.put("eventNeedDispose", eventNeedDispose);
-        unitMap.put("eventNeedDisposeRateStr", eventNeedDisposeRateStr);
+        eventMap.put("eventDispose", eventDispose);
+        eventMap.put("eventNeedDispose", eventNeedDispose);
+        eventMap.put("eventNeedDisposeRateStr", eventNeedDisposeRateStr);
         map.put("event", eventMap);
         return map;
     }
