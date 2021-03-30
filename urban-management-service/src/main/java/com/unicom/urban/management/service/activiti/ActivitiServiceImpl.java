@@ -301,7 +301,7 @@ public class ActivitiServiceImpl implements ActivitiService {
 
 
         // 总时间-休息时间
-        return totalMinute - getMinute(startTime, endTime, tempTimeList);
+        return totalMinute - getMinute(startTime, endTime, tempTimeList, timePlan);
 
     }
 
@@ -384,16 +384,19 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     /**
      * 计算需要扣除多少分钟=总时间-休息日的总分钟-工作日的休息时间
+     *
+     * @param startDateTime 开始时间
+     * @param endDateTime   结束时间
+     * @param tempTimeList  集合
      */
-    private long getMinute(LocalDateTime startDateTime, LocalDateTime endDateTime, List<TempTime> tempTimeList) {
+    private long getMinute(LocalDateTime startDateTime, LocalDateTime endDateTime, List<TempTime> tempTimeList, TimePlan timePlan) {
         // 开始日期和结束日期为同一天
         if (startDateTime.toLocalDate().equals(endDateTime.toLocalDate())) {
             return oneDay(startDateTime, endDateTime, tempTimeList);
         } else {
             List<LocalDate> localDateList = LocalDateTimeUtil.between(startDateTime, endDateTime);
 
-            List<Day> dayList = dayRepository.findByCalendarInOrderByCalendar(localDateList);
-
+            List<Day> dayList = dayRepository.findByCalendarInAndTimePlanOrderByCalendar(localDateList, timePlan);
 
             long startMin = 0;
 
