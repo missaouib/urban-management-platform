@@ -216,8 +216,6 @@
     var findHighIncidence = /*[[@{/bigScreen/findHighIncidence}]]*/ "/bigScreen/findHighIncidence";//高发类型
     var getIndexValueByDay = /*[[@{/bigScreen/getIndexValueByDay}]]*/ "/bigScreen/getIndexValueByDay";//案件趋势
     //高发区域
-    findHighGrid();
-    function findHighGrid(){
         var myChart1 = echarts.init(document.getElementById('gfqy'));
         $.ajaxUtil.get(findHotGrid, function (e) {
             if(e.code==0){
@@ -388,10 +386,8 @@
             }
 
         });
-    }
-    // 高发类型
-    getFindHighIncidence();
-    function getFindHighIncidence(){
+
+
         var myChart2 = echarts.init(document.getElementById('gflx'));
         $.ajaxUtil.get(findHighIncidence, function (e) {
             if(e.code==0){
@@ -538,10 +534,9 @@
             }
         })
 
-    }
+
     // 案件趋势
-    indexValueByDay();
-    function indexValueByDay(){
+
         var myChart3 = echarts.init(document.getElementById('ajqs'));
         $.ajaxUtil.get(getIndexValueByDay,function (e){
             if(e.code==0){
@@ -700,7 +695,6 @@
                 myChart3.setOption(optionCaseTrend);
             }
         })
-    }
     $(function () {
         $.ajaxUtil.get(getIndexValue, function (e) {
             let data = e.data;
@@ -1656,5 +1650,15 @@
     })
     var myChartrygl = echarts.init(document.getElementById('rygl'));
 
+    window.addEventListener('resize',function () {
+        myChartrygl.resize();
+        myChart.resize();
+        wtlymyChart.resize();
+        myChart3.resize();
+        rykhmyChart.resize();
+        bmkhmyChart.resize();
+        myChart1.resize();
+        myChart2.resize();
+    })
 </script>
 </html>
