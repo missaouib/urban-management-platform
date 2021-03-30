@@ -24,12 +24,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.SimpleDateFormat;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.temporal.TemporalAdjusters;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author 顾志杰
@@ -50,7 +49,6 @@ public class IndexRestController {
     private DeptEvaluateService evaluateService;
     @Autowired
     private PositionService positionService;
-
     @Autowired
     private UserService userService;
 
@@ -112,8 +110,8 @@ public class IndexRestController {
     @GetMapping("/findHotGrid")
     public List<Map<String, Object>> findHotGrid() {
         List<Map<String, Object>> hotGrid = statisticsService.findHotGrid("");
-        if (hotGrid.size()>5){
-            return hotGrid.subList(0,4);
+        if (hotGrid.size() > 5) {
+            return hotGrid.subList(0, 4);
         }
         return hotGrid;
     }
@@ -182,14 +180,16 @@ public class IndexRestController {
      * 部门考核
      * 查询考核评分前四部门 此处查询所有 应为是公用的接口，需要前端自行选取前四
      *
-     * @param startTime 开始时间
-     * @param endTime 结束时间
      * @param pageable 无用
      * @return list
      */
     @GetMapping("/evaluate")
-    public Page<DeptEvaluate> evaluates(String startTime,
-                                        String endTime, @PageableDefault Pageable pageable) {
+    public Page<DeptEvaluate> evaluates(@PageableDefault Pageable pageable) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -5);
+        String startTime = simpleDateFormat.format(calendar.getTime());
+        String endTime = simpleDateFormat.format(new Date());
         List<DeptEvaluate> list = evaluateService.deptEvaluates(startTime, endTime);
         return new PageImpl<>(list, pageable, 0);
     }
@@ -198,12 +198,15 @@ public class IndexRestController {
      * 人员考核
      * 监督员岗位考核人员前四 此处查询所有 应为是公用的接口，需要前端自行选取前四
      *
-     * @param startTime 开始时间
-     * @param endTime 结束时间
      * @return list
      */
     @GetMapping("/supervisorEvaluation")
-    public Result supervisorEvaluation(String startTime, String endTime) {
+    public Result supervisorEvaluation() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.YEAR, -5);
+        String startTime = simpleDateFormat.format(calendar.getTime());
+        String endTime = simpleDateFormat.format(new Date());
         List<SupervisorEvaluateVO> list = positionService.findSupervisorEvaluateByCondition(startTime, endTime);
         return Result.success(list);
     }
@@ -215,11 +218,10 @@ public class IndexRestController {
      * @return 数量
      */
     @GetMapping("/getCountByEventSource")
-    public Result getCountByEventSource(){
+    public Result getCountByEventSource() {
         Map<String, Object> countByEventSource = eventService.getCountByEventSource();
         return Result.success(countByEventSource);
     }
-
 
 
     @GetMapping("/index")
