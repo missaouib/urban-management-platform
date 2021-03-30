@@ -215,6 +215,7 @@
     var findHotGrid = /*[[@{/bigScreen/findHotGrid}]]*/ "/bigScreen/findHotGrid";//高发区域
     var findHighIncidence = /*[[@{/bigScreen/findHighIncidence}]]*/ "/bigScreen/findHighIncidence";//高发类型
     var getIndexValueByDay = /*[[@{/bigScreen/getIndexValueByDay}]]*/ "/bigScreen/getIndexValueByDay";//案件趋势
+    var getCountByEventType = /*[[@{/bigScreen/countByEventType}]]*/ "/bigScreen/countByEventType";//环比
     //高发区域
         var myChart1 = echarts.init(document.getElementById('gfqy'));
         $.ajaxUtil.get(findHotGrid, function (e) {
@@ -304,7 +305,7 @@
                                 },
                                     {
                                         offset: 1,
-                                        color: "rgba(0, 126, 255, 0.2)"
+                                        color: "rgba(63, 255, 234, 0.2)"
                                     }
                                 ])
                             },
@@ -325,7 +326,7 @@
                                 },
                                     {
                                         offset: 1,
-                                        color: "rgba(0, 126, 255, 0.2)"
+                                        color: "rgba(255, 119, 87, 0.2)"
                                     }
                                 ])
                             },
@@ -345,7 +346,7 @@
                                 },
                                     {
                                         offset: 1,
-                                        color: "rgba(0, 126, 255, 0.2)"
+                                        color: "rgba(168, 84, 255, 0.2)"
                                     }
                                 ])
                             },
@@ -480,7 +481,7 @@
                                 },
                                     {
                                         offset: 1,
-                                        color: "rgba(0, 126, 255, 0.2)"
+                                        color: "rgba(63, 255, 234, 0.2)"
                                     }
                                 ])
                             },
@@ -500,7 +501,7 @@
                                 },
                                     {
                                         offset: 1,
-                                        color: "rgba(0, 126, 255, 0.2)"
+                                        color: "rgba(255, 119, 87, 0.2)"
                                     }
                                 ])
                             },
@@ -520,7 +521,7 @@
                                 },
                                     {
                                         offset: 1,
-                                        color: "rgba(0, 126, 255, 0.2)"
+                                        color: "rgba(168, 84, 255, 0.2)"
                                     }
                                 ])
                             },
@@ -665,7 +666,7 @@
                                     areaStyle: {
                                         type: "default"
                                     },
-                                    color: "#A282E4"
+                                    color: "#1FD8EE"
                                 }
                             },
 
@@ -680,7 +681,7 @@
                                     areaStyle: {
                                         type: "default"
                                     },
-                                    color: "#82c2e4"
+                                    color: "#A282E4"
                                 }
                             },
 
@@ -694,6 +695,121 @@
                 myChart3.setOption(optionCaseTrend);
             }
         })
+    // 环比分析
+    var myCharthb = echarts.init(document.getElementById('hbfx'));
+    $.ajaxUtil.get(getCountByEventType,function (e){
+        if(e.code==0){
+            let data = e.data.unit;
+            var  getsyzl=['部件处置数','应处置数','处置率'];
+            var  getwkrs=[data.unitDispose,data.unitNeedDispose,data.unitNeedDisposeRateStr];
+            optionhb= {
+                grid: {
+                    top: '20%',
+                    left: '7%',
+                    right: '2%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                legend: {
+                    show:false,
+                    data: ['本期','同期'],
+                    right: "3%",
+                    top:"4%",
+                    textStyle: {
+                        color: "#A1D5FF",
+                        fontSize: 12
+                    },
+                    itemWidth: 12,  // 设置宽度
+                    itemHeight:16, // 设置高度
+                    itemGap: 12 // 设置间距
+                },
+                xAxis: [{
+                    data: getsyzl,
+                    axisLabel: {
+                        margin: 10,
+                        color: '#A1D5FF',
+                        textStyle: {
+                            fontSize: 12
+                        },
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#102E74',
+                        }
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                }],
+                yAxis: [{
+                    type:'value',
+                    axisLabel: {
+                        color: '#A1D5FF',
+                        textStyle: {
+                            fontSize: 12
+                        },
+                    },
+                    axisLine: {
+                        show:false,
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#102E74',
+                        }
+                    }
+                }],
+                series: [
+                    {
+                        name: "本期",
+                        type: 'bar',
+                        data: getwkrs,
+                        barWidth: '12px',
+                        itemStyle: {
+                            normal: {
+                                // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                //     offset: 0,
+                                //     color: 'rgba(63, 255, 234, 0.82)' // 0% 处的颜色
+                                // }, {
+                                //     offset: 1,
+                                //     color: 'rgba(0, 126, 255, 0.2)' // 100% 处的颜色
+                                // }], false),
+                                barBorderRadius: [30, 30, 0, 0],
+                                color: function(params){
+                                    console.log(params);
+                                    var colorList = [
+                                        ['rgba(255, 161, 26, 0.2)','#E6CD08'],
+                                        ['rgba(0, 126, 255, 0.2)','#3FFFEA'],
+                                        ['rgba(39, 78, 2, 0.2)','#81EB53'],
+                                        ['#4B8D10','#83FFC0'],
+                                        ['#8D104B','#FF83D8'],
+                                        ['#7F610F','#FFE899'],
+                                        ['#108D89','#83FFE9']
+                                    ];
+                                    var colorItem = colorList[params.dataIndex];
+                                    return new echarts.graphic.LinearGradient(0,1,0,0,[
+                                        {
+                                            offset:0,
+                                            color: colorItem[0]
+                                        },
+                                        {
+                                            offset:1,
+                                            color: colorItem[1]
+                                        }
+                                    ],false);
+                                }
+                            }
+                        },
+                    }
+                ]
+            }
+            myCharthb.setOption(optionhb);
+        }
+    })
+
+
     $(function () {
         $.ajaxUtil.get(getIndexValue, function (e) {
             let data = e.data;
@@ -969,9 +1085,9 @@
                         color: function(params){
                             console.log(params);
                             var colorList = [
-                                ['#0F5C7F','#99DFFF'],
-                                ['#8D3510','#FFA783'],
-                                ['#651180','#D099FF'],
+                                ['rgba(255, 161, 26, 0.2)','#E6CD08'],
+                                ['rgba(0, 126, 255, 0.2)','#3FFFEA'],
+                                ['rgba(39, 78, 2, 0.2)','#81EB53'],
                                 ['#4B8D10','#83FFC0'],
                                 ['#8D104B','#FF83D8'],
                                 ['#7F610F','#FFE899'],
@@ -998,117 +1114,6 @@
         myCharttb.setOption(tboption);
     })
     var myCharttb = echarts.init(document.getElementById('tbfx'));
-
-    // 环比分析
-    var myCharthb = echarts.init(document.getElementById('hbfx'));
-    var  getsyzl=['道里','道外','香坊','南岗'];
-    var  getwkrs=[826,673,588,782];
-    var  getlkrs=[686,703,788,882];
-    optionhb= {
-        grid: {
-            top: '20%',
-            left: '7%',
-            right: '2%',
-            bottom: '3%',
-            containLabel: true
-        },
-        legend: {
-            show:false,
-            data: ['本期','同期'],
-            right: "3%",
-            top:"4%",
-            textStyle: {
-                color: "#A1D5FF",
-                fontSize: 12
-            },
-            itemWidth: 12,  // 设置宽度
-            itemHeight:16, // 设置高度
-            itemGap: 12 // 设置间距
-        },
-        xAxis: [{
-            data: getsyzl,
-            axisLabel: {
-                margin: 10,
-                color: '#A1D5FF',
-                textStyle: {
-                    fontSize: 12
-                },
-            },
-            axisLine: {
-                lineStyle: {
-                    color: '#102E74',
-                }
-            },
-            axisTick: {
-                show: false
-            },
-        }],
-        yAxis: [{
-            type:'value',
-            axisLabel: {
-                color: '#A1D5FF',
-                textStyle: {
-                    fontSize: 12
-                },
-            },
-            axisLine: {
-                show:false,
-            },
-            axisTick: {
-                show: false
-            },
-            splitLine: {
-                lineStyle: {
-                    color: '#102E74',
-                }
-            }
-        }],
-        series: [
-            {
-                name: "本期",
-                type: 'bar',
-                data: getwkrs,
-                barWidth: '12px',
-                itemStyle: {
-                    normal: {
-                        // color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                        //     offset: 0,
-                        //     color: 'rgba(63, 255, 234, 0.82)' // 0% 处的颜色
-                        // }, {
-                        //     offset: 1,
-                        //     color: 'rgba(0, 126, 255, 0.2)' // 100% 处的颜色
-                        // }], false),
-                        barBorderRadius: [30, 30, 0, 0],
-                        color: function(params){
-                            console.log(params);
-                            var colorList = [
-                                ['#0F5C7F','#99DFFF'],
-                                ['#8D3510','#FFA783'],
-                                ['#651180','#D099FF'],
-                                ['#4B8D10','#83FFC0'],
-                                ['#8D104B','#FF83D8'],
-                                ['#7F610F','#FFE899'],
-                                ['#108D89','#83FFE9']
-                            ];
-                            var colorItem = colorList[params.dataIndex];
-                            return new echarts.graphic.LinearGradient(0,1,0,0,[
-                                {
-                                    offset:0,
-                                    color: colorItem[0]
-                                },
-                                {
-                                    offset:1,
-                                    color: colorItem[1]
-                                }
-                            ],false);
-                        }
-                    }
-                },
-            }
-        ]
-    }
-    myCharthb.setOption(optionhb);
-
 
     // 部门考核
     let bmkhUrl = /*[[@{/bigScreen/evaluate}]]*/ "/bigScreen/evaluate";
