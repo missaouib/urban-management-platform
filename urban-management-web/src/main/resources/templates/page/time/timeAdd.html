@@ -98,14 +98,9 @@
                     <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
-                    <P style="display: flex;align-items:center;justify-content:center;margin: 5px 0">
-                        <span class="sendText" style="width: 20%"><i style="color: red!important;"></i>日期</span>
-                        <input size="16" class="find_input form_date" name="startTime" id="beginedi" type="text" value="" readonly style="width: 80%">
-                    </P>
                     <P style="display: flex;align-items:center;justify-content:center">
                         <span class="sendText" style="width: 20%"><i style="color: red!important;"></i>标识</span>
                         <select style="width: 80%" type="text" class="find_input" id="workedi">
-                            <option selected>-请选择-</option>
                             <option value="0">工作日</option>
                             <option value="1">非工作日</option>
                         </select>
@@ -113,9 +108,8 @@
                     <P style="display: flex;align-items:center;justify-content:center;margin-top: 5px">
                         <span class="sendText" style="width: 20%"><i style="color: red!important;"></i>是否上班</span>
                         <select style="width: 80%" type="text" class="find_input" id="workDayedi">
-                            <option selected>-请选择-</option>
-                            <option value="1">休息</option>
                             <option value="0">上班</option>
+                            <option value="1">休息</option>
                         </select>
                     </P>
                 </div>
@@ -254,13 +248,10 @@
     }
 
     function saveTabEdi() {
-        let date = $("#beginedi").val();
         let orWork = $("#workedi option:selected").val();
         let orWorkDay = $("#workDayedi option:selected").val();
         let timePlanId = $("#imageUrlListedi").val();
-        console.log(date,orWork,orWorkDay,timePlanId)
         let params = {
-            calendar: date,
             workDayMark: orWork,
             work: orWorkDay,
             id: timePlanId
