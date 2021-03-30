@@ -888,11 +888,11 @@
 
 
     // 同比分析
-    var myChart = echarts.init(document.getElementById('tbfx'));
+    var myCharttb = echarts.init(document.getElementById('tbfx'));
     var  getsyzl=['道里','道外','香坊','南岗'];
     var  getwkrs=[826,673,588,782];
     var  getlkrs=[686,703,788,882];
-    option= {
+    tboption= {
         grid: {
             top: '10%',
             left: '2%',
@@ -994,13 +994,13 @@
             }
         ]
     }
-    myChart.setOption(option);
+    myCharttb.setOption(tboption);
     // 环比分析
-    var myChart = echarts.init(document.getElementById('hbfx'));
+    var myCharthb = echarts.init(document.getElementById('hbfx'));
     var  getsyzl=['道里','道外','香坊','南岗'];
     var  getwkrs=[826,673,588,782];
     var  getlkrs=[686,703,788,882];
-    option= {
+    optionhb= {
         grid: {
             top: '20%',
             left: '7%',
@@ -1096,7 +1096,7 @@
             }
         ]
     }
-    myChart.setOption(option);
+    myCharthb.setOption(optionhb);
 
 
     // 部门考核
@@ -1652,13 +1652,14 @@
 
     window.addEventListener('resize',function () {
         myChartrygl.resize();
-        myChart.resize();
+        myCharthb.resize();
         wtlymyChart.resize();
         myChart3.resize();
         rykhmyChart.resize();
         bmkhmyChart.resize();
         myChart1.resize();
         myChart2.resize();
+        myCharthb.resize();
     })
 </script>
 </html>
