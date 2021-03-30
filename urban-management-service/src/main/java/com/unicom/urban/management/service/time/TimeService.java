@@ -96,6 +96,13 @@ public class TimeService {
         if (dayRepository.existsByCalendarAndTimePlan(dayDTO.getCalendar(), new TimePlan(dayDTO.getTimePlanId()))) {
             throw new DataValidException(dayDTO.getCalendar() + " 日期已经设置 不可再次设置");
         }
+
+        TimePlan timePlan = timePlanRepository.findById(dayDTO.getTimePlanId()).orElseThrow(() -> new DataValidException("计时不存在"));
+
+        if (dayDTO.getCalendar().isBefore(timePlan.getStartTime()) || dayDTO.getCalendar().isAfter(timePlan.getEndTime())) {
+            throw new DataValidException("日期不可超出 " + timePlan.getStartTime() + " - " + timePlan.getEndTime() + "范围");
+        }
+
         Day day = new Day();
         day.setTimePlan(new TimePlan(dayDTO.getTimePlanId()));
         day.setCalendar(dayDTO.getCalendar());
