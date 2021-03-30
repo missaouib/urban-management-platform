@@ -887,76 +887,79 @@
 
 
     // 同比分析
-    var myCharttb = echarts.init(document.getElementById('tbfx'));
-    var  getsyzl=['道里','道外','香坊','南岗'];
-    var  getwkrs=[826,673,588,782];
-    var  getlkrs=[686,703,788,882];
-    tboption= {
-        grid: {
-            top: '10%',
-            left: '2%',
-            right: '2%',
-            bottom: '3%',
-            containLabel: true
-        },
-        legend: {
-            show:false,
-            itemHeight: 15,
-            itemWidth: 15,
-            data:[
-                { name: "本期", icon: "roundRect" },
-                { name: "同期", icon: "roundRect" },
-
-            ],
-            right: "3%",
-            top:"4%",
-            textStyle: {
-                color: "#A1D5FF",
-                fontSize: 12
+    let tbfxUrl = /*[[@{/bigScreen/countByEventType}]]*/ "/bigScreen/countByEventType";
+    $.ajaxUtil.get(tbfxUrl,function (res) {
+        console.log('my',res.data.event)
+        let data = res.data.event
+        var  getsyzl=['处置数','处置率','应处置数'];
+        var  getwkrs=[826,673,588,782];
+        var  getlkrs=[data.eventDispose,data.eventNeedDisposeRateStr,data.eventNeedDispose];
+        tboption= {
+            grid: {
+                top: '10%',
+                left: '2%',
+                right: '2%',
+                bottom: '3%',
+                containLabel: true
             },
-            itemWidth: 12,  // 设置宽度
-            itemHeight:16, // 设置高度
-            itemGap: 12 // 设置间距
-        },
-        xAxis: [{
-            data: getsyzl,
-            axisLabel: {
-                margin: 10,
-                color: '#A1D5FF',
-                textStyle: {
-                    fontSize: 12
-                },
-            },
-            axisLine: {
-                lineStyle: {
-                    color: '#102E74',
-                }
-            },
-            axisTick: {
-                show: false
-            },
-        }],
-        yAxis: [{
-            type:'value',
-            axisLabel: {
-                color: '#A1D5FF',
-                textStyle: {
-                    fontSize: 12
-                },
-            },
-            axisLine: {
+            legend: {
                 show:false,
+                itemHeight: 15,
+                itemWidth: 15,
+                data:[
+                    { name: "本期", icon: "roundRect" },
+                    { name: "同期", icon: "roundRect" },
+
+                ],
+                right: "3%",
+                top:"4%",
+                textStyle: {
+                    color: "#A1D5FF",
+                    fontSize: 12
+                },
+                itemWidth: 12,  // 设置宽度
+                itemHeight:16, // 设置高度
+                itemGap: 12 // 设置间距
             },
-            axisTick: {
-                show: false
-            },
-            splitLine: {
-                lineStyle: {
-                    color: '#102E74',
+            xAxis: [{
+                data: getsyzl,
+                axisLabel: {
+                    margin: 10,
+                    color: '#A1D5FF',
+                    textStyle: {
+                        fontSize: 12
+                    },
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: '#102E74',
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+            }],
+            yAxis: [{
+                type:'value',
+                axisLabel: {
+                    color: '#A1D5FF',
+                    textStyle: {
+                        fontSize: 12
+                    },
+                },
+                axisLine: {
+                    show:false,
+                },
+                axisTick: {
+                    show: false
+                },
+                splitLine: {
+                    lineStyle: {
+                        color: '#102E74',
+                    }
                 }
-            }
-        }],
-        series: [{
+            }],
+            series: [{
                 name: "同期",
                 type: 'bar',
                 data: getlkrs,
@@ -990,9 +993,12 @@
                     }
                 },
             }
-        ]
-    }
-    myCharttb.setOption(tboption);
+            ]
+        }
+        myCharttb.setOption(tboption);
+    })
+    var myCharttb = echarts.init(document.getElementById('tbfx'));
+
     // 环比分析
     var myCharthb = echarts.init(document.getElementById('hbfx'));
     var  getsyzl=['道里','道外','香坊','南岗'];
@@ -1657,7 +1663,7 @@
 
     window.addEventListener('resize',function () {
         myChartrygl.resize();
-        myCharthb.resize();
+        myCharttb.resize();
         wtlymyChart.resize();
         myChart3.resize();
         rykhmyChart.resize();
