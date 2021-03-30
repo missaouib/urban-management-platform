@@ -75,16 +75,16 @@
                 <!-- 上报立案处置结案 -->
                 <div class="ctrl_top flex">
                     <div class="text_ctrl flexC" id="reporting">
-                        <span class="topVtrl_title">上报</span><span>78个</span>
+                        <span class="topVtrl_title">上报</span><span id="report"></span>
                     </div>
                     <div class="text_ctrl flexC" id="register">
-                        <span class="topVtrl_title">立案</span><span>23个</span>
+                        <span class="topVtrl_title">立案</span><span id="inst"></span>
                     </div>
                     <div class="text_ctrl flexC" id="caseclosed">
-                        <span class="topVtrl_title">处置</span><span>3个</span>
+                        <span class="topVtrl_title">处置</span><span id="dispose"></span>
                     </div>
                     <div class="text_ctrl flexC" id="caseDispose">
-                        <span class="topVtrl_title">结案</span><span>46个</span>
+                        <span class="topVtrl_title">结案</span><span id="close"></span>
                     </div>
                 </div>
                 <!-- 人员车辆摄像头 -->
@@ -257,9 +257,191 @@
     var showPointsUrl = /*[[@{/bigscreen/showPoints}]]*/ "/bigscreen/showPoints";
     var findHighIncidenceUrl = /*[[@{/commandSubsystem/findHighIncidence}]]*/ "/commandSubsystem/findHighIncidence";
     var getTrendAnalysisUrl = /*[[@{/commandSubsystem/getTrendAnalysis}]]*/ "/commandSubsystem/getTrendAnalysis";
+    var getIndexValue = /*[[@{/bigScreen/getIndexValue}]]*/ "/bigScreen/getIndexValue";
+    var findHotGrid = /*[[@{/bigScreen/getIndexValue}]]*/ "/bigScreen/findHotGrid";
+    //高发区域
+    findHighGrid();
+    function findHighGrid(){
+        var myChart1 = echarts.init(document.getElementById('gfqy'));
+        $.ajaxUtil.get(findHotGrid, function (e) {
+            if(e.code==0){
+                let totalClose=[];
+                let totalDispose=[];
+                let totalInst=[];
+                let data = e.data;
+                for (let i=0; i< data.length; i++){
+                    console.log("nihao"+data[i].totalClose)
+                    totalClose.push(data[i].totalClose);
+                    totalDispose.push(data[i].totalDispose);
+                    totalInst.push(data[i].totalInst);
+                }
+                var option1 = {
+                    // backgroundColor: '#001120',
+                    tooltip : {
+                        trigger: 'axis',
+                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
+                    },
+                    legend: {
+                        itemHeight: 15,
+                        itemWidth: 15,
+                        data:[
+                            { name: "结案数", icon: "roundRect" },
+                            { name: "处置数", icon: "roundRect" },
+                            { name: "立案数", icon: "roundRect" },
+                        ],
+                        orient: "vertical",
+                        textStyle: {
+                            fontSize: 12,
+                            color: "#ffffff",
+                            fontFamily: "SourceHanSansCN-Regular"
+                        },
+                        y: "top",
+                        x: "right",
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data : ['兴安区','南岗区','兴山区','向阳区'],
+                            splitLine: {
+                                show: false
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff',
+                                }
+                            },
+                            axisLabel: {
+                                color: '#fff'
+                            }
+                        }
+                    ],
+                    yAxis : [
+                        {
+                            type : 'value',
+                            splitLine: {
+                                show: false
+                            },
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#fff',
+                                }
+                            }
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'结案数',
+                            type:'bar',
+                            barWidth: 13,
+                            itemStyle: {
+                                barBorderRadius: [5, 5, 0, 0],
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                    offset: 0,
+                                    color: "rgba(63, 255, 234, 0.82)"
+                                },
+                                    {
+                                        offset: 1,
+                                        color: "rgba(0, 126, 255, 0.2)"
+                                    }
+                                ])
+                            },
+                            data:totalClose
+                        },
 
+                        {
+                            name:'处置数',
+                            type:'bar',
+                            barWidth : 13,
+                            barGap: '-100%',
+                            stack: '广告',
+                            itemStyle: {
+                                barBorderRadius: [5, 5, 0, 0],
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                    offset: 0.4,
+                                    color: "rgba(255, 119, 87, 0.82)"
+                                },
+                                    {
+                                        offset: 1,
+                                        color: "rgba(0, 126, 255, 0.2)"
+                                    }
+                                ])
+                            },
+                            data:totalDispose
+                        },
+                        {
+                            name:'立案数',
+                            type:'bar',
+                            barWidth : 13,
+                            barGap: '-100%',
+                            stack: '广告',
+                            itemStyle: {
+                                barBorderRadius: [5, 5, 0, 0],
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                    offset: 0.4,
+                                    color: "rgba(168, 84, 255, 0.82)"
+                                },
+                                    {
+                                        offset: 1,
+                                        color: "rgba(0, 126, 255, 0.2)"
+                                    }
+                                ])
+                            },
+                            data:totalInst
+                        },
+                        // {
+                        //     name:'结案',
+                        //     type:'bar',
+                        //      barWidth : 13,
+                        //     barGap: '-100%',
+                        //     stack: '广告',
+                        //     itemStyle: {
+                        //         barBorderRadius: [5, 5, 0, 0],
+                        //         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                        //             offset: 0.4,
+                        //             color: "rgba(255, 234, 0, 1)"
+                        //         },
+                        //             {
+                        //                 offset: 1,
+                        //                 color: "rgba(8,228,222,0.2)"
+                        //             }
+                        //         ])
+                        //     },
+                        //     data:[220, 182, 191, 234, 290, 330, 310]
+                        // }
+
+                    ],
+                    grid: {
+                        left: '3%',
+                        bottom: '3',
+                        // right: '5%',
+                        containLabel: true,
+                        width:'92%', // grid 组件的宽度。默认自适应。
+                        height:'95%'
+                    },
+                };
+                myChart1.setOption(option1);
+            }
+
+        });
+    }
     $(function () {
+        $.ajaxUtil.get(getIndexValue, function (e) {
+            console.log(e)
+            let data = e.data;
+            $("#report").text(data.report);
+            $("#inst").text(data.inst);
+            $("#dispose").text(data.dispose);
+            $("#close").text(data.close);
 
+        });
 
         var date = new Date()
         let YYYY = date.getFullYear()
@@ -405,162 +587,7 @@
 
 
     })
-    // 高发区域
-    var myChart = echarts.init(document.getElementById('gfqy'));
-    option = {
-        // backgroundColor: '#001120',
-        tooltip : {
-            trigger: 'axis',
-            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-            }
-        },
-        legend: {
-            itemHeight: 15,
-            itemWidth: 15,
-            data:[
-                { name: "上报", icon: "roundRect" },
-                { name: "立案", icon: "roundRect" },
-                { name: "处置", icon: "roundRect" },
-                { name: "结案", icon: "roundRect" },
-                ],
-            orient: "vertical",
-            textStyle: {
-                fontSize: 12,
-                color: "#ffffff",
-                fontFamily: "SourceHanSansCN-Regular"
-            },
-            y: "bottom",
-            x: "right",
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis : [
-            {
-                type : 'category',
-                data : ['道里','道外','香坊','南岗','平房'],
-                splitLine: {
-                    show: false
-                },
-                axisLine: {
-                    lineStyle: {
-                        color: '#fff',
-                    }
-                },
-                axisLabel: {
-                    color: '#fff'
-                }
-            }
-        ],
-        yAxis : [
-            {
-                type : 'value',
-                splitLine: {
-                    show: false
-                },
-                axisLine: {
-                    lineStyle: {
-                        color: '#fff',
-                    }
-                }
-            }
-        ],
-        series : [
-            {
-                name:'上报',
-                type:'bar',
-                barWidth: 13,
-                itemStyle: {
-                    barBorderRadius: [5, 5, 0, 0],
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                        offset: 0,
-                        color: "rgba(63, 255, 234, 0.82)"
-                    },
-                        {
-                            offset: 1,
-                            color: "rgba(0, 126, 255, 0.2)"
-                        }
-                    ])
-                },
-                data:[120, 132, 101, 134, 90, 230, 210]
-            },
 
-            {
-                name:'立案',
-                type:'bar',
-                 barWidth : 13,
-                barGap: '-100%',
-                stack: '广告',
-                itemStyle: {
-                    barBorderRadius: [5, 5, 0, 0],
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                        offset: 0.4,
-                        color: "rgba(255, 119, 87, 0.82)"
-                    },
-                        {
-                            offset: 1,
-                            color: "rgba(0, 126, 255, 0.2)"
-                        }
-                    ])
-                },
-                data:[220, 182, 191, 234, 290, 330, 310]
-            },
-            {
-                name:'处置',
-                type:'bar',
-                 barWidth : 13,
-                barGap: '-100%',
-                stack: '广告',
-                itemStyle: {
-                    barBorderRadius: [5, 5, 0, 0],
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                        offset: 0.4,
-                        color: "rgba(168, 84, 255, 0.82)"
-                    },
-                        {
-                            offset: 1,
-                            color: "rgba(0, 126, 255, 0.2)"
-                        }
-                    ])
-                },
-                data:[220, 182, 191, 234, 290, 330, 310]
-            },
-            {
-                name:'结案',
-                type:'bar',
-                 barWidth : 13,
-                barGap: '-100%',
-                stack: '广告',
-                itemStyle: {
-                    barBorderRadius: [5, 5, 0, 0],
-                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                        offset: 0.4,
-                        color: "rgba(255, 234, 0, 1)"
-                    },
-                        {
-                            offset: 1,
-                            color: "rgba(8,228,222,0.2)"
-                        }
-                    ])
-                },
-                data:[220, 182, 191, 234, 290, 330, 310]
-            }
-
-        ],
-        grid: {
-            left: '3%',
-            bottom: '3',
-            // right: '5%',
-            containLabel: true,
-            width:'92%', // grid 组件的宽度。默认自适应。
-            height:'95%'
-        },
-    };
-    myChart.setOption(option);
 
    // 高发类型
     var myChart = echarts.init(document.getElementById('gflx'));
