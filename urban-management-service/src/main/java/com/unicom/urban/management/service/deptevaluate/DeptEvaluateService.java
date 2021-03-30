@@ -1,5 +1,6 @@
 package com.unicom.urban.management.service.deptevaluate;
 
+import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.dao.statistics.StatisticsRepository;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.Statistics;
@@ -16,9 +17,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -110,6 +109,44 @@ public class DeptEvaluateService {
         return list;
     }
 
+
+    public Map<String, Map<String, Object>> countByEventType() {
+
+        Map<String, Map<String, Object>> map = new HashMap<>();
+        DecimalFormat df = new DecimalFormat("0");
+        List<Statistics> all = statisticsRepository.findAll();
+        //部件
+        /*部件处置数*/
+        long unitDispose = all.stream().filter(s -> null != s.getDispose()).filter(s -> 1 == s.getDispose()).filter(s -> KvConstant.UNIT.equals(s.getEvent().getEventType().getParent().getParent().getId())).count();
+        /*部件应处置数*/
+        long unitNeedDispose = all.stream().filter(s -> null != s.getNeedDispose()).filter(s -> 1 == s.getNeedDispose()).filter(s -> KvConstant.UNIT.equals(s.getEvent().getEventType().getParent().getParent().getId())).count();
+        String unitNeedDisposeRateStr = "0";
+        if (unitNeedDispose != 0) {
+            unitNeedDisposeRateStr = df.format((double) unitDispose / (double) unitNeedDispose);
+        }
+        Map<String, Object> unitMap = new HashMap<>();
+        unitMap.put("unitDispose", unitDispose);
+        unitMap.put("unitNeedDispose", unitNeedDispose);
+        unitMap.put("unitNeedDisposeRateStr", unitNeedDisposeRateStr);
+        map.put("unit", unitMap);
+
+        //事件
+        /*事件处置数*/
+        long eventDispose = all.stream().filter(s -> null != s.getDispose()).filter(s -> 1 == s.getDispose()).filter(s -> KvConstant.EVENT.equals(s.getEvent().getEventType().getParent().getParent().getId())).count();
+        /*事件应处置数*/
+        long eventNeedDispose = all.stream().filter(s -> null != s.getNeedDispose()).filter(s -> 1 == s.getNeedDispose()).filter(s -> KvConstant.EVENT.equals(s.getEvent().getEventType().getParent().getParent().getId())).count();
+        String eventNeedDisposeRateStr = "0";
+        if (eventNeedDispose != 0) {
+            eventNeedDisposeRateStr = df.format((double) eventDispose / (double) eventNeedDispose);
+        }
+        Map<String, Object> eventMap = new HashMap<>();
+        unitMap.put("eventDispose", eventDispose);
+        unitMap.put("eventNeedDispose", eventNeedDispose);
+        unitMap.put("eventNeedDisposeRateStr", eventNeedDisposeRateStr);
+        map.put("event", eventMap);
+        return map;
+    }
+
     private String comprehensive(Integer registerNum, String closeRateStr, String onTimeManagementRateStr, String reworkRateStr) {
         double register;
         if (registerNum <= 50) {
@@ -192,12 +229,12 @@ public class DeptEvaluateService {
      * 应结案数
      */
     private Integer mustCloseNum(List<Statistics> statistics, String deptId) {
-        //TODO 应结案数 = 处置数 + 超时未处置数
+        //应结案数 = 处置数 + 超时未处置数
         List<Statistics> dispose = statistics.stream().filter(s -> null != s.getDispose()).filter(s -> s.getDispose() == 1).collect(Collectors.toList());
         List<Statistics> overtimeToDispose = statistics.stream().filter(s -> null != s.getDispose()).filter(s -> s.getOvertimeToDispose() == 1).collect(Collectors.toList());
         // 处置数
         long count = dispose.stream().filter(s -> deptId.equals(s.getDisposeUnit().getId())).count();
-         count += overtimeToDispose.stream().filter(s -> deptId.equals(s.getDisposeUnit().getId())).count();
+        count += overtimeToDispose.stream().filter(s -> deptId.equals(s.getDisposeUnit().getId())).count();
         return Math.toIntExact(count);
     }
 

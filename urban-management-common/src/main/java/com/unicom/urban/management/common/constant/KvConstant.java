@@ -140,4 +140,15 @@ public class KvConstant {
      */
     public static final String SUPERVISE = "监督员上报";
 
+
+    /**
+     * 部件分类
+     */
+    public static final String UNIT = "668cb995-0650-46bb-8b29-fa2c7f3022c3";
+
+    /**
+     * 事件分类
+     */
+    public static final String EVENT = "7b5b2ad0-2eeb-11eb-8350-0a580a2a3ef8";
+
 }
