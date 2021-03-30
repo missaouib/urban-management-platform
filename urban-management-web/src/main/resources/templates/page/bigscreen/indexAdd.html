@@ -130,54 +130,7 @@
                             <div id="scroll">
                                 <div id="con1">
                                     <ul>
-                                        <li class="tableOptions mach_opt">
-                                            <span class="mach_img">
-                                                <img th:src="@{/img/bg_queen.png}">
-                                            </span>
-                                            <span class="over_ell">2300213123333333333335</span>
-                                            <span class="over_ell">南岗</span>
-                                            <span class="over_ell">202</span>
-                                        </li>
-                                        <li class="tableOptions mach_opt">
-                                            <span class="mach_img">
-                                                <img th:src="@{/img/bg_queen.png}">
-                                            </span>
-                                            <span class="over_ell">23001572762</span>
-                                            <span class="over_ell">南岗区花园街</span>
-                                            <span class="over_ell">2</span>
-                                        </li>
-                                        <li class="tableOptions mach_opt">
-                                            <span class="mach_img">
-                                                <img th:src="@{/img/bg_queen.png}">
-                                            </span>
-                                            <span class="over_ell">1223318988123</span>
-                                            <span class="over_ell">南岗区儿童公园</span>
-                                            <span class="over_ell">1</span>
-                                        </li>
-                                        <li class="tableOptions mach_opt">
-                                            <span class="mach_img">
-                                                <img th:src="@{/img/bg_queen.png}">
-                                            </span>
-                                            <span class="over_ell">2300213123333333333335</span>
-                                            <span class="over_ell">香坊区文正街</span>
-                                            <span class="over_ell">12</span>
-                                        </li>
-                                        <li class="tableOptions mach_opt">
-                                            <span class="mach_img">
-                                                <img th:src="@{/img/bg_queen.png}">
-                                            </span>
-                                            <span class="over_ell">2300213123333333333335</span>
-                                            <span class="over_ell">道里区花园街</span>
-                                            <span class="over_ell">202</span>
-                                        </li>
-                                        <li class="tableOptions mach_opt">
-                                            <span class="mach_img">
-                                                <img th:src="@{/img/bg_queen.png}">
-                                            </span>
-                                            <span class="over_ell">2300213123333333333335</span>
-                                            <span class="over_ell">道里区中央大街</span>
-                                            <span class="over_ell">202</span>
-                                        </li>
+
                                     </ul>
                                 </div>
 
@@ -643,6 +596,32 @@
             });
         }
 
+
+         //案件动态表格
+        let eventListUrl = /*[[@{/bigScreen/eventList}]]*/ "/bigScreen/eventList";
+        let img = /*[[@{/common/img/}]]*/ "/common/img/";
+            // <img src="${r.file[0]}">
+
+        //     $.ajaxUtil.get(eventListUrl,function (res) {
+        //     let data = res.data.content
+        //     console.log(data)
+        //     let ajqsHtml = ''
+        //     $("#con1 ul").html(``)
+        //     data.map(r =>{
+        //         ajqsHtml +=`
+        //                 <li class="tableOptions mach_opt">
+        //                      <span class="mach_img">
+        //                       </span>
+        //                       <span class="over_ell">${r.eventCode}</span>
+        //                       <span class="over_ell">${r.eventTypeName}</span>
+        //                       <span class="over_ell">${r.eventRegion}</span>
+        //                 </li>
+        //         `
+        //     })
+        //     $("#con1 ul").html(ajqsHtml)
+        //
+        // })
+
         var time = 60;
         var box = document.getElementById('scroll');
         var con1 = document.getElementById('con1');
@@ -656,6 +635,8 @@
                 box.scrollTop++
             }
         }
+
+
 
         var setlId = setInterval(Up, time);
 
@@ -1098,527 +1079,555 @@
     caseTrend.setOption(optionCaseTrend);
 
     // 部门考核
-    var myChart = echarts.init(document.getElementById('bmkh'));
-    option ={
-        tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "shadow"
-            }
-        },
-        legend: {
-            itemHeight: 15,
-            itemWidth: 15,
-            data:[
-                { name: "得分", icon: "roundRect" },
+    let bmkhUrl = /*[[@{/bigScreen/evaluate}]]*/ "/bigScreen/evaluate";
+    $.ajaxUtil.get(bmkhUrl,function (res) {
+        let data  = res.data.content
+        var bmkhYtext = [];
+        var bmkhSerData = [];
+        data.map(i =>{
+            bmkhYtext.push(i.deptName)
+            bmkhSerData.push(i.comprehensive)
+        })
+        var bmkhoption ={
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    type: "shadow"
+                }
+            },
+            legend: {
+                itemHeight: 15,
+                itemWidth: 15,
+                data:[
+                    { name: "得分", icon: "roundRect" },
+                ],
+                x: "right",
+                y: "bottom",
+                orient: "vertical",
+                backgroundColor: "rgba(0, 0, 0, 0)",
+                textStyle: {
+                    color: "rgb(255, 255, 255)"
+                }
+            },
+            toolbox: {
+                show: false,
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true
+                    },
+                    magicType: {
+                        show: false,
+                        type: ["line", "bar", "stack", "tiled"]
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: "value",
+                    splitLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    nameTextStyle: {
+                        color: "rgb(255, 255, 255)"
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: "rgb(255, 255, 255)"
+                        }
+                    }
+                }
             ],
-            x: "right",
-            y: "bottom",
-            orient: "vertical",
-            backgroundColor: "rgba(0, 0, 0, 0)",
-            textStyle: {
-                color: "rgb(255, 255, 255)"
-            }
-        },
-        toolbox: {
-            show: false,
-            feature: {
-                mark: {
-                    show: true
-                },
-                dataView: {
-                    show: true,
-                    readOnly: true
-                },
-                magicType: {
-                    show: false,
-                    type: ["line", "bar", "stack", "tiled"]
-                },
-                restore: {
-                    show: true
-                },
-                saveAsImage: {
-                    show: true
-                }
-            }
-        },
-        calculable: true,
-        xAxis: [
-            {
-                type: "value",
-                splitLine: {
-                    show: false
-                },
-                axisTick: {
-                    show: false
-                },
-                axisLine: {
-                    show: false
-                },
-                splitArea: {
-                    show: false
-                },
-                nameTextStyle: {
-                    color: "rgb(255, 255, 255)"
-                },
-                axisLabel: {
-                    textStyle: {
+            yAxis: [
+                {
+                    type: "category",
+                    data: bmkhYtext,
+                    splitLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: "rgb(255, 255, 255)"
+                        }
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    nameTextStyle: {
                         color: "rgb(255, 255, 255)"
                     }
                 }
-            }
-        ],
-        yAxis: [
-            {
-                type: "category",
-                data: ["部门1", "部门2", "部门3", "部门4"],
-                splitLine: {
-                    show: false
-                },
-                axisTick: {
-                    show: false
-                },
-                axisLine: {
-                    show: false
-                },
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: "rgb(255, 255, 255)"
-                    }
-                },
-                splitArea: {
-                    show: false
-                },
-                nameTextStyle: {
-                    color: "rgb(255, 255, 255)"
+            ],
+            series: [
+                {
+                    name: "得分",
+                    type: "bar",
+                    stack: "总量",
+                    itemStyle: {
+                        normal: {
+                            barBorderRadius: [30, 30, 30, 30],
+                            label: {
+                                show: true,
+                                position: "inside"
+                            },
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                offset: 0,
+                                color: '#6A16D9'
+                            }, {
+                                offset: 1,
+                                color: '#8152F5'
+                            }]),
+                        }
+                    },
+                    data: bmkhSerData,
+                    barGap: "53%",
+                    barMinHeight: 12,
+                    barWidth: 15
                 }
-            }
-        ],
-        series: [
-            {
-                name: "得分",
-                type: "bar",
-                stack: "总量",
-                itemStyle: {
-                    normal: {
-                        barBorderRadius: [30, 30, 30, 30],
-                        label: {
-                            show: true,
-                            position: "inside"
-                        },
-                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                            offset: 0,
-                            color: '#6A16D9'
-                        }, {
-                            offset: 1,
-                            color: '#8152F5'
-                        }]),
-                    }
-                },
-                data: [320, 302, 301, 334],
-                barGap: "53%",
-                barMinHeight: 12,
-                barWidth: 15
-            }
-        ],
-        grid: {
-            left: '2%',
-            right: '2%',
-            bottom: '2%',
-            top: '2%',
-            containLabel: true
-        },
-    }
-    myChart.setOption(option);
+            ],
+            grid: {
+                left: '2%',
+                right: '2%',
+                bottom: '2%',
+                top: '2%',
+                containLabel: true
+            },
+        }
+        bmkhmyChart.setOption(bmkhoption);
+    })
+    var bmkhmyChart = echarts.init(document.getElementById('bmkh'));
+
 
     // 人员考核
-    var myChart = echarts.init(document.getElementById('rykh'));
-    option = {
-        tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "shadow"
-            }
-        },
-        legend: {
-            itemHeight: 15,
-            itemWidth: 15,
-            data:[
-                { name: "得分", icon: "roundRect" },
+    let rykhUrl = /*[[@{/bigScreen/supervisorEvaluation}]]*/ "/bigScreen/supervisorEvaluation";
+    var rykhYtext = [];
+    var rykhSerData =  [];
+    $.ajaxUtil.get(rykhUrl,function (res) {
+        let data = res.data
+        data.map(i =>{
+            rykhYtext.push(i.supervisorName)
+            rykhSerData.push(i.aggregativeIndicator)
+        })
+        var rykhoption = {
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    type: "shadow"
+                }
+            },
+            legend: {
+                itemHeight: 15,
+                itemWidth: 15,
+                data:[
+                    { name: "得分", icon: "roundRect" },
+                ],
+                x: "right",
+                y: "bottom",
+                orient: "vertical",
+                backgroundColor: "rgba(0, 0, 0, 0)",
+                textStyle: {
+                    color: "rgb(255, 255, 255)"
+                }
+            },
+            toolbox: {
+                show: false,
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true
+                    },
+                    magicType: {
+                        show: false,
+                        type: ["line", "bar", "stack", "tiled"]
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: "value",
+                    splitLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    nameTextStyle: {
+                        color: "rgb(255, 255, 255)"
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: "rgb(255, 255, 255)"
+                        }
+                    }
+                }
             ],
-            x: "right",
-            y: "bottom",
-            orient: "vertical",
-            backgroundColor: "rgba(0, 0, 0, 0)",
-            textStyle: {
-                color: "rgb(255, 255, 255)"
-            }
-        },
-        toolbox: {
-            show: false,
-            feature: {
-                mark: {
-                    show: true
-                },
-                dataView: {
-                    show: true,
-                    readOnly: true
-                },
-                magicType: {
-                    show: false,
-                    type: ["line", "bar", "stack", "tiled"]
-                },
-                restore: {
-                    show: true
-                },
-                saveAsImage: {
-                    show: true
-                }
-            }
-        },
-        calculable: true,
-        xAxis: [
-            {
-                type: "value",
-                splitLine: {
-                    show: false
-                },
-                axisTick: {
-                    show: false
-                },
-                axisLine: {
-                    show: false
-                },
-                splitArea: {
-                    show: false
-                },
-                nameTextStyle: {
-                    color: "rgb(255, 255, 255)"
-                },
-                axisLabel: {
-                    textStyle: {
+            yAxis: [
+                {
+                    type: "category",
+                    data: rykhYtext,
+                    splitLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: "rgb(255, 255, 255)"
+                        }
+                    },
+                    splitArea: {
+                        show: false
+                    },
+                    nameTextStyle: {
                         color: "rgb(255, 255, 255)"
                     }
                 }
-            }
-        ],
-        yAxis: [
-            {
-                type: "category",
-                data: ["人员1", "人员2", "人员3", "人员4"],
-                splitLine: {
-                    show: false
-                },
-                axisTick: {
-                    show: false
-                },
-                axisLine: {
-                    show: false
-                },
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: "rgb(255, 255, 255)"
-                    }
-                },
-                splitArea: {
-                    show: false
-                },
-                nameTextStyle: {
-                    color: "rgb(255, 255, 255)"
+            ],
+            series: [
+                {
+                    name: "得分",
+                    type: "bar",
+                    stack: "总量",
+                    itemStyle: {
+                        normal: {
+                            barBorderRadius: [30, 30, 30, 30],
+                            label: {
+                                show: true,
+                                position: "inside"
+                            },
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                offset: 0,
+                                color: '#0ED7EE'
+                            }, {
+                                offset: 1,
+                                color: '#0076FF'
+                            }]),
+                        }
+                    },
+                    data: rykhSerData,
+                    barGap: "53%",
+                    barMinHeight: 12,
+                    barWidth: 13
                 }
-            }
-        ],
-        series: [
-            {
-                name: "得分",
-                type: "bar",
-                stack: "总量",
-                itemStyle: {
-                    normal: {
-                        barBorderRadius: [30, 30, 30, 30],
-                        label: {
-                            show: true,
-                            position: "inside"
-                        },
-                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                            offset: 0,
-                            color: '#0ED7EE'
-                        }, {
-                            offset: 1,
-                            color: '#0076FF'
-                        }]),
-                    }
-                },
-                data: [12, 11, 6, 2],
-                barGap: "53%",
-                barMinHeight: 12,
-                barWidth: 13
-            }
-        ],
-        grid: {
-            left: '2%',
-            right: '2%',
-            bottom: '2%',
-            top: '2%',
-            containLabel: true
-        },
-    }
-    myChart.setOption(option);
+            ],
+            grid: {
+                left: '2%',
+                right: '2%',
+                bottom: '2%',
+                top: '2%',
+                containLabel: true
+            },
+        }
+        rykhmyChart.setOption(rykhoption);
+    })
+    var rykhmyChart = echarts.init(document.getElementById('rykh'));
+
+
+
 
     // 问题来源
-    var myChart = echarts.init(document.getElementById('wtly'));
+    let wtlyUrl = /*[[@{/bigScreen/getCountByEventSource}]]*/ "/bigScreen/getCountByEventSource";
+    $.ajaxUtil.get(wtlyUrl,function (res) {
+        var wtlyData = [{
+            'name': '监督员',
+            'value': res.data.supervise
+        }, {
+            'name': '热线',
+            'value': res.data.hotline
+        },
+        ]
+        wtlyoption = {
+            title: {
+                x: 'center',
+                y: 'center',
+                textStyle: {
+                    fontSize: 20
+                }
+            },
+            grid: {
+                left: '3%',
+                bottom: '3',
+                // right: '5%',
+                containLabel: true,
+                width:'80%', // grid 组件的宽度。默认自适应。
+                height:'95%'
+            },
+            legend: {
+                show:true,
+                orient: "vertical",
+                itemHeight: 15,
+                itemWidth: 15,
+                data:[
+                    { name: "热线", icon: "roundRect" },
+                    { name: "监督员", icon: "roundRect" },
+                ],
+                y: "bottom",
+                x: "right",
+                textStyle: {
+                    color: "rgb(255, 255, 255)"
+                }
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            series: [{
+                type: 'pie',
+                center: ['50%', '50%'],
+                radius: ['44%', '75%'],
+                clockwise: true,
+                avoidLabelOverlap: true,
+                hoverOffset: 15,
+                itemStyle: {
+                    normal: {
+                        color: function(params) {
+                            return colorList[params.dataIndex]
+                        }
+                    }
+                },
+                label: {
+                    show: true,
+                    position: 'outside',
+                    formatter: '{a|{b}：{d}%}\n{hr|}',
+                    rich: {
+                        hr: {
+
+                            backgroundColor: 't',
+                            borderRadius: 3,
+                            width: 3,
+                            height: 3,
+                            padding: [3, 3, 0, -12]
+                        },
+                        a: {
+                            padding: [-30, 15, -20, 15]
+                        }
+                    }
+                },
+                labelLine: {
+                    normal: {
+                        length: 10,
+                        length2: 20,
+                        lineStyle: {
+                            width: 1
+                        }
+                    }
+                },
+                data: wtlyData,
+            }]
+        };
+        wtlymyChart.setOption(wtlyoption);
+    })
+    var wtlymyChart = echarts.init(document.getElementById('wtly'));
     var colorList = ['#A854FF', '#FFD013', '#2D9FFF', '#2DFFFD']
 
-    option = {
-        title: {
-            x: 'center',
-            y: 'center',
-            textStyle: {
-                fontSize: 20
-            }
-        },
-        grid: {
-            left: '3%',
-            bottom: '3',
-            // right: '5%',
-            containLabel: true,
-            width:'80%', // grid 组件的宽度。默认自适应。
-            height:'95%'
-        },
-        legend: {
-            show:true,
-            orient: "vertical",
-            itemHeight: 15,
-            itemWidth: 15,
-            data:[
-                { name: "巡查上报", icon: "roundRect" },
-                { name: "热线上报", icon: "roundRect" },
-                { name: "领导交办", icon: "roundRect" },
-                { name: "物联感知", icon: "roundRect" },
-            ],
-            y: "bottom",
-            x: "right",
-            textStyle: {
-                color: "rgb(255, 255, 255)"
-            }
-        },
-        tooltip: {
-            trigger: 'item'
-        },
-        series: [{
-            type: 'pie',
-            center: ['50%', '50%'],
-            radius: ['44%', '75%'],
-            clockwise: true,
-            avoidLabelOverlap: true,
-            hoverOffset: 15,
-            itemStyle: {
-                normal: {
-                    color: function(params) {
-                        return colorList[params.dataIndex]
-                    }
-                }
-            },
-            label: {
-                show: true,
-                position: 'outside',
-                formatter: '{a|{b}：{d}%}\n{hr|}',
-                rich: {
-                    hr: {
-
-                        backgroundColor: 't',
-                        borderRadius: 3,
-                        width: 3,
-                        height: 3,
-                        padding: [3, 3, 0, -12]
-                    },
-                    a: {
-                        padding: [-30, 15, -20, 15]
-                    }
-                }
-            },
-            labelLine: {
-                normal: {
-                    length: 10,
-                    length2: 20,
-                    lineStyle: {
-                        width: 1
-                    }
-                }
-            },
-            data: [{
-                'name': '巡查上报',
-                'value': 1.45
-            }, {
-                'name': '热线上报',
-                'value': 2.93
-            }, {
-                'name': '领导交办',
-                'value': 3.15
-            }, {
-                'name': '物联感知',
-                'value': 4.78
-
-            }
-            ],
-        }]
-    };
-    myChart.setOption(option);
 
     // 人员管理
-    var myChart = echarts.init(document.getElementById('rygl'));
-    option = {
-        tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "shadow"
-            }
-        },
-        legend: {
-            itemHeight: 15,
-            itemWidth: 15,
-            data:[
-                { name: "在线", icon: "roundRect" },{ name: "离线", icon: "roundRect" },
-            ],
-            x: "right",
-            y: "bottom",
-            orient: "vertical",
-            backgroundColor: "rgba(0, 0, 0, 0)",
-            textStyle: {
-                color: "rgb(255, 255, 255)"
-            }
-        },
-        toolbox: {
-            show: false,
-            feature: {
-                mark: {
-                    show: true
-                },
-                dataView: {
-                    show: true,
-                    readOnly: true
-                },
-                magicType: {
-                    show: false,
-                    type: ["line", "bar", "stack", "tiled"]
-                },
-                restore: {
-                    show: true
-                },
-                saveAsImage: {
-                    show: true
-                }
-            }
-        },
-        grid: {
-            left: '3%',
-            bottom: '3',
-            // right: '5%',
-            containLabel: true,
-            width:'80%', // grid 组件的宽度。默认自适应。
-            height:'95%'
-        },
-        calculable: true,
-        xAxis: [
-            {
-                type: "value",
-                axisLine: {
-                    show: false
-                },
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: "rgb(255, 255, 255)"
-                    }
-                },
-                axisTick: {
-                    show: false
-                },
-                splitLine: {
-                    show: false
-                },
-                splitArea: {
-                    show: false
-                }
-            }
-        ],
-        yAxis: [
-            {
-                type: "category",
-                data: ["基层人员", "考评人员", "处置人员", "监督人员"],
-                axisLine: {
-                    show: false
-                },
-                axisLabel: {
-                    show: true,
-                    textStyle: {
-                        color: "rgb(255, 255, 255)"
-                    }
-                },
-                axisTick: {
-                    show: false
-                },
-                splitLine: {
-                    show: false
-                },
-                splitArea: {
-                    show: false
-                }
-            }
-        ],
-        series: [
-            {
-                name: "在线",
-                type: "bar",
-                stack: "总量",
-                barWidth: 13,
-                itemStyle: {
-                    normal: {
-                        barBorderRadius: [30,0, 0, 30],
-                        label: {
-                            show: true,
-                            position: "inside",
 
-                        },
-                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                            offset: 0,
-                            color: '#0ED7EE'
-                        }, {
-                            offset: 1,
-                            color: '#0076FF'
-                        }]),
-                    }
-                },
-                data: [320, 302, 301, 334]
+    let ryglUrl = /*[[@{/bigScreen/findRoleCount}]]*/ "/bigScreen/findRoleCount";
+    $.ajaxUtil.get(ryglUrl,function (res) {
+        let data = res.data
+        var ryglOnline = []
+        var ryglOutLine = [data.professionalDepartments,data.supervisor,data.shiftLeader,data.dispatcher,data.receptionist]
+        var ryglYtext = ["专业部门", "监督员", "值班长", "派遣员","受理员"]
+        var rygloption = {
+            tooltip: {
+                trigger: "axis",
+                axisPointer: {
+                    type: "shadow"
+                }
             },
-            {
-                name: "离线",
-                type: "bar",
-                barWidth: 13,
-                stack: "总量",
-                itemStyle: {
-                    normal: {
-                        barBorderRadius: [0, 30, 30, 0],
-                        label: {
-                            show: true,
-                            position: "inside",
-
-                        },
-                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
-                            offset: 0,
-                            color: '#6A16D9'
-                        }, {
-                            offset: 1,
-                            color: '#8152F5'
-                        }]),
+            legend: {
+                itemHeight: 15,
+                itemWidth: 15,
+                data:[
+                    { name: "在线", icon: "roundRect" },{ name: "离线", icon: "roundRect" },
+                ],
+                x: "right",
+                y: "bottom",
+                orient: "vertical",
+                backgroundColor: "rgba(0, 0, 0, 0)",
+                textStyle: {
+                    color: "rgb(255, 255, 255)"
+                }
+            },
+            toolbox: {
+                show: false,
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    dataView: {
+                        show: true,
+                        readOnly: true
+                    },
+                    magicType: {
+                        show: false,
+                        type: ["line", "bar", "stack", "tiled"]
+                    },
+                    restore: {
+                        show: true
+                    },
+                    saveAsImage: {
+                        show: true
                     }
+                }
+            },
+            grid: {
+                left: '3%',
+                bottom: '3',
+                // right: '5%',
+                containLabel: true,
+                width:'80%', // grid 组件的宽度。默认自适应。
+                height:'95%'
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: "value",
+                    axisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: "rgb(255, 255, 255)"
+                        }
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    splitArea: {
+                        show: false
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: "category",
+                    data: ryglYtext,
+                    axisLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: "rgb(255, 255, 255)"
+                        }
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    splitArea: {
+                        show: false
+                    }
+                }
+            ],
+            series: [
+                {
+                    name: "在线",
+                    type: "bar",
+                    stack: "总量",
+                    barWidth: 13,
+                    itemStyle: {
+                        normal: {
+                            barBorderRadius: [30,0, 0, 30],
+                            label: {
+                                show: true,
+                                position: "inside",
+
+                            },
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                offset: 0,
+                                color: '#0ED7EE'
+                            }, {
+                                offset: 1,
+                                color: '#0076FF'
+                            }]),
+                        }
+                    },
+                    data: ryglOnline
                 },
-                data: [120, 132, 101, 134]
-            }
-        ]
-    }
-    myChart.setOption(option);
+                {
+                    name: "离线",
+                    type: "bar",
+                    barWidth: 13,
+                    stack: "总量",
+                    itemStyle: {
+                        normal: {
+                            barBorderRadius: [0, 30, 30, 0],
+                            label: {
+                                show: true,
+                                position: "inside",
+
+                            },
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                                offset: 0,
+                                color: '#6A16D9'
+                            }, {
+                                offset: 1,
+                                color: '#8152F5'
+                            }]),
+                        }
+                    },
+                    data: ryglOutLine
+                }
+            ]
+        }
+        myChartrygl.setOption(rygloption);
+    })
+    var myChartrygl = echarts.init(document.getElementById('rygl'));
+
 </script>
 </html>
