@@ -194,8 +194,10 @@ public class DeptEvaluateService {
     private Integer mustCloseNum(List<Statistics> statistics, String deptId) {
         //TODO 应结案数 = 处置数 + 超时未处置数
         List<Statistics> dispose = statistics.stream().filter(s -> null != s.getDispose()).filter(s -> s.getDispose() == 1).collect(Collectors.toList());
+        List<Statistics> overtimeToDispose = statistics.stream().filter(s -> null != s.getDispose()).filter(s -> s.getOvertimeToDispose() == 1).collect(Collectors.toList());
         // 处置数
         long count = dispose.stream().filter(s -> deptId.equals(s.getDisposeUnit().getId())).count();
+         count += overtimeToDispose.stream().filter(s -> deptId.equals(s.getDisposeUnit().getId())).count();
         return Math.toIntExact(count);
     }
 
