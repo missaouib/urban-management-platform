@@ -2,6 +2,7 @@ package com.unicom.urban.management.api.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.properties.GisServiceProperties;
 import com.unicom.urban.management.common.util.RestTemplateUtil;
 import com.unicom.urban.management.pojo.RestReturn;
@@ -26,7 +27,7 @@ import com.unicom.urban.management.service.process.ProcessService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
 import com.unicom.urban.management.service.trajectory.TrajectoryService;
 import com.unicom.urban.management.util.SecurityUtil;
-import io.micrometer.core.instrument.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -36,6 +37,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 /**
@@ -341,7 +344,7 @@ public class WirelessAcquisitionController {
     }
 
     /**
-     * 轨迹记录
+     * 轨迹记录-保存
      *
      * @return 成功
      */
@@ -350,6 +353,20 @@ public class WirelessAcquisitionController {
         SecurityUserBean user = SecurityUtil.getUser();
         trajectoryService.saveTrajectory(trajectoryDTO, user.castToUser());
         return Result.success("成功");
+    }
+
+    /**
+     * 轨迹记录-列表
+     *
+     * @return 成功
+     */
+    @GetMapping("/getTrackLogForOne")
+    public Result getTrackLogForOne(String id) {
+        if (StringUtils.isBlank(id)) {
+            return Result.fail(500, "请选择巡查人员");
+        }
+        List<TrajectoryVO> trajectoryForOne = trajectoryService.getTrajectoryForOne(id);
+        return Result.success(trajectoryForOne);
     }
 
     /**

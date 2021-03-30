@@ -1,8 +1,10 @@
 package com.unicom.urban.management.pojo.entity;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * 轨迹记录表
@@ -20,6 +22,8 @@ public class Trajectory {
     private Double x;
 
     private Double y;
+
+    private LocalDateTime createTime;
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -55,6 +59,15 @@ public class Trajectory {
 
     public void setY(Double y) {
         this.y = y;
+    }
+
+    @CreatedDate
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
     }
 
 }
