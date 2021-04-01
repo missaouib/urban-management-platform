@@ -423,7 +423,7 @@ public class UserService {
             AddressBookVO addressBookVO = new AddressBookVO();
             addressBookVO.setId(user.getId());
             addressBookVO.setName(user.getName());
-            addressBookVO.setPhone(user.getPhone());
+            addressBookVO.setPhone(AESUtil.decrypt(user.getPhone()));
             addressBookVOList.add(addressBookVO);
         }
         return addressBookVOList;
