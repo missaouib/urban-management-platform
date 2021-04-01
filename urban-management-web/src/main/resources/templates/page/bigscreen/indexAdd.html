@@ -553,7 +553,6 @@
                 let dispatch=[];
                 let operate=[];
                 let data=e.data;
-                console.log(data)
                 var optionCaseTrend = {
                     tooltip: {
                         trigger: "axis",
@@ -778,7 +777,6 @@
                                 // }], false),
                                 barBorderRadius: [30, 30, 0, 0],
                                 color: function(params){
-                                    console.log(params);
                                     var colorList = [
                                         ['rgba(255, 161, 26, 0.2)','#E6CD08'],
                                         ['rgba(0, 126, 255, 0.2)','#3FFFEA'],
@@ -830,13 +828,13 @@
         let day = date.getDay()
         $("#week").html(day)
         setInterval(() => {
-            let HH = date.getHours()
+            let HH = new Date().getHours()
             if (HH >= 12){
                 $("#apm").html('下午')
             }else {
                 $("#apm").html('上午')
             }
-            let mm = date.getMinutes()
+            let mm = new Date().getMinutes()
             $("#hour").html(HH)
             $("#min").html(mm)
         }, 1000);
@@ -1005,7 +1003,6 @@
     // 同比分析
     let tbfxUrl = /*[[@{/bigScreen/countByEventType}]]*/ "/bigScreen/countByEventType";
     $.ajaxUtil.get(tbfxUrl,function (res) {
-        console.log('my',res.data.event)
         let data = res.data.event
         var  getsyzl=['处置数','处置率','应处置数'];
         var  getwkrs=[826,673,588,782];
@@ -1083,7 +1080,6 @@
                 itemStyle: {
                     normal: {
                         color: function(params){
-                            console.log(params);
                             var colorList = [
                                 ['rgba(255, 161, 26, 0.2)','#E6CD08'],
                                 ['rgba(0, 126, 255, 0.2)','#3FFFEA'],
@@ -1516,6 +1512,7 @@
                 }
             },
             legend: {
+                show:false,
                 itemHeight: 15,
                 itemWidth: 15,
                 data:[
