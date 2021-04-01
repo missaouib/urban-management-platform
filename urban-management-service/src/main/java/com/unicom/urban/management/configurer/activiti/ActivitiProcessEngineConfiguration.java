@@ -36,7 +36,7 @@ public class ActivitiProcessEngineConfiguration extends AbstractProcessEngineAut
         config.setJpaCloseEntityManager(false);
         config.addConfigurator(new ActivitiFontConfigurator()).addConfigurator(new ActivitiIdConfigurator());
         config.setProcessEngineLifecycleListener(new ActivitiProcessEngineLifecycleListener());
-
+        config.setEnableDatabaseEventLogging(true);
         return config;
     }
 }

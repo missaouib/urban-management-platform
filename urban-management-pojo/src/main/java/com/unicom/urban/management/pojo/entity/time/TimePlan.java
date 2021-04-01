@@ -148,8 +148,7 @@ public class TimePlan {
         this.sts = sts;
     }
 
-    @JoinColumn(name = "time_plan_id")
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "timePlan", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     public List<Day> getDayList() {
         return dayList;
     }
@@ -159,8 +158,7 @@ public class TimePlan {
     }
 
     @OrderBy("startTime ASC")
-    @JoinColumn(name = "time_plan_id")
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(mappedBy = "timePlan", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
     public List<TimeScheme> getTimeSchemeList() {
         return timeSchemeList;
     }
