@@ -191,3 +191,18 @@ body {
 .fx_case{
 	width: 45%;
 }
+.mengBan{
+	width: 100%;height: 100%;
+	position: absolute;
+	z-index: 2;
+	top: 0;left: 0;
+	background-color: #fff;
+	opacity: 0.4;
+}
+.anchorBL{
+	display: none!important;
+}
+#container{
+	position: absolute;
+	top: 0;left: 0;z-index: 1;
+}
