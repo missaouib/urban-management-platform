@@ -1,6 +1,7 @@
 package com.unicom.urban.management.api.project.supervise;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
+import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.SuperviseDTO;
 import com.unicom.urban.management.pojo.vo.SuperviseVO;
 import com.unicom.urban.management.service.supervise.SuperviseService;
@@ -25,8 +26,9 @@ public class SuperviseController {
     private SuperviseService superviseService;
 
     @PostMapping("/supervise")
-    public void supervise(@Valid SuperviseDTO dto){
+    public Result supervise(@Valid SuperviseDTO dto){
         superviseService.save(dto);
+        return Result.success("成功");
     }
 
     @PostMapping("/reply")
