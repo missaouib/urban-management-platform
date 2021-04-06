@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.time;
 
 import com.unicom.urban.management.common.exception.DataValidException;
+import com.unicom.urban.management.common.util.LocalDateTimeUtil;
 import com.unicom.urban.management.dao.time.DayRepository;
 import com.unicom.urban.management.dao.time.TimePlanRepository;
 import com.unicom.urban.management.dao.time.TimeSchemeRepository;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
@@ -70,18 +72,14 @@ public class TimeService {
     public void activation(String id, TimePlan.Status status) {
         // 激活
         if (TimePlan.Status.ENABLE.equals(status)) {
-//            TimePlan timePlan = timePlanRepository.findById(id).orElseThrow(() -> new DataValidException("数据不存在"));
-//            List<LocalDate> between = LocalDateTimeUtil.between(timePlan.getStartTime(), timePlan.getEndTime());
-//
-//            List<Day> dayList = dayRepository.findByTimePlanOrderByCalendar(new TimePlan(id));
-//
-//            if (between.size() != dayList.size()) {
-//
-//                for (int i = 0; i < dayList.size(); i++) {
-//
-//                }
-//
-//            }
+            TimePlan timePlan = timePlanRepository.findById(id).orElseThrow(() -> new DataValidException("数据不存在"));
+            List<LocalDate> between = LocalDateTimeUtil.between(timePlan.getStartTime(), timePlan.getEndTime());
+            List<Day> days = dayRepository.findByCalendarInAndTimePlanOrderByCalendar(between, timePlan);
+
+            if (days.size() != between.size()) {
+                throw new DataValidException("有尚未设置的天数 不能激活");
+            }
+
             timePlanRepository.updateStatus(TimePlan.Status.DISABLE);
             timePlanRepository.updateStatus(TimePlan.Status.ENABLE, id);
         } else {
