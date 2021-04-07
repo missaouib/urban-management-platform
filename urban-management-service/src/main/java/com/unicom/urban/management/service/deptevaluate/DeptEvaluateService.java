@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.text.DecimalFormat;
@@ -38,77 +39,81 @@ public class DeptEvaluateService {
     @Autowired
     private StatisticsRepository statisticsRepository;
 
-    private final NumberFormat nt = NumberFormat.getPercentInstance();
+    private final NumberFormat numberFormat = NumberFormat.getPercentInstance();
 
     public DeptEvaluateService() {
-        nt.setMinimumFractionDigits(0);
+        numberFormat.setMinimumFractionDigits(0);
     }
 
     public List<DeptEvaluate> deptEvaluates(String starTimeStr, String endTimeStr) {
 
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+        List<DeptVO> deptVoList = deptService.getAll();
 
-        List<DeptEvaluate> list = new ArrayList<>();
-        List<DeptVO> deptVOS = deptService.getAll();
-
-        List<Statistics> all = statisticsRepository.findAll((Specification<Statistics>) (root, criteriaQuery, criteriaBuilder) -> {
-            List<Predicate> list1 = new ArrayList<>();
+        List<Statistics> statisticsList = statisticsRepository.findAll((Specification<Statistics>) (root, criteriaQuery, criteriaBuilder) -> {
+            root.fetch("disposeUnit", JoinType.LEFT);
+            List<Predicate> list = new ArrayList<>();
             //查询更新时间在此时间范围内的所有spu对象
             if (StringUtils.isNotBlank(starTimeStr)) {
-                LocalDateTime starTime = LocalDateTime.parse(starTimeStr, df);
-                list1.add(criteriaBuilder.greaterThanOrEqualTo(root.get("event").get("createTime").as(LocalDateTime.class), starTime));
+                LocalDateTime starTime = LocalDateTime.parse(starTimeStr, dateTimeFormatter);
+                list.add(criteriaBuilder.greaterThanOrEqualTo(root.get("event").get("createTime").as(LocalDateTime.class), starTime));
             }
             if (StringUtils.isNotBlank(endTimeStr)) {
-                LocalDateTime endTime = LocalDateTime.parse(endTimeStr, df);
-                list1.add(criteriaBuilder.lessThanOrEqualTo(root.get("event").get("createTime").as(LocalDateTime.class), endTime));
+                LocalDateTime endTime = LocalDateTime.parse(endTimeStr, dateTimeFormatter);
+                list.add(criteriaBuilder.lessThanOrEqualTo(root.get("event").get("createTime").as(LocalDateTime.class), endTime));
             }
-            Predicate[] p = new Predicate[list1.size()];
-            return criteriaBuilder.and(list1.toArray(p));
+            Predicate[] p = new Predicate[list.size()];
+            return criteriaBuilder.and(list.toArray(p));
         });
         /*endTime不等于null的*/
-        List<Statistics> endTimeIsNotNull = all.stream().filter(s -> s.getEndTime() != null).collect(Collectors.toList());
+        List<Statistics> endTimeIsNotNull = statisticsList.stream().filter(statistics -> statistics.getEndTime() != null).collect(Collectors.toList());
         /*结案数*/
-        List<Statistics> closeNumList = all.stream().filter(s -> null != s.getClose()).filter(s -> 1 == s.getClose()).collect(Collectors.toList());
+        List<Statistics> closeNumList = statisticsList.stream().filter(statistics -> null != statistics.getClose()).filter(s -> 1 == s.getClose()).collect(Collectors.toList());
         /*处置数*/
-        List<Statistics> disposeList = all.stream().filter(s -> null != s.getDispose()).filter(s -> 1 == s.getDispose()).collect(Collectors.toList());
+        List<Statistics> disposeList = statisticsList.stream().filter(statistics -> null != statistics.getDispose()).filter(s -> 1 == s.getDispose()).collect(Collectors.toList());
         /*应处置数*/
-        List<Statistics> needDisposeList = all.stream().filter(s -> null != s.getNeedDispose()).filter(s -> 1 == s.getNeedDispose()).collect(Collectors.toList());
+        List<Statistics> needDisposeList = statisticsList.stream().filter(statistics -> null != statistics.getNeedDispose()).filter(s -> 1 == s.getNeedDispose()).collect(Collectors.toList());
         /*返工数*/
-        List<Statistics> reworkList = all.stream().filter(s -> null != s.getRework()).filter(s -> s.getRework() == 1).collect(Collectors.toList());
+        List<Statistics> reworkList = statisticsList.stream().filter(statistics -> null != statistics.getRework()).filter(s -> s.getRework() == 1).collect(Collectors.toList());
 
-        deptVOS.forEach(d -> {
+        List<DeptEvaluate> deptEvaluateList = new ArrayList<>();
+
+        List<Statistics> deptStatisticsList = statisticsList.stream().filter(s -> s.getTaskName().equals("专业部门")).collect(Collectors.toList());
+
+        deptVoList.forEach(deptVO -> {
             DeptEvaluate deptEvaluate = new DeptEvaluate();
-            deptEvaluate.setDeptName(d.getDeptName());
-            deptEvaluate.setRegisterNum(this.registerNum(endTimeIsNotNull, d.getId()));
-            deptEvaluate.setOnTimeCloseNum(this.onTimeCloseNum(closeNumList, d.getId()));
+            deptEvaluate.setDeptName(deptVO.getDeptName());
+            deptEvaluate.setRegisterNum(this.registerNum(endTimeIsNotNull, deptStatisticsList, deptVO.getId()));
+            deptEvaluate.setOnTimeCloseNum(this.onTimeCloseNum(closeNumList, deptStatisticsList, deptVO.getId()));
             /*结案数*/
-            Integer closeNum = this.closeNum(closeNumList, d.getId());
+            Integer closeNum = this.closeNum(closeNumList, deptStatisticsList, deptVO.getId());
             deptEvaluate.setCloseNum(closeNum);
             /*应结案数*/
-            Integer mustCloseNum = this.mustCloseNum(all, d.getId());
+            Integer mustCloseNum = this.mustCloseNum(statisticsList, deptVO.getId());
             deptEvaluate.setMustCloseNum(mustCloseNum);
             String closeRate = this.getRate(closeNum, mustCloseNum);
             deptEvaluate.setCloseRate(closeRate);
-            deptEvaluate.setManagementNum(this.managementNum(disposeList, d.getId()));
+            deptEvaluate.setManagementNum(this.managementNum(disposeList, deptVO.getId()));
             /*按时处置数*/
-            Integer onTimeManagementNum = this.onTimeManagementNum(disposeList, d.getId());
+            Integer onTimeManagementNum = this.onTimeManagementNum(disposeList, deptVO.getId());
             deptEvaluate.setOnTimeManagementNum(onTimeManagementNum);
             /*应处置数*/
-            Integer mustManagementNum = this.mustManagementNum(needDisposeList, d.getId());
+            Integer mustManagementNum = this.mustManagementNum(needDisposeList, deptVO.getId());
             String onTimeManagementRate = this.getRate(onTimeManagementNum, mustManagementNum);
             deptEvaluate.setOnTimeManagementRate(onTimeManagementRate);
             deptEvaluate.setMustManagementNum(mustManagementNum);
             /*返工数*/
-            Integer reworkNum = this.reworkNum(reworkList, d.getId());
+            Integer reworkNum = this.reworkNum(reworkList, deptStatisticsList, deptVO.getId());
             deptEvaluate.setReworkNum(reworkNum);
             String reworkRate = this.getRate(reworkNum, mustCloseNum);
             deptEvaluate.setReworkRate(reworkRate);
             deptEvaluate.setComprehensive(this.comprehensive(reworkNum, closeRate, onTimeManagementRate, reworkRate));
-            list.add(deptEvaluate);
+            deptEvaluateList.add(deptEvaluate);
 
         });
-        return list;
+
+        return deptEvaluateList;
     }
 
 
@@ -124,7 +129,7 @@ public class DeptEvaluateService {
         long unitNeedDispose = all.stream().filter(s -> null != s.getNeedDispose()).filter(s -> 1 == s.getNeedDispose()).filter(s -> KvConstant.UNIT.equals(s.getEvent().getEventType().getParent().getParent().getId())).count();
         String unitNeedDisposeRateStr = "0";
         if (unitNeedDispose != 0) {
-            unitNeedDisposeRateStr = df.format(((double) unitDispose / (double) unitNeedDispose)*100);
+            unitNeedDisposeRateStr = df.format(((double) unitDispose / (double) unitNeedDispose) * 100);
         }
         Map<String, Object> unitMap = new HashMap<>();
         unitMap.put("unitDispose", unitDispose);
@@ -139,7 +144,7 @@ public class DeptEvaluateService {
         long eventNeedDispose = all.stream().filter(s -> null != s.getNeedDispose()).filter(s -> 1 == s.getNeedDispose()).filter(s -> KvConstant.EVENT.equals(s.getEvent().getEventType().getParent().getParent().getId())).count();
         String eventNeedDisposeRateStr = "0";
         if (eventNeedDispose != 0) {
-            eventNeedDisposeRateStr = df.format(((double) eventDispose / (double) eventNeedDispose)*100);
+            eventNeedDisposeRateStr = df.format(((double) eventDispose / (double) eventNeedDispose) * 100);
         }
         Map<String, Object> eventMap = new HashMap<>();
         eventMap.put("eventDispose", eventDispose);
@@ -189,17 +194,17 @@ public class DeptEvaluateService {
             return "0";
         }
         Double closeRate = (double) (num1) / (double) num2;
-        return Optional.of(nt.format(closeRate)).filter(s -> !"NaN".equals(s)).orElse("0");
+        return Optional.of(numberFormat.format(closeRate)).filter(s -> !"NaN".equals(s)).orElse("0");
     }
 
     /**
      * 立案数
      */
-    private Integer registerNum(List<Statistics> statistics, String deptId) {
+    private Integer registerNum(List<Statistics> statistics, List<Statistics> list, String deptId) {
         List<Statistics> collect = statistics.stream().filter(s -> "派遣员-派遣".equals(s.getTaskName())).collect(Collectors.toList());
-        List<Event> events = new ArrayList<>();
-        collect.forEach(s -> events.add(s.getEvent()));
-        List<Statistics> statistics1 = statisticsRepository.findAllByEventInAndTaskNameAndDisposeUnit_Id(events, "专业部门", deptId);
+        List<String> events = new ArrayList<>();
+        collect.forEach(s -> events.add(s.getEvent().getId()));
+        List<Statistics> statistics1 = filterList(list, deptId, events);
         Integer count = Math.toIntExact(statistics1.stream().filter(s -> s.getEndTime() == null).count());
         Integer count1 = Math.toIntExact(statistics1.stream().filter(s -> null != s.getDispose()).filter(s -> s.getDispose() == 1).count());
         return count + count1;
@@ -208,69 +213,77 @@ public class DeptEvaluateService {
     /**
      * 按时结案数
      */
-    private Integer onTimeCloseNum(List<Statistics> statistics, String deptId) {
-        List<Event> events = new ArrayList<>();
-        statistics.forEach(s -> events.add(s.getEvent()));
-        return Math.toIntExact(statisticsRepository.findAllByEventInAndTaskNameAndDisposeUnit_Id(events, "专业部门", deptId).stream().filter(s -> null != s.getInTimeDispose()).filter(s -> s.getInTimeDispose() == 1).count());
+    private Integer onTimeCloseNum(List<Statistics> statisticsList, List<Statistics> list, String deptId) {
+        List<String> events = new ArrayList<>();
+        statisticsList.forEach(s -> events.add(s.getEvent().getId()));
+        return Math.toIntExact(filterList(list, deptId, events).stream().filter(s -> null != s.getInTimeDispose()).filter(s -> s.getInTimeDispose() == 1).count());
     }
 
 
     /**
      * 结案数
      */
-    private Integer closeNum(List<Statistics> statistics, String deptId) {
-        List<Event> events = new ArrayList<>();
-        statistics.forEach(s -> events.add(s.getEvent()));
-        List<Statistics> statisticsList = statisticsRepository.findAllByEventInAndTaskNameAndDisposeUnit_Id(events, "专业部门", deptId).stream().filter(s -> null != s.getDispose()).filter(s -> s.getDispose() == 1).collect(Collectors.toList());
+    private Integer closeNum(List<Statistics> statistics, List<Statistics> list, String deptId) {
+        List<String> events = new ArrayList<>();
+        statistics.forEach(s -> events.add(s.getEvent().getId()));
+        List<Statistics> collect = filterList(list, deptId, events);
+        List<Statistics> statisticsList = collect.stream().filter(s -> null != s.getDispose()).filter(s -> s.getDispose() == 1).collect(Collectors.toList());
         List<String> event = new ArrayList<>();
         statisticsList.forEach(s -> event.add(s.getEvent().getId()));
         return Math.toIntExact(event.stream().distinct().count());
     }
 
     /**
+     * 过滤查询
+     */
+    private List<Statistics> filterList(List<Statistics> statisticsList, String deptId, List<String> events) {
+        return statisticsList.stream().filter(statistics -> statistics.getDisposeUnit().getId().equals(deptId) && events.contains(statistics.getEvent().getId())).collect(Collectors.toList());
+    }
+
+    /**
      * 应结案数
      */
-    private Integer mustCloseNum(List<Statistics> statistics, String deptId) {
+    private Integer mustCloseNum(List<Statistics> statisticsList, String deptId) {
         //应结案数 = 处置数 + 超时未处置数
-        List<Statistics> dispose = statistics.stream().filter(s -> null != s.getDispose()).filter(s -> s.getDispose() == 1).collect(Collectors.toList());
-        List<Statistics> overtimeToDispose = statistics.stream().filter(s -> null != s.getDispose()).filter(s -> s.getOvertimeToDispose() == 1).collect(Collectors.toList());
+        List<Statistics> dispose = statisticsList.stream().filter(statistics -> null != statistics.getDispose()).filter(s -> s.getDispose() == 1).collect(Collectors.toList());
+        List<Statistics> overtimeToDispose = statisticsList.stream().filter(statistics -> null != statistics.getDispose()).filter(s -> s.getOvertimeToDispose() == 1).collect(Collectors.toList());
         // 处置数
-        long count = dispose.stream().filter(s -> deptId.equals(s.getDisposeUnit().getId())).count();
-        count += overtimeToDispose.stream().filter(s -> deptId.equals(s.getDisposeUnit().getId())).count();
+        long count = dispose.stream().filter(statistics -> deptId.equals(statistics.getDisposeUnit().getId())).count();
+        count += overtimeToDispose.stream().filter(statistics -> deptId.equals(statistics.getDisposeUnit().getId())).count();
         return Math.toIntExact(count);
     }
 
     /**
      * 按时处置数
      */
-    private Integer onTimeManagementNum(List<Statistics> statistics, String deptId) {
-        long count = statistics.stream().filter(s -> s.getInTimeDispose() == 1).filter(s -> deptId.equals(s.getDisposeUnit().getId())).count();
+    private Integer onTimeManagementNum(List<Statistics> statisticsList, String deptId) {
+        long count = statisticsList.stream().filter(statistics -> statistics.getInTimeDispose() == 1).filter(s -> deptId.equals(s.getDisposeUnit().getId())).count();
         return Math.toIntExact(count);
     }
 
     /**
      * 处置数
      */
-    private Integer managementNum(List<Statistics> statistics, String deptId) {
-        long count = statistics.stream().filter(s -> deptId.equals(s.getDisposeUnit().getId())).count();
+    private Integer managementNum(List<Statistics> statisticsList, String deptId) {
+        long count = statisticsList.stream().filter(statistics -> deptId.equals(statistics.getDisposeUnit().getId())).count();
         return Math.toIntExact(count);
     }
 
     /**
      * 应处置数
      */
-    private Integer mustManagementNum(List<Statistics> statistics, String deptId) {
-        long count = statistics.stream().filter(s -> deptId.equals(s.getDisposeUnit().getId())).count();
+    private Integer mustManagementNum(List<Statistics> statisticsList, String deptId) {
+        long count = statisticsList.stream().filter(statistics -> deptId.equals(statistics.getDisposeUnit().getId())).count();
         return Math.toIntExact(count);
     }
 
     /**
      * 返工数
      */
-    private Integer reworkNum(List<Statistics> statistics, String deptId) {
-        List<Event> events = new ArrayList<>();
-        statistics.forEach(s -> events.add(s.getEvent()));
-        return statisticsRepository.findAllByEventInAndTaskNameAndDisposeUnit_Id(events, "专业部门", deptId).size();
+    private Integer reworkNum(List<Statistics> statisticsList, List<Statistics> list, String deptId) {
+        List<String> events = new ArrayList<>();
+        statisticsList.forEach(statistics -> events.add(statistics.getEvent().getId()));
+        return filterList(list, deptId, events).size();
     }
 
 }
