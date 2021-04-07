@@ -1092,7 +1092,11 @@
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox'>";
-                    html += "by:<em class='roleSize'>"+ data[i].user  + "</em> ";
+                    if (data[i].name && data[i].name != null){
+                        html += "by:<em class='roleSize'>"+ data[i].name  + "</em> ";
+                    }else {
+                        html += "by:<em class='roleSize'>"+ ' ' + "</em> ";
+                    }
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";
@@ -1102,7 +1106,11 @@
                     html += "</div>";
                     html += "<div class='gameEnd'>";
                     html += "<div class='endBox RecordTime'>";
-                    html += "结束时间:<em>"+ data[i].endTime +"</em>"
+                    if (data[i].endTime&& data[i].endTime != null){
+                        html += "结束时间:<em>"+ data[i].endTime +"</em>"
+                    }else {
+                        html += "结束时间:<em>"+ '-' +"</em>"
+                    }
                     html += "</div>";
                     html += "</div>";
                     html += "<div class='gameEnd'>";

@@ -157,7 +157,8 @@
                             <td><span></span>上报人</td>
                             <td  style="margin-top:10px;display: flex;justify-content: space-between;align-items: center"><div class="username" th:sec:authentication="principal.name"></div>
                                 <div style="display: flex;align-items: center;justify-content: space-between">
-                                    <div style="color: black!important;">是否自处理</div><input  id="doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
+                                    <div style="color: black!important;">是否自处理</div>
+                                    <input  id="doBySelf"  name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
                                 </div>
                             </td>
 
@@ -177,16 +178,6 @@
                                 <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
                                 <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
                             </div>
-                            <!--                            <div class="sendImg">-->
-                            <!--                                <div class="sendText"><span>视频:</span></div>-->
-                            <!--                                <div><input id="videoInput" class="videoInput" type="file" name="files" multiple="multiple"></div>-->
-                            <!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" />-->
-                            <!--                            </div>-->
-                            <!--                            <div class="sendImg">-->
-                            <!--                                <div class="sendText"><span>音频:</span></div>-->
-                            <!--                                <div><input id="musicInput" class="musicInput" type="file" name="files" multiple="multiple"></div>-->
-                            <!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" />-->
-                            <!--                            </div>-->
                         </div>
                         <div class="" id="after" style="display:none;padding-left: 20px">
                             <span>处置后</span>
@@ -198,16 +189,7 @@
                                 <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter" value="">
                                 <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter" value="">
                             </div>
-                            <!--                            <div class="sendImg">-->
-                            <!--                                <div class="sendText"><span>视频:</span></div>-->
-                            <!--                                <div><input id="videoInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>-->
-                            <!--                                <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter" value="">-->
-                            <!--                            </div>-->
-                            <!--                            <div class="sendImg">-->
-                            <!--                                <div class="sendText"><span>音频:</span></div>-->
-                            <!--                                <div><input id="musicInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>-->
-                            <!--                                <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter" value="">-->
-                            <!--                            </div>-->
+
                         </div>
                     </div>
 
@@ -279,6 +261,9 @@
 <th:block th:include="page/fragments/common :: ztree_js"/>
 <th:block th:include="page/fragments/common :: bmap_js" />
 <script type="text/javascript" th:inline="javascript">
+    if ($("#after").css("display", "block")){
+        $("#doBySelf").prop('checked',true)
+    }
     $("#doBySelf").on('click', function () {
         var after = $("#after");
         if ($("#doBySelf").is(':checked')) {
