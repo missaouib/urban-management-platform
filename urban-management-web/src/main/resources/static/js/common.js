@@ -47,7 +47,7 @@ function setTimeLimit(row, index) {
     //         "<img src='../img/1.png' style='width: 100%;height: 100%'></div>";
     // }
     var demo = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
-        "<img src='../img/"+index.timeLimitLong+".png' style='width: 100%;height: 100%'></div>";
+        "<img src='../img/" + index.timeLimitLong + ".png' style='width: 100%;height: 100%'></div>";
     return demo;
 }
 
@@ -514,14 +514,14 @@ function setFileInput(file) {
 
 function setPointForList(data) {
     let rowArray = data.rows;
-    if(rowArray.length > 0){
-        if(rowArray[0].centerPoint == null){
+    if (rowArray.length > 0) {
+        if (rowArray[0].centerPoint == null) {
             return false;
         }
         let x = parseFloat(rowArray[0].centerPoint.split("-")[0]);
         let y = parseFloat(rowArray[0].centerPoint.split("-")[1]);
         // setPointForCenter(x, y);
-        setCenterAndZoom(x, y, map.getView().getZoom()-4);
+        setCenterAndZoom(x, y, map.getView().getZoom() - 4);
     }
     wkts = [];
     for (let i = 0; i < rowArray.length; i++) {
@@ -1608,11 +1608,18 @@ function saveIdioms(data) {
     if (idiomsValue === undefined || idiomsValue === '') {
         return false;
     }
-    table.set();
-    $.modal.confirm("确定保存该条惯用语吗？", function () {
-        $.operate.submit(url, "post", "json", {"idiomsValue": idiomsValue});
-        getIdioms();
+    let isIdioms = "/idioms/isIdioms";
+    $.ajaxUtil.get(isIdioms + "?idiomsValue=" + idiomsValue, function (e) {
+        if (e.data !== "此惯用语已存在无需保存") {
+            table.set();
+            $.modal.confirm("确定保存该条惯用语吗？", function () {
+                $.operate.submit(url, "post", "json", {"idiomsValue": idiomsValue});
+                getIdioms();
+            });
+        }
     });
+
+
 }
 
 /**

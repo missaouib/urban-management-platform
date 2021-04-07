@@ -33,4 +33,9 @@ public class IdiomsController {
         List<String> list = idiomsService.findAllIdiomsValue();
         return Result.success(list);
     }
+
+    @GetMapping("/isIdioms")
+    public Result isIdioms(IdiomsVO idiomsVO){
+        return Result.success(idiomsService.isIdioms(idiomsVO));
+    }
 }

@@ -27,6 +27,20 @@ public class IdiomsService {
     @Autowired
     private IdiomsRepository idiomsRepository;
     public void saveIdioms(IdiomsVO idiomsVO){
+        String idiomsValue = this.isIdioms(idiomsVO);
+        if("此惯用语已存在无需保存".equals(idiomsValue)){
+            throw new DataValidException("此惯用语已存在无需保存");
+        }
+        if (idiomsRepository.existsByIdiomsValue(idiomsValue)) {
+            throw new DataValidException("此惯用语已存在无需保存");
+        }
+        Idioms idioms = new Idioms();
+        idioms.setIdiomsValue(idiomsValue);
+        idioms.setUser(SecurityUtil.getUser().castToUser());
+        idiomsRepository.save(idioms);
+    }
+
+    public String isIdioms(IdiomsVO idiomsVO){
         String  value = idiomsVO.getIdiomsValue().trim();
         char[] c = value.toCharArray();
         StringBuilder stringBuilder = new StringBuilder();
@@ -38,12 +52,9 @@ public class IdiomsService {
         }
         String idiomsValue = stringBuilder.toString();
         if (idiomsRepository.existsByIdiomsValue(idiomsValue)) {
-            throw new DataValidException("此惯用语已存在无需保存");
+            return "此惯用语已存在无需保存";
         }
-        Idioms idioms = new Idioms();
-        idioms.setIdiomsValue(idiomsValue);
-        idioms.setUser(SecurityUtil.getUser().castToUser());
-        idiomsRepository.save(idioms);
+        return idiomsValue;
     }
 
     public Page<IdiomsVO> search(IdiomsVO idiomsVO, Pageable pageable) {
