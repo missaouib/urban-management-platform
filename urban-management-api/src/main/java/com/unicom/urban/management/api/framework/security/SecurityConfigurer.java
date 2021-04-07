@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 /**
  * @author liukai
  */
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
