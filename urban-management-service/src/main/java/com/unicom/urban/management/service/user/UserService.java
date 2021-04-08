@@ -76,7 +76,7 @@ public class UserService {
                 Join<Object, Object> roleList = root.join("roleList", JoinType.LEFT);
                 list.add(criteriaBuilder.equal(roleList.get("id").as(String.class), userDTO.getRoleId()));
             }
-
+            list.add(criteriaBuilder.equal(root.get("deleted").as(String.class), Delete.NORMAL));
 
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
