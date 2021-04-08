@@ -94,6 +94,7 @@ public class StatisticsService {
                     .endTime(endTime)
                     .opinions(Optional.ofNullable(statistics.getOpinions()).orElse("无"))
                     .fileName(stringList)
+                    .name(Optional.ofNullable(statistics.getUser()).map(User::getName).orElse(""))
                     .user(Optional.ofNullable(statistics.getUser()).map(User::getUsername).orElse(""))
                     .link(statistics.getTaskName())
                     .taskId(statistics.getTaskId())
