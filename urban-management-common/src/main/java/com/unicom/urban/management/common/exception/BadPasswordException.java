@@ -5,7 +5,7 @@ package com.unicom.urban.management.common.exception;
  *
  * @author liukai
  */
-public class BadPasswordException extends BusinessException {
+public class BadPasswordException extends DataValidException {
 
     public BadPasswordException(String message) {
         super(message);
