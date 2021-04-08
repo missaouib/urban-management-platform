@@ -1076,15 +1076,16 @@
 
     /* 完成任务 派核实 监督员 */
     function setValueForCompleteEvent(data) {
-        $("#textIdioms").empty();
         $("#eventId").val(data.value)
         $("#button").val(data.id)
+        $("#textIdioms").empty();
     }
 
     function completeEvent() {
         $.operate.saveAndReload(completeBySelfProcessingAuditUrl, {
             id: $("#eventId").val(),
             button: $("#button").val(),
+            represent: $("#textIdioms").val(),
             imageUrlList: $("#imageUrlList").val()
         });
     }
