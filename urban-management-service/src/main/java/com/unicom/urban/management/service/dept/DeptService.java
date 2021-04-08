@@ -201,8 +201,8 @@ public class DeptService {
         List<Role> roleList = one.getRoleList();
         if (roleList.size() > 0) {
             List<Integer> numList = roleList.stream().map(Role::getSort).distinct().collect(Collectors.toList());
-            Integer max = Collections.max(numList);
-            return (max != null ? max : 0) + 10;
+            Integer max = numList.stream().filter(Objects::nonNull).max(Comparator.naturalOrder()).orElse(0);
+            return max + 10;
         } else {
             return 10;
         }
