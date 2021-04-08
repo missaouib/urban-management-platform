@@ -265,6 +265,9 @@ public class TaskProcessingService {
         Statistics newStatistics;
         switch (eventButton.getButtonText()) {
             case "申请延时":
+                if(statisticsDTO.getDelayedTime()==null){
+                    throw new DataValidException("延时时间不能为空");
+                }
                 userId.addAll(this.getUsers(KvConstant.DISPATCHER_ROLE));
                 this.avtivitiHandle(eventId, userId, buttonId);
                 newStatistics = this.initStatistics(event);
