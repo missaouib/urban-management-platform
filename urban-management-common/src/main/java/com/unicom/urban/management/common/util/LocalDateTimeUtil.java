@@ -61,6 +61,13 @@ public abstract class LocalDateTimeUtil extends DateUtil {
     }
 
     /**
+     * 判断两个日期是否为同一天
+     */
+    public static boolean isSameDay(LocalDate startDate, LocalDate endDate) {
+        return startDate.equals(endDate);
+    }
+
+    /**
      * 当前还剩下多少分钟
      */
     public static long remainingMinute(LocalDateTime localDateTime) {

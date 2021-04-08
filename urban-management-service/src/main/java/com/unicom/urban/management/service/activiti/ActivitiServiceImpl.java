@@ -281,28 +281,69 @@ public class ActivitiServiceImpl implements ActivitiService {
         if (endTime.isBefore(startTime)) {
             throw new BusinessException("结束时间不可在开始时间之前 startTime: " + startTime + " endTime: " + endTime);
         }
-
-
         // 总共差了多少分钟
         long totalMinute = Duration.between(startTime, endTime).toMinutes();
 
         Optional<TimePlan> optionalTimePlan = timePlanRepository.getBySts(TimePlan.Status.ENABLE);
+        if (optionalTimePlan.isPresent()) {
+            TimePlan timePlan = optionalTimePlan.get();
 
-        TimePlan timePlan = optionalTimePlan.orElseThrow(() -> new BusinessException("未找到可用的时间计划"));
-
-        List<TimeScheme> timeSchemeList = timePlan.getTimeSchemeList();
+            List<TimeScheme> timeSchemeList = timePlan.getTimeSchemeList();
 
 
-        if (CollectionUtils.isEmpty(timeSchemeList)) {
-            throw new BusinessException("未设置时间");
+            if (CollectionUtils.isEmpty(timeSchemeList)) {
+                throw new BusinessException("未设置时间");
+            }
+
+            List<TempTime> tempTimeList = buildTempTimeList(timeSchemeList);
+            // 总时间-休息时间
+            return totalMinute - getMinute(startTime, endTime, tempTimeList, timePlan);
+        } else {
+            return totalMinute - defaultMethod(startTime, endTime);
         }
 
-        List<TempTime> tempTimeList = buildTempTimeList(timeSchemeList);
 
+    }
 
-        // 总时间-休息时间
-        return totalMinute - getMinute(startTime, endTime, tempTimeList, timePlan);
+    /**
+     * 默认的处理
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     */
+    private Long defaultMethod(LocalDateTime startTime, LocalDateTime endTime) {
+        if (isSameDay(startTime, endTime)) {
+            if (isWeekDay(startTime)) {
+                return Duration.between(startTime, endTime).toMinutes();
+            } else {
+                return 0L;
+            }
+        } else {
+            long totalMin = 0L;
+            List<LocalDate> between = LocalDateTimeUtil.between(startTime.toLocalDate(), endTime.toLocalDate());
 
+            if (LocalDateTimeUtil.isWeekDay(startTime.toLocalDate())) {
+                totalMin = totalMin + Duration.between(startTime, startTime.plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0)).toMinutes();
+            }
+
+            for (int i = 1; i < between.size() - 1; i++) {
+                if (LocalDateTimeUtil.isWeekDay(between.get(0))) {
+                    totalMin = totalMin + LocalDateTimeUtil.ONE_DAY_MINUTE;
+                }
+            }
+
+            if (LocalDateTimeUtil.isWeekDay(endTime.toLocalDate())) {
+                totalMin = totalMin + Duration.between(endTime.plusDays(0).withHour(0).withMinute(0).withSecond(0).withNano(0), startTime).toMinutes();
+            }
+
+            return totalMin;
+
+        }
+
+    }
+
+    private boolean isWeekDay(LocalDateTime startTime) {
+        return LocalDateTimeUtil.isWeekDay(startTime.toLocalDate());
     }
 
     /**
@@ -391,7 +432,7 @@ public class ActivitiServiceImpl implements ActivitiService {
      */
     private long getMinute(LocalDateTime startDateTime, LocalDateTime endDateTime, List<TempTime> tempTimeList, TimePlan timePlan) {
         // 开始日期和结束日期为同一天
-        if (startDateTime.toLocalDate().equals(endDateTime.toLocalDate())) {
+        if (isSameDay(startDateTime, endDateTime)) {
             return oneDay(startDateTime, endDateTime, tempTimeList, timePlan);
         } else {
             List<LocalDate> localDateList = LocalDateTimeUtil.between(startDateTime, endDateTime);
@@ -485,6 +526,13 @@ public class ActivitiServiceImpl implements ActivitiService {
 
         }
 
+    }
+
+    /**
+     * 是否为同一天
+     */
+    private boolean isSameDay(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        return LocalDateTimeUtil.isSameDay(startDateTime.toLocalDate(), endDateTime.toLocalDate());
     }
 
     /**
