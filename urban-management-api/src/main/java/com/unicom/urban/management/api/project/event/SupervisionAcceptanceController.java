@@ -9,10 +9,12 @@ import com.unicom.urban.management.pojo.entity.EventFile;
 import com.unicom.urban.management.pojo.entity.User;
 import com.unicom.urban.management.pojo.vo.EventOneVO;
 import com.unicom.urban.management.pojo.vo.EventVO;
+import com.unicom.urban.management.pojo.vo.PublishVO;
 import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.event.TaskProcessingService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
+import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.role.RoleService;
 import com.unicom.urban.management.util.SecurityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,8 @@ public class SupervisionAcceptanceController {
     private RoleService roleService;
     @Autowired
     private TaskProcessingService taskProcessingService;
+    @Autowired
+    private PublishService publishService;
 
     /**
      * 登记
@@ -318,6 +322,14 @@ public class SupervisionAcceptanceController {
     @GetMapping("/getTaskName")
     public Result getTaskName(){
         return Result.success(taskProcessingService.findTaskNames());
+    }
+
+    /**
+     * 获取部件分类图层
+     */
+    @GetMapping("/componentTypePublish")
+    public List<PublishVO> componentList(String typeId){
+        return publishService.searchTypeId(typeId);
     }
 
 }

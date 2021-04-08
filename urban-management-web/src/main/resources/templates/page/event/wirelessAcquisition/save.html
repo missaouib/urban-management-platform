@@ -520,9 +520,9 @@
             let mation = map.getLayerGroup().getLayers().a;
             if (mation.length > 2) {
                 mation.splice(1, 1);
-                source.clear();
+                // source.clear();
                 $("#componentObjId").val("")
-                $("#componentObjId").val("")
+                layerMap.getSource().clear();
             }
             $(e.data).each(function (index, value) {
                 if (value.url != null) {

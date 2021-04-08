@@ -479,10 +479,10 @@
             $("#layer").val("");
             //删除上一个底图
             let mation = map.getLayerGroup().getLayers().a;
+            console.log(mation)
             if (mation.length > 2) {
                 mation.splice(1, 1);
-                source.clear();
-                $("#componentObjId").val("")
+                // source.clear();
                 $("#componentObjId").val("")
                 layerMap.getSource().clear();
 
