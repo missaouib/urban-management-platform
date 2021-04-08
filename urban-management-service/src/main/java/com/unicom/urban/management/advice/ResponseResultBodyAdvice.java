@@ -1,4 +1,4 @@
-package com.unicom.urban.management.web.framework;
+package com.unicom.urban.management.advice;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.annotation.Annotation;
 
+
 /**
  * JSON增强 把json用Result封装起来
  *
@@ -32,6 +33,7 @@ import java.lang.annotation.Annotation;
  */
 @Slf4j
 @RestControllerAdvice
+@SuppressWarnings("all")
 public class ResponseResultBodyAdvice implements ResponseBodyAdvice<Object> {
 
     private static final Class<? extends Annotation> ANNOTATION_TYPE = ResponseResultBody.class;

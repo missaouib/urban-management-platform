@@ -69,9 +69,9 @@
                                     </select>
                                 </td>
 
-                                <td><span></span>计时等级</td>
+                                <td><span>*</span>计时等级</td>
                                 <td>
-                                    <select id="timeType" onchange="getDeptTimeLimitList()" required>
+                                    <select id="timeType" onchange="getDeptTimeLimitList()" name="timeLevel" required>
 
                                     </select>
                                 </td>
@@ -803,6 +803,9 @@
             y: {
                 required: true
             },
+            timeLevel:{
+                required:true
+            }
         },
         messages: {
         }
