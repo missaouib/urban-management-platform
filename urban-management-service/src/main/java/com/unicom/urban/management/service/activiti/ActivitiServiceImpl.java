@@ -292,7 +292,7 @@ public class ActivitiServiceImpl implements ActivitiService {
 
 
             if (CollectionUtils.isEmpty(timeSchemeList)) {
-                throw new BusinessException("未设置时间");
+                throw new DataValidException("未设置时间");
             }
 
             List<TempTime> tempTimeList = buildTempTimeList(timeSchemeList);
@@ -441,12 +441,46 @@ public class ActivitiServiceImpl implements ActivitiService {
 
             long startMin = 0;
 
+
+//            for (Day day : dayList) {
+//                boolean exists = localDateList.contains(day.getCalendar());
+//                if (exists) {
+//
+//                }else{
+//                    Day newDay = new Day();
+//                    day.setCalendar();
+//                }
+//            }
+
+
+            List<Day> days = new ArrayList<>();
+            for (LocalDate localDate : localDateList) {
+                boolean exists = dayList.stream().anyMatch(day -> day.getCalendar().equals(localDate));
+                if (exists) {
+
+                } else {
+                    Day day = new Day();
+                    day.setCalendar(localDate);
+                    if (LocalDateTimeUtil.isWeekDay(localDate)) {
+                        day.setWork(Day.Work.NON_WORK);
+                    } else {
+                        day.setWork(Day.Work.WORK);
+                    }
+                    days.add(day);
+                }
+
+
+            }
+
+            dayList.addAll(days);
+
+            dayList = dayList.stream().sorted(Comparator.comparing(Day::getCalendar)).collect(Collectors.toList());
+
             if (dayList.get(0).isWork()) {
                 int startIndex = -1;
 
                 for (int i = tempTimeList.size() - 1; i >= 0; i--) {
-                    if ((startDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime()))
-                            && (startDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
+                    if ((startDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime())) && (startDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
                         startIndex = i;
                         break;
                     }
@@ -468,7 +502,7 @@ public class ActivitiServiceImpl implements ActivitiService {
                 }
 
             } else {
-                startMin = startMin + Duration.between(LocalTime.MAX, startDateTime.toLocalTime()).toMinutes();
+                startMin = startMin + Duration.between(startDateTime.toLocalTime(), LocalTime.MAX).toMinutes();
             }
 
             long endMin = 0;
@@ -478,8 +512,7 @@ public class ActivitiServiceImpl implements ActivitiService {
                 int endIndex = -1;
 
                 for (int i = 0; i < tempTimeList.size(); i++) {
-                    if ((endDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime()))
-                            && (endDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
+                    if ((endDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime())) && (endDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
                         endIndex = i;
                         break;
                     }
@@ -567,72 +600,68 @@ public class ActivitiServiceImpl implements ActivitiService {
         if (optionalDay.isPresent()) {
             Day day = optionalDay.get();
             if (day.isWork()) {
-                int startIndex = -1;
-                int endIndex = -1;
-                for (int i = tempTimeList.size() - 1; i >= 0; i--) {
-                    if ((startDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime()))
-                            && (startDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
-                        startIndex = i;
-                        break;
-                    }
-                }
-
-                for (int i = 0; i < tempTimeList.size(); i++) {
-                    if ((endDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime()))
-                            && (endDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
-                        endIndex = i;
-                        break;
-                    }
-                }
-
-
-                // 在同一个区间里面
-                if (startIndex == endIndex) {
-                    TempTime tempTime = tempTimeList.get(startIndex);
-                    // 上班区间
-                    if (tempTime.isFlag()) {
-                        return 0;
-                    } else {
-                        // 休息时间
-                        return Duration.between(startDateTime, endDateTime).toMinutes();
-                    }
-                } else {
-                    TempTime startTempTime = tempTimeList.get(startIndex);
-                    TempTime endTempTime = tempTimeList.get(endIndex);
-
-
-                    long min = 0;
-                    if (startTempTime.isFlag()) {
-                        startIndex = startIndex + 1;
-                    } else {
-                        min = min + Duration.between(startDateTime.toLocalTime(), tempTimeList.get(startIndex).getEndTime()).toMinutes();
-                        startIndex = startIndex + 1;
-                    }
-
-                    if (endTempTime.isFlag()) {
-                        endIndex = endIndex - 1;
-                    } else {
-                        min = min + Duration.between(tempTimeList.get(endIndex).getStartTime(), endDateTime.toLocalTime()).toMinutes();
-                        endIndex = endIndex - 1;
-                    }
-
-
-                    for (int i = startIndex; i <= endIndex; i++) {
-
-                        if (!tempTimeList.get(i).isFlag()) {
-                            min = min + tempTimeList.get(i).getTotalMinute();
-                        }
-                    }
-                    return min;
-                }
-
-
+                return extracted(startDateTime, endDateTime, tempTimeList);
             } else {
                 return Duration.between(startDateTime, endDateTime).toMinutes();
             }
 
         } else {
-            throw new BusinessException("未知日期" + startDateTime.toLocalDate());
+            boolean weekDay = LocalDateTimeUtil.isWeekDay(startDateTime.toLocalDate());
+            if (!weekDay) {
+                return extracted(startDateTime, endDateTime, tempTimeList);
+            } else {
+                return Duration.between(startDateTime, endDateTime).toMinutes();
+            }
+        }
+    }
+
+    private long extracted(LocalDateTime startDateTime, LocalDateTime endDateTime, List<TempTime> tempTimeList) {
+        int startIndex = -1;
+        int endIndex = -1;
+        for (int i = tempTimeList.size() - 1; i >= 0; i--) {
+            if ((startDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime())) && (startDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
+                startIndex = i;
+                break;
+            }
+        }
+        for (int i = 0; i < tempTimeList.size(); i++) {
+            if ((endDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime())) && (endDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || endDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
+                endIndex = i;
+                break;
+            }
+        }
+        // 在同一个区间里面
+        if (startIndex == endIndex) {
+            TempTime tempTime = tempTimeList.get(startIndex);
+            // 上班区间
+            if (tempTime.isFlag()) {
+                return 0;
+            } else {
+                // 休息时间
+                return Duration.between(startDateTime, endDateTime).toMinutes();
+            }
+        } else {
+            TempTime startTempTime = tempTimeList.get(startIndex);
+            TempTime endTempTime = tempTimeList.get(endIndex);
+            long min = 0;
+            if (startTempTime.isFlag()) {
+                startIndex = startIndex + 1;
+            } else {
+                min = min + Duration.between(startDateTime.toLocalTime(), tempTimeList.get(startIndex).getEndTime()).toMinutes();
+                startIndex = startIndex + 1;
+            }
+            if (endTempTime.isFlag()) {
+                endIndex = endIndex - 1;
+            } else {
+                min = min + Duration.between(tempTimeList.get(endIndex).getStartTime(), endDateTime.toLocalTime()).toMinutes();
+                endIndex = endIndex - 1;
+            }
+            for (int i = startIndex; i <= endIndex; i++) {
+                if (!tempTimeList.get(i).isFlag()) {
+                    min = min + tempTimeList.get(i).getTotalMinute();
+                }
+            }
+            return min;
         }
     }
 
