@@ -2,6 +2,7 @@ package com.unicom.urban.management.web.project.grid;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
+import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.AreaDTO;
 import com.unicom.urban.management.pojo.dto.GridDTO;
@@ -100,6 +101,9 @@ public class GridController {
 
     @PostMapping("/gridDelete")
     public void gridDelete(String gridId) {
+        if (StringUtils.isBlank(gridId)) {
+            throw new DataValidException("请选择正确的行政区划");
+        }
         gridService.delete(gridId);
     }
 
