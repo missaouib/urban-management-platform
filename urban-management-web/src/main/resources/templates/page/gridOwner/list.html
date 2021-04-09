@@ -2,7 +2,7 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
-    <title>用户管理</title>
+    <title>移动终端配置</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
 
@@ -22,7 +22,7 @@
                         <td style="width: 40%">
                             <input type="text" class="find_input" name="gridName" autocomplete="off">
                         </td>
-                        <td style="width: 20%"><span>*</span>所在区域</td>
+                        <td style="width: 20%">所在区域</td>
                         <td style="width: 40%">
                             <select name="region" class="form-control" id="grid1" onchange="getStreetList()" required>
                                 <option value="">--请选择--</option>
@@ -32,15 +32,17 @@
                         </td>
                     </tr>
                     <tr style="display: flex;justify-content: center;align-items: center">
-                        <td style="width: 20%"><span>*</span>所属街道</td>
+                        <td style="width: 20%">所属街道</td>
                         <td style="width: 40%">
                             <select name="street" class="form-control" id="grid2" onchange="getCommunityList()"
                                     required>
+                                <option value=''>--请选择--</option>
                             </select>
                         </td>
-                        <td style="width: 20%"><span>*</span>所属社区</td>
+                        <td style="width: 20%">所属社区</td>
                         <td style="width: 40%">
                             <select name="community" class="form-control" id="grid3" required>
+                                <option value=''>--请选择--</option>
                             </select>
                         </td>
                     </tr>
@@ -54,6 +56,7 @@
         <form id="search-form">
             <p style="display: flex;justify-content: flex-end">
                 <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
+                <input type="button" class="check_btn1 button_ground closeSearch" onclick="$.form.reset()" value="重置">
             </p>
         </form>
     </div>
@@ -140,8 +143,11 @@
     function getStreetList() {
         let parentId = $("#grid1 option:selected").val();
         let url = "/event/findAllByParentId/?parentId=" + parentId;
+        let option1 = "<option value=''>--请选择--</option>";
+        $("#grid2").html(option1);
+        $("#grid3").html(option1);
         $.ajaxUtil.get(url, function (e) {
-            let option = "<option>--请选择--</option>";
+            let option = "<option value=''>--请选择--</option>";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
@@ -157,8 +163,10 @@
     function getCommunityList() {
         let parentId = $("#grid2 option:selected").val();
         let url = "/event/findAllByParentId/?parentId=" + parentId;
+        let option1 = "<option value=''>--请选择--</option>";
+        $("#grid3").html(option1);
         $.ajaxUtil.get(url, function (e) {
-            let option = "<option>--请选择--</option>";
+            let option = "<option value=''>--请选择--</option>";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
