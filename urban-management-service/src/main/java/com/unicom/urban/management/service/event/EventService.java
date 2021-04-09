@@ -396,6 +396,9 @@ public class EventService {
      * @param eventDTO 事件参数
      */
     public void saveTemp(EventDTO eventDTO) {
+        if (existsByEventCode(eventDTO.getEventCode())) {
+            throw new DataValidException("案件号已存在，将为你修改新的编号");
+        }
         eventDTO.setSts(0);
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
