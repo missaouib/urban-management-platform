@@ -5,6 +5,8 @@ import com.unicom.urban.management.pojo.Result;
 import com.unicom.urban.management.pojo.dto.ChangePasswordDTO;
 import com.unicom.urban.management.pojo.dto.UserDTO;
 import com.unicom.urban.management.pojo.vo.AddressBookVO;
+import com.unicom.urban.management.pojo.vo.TreeVO;
+import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private GridService gridService;
 
     /**
      * 手机端 获取通讯录
@@ -71,6 +75,15 @@ public class UserController {
     public Result initialization(String id){
         userService.initialization(id);
         return Result.success("重置成功");
+    }
+
+    /**
+     * 获取网格人员
+     * @return
+     */
+    @GetMapping("/gridAndUserTree")
+    public Result gridAndUserTree(){
+        return Result.success(gridService.searchTreeAndUser());
     }
 
 }
