@@ -351,11 +351,13 @@ public class UserService {
             if (checkbox == 1) {
                 dept.setId(deptId);
                 user.setDept(dept);
-            } else {
-                user.setDept(null);
+                userRepository.saveAndFlush(user);
             }
+//            else {
+//                user.setDept(null);
+//            }
 
-            userRepository.saveAndFlush(user);
+
         }
     }
 
