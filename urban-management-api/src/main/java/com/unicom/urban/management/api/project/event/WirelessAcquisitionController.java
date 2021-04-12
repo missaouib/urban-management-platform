@@ -2,7 +2,6 @@ package com.unicom.urban.management.api.project.event;
 
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
-import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.properties.GisServiceProperties;
 import com.unicom.urban.management.common.util.RestTemplateUtil;
 import com.unicom.urban.management.pojo.RestReturn;
@@ -37,8 +36,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.*;
 
 /**
@@ -211,7 +208,7 @@ public class WirelessAcquisitionController {
      * @param eventDTO 参数
      */
     @PostMapping("/saveTemp")
-    public Result saveTemp(EventDTO eventDTO){
+    public Result saveTemp(EventDTO eventDTO) {
         eventDTO.setSts(EventConstant.SUPERVISE_SAVE);
         eventService.uploadFiles(eventDTO);
         eventService.saveTemp(eventDTO);
@@ -220,10 +217,11 @@ public class WirelessAcquisitionController {
 
     /**
      * 列表页案件采集上报
+     *
      * @param ids 主键集合
      */
     @PostMapping("/reportOnList")
-    public Result reportOnList(String ids){
+    public Result reportOnList(String ids) {
         eventService.reportOnList(ids);
         return Result.success("上报成功");
     }
@@ -361,11 +359,11 @@ public class WirelessAcquisitionController {
      * @return 成功
      */
     @GetMapping("/getTrackLogForOne")
-    public Result getTrackLogForOne(String id) {
+    public Result getTrackLogForOne(String id, String startTime, String endTime) {
         if (StringUtils.isBlank(id)) {
             return Result.fail(500, "请选择巡查人员");
         }
-        List<TrajectoryVO> trajectoryForOne = trajectoryService.getTrajectoryForOne(id);
+        List<TrajectoryVO> trajectoryForOne = trajectoryService.getTrajectoryForOne(id, startTime, endTime);
         return Result.success(trajectoryForOne);
     }
 
@@ -487,13 +485,13 @@ public class WirelessAcquisitionController {
     /**
      * 设置转应急状态
      *
-     * @param eventId
-     * @return
+     * @param eventId id
+     * @return 成功
      */
     @PostMapping("/urgent")
     public Result changeUrgentUrl(String eventId) {
         eventService.changeUrgent(eventId);
-        return Result.success();
+        return Result.success("成功");
     }
 
     @GetMapping("/findUrgent")
