@@ -19,7 +19,7 @@
             <div class="onmer_box" id="userList">
 
             </div>
-            <div class="notice_bot">
+            <div class="">
                 <div class="r_right but_p girdBtnGroup" id="eventButton">
                     <button class="but_save" type="button" id="saveGridOwner" onclick="saveGridOwner()">
                         保存
@@ -28,6 +28,8 @@
             </div>
         </div>
         <div class="rightBox" style="position: relative">
+            <div class="mengBan"></div>
+            <div id="container" style="width: 100%;height: 100%;"></div>
             <div class="map_masion">
                 <p>
                     <span class="span1">所属区域</span><span class="span2" id="region">南岗区</span>
@@ -53,6 +55,8 @@
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
 <th:block th:include="page/fragments/common :: ztree_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
+<th:block th:include="page/fragments/common :: bmap_js"/>
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
@@ -73,59 +77,7 @@
     let saveUrl = /*[[@{/gridOwner/save}]]*/ "/gridOwner/save";
 
     //回调函数接收查询结果
-    let geoJsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
-    let container = document.getElementById('popup');
-    let content = document.getElementById('popup-content');
-    let closer = document.getElementById('popup-closer');
-    let center = [115.68192, 41.66462];
-    let overlay = new ol.Overlay({
-        element: container,
-        autoPan: true,
-        autoPanAnimation: {
-            duration: 250
-        }
-    });
-    let projection = new ol.proj.Projection({
-        code: 'EPSG:4326',
-        units: 'degrees',
-        axisOrientation: 'neu',
-        global: true
-    });
-    let untiled = new ol.layer.Image({
-        source: new ol.source.ImageWMS({
-            ratio: 1,
-            url: 'http://192.168.24.203:7880/geoserver/guyuan20201010/wms',
-            params: {
-                'VERSION': '1.1.1',
-                "LAYERS": 'guyuan20201010:guyuan',
-                "exceptions": 'application/vnd.ogc.se_inimage',
-            }
-        })
-    });
-    let source = new ol.source.Vector({wrapX: false});
-    let fullScreenControl = new ol.control.FullScreen();
-    let layerMap = new ol.layer.Vector({
-        source: new ol.source.Vector(),
-    });
-    let map = new ol.Map({
-        target: 'map',
-        overlays: [overlay],
-        layers: [
-            untiled
-        ],
-        view: new ol.View({
-            center: center,
-            zoom: 17,
-            projection: projection
-        })
-    });
 
-    map.addOverlay(overlay);
-    map.addControl(fullScreenControl)
-    map.addLayer(layerMap);
-    map.on('singleclick', function (evt) {
-        layerMap.getSource().clear()
-    });
 
     function getSupervisorUserList() {
         $.ajaxUtil.get(getSupervisorUserListUrl + "?gridId=" + gridId, function (e) {
@@ -193,5 +145,6 @@
     }
 
 </script>
+<th:block th:include="page/fragments/common :: mapinit_js"/>
 </body>
 </html>
