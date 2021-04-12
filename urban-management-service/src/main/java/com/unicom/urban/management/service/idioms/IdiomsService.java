@@ -61,7 +61,7 @@ public class IdiomsService {
         Page<Idioms> page = idiomsRepository.findAll((Specification<Idioms>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
             if (StringUtils.isNotEmpty(idiomsVO.getIdiomsValue())) {
-                list.add(criteriaBuilder.like(root.get("idiomsVO").get("idioms_value").as(String.class), "%" + idiomsVO.getIdiomsValue() + "%"));
+                list.add(criteriaBuilder.like(root.get("idiomsValue").as(String.class), "%" + idiomsVO.getIdiomsValue() + "%"));
 
             }
             Predicate[] p = new Predicate[list.size()];
