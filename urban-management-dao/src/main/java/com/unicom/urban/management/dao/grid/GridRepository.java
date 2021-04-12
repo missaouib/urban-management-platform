@@ -55,7 +55,14 @@ public interface GridRepository extends CustomizeRepository<Grid, String> {
      */
     List<Grid> findAllByLevel(int level);
 
-
+    /**
+     * 查询level为 3 4的
+     *
+     * @param level1 3
+     * @param level2 4
+     * @return 网格
+     */
+    List<Grid> findAllByLevelOrLevel(int level1, int level2);
 
     List<Grid> findAllByParent_IdAndGridName(String pId,String gridName);
 
