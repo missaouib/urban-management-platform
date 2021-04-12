@@ -447,6 +447,12 @@ public class GridService {
         List<Grid> grids = gridRepository.findAllByLevelLessThan(level);
         return TreeMapper.INSTANCE.gridListToTreeVOList(grids);
     }
+
+    /**
+     * 轨迹记录 监督员的树查询 pc端使用 一共5层 街道、社区、乡镇、网格、人员
+     *
+     * @return 树
+     */
     public List<TreeVO> searchTreeAndUser() {
         List<Grid> grids = gridRepository.findAll();
         List<TreeVO> treeVOS = TreeMapper.INSTANCE.gridListToTreeVOList(grids);
@@ -458,6 +464,30 @@ public class GridService {
             treeVO.setLevelOrNot("user");
             treeVOS.add(treeVO);
         }));
+        return treeVOS;
+    }
+
+    /**
+     * 轨迹记录 监督员的树查询 app端使用 一共3层 乡镇、网格、人员 因为手机端屏幕有限
+     *
+     * @return 树
+     */
+    public List<TreeVO> searchTreeAndUserForApp() {
+        List<Grid> grids = gridRepository.findAllByLevelOrLevel(3, 4);
+        List<TreeVO> treeVOS = TreeMapper.INSTANCE.gridListToTreeVOList(grids);
+        grids.forEach(g-> {
+            if(g.getLevel() == 3){
+                g.setParent(null);
+            }
+            g.getUserList().forEach(u->{
+                TreeVO treeVO = new TreeVO();
+                treeVO.setId(u.getId());
+                treeVO.setParentId(g.getId());
+                treeVO.setName(u.getName());
+                treeVO.setLevelOrNot("user");
+                treeVOS.add(treeVO);
+            });
+        });
         return treeVOS;
     }
 

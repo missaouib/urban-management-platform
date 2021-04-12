@@ -83,7 +83,7 @@ public class UserController {
      */
     @GetMapping("/gridAndUserTree")
     public Result gridAndUserTree(){
-        return Result.success(gridService.searchTreeAndUser());
+        return Result.success(gridService.searchTreeAndUserForApp());
     }
 
 }
