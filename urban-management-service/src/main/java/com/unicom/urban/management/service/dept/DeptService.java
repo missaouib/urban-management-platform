@@ -1,6 +1,7 @@
 package com.unicom.urban.management.service.dept;
 
 import com.unicom.urban.management.common.exception.DataValidException;
+import com.unicom.urban.management.common.util.AESUtil;
 import com.unicom.urban.management.dao.dept.DeptRepository;
 import com.unicom.urban.management.mapper.TreeMapper;
 import com.unicom.urban.management.pojo.dto.DeptDTO;
@@ -269,7 +270,7 @@ public class DeptService {
                     newUserVO.setUsername(user.getUsername());
                     newUserVO.setSex(user.getSex());
                     newUserVO.setSts(user.getSts());
-                    newUserVO.setPhone(user.getPhone());
+                    newUserVO.setPhone(StringUtils.isNotBlank(user.getPhone())? AESUtil.decrypt(user.getPhone()):"");
                     if (user.getBirth() != null) {
                         newUserVO.setBirth(user.getBirth().format(FMT));
                     }
