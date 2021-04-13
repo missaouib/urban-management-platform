@@ -388,7 +388,7 @@ public class WirelessAcquisitionController {
     @RequestMapping("/reportOnList")
     public Result reportOnList(String ids){
         eventService.reportOnList(ids);
-        return Result.success();
+        return Result.success("成功");
 
     }
 

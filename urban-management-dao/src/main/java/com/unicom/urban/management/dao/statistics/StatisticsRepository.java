@@ -273,4 +273,13 @@ public interface StatisticsRepository extends CustomizeRepository<Statistics, St
     @Query(value = "SELECT count(s.id) as totalDispose FROM Statistics s LEFT JOIN s.event e LEFT JOIN e.eventType et WHERE s.dispose = 1 AND et.id = ?1")
     Map<String, String> findHighIncidenceByDispose(String eventTypeId);
 
+    /**
+     * 查询 受理员-信息收集 这一步数据 为了草稿箱上报之后融入流转记录设置endTime使用的
+     *
+     * @param eventId 事件id
+     * @param sort 1
+     * @return 数据
+     */
+    Statistics findByEvent_IdAndSort(String eventId, int sort);
+
 }

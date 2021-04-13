@@ -107,7 +107,10 @@ public class StatisticsService {
         StatisticsVO firstStatisticsVO = new StatisticsVO();
         Event event = eventService.findOne(eventId);
         firstStatisticsVO.setStarTime(dateTimeFormatter.format(event.getCreateTime()));
+        Statistics statistics = statisticsRepository.findByEvent_IdAndSort(eventId, 1);
+        firstStatisticsVO.setEndTime(dateTimeFormatter.format(statistics.getStartTime()));
         firstStatisticsVO.setUser(Optional.ofNullable(event.getUser()).map(User::getUsername).orElse(""));
+        firstStatisticsVO.setName(Optional.ofNullable(event.getUser()).map(User::getUsername).orElse(""));
         firstStatisticsVO.setOpinions(event.getRepresent());
         firstStatisticsVO.setLink(event.getEventSource().getValue());
         List<Map<String, Object>> mapArrayList = new ArrayList<>();
