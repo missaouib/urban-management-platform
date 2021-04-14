@@ -106,10 +106,11 @@ public class StatisticsService {
         /*增加上报时候的环节*/
         StatisticsVO firstStatisticsVO = new StatisticsVO();
         Event event = eventService.findOne(eventId);
-        firstStatisticsVO.setStarTime(dateTimeFormatter.format(event.getCreateTime()));
-        firstStatisticsVO.setEndTime(dateTimeFormatter.format(event.getCreateTime()));
+
+        /*第一步的开始时间是任务进工作流的开始时间*/
         Statistics statistics = statisticsRepository.findByEvent_IdAndSort(eventId, 1);
         firstStatisticsVO.setEndTime(dateTimeFormatter.format(statistics.getStartTime()));
+        firstStatisticsVO.setStarTime(dateTimeFormatter.format(statistics.getStartTime()));
         firstStatisticsVO.setUser(Optional.ofNullable(event.getUser()).map(User::getUsername).orElse(""));
         firstStatisticsVO.setName(Optional.ofNullable(event.getUser()).map(User::getUsername).orElse(""));
         firstStatisticsVO.setOpinions(event.getRepresent());
