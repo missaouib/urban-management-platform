@@ -268,6 +268,7 @@ public class SupervisionAcceptanceController {
      */
     @GetMapping("/eventList")
     public Page<EventVO> eventList(EventDTO eventDTO, @PageableDefault Pageable pageable) {
+        eventDTO.setQuerySts("1");
         return eventService.search(eventDTO, pageable);
     }
 

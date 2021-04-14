@@ -4,6 +4,7 @@ import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.FastdfsToken;
 import com.unicom.urban.management.dao.event.EventRepository;
 import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
+import com.unicom.urban.management.dao.statistics.StatisticsRepository;
 import com.unicom.urban.management.mapper.EventButtonMapper;
 import com.unicom.urban.management.mapper.EventConditionMapper;
 import com.unicom.urban.management.mapper.EventMapper;
@@ -33,9 +34,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -82,12 +81,23 @@ public class EventService {
     @Autowired
     private TaskProcessingService taskProcessingService;
 
+
     public Page<EventVO> search(EventDTO eventDTO, Pageable pageable) {
         Specification<Event> specification = (root, query, criteriaBuilder) -> {
+
+
             if (!query.getResultType().equals(Long.class)) {
                 root.fetch("eventType", JoinType.LEFT);
             }
             List<Predicate> list = new ArrayList<>();
+
+
+            if(StringUtils.isNotBlank(eventDTO.getQuerySts())){
+                List<String> eventIds = statisticsService.findEventIds();
+                CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
+                eventIds.forEach(in::value);
+                list.add(in);
+            }
             if (eventDTO.getClose() != null) {
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("eventSate").get("id"));
                 eventDTO.getClose().forEach(in::value);
@@ -97,7 +107,6 @@ public class EventService {
             if (StringUtils.isNotBlank(eventDTO.getEventId())) {
                 list.add(criteriaBuilder.equal(root.get("id").as(String.class), eventDTO.getEventId()));
             }
-
             if (StringUtils.isNotBlank(eventDTO.getUserName())) {
                 list.add(criteriaBuilder.equal(root.get("user").get("username").as(String.class), eventDTO.getUserName()));
             }

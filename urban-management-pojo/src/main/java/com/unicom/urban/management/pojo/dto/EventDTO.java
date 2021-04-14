@@ -166,4 +166,7 @@ public class EventDTO {
     private String supervision;
 
 
+    private String querySts;
+
+
 }

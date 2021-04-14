@@ -907,4 +907,13 @@ public class StatisticsService {
         }
         return new PageImpl<>(cellGridRegionVOList, pageable, 0);
     }
+
+
+
+    public List<String> findEventIds(){
+        List<Statistics> all = statisticsRepository.findAll();
+        List<String> ids = new ArrayList<>();
+        all.forEach(a->ids.add(a.getEvent().getId()));
+        return ids.stream().distinct().collect(Collectors.toList());
+    }
 }
