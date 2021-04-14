@@ -102,13 +102,18 @@
             $("#changeName").html($(this).text()+"案件")
         })
         $("#sureOne").on('click', function () {
-            var data = $('#myFormAdd').serialize();
-            console.log("sureOne",data)
-            $.operate.saveAndReload(addUrl, data);
+            let data = $('#myFormAdd').serialize();
+            let regionUpdate = $("#regionUpdate").val();
+            if(regionUpdate === null || regionUpdate === "" || regionUpdate === undefined){
+                $.modal.alertError("请填写区域名称", function (){
+                    return false;
+                });
+            }else{
+                $.operate.saveAndReload(addUrl, data);
+            }
         })
         $("#sureTwo").on('click', function () {
-            var data = $('#myFormUpdate').serialize();
-            console.log("sureTwo",data)
+            let data = $('#myFormUpdate').serialize();
             $.operate.saveAndReload(editUrl, data);
         })
     });
