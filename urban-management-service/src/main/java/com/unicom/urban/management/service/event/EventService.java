@@ -4,7 +4,6 @@ import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.FastdfsToken;
 import com.unicom.urban.management.dao.event.EventRepository;
 import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
-import com.unicom.urban.management.dao.statistics.StatisticsRepository;
 import com.unicom.urban.management.mapper.EventButtonMapper;
 import com.unicom.urban.management.mapper.EventConditionMapper;
 import com.unicom.urban.management.mapper.EventMapper;
@@ -34,7 +33,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Predicate;
 import javax.transaction.Transactional;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -92,7 +93,7 @@ public class EventService {
             List<Predicate> list = new ArrayList<>();
 
 
-            if(StringUtils.isNotBlank(eventDTO.getQuerySts())){
+            if (StringUtils.isNotBlank(eventDTO.getQuerySts())) {
                 List<String> eventIds = statisticsService.findEventIds();
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
                 eventIds.forEach(in::value);
@@ -305,7 +306,7 @@ public class EventService {
                 }
                 eventVO.setTimeLimitStr(time + timeType);
                 eventVO.setDeptName(Optional.ofNullable(statistics.getDisposeUnit()).map(Dept::getDeptName).orElse(""));
-                eventVO.setTimeLimitLong(taskProcessingService.betWeenTime(startTime,LocalDateTime.now(),timeType,timeLimit,0)[1]);
+                eventVO.setTimeLimitLong(taskProcessingService.betWeenTime(startTime, LocalDateTime.now(), timeType, timeLimit, 0)[1]);
             } else {
                 /*如果事件步骤没有endTime为null的  证明事件已经完成 获取结束时间最近的那条步骤 附加到vo信息*/
                 List<Statistics> collect = e.getStatisticsList().stream()
@@ -566,7 +567,7 @@ public class EventService {
     public String createCode(String eventTypeId) {
         String eventCode;
         //查询当天最大序号
-        Integer maxNum = eventRepository.findMaxNum();
+        long maxNum = eventRepository.findMaxNum();
         EventType eventType = eventTypeService.getEventType(eventTypeId);
         String level = eventType.getLevel();
         String code = eventType.getCode();
@@ -580,7 +581,7 @@ public class EventService {
         }
         //部件（简称C）或事件（E）+大类代码+小类代码+××××××××××（年：4位，月：2位，日：2位，序号：2位）即C01012019041101
         String maxNumStr;
-        if (maxNum == null) {
+        if (maxNum < 0) {
             maxNum = 0;
         }
         maxNum++;
@@ -644,11 +645,6 @@ public class EventService {
         eventOneVO.setRecTypeStr(one.getRecType().getValue());
         eventOneVO.setUserId(Optional.ofNullable(one.getUser()).map(User::getId).orElse(""));
         eventOneVO.setUserName(Optional.ofNullable(one.getUser()).map(User::getName).orElse(""));
-//        if (one.getComponent() != null) {
-//            if (one.getComponent().getComponentInfo() != null) {
-//                eventOneVO.setObjId(one.getComponent().getComponentInfo().getObjId());
-//            }
-//        }
         eventOneVO.setObjId(one.getComponentObjId());
         Optional<Petitioner> petitioner = Optional.ofNullable(one.getPetitioner());
         eventOneVO.setPetitionerName(petitioner.map(Petitioner::getName).orElse(""));
@@ -662,7 +658,7 @@ public class EventService {
         List<Map<String, Object>> fileList = new ArrayList<>();
         one.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
-            map.put("url", f.getFilePath() + "?token=" + FastdfsToken.getToken(f.getFilePath().substring(f.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
+            map.put("url", f.getFilePath() + "?token=" + FastdfsToken.getToken(f.getFilePath().substring(f.getFilePath().indexOf("/") + 1), ts) + "&ts=" + ts);
             map.put("type", f.getFileType().getValue());
             map.put("taskName", "上报");
             map.put("management", f.getManagement());
@@ -671,7 +667,7 @@ public class EventService {
         /*处置前*/
         one.getStatisticsList().stream().filter(s -> taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getStartTime)).forEach(s -> s.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
-            map.put("url", f.getFilePath() + "?token=" + FastdfsToken.getToken(f.getFilePath().substring(f.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
+            map.put("url", f.getFilePath() + "?token=" + FastdfsToken.getToken(f.getFilePath().substring(f.getFilePath().indexOf("/") + 1), ts) + "&ts=" + ts);
             map.put("type", f.getFileType().getValue());
             map.put("taskName", s.getTaskName());
             map.put("management", 1);
@@ -680,7 +676,7 @@ public class EventService {
         /*处置后*/
         one.getStatisticsList().stream().filter(s -> !taskName(s.getTaskName())).sorted(Comparator.comparing(Statistics::getStartTime)).forEach(s -> s.getEventFileList().forEach(f -> {
             Map<String, Object> map = new HashMap<>();
-            map.put("url", f.getFilePath() + "?token=" + FastdfsToken.getToken(f.getFilePath().substring(f.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
+            map.put("url", f.getFilePath() + "?token=" + FastdfsToken.getToken(f.getFilePath().substring(f.getFilePath().indexOf("/") + 1), ts) + "&ts=" + ts);
             map.put("type", f.getFileType().getValue());
             map.put("taskName", s.getTaskName());
             map.put("management", 0);
@@ -739,7 +735,7 @@ public class EventService {
      */
     public void updateTemp(EventDTO eventDTO) {
         eventDTO.setSts(0);
-        Event event = EventDTOToEvent(eventDTO);
+        Event event = eventDTOToEvent(eventDTO);
         if (StringUtils.isNotBlank(eventDTO.getObjId())) {
             Component component = new Component();
             component.setId(eventDTO.getObjId());
@@ -748,7 +744,7 @@ public class EventService {
         this.update(event);
     }
 
-    public Event EventDTOToEvent(EventDTO eventDTO) {
+    public Event eventDTOToEvent(EventDTO eventDTO) {
         Event event = eventRepository.findById(eventDTO.getId()).orElse(new Event());
         if (StringUtils.isNotBlank(eventDTO.getEventCode())) {
             event.setEventCode(eventDTO.getEventCode());
@@ -840,7 +836,7 @@ public class EventService {
      * @param eventDTO 数据
      */
     public void saveAutoReport(EventDTO eventDTO) {
-        Event event = this.EventDTOToEvent(eventDTO);
+        Event event = this.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         if (StringUtils.isNotBlank(eventDTO.getObjId())) {
             Component component = new Component();
@@ -856,7 +852,7 @@ public class EventService {
      */
     public void saveReport(EventDTO eventDTO) {
         eventDTO.setSts(null);
-        Event event = this.EventDTOToEvent(eventDTO);
+        Event event = this.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
         if (StringUtils.isNotBlank(eventDTO.getObjId())) {
             Component component = new Component();
@@ -1073,7 +1069,7 @@ public class EventService {
      *
      * @return 数量
      */
-    public Map<String, Object> getCountByEventSource(){
+    public Map<String, Object> getCountByEventSource() {
         long countByEventSourceKey0 = getCountByEventSourceKey(0);
         long countByEventSourceKey1 = getCountByEventSourceKey(1);
         Map<String, Object> map = new HashMap<>(2);
@@ -1082,7 +1078,7 @@ public class EventService {
         return map;
     }
 
-    private long getCountByEventSourceKey(int key){
+    private long getCountByEventSourceKey(int key) {
         return eventRepository.countEventByEventSource_FieldNameAndEventSource_TableNameAndEventSource_Key("eventSource", "event", key);
     }
 

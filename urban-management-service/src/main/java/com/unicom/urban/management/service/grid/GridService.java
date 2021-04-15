@@ -3,7 +3,6 @@ package com.unicom.urban.management.service.grid;
 import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.constant.StsConstant;
 import com.unicom.urban.management.common.exception.DataValidException;
-import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.grid.GridRepository;
 import com.unicom.urban.management.mapper.GridMapper;
 import com.unicom.urban.management.mapper.TreeMapper;
@@ -16,7 +15,7 @@ import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.publish.PublishService;
 import com.unicom.urban.management.service.record.RecordService;
-import com.unicom.urban.management.service.user.UserService;
+import com.unicom.urban.management.util.SecurityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -71,8 +70,8 @@ public class GridService {
             if (StringUtils.isNotEmpty(gridDTO.getRegion())) {
                 list.add(criteriaBuilder.equal(root.get("parent").get("parent").get("parent").get("id").as(String.class), gridDTO.getRegion()));
             }
-            if(gridDTO.getLevel()!=null){
-                list.add(criteriaBuilder.equal(root.get("level").as(Integer.class),gridDTO.getLevel()));
+            if (gridDTO.getLevel() != null) {
+                list.add(criteriaBuilder.equal(root.get("level").as(Integer.class), gridDTO.getLevel()));
             }
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
@@ -96,8 +95,8 @@ public class GridService {
             if (StringUtils.isNotEmpty(gridDTO.getRegion())) {
                 list.add(criteriaBuilder.equal(root.get("parent").get("parent").get("parent").get("id").as(String.class), gridDTO.getRegion()));
             }
-            if(gridDTO.getLevel()!=null){
-                list.add(criteriaBuilder.equal(root.get("level").as(Integer.class),gridDTO.getLevel()));
+            if (gridDTO.getLevel() != null) {
+                list.add(criteriaBuilder.equal(root.get("level").as(Integer.class), gridDTO.getLevel()));
             }
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
@@ -133,7 +132,7 @@ public class GridService {
                 CriteriaBuilder.In<String> in = criteriaBuilder.in(root.get("id"));
                 Grid one = this.findOne(gridId);
                 List<String> gridStr = new ArrayList<>();
-                switch (one.getLevel()){
+                switch (one.getLevel()) {
                     case 1:
                         List<Grid> gridLevel2 = gridRepository.findAllByParentId(gridId);
                         for (Grid grid : gridLevel2) {
@@ -215,10 +214,10 @@ public class GridService {
 
     public void delete(String id) {
         List<Grid> ifGrid = gridRepository.findAllByParentId(id);
-        if(ifGrid.size()>0){
+        if (ifGrid.size() > 0) {
             throw new DataValidException("区域下有子节点，不能删除");
         }
-        if(gridRepository.findById(id).isPresent()){
+        if (gridRepository.findById(id).isPresent()) {
             gridRepository.deleteById(id);
         }
 
@@ -230,11 +229,12 @@ public class GridService {
     }
 
     public Grid findOne(String id) {
-        if(StringUtils.isBlank(id)) {
+        if (StringUtils.isBlank(id)) {
             throw new DataValidException("选择区域没有网格");
         }
         return gridRepository.getOne(id);
     }
+
     public Integer getLevel(String id) {
         return findOne(id).getLevel();
     }
@@ -396,7 +396,7 @@ public class GridService {
     }
 
     public Grid findByGridCode(String gridCode) {
-        if(StringUtils.isBlank(gridCode)) {
+        if (StringUtils.isBlank(gridCode)) {
             throw new DataValidException("选择区域没有网格");
         }
         return gridRepository.findById(gridCode).orElse(new Grid());
@@ -456,7 +456,7 @@ public class GridService {
     public List<TreeVO> searchTreeAndUser() {
         List<Grid> grids = gridRepository.findAll();
         List<TreeVO> treeVOS = TreeMapper.INSTANCE.gridListToTreeVOList(grids);
-        grids.forEach(g-> g.getUserList().forEach(u->{
+        grids.forEach(g -> g.getUserList().forEach(u -> {
             TreeVO treeVO = new TreeVO();
             treeVO.setId(u.getId());
             treeVO.setParentId(g.getId());
@@ -474,21 +474,21 @@ public class GridService {
      */
     public List<TreeVO> searchTreeAndUserForApp() {
         List<Grid> grids = gridRepository.findAllByLevelOrLevel(3, 4);
-        List<TreeVO> treeVOS = TreeMapper.INSTANCE.gridListToTreeVOList(grids);
-        grids.forEach(g-> {
-            if(g.getLevel() == 3){
+        List<TreeVO> treeVOList = TreeMapper.INSTANCE.gridListToTreeVOList(grids);
+        grids.forEach(g -> {
+            if (g.getLevel() == 3) {
                 g.setParent(null);
             }
-            g.getUserList().forEach(u->{
+            g.getUserList().forEach(u -> {
                 TreeVO treeVO = new TreeVO();
                 treeVO.setId(u.getId());
                 treeVO.setParentId(g.getId());
                 treeVO.setName(u.getName());
                 treeVO.setLevelOrNot("user");
-                treeVOS.add(treeVO);
+                treeVOList.add(treeVO);
             });
         });
-        return treeVOS;
+        return treeVOList;
     }
 
     /**

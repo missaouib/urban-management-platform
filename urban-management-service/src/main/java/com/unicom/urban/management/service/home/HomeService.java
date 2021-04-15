@@ -36,7 +36,7 @@ public class HomeService {
         List<EventType> unit = eventTypeRepository.findAllByLevelAndParent_Name("1", type);
         List<Map<String,Object>> list = new ArrayList<>();
         unit.forEach(u->{
-            Map<String,Object> map = new ConcurrentHashMap<>();
+            Map<String,Object> map = new ConcurrentHashMap<>(4);
             map.put("typeName",u.getName());
             map.put("weekCount",weekList.stream().filter(w-> Optional.ofNullable(w.getEventType().getParent()).isPresent()).filter(w->w.getEventType().getParent().getName().equals(u.getName())).count());
             map.put("monthCount", monthList.stream().filter(w -> Optional.ofNullable(w.getEventType().getParent()).isPresent()).filter(w -> w.getEventType().getParent().getName().equals(u.getName())).count());

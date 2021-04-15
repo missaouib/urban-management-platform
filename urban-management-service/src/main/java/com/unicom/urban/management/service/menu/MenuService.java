@@ -47,16 +47,13 @@ public class MenuService {
     public Page<MenuVO> search(MenuDTO menuDTO, Pageable pageable) {
         Page<Menu> page = menuRepository.findAll((Specification<Menu>) (root, query, criteriaBuilder) -> {
             List<Predicate> list = new ArrayList<>();
-//            if (StringUtils.isNotEmpty(menuDTO.getName())) {
-//                list.add(criteriaBuilder.equal(root.get("name").as(String.class), menuDTO.getName()));
-//            }
             if (menuDTO.getPurpose() != null) {
                 list.add(criteriaBuilder.equal(root.get("purpose").as(Integer.class), menuDTO.getPurpose()));
-            }else{
+            } else {
                 throw new DataValidException("功能列表code码错误");
             }
-            Join<Menu,Role> join = root.join("roleList", JoinType.LEFT);
-            list.add(criteriaBuilder.equal(join.get("id").as(String.class),SecurityUtil.getRoleId().get(0)));
+            Join<Menu, Role> join = root.join("roleList", JoinType.LEFT);
+            list.add(criteriaBuilder.equal(join.get("id").as(String.class), SecurityUtil.getRoleId().get(0)));
 
             Predicate[] p = new Predicate[list.size()];
             return criteriaBuilder.and(list.toArray(p));
@@ -73,8 +70,7 @@ public class MenuService {
             if (menuDTO.getPurpose() != null) {
                 list.add(criteriaBuilder.equal(root.get("purpose").as(Integer.class), menuDTO.getPurpose()));
             }
-            Join<Menu,Role> join = root.join("roleList", JoinType.LEFT);
-//            list.add(criteriaBuilder.equal(join.get("id").as(String.class),SecurityUtil.getRoleId().get(0)));
+            Join<Menu, Role> join = root.join("roleList", JoinType.LEFT);
             CriteriaBuilder.In<Object> in = criteriaBuilder.in(join.get("id"));
             User user = userService.findOne(SecurityUtil.getUserId());
             List<String> type = user.getRoleList().stream().map(Role::getId).distinct().collect(Collectors.toList());
@@ -137,43 +133,45 @@ public class MenuService {
         }
     }
 
-    public List<MenuVO> getMenuByMenuType(String menuTypeId,String roleId) {
-      List<Menu>  menuList = menuRepository.findAllByMenuType_Id(menuTypeId);
-      List<MenuVO> menuVOList = new ArrayList<>();
-      for (Menu m : menuList){
-          MenuVO vo = new MenuVO();
-          boolean flag = false;
-          if (StringUtils.isEmpty(roleId)) {
-              flag = false;
-          } else {
-              for (Role role : m.getRoleList()) {
-                  if (roleId.equals(role.getId())) {
-                      flag = true;
-                  }
-                  continue;
-              }
-          }
-          if (flag) {
-              vo.setCheckbox(1);
-          } else {
-              vo.setCheckbox(0);
-          }
-          vo.setId(m.getId());
-          vo.setParentId(m.getParent() == null ? "" : m.getParent().getId());
-          vo.setName(m.getName());
-          menuVOList.add(vo);
-      }
-       return menuVOList;
+    public List<MenuVO> getMenuByMenuType(String menuTypeId, String roleId) {
+        List<Menu> menuList = menuRepository.findAllByMenuType_Id(menuTypeId);
+        List<MenuVO> menuVOList = new ArrayList<>();
+        for (Menu m : menuList) {
+            MenuVO vo = new MenuVO();
+            boolean flag = false;
+            if (StringUtils.isEmpty(roleId)) {
+                flag = false;
+            } else {
+                for (Role role : m.getRoleList()) {
+                    if (roleId.equals(role.getId())) {
+                        flag = true;
+                    }
+                    continue;
+                }
+            }
+            if (flag) {
+                vo.setCheckbox(1);
+            } else {
+                vo.setCheckbox(0);
+            }
+            vo.setId(m.getId());
+            vo.setParentId(m.getParent() == null ? "" : m.getParent().getId());
+            vo.setName(m.getName());
+            menuVOList.add(vo);
+        }
+        return menuVOList;
     }
-    public  List<MenuVO> getTree(){
-        List<Menu>  menuList = menuRepository.findAll();
+
+    public List<MenuVO> getTree() {
+        List<Menu> menuList = menuRepository.findAll();
         return toVO(menuList);
     }
-    private List<MenuVO> toVO(List<Menu> menuList){
+
+    private List<MenuVO> toVO(List<Menu> menuList) {
         List<MenuVO> menuVOList = new ArrayList<>();
-        for (Menu m : menuList){
+        for (Menu m : menuList) {
             MenuVO vo = new MenuVO();
-            BeanUtils.copyProperties(m,vo);
+            BeanUtils.copyProperties(m, vo);
             vo.setParentId(Optional.ofNullable(m.getParent()).map(Menu::getId).orElse(""));
             vo.setMenuTypeId(Optional.ofNullable(m.getMenuType()).map(MenuType::getId).orElse(""));
             menuVOList.add(vo);
@@ -196,14 +194,14 @@ public class MenuService {
                         if (menuVO.getId().equals(m.getId())) {
                             flag = false;
                             break;
-                        }else {
+                        } else {
                             flag = true;
                         }
                     }
-                }else {
+                } else {
                     flag = true;
                 }
-                if (flag && m.getPurpose() == 1){
+                if (flag && m.getPurpose() == 1) {
                     MenuVO vo = new MenuVO();
                     vo.setId(m.getId());
                     vo.setParentId(m.getParent() == null ? "" : m.getParent().getId());
@@ -217,21 +215,21 @@ public class MenuService {
         return menuVOList;
     }
 
-    public void del(MenuDTO menuDTO){
-        Optional<Menu> ifmenu = menuRepository.findById(menuDTO.getId());
-        if(ifmenu.isPresent()){
-            Menu menu = ifmenu.get();
-            if(menu.getChild().size()>0){
+    public void del(MenuDTO menuDTO) {
+        Optional<Menu> isMenu = menuRepository.findById(menuDTO.getId());
+        if (isMenu.isPresent()) {
+            Menu menu = isMenu.get();
+            if (menu.getChild().size() > 0) {
                 throw new DataValidException("菜单下有子菜单不能删除");
             }
             menuRepository.delete(menu);
-        }else{
+        } else {
             throw new DataValidException("菜单不存在");
         }
     }
 
 
-    public List<MenuType> menuType(){
+    public List<MenuType> menuType() {
         return menuTypeRepository.findAll();
     }
 }

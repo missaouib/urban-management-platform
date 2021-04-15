@@ -1,11 +1,11 @@
 package com.unicom.urban.management.service.idioms;
 
 import com.unicom.urban.management.common.exception.DataValidException;
-import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.idioms.IdiomsRepository;
 import com.unicom.urban.management.mapper.IdiomsMapper;
 import com.unicom.urban.management.pojo.entity.Idioms;
 import com.unicom.urban.management.pojo.vo.IdiomsVO;
+import com.unicom.urban.management.util.SecurityUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +24,18 @@ import java.util.List;
 @Transactional(rollbackOn = Exception.class)
 public class IdiomsService {
 
+    private static final String MESSAGE = "此惯用语已存在无需保存";
+
     @Autowired
     private IdiomsRepository idiomsRepository;
-    public void saveIdioms(IdiomsVO idiomsVO){
+
+    public void saveIdioms(IdiomsVO idiomsVO) {
         String idiomsValue = this.isIdioms(idiomsVO);
-        if("此惯用语已存在无需保存".equals(idiomsValue)){
-            throw new DataValidException("此惯用语已存在无需保存");
+        if (MESSAGE.equals(idiomsValue)) {
+            throw new DataValidException(MESSAGE);
         }
         if (idiomsRepository.existsByIdiomsValue(idiomsValue)) {
-            throw new DataValidException("此惯用语已存在无需保存");
+            throw new DataValidException(MESSAGE);
         }
         Idioms idioms = new Idioms();
         idioms.setIdiomsValue(idiomsValue);
@@ -40,8 +43,8 @@ public class IdiomsService {
         idiomsRepository.save(idioms);
     }
 
-    public String isIdioms(IdiomsVO idiomsVO){
-        String  value = idiomsVO.getIdiomsValue().trim();
+    public String isIdioms(IdiomsVO idiomsVO) {
+        String value = idiomsVO.getIdiomsValue().trim();
         char[] c = value.toCharArray();
         StringBuilder stringBuilder = new StringBuilder();
         //去除数字字母汉字以外的字符。
@@ -52,7 +55,7 @@ public class IdiomsService {
         }
         String idiomsValue = stringBuilder.toString();
         if (idiomsRepository.existsByIdiomsValue(idiomsValue)) {
-            return "此惯用语已存在无需保存";
+            return MESSAGE;
         }
         return idiomsValue;
     }
@@ -74,7 +77,7 @@ public class IdiomsService {
     public List<String> findAllIdiomsValue() {
         List<Idioms> list = idiomsRepository.findAll();
         List<String> idiomsValueList = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(list)){
+        if (CollectionUtils.isNotEmpty(list)) {
             for (Idioms idioms : list) {
                 idiomsValueList.add(idioms.getIdiomsValue());
             }

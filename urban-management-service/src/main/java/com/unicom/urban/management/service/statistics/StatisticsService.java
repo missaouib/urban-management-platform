@@ -2,7 +2,6 @@ package com.unicom.urban.management.service.statistics;
 
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.FastdfsToken;
-import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.statistics.StatisticsRepository;
 import com.unicom.urban.management.pojo.entity.Event;
 import com.unicom.urban.management.pojo.entity.Grid;
@@ -13,6 +12,7 @@ import com.unicom.urban.management.pojo.vo.GridVO;
 import com.unicom.urban.management.pojo.vo.StatisticsVO;
 import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.grid.GridService;
+import com.unicom.urban.management.util.SecurityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -84,7 +83,7 @@ public class StatisticsService {
             List<Map<String, Object>> stringList = new ArrayList<>();
             statistics.getEventFileList().forEach(eventFile -> {
                 Map<String, Object> map = new HashMap<>(3);
-                map.put("url", eventFile.getFilePath() + "?token=" + FastdfsToken.getToken(eventFile.getFilePath().substring(eventFile.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
+                map.put("url", eventFile.getFilePath() + "?token=" + FastdfsToken.getToken(eventFile.getFilePath().substring(eventFile.getFilePath().indexOf("/") + 1), ts) + "&ts=" + ts);
                 map.put("type", eventFile.getFileType().getValue());
                 map.put("management", eventFile.getManagement());
                 stringList.add(map);
@@ -107,10 +106,8 @@ public class StatisticsService {
         StatisticsVO firstStatisticsVO = new StatisticsVO();
         Event event = eventService.findOne(eventId);
 
-        /*第一步的开始时间是任务进工作流的开始时间*/
-        Statistics statistics = statisticsRepository.findByEvent_IdAndSort(eventId, 1);
-        firstStatisticsVO.setEndTime(dateTimeFormatter.format(statistics.getStartTime()));
-        firstStatisticsVO.setStarTime(dateTimeFormatter.format(statistics.getStartTime()));
+        firstStatisticsVO.setEndTime(dateTimeFormatter.format(event.getCreateTime()));
+        firstStatisticsVO.setStarTime(dateTimeFormatter.format(event.getCreateTime()));
         firstStatisticsVO.setUser(Optional.ofNullable(event.getUser()).map(User::getUsername).orElse(""));
         firstStatisticsVO.setName(Optional.ofNullable(event.getUser()).map(User::getUsername).orElse(""));
         firstStatisticsVO.setOpinions(event.getRepresent());
@@ -118,7 +115,7 @@ public class StatisticsService {
         List<Map<String, Object>> mapArrayList = new ArrayList<>();
         event.getEventFileList().forEach(eventFile -> {
             Map<String, Object> map = new HashMap<>(3);
-            map.put("url", eventFile.getFilePath() + "?token=" + FastdfsToken.getToken(eventFile.getFilePath().substring(eventFile.getFilePath().indexOf("/")+1), ts) + "&ts=" + ts);
+            map.put("url", eventFile.getFilePath() + "?token=" + FastdfsToken.getToken(eventFile.getFilePath().substring(eventFile.getFilePath().indexOf("/") + 1), ts) + "&ts=" + ts);
             map.put("type", eventFile.getFileType().getValue());
             map.put("management", eventFile.getManagement());
             mapArrayList.add(map);
@@ -208,7 +205,7 @@ public class StatisticsService {
             double closeRate = 100D - Double.parseDouble(cellGridRegionVO.getCloseRate().split("%")[0]);
             double inTimeCloseRate = 100D - Double.parseDouble(cellGridRegionVO.getInTimeCloseRate().split("%")[0]);
             double instSizeValue;
-            if("一类区域".equals(region)){
+            if ("一类区域".equals(region)) {
                 if (instSize == 0) {
                     instSizeValue = 100;
                 } else if (instSize < 3) {
@@ -222,7 +219,7 @@ public class StatisticsService {
                 } else {
                     instSizeValue = 0;
                 }
-            }else if("二类区域".equals(region)){
+            } else if ("二类区域".equals(region)) {
                 if (instSize == 0) {
                     instSizeValue = 100;
                 } else if (instSize < 4) {
@@ -236,7 +233,7 @@ public class StatisticsService {
                 } else {
                     instSizeValue = 0;
                 }
-            }else{
+            } else {
                 instSizeValue = 0;
             }
             double comprehensiveIndexValue = publicReportAndInstRate * 0.1 + instSizeValue * 0.2 + closeRate * 0.3 + inTimeCloseRate * 0.1;
@@ -623,7 +620,7 @@ public class StatisticsService {
      *
      * @return map
      */
-    public Map<String, Object> getIndexValueByWeek(LocalDateTime monday,LocalDateTime sunday) {
+    public Map<String, Object> getIndexValueByWeek(LocalDateTime monday, LocalDateTime sunday) {
 
         int reportSize = statisticsRepository.findByReport(monday, sunday).size();
         int instSize = statisticsRepository.findByInst(monday, sunday).size();
@@ -728,7 +725,7 @@ public class StatisticsService {
      */
     private List<Map<String, String>> findHighIncidenceByInst(LocalDateTime startTime, LocalDateTime endTime) {
         List<Map<String, String>> highIncidenceByInst = statisticsRepository.findHighIncidenceByInst(startTime, endTime);
-        if(highIncidenceByInst.size()>5){
+        if (highIncidenceByInst.size() > 5) {
             return highIncidenceByInst.subList(0, 4);
         }
         return highIncidenceByInst;
@@ -870,7 +867,7 @@ public class StatisticsService {
             double closeRate = 100D - Double.parseDouble(cellGridRegionVO.getCloseRate().split("%")[0]);
             double inTimeCloseRate = 100D - Double.parseDouble(cellGridRegionVO.getInTimeCloseRate().split("%")[0]);
             double instSizeValue;
-            if("一类区域".equals(region)){
+            if ("一类区域".equals(region)) {
                 if (instSize == 0) {
                     instSizeValue = 100;
                 } else if (instSize < 3) {
@@ -884,7 +881,7 @@ public class StatisticsService {
                 } else {
                     instSizeValue = 0;
                 }
-            }else if("二类区域".equals(region)){
+            } else if ("二类区域".equals(region)) {
                 if (instSize == 0) {
                     instSizeValue = 100;
                 } else if (instSize < 4) {
@@ -898,7 +895,7 @@ public class StatisticsService {
                 } else {
                     instSizeValue = 0;
                 }
-            }else{
+            } else {
                 instSizeValue = 0;
             }
             double comprehensiveIndexValue = publicReportAndInstRate * 0.1 + instSizeValue * 0.2 + closeRate * 0.3 + inTimeCloseRate * 0.1;
@@ -911,11 +908,10 @@ public class StatisticsService {
     }
 
 
-
-    public List<String> findEventIds(){
+    public List<String> findEventIds() {
         List<Statistics> all = statisticsRepository.findAll();
         List<String> ids = new ArrayList<>();
-        all.forEach(a->ids.add(a.getEvent().getId()));
+        all.forEach(a -> ids.add(a.getEvent().getId()));
         return ids.stream().distinct().collect(Collectors.toList());
     }
 }

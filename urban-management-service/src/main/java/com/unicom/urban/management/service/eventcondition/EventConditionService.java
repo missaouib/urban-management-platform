@@ -3,20 +3,11 @@ package com.unicom.urban.management.service.eventcondition;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
 import com.unicom.urban.management.mapper.EventConditionMapper;
-import com.unicom.urban.management.mapper.IdiomsMapper;
-import com.unicom.urban.management.pojo.dto.EventConditionDTO;
-import com.unicom.urban.management.pojo.entity.EventCondition;
-import com.unicom.urban.management.pojo.entity.Idioms;
-import com.unicom.urban.management.pojo.vo.EventConditionVO;
-import com.unicom.urban.management.pojo.vo.IdiomsVO;
-import com.unicom.urban.management.service.event.EventService;
-import org.apache.commons.lang3.StringUtils;
-import com.unicom.urban.management.dao.eventcondition.EventConditionRepository;
-import com.unicom.urban.management.mapper.EventConditionMapper;
 import com.unicom.urban.management.pojo.dto.EventConditionDTO;
 import com.unicom.urban.management.pojo.entity.EventCondition;
 import com.unicom.urban.management.pojo.entity.EventType;
 import com.unicom.urban.management.pojo.vo.EventConditionVO;
+import com.unicom.urban.management.service.event.EventService;
 import com.unicom.urban.management.service.eventtype.EventTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,6 +36,7 @@ public class EventConditionService {
     private EventTypeService eventTypeService;
     @Autowired
     private EventService eventService;
+
     public List<EventConditionVO> allByEventTypeIdAndRegionIsNotNull(String eventTypeId) {
         List<EventCondition> eventConditionList = eventConditionRepository.findAllByEventType_IdAndRegionIsNotNull(eventTypeId);
         return EventConditionMapper.INSTANCE.eventConditionListToEventConditionVOList(eventConditionList);
@@ -66,7 +58,6 @@ public class EventConditionService {
         }
         return new PageImpl<>(eventConditionVOList, page.getPageable(), page.getTotalElements());
     }
-
 
 
     public Page<EventConditionVO> search(EventConditionVO eventConditionVO, Pageable pageable) {
@@ -93,17 +84,17 @@ public class EventConditionService {
 
     public void del(String id) {
         long exitCondition = eventService.findAllByConditionId(id);
-        if (exitCondition > 0){
+        if (exitCondition > 0) {
             throw new DataValidException("该区域下包含立案与结案条件，不能删除");
-        }else {
+        } else {
             EventCondition eventCondition = new EventCondition();
             eventCondition.setId(id);
-         eventConditionRepository.delete(eventCondition);
+            eventConditionRepository.delete(eventCondition);
         }
 
     }
 
-    public EventCondition findOne(String id){
+    public EventCondition findOne(String id) {
         return eventConditionRepository.findById(id).orElse(new EventCondition());
     }
 

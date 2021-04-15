@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface EventRepository extends CustomizeRepository<Event, String> {
     @Query(value = "SELECT max(substr(event_code,14,15)) FROM event WHERE date_format(create_time,'%y-%m-%d') = date_format(now(),'%y-%m-%d')", nativeQuery = true)
-    Integer findMaxNum();
+    long findMaxNum();
 
     long countEventByConditionId(String conditionId);
 
