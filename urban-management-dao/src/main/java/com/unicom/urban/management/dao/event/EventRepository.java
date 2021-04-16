@@ -13,6 +13,9 @@ public interface EventRepository extends CustomizeRepository<Event, String> {
     @Query(value = "SELECT max(substr(event_code,14,15)) FROM event WHERE date_format(create_time,'%y-%m-%d') = date_format(now(),'%y-%m-%d')", nativeQuery = true)
     long findMaxNum();
 
+    @Query(value = "SELECT max(event_code) FROM event WHERE date_format(create_time,'%y-%m-%d') = date_format(now(),'%y-%m-%d')", nativeQuery = true)
+    String findMaxNumNew();
+
     long countEventByConditionId(String conditionId);
 
     /**

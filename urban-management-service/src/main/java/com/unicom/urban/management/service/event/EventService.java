@@ -307,7 +307,7 @@ public class EventService {
                 eventVO.setTimeLimitStr(time + timeType);
                 eventVO.setDeptName(Optional.ofNullable(statistics.getDisposeUnit()).map(Dept::getDeptName).orElse(""));
                 if (!"挂账恢复".equals(statistics.getTaskName())) {
-                    eventVO.setTimeLimitLong(taskProcessingService.betWeenTime(startTime,LocalDateTime.now(),timeType,timeLimit,0)[1]);
+                    eventVO.setTimeLimitLong(taskProcessingService.betWeenTime(startTime, LocalDateTime.now(), timeType, timeLimit, 0)[1]);
                 } else {
                     eventVO.setTimeLimitLong(2);
                 }
@@ -571,7 +571,14 @@ public class EventService {
     public String createCode(String eventTypeId) {
         String eventCode;
         //查询当天最大序号
-        long maxNum = eventRepository.findMaxNum();
+        String maxNum = eventRepository.findMaxNumNew();
+        String result;
+        if (StringUtils.isNotBlank(maxNum)) {
+            result = maxNum.substring(maxNum.length() - 4);
+        } else {
+            result = "0";
+        }
+        int maxNumNew = Integer.parseInt(result);
         EventType eventType = eventTypeService.getEventType(eventTypeId);
         String level = eventType.getLevel();
         String code = eventType.getCode();
@@ -585,19 +592,20 @@ public class EventService {
         }
         //部件（简称C）或事件（E）+大类代码+小类代码+××××××××××（年：4位，月：2位，日：2位，序号：2位）即C01012019041101
         String maxNumStr;
-        if (maxNum < 0) {
-            maxNum = 0;
+        if (maxNumNew < 0) {
+            maxNumNew = 0;
         }
-        maxNum++;
-        if (maxNum < 10) {
-            maxNumStr = "000" + maxNum;
-        } else if (maxNum < 100) {
-            maxNumStr = "00" + maxNum;
-        } else if (maxNum < 1000) {
-            maxNumStr = "0" + maxNum;
+        maxNumNew++;
+        if (maxNumNew < 10) {
+            maxNumStr = "000" + maxNumNew;
+        } else if (maxNumNew < 100) {
+            maxNumStr = "00" + maxNumNew;
+        } else if (maxNumNew < 1000) {
+            maxNumStr = "0" + maxNumNew;
         } else {
-            maxNumStr = String.valueOf(maxNum);
+            maxNumStr = String.valueOf(maxNumNew);
         }
+        /* 最终拼接 判断事件还是部件 */
         if (type == 1) {
             eventCode = "C" + level + code + now + maxNumStr;
         } else {

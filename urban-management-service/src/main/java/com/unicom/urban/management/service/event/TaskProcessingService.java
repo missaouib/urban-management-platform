@@ -585,37 +585,37 @@ public class TaskProcessingService {
         return statistics;
     }
 
-    public int[] betWeenTime(LocalDateTime startTime, LocalDateTime endTime, String timeType, int timeLimit, int hangDuation) {
+    public int[] betWeenTime(LocalDateTime startTime, LocalDateTime endTime, String timeType, int timeLimit, int hangDuAction) {
         Long between1 = activitiService.between(startTime, endTime);
         long millis = between1 * 60 * 1000;
 //        Duration between = Duration.between(startTime, endTime);
 //        long millis = between.toMillis();
         switch (timeType) {
             case KvConstant.TASK_DAY:
-                timeLimit = (timeLimit * 24 * 60 * 60 * 1000) + hangDuation;
+                timeLimit = (timeLimit * 24 * 60 * 60 * 1000) + hangDuAction;
                 break;
             case KvConstant.TASK_HOUR:
-                timeLimit = (timeLimit * 60 * 60 * 1000) + hangDuation;
+                timeLimit = (timeLimit * 60 * 60 * 1000) + hangDuAction;
                 break;
             case KvConstant.TASK_MINUTE:
-                timeLimit = (timeLimit * 60 * 1000) + hangDuation;
+                timeLimit = (timeLimit * 60 * 1000) + hangDuAction;
                 break;
             case KvConstant.DAY:
-                timeLimit = (timeLimit * 24 * 60 * 60 * 1000) + hangDuation;
+                timeLimit = (timeLimit * 24 * 60 * 60 * 1000) + hangDuAction;
                 break;
             case KvConstant.HOUR:
-                timeLimit = (timeLimit * 60 * 60 * 1000) + hangDuation;
+                timeLimit = (timeLimit * 60 * 60 * 1000) + hangDuAction;
                 break;
             case "工作日":
             case "天":
-                timeLimit = (timeLimit * 24 * 60 * 60 * 1000) + hangDuation;
+                timeLimit = (timeLimit * 24 * 60 * 60 * 1000) + hangDuAction;
                 break;
             case "工作时":
             case "小时":
-                timeLimit = (timeLimit * 60 * 60 * 1000) + hangDuation;
+                timeLimit = (timeLimit * 60 * 60 * 1000) + hangDuAction;
                 break;
             case "分钟":
-                timeLimit = (timeLimit * 60 * 1000) + hangDuation;
+                timeLimit = (timeLimit * 60 * 1000) + hangDuAction;
                 break;
             default:
                 return new int[]{0, 0};

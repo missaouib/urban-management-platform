@@ -105,8 +105,12 @@ public class StatisticsService {
         /*增加上报时候的环节*/
         StatisticsVO firstStatisticsVO = new StatisticsVO();
         Event event = eventService.findOne(eventId);
-
-        firstStatisticsVO.setEndTime(dateTimeFormatter.format(event.getCreateTime()));
+        Statistics statistics = statisticsRepository.findByEvent_IdAndSort(eventId, 1);
+        if (statistics == null) {
+            firstStatisticsVO.setEndTime(dateTimeFormatter.format(event.getCreateTime()));
+        }else{
+            firstStatisticsVO.setEndTime(dateTimeFormatter.format(statistics.getStartTime()));
+        }
         firstStatisticsVO.setStarTime(dateTimeFormatter.format(event.getCreateTime()));
         firstStatisticsVO.setUser(Optional.ofNullable(event.getUser()).map(User::getUsername).orElse(""));
         firstStatisticsVO.setName(Optional.ofNullable(event.getUser()).map(User::getUsername).orElse(""));
