@@ -1,14 +1,12 @@
 package com.unicom.urban.management.service.event;
 
 import com.unicom.urban.management.common.constant.KvConstant;
-import com.unicom.urban.management.common.exception.BusinessException;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.event.EventButtonRepository;
 import com.unicom.urban.management.pojo.dto.StatisticsDTO;
 import com.unicom.urban.management.pojo.entity.*;
 import com.unicom.urban.management.service.activiti.ActivitiService;
-import com.unicom.urban.management.service.dept.DeptService;
 import com.unicom.urban.management.service.eventfile.EventFileService;
 import com.unicom.urban.management.service.processtimelimit.ProcessTimeLimitService;
 import com.unicom.urban.management.service.role.RoleService;
@@ -18,7 +16,6 @@ import org.activiti.engine.task.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.plaf.nimbus.NimbusStyle;
 import javax.transaction.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -265,7 +262,7 @@ public class TaskProcessingService {
         Statistics newStatistics;
         switch (eventButton.getButtonText()) {
             case "申请延时":
-                if(statisticsDTO.getDelayedTime()==null){
+                if (statisticsDTO.getDelayedTime() == null) {
                     throw new DataValidException("延时时间不能为空");
                 }
                 userId.addAll(this.getUsers(KvConstant.DISPATCHER_ROLE));
@@ -586,7 +583,7 @@ public class TaskProcessingService {
     }
 
     public int[] betWeenTime(LocalDateTime startTime, LocalDateTime endTime, String timeType, int timeLimit, int hangDuAction) {
-        Long between1 = activitiService.between(startTime, endTime);
+        Long between1 = activitiService.addTime(startTime, endTime);
         long millis = between1 * 60 * 1000;
 //        Duration between = Duration.between(startTime, endTime);
 //        long millis = between.toMillis();

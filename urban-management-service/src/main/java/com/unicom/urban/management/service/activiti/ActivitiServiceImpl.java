@@ -276,7 +276,7 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
-    public Long between(LocalDateTime startTime, LocalDateTime endTime) {
+    public Long addTime(LocalDateTime startTime, LocalDateTime endTime) {
 
         if (endTime.isBefore(startTime)) {
             throw new BusinessException("结束时间不可在开始时间之前 startTime: " + startTime + " endTime: " + endTime);
@@ -300,6 +300,130 @@ public class ActivitiServiceImpl implements ActivitiService {
             return totalMinute - getMinute(startTime, endTime, tempTimeList, timePlan);
         } else {
             return totalMinute - defaultMethod(startTime, endTime);
+        }
+
+
+    }
+
+    @Override
+    public LocalDateTime addTime(LocalDateTime startDateTime, long minutes, boolean flag) {
+        if (flag) {
+            return startDateTime.plusSeconds(minutes);
+        } else {
+            Optional<TimePlan> optionalTimePlan = timePlanRepository.getBySts(TimePlan.Status.ENABLE);
+            long seconds = minutes * 60;
+            LocalTime localTime = null;
+            LocalDateTime plusDays = startDateTime;
+            // 系统中设置了可用的计时方案
+            if (optionalTimePlan.isPresent()) {
+
+                TimePlan timePlan = optionalTimePlan.get();
+
+                List<TimeScheme> timeSchemeList = timePlan.getTimeSchemeList();
+
+                List<Day> dayList = timePlan.getDayList();
+
+                if (CollectionUtils.isEmpty(timeSchemeList)) {
+                    throw new DataValidException("未设置时间");
+                }
+
+                List<TempTime> tempTimeList = buildTempTimeList(timeSchemeList);
+                int index = -1;
+
+                // 查询在哪个区间 index为区间下标
+                for (int i = tempTimeList.size() - 1; i >= 0; i--) {
+                    if ((startDateTime.toLocalTime().isAfter(tempTimeList.get(i).getStartTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getStartTime())) && (startDateTime.toLocalTime().isBefore(tempTimeList.get(i).getEndTime()) || startDateTime.toLocalTime().equals(tempTimeList.get(i).getEndTime()))) {
+                        index = i;
+                        break;
+                    }
+                }
+
+
+                // 开始时间那天是上班的
+                if (isWorkDay(startDateTime, dayList)) {
+                    // 如果上班时间
+                    if (tempTimeList.get(index).isFlag()) {
+                        LocalTime endTime = tempTimeList.get(index).getEndTime();
+                        long betweenSeconds = Duration.between(startDateTime.toLocalTime(), endTime).getSeconds();
+                        if (betweenSeconds >= seconds) {
+                            return startDateTime.plusSeconds(seconds);
+                        } else {
+                            seconds = seconds - betweenSeconds;
+                            for (int i = index + 1; i < tempTimeList.size(); i++) {
+                                if (tempTimeList.get(i).isFlag()) {
+                                    if (seconds >= tempTimeList.get(i).getTotalMinute() * 60) {
+                                        seconds = seconds - tempTimeList.get(i).getTotalMinute() * 60;
+                                    } else {
+                                        localTime = tempTimeList.get(i).getStartTime().plusSeconds(seconds);
+                                        break;
+                                    }
+                                }
+                                // 该下一天了
+                                if (i == tempTimeList.size() - 1) {
+                                    i = -1;
+                                    do {
+                                        plusDays = plusDays.plusDays(1);
+                                    } while (isWeekDay(plusDays, dayList));
+
+                                }
+                            }
+                            return LocalDateTime.of(plusDays.toLocalDate(), localTime);
+                        }
+                    } else {
+                        for (int i = index + 1; i < tempTimeList.size(); i++) {
+                            if (tempTimeList.get(i).isFlag()) {
+                                if (seconds >= tempTimeList.get(i).getTotalMinute() * 60) {
+                                    seconds = seconds - tempTimeList.get(i).getTotalMinute() * 60;
+                                } else {
+                                    localTime = tempTimeList.get(i).getStartTime().plusSeconds(seconds);
+                                    break;
+                                }
+                            }
+                            // 该下一天了
+                            if (i == tempTimeList.size() - 1) {
+                                i = -1;
+                                do {
+                                    plusDays = plusDays.plusDays(1);
+                                } while (isWeekDay(plusDays, dayList));
+
+                            }
+                        }
+                        return LocalDateTime.of(plusDays.toLocalDate(), localTime);
+
+                    }
+                } else {
+
+                    while (isWeekDay(plusDays, dayList)) {
+                        plusDays = plusDays.plusDays(1);
+                    }
+
+                    index = -1;
+                    for (int i = index + 1; i < tempTimeList.size(); i++) {
+                        if (tempTimeList.get(i).isFlag()) {
+                            if (seconds >= tempTimeList.get(i).getTotalMinute() * 60) {
+                                seconds = seconds - tempTimeList.get(i).getTotalMinute() * 60;
+                            } else {
+                                localTime = tempTimeList.get(i).getStartTime().plusSeconds(seconds);
+                                break;
+                            }
+                        }
+                        // 该下一天了
+                        if (i == tempTimeList.size() - 1) {
+                            i = -1;
+                            do {
+                                plusDays = plusDays.plusDays(1);
+                            } while (isWeekDay(plusDays, dayList));
+
+                        }
+                    }
+                    return LocalDateTime.of(plusDays.toLocalDate(), localTime);
+                }
+            } else {
+                while (isWeekDay(plusDays)) {
+                    plusDays = plusDays.plusDays(1);
+                }
+                return plusDays.plusMinutes(minutes);
+            }
         }
 
 
@@ -342,9 +466,29 @@ public class ActivitiServiceImpl implements ActivitiService {
 
     }
 
-    private boolean isWeekDay(LocalDateTime startTime) {
-        return LocalDateTimeUtil.isWeekDay(startTime.toLocalDate());
+    /**
+     * 判断是否休息
+     */
+    private boolean isWeekDay(LocalDateTime dateTime) {
+        return LocalDateTimeUtil.isWeekDay(dateTime.toLocalDate());
     }
+
+    /**
+     * 判断是否休息
+     */
+    private boolean isWeekDay(LocalDateTime dateTime, List<Day> dayList) {
+        Optional<Day> optionalDay = dayList.stream().filter(day -> day.getCalendar().equals(dateTime.toLocalDate())).findAny();
+        if (optionalDay.isPresent()) {
+            Day day = optionalDay.get();
+            return day.isNotWork();
+        }
+        return isWeekDay(dateTime);
+    }
+
+    private boolean isWorkDay(LocalDateTime dateTime, List<Day> dayList) {
+        return !isWeekDay(dateTime, dayList);
+    }
+
 
     /**
      * 重新构建一个List 包含休息时间和工作时间

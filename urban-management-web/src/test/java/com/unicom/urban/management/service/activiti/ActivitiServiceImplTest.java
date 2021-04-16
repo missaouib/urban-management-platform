@@ -172,10 +172,19 @@ public class ActivitiServiceImplTest {
 
         LocalDateTime endTime = LocalDateTime.parse("2021-01-09T17:15:00");
 
-        Long time = activitiService.between(startTime, endTime);
+        Long time = activitiService.addTime(startTime, endTime);
 
         System.out.println(time);
 
+    }
+
+    @Test
+    @Transactional
+    public void bew() {
+        LocalDateTime startTime = LocalDateTime.parse("2021-04-23T17:50:45");
+        long minutes = 90;
+        LocalDateTime afterTime = activitiService.addTime(startTime, minutes, false);
+        System.out.println(afterTime);
 
     }
 

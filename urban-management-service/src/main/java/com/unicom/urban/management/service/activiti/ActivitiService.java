@@ -147,7 +147,14 @@ public interface ActivitiService {
      * @param endTime   结束时间
      * @return 分钟
      */
-    Long between(LocalDateTime startTime, LocalDateTime endTime);
+    Long addTime(LocalDateTime startTime, LocalDateTime endTime);
+
+    /**
+     * @param localDateTime 开始事件
+     * @param minutes       分钟
+     * @param flag          是否为应急事件 true为是
+     */
+    LocalDateTime addTime(LocalDateTime localDateTime, long minutes, boolean flag);
 
 
 }
