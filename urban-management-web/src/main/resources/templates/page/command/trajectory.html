@@ -78,6 +78,10 @@
 <th:block th:include="page/fragments/common :: arc_js"/>
 <!--<th:block th:include="page/fragments/common :: mapinit_js"/>-->
 <script type="text/javascript" th:inline="javascript">
+
+    var userId = [[${userId}]];
+    console.log("userId", userId);
+
     $(function () {
 
 

@@ -83,8 +83,10 @@ public class SupervisionCommandSubsystemController {
         return new ModelAndView(SystemConstant.PAGE + "/command/positionEvaluation");
     }
     @GetMapping("/trajectory")
-    public ModelAndView trajectory() {
-        return new ModelAndView(SystemConstant.PAGE + "/command/trajectory");
+    public ModelAndView trajectory(String id) {
+        ModelAndView modelAndView = new ModelAndView(SystemConstant.PAGE + "/command/trajectory");
+        modelAndView.addObject("userId", id);
+        return modelAndView;
     }
 
     @GetMapping("/gridInformation")
