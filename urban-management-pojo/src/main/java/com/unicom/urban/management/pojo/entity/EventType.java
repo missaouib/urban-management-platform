@@ -66,6 +66,8 @@ public class EventType {
      */
     private String deleted = Delete.NORMAL;
 
+    private Integer sort;
+
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -185,4 +187,11 @@ public class EventType {
         this.deleted = deleted;
     }
 
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
 }
