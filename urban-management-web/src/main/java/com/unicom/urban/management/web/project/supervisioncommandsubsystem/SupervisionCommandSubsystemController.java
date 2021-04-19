@@ -4,15 +4,14 @@ import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.SystemConstant;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.pojo.Result;
-import com.unicom.urban.management.pojo.vo.*;
-import com.unicom.urban.management.pojo.vo.CellGridRegionVO;
-import com.unicom.urban.management.pojo.vo.ComprehensiveVO;
-import com.unicom.urban.management.service.comprehensiveevaluation.ComprehensiveEvaluationService;
 import com.unicom.urban.management.pojo.dto.EventDTO;
+import com.unicom.urban.management.pojo.vo.*;
 import com.unicom.urban.management.service.bigscreen.IndexService;
+import com.unicom.urban.management.service.comprehensiveevaluation.ComprehensiveEvaluationService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.kv.KVService;
 import com.unicom.urban.management.service.statistics.StatisticsService;
+import com.unicom.urban.management.service.trajectory.TrajectoryService;
 import io.micrometer.core.instrument.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +46,8 @@ public class SupervisionCommandSubsystemController {
     private GridService gridService;
     @Autowired
     private KVService kvService;
+    @Autowired
+    private TrajectoryService trajectoryService;
 
     @GetMapping("/index")
     public ModelAndView index() {
@@ -76,7 +76,7 @@ public class SupervisionCommandSubsystemController {
 
     /**
      * 岗位评价页面跳转
-     * @return
+     * @return 页面
      */
     @GetMapping("/toPositionEvaluation")
     public ModelAndView toSupervisorEvaluation() {
@@ -156,97 +156,92 @@ public class SupervisionCommandSubsystemController {
     public PageImpl<ComprehensiveVO> comprehensiveEvaluationSearch(String startTime,
                                                                    String endTime, String gridId, @PageableDefault Pageable pageable) {
         List<ComprehensiveVO> list = comprehensiveEvaluationService.search(startTime, endTime, gridId);
-        return new PageImpl<ComprehensiveVO>(list, pageable, 0);
+        return new PageImpl<>(list, pageable, 0);
     }
 
     /**
      * 综合评价-排行榜
      *
-     * @return
+     * @return 数据
      */
     @GetMapping("/comprehensiveEvaluationRankingList")
     public Map<String, Object> comprehensiveEvaluationRankingList(String startTime, String endTime, String gridId) {
-        Map<String, Object> map = comprehensiveEvaluationService.findRankingList(startTime, endTime, gridId);
-        return map;
+        return comprehensiveEvaluationService.findRankingList(startTime, endTime, gridId);
     }
     /**
      * 岗位评价-监督员列表查询
      *
-     * @return
+     * @return 数据
      */
     @GetMapping("/supervisorEvaluationSearch")
     public PageImpl<SupervisorEvaluateVO> supervisorEvaluationSearch(String startTime,
                                                                      String endTime, String gridId, @PageableDefault Pageable pageable) {
         List<SupervisorEvaluateVO> list = comprehensiveEvaluationService.supervisorEvaluationSearch(startTime, endTime,gridId);
-        return new PageImpl<SupervisorEvaluateVO>(list, pageable, 0);
+        return new PageImpl<>(list, pageable, 0);
     }
     /**
      * 岗位评价-受理员列表查询
-     * @return
+     * @return 数据
      */
     @GetMapping("/operatorEvaluationSearch")
     public PageImpl<AcceptorEvaluateVO> operatorEvaluationSearch(String startTime,
                                                                  String endTime, String gridId, @PageableDefault Pageable pageable) {
         List<AcceptorEvaluateVO> list = comprehensiveEvaluationService.operatorEvaluationSearch(startTime, endTime,gridId);
-        return new PageImpl<AcceptorEvaluateVO>(list, pageable, 0);
+        return new PageImpl<>(list, pageable, 0);
     }
     /**
      * 岗位评价-值班长列表查询
-     * @return
+     * @return 数据
      */
     @GetMapping("/instHumanEvaluationSearch")
     public PageImpl<ShiftForemanEvaluateVO> instHumanEvaluationSearch(String startTime,
                                                                       String endTime, String gridId, @PageableDefault Pageable pageable) {
         List<ShiftForemanEvaluateVO> list = comprehensiveEvaluationService.instHumanEvaluationSearch(startTime, endTime,gridId);
-        return new PageImpl<ShiftForemanEvaluateVO>(list, pageable, 0);
+        return new PageImpl<>(list, pageable, 0);
     }
     /**
      * 岗位评价-派遣员列表查询
-     * @return
+     * @return 数据
      */
     @GetMapping("/dispatcherEvaluationSearch")
     public PageImpl<DispatcherEvaluateVO> dispatcherEvaluationSearch(String startTime,
                                                                      String endTime, String gridId, @PageableDefault Pageable pageable) {
         List<DispatcherEvaluateVO> list = comprehensiveEvaluationService.dispatcherEvaluationSearch(startTime, endTime,gridId);
-        return new PageImpl<DispatcherEvaluateVO>(list, pageable, 0);
+        return new PageImpl<>(list, pageable, 0);
     }
 
     /**
      * 岗位评价-监督员排行榜
      *
-     * @return
+     * @return 数据
      */
     @GetMapping("/supervisorEvaluationRankingList")
     public Map<String,Object> supervisorEvaluationRankingList(String startTime,String endTime, String gridId){
-        Map<String,Object> map = comprehensiveEvaluationService.supervisorEvaluationRankingList(startTime,endTime, gridId);
-        return map;
+        return comprehensiveEvaluationService.supervisorEvaluationRankingList(startTime,endTime, gridId);
     }
     /**
      * 岗位评价-受理员排行榜
-     * @return
+     * @return 数据
      */
     @GetMapping("/operatorEvaluationRankingList")
     public Map<String,Object> operatorEvaluationRankingList(String startTime,String endTime, String gridId){
-        Map<String,Object> map = comprehensiveEvaluationService.operatorEvaluationRankingList(startTime,endTime, gridId);
-        return map;
+        return comprehensiveEvaluationService.operatorEvaluationRankingList(startTime,endTime, gridId);
     }
     /**
      * 岗位评价-值班长排行榜
-     * @return
+     * @return 数据
      */
     @GetMapping("/instHumanEvaluationRankingList")
     public Map<String,Object> instHumanEvaluationRankingList(String startTime,String endTime, String gridId){
-        Map<String,Object> map = comprehensiveEvaluationService.instHumanEvaluationRankingList(startTime,endTime, gridId);
-        return map;
+        return comprehensiveEvaluationService.instHumanEvaluationRankingList(startTime,endTime, gridId);
     }
     /**
      * 岗位评价-派遣员列表查询
-     * @return
+     * @return 数据
      */
     @GetMapping("/dispatcherEvaluationRankingList")
     public Map<String,Object> dispatcherEvaluationRankingList(String startTime,String endTime, String gridId){
-        Map<String,Object> map = comprehensiveEvaluationService.dispatcherEvaluationRankingList(startTime,endTime, gridId);
-        return map;
+        return comprehensiveEvaluationService.dispatcherEvaluationRankingList(startTime,endTime, gridId);
     }
 
     /**
@@ -267,6 +262,20 @@ public class SupervisionCommandSubsystemController {
     @GetMapping("/regionalEvaluationTwo")
     public Page<CellGridRegionVO> cellGridRegionTwo(String startTime, String endTime, String gridId, @PageableDefault Pageable pageable) {
         return statisticsService.findAllForRegionalEvaluation(startTime, endTime, "二类区域", gridId, pageable);
+    }
+
+    /**
+     * 轨迹记录-列表
+     *
+     * @return 成功
+     */
+    @GetMapping("/getTrackLogForOne")
+    public Result getTrackLogForOne(String id, String startTime, String endTime) {
+        if (StringUtils.isBlank(id)) {
+            return Result.fail(500, "请选择巡查人员");
+        }
+        List<TrajectoryVO> trajectoryForOne = trajectoryService.getTrajectoryForOne(id, startTime, endTime);
+        return Result.success(trajectoryForOne);
     }
 
 }
