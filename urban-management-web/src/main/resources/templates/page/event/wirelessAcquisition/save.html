@@ -861,7 +861,7 @@
     let layers = [[${@geoServerProperties.layers}]];
     let zoom = [[${@geoServerProperties.zoom}]];
     let epsg = [[${@geoServerProperties.epsg}]];
-    // 沽源地图
+    // 地图
     var gridsetName = 'EPSG:4552';
     var gridNames = ['EPSG:4552:0', 'EPSG:4552:1', 'EPSG:4552:2', 'EPSG:4552:3', 'EPSG:4552:4', 'EPSG:4552:5', 'EPSG:4552:6', 'EPSG:4552:7'];
     var baseUrl = 'http://218.10.223.8:9050/geoserver/gwc/service/wmts';
@@ -869,6 +869,7 @@
     var format = 'image/png';
     var infoFormat = 'text/html';
     var layerName = 'hegang:hegang8';
+    var layerName1 = 'hegang:gongnong';
     var projection = new ol.proj.Projection({
         code: 'EPSG:4552',
         units: 'm',
@@ -919,6 +920,48 @@
         source: constructSource()
     });
 
+    //覆盖新图层
+    params = {
+        'VERSION': '1.0.0',
+        'LAYER': layerName1,
+        'STYLE': style,
+        'TILEMATRIX': gridNames,
+        'TILEMATRIXSET': gridsetName,
+        'SERVICE': 'WMTS',
+        'FORMAT': format
+    };
+    function constructSource1() {
+        var url = baseUrl+'?'
+        for (var param in params) {
+            if (baseParams.indexOf(param.toUpperCase()) < 0) {
+                url = url + param + '=' + params[param] + '&';
+            }
+        }
+        url = url.slice(0, -1);
+
+        var source = new ol.source.WMTS({
+            url: url,
+            layer: params['LAYER'],
+            matrixSet: params['TILEMATRIXSET'],
+            format: params['FORMAT'],
+            projection: projection,
+            tileGrid: new ol.tilegrid.WMTS({
+                tileSize: [512,512],
+                extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
+                origin: [374503.7646126483, 5570848.560955403],
+                resolutions: resolutions,
+                matrixIds: params['TILEMATRIX']
+            }),
+            style: params['STYLE'],
+            wrapX: true
+        });
+        return source;
+    }
+
+    var gongnong = new ol.layer.Tile({
+        source: constructSource1()
+    });
+
     var view = new ol.View({
         center: [0, 0],
         zoom: 17,
@@ -928,7 +971,7 @@
     });
 
     var map = new ol.Map({
-        layers: [untiled],
+        layers: [untiled,gongnong],
         target: 'map',
         view: view
     });
@@ -1207,6 +1250,22 @@
     function setCenterForGrid(data) {
         map.getView().setCenter(data);
     }
+
+
+    // var gongnong= new ol.layer.Image({
+    //     source: new ol.source.ImageWMS({
+    //         ratio: 1,
+    //         url: 'http://218.10.223.8:9050/geoserver/hegang/wms',
+    //         params: {'FORMAT': format,
+    //             'VERSION': '1.1.1',
+    //             "LAYERS": 'hegang:gongnong',
+    //             "exceptions": 'application/vnd.ogc.se_inimage',
+    //             projection:projection
+    //         }
+    //     })
+    // });
+    // var layersArray = map.getLayers();
+    // layersArray.insertAt(1, gongnong);
 
 
 </script>

@@ -19,7 +19,8 @@
         <div class="myOption">
             <div class="myleft">
                 <div class="myhead"></div>
-                <div class="mayname" onclick="window.parent.$.learuntab.myAddTab('轨迹回放', '/commandSubsystem/trajectory', 'data_id')">轨迹回放</div>
+                <div class="mayname" onclick="lookGui()">轨迹回放</div>
+                <input type="hidden" id="guiJiId">
             </div>
             <div class="myright">
                 <span>
@@ -305,6 +306,7 @@
 
 
 
+
         function gridAndUser() {
             $.ajaxUtil.get(gridAndUserTree, function (e) {
                 $.fn.zTree.init($("#treeDemo"), setting, e.data);
@@ -317,6 +319,7 @@
             $(".myhead").html($(this).children(".header").html())
             $("#am").html(treeNode.name);
             $("#halfCheck").html(treeNode.id)
+            $("#guiJiId").val(treeNode.id)
         }
 
         $(".fenlei").click(function() {
@@ -364,7 +367,10 @@
 
     })
 
-
+    function lookGui() {
+        let id = $("#guiJiId").val()
+        window.parent.$.learuntab.myAddTab('轨迹回放', '/commandSubsystem/trajectory?id=' + id,  'data_id')
+    }
 </script>
 <th:block th:include="page/fragments/common :: mapinit_js"/>
 </body>
