@@ -5,6 +5,7 @@ var style = '';
 var format = 'image/png';
 var infoFormat = 'text/html';
 var layerName = 'hegang:hegang8';
+var layerName1 = 'hegang:gongnong'
 var projection = new ol.proj.Projection({
     code: 'EPSG:4552',
     units: 'm',
@@ -57,7 +58,47 @@ function constructSource() {
 var untiled = new ol.layer.Tile({
     source: constructSource()
 });
+//覆盖新图层
+params = {
+    'VERSION': '1.0.0',
+    'LAYER': layerName1,
+    'STYLE': style,
+    'TILEMATRIX': gridNames,
+    'TILEMATRIXSET': gridsetName,
+    'SERVICE': 'WMTS',
+    'FORMAT': format
+};
+function constructSource1() {
+    var url = baseUrl+'?'
+    for (var param in params) {
+        if (baseParams.indexOf(param.toUpperCase()) < 0) {
+            url = url + param + '=' + params[param] + '&';
+        }
+    }
+    url = url.slice(0, -1);
 
+    var source = new ol.source.WMTS({
+        url: url,
+        layer: params['LAYER'],
+        matrixSet: params['TILEMATRIXSET'],
+        format: params['FORMAT'],
+        projection: projection,
+        tileGrid: new ol.tilegrid.WMTS({
+            tileSize: [512,512],
+            extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
+            origin: [374503.7646126483, 5570848.560955403],
+            resolutions: resolutions,
+            matrixIds: params['TILEMATRIX']
+        }),
+        style: params['STYLE'],
+        wrapX: true
+    });
+    return source;
+}
+
+var gongnong = new ol.layer.Tile({
+    source: constructSource1()
+});
 var view = new ol.View({
     center: [0, 0],
     zoom: 17,
@@ -67,7 +108,7 @@ var view = new ol.View({
 });
 
 var map = new ol.Map({
-    layers: [untiled],
+    layers: [untiled,gongnong],
     target: 'map',
     view: view
 });
