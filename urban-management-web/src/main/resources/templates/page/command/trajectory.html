@@ -111,6 +111,9 @@
                 data.map(i=>{
                     routeCoords.push([i.x,i.y])
                 })
+                if (routeCoords.length == 0){
+                    $.modal.alertError('当天无轨迹记录');
+                }
                 getMap()
             })
         }
