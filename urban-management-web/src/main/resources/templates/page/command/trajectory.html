@@ -106,7 +106,7 @@
         function getPointArray(day) {
             let startDay = day + ' ' + '00:00:00'
             let endDay = day + ' ' + '23:59:59'
-            $.ajaxUtil.get(ryglUrl + "?id=" + '1' + "&startTime=" + startDay + "&endTime=" + endDay,function (res) {
+            $.ajaxUtil.get(ryglUrl + "?id=" + userId + "&startTime=" + startDay + "&endTime=" + endDay,function (res) {
                 let data = res.data;
                 data.map(i=>{
                     routeCoords.push([i.x,i.y])
