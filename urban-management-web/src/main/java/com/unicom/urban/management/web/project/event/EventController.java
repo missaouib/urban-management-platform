@@ -106,7 +106,7 @@ public class EventController {
      */
     @GetMapping("findUnit")
     public Map<String, String> findUnit(String tableName, String x, String y) throws DataAccessException {
-        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/queryUnit?tableName=" + tableName + "&x=" + x + "&y=" + y, RestReturn.class).getBody();
+        RestReturn body = RestTemplateUtil.get(gisServiceProperties.getUrl() + "/queryUnit?tableName=" + tableName + "&x=" + x + "&y=" + y + "&epsg=4552", RestReturn.class).getBody();
         assert body != null;
         return (Map<String, String>) body.getData();
     }

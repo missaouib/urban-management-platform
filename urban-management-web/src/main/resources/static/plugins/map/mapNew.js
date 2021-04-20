@@ -5,7 +5,7 @@ var style = '';
 var format = 'image/png';
 var infoFormat = 'text/html';
 var layerName = 'hegang:hegang8';
-var layerName1 = 'hegang:gongnong'
+// var layerName1 = 'hegang:gongnong'
 var projection = new ol.proj.Projection({
     code: 'EPSG:4552',
     units: 'm',
@@ -58,16 +58,16 @@ function constructSource() {
 var untiled = new ol.layer.Tile({
     source: constructSource()
 });
-//覆盖新图层
-params = {
-    'VERSION': '1.0.0',
-    'LAYER': layerName1,
-    'STYLE': style,
-    'TILEMATRIX': gridNames,
-    'TILEMATRIXSET': gridsetName,
-    'SERVICE': 'WMTS',
-    'FORMAT': format
-};
+// //覆盖新图层
+// params = {
+//     'VERSION': '1.0.0',
+//     'LAYER': layerName1,
+//     'STYLE': style,
+//     'TILEMATRIX': gridNames,
+//     'TILEMATRIXSET': gridsetName,
+//     'SERVICE': 'WMTS',
+//     'FORMAT': format
+// };
 function constructSource1() {
     var url = baseUrl+'?'
     for (var param in params) {
