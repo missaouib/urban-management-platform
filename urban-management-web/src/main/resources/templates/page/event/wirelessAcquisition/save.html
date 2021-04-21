@@ -99,7 +99,6 @@
                                 <td><span>*</span>所在区域</td>
                                 <td>
                                     <select name="required" class="form-control" id="grid1" onchange="getStreetList()" required>
-                                        <option>--请选择--</option>
                                         <option th:each="as:${gridList}" th:value="${as.id}"
                                                 th:text="${as.gridName}"></option>
                                     </select>
@@ -423,6 +422,8 @@
             console.log('Key = ' + key);
         });
 
+        getStreetList();
+
     })
 
     let url = /*[[@{/event/register}]]*/ "/event/register";
@@ -570,12 +571,13 @@
     function findEventConditionByEventType(eventTypeId) {
         let url = findEventConditionByEventTypeUrl + "?eventTypeId=" + eventTypeId;
         $.ajaxUtil.get(url, function (e) {
-            let option = "<option>--请选择--</option>";
+            let option = "";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.region + "</option>"
+                    option += "<option value='" + value.id + "'>" + value.region + "</option>";
                 });
                 $("#eventCondition").html(option);
+                getEventCondition();
             }
         });
     }
@@ -584,17 +586,19 @@
      * 立案条件
      */
     function getEventCondition() {
-        let eventConditionId = $("#eventCondition").val();
+        let eventConditionId = $("#eventCondition option:selected").val();
+        console.log("eventConditionId", eventConditionId);
         let url = "/event/getEventCondition?conditionId=" + eventConditionId;
         $.ajaxUtil.get(url, function (e) {
             $("#eventTerm").empty();
-            let option = "<option>--请选择--</option>";
+            let option = "";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
-                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
+                    option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>";
                 });
             }
             $("#eventTerm").html(option);
+            getTimeTypeList();
         });
     }
 
@@ -602,17 +606,18 @@
      * 获取立案时限分类
      */
     function getTimeTypeList() {
-        let eventTerm = $("#eventTerm").val();
+        let eventTerm = $("#eventTerm option:selected").val();
         let url = "/event/findDeptTimeLimitByCondition?conditionId=" + eventTerm;
         $.ajaxUtil.get(url, function (e) {
             $("#timeType").empty();
-            let option = "<option>--请选择--</option>";
+            let option = "";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.level + "</option>"
                 });
             }
             $("#timeType").html(option);
+            getDeptTimeLimitList();
         });
     }
 
@@ -620,7 +625,7 @@
      * 获取计时等级
      */
     function getDeptTimeLimitList() {
-        let deptTimeLimitId = $("#timeType").val();
+        let deptTimeLimitId = $("#timeType option:selected").val();
         let url = "/event/findDeptTimeLimit?deptTimeLimitId=" + deptTimeLimitId;
         $.ajaxUtil.get(url, function (e) {
             if (e.code === 0) {
@@ -638,16 +643,15 @@
         let parentId = $("#grid1 option:selected").val();
         let url = "/event/findAllByParentId?parentId="+parentId;
         $.ajaxUtil.get(url, function (e) {
-            let option="<option>--请选择--</option>";
+            let option="";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
                 $("#grid2").html(option);
+                getCommunityList();
             }
         });
-        getCommunityList();
-        getGridList()
     }
 
     /**
@@ -657,12 +661,13 @@
         let parentId = $("#grid2 option:selected").val();
         let url = "/event/findAllByParentId?parentId="+parentId;
         $.ajaxUtil.get(url, function (e) {
-            let option="<option>--请选择--</option>";
+            let option="";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
                 $("#grid3").html(option);
+                getGridList();
             }
         });
     }
@@ -674,7 +679,7 @@
         let parentId = $("#grid3 option:selected").val();
         let url = "/event/findAllByParentId?parentId="+parentId;
         $.ajaxUtil.get(url, function (e) {
-            let option = "<option>--请选择--</option>";
+            let option = "";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
