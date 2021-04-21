@@ -308,7 +308,7 @@ public class ActivitiServiceImpl implements ActivitiService {
     @Override
     public LocalDateTime addTime(LocalDateTime startDateTime, long minutes, boolean flag) {
         if (flag) {
-            return startDateTime.plusSeconds(minutes);
+            return startDateTime.plusMinutes(minutes);
         } else {
             Optional<TimePlan> optionalTimePlan = timePlanRepository.getBySts(TimePlan.Status.ENABLE);
             long seconds = minutes * 60;
