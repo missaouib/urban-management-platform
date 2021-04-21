@@ -588,9 +588,13 @@ public class EventService {
         String now = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         if (level.length() == 1) {
             level = 0 + level;
+        }else if(level.length() > 2){
+            level = level.substring(level.length() - 2);
         }
         if (code.length() == 1) {
             code = 0 + code;
+        }else if(code.length() > 2){
+            code = code.substring(code.length() - 2);
         }
         //部件（简称C）或事件（E）+大类代码+小类代码+××××××××××（年：4位，月：2位，日：2位，序号：2位）即C01012019041101
         String maxNumStr;
