@@ -583,7 +583,7 @@ public class TaskProcessingService {
     }
 
     public int[] betWeenTime(LocalDateTime startTime, LocalDateTime endTime, String timeType, int timeLimit, int hangDuAction) {
-        Long between1 = activitiService.addTime(startTime, endTime);
+        Long between1 = activitiService.intervalMinutes(startTime, endTime);
         long millis = between1 * 60 * 1000;
 //        Duration between = Duration.between(startTime, endTime);
 //        long millis = between.toMillis();

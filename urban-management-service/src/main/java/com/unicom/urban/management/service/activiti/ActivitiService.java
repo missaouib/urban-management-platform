@@ -141,13 +141,13 @@ public interface ActivitiService {
 
 
     /**
-     * 消耗多少工作日 (去掉系统设置的节假日的时间)
+     * 计算间隔时间 消耗多少工作日 (去掉系统设置的节假日的时间)
      *
      * @param startTime 开始时间
      * @param endTime   结束时间
      * @return 分钟
      */
-    Long addTime(LocalDateTime startTime, LocalDateTime endTime);
+    Long intervalMinutes(LocalDateTime startTime, LocalDateTime endTime);
 
     /**
      * @param localDateTime 开始事件

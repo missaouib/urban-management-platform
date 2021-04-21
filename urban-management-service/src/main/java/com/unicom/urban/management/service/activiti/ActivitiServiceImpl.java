@@ -276,7 +276,7 @@ public class ActivitiServiceImpl implements ActivitiService {
     }
 
     @Override
-    public Long addTime(LocalDateTime startTime, LocalDateTime endTime) {
+    public Long intervalMinutes(LocalDateTime startTime, LocalDateTime endTime) {
 
         if (endTime.isBefore(startTime)) {
             throw new BusinessException("结束时间不可在开始时间之前 startTime: " + startTime + " endTime: " + endTime);
