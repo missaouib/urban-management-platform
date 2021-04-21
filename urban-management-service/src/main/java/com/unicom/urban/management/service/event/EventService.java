@@ -277,6 +277,7 @@ public class EventService {
                 DecimalFormat df = new DecimalFormat("#.00");
                 String timeType = StringUtils.isNotBlank(eventVO.getTimeType()) ? eventVO.getTimeType() : "";
                 String time = "";
+                LocalDateTime localDateTime;
                 switch (timeType) {
                     case "工作日":
                     case "天":
@@ -286,19 +287,20 @@ public class EventService {
                             time = df.format(((double) ((timeLimit * 24) + hangDurationHours + delayedHours)) / 24);
                         }
                         eventVO.setTimeLimitStr(time + timeType);
-
-                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusDays(timeLimit).plusHours(hangDurationHours).plusHours(delayedHours)));
+                        localDateTime = activitiService.addTime(startTime, (timeLimit * 24 * 60) + (hangDurationHours * 60L) + (delayedHours * 60L), e.getUrgent().equals(1));
+                        eventVO.setEndTimeStr(simpleDateFormat.format(localDateTime));
                         break;
                     case "工作时":
                     case "小时":
                         time = String.valueOf((timeLimit + hangDurationHours + delayedHours));
                         eventVO.setTimeLimitStr(timeLimit + timeType);
-                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusHours(timeLimit).plusHours(hangDurationHours).plusHours(delayedHours)));
+                        localDateTime = activitiService.addTime(startTime, (timeLimit * 60) + (hangDurationHours * 60L) + (delayedHours * 60L), e.getUrgent().equals(1));
+                        eventVO.setEndTimeStr(simpleDateFormat.format(localDateTime));
                         break;
                     case "分钟":
                         time = String.valueOf((timeLimit + (hangDurationHours * 60) + (delayedHours * 60)));
-
-                        eventVO.setEndTimeStr(simpleDateFormat.format(startTime.plusMinutes(timeLimit).plusHours(hangDurationHours).plusHours(delayedHours)));
+                        localDateTime = activitiService.addTime(startTime, (timeLimit) + (hangDurationHours * 60L) + (delayedHours * 60L), e.getUrgent().equals(1));
+                        eventVO.setEndTimeStr(simpleDateFormat.format(localDateTime));
                         break;
                     default:
                         eventVO.setEndTimeStr("暂无");
