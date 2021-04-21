@@ -132,7 +132,6 @@
                                 <td><span>*</span>所在区域</td>
                                 <td>
                                     <select name="required" class="form-control" id="grid1" onchange="getStreetList()" required>
-                                        <option>--请选择--</option>
                                         <option th:each="as:${gridList}" th:value="${as.id}"
                                                 th:text="${as.gridName}"></option>
                                     </select>
@@ -537,6 +536,7 @@
                     option += "<option value='" + value.id + "'>" + value.region + "</option>"
                 });
                 $("#eventCondition").html(option);
+                getEventCondition();
             }
         });
     }
@@ -555,6 +555,7 @@
                 });
             }
             $("#eventTerm").html(option);
+            getTimeTypeList();
         });
     }
 
@@ -572,6 +573,7 @@
                 });
             }
             $("#timeType").html(option);
+            getDeptTimeLimitList();
         });
     }
 
@@ -601,6 +603,7 @@
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
                 $("#grid2").html(option);
+                getCommunityList();
             }
         });
     }
@@ -617,6 +620,7 @@
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
                 });
                 $("#grid3").html(option);
+                getGridList();
             }
         });
     }

@@ -135,7 +135,7 @@
                                 <td>
                                     <select class="form-control" id="grid1" onchange="getStreetList()"
                                             required>
-                                        <option>--请选择--</option>
+
                                         <option th:each="as:${gridList}" th:value="${as.id}"
                                                 th:text="${as.gridName}"></option>
                                     </select>
@@ -567,7 +567,7 @@
     function findEventConditionByEventType(eventTypeId, regionIdStr, conditionId, levelId) {
         $.ajaxUtil.get(findEventConditionByEventTypeUrl + "?eventTypeId=" + eventTypeId, function (e) {
             $("#eventCondition").empty();
-            let option = "<option>--请选择--</option>";
+            let option = "";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.region + "</option>"
@@ -588,7 +588,7 @@
         let eventConditionId = $("#eventCondition").val();
         $.ajaxUtil.get(getEventConditionUrl + "?conditionId=" + eventConditionId, function (e) {
             $("#conditionId").empty();
-            let option = "<option>--请选择--</option>";
+            let option = "";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.conditionValue + "</option>"
@@ -609,7 +609,7 @@
         let conditionId = $("#conditionId").val();
         $.ajaxUtil.get(findDeptTimeLimitByConditionUrl + "?conditionId=" + conditionId, function (e) {
             $("#timeType").empty();
-            let option = "<option>--请选择--</option>";
+            let option = "";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.level + "</option>"
@@ -643,7 +643,7 @@
     function getStreetList(streetId, communityId, gridId) {
         let parentId = $("#grid1 option:selected").val();
         $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function (e) {
-            let option = "<option>--请选择--</option>";
+            let option = "";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
@@ -663,7 +663,7 @@
     function getCommunityList(communityId, gridId) {
         let parentId = $("#grid2 option:selected").val();
         $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function (e) {
-            let option = "<option>--请选择--</option>";
+            let option = "";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
@@ -683,7 +683,7 @@
     function getGridList(gridId) {
         let parentId = $("#grid3 option:selected").val();
         $.ajaxUtil.get(findAllByParentIdUrl + "?parentId=" + parentId, function (e) {
-            let option = "<option>--请选择--</option>";
+            let option = "";
             if (e.code === 0) {
                 $(e.data).each(function (index, value) {
                     option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
