@@ -55,7 +55,7 @@ public class UserController {
     @GetMapping("/edit/{id}")
     public ModelAndView edit(@PathVariable String id, Model model) {
         UserVO user = userService.findById(id);
-        user.setPhone(StringUtils.isNotBlank(user.getPhone())? AESUtil.decrypt(user.getPhone()):"");
+        user.setPhone(StringUtils.isNotBlank(user.getPhone()) ? AESUtil.decrypt(user.getPhone()) : "");
         model.addAttribute("user", user);
 
         return new ModelAndView(SystemConstant.PAGE + "/user/edit");
@@ -82,18 +82,26 @@ public class UserController {
     }
 
 
+    /**
+     * 修改个人密码
+     */
     @PostMapping("/changePassword")
     public void changePassword(@Valid ChangePasswordDTO changePasswordDTO) {
         userService.changePassword(changePasswordDTO);
     }
 
+    @GetMapping("/profile")
+    public ModelAndView profile() {
+        return new ModelAndView(SystemConstant.PAGE + "/user/profile/profile");
+    }
+
     @GetMapping("/activation")
-    public void activation(String id){
+    public void activation(String id) {
         userService.activation(id);
     }
 
     @GetMapping("/initialization")
-    public void initialization(String id){
+    public void initialization(String id) {
         userService.initialization(id);
     }
 
@@ -108,8 +116,9 @@ public class UserController {
         UserVO userVO = userService.findById(userId);
         return Result.success(userVO);
     }
+
     @GetMapping("/findUserByDept")
-    public Result findUserByDept(String deptId){
+    public Result findUserByDept(String deptId) {
         List<UserVO> list = userService.findUserByDept(deptId);
         return Result.success(list);
     }

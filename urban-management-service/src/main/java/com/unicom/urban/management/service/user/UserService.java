@@ -155,21 +155,18 @@ public class UserService {
 
     @Log(name = "修改个人密码")
     public void changePassword(ChangePasswordDTO changePasswordDTO) {
+        if (!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfigNewPassword())) {
+            throw new BadPasswordException("两次输入的密码不一致");
+        }
         Optional<User> optionalUser = userRepository.findByUsernameAndDeleted(SecurityUtil.getUsername(), Delete.NORMAL);
-
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             if (!passwordService.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
                 throw new BadPasswordException("密码错误");
             }
-            if (!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfigNewPassword())) {
-                throw new BadPasswordException("两次输入的密码不一致");
-            }
             user.setPassword(passwordService.encode(changePasswordDTO.getNewPassword()));
             userRepository.save(user);
         }
-
-
     }
 
     public UserVO findById(String id) {

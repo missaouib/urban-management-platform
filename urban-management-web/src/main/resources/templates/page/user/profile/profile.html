@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>修改密码</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+</head>
+<body style="border-radius: 8px;width: 680px">
+
+<div class="selectPoint" style="display: block">
+    <form id="changePasswordForm">
+        <div class="top table2_top">
+            <div class="top_out">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td><span>*</span>旧密码</td>
+                        <td>
+                            <input type="text" id="oldPassword" name="oldPassword" class="find_input"/>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td><span>*</span>新密码</td>
+                        <td>
+                            <input type="password" id="newPassword" name="newPassword" class="find_input" maxlength=16/>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td><span>*</span>确认密码<span></span></td>
+                        <td>
+                            <input type="password" id="configNewPassword" name="configNewPassword" class="find_input"/>
+                        </td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <div class="notice_bot">
+        <div class="r_right but_p" style="display: flex;justify-content: flex-end">
+            <button class="but_save" type="submit" id="smtBtn" onclick="submit()">保存</button>
+            <button class="but_close" onclick="$.modal.closeTab();">关闭</button>
+        </div>
+    </div>
+</div>
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+
+    let changePasswordUrl = /*[[@{/user/changePassword}]]*/ "";
+
+    function submit() {
+        let data = $('#changePasswordForm').serialize();
+        $.operate.saveAndReload(changePasswordUrl, data);
+    }
+
+</script>
+</body>
+</html>
