@@ -2,8 +2,7 @@ package com.unicom.urban.management.common.properties;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,21 +14,24 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @Component
-@PropertySource("classpath:geoServer.properties")
-@ConfigurationProperties(prefix = "gis.geoserver")
 public class GeoServerProperties {
 
+    @Value("${gis.geoserver.url}")
     private String url;
 
+    @Value("${gis.geoserver.center_x}")
     private double center_x;
 
+    @Value("${gis.geoserver.center_y}")
     private double center_y;
 
+    @Value("${gis.geoserver.layers}")
     private String layers;
 
+    @Value("${gis.geoserver.zoom}")
     private int zoom;
 
+    @Value("${gis.geoserver.epsg}")
     private String epsg;
-
 
 }

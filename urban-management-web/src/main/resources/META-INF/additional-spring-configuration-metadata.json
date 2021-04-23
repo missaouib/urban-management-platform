@@ -4,6 +4,41 @@
       "name": "fdfs.nginx-url",
       "type": "java.lang.String",
       "description": "fastdfs nginx附件回显地址."
+    },
+    {
+      "name": "gis.geoserver.url",
+      "type": "java.lang.String",
+      "description": "geoserver 地址."
+    },
+    {
+      "name": "gis.geoserver.center_x",
+      "type": "java.lang.Double",
+      "description": "中心点横坐标."
+    },
+    {
+      "name": "gis.geoserver.center_y",
+      "type": "java.lang.Double",
+      "description": "中心点纵坐标."
+    },
+    {
+      "name": "gis.geoserver.layers",
+      "type": "java.lang.String",
+      "description": "Description for gis.geoserver.layers."
+    },
+    {
+      "name": "gis.geoserver.zoom",
+      "type": "java.lang.Integer",
+      "description": "Description for gis.geoserver.zoom."
+    },
+    {
+      "name": "gis.geoserver.epsg",
+      "type": "java.lang.String",
+      "description": "Description for gis.geoserver.epsg."
+    },
+    {
+      "name": "gis.api.url",
+      "type": "java.lang.String",
+      "description": "GIS项目的地址."
     }
   ]
 }
