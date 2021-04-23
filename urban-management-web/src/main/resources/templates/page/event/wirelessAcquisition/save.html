@@ -860,130 +860,180 @@
             duration: 250
         }
     });
+    //
     let mapUrl = [[${@geoServerProperties.url}]];
-    let center_x = [[${@geoServerProperties.center_x}]];
-    let center_y = [[${@geoServerProperties.center_y}]];
-    let layers = [[${@geoServerProperties.layers}]];
-    let zoom = [[${@geoServerProperties.zoom}]];
-    let epsg = [[${@geoServerProperties.epsg}]];
-    // 地图
-    var gridsetName = 'EPSG:4552';
-    var gridNames = ['EPSG:4552:0', 'EPSG:4552:1', 'EPSG:4552:2', 'EPSG:4552:3', 'EPSG:4552:4', 'EPSG:4552:5', 'EPSG:4552:6', 'EPSG:4552:7'];
-    var baseUrl = 'http://218.10.223.8:9050/geoserver/gwc/service/wmts';
-    var style = 'blue';
-    var format = 'image/png';
-    var infoFormat = 'text/html';
-    var layerName = 'hegang:hegang8';
-    var layerName1 = 'hegang:gongnong';
-    var projection = new ol.proj.Projection({
-        code: 'EPSG:4552',
-        units: 'm',
-        axisOrientation: 'neu'
-    });
-    var resolutions = [13.999999999999998, 6.999999999999999, 3.4999999999999996, 1.7499999999999998, 0.8749999999999999, 0.43749999999999994, 0.21874999999999997, 0.10937499999999999];
-    baseParams = ['VERSION','LAYER','STYLE','TILEMATRIX','TILEMATRIXSET','SERVICE','FORMAT'];
-
-    params = {
-        'VERSION': '1.0.0',
-        'LAYER': layerName,
-        'STYLE': style,
-        'TILEMATRIX': gridNames,
-        'TILEMATRIXSET': gridsetName,
-        'SERVICE': 'WMTS',
-        'FORMAT': format
-    };
-
-    function constructSource() {
-        var url = baseUrl+'?'
-        for (var param in params) {
-            if (baseParams.indexOf(param.toUpperCase()) < 0) {
-                url = url + param + '=' + params[param] + '&';
-            }
-        }
-        url = url.slice(0, -1);
-
-        var source = new ol.source.WMTS({
-            url: url,
-            layer: params['LAYER'],
-            matrixSet: params['TILEMATRIXSET'],
-            format: params['FORMAT'],
-            projection: projection,
-            tileGrid: new ol.tilegrid.WMTS({
-                tileSize: [512,512],
-                extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
-                origin: [374503.7646126483, 5570848.560955403],
-                resolutions: resolutions,
-                matrixIds: params['TILEMATRIX']
-            }),
-            style: params['STYLE'],
-            wrapX: true
-        });
-        return source;
-    }
-
-    var untiled = new ol.layer.Tile({
-        source: constructSource()
-    });
-
-    // //覆盖新图层
+    // let center_x = [[${@geoServerProperties.center_x}]];
+    // let center_y = [[${@geoServerProperties.center_y}]];
+    // let layers = [[${@geoServerProperties.layers}]];
+    // let zoom = [[${@geoServerProperties.zoom}]];
+    // let epsg = [[${@geoServerProperties.epsg}]];
+    // // 地图
+    // var gridsetName = 'EPSG:4552';
+    // var gridNames = ['EPSG:4552:0', 'EPSG:4552:1', 'EPSG:4552:2', 'EPSG:4552:3', 'EPSG:4552:4', 'EPSG:4552:5', 'EPSG:4552:6', 'EPSG:4552:7'];
+    // var baseUrl = 'http://218.10.223.8:9050/geoserver/gwc/service/wmts';
+    // var style = 'blue';
+    // var format = 'image/png';
+    // var infoFormat = 'text/html';
+    // var layerName = 'hegang:hegang8';
+    // var layerName1 = 'hegang:gongnong';
+    // var projection = new ol.proj.Projection({
+    //     code: 'EPSG:4552',
+    //     units: 'm',
+    //     axisOrientation: 'neu'
+    // });
+    // var resolutions = [13.999999999999998, 6.999999999999999, 3.4999999999999996, 1.7499999999999998, 0.8749999999999999, 0.43749999999999994, 0.21874999999999997, 0.10937499999999999];
+    // baseParams = ['VERSION','LAYER','STYLE','TILEMATRIX','TILEMATRIXSET','SERVICE','FORMAT'];
+    //
     // params = {
     //     'VERSION': '1.0.0',
-    //     'LAYER': layerName1,
+    //     'LAYER': layerName,
     //     'STYLE': style,
     //     'TILEMATRIX': gridNames,
     //     'TILEMATRIXSET': gridsetName,
     //     'SERVICE': 'WMTS',
     //     'FORMAT': format
     // };
-    function constructSource1() {
-        var url = baseUrl+'?'
-        for (var param in params) {
-            if (baseParams.indexOf(param.toUpperCase()) < 0) {
-                url = url + param + '=' + params[param] + '&';
+    //
+    // function constructSource() {
+    //     var url = baseUrl+'?'
+    //     for (var param in params) {
+    //         if (baseParams.indexOf(param.toUpperCase()) < 0) {
+    //             url = url + param + '=' + params[param] + '&';
+    //         }
+    //     }
+    //     url = url.slice(0, -1);
+    //
+    //     var source = new ol.source.WMTS({
+    //         url: url,
+    //         layer: params['LAYER'],
+    //         matrixSet: params['TILEMATRIXSET'],
+    //         format: params['FORMAT'],
+    //         projection: projection,
+    //         tileGrid: new ol.tilegrid.WMTS({
+    //             tileSize: [512,512],
+    //             extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
+    //             origin: [374503.7646126483, 5570848.560955403],
+    //             resolutions: resolutions,
+    //             matrixIds: params['TILEMATRIX']
+    //         }),
+    //         style: params['STYLE'],
+    //         wrapX: true
+    //     });
+    //     return source;
+    // }
+    //
+    // var untiled = new ol.layer.Tile({
+    //     source: constructSource()
+    // });
+    //
+    // // //覆盖新图层
+    // // params = {
+    // //     'VERSION': '1.0.0',
+    // //     'LAYER': layerName1,
+    // //     'STYLE': style,
+    // //     'TILEMATRIX': gridNames,
+    // //     'TILEMATRIXSET': gridsetName,
+    // //     'SERVICE': 'WMTS',
+    // //     'FORMAT': format
+    // // };
+    // function constructSource1() {
+    //     var url = baseUrl+'?'
+    //     for (var param in params) {
+    //         if (baseParams.indexOf(param.toUpperCase()) < 0) {
+    //             url = url + param + '=' + params[param] + '&';
+    //         }
+    //     }
+    //     url = url.slice(0, -1);
+    //
+    //     var source = new ol.source.WMTS({
+    //         url: url,
+    //         layer: params['LAYER'],
+    //         matrixSet: params['TILEMATRIXSET'],
+    //         format: params['FORMAT'],
+    //         projection: projection,
+    //         tileGrid: new ol.tilegrid.WMTS({
+    //             tileSize: [512,512],
+    //             extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
+    //             origin: [374503.7646126483, 5570848.560955403],
+    //             resolutions: resolutions,
+    //             matrixIds: params['TILEMATRIX']
+    //         }),
+    //         style: params['STYLE'],
+    //         wrapX: true
+    //     });
+    //     return source;
+    // }
+    //
+    // var gongnong = new ol.layer.Tile({
+    //     source: constructSource1()
+    // });
+    //
+    // var view = new ol.View({
+    //     center: [0, 0],
+    //     zoom: 17,
+    //     resolutions: resolutions,
+    //     projection: projection,
+    //     extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403]
+    // });
+    //
+    // var map = new ol.Map({
+    //     layers: [untiled,gongnong],
+    //     target: 'map',
+    //     view: view
+    // });
+    // map.getView().fit([593489.95, 5237489.95,
+    //     598010.0499999999, 5247510.05], map.getSize());
+    var pureCoverage = true;
+    // if this is just a coverage or a group of them, disable a few items,
+    // and default to jpeg format
+    var format = 'image/png';
+    var bounds = [593489.95, 5237489.850000007,
+        598010.1499999968, 5247510.05];
+    var untiled = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+            ratio: 1,
+            url: 'http://218.10.223.8:9050/geoserver/hegang/wms',
+            params: {'FORMAT': format,
+                'VERSION': '1.1.1',
+                "LAYERS": 'hegang:hegang8',
+                "exceptions": 'application/vnd.ogc.se_inimage',
             }
-        }
-        url = url.slice(0, -1);
-
-        var source = new ol.source.WMTS({
-            url: url,
-            layer: params['LAYER'],
-            matrixSet: params['TILEMATRIXSET'],
-            format: params['FORMAT'],
-            projection: projection,
-            tileGrid: new ol.tilegrid.WMTS({
-                tileSize: [512,512],
-                extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
-                origin: [374503.7646126483, 5570848.560955403],
-                resolutions: resolutions,
-                matrixIds: params['TILEMATRIX']
-            }),
-            style: params['STYLE'],
-            wrapX: true
-        });
-        return source;
-    }
-
-    var gongnong = new ol.layer.Tile({
-        source: constructSource1()
+        })
     });
-
-    var view = new ol.View({
-        center: [0, 0],
-        zoom: 17,
-        resolutions: resolutions,
-        projection: projection,
-        extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403]
+    var tiled = new ol.layer.Tile({
+        visible: false,
+        source: new ol.source.TileWMS({
+            url: 'http://218.10.223.8:9050/geoserver/hegang/wms',
+            params: {'FORMAT': format,
+                'VERSION': '1.1.1',
+                tiled: true,
+                "LAYERS": 'hegang:hegang8',
+                "exceptions": 'application/vnd.ogc.se_inimage',
+                tilesOrigin: 593489.95 + "," + 5237489.850000007
+            }
+        })
     });
-
+    var projection = new ol.proj.Projection({
+        code: 'EPSG:4552',
+        units: 'm',
+        axisOrientation: 'neu',
+        global: false
+    });
     var map = new ol.Map({
-        layers: [untiled,gongnong],
         target: 'map',
-        view: view
+        layers: [
+            untiled,
+            tiled
+        ],
+        view: new ol.View({
+            projection: projection
+        })
     });
-    map.getView().fit([593489.95, 5237489.95,
-        598010.0499999999, 5247510.05], map.getSize());
-    var fullScreenControl = new ol.control.FullScreen();
 
+    map.getView().fit(bounds, map.getSize());
+    map.getView().setZoom(17)
+
+    var fullScreenControl = new ol.control.FullScreen();
     map.addControl(fullScreenControl)
     var layerMap = new ol.layer.Vector({
         source: new ol.source.Vector(),

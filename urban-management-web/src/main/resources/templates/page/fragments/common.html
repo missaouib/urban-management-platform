@@ -63,6 +63,23 @@
 </div>
 
 
+<!--地图    非    切片地图-->
+<div th:fragment="mapSlicing_js">
+    <script type="text/javascript" th:inline="javascript">
+        let url = [[${@geoServerProperties.url}]];
+        let center_x = [[${@geoServerProperties.center_x}]];
+        let center_y = [[${@geoServerProperties.center_y}]];
+        let layers = [[${@geoServerProperties.layers}]];
+        let zoom = [[${@geoServerProperties.zoom}]];
+        let epsg = [[${@geoServerProperties.epsg}]];
+    </script>
+    <script th:src="@{/plugins/map/noSlicingMap.js}"></script>
+    <!--    <script th:src="@{/plugins/map/mapNew.js}"></script>-->
+    <script th:src="@{/plugins/map/boxSelect.js}"></script>
+    <script th:src="@{/plugins/map/mouseClickSearch.js}"></script>
+</div>
+
+
 <!-- 轮播图 swiper 插件-->
 <div th:fragment="swiper_css">
     <link rel="stylesheet" th:href="@{/plugins/swiper/dist/css/swiper.min.css}">
