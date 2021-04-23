@@ -28,7 +28,7 @@
                 <div class="Day" id="Day" th:text="${#dates.dayOfWeekName(new java.util.Date().getTime())}"></div>
                 <div class="daily" id="daily" th:text="${#dates.format(new java.util.Date().getTime(), 'yyyy年MM月dd日')}"></div>
             </div>
-            <div class="userNameTop username" id="userNameTop" th:sec:authentication="principal.name">
+            <div class="userNameTop username" id="userNameTop" th:sec:authentication="principal.name" onclick="openProfile()">
 
             </div>
             <!--            铃铛-->
@@ -130,6 +130,8 @@
 <script th:src="@{/js/index.js}"></script>
 <script type="text/javascript" th:inline="javascript">
 
+    let colorIndex = 0;
+
     $(function () {
 
         $(document).mousemove(function(e){
@@ -148,6 +150,7 @@
         $(".quitBtn").click(function () {
             window.location.href = logoutUrl;
         })
+        changeColor(colorIndex);
 
         // $(".treeview").click(function () {
         //     $(this).addClass("menuActive").siblings(".treeview").removeClass("menuActive");
@@ -168,11 +171,12 @@
     })
 
 
-    let colorIndex = 0;
+    let profileUrl = /*[[@{/user/profile}]]*/ "";
 
-    $(function () {
-        changeColor(colorIndex);
-    });
+    function openProfile() {
+        $.learuntab.myAddTab("修改密码", profileUrl, profileUrl);
+    }
+
 
     function changeColor(index){
         var logo = $(".logo");

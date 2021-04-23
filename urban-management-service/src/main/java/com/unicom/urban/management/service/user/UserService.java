@@ -5,7 +5,6 @@ import com.unicom.urban.management.common.constant.KvConstant;
 import com.unicom.urban.management.common.exception.BadPasswordException;
 import com.unicom.urban.management.common.exception.DataValidException;
 import com.unicom.urban.management.common.util.AESUtil;
-import com.unicom.urban.management.util.SecurityUtil;
 import com.unicom.urban.management.dao.user.UserRepository;
 import com.unicom.urban.management.mapper.UserMapper;
 import com.unicom.urban.management.pojo.Delete;
@@ -21,6 +20,7 @@ import com.unicom.urban.management.pojo.vo.UserVO;
 import com.unicom.urban.management.service.dept.DeptService;
 import com.unicom.urban.management.service.grid.GridService;
 import com.unicom.urban.management.service.password.PasswordService;
+import com.unicom.urban.management.util.SecurityUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,22 +153,20 @@ public class UserService {
 
     }
 
+    @Log(name = "修改个人密码")
     public void changePassword(ChangePasswordDTO changePasswordDTO) {
+        if (!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfigNewPassword())) {
+            throw new BadPasswordException("两次输入的密码不一致");
+        }
         Optional<User> optionalUser = userRepository.findByUsernameAndDeleted(SecurityUtil.getUsername(), Delete.NORMAL);
-
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             if (!passwordService.matches(changePasswordDTO.getOldPassword(), user.getPassword())) {
                 throw new BadPasswordException("密码错误");
             }
-            if (!changePasswordDTO.getNewPassword().equals(changePasswordDTO.getConfigNewPassword())) {
-                throw new BadPasswordException("两次输入的密码不一致");
-            }
             user.setPassword(passwordService.encode(changePasswordDTO.getNewPassword()));
             userRepository.save(user);
         }
-
-
     }
 
     public UserVO findById(String id) {
