@@ -273,7 +273,10 @@ var draw;
 //添加交互式绘图对象的函数
 function addInteraction() {
     // 获取当前选择的绘制类型
-    var type = typeSelect.value == 'area' ? 'Polygon' : 'LineString';
+    if (typeSelect){
+        var type = typeSelect.value == 'area' ? 'Polygon' : 'LineString';
+    }
+
     //创建一个交互式绘图对象
     draw = new ol.interaction.Draw({
         //绘制的数据源
@@ -430,12 +433,15 @@ function createMeasureTooltip() {
     map.addOverlay(measureTooltip);
 }
 //测量类型发生改变时触发事件
-typeSelect.onchange = function() {
-    //移除之前的绘制对象
-    map.removeInteraction(draw);
-    //重新进行绘制
-    addInteraction();
-};
+if (typeSelect){
+    typeSelect.onchange = function() {
+        //移除之前的绘制对象
+        map.removeInteraction(draw);
+        //重新进行绘制
+        addInteraction();
+    };
+}
+
 
 //格式化测量长度
 var formatLength = function(line) {
