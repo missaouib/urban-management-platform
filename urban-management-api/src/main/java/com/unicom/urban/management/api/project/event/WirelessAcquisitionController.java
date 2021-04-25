@@ -1,5 +1,6 @@
 package com.unicom.urban.management.api.project.event;
 
+import cn.hutool.json.JSONObject;
 import com.unicom.urban.management.common.annotations.ResponseResultBody;
 import com.unicom.urban.management.common.constant.EventConstant;
 import com.unicom.urban.management.common.properties.GisServiceProperties;
@@ -349,8 +350,24 @@ public class WirelessAcquisitionController {
     @PostMapping("/saveTrackLog")
     public Result saveTrackLog(TrajectoryDTO trajectoryDTO) {
         SecurityUserBean user = SecurityUtil.getUser();
+        RestReturn body = RestTemplateUtil.post(gisServiceProperties.getUrl() + "/portTransformation",getPointJson(trajectoryDTO.getX(),trajectoryDTO.getY()), RestReturn.class).getBody();
+        assert body != null;
+        Map<String,Object> map = (Map<String, Object>) body.getData();
+        trajectoryDTO.setX((Double) map.get("longitude"));
+        trajectoryDTO.setY((Double) map.get("latitude"));
         trajectoryService.saveTrajectory(trajectoryDTO, user.castToUser());
         return Result.success("成功");
+    }
+
+    private JSONObject getPointJson(Double x, Double y){
+        Map<String, Object> point = new HashMap<>(3);
+        point.put("longitude",x);
+        point.put("latitude",y);
+        point.put("epsg","4326");
+        Map<String, Object> pointApiParam = new HashMap<>(2);
+        pointApiParam.put("point",point);
+        pointApiParam.put("toEPSG","4552");
+        return new JSONObject(pointApiParam);
     }
 
     /**
