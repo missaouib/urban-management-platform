@@ -363,6 +363,7 @@ public class WorkService {
         int[] map = taskProcessingService.betWeenTime(statistics.getStartTime(), statistics.getEndTime(), statistics.getProcessTimeLimit().getTimeType().getId(), statistics.getProcessTimeLimit().getTimeLimit(), 0);
         statistics.setSts(String.valueOf(map[1]));
         setOpinionsAndEventFileList(statistics, eventDTO.getRepresent(), eventDTO.getEventFileList());
+        statistics.setUser(SecurityUtil.getUser().castToUser());
         statisticsService.update(statistics);
         List<String> userList = taskProcessingService.getUsers(KvConstant.SHIFT_LEADER_ROLE);
         activitiService.complete(statistics.getTaskId(), userList, eventDTO.getButton());
