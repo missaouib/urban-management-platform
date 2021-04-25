@@ -86,10 +86,57 @@
 <th:block th:include="page/fragments/common :: bmap_js" />
 <script type="text/javascript" th:inline="javascript">
     var id=[[${id}]]
+    getGridCenter(id)
     $(function () {
         search();
         $(".ol-full-screen-false").html("全屏")
     });
+
+
+    /**
+     * 获取网格的中心点
+     */
+    function getGridCenter(id) {
+        layerMap.getSource().clear();
+        let surl = "/event/findGeomByGridId?id=" + id;
+        $.ajaxUtil.get(surl, function (e) {
+            console.log(e)
+            $(e.data.geom).each(function (index, value) {
+                let split = value.split(",");
+                let polygonArray = [];
+                let polygonArrayEnd = [];
+                for (let j = 0; j < split.length; j++) {
+                    let pointArray = [];
+                    pointArray.push(split[j].split(" ")[0]);
+                    pointArray.push(split[j].split(" ")[1]);
+                    polygonArray.push(pointArray);
+                    polygonArrayEnd.push(polygonArray);
+                }
+                setPolygon(polygonArrayEnd);
+            })
+            var data = e.data.center[0].split(" ");
+            var center = [];
+            center.push(parseFloat(data[0]))
+            center.push(parseFloat(data[1]))
+            setCenterForGrid(center);
+        });
+
+    }
+    function setPolygon(Polygons, data) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(Polygons),
+            data: {
+                id: data,
+                // name: name,
+                coordinate: Polygons
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
+    }
+    function setCenterForGrid(data) {
+        map.getView().setCenter(data);
+    }
+
 
     let searchUrl = /*[[@{/gridOwner/getGridList}]]*/ "/gridOwner/getGridList";
     let collocationUrl = /*[[@{/grid/coolocation}]]*/ "/gridOwner/coolocation";
@@ -153,6 +200,9 @@
         ////取消所有
         onUncheckAll: function (row) {
             checked()
+        },
+        onClickRow: function (row,index) {
+            getGridCenter(row.id)
         },
         pagination: true,
         paginationLoop: true,
@@ -263,26 +313,7 @@
         $.operate.saveAndReload(collocationUrl, data);
     }
 
-    /*网格*/
-    function setPolygon(coordinates, id) {
-        let Polygon = new ol.Feature({
-            geometry: new ol.geom.Polygon(coordinates),
-            data: {
-                id: id,
-                coordinate: coordinates
-            }
-        });
-        layerMap.getSource().addFeature(Polygon);
-    }
-    /* ------------  网格点击事件，打印id  ------------------*/
-    var selectClick = new ol.interaction.Select();
-    map.addInteraction(selectClick);
-    selectClick.on('select', function (e) {
-        var features = e.target.getFeatures().getArray();
-        console.log('网格',features)
-        let data = features[0].H.data;
-        console.log('data', data)
-    })
+
 
 
 </script>
