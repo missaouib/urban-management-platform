@@ -40,12 +40,12 @@
                 </div>
 
                     <div class="r_right but_p girdBtnGroup" id="eventButton" style="margin:  0 0 10px 0!important;">
-                        <button class="but_save" type="button" style="margin-right: 10px" id="saveRoleBtn"
+                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="saveRoleBtn"
                                 >全选
                         </button>
                         <button class="but_save roleBox" type="button" id="lessCheck" style="margin-right: 10px">取消全选
                         </button>
-                        <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn" onclick="save()"  >保存
+                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="updateRoleBtn" onclick="save()"  >保存
                         </button>
 
             </div>
@@ -71,24 +71,21 @@
     let saveUserAndRoleURL = /*[[@{/roleSetup/saveUserAndRole}]]*/ "/roleSetup/saveUserAndRole";
 
     $(function () {
-        var rowIds = [];
+
         //全选 全不选
         $("#saveRoleBtn").click(function () {
             $(this).addClass("roleBox");
             $("#lessCheck").removeClass("roleBox");
             $('input:checkbox').prop("checked",true)
         });
+
         $("#lessCheck").click(function () {
             $(this).addClass("roleBox");
             $("#saveRoleBtn").removeClass("roleBox");
             $('input:checkbox').prop("checked",false)
-        })
+        });
 
-        $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
-            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
-        })
-
-        var setting = {
+        let setting = {
             callback: {
                 onClick: zTreeOnClick
             },
@@ -121,7 +118,6 @@
 
         search()
 
-
     });
 
     function save() {
@@ -144,8 +140,13 @@
     function zTreeOnClick(event, treeId, treeNode) {
         if(treeNode.isParent || treeNode.levelOrNot === null){
             $.modal.alertWarning("请选择角色");
+            $("#saveRoleBtn").addClass("roleBox");
+            $("#updateRoleBtn").addClass("roleBox");
+            $("#lessCheck").addClass("roleBox");
             return false;
         }
+        $("#saveRoleBtn").removeClass("roleBox");
+        $("#updateRoleBtn").removeClass("roleBox");
         $("#roleId").val(treeNode.id)
         findUserByRole(treeNode.id)
     }
