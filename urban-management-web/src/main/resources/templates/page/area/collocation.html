@@ -100,25 +100,26 @@
         layerMap.getSource().clear();
         let surl = "/event/findGeomByGridId?id=" + id;
         $.ajaxUtil.get(surl, function (e) {
-            console.log(e)
-            $(e.data.geom).each(function (index, value) {
-                let split = value.split(",");
-                let polygonArray = [];
-                let polygonArrayEnd = [];
-                for (let j = 0; j < split.length; j++) {
-                    let pointArray = [];
-                    pointArray.push(split[j].split(" ")[0]);
-                    pointArray.push(split[j].split(" ")[1]);
-                    polygonArray.push(pointArray);
-                    polygonArrayEnd.push(polygonArray);
-                }
-                setPolygon(polygonArrayEnd);
-            })
-            var data = e.data.center[0].split(" ");
-            var center = [];
-            center.push(parseFloat(data[0]))
-            center.push(parseFloat(data[1]))
-            setCenterForGrid(center);
+           if (e.data){
+               $(e.data.geom).each(function (index, value) {
+                   let split = value.split(",");
+                   let polygonArray = [];
+                   let polygonArrayEnd = [];
+                   for (let j = 0; j < split.length; j++) {
+                       let pointArray = [];
+                       pointArray.push(split[j].split(" ")[0]);
+                       pointArray.push(split[j].split(" ")[1]);
+                       polygonArray.push(pointArray);
+                       polygonArrayEnd.push(polygonArray);
+                   }
+                   setPolygon(polygonArrayEnd);
+               })
+               var data = e.data.center[0].split(" ");
+               var center = [];
+               center.push(parseFloat(data[0]))
+               center.push(parseFloat(data[1]))
+               setCenterForGrid(center);
+           }
         });
 
     }
