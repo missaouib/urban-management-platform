@@ -28,7 +28,6 @@
 <div class="col-md-12" style="height: 100%">
     <div class="content">
         <div class="leftContent">
-
             <form id="userForm">
                 <div style="width: 100%;display: flex;justify-content: start;">
                     <button style="margin-left: 10px" class="but_save saveTheBtn" type="submit" onclick="submitHandler()">保存</button>
@@ -38,10 +37,10 @@
                         <table class="table">
                             <tbody>
                             <tr>
-                                <td><span></span>案件编号</td>
-                                <td>
-                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input" />
-                                </td>
+<!--                                <td><span></span>案件编号</td>-->
+<!--                                <td>-->
+<!--                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input" />-->
+<!--                                </td>-->
                                 <td><span></span>案件分类</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
@@ -49,26 +48,39 @@
                                     <button type="button" class="addBtn" onclick="selectEventTypeTree()">
                                         +
                                     </button>
-                                    <!--                                    <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">-->
-                                    <!--                                        +-->
-                                    <!--                                    </button>-->
                                 </td>
+                                <td><span></span>案件类型</td>
+                                <td>
+                                    <select class="form-control" id="recTypeId" th:name="recTypeId" required>
+                                        <option th:each="as:${recType}" th:value="${as.id}" th:text="${as.value}"></option>
+                                    </select>
+                                </td>
+                                <td><span></span>部件编码</td>
+                                <td>
+                                    <input type="text" readonly id="componentObjId" name="componentObjId" />
+                                    <input type="hidden" id="layer"  readonly="readonly">
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><span>*</span>立案区域</td>
                                 <td>
                                     <select id="eventCondition" onchange="getEventCondition()" required>
 
                                     </select>
                                 </td>
-
-                            </tr>
-                            <tr>
                                 <td><span>*</span>立案条件</td>
                                 <td>
                                     <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
 
                                     </select>
                                 </td>
+                                <td><span>*</span>经度</td>
+                                <td>
+                                    <input type="text" class="" value="" name="x" id="longitude"  required readonly/>
 
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><span>*</span>计时等级</td>
                                 <td>
                                     <select id="timeType" onchange="getDeptTimeLimitList()" name="timeLevel" required>
@@ -81,21 +93,12 @@
                                     <input type="text" id="deptTImeLimit" required readonly/>
 
                                 </td>
+                                <td><span>*</span>纬度</td>
+                                <td>
+                                    <input type="text" class="" value="" name="y" id="latitude" required readonly/>
+                                </td>
                             </tr>
                             <tr>
-
-                                <td><span></span>部件编码</td>
-                                <td>
-                                    <input type="text" readonly id="componentObjId" name="componentObjId" />
-                                    <input type="hidden" id="layer"  readonly="readonly">
-<!--                                    <input type="hidden" id="componentObjId1"  />-->
-                                </td>
-                                <td><span></span>案件类型</td>
-                                <td>
-                                    <select class="form-control" id="recTypeId" th:name="recTypeId" required>
-                                        <option th:each="as:${recType}" th:value="${as.id}" th:text="${as.value}"></option>
-                                    </select>
-                                </td>
                                 <td><span>*</span>所在区域</td>
                                 <td>
                                     <select name="required" class="form-control" id="grid1" onchange="getStreetList()" required>
@@ -103,27 +106,19 @@
                                                 th:text="${as.gridName}"></option>
                                     </select>
                                 </td>
-                            </tr>
-                            <tr>
-
-                                <td><span>*</span>经度</td>
-                                <td>
-                                    <input type="text" class="" value="" name="x" id="longitude"  required readonly/>
-
-                                </td>
-                                <td><span>*</span>纬度</td>
-                                <td>
-                                    <input type="text" class="" value="" name="y" id="latitude" required readonly/>
-                                </td>
-
                                 <td><span>*</span>所属街道</td>
                                 <td>
                                     <select name="petitonerPhone" class="form-control" id="grid2" onchange="getCommunityList()" required>
                                     </select>
                                 </td>
-
+                                <td><span></span>问题来源</td>
+                                <td>
+                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required disabled>
+                                        <option th:each="as:${eventSource}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
+                                    </select>
+                                </td>
                             </tr>
-
                             <tr>
                                 <td><span></span>所属社区</td>
                                 <td>
@@ -135,42 +130,33 @@
                                     <select  th:name="gridId"  id="grid4"  onchange="getGridCenter(this)" required>
                                     </select>
                                 </td>
-                                <td><span></span>问题来源</td>
-                                <td>
-                                    <select class="form-control" id="eventSource" th:name="eventSourceId" required disabled>
-                                        <option th:each="as:${eventSource}" th:value="${as.id}"
-                                                th:text="${as.value}"></option>
-                                    </select>
+                                <td><span></span>上报人</td>
+                                <td style="margin-top:10px;display: flex;justify-content: space-between;align-items: center">
+                                    <div class="username" th:sec:authentication="principal.name"></div>
+                                    <div style="display: flex;align-items: center;justify-content: space-between">
+                                        <div style="color: black!important;">是否自处理</div>
+                                        <input id="doBySelf" name="doBySelf" placeholder="" class="" type="checkbox"
+                                               style="width: 30px">
+                                    </div>
                                 </td>
+                                <td><span></span></td>
+                                <td style="text-align: left"></td>
                             </tr>
                             <tr style="position: relative">
                                 <td><span>*</span>案件地址</td>
                                 <td style="position: relative">
-                                    <input onmouseover="this.title=this.value" id="location" th:name="location" onkeyup="setLocalSearch(this.value)"
+                                    <input onmouseover="this.title=this.value" id="location" th:name="location"
+                                           onkeyup="setLocalSearch(this.value)"
                                            type="text" class="overInput" required>
-                                    <div class="caseSeach" onclick="localGeocoding()"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
+                                    <div class="caseSeach" onclick="localGeocoding()"><i class="fa fa-search-plus"
+                                                                                         aria-hidden="true"></i></div>
                                 </td>
                                 <td><span>*</span>问题描述</td>
-                                <!--                                        <input id="phonenumber" name="phonenumber" placeholder="" class="" type="text" maxlength="11" required>-->
-                                <td >
-                                    <input th:name="represent" id="problemescription" type="text" class="overInput" onmouseover="this.title=this.value"  required>
+                                <td>
+                                    <input th:name="represent" id="problemescription" type="text" class="overInput"
+                                           onmouseover="this.title=this.value" required>
                                 </td>
-                                <td><span></span>上报人</td>
-                                <td  style="margin-top:10px;display: flex;justify-content: space-between;align-items: center"><div class="username" th:sec:authentication="principal.name"></div>
-                                    <div style="display: flex;align-items: center;justify-content: space-between">
-                                        <div style="color: black!important;">是否自处理</div><input  id="doBySelf" name="doBySelf" placeholder="" class="" type="checkbox" style="width: 30px">
-                                    </div>
-                                </td>
-
-                                    <td><span></span></td>
-                                    <td style="text-align: left">
-
-                                    </td>
-
                             </tr>
-
-
-
                             </tbody>
                         </table>
                         <div style="display: flex;align-items: center;justify-content: center">
@@ -184,16 +170,6 @@
                                     <input type="hidden" id="videoUrlList" name="videoUrlList" value="">
                                     <input type="hidden" id="musicUrlList" name="musicUrlList" value="">
                                 </div>
-                                <!--                            <div class="sendImg">-->
-                                <!--                                <div class="sendText"><span>视频:</span></div>-->
-                                <!--                                <div><input id="videoInput" class="videoInput" type="file" name="files" multiple="multiple"></div>-->
-                                <!--                                <input type="hidden" id="videoUrlList" name="videoUrlList" />-->
-                                <!--                            </div>-->
-                                <!--                            <div class="sendImg">-->
-                                <!--                                <div class="sendText"><span>音频:</span></div>-->
-                                <!--                                <div><input id="musicInput" class="musicInput" type="file" name="files" multiple="multiple"></div>-->
-                                <!--                                <input type="hidden" id="musicUrlList" name="musicUrlList" />-->
-                                <!--                            </div>-->
                             </div>
                             <div class="" id="after" style="display:none;padding-left: 20px">
                                 <span>处置后</span>
@@ -204,27 +180,12 @@
                                     <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter" value="">
                                     <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter" value="">
                                 </div>
-                                <!--                            <div class="sendImg">-->
-                                <!--                                <div class="sendText"><span>视频:</span></div>-->
-                                <!--                                <div><input id="videoInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>-->
-                                <!--                                <input type="hidden" id="videoUrlListAfter" name="videoUrlListAfter" value="">-->
-                                <!--                            </div>-->
-                                <!--                            <div class="sendImg">-->
-                                <!--                                <div class="sendText"><span>音频:</span></div>-->
-                                <!--                                <div><input id="musicInputAfter" type="file" class="input-id" name="files" multiple="multiple"></div>-->
-                                <!--                                <input type="hidden" id="musicUrlListAfter" name="musicUrlListAfter" value="">-->
-                                <!--                            </div>-->
                             </div>
                         </div>
 
                     </div>
-
-                    <!--                            按钮-->
-
                 </div>
             </form>
-
-
         </div>
         <div class="rightContent" style="position: relative">
             <div class="mengBan"></div>
@@ -431,7 +392,6 @@
     let dispatchUrl = /*[[@{/event/dispatch}]]*/ "/event/dispatch";
     let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
     let componentTypeUrl = /*[[@{/allEventType}]]*/ "/allEventType";
-    let createEventCodeUrl = /*[[@{/event/createEventCode}]]*/ "/event/createEventCode";
     let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
     let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
     let getDeptTimeLimitByLevelUrl = /*[[@{/event/getDeptTimeLimitByLevel}]]*/ "/event/getDeptTimeLimitByLevel";
@@ -463,8 +423,6 @@
         $("#typeStr").val(treeNode.name);
         $("#eventTypeId").val(treeNode.id);
         $(".closemodal").click();
-        let eventTypeId = $("#eventTypeId").val();
-        createEventCode(eventTypeId);
         //获取立案区域
         findEventConditionByEventType(eventTypeId)
     }
@@ -495,21 +453,6 @@
         $.operate.saveTab(preReportUrl, data);
     }
 
-    /**
-     * 后台自动生成案卷号
-     * @param eventTypeId
-     */
-    function createEventCode(eventTypeId) {
-        if (eventTypeId !== undefined && eventTypeId !== '') {
-            var url = createEventCodeUrl + "?eventTypeId=" + eventTypeId
-            $.ajaxUtil.get(url, function (e) {
-                if (e.code === 0) {
-                    let eventCode = e.data
-                    $("#eventCode").val(eventCode);
-                }
-            })
-        }
-    }
     let unit = /*[[@{/event/findUnit}]]*/ "/event/findUnit";
     /**
      * 获取部件的发布图层
@@ -543,13 +486,8 @@
                             }
                         })
                     });
-
-
                     let layersArray = map.getLayers();
                     layersArray.insertAt(1, ImageVector);
-
-
-
                 }
             })
         })
@@ -712,7 +650,6 @@
         $("#eventTypeId").val(body.find('#treeId').val());
         $("#typeStr").val(body.find('#treeName').val());
         let eventTypeId = $("#eventTypeId").val();
-        createEventCode(eventTypeId);
         //获取立案区域
         findEventConditionByEventType(eventTypeId);
         //部件获取
@@ -828,29 +765,6 @@
         return reg.test(value);
     }, "petitonerPhone error");
 
-    function submitHandler1() {
-        //先校验
-        if (!$("form").valid()) {
-            return;
-        }
-        let data = $('#userForm').serialize();
-        $.operate.saveAndReload(receiveUrl, data, function (e){
-            createEventCode($("#eventTypeId").val());
-        });
-    }
-
-    function submitHandler2() {
-        //先校验
-        if (!$("form").valid()) {
-            return;
-        }
-        let data = $('#userForm').serialize();
-        $.operate.saveAndReload(dispatchUrl, data, function (e){
-            createEventCode($("#eventTypeId").val());
-        });
-    }
-
-
     var container = document.getElementById('popup');
     var content = document.getElementById('popup-content');
     var closer = document.getElementById('popup-closer');
@@ -863,130 +777,7 @@
     });
     //
     let mapUrl = [[${@geoServerProperties.url}]];
-    // let center_x = [[${@geoServerProperties.center_x}]];
-    // let center_y = [[${@geoServerProperties.center_y}]];
-    // let layers = [[${@geoServerProperties.layers}]];
-    // let zoom = [[${@geoServerProperties.zoom}]];
-    // let epsg = [[${@geoServerProperties.epsg}]];
-    // // 地图
-    // var gridsetName = 'EPSG:4552';
-    // var gridNames = ['EPSG:4552:0', 'EPSG:4552:1', 'EPSG:4552:2', 'EPSG:4552:3', 'EPSG:4552:4', 'EPSG:4552:5', 'EPSG:4552:6', 'EPSG:4552:7'];
-    // var baseUrl = 'http://218.10.223.8:9050/geoserver/gwc/service/wmts';
-    // var style = 'blue';
-    // var format = 'image/png';
-    // var infoFormat = 'text/html';
-    // var layerName = 'hegang:hegang8';
-    // var layerName1 = 'hegang:gongnong';
-    // var projection = new ol.proj.Projection({
-    //     code: 'EPSG:4552',
-    //     units: 'm',
-    //     axisOrientation: 'neu'
-    // });
-    // var resolutions = [13.999999999999998, 6.999999999999999, 3.4999999999999996, 1.7499999999999998, 0.8749999999999999, 0.43749999999999994, 0.21874999999999997, 0.10937499999999999];
-    // baseParams = ['VERSION','LAYER','STYLE','TILEMATRIX','TILEMATRIXSET','SERVICE','FORMAT'];
-    //
-    // params = {
-    //     'VERSION': '1.0.0',
-    //     'LAYER': layerName,
-    //     'STYLE': style,
-    //     'TILEMATRIX': gridNames,
-    //     'TILEMATRIXSET': gridsetName,
-    //     'SERVICE': 'WMTS',
-    //     'FORMAT': format
-    // };
-    //
-    // function constructSource() {
-    //     var url = baseUrl+'?'
-    //     for (var param in params) {
-    //         if (baseParams.indexOf(param.toUpperCase()) < 0) {
-    //             url = url + param + '=' + params[param] + '&';
-    //         }
-    //     }
-    //     url = url.slice(0, -1);
-    //
-    //     var source = new ol.source.WMTS({
-    //         url: url,
-    //         layer: params['LAYER'],
-    //         matrixSet: params['TILEMATRIXSET'],
-    //         format: params['FORMAT'],
-    //         projection: projection,
-    //         tileGrid: new ol.tilegrid.WMTS({
-    //             tileSize: [512,512],
-    //             extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
-    //             origin: [374503.7646126483, 5570848.560955403],
-    //             resolutions: resolutions,
-    //             matrixIds: params['TILEMATRIX']
-    //         }),
-    //         style: params['STYLE'],
-    //         wrapX: true
-    //     });
-    //     return source;
-    // }
-    //
-    // var untiled = new ol.layer.Tile({
-    //     source: constructSource()
-    // });
-    //
-    // // //覆盖新图层
-    // // params = {
-    // //     'VERSION': '1.0.0',
-    // //     'LAYER': layerName1,
-    // //     'STYLE': style,
-    // //     'TILEMATRIX': gridNames,
-    // //     'TILEMATRIXSET': gridsetName,
-    // //     'SERVICE': 'WMTS',
-    // //     'FORMAT': format
-    // // };
-    // function constructSource1() {
-    //     var url = baseUrl+'?'
-    //     for (var param in params) {
-    //         if (baseParams.indexOf(param.toUpperCase()) < 0) {
-    //             url = url + param + '=' + params[param] + '&';
-    //         }
-    //     }
-    //     url = url.slice(0, -1);
-    //
-    //     var source = new ol.source.WMTS({
-    //         url: url,
-    //         layer: params['LAYER'],
-    //         matrixSet: params['TILEMATRIXSET'],
-    //         format: params['FORMAT'],
-    //         projection: projection,
-    //         tileGrid: new ol.tilegrid.WMTS({
-    //             tileSize: [512,512],
-    //             extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
-    //             origin: [374503.7646126483, 5570848.560955403],
-    //             resolutions: resolutions,
-    //             matrixIds: params['TILEMATRIX']
-    //         }),
-    //         style: params['STYLE'],
-    //         wrapX: true
-    //     });
-    //     return source;
-    // }
-    //
-    // var gongnong = new ol.layer.Tile({
-    //     source: constructSource1()
-    // });
-    //
-    // var view = new ol.View({
-    //     center: [0, 0],
-    //     zoom: 17,
-    //     resolutions: resolutions,
-    //     projection: projection,
-    //     extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403]
-    // });
-    //
-    // var map = new ol.Map({
-    //     layers: [untiled,gongnong],
-    //     target: 'map',
-    //     view: view
-    // });
-    // map.getView().fit([593489.95, 5237489.95,
-    //     598010.0499999999, 5247510.05], map.getSize());
     var pureCoverage = true;
-    // if this is just a coverage or a group of them, disable a few items,
-    // and default to jpeg format
     var format = 'image/png';
     var bounds = [593489.95, 5237489.850000007,
         598010.1499999968, 5247510.05];

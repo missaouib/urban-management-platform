@@ -11,17 +11,17 @@
     <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
 </head>
 <style>
-    .file-drop-zone-title{
-        padding: 68px 55px!important;
+    .file-preview{
+        height: 241px!important;
     }
     .file-drop-zone{
         min-height: 200px!important;
     }
+    .file-drop-zone-title{
+        padding: 68px 55px!important;
+    }
     .file-preview-thumbnails{
         max-height: 233px!important;
-    }
-    .file-preview{
-        height: 241px!important;
     }
 </style>
 
@@ -41,11 +41,11 @@
                         <table class="table">
                             <tbody>
                             <tr>
-                                <td><span></span>案件编号</td>
-                                <td>
-                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode"
-                                           class="find_input"/>
-                                </td>
+<!--                                <td><span></span>案件编号</td>-->
+<!--                                <td>-->
+<!--                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode"-->
+<!--                                           class="find_input"/>-->
+<!--                                </td>-->
                                 <td><span></span>案件类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                     <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
@@ -55,20 +55,41 @@
                                         +
                                     </button>
                                 </td>
+                                <td><span></span>案件分类</td>
+                                <td>
+                                    <select class="form-control" id="recTypeId" th:name="recTypeId" required>
+                                        <option th:each="as:${recType}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
+                                    </select>
+                                </td>
+                                <td><span>*</span>诉求人</td>
+                                <td>
+                                    <input readonly id="petitionerName" name="peopleName" type="text" class="" required>
+                                </td>
+
+                            </tr>
+                            <tr>
                                 <td><span>*</span>立案区域</td>
                                 <td>
                                     <select id="eventCondition" onchange="getEventCondition()" required>
 
                                     </select>
                                 </td>
-                            </tr>
-                            <tr>
                                 <td><span>*</span>立案条件</td>
                                 <td>
                                     <select id="conditionId" onchange="getTimeTypeList()" name="conditionId" required>
 
                                     </select>
                                 </td>
+                                <td><span></span>性别</td>
+                                <td>
+                                    <select disabled id="sex" required>
+                                        <option value="男">男</option>
+                                        <option value="女">女</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><span></span>计时等级</td>
                                 <td>
                                     <select id="timeType" onchange="getDeptTimeLimitList()" required>
@@ -81,45 +102,13 @@
                                     <input type="text" id="deptTImeLimit" required readonly/>
 
                                 </td>
-                            </tr>
-
-                            <tr>
-                                <td><span>*</span>诉求人</td>
-                                <td>
-                                    <input readonly id="petitionerName" name="peopleName" type="text" class="" required>
-                                </td>
-                                <td><span></span>性别</td>
-                                <td>
-                                    <select disabled id="sex" required>
-                                        <option value="男">男</option>
-                                        <option value="女">女</option>
-                                    </select>
-                                </td>
                                 <td><span>*</span>联系方式</td>
                                 <td>
                                     <input readonly id="petitionerPhone" name="petitionerPhone" type="text" class="" required/>
                                 </td>
-                            </tr>
-                            <tr>
 
-                                <td><span></span>诉求时间</td>
-                                <td>
-                                    <input id="createTime" type="text" class=""/>
-                                </td>
-                                <td><span></span>部件编码</td>
-                                <td>
-                                    <input type="text" id="componentObjId" name="componentObjId" readonly="readonly">
-                                    <input type="hidden" id="layer" readonly="readonly">
-                                </td>
-                                <td><span></span>案件分类</td>
-                                <td>
-                                    <select class="form-control" id="recTypeId" th:name="recTypeId" required>
-                                        <option th:each="as:${recType}" th:value="${as.id}"
-                                                th:text="${as.value}"></option>
-                                    </select>
-                                </td>
-                            </tr>
 
+                            </tr>
                             <tr>
                                 <td><span>*</span>经度</td>
                                 <td>
@@ -131,6 +120,13 @@
                                     <input type="text" class="" placeholder="" value="" name="y" id="latitude"
                                            readonly/>
                                 </td>
+                                <td><span></span>诉求时间</td>
+                                <td>
+                                    <input id="createTime" type="text" class=""/>
+                                </td>
+                            </tr>
+                            <tr>
+
                                 <td><span>*</span>所在区域</td>
                                 <td>
                                     <select class="form-control" id="grid1" onchange="getStreetList()"
@@ -140,15 +136,21 @@
                                                 th:text="${as.gridName}"></option>
                                     </select>
                                 </td>
-                            </tr>
-                            <tr>
-
                                 <td><span>*</span>所属街道</td>
                                 <td>
                                     <select class="form-control" id="grid2" onchange="getCommunityList()"
                                             required>
                                     </select>
                                 </td>
+                                <td><span></span>部件编码</td>
+                                <td>
+                                    <input type="text" id="componentObjId" name="componentObjId" readonly="readonly">
+                                    <input type="hidden" id="layer" readonly="readonly">
+                                </td>
+                            </tr>
+                            <tr>
+
+
                                 <td><span>*</span>所属社区</td>
                                 <td>
                                     <select class="form-control" id="grid3"
@@ -160,8 +162,6 @@
                                     <select th:name="gridId" id="grid4" onchange="getGridCenter(this)" required>
                                     </select>
                                 </td>
-                            </tr>
-                            <tr>
                                 <td><span></span>问题来源</td>
                                 <td>
                                     <select class="form-control" id="eventSource" required
@@ -169,6 +169,14 @@
                                         <option th:each="as:${eventSource}" th:value="${as.id}"
                                                 th:text="${as.value}"></option>
                                     </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>案件地址</td>
+                                <td style="position: relative">
+                                    <input onmouseover="this.title=this.value" id="location" th:name="location" onkeyup="setLocalSearch(this.value)"
+                                           type="text" class="overInput" required>
+                                    <div class="caseSeach" onclick="localGeocoding()"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
                                 </td>
                                 <td><span></span>上报人</td>
                                 <td>
@@ -180,14 +188,6 @@
 
 <!--                                    </select>-->
 <!--                                </td>-->
-                                <td><span>*</span>案件地址</td>
-                                <td style="position: relative">
-                                    <input onmouseover="this.title=this.value" id="location" th:name="location" onkeyup="setLocalSearch(this.value)"
-                                           type="text" class="overInput" required>
-                                    <div class="caseSeach" onclick="localGeocoding()"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
-                                </td>
-                            </tr>
-                            <tr>
                                 <td><span>*</span>问题描述</td>
                                 <td>
                                     <input onmouseover="this.title=this.value" id="represent"

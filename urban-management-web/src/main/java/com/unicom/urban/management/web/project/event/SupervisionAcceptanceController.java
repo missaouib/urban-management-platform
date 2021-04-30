@@ -181,7 +181,7 @@ public class SupervisionAcceptanceController {
     @PostMapping("/registerUpdate")
     public Result registerUpdate(@Valid EventDTO eventDTO) {
         eventService.registerUpdate(eventDTO);
-        return Result.success();
+        return Result.success("成功");
     }
 
     @GetMapping("/supervisionAcceptanceList")

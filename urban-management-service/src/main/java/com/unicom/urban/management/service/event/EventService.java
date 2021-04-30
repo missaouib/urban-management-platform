@@ -412,9 +412,6 @@ public class EventService {
      * @param eventDTO 事件参数
      */
     public void saveTemp(EventDTO eventDTO) {
-        if (existsByEventCode(eventDTO.getEventCode())) {
-            throw new DataValidException("案件号已存在，将为你修改新的编号");
-        }
         eventDTO.setSts(0);
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         event.setUser(SecurityUtil.getUser().castToUser());
@@ -423,6 +420,7 @@ public class EventService {
             component.setId(eventDTO.getObjId());
             event.setComponent(component);
         }
+        event.setEventCode(this.createCode(eventDTO.getEventTypeId()));
         eventRepository.save(event);
     }
 
@@ -432,9 +430,6 @@ public class EventService {
      * @param eventDTO 事件参数
      */
     public void save(EventDTO eventDTO) {
-        if (existsByEventCode(eventDTO.getEventCode())) {
-            throw new DataValidException("案件号已存在，将为你修改新的编号");
-        }
         Event event = EventMapper.INSTANCE.eventDTOToEvent(eventDTO);
         if (StringUtils.isNotBlank(eventDTO.getObjId())) {
             Component component = new Component();
@@ -458,7 +453,7 @@ public class EventService {
         eventFileList.addAll(eventFileListVideo);
         eventFileList.addAll(eventFileListMusic);
         event.setEventFileList(eventFileList);
-
+        event.setEventCode(this.createCode(eventDTO.getEventTypeId()));
         Event save = eventRepository.save(event);
         /* 受理员保存 */
         if (eventDTO.getInitSts() != null && eventDTO.getInitSts() == 2) {
@@ -503,6 +498,9 @@ public class EventService {
         eventFileList.addAll(eventFileListMusic);
         eventFileList.addAll(one.getEventFileList());
         one.setEventFileList(eventFileList);
+        if (!one.getEventType().getId().equals(eventDTO.getEventTypeId())) {
+            one.setEventCode(this.createCode(eventDTO.getEventTypeId()));
+        }
         eventRepository.saveAndFlush(one);
     }
 
@@ -570,7 +568,7 @@ public class EventService {
         workService.completeByReceptionist(eventDTO);
     }
 
-    public String createCode(String eventTypeId) {
+    public synchronized String createCode(String eventTypeId) {
         String eventCode;
         //查询当天最大序号
         String maxNum = eventRepository.findMaxNumNew();
@@ -758,6 +756,9 @@ public class EventService {
             Component component = new Component();
             component.setId(eventDTO.getObjId());
             event.setComponent(component);
+        }
+        if (!event.getEventType().getId().equals(eventDTO.getEventTypeId())) {
+            event.setEventCode(this.createCode(eventDTO.getEventTypeId()));
         }
         this.update(event);
     }

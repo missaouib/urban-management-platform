@@ -44,10 +44,10 @@
                         <table class="table">
                             <tbody>
                             <tr>
-                                <td><span></span>案件编号</td>
-                                <td>
-                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input" />
-                                </td>
+<!--                                <td><span></span>案件编号</td>-->
+<!--                                <td>-->
+<!--                                    <input type="text" readonly="readonly" th:name="eventCode" id="eventCode" class="find_input" />-->
+<!--                                </td>-->
                                 <td><span></span>案件类型</td>
                                 <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
                                     <input type="text" readonly="readonly" id="typeStr" name="eventType" class="find_input" />
@@ -56,37 +56,30 @@
                                         +
                                     </button>
                                 </td>
+                                <td><span></span>案件分类</td>
+                                <td>
+                                    <select class="form-control" id="recTypeId" th:name="recTypeId" required>
+                                        <option th:each="as:${recType}" th:value="${as.id}"
+                                                th:text="${as.value}"></option>
+                                    </select>
+                                </td>
+                                <td><span>*</span>诉求人</td>
+                                <td>
+                                    <input name="peopleName" type="text" class="" required>
+                                </td>
+
+
+                            </tr>
+                            <tr>
                                 <td><span>*</span>立案区域</td>
                                 <td>
                                     <select id="eventCondition" onchange="getEventCondition()" required name="casePlace">
-
                                     </select>
                                 </td>
-                            </tr>
-                            <tr>
                                 <td><span>*</span>立案条件</td>
                                 <td>
                                     <select id="eventTerm" onchange="getTimeTypeList()" name="conditionId" required>
                                     </select>
-                                </td>
-                                <td><span></span>计时等级</td>
-                                <td>
-                                    <select id="timeType" onchange="getDeptTimeLimitList()" name="timeLevel" required>
-
-                                    </select>
-                                </td>
-                                <td><span></span>立案时限</td>
-                                <td>
-                                    <input th:name="timeLimitId" type="hidden" id="deptTImeLimitId" />
-                                    <input type="text" id="deptTImeLimit" name="caseTime" required readonly/>
-
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td><span>*</span>诉求人</td>
-                                <td>
-                                    <input name="peopleName" type="text" class="" required>
                                 </td>
                                 <td><span></span>性别</td>
                                 <td>
@@ -95,6 +88,18 @@
                                         <option value="女">女</option>
                                     </select>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>计时等级</td>
+                                <td>
+                                    <select id="timeType" onchange="getDeptTimeLimitList()" name="timeLevel" required>
+                                    </select>
+                                </td>
+                                <td><span></span>立案时限</td>
+                                <td>
+                                    <input th:name="timeLimitId" type="hidden" id="deptTImeLimitId" />
+                                    <input type="text" id="deptTImeLimit" name="caseTime" required readonly/>
+                                </td>
                                 <td><span>*</span>联系方式</td>
                                 <td>
                                     <input name="petitionerPhone" type="text" class="" required/>
@@ -102,25 +107,6 @@
                             </tr>
                             <tr>
 
-                                <td><span></span>诉求时间</td>
-                                <td>
-                                    <input th:name="createTime" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
-                                </td>
-                                <td><span></span>部件编码</td>
-                                <td>
-                                    <input type="text" id="componentObjId" name="componentObjId" readonly="readonly">
-                                    <input type="hidden" id="layer" readonly="readonly" name="caseCode">
-                                </td>
-                                <td><span></span>案件分类</td>
-                                <td>
-                                    <select class="form-control" id="recTypeId" th:name="recTypeId" required>
-                                        <option th:each="as:${recType}" th:value="${as.id}"
-                                                th:text="${as.value}"></option>
-                                    </select>
-                                </td>
-                            </tr>
-
-                            <tr>
                                 <td><span>*</span>经度</td>
                                 <td>
                                     <input type="text" class="" placeholder="" value="" name="x" id="longitude" readonly/>
@@ -129,6 +115,12 @@
                                 <td>
                                     <input type="text" class="" placeholder="" value="" name="y" id="latitude" readonly/>
                                 </td>
+                                <td><span></span>诉求时间</td>
+                                <td>
+                                    <input th:name="createTime" th:value="${#dates.format(new java.util.Date().getTime(), 'yyyy-MM-dd HH:mm:ss')}" type="text" class="" />
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><span>*</span>所在区域</td>
                                 <td>
                                     <select name="required" class="form-control" id="grid1" onchange="getStreetList()" required>
@@ -136,14 +128,18 @@
                                                 th:text="${as.gridName}"></option>
                                     </select>
                                 </td>
-                            </tr>
-                            <tr>
-
                                 <td><span>*</span>所属街道</td>
                                 <td>
                                     <select name="phone" class="form-control" id="grid2" onchange="getCommunityList()" required>
                                     </select>
                                 </td>
+                                <td><span></span>部件编码</td>
+                                <td>
+                                    <input type="text" id="componentObjId" name="componentObjId" readonly="readonly">
+                                    <input type="hidden" id="layer" readonly="readonly" name="caseCode">
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><span>*</span>所属社区</td>
                                 <td>
                                     <select name="petitonerPhone" class="form-control" id="grid3" onchange="getGridList()" required>
@@ -154,8 +150,6 @@
                                     <select th:name="gridId" id="grid4" onchange="getGridCenter(this)" required style="padding-left: 0px!important;">
                                     </select>
                                 </td>
-                            </tr>
-                            <tr>
                                 <td><span></span>问题来源</td>
                                 <td>
                                     <select class="form-control" id="eventSource" th:name="eventSourceId" required readonly="readonly">
@@ -163,27 +157,24 @@
                                                 th:text="${as.value}"></option>
                                     </select>
                                 </td>
-                                <td><span></span>上报人</td>
-                                <td>
-                                    <input type="text" readonly th:value="${#authentication.principal.name}" name="reportMen">
-                                    <!--<input type="hidden" value="" id="selectDown">
-                            <input value="1" type="hidden" name="userId">-->
-                                </td>
-                                <td><span></span>监督员</td>
-                                <td>
-                                    <select class="form-control" id="userId" name="userId" required>
-
-                                    </select>
-                                </td>
                             </tr>
-
                             <tr>
                                 <td><span>*</span>案件地址</td>
                                 <td style="position: relative">
                                     <input onmouseover="this.title=this.value" id="location" th:name="location" name="location" onkeyup="setLocalSearch(this.value)" type="text" class="overInput" required>
                                     <div class="caseSeach" onclick="localGeocoding()"><i class="fa fa-search-plus" aria-hidden="true"></i></div>
                                 </td>
-
+                                <td><span></span>监督员</td>
+                                <td>
+                                    <select class="form-control" id="userId" name="userId" required>
+                                    </select>
+                                </td>
+                                <td><span></span>上报人</td>
+                                <td>
+                                    <input type="text" readonly th:value="${#authentication.principal.name}" name="reportMen">
+                                </td>
+                            </tr>
+                            <tr>
                                 <td><span>*</span>问题描述</td>
                                 <td>
                                     <input onmouseover="this.title=this.value" id="problemescription" th:name="represent" type="text" class="overInput" required>
@@ -213,9 +204,7 @@
                 </div>
                 <div class="map_button"><img th:src="@{/img/search.png}"></div>
                 <div class="place_map">
-                    <ul id="place_ul">
-
-                    </ul>
+                    <ul id="place_ul"></ul>
                 </div>
             </div>
             <div class="map" id="map"></div>
@@ -367,12 +356,11 @@
 
     });
 
-    let receiveUrl = /*[[@{/event/receive}]]*/ "/event/receive";
     let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
+    let receiveUrl = /*[[@{/event/receive}]]*/ "/event/receive";
     let dispatchUrl = /*[[@{/event/dispatch}]]*/ "/event/dispatch";
     let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
     let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
-    let createEventCodeUrl = /*[[@{/event/createEventCode}]]*/ "/event/createEventCode";
     let getEventConditionUrl = /*[[@{/event/getEventCondition}]]*/ "/event/getEventCondition";
     let findDeptTimeLimitUrl = /*[[@{/event/findDeptTimeLimit}]]*/ "/event/findDeptTimeLimit";
     let findAllByParentIdUrl = /*[[@{/event/findAllByParentId}]]*/ "/event/findAllByParentId";
@@ -454,19 +442,6 @@
                 return data[i];
             }
         }
-    }
-
-    /**
-     * 后台自动生成案卷号
-     * @param eventTypeId
-     */
-    function createEventCode(eventTypeId) {
-        $.ajaxUtil.get(createEventCodeUrl + "?eventTypeId=" + eventTypeId, function(e) {
-            if (e.code === 0) {
-                let eventCode = e.data
-                $("#eventCode").val(eventCode);
-            }
-        })
     }
 
     let unit = /*[[@{/event/findUnit}]]*/ "/event/findUnit";
@@ -725,7 +700,6 @@
         $("#eventTypeId").val(body.find('#treeId').val());
         $("#typeStr").val(body.find('#treeName').val());
         let eventTypeId = $("#eventTypeId").val();
-        createEventCode(eventTypeId);
         //获取立案区域
         findEventConditionByEventType(eventTypeId);
         //部件获取
@@ -897,9 +871,7 @@
             return;
         }
         let data = $('#userForm').serialize();
-        $.operate.saveAndReload(receiveUrl, data, function(e) {
-            createEventCode($("#eventTypeId").val());
-        });
+        $.operate.saveAndReload(receiveUrl, data);
 
     }
 
@@ -909,9 +881,7 @@
             return;
         }
         let data = $('#userForm').serialize();
-        $.operate.saveAndReload(dispatchUrl, data, function(e) {
-            createEventCode($("#eventTypeId").val());
-        });
+        $.operate.saveAndReload(dispatchUrl, data);
     }
 
 
