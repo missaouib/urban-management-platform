@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>城市综合管理服务平台</title>
+    <link th:href="@{/css/notfound.css}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="warp">
+    <div class="notfond">
+        <div class="error">
+            <div class="cloud cloud1"></div>
+            <div class="cloud cloud4"></div>
+            <div class="cloud cloud2"></div>
+            <div class="cloud cloud3"></div>
+        </div>
+        <div class="text">
+            <div class="title">页面丢失了!</div>
+        </div>
+    </div>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<script type="text/javascript" th:inline="javascript">
+$(function () {
+    setTimeout(() => {
+        $(".cloud2").addClass("cloud2acive")
+        $(".cloud1").addClass("cloud1acive")
+        $(".cloud3").addClass("cloud3acive")
+        $(".cloud4").addClass("cloud4acive")
+    }, 1000);
+})
+
+</script>
+</body>
+</html>

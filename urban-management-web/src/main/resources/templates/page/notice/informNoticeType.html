@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <title>通知公告维护</title>
+    <th:block th:include="page/fragments/common :: common_css" />
+    <th:block th:include="page/fragments/common :: bootstrap_table_css" />
+
+</head>
+<style>
+    #id{
+        display: none;
+    }
+</style>
+
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+    <div class="notice_main ">
+        <div class="clear"></div>
+
+        <div class="btn-group-sm" id="toolbar">
+            <a class="btn btn-success" onclick="add()">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+        </div>
+        <input type="hidden" id="del">
+        <table id="bootstrap-table" class="table_style" style="margin: 0 auto"> </table>
+    </div>
+
+    <script id="modelDiv" type="text/template">
+    <form action="" method="post" id="noticeTypeForm">
+        <div class="modelBox">
+            <label class="modelTitle" style="margin-top: 10px">名称:</label>
+            <input type="text" id="id" name="id">
+            <input type="text" required="required" name="name" id="name" style="width: 70%">
+        </div>
+    </form>
+</script>
+
+
+    <th:block th:include="page/fragments/common :: common_js" />
+    <th:block th:include="page/fragments/common :: bootstrap_table_js" />
+
+</body>
+
+</html>
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        search();
+    })
+
+
+    let searchUrl = /*[[@{/noticeType/search}]]*/ "/json/unit.json";
+
+    let addUrl = /*[[@{/noticeType/noticeTypeSave}]]*/ "/processdef/model";
+
+    let editUrl = /*[[@{/noticeType/noticeTypeUpdate}]]*/ "/modeler.html";
+
+    let removeUrl = /*[[@{/noticeType/noticeTypeDelete}]]*/ "/processdef/remove";
+
+    let activitiUrl = /*[[@{/activiti/create}]]*/ "/deployment/file";
+
+    let modelUrl = /*[[@{/modeler.html?modelId=}]]*/ "/modeler.html";
+
+
+
+
+    // let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
+
+    function doSubmit(index, layero) {
+        console.log(index);
+        console.log(layero);
+    }
+
+    function search() {
+        var options = {
+            url: searchUrl,
+            updateUrl: editUrl,
+            removeUrl: removeUrl,
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class: 'index_width',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '名称',
+                    field: 'name',
+                    sortable: true,
+                },
+                {
+                    title: '操作',
+                    field: '',
+                    formatter: function (value, row) {
+                        console.log("value", value);
+                        console.log("row", row);
+                        var a = '<a  href="#" title="'+ row.id +'" onclick="edit(this)">编辑</a> ';
+                        var b = '<a  href="#" title=" '+ row.id +' " onclick="del(this)">删除</a> ';
+                        return a + b;
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    }
+
+    function del(data){
+        $("#del").val(data.title);
+        let noticeTypeData = $("#del").val().trim()
+        $.operate.saveAndReload(removeUrl, {id:noticeTypeData});
+    }
+
+    function edit(data) {
+        layer.open({
+            type: 1,
+            area: ['400px', '300px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '编辑',
+            content: $('#modelDiv').html(),
+            btn: ['<i class="fa fa-check"></i> 保存', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: false,
+            btn1: function (index, layero) {
+                let noticeTypeData = $('#noticeTypeForm').serialize();
+                console.log('index', noticeTypeData);
+                $.operate.saveAndReload(editUrl, noticeTypeData);
+            }
+        });
+        console.log("data", data);
+        $("#id").val(data.title);
+    }
+
+    function add() {
+        layer.open({
+            type: 1,
+            area: ['400px', '300px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '新增',
+            content: $('#modelDiv').html(),
+            btn: ['<i class="fa fa-check"></i> 保存', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: false,
+            btn1: function (index, layero) {
+                let noticeTypeData = $('#noticeTypeForm').serialize();
+                console.log('noticeTypeData', noticeTypeData);
+                $.operate.saveAndReload(addUrl, noticeTypeData);
+            }
+        });
+    }
+
+
+</script>

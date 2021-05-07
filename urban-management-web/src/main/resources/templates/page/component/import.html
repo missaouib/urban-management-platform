@@ -1,130 +1,511 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
-    <title>部件导入</title>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>用户管理</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
-
+    <link th:href="@{/css/import.css}" rel="stylesheet" type="text/css">
+    <th:block th:include="page/fragments/common :: map_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
 </head>
-<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
-<div class="notice_main ">
-    <div class="content">
-        <div class="leftBox" style="width: 50%!important;">
-            <div class="leftInner">
 
-<!--                tree-->
-                <div class="zTreeDemoBackground left">
-                    <ul id="treeDemo" class="ztree">zTree</ul>
-                </div>
+<body>
+<div class="innerBox">
+    <div class="tree">
+        <div class="treeDemo">
+            <ul id="treeDemo" class="ztree"></ul>
+        </div>
+    </div>
+    <div class="tabels" style="overflow:inherit;">
+        <div class="notice_check">
+            <form id="component">
+                <div class="top table2_top">
+                    <div class="top_out">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td><span></span>图层分类</td>
+                                <td>
+                                    <input type="text" readonly="readonly" id="typeStr" class="find_input">
+                                    <input type="hidden" readonly="readonly" name="componentId" id="componentId" class="find_input">
+                                    <input type="hidden" readonly="readonly" name="eventTypeId" id="eventTypeId"
+                                           class="find_input">
+                                    <input type="hidden" readonly="readonly" name="layerId" id="layerId" class="find_input">
+                                    <input type="hidden" readonly="readonly" name="mongoId" id="mongoId" class="find_input">
+                                </td>
+                                <td><span></span>图层名称</td>
+                                <td>
+                                    <input type="text" readonly="readonly" id="publish" class="find_input">
+                                    <input type="hidden" readonly="readonly" id="publishId" name="publish" class="find_input">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>位置信息</td>
+                                <td>
+                                    <input type="text" readonly="readonly" id="coordinate" name="coordinate" class="find_input coor">
+                                </td>
 
+                            </tr>
+                            <tr class="attribute" >
+                                <td colspan="12" style="background-color:#354e85!important;text-align: left!important;font-size: 14px!important;padding-left: 10px;color: white">属性信息</td>
+                            </tr>
+                            <tr>
+                                <td><span></span>部件标识码</td>
+                                <td>
+                                    <input type="text" class="find_input" id="objId" name="objId">
+                                </td>
+                                <td><span></span>部件名称</td>
+                                <td>
+                                    <input type="text" class="find_input" id="objName" name="objName">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>主管部门代码</td>
+                                <td>
+                                    <input type="text" class="find_input" id="mainDeptCode" name="mainDeptCode">
+                                </td>
+                                <td><span></span>主管部门名称</td>
+                                <td>
+                                    <input type="text" class="find_input" id="mainDeptName" name="mainDeptName">
+                                </td>
+                            </tr>
 
-                <div>
-                    <label class="modelTitle">图层名称</label>
-                    <input type="text" class="find_input" name="username">
-                </div>
-
-                <div>
-                    <label class="modelTitle">EPSG</label>
-                    <select class="find_input">
-                        <option value="">--请选择--</option>
-                        <option th:value="1">1</option>
-                        <option th:value="2">2</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="modelTitle"></label>
-                    <input type="file" class="find_input" name="" style="padding: 0!important;">
-                </div>
-                <div style="padding-bottom: 20px;margin-right: 20px;display: flex;justify-content: flex-end" class="">
-                    <input type="button" class="check_btn1" onclick="" value="导入">
-<!--                    <input type="button" class="check_btn1" onclick="" value="修改">-->
-<!--                    <input type="button" class="check_btn1" onclick="" value="保存">-->
+                            <tr>
+                                <td><span></span>权属单位代码</td>
+                                <td>
+                                    <input type="text" class="find_input" id="ownershipDeptCode" name="ownershipDeptCode">
+                                </td>
+                                <td><span></span>权属单位名称</td>
+                                <td>
+                                    <input type="text" class="find_input" id="ownershipDeptName" name="ownershipDeptName">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>养护部门代码</td>
+                                <td>
+                                    <input type="text" class="find_input" id="maintenanceDeptCode" name="maintenanceDeptCode">
+                                </td>
+                                <td><span></span>养护部门名称</td>
+                                <td>
+                                    <input type="text" class="find_input" id="maintenanceDeptName" name="maintenanceDeptName">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>初始日期</td>
+                                <td>
+                                    <input size="16" class="form_date find_input" name="initialDate" id="initialDate" type="text" readonly>
+                                </td>
+                                <td><span></span>变更日期</td>
+                                <td>
+                                    <input size="16" class="form_date find_input" name="changeDate" id="changeDate" type="text" value="" readonly>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>所在网格</td>
+                                <td>
+                                    <select id="bgid" class="find_input" name="bgid"></select>
+                                </td>
+                                <td><span></span>部件状态</td>
+                                <td>
+                                    <select id="objState" class="find_input" name="objState"></select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span></span>数据来源</td>
+                                <td>
+                                    <select id="dataSource" class="find_input" name="dataSource"></select>
+                                </td>
+                                <td><span></span>备注</td>
+                                <td>
+                                    <input type="text" class="find_input" id="note" name="note">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </div>
+            </form>
+            <div class="notice_bot">
+                <div class="r_right but_p girdBtnGroup">
+                    <button class="but_save" type="submit" id="smtBtn" onclick="saveComponent()">保存</button>
+                    <button class="but_save" type="submit" onclick="saveComponent()" style="margin-left: 10px">修改</button>
+                    <button class="but_close" onclick="deleteComponent()">删除</button>
                 </div>
             </div>
         </div>
-        <div class="rightBox" style="width: 50%!important;">
-
-        </div>
+    </div>
+    <div class="maps" style="position: relative">
+        <div class="mengBan"></div>
+        <div id="container" style="width: 100%;height: 100%;"></div>
+        <div class="map" id="map" style="width: 100%;height: 100%"></div>
     </div>
 
 
 </div>
 
 
-
-
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
-
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: bmap_js" />
 <script type="text/javascript" th:inline="javascript">
 
-    $(function () {
-        queryUserList();
-    })
 
+    var setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parent'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+    var typeStr;
+    var eventTypeId;
+    var publish;
+    var publishId;
 
-    let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
+    function zTreeOnClick(event, treeId, treeNode) {
+        //删除上一个底图
+        var mation = map.getLayerGroup().getLayers().a;
+        if (mation.length > 4) {
+            mation.splice(1, 1);
+            source.clear();
+        }
+        $("#componentId").val("");
+        $("#mongoId").val("");
+        publish = "";
+        publishId = "";
+        resetFrom();
+        $("#coordinate").val(coordinate);
+        if (treeNode.children === undefined) {
+            $("#typeStr").val(treeNode.name);
+            $("#eventTypeId").val(treeNode.id);
+            typeStr = treeNode.name;
+            eventTypeId = treeNode.id;
+            $.ajaxUtil.get(publishUrl + "?typeId=" + treeNode.id, function (e) {
+                $(e.data).each(function (index, value) {
+                    console.log(e.data)
 
-    let addUrl = /*[[@{/user/add}]]*/ "/user/add";
+                    $("#publish").val(value.name);
+                    $("#publishId").val(value.id);
+                    publish = value.name;
+                    publishId = value.id;
+                    if (value.url != null) {
+                        var urlParam = value.url.split("?");
+                        var url = urlParam[0];
+                        var param = urlParam[1];
+                        // console.log(url+","+param)
 
-    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
+                        var ImageVector = new ol.layer.Tile({
+                            source: new ol.source.TileWMS({
+                                url: url,
+                                params: {
+                                    'VERSION': '1.1.1',
+                                    tiled: true,
+                                    "LAYERS": param,
+                                    "exceptions": ''
+                                }
+                            })
+                        });
+                        var layersArray = map.getLayers();
+                        layersArray.insertAt(1, ImageVector);
 
-    let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
+                        $("#layerId").val(value.layerId == null ? "" : value.layerId);
+                        //获取地图数据s
+                        map.on('singleclick', function (evt) {
+                            var viewResolution = map.getView().getResolution();
+                            var url = ImageVector.getSource().getGetFeatureInfoUrl(
+                                evt.coordinate, viewResolution, 'EPSG:4326', {
+                                    'INFO_FORMAT': 'text/javascript', //geoserver支持jsonp才能输出为jsonp的格式
+                                    'FEATURE_COUNT': 50 //点击查询能返回的数量上限
+                                });
+                            $.ajax({
+                                type: 'GET',
+                                url: url,
+                                dataType: 'jsonp',
+                                jsonp: 'format_options',
+                                jsonpCallback: "callback:success_jsonpCallback"
+                            });
+                        });
 
-    function queryUserList() {
-        var options = {
-            url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
-            // exportUrl: prefix + "/export",
-            // importUrl: prefix + "/importData",
-            // importTemplateUrl: prefix + "/importTemplate",
-            uniqueId: "id",
-            sortName: "updateTime",
-            sortOrder: "desc",
-            modalName: "用户",
-            columns: [
-                {
-                    checkbox: true
-                },
-                {
-                    title: '账号',
-                    field: 'username'
-                },
-                {
-                    title: '姓名',
-                    field: 'name'
-                },
-                {
-                    title: '手机号码',
-                    field: 'mobileNumber'
-                },
-                {
-                    title: '创建时间',
-                    field: 'createTime',
-                    sortable: true,
-                },
-                {
-                    title: '修改时间',
-                    field: 'updateTime',
-                    sortable: true,
-
-                },
-                {
-                    title: '操作',
-                    field: '',
-                    formatter: function (value, row) {
-                        var e = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
-                        return e;
                     }
-                }
-            ]
-        };
-        $.table.init(options);
+                })
+            })
+
+            $.ajaxUtil.get(recordUrl + "?typeId=" + treeNode.id, function (e) {
+
+                $(e.data.record).each(function (index, value) {
+                    var point = value.coordinate.split(",");
+                    setPoint(point[0], point[1], value.id, value.name);
+                });
+            })
+        }
     }
 
+    $(function () {
+
+        $(".ol-full-screen-false").html("全屏");
+        ////日期插件
+        $('.form_date').datetimepicker({
+            language: 'fr',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0,
+            language: 'zh-CN', //语言
+            format: "yyyy-mm-dd"
+        });
+        $.ajaxUtil.get(componentTypeUrl, function (e) {
+            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        })
+        $.ajaxUtil.get(objStateUrl, function (e) {
+            var objStateStr = "<option value=''>--请选择--</option>";
+            $(e.data).each(function (index, value) {
+                objStateStr += "<option value='" + value.id + "'>" + value.value + "</option>"
+            })
+            $("#objState").append(objStateStr);
+        })
+        $.ajaxUtil.get(dataSourceUrl, function (e) {
+            var datasourceStr = "<option value=''>--请选择--</option>";
+            $(e.data).each(function (index, value) {
+                datasourceStr += "<option value='" + value.id + "'>" + value.value + "</option>"
+            })
+            $("#dataSource").append(datasourceStr);
+        })
+        $.ajaxUtil.get(gridUrl, function (e) {
+            var gridStr = "<option value=''>--请选择--</option>";
+            $(e.data).each(function (index, value) {
+                gridStr += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+            })
+            $("#bgid").append(gridStr);
+        });
+
+    })
+
+    function saveComponent() {
+        let data = $('#component').serialize();
+        console.log($("#componentId").val())
+        if ($("#componentId").val() === null || $("#componentId").val() === "") {
+            $.operate.saveAndReload(saveUrl, data);
+        } else {
+            $.operate.saveAndReload(updateUrl, data);
+        }
+    }
+
+    function deleteComponent() {
+        let data = $('#component').serialize();
+        $.operate.saveAndReload(deleteUrl, data);
+    }
+
+    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
+
+    let objStateUrl = /*[[@{/objState}]]*/ "/objState";
+
+    let dataSourceUrl = /*[[@{/dataSource}]]*/ "/dataSource";
+
+    let gridUrl = /*[[@{/grid}]]*/ "/grid";
+
+    let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
+
+    let saveUrl = /*[[@{/component}]]*/ "/component";
+
+    let updateUrl = /*[[@{/updateComponent}]]*/ "/updateComponent";
+
+    let recordUrl = /*[[@{/recordVOS}]]*/ "/recordVOS";
+
+    let componentByRecordId = /*[[@{/componentByRecordId}]]*/ "/componentByRecordId";
+
+    let deleteUrl = /*[[@{/deleteComponent}]]*/ "/deleteComponent";
+
+    let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
+
+    let url = [[${@geoServerProperties.url}]];
+    let center_x = [[${@geoServerProperties.center_x}]];
+    let center_y = [[${@geoServerProperties.center_y}]];
+    let layers = [[${@geoServerProperties.layers}]];
+    let zoom = [[${@geoServerProperties.zoom}]];
+    let epsg = [[${@geoServerProperties.epsg}]];
+    // 沽源地图
+    var center = [center_x, center_y];
+    var fullScreenControl = new ol.control.FullScreen();
+    var projection = new ol.proj.Projection({
+        code: epsg,
+        units: 'degrees',
+        axisOrientation: 'neu',
+        global: true
+    });
+    var untiled = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+            ratio: 1,
+            url: url,
+            params: {
+                'VERSION': '1.1.1',
+                "LAYERS": layers,
+                "exceptions": 'application/vnd.ogc.se_inimage',
+            }
+        })
+    });
+    var source = new ol.source.Vector({wrapX: false});
+    //ol.layer.Vector用于显示在客户端渲染的矢量数据。
+    var vector = new ol.layer.Vector({
+        source: source
+    });
+
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            untiled, vector
+        ],
+        view: new ol.View({
+            // projection: projection,
+            center: center,
+            zoom: zoom,
+            projection: projection
+        })
+    });
+    //画笔
+    map.addControl(fullScreenControl)
+    var draw = new ol.interaction.Draw({
+        source: source,
+        //点：Point   线:LineString      面:Polygon
+        type: "Point",
+    });
+    map.addInteraction(draw)
+    draw.on('drawstart', function () {
+
+    })
+    draw.on('drawend', function () {
+        source.clear();
+    });
+
+
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
+
+    var geojsonFormat = new ol.format.GeoJSON({
+        defaultDataProjection: "EPSG:4326"
+    });
+
+    function success_jsonpCallback(res) {
+        var features = geojsonFormat.readFeatures(res);
+        if (undefined !== features[0]) {
+            $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function (e) {
+                $("#componentId").val(e.data.id);
+                $("#objId").val(e.data.objId);
+                $("#objName").val(e.data.objName);
+                $("#maintenanceDeptCode").val(e.data.maintenanceDeptCode);
+                $("#maintenanceDeptName").val(e.data.maintenanceDeptName);
+                $("#mainDeptCode").val(e.data.mainDeptCode);
+                $("#mainDeptName").val(e.data.mainDeptName);
+                $("#ownershipDeptCode").val(e.data.ownershipDeptCode);
+                $("#ownershipDeptName").val(e.data.ownershipDeptName);
+                $("#objState option[value='" + e.data.objStateId + "']").prop("selected", true);
+                $("#bgid option[value='" + e.data.bgid + "']").prop("selected", true);
+                $("#dataSource option[value='" + e.data.dataSourceId + "']").prop("selected", true);
+                $("#note").val(e.data.note);
+                $("#coordinate").val(e.data.coordinate);
+                $("#mongoId").val(features[0].H.mongodb_id);
+                $("#changeDate").val(e.data.changeDate);
+                $("#initialDate").val(e.data.initialDate);
+            });
+        }
+
+    }
+
+
+    var t;
+    $("#map").click(function (e) {
+        t = map.getEventCoordinate(e);
+        coordinate = t;
+    });
+    var coordinate;
+
+    /* ------------  点击事件  ------------------*/
+    var selectClick = new ol.interaction.Select();
+    map.addInteraction(selectClick);
+    selectClick.on('select', function (e) {
+        var features = e.target.getFeatures().getArray();
+        if (undefined !== features[0].H.data) {
+            let data = features[0].H.data;
+            $.ajaxUtil.get(componentByRecordId + "?recordId=" + data.id, function (e) {
+                $("#componentId").val(e.data.id);
+                $("#objId").val(e.data.objId);
+                $("#objName").val(e.data.objName);
+                $("#maintenanceDeptCode").val(e.data.maintenanceDeptCode);
+                $("#maintenanceDeptName").val(e.data.maintenanceDeptName);
+                $("#mainDeptCode").val(e.data.mainDeptCode);
+                $("#mainDeptName").val(e.data.mainDeptName);
+                $("#ownershipDeptCode").val(e.data.ownershipDeptCode);
+                $("#ownershipDeptName").val(e.data.ownershipDeptName);
+                $("#objState option[value='" + e.data.objStateId + "']").prop("selected", true);
+                $("#bgid option[value='" + e.data.bgid + "']").prop("selected", true);
+                $("#dataSource option[value='" + e.data.dataSourceId + "']").prop("selected", true);
+                $("#note").val(e.data.note);
+                $("#coordinate").val(e.data.coordinate);
+                $("#mongoId").val("");
+                $("#changeDate").val(e.data.changeDate);
+                $("#initialDate").val(e.data.initialDate);
+
+            })
+        } else {
+            resetFrom();
+            $("#componentId").val("")
+            $("#publish").val(publish);
+            $("#publishId").val(publishId);
+            $("#typeStr").val(typeStr);
+            $("#eventTypeId").val(eventTypeId);
+            $("#coordinate").val(coordinate);
+        }
+
+    })
+
+    function resetFrom() {
+        $('#component')[0].reset();
+    }
+
+    function setPoint(x, y, data, name) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                id: data,
+                name: name,
+                coordinate: x + "," + y
+            }
+        });
+        layerMap.getSource().addFeature(point);
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 10,
+                fill: new ol.style.Fill({
+                    color: '#ff0000'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#ff0000',
+                    width: 3
+                })
+            })
+        }));
+    }
 
 </script>
 </body>

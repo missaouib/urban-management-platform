@@ -13,11 +13,41 @@ import java.time.LocalDateTime;
 @Data
 public class GridVO {
 
+    private String id;
+
+    private String parentId;
+
+    private String coordinate;
+
+    private String gridCode;
+
     private String gridName;
 
-    private String deptName;
+    private String remark;
+
+    private String area;
+
+    /**
+     * 所属区域
+     */
+    private String region;
+
+    /**
+     * 所属街道
+     */
+    private String street;
+
+    /**
+     * 所属社区
+     */
+    private String community;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createTime;
+    private LocalDateTime initialDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime terminationDate;
+
+    private String initialDateStr;
 
 }

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
+</head>
+<body style="border-radius: 8px;">
+<div class="content">
+    <div class="areaCenter">
+        <div class="notice_check">
+
+            <div class=" but_p girdBtnGroup" style="margin-bottom: 20px">
+                <button class="but_save" type="button" style="margin-right: 10px" id="addEventTypeBtn"
+                        onclick="addEventType()">新增
+                </button>
+                <button class="but_save" type="button" style="margin-right: 10px" id="deleteEventTypeBtn"
+                        onclick="deleteEventType()">删除
+                </button>
+                <button class="but_save" type="button" style="margin-right: 10px" id="areaMaintenanceBtn"
+                        onclick="addTab()">区域维护
+                </button>
+                <button class="but_save" type="button" id="categoryConfigurationBtn" onclick="toInsert()">
+                    配置
+                </button>
+            </div>
+
+            <div class="tree">
+                <div class="treeDemo">
+                    <ul id="treeDemo" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="areaCenter">
+        <form class="details" id="eventTypeForm">
+            <div class="top table2_top">
+
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <input type="hidden" id="id" name="id" value="" text="id">
+                        <tr>
+                            <td><span>*</span>类别名称</td>
+                            <td>
+                                <input id="name" name="name" placeholder="类别名称" class="" type="text" required>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span>*</span>类别编码</td>
+                            <td>
+                                <input id="code" name="code" placeholder="类别编码" class="" type="text" required>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                    <div class="r_right but_p girdBtnGroup" style="margin: 10px 0 10px 0!important;">
+                        <button class="but_save" type="submit" id="saveEventTypeBtn" onclick="saveEventType()">保存
+                        </button>
+                        <button class="but_save" type="submit" id="updateEventTypeBtn" onclick="updateEventType()">修改
+                        </button>
+                    </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    let getEventTypeTreeUrl = /*[[@{/categoryConfiguration/getEventTypeTree}]]*/ "/categoryConfiguration/getEventTypeTree";
+    let saveEventTypeUrl = /*[[@{/categoryConfiguration/saveEventType}]]*/ "/categoryConfiguration/saveEventType";
+    let updateEventTypeUrl = /*[[@{/categoryConfiguration/updateEventType}]]*/ "/categoryConfiguration/updateEventType";
+    let deleteEventTypeUrl = /*[[@{/categoryConfiguration/deleteEventType}]]*/ "/categoryConfiguration/deleteEventType";
+
+    let setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parent'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+
+    $(function () {
+        allButton();
+        setEventTypeTree();
+    });
+
+    function setEventTypeTree() {
+        $.ajaxUtil.get(getEventTypeTreeUrl, function (e) {
+            $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        });
+    }
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        $("#eventTypeId").val(treeNode.id);
+        $("#id").val(treeNode.id);
+        $("#name").val(treeNode.name);
+        $("#code").val(treeNode.code);
+        if (treeNode.isParent) {
+            if (treeNode.level === 1) {
+                parentNode();
+            }
+        } else {
+            sonNode();
+        }
+    }
+
+    function allButton() {
+        $("#addEventTypeBtn").addClass("roleBox");
+        $("#deleteEventTypeBtn").addClass("roleBox");
+        $("#areaMaintenanceBtn").addClass("roleBox");
+        $("#categoryConfigurationBtn").addClass("roleBox");
+        $("#areaMaintenanceBtn").addClass("roleBox");
+        $("#saveEventTypeBtn").addClass("roleBox");
+        $("#updateEventTypeBtn").addClass("roleBox");
+    }
+
+    function sonNode() {
+        $("#addEventTypeBtn").addClass("roleBox");
+        $("#deleteEventTypeBtn").removeClass("roleBox");
+        $("#areaMaintenanceBtn").addClass("roleBox");
+        $("#categoryConfigurationBtn").removeClass("roleBox");
+        $("#areaMaintenanceBtn").removeClass("roleBox");
+        $("#saveEventTypeBtn").addClass("roleBox");
+        $("#updateEventTypeBtn").removeClass("roleBox");
+    }
+
+    function parentNode() {
+        $("#addEventTypeBtn").removeClass("roleBox");
+        $("#deleteEventTypeBtn").addClass("roleBox");
+        $("#areaMaintenanceBtn").addClass("roleBox");
+        $("#categoryConfigurationBtn").addClass("roleBox");
+        $("#areaMaintenanceBtn").addClass("roleBox");
+        $("#saveEventTypeBtn").addClass("roleBox");
+        $("#updateEventTypeBtn").removeClass("roleBox");
+    }
+
+    function saveEventType() {
+        let data = $('#eventTypeForm').serialize();
+        $.operate.saveAndReload(saveEventTypeUrl, data);
+    }
+
+    function updateEventType() {
+        let data = $('#eventTypeForm').serialize();
+        $.operate.saveAndReload(updateEventTypeUrl, data);
+    }
+
+    function deleteEventType() {
+        let data = $('#eventTypeForm').serialize();
+        $.modal.confirm("是否删除", function () {
+            $.operate.saveAndReload(deleteEventTypeUrl, data);
+        });
+    }
+
+    function addEventType() {
+        $("#name").val("");
+        $("#code").val("");
+        $("#saveEventTypeBtn").removeClass("roleBox");
+        $("#updateEventTypeBtn").addClass("roleBox");
+    }
+
+    function toInsert() {
+        window.parent.$.learuntab.myAddTab('配置页面', '/categoryConfiguration/toInsert?id=' + $("#id").val(), 'data_id')
+    }
+
+    function addTab() {
+        window.parent.$.learuntab.myAddTab('区域维护', '/eventCondition/toEventConditionList?eventTypeId=' + $("#id").val(), 'data_id')
+    }
+
+    jQuery.extend(jQuery.validator.messages, {
+        required: "必填",
+        phone: "必填",
+        remote: "请修正该字段",
+        email: "请输入正确格式的电子邮件",
+        url: "请输入合法的网址",
+        date: "请输入合法的日期",
+        dateISO: "请输入合法的日期 (ISO).",
+        number: "请输入合法的数字",
+        digits: "只能输入整数",
+        creditcard: "请输入合法的信用卡号",
+        equalTo: "请再次输入相同的值",
+        accept: "请输入拥有合法后缀名的字符串",
+        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
+        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
+        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
+        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
+        min: jQuery.validator.format("请输入一个最小为{0} 的值")
+    });
+
+    $("#eventTypeForm").validate({
+        debug: true,
+        ignore: "",
+        submitHandler: function (form) {
+            var params = $(form).serialize(); //串行化表单参数
+            $.post("user", params, function (result) {
+                if (result.ok) {//注册成功
+                    location.href = "register_ok.html";
+                } else {//注册失败
+                    alert(result.msg);
+                    $("#checkImg").click();
+                }
+            }, "json");
+        },
+        rules: {
+            userName: {
+                required: true
+            },
+            loginName: {
+                required: true,
+                // rangelength: [5, 8]
+            },
+            phonenumber: {
+                required: true,
+                // rangelength: [6, 12]
+            },
+            problemescription: {
+                required: true,
+                // rangelength: [6, 12],
+                /*重复密码需要与原密码相同的要求*/
+                // equalTo: "#pwd"
+            },
+            safeLevel: {
+                required: true
+            },
+            findTime: {
+                required: true,
+                // range: [26, 50]
+            },
+            enterprise: {
+                required: true
+            },
+            department: {
+                required: true
+            },
+            handleTime: {
+                required: true
+            }, charge: {
+                required: true
+            },
+            question: {
+                required: true
+            },
+            closeTime: {
+                required: true,
+                // email: true
+            },
+            // idcard: {
+            //     card: true
+            // },
+            // phone: {
+            //     phone: true
+            // }
+        },
+        messages: {
+
+        }
+    });
+</script>
+</body>
+</html>

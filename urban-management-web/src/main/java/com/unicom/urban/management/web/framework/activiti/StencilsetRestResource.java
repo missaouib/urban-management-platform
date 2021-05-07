@@ -2,24 +2,22 @@ package com.unicom.urban.management.web.framework.activiti;
 
 import org.activiti.engine.ActivitiException;
 import org.apache.commons.io.IOUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.InputStream;
 
 /**
- * @author Tijs Rademakers
+ * @author liukai
  */
 @RestController
 @RequestMapping(value = "/service")
 public class StencilsetRestResource {
 
-    @ResponseBody
-    @RequestMapping(value = "/editor/stencilset", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
+    @GetMapping("/editor/stencilset")
     public String getStencilset() {
-        InputStream stencilsetStream = this.getClass().getClassLoader().getResourceAsStream("stencilset.json");
+        InputStream stencilsetStream = this.getClass().getClassLoader().getResourceAsStream("public/stencilset.json");
         try {
             return IOUtils.toString(stencilsetStream, "utf-8");
         } catch (Exception e) {

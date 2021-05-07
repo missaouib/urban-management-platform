@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: swiper_css" />
+    <link th:href="@{/css/ealuations.css}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="warp" style="position: relative">
+    <div class="fullScreen_index"><i class="fa fa-arrows-alt" aria-hidden="true"></i></div>
+    <div class="leftwarp">
+        <div class="inner">
+            <form id="userForm">
+            <div class="group">
+                <div class="grouptitle">考核周期</div>
+                <div class="inputs">
+                    <div class="dateIn">
+                        <input size="16" class="form_datetime" name="startTime" id="begin" type="text" value="" readonly>
+                    </div>
+                    <div class="dateIn">
+                        <input size="16" class="form_datetime" name="endTime" id="end" type="text" value="" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="group">
+                <div class="grouptitle">区域</div>
+                <div class="inputs">
+                    <div class="dateIn">
+                        <input type="text" readonly="readonly" id="grid" class="find_input" style="width: 100%!important;"/>
+                        <input type="hidden" readonly="readonly" name="gridId" id="gridId" class="find_input"/>
+                        <button type="button" class="addBtn" onclick="selectGridTree()">
+                            +
+                        </button>
+                    </div>
+                    <div class="notice_check">
+                        <form id="search-form">
+                            <p style="display: flex;justify-content: flex-end">
+                                <input type="button" class="check_btn button_ground closeSearch" onclick="search()" value="查询">
+                                <input type="button" class="check_btn1 button_ground closeSearch" onclick="$.form.reset()" value="重置">
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="tablegroup">
+                <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+            </div>
+            </form>
+        </div>
+    </div>
+    <div class="rightwarp">
+        <div class="tables">
+            <div class="title">处置数排行榜</div>
+            <div class="tablesInner">
+                <div class="rellTable">
+                    <table id="bootstrap-table-did" class="table_style" style="margin: 0 auto"></table>
+                </div>
+            </div>
+        </div>
+        <div class="tables">
+            <div class="title">处置率排行榜</div>
+            <div class="tablesInner">
+                <div class="rellTable">
+                    <table id="bootstrap-table2" class="table_style" style="margin: 0 auto"></table>
+                </div>
+            </div>
+        </div>
+        <div class="tables">
+            <div class="title">按期处置率排行榜</div>
+            <div class="tablesInner">
+                <div class="rellTable">
+                    <table id="bootstrap-table3" class="table_style" style="margin: 0 auto"></table>
+                </div>
+            </div>
+        </div>
+        <div class="tables">
+            <div class="title">返工率排行榜</div>
+            <div class="tablesInner">
+                <div class="rellTable">
+                    <table id="bootstrap-table4" class="table_style" style="margin: 0 auto"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">默认窗口</h4>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+<script th:src="@{/js/index.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+
+    /**
+     * 模态窗 selectGridTree
+     */
+    function selectGridTree() {
+        var url = /*[[@{/tree/grid}]]*/ "/tree/grid";
+        var options = {
+            title: '选择区域',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#gridId").val(body.find('#treeId').val());
+        $("#grid").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+    $(function () {
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+        search();
+
+        var options = {
+            // num: num,
+            showRefresh: false,
+            showColumns: false,
+            showToggle: false,
+            url: searchUrl,
+            // createUrl: addUrl,
+            // updateUrl: editUrl,
+            // removeUrl: removeUrl,
+            uniqueId: "id",
+            sortName: "updateTime",
+            sortOrder: "desc",
+            modalName: "用户",
+            onClickRow: function (row, index) {
+            },
+            columns: [
+                {
+                    title: '部门名称',
+                    field: 'deptName'
+                },
+                {
+                    title: '处置数',
+                    field: 'disposeNum'
+                },
+                {
+                    title: '应处置数',
+                    field: 'needDisposeNum'
+                },
+                {
+                    title: '超期处置数',
+                    field: 'overtimeDisposeNum'
+                },
+                {
+                    title: '返工数',
+                    field: 'reworkNum'
+                },
+            ]
+        };
+        $.table.init(options);
+    })
+    function search(){
+        queryUserList();
+        disposeRankingList();
+    }
+    let searchUrl = /*[[@{/commandSubsystem/comprehensiveEvaluationSearch}]]*/ "/commandSubsystem/comprehensiveEvaluationSearch";
+    function queryUserList() {
+        $("#bootstrap-table").bootstrapTable("refresh");
+        let startTime = $("#begin").val();
+        let endTime = $("#end").val();
+        let gridId = $("#gridId").val();
+        $.ajaxUtil.get(searchUrl+"?startTime="+startTime+"&endTime="+endTime+"&gridId="+gridId, function (e) {
+            $("#bootstrap-table").bootstrapTable({
+                columns: [
+                    {
+                        title: '部门名称',
+                        field: 'deptName'
+                    },
+                    {
+                        title: '处置数',
+                        field: 'disposeNum'
+                    },
+                    {
+                        title: '应处置数',
+                        field: 'needDisposeNum'
+                    },
+                    {
+                        title: '超期处置数',
+                        field: 'overtimeDisposeNum'
+                    },
+                    {
+                        title: '返工数',
+                        field: 'reworkNum'
+                    },
+                ],
+                data: e.data.content
+            });
+        });
+    }
+
+    function disposeRankingList() {
+        let startTime = $("#begin").val();
+        let endTime = $("#end").val();
+        let gridId = $("#gridId").val();
+        let url = "/commandSubsystem/comprehensiveEvaluationRankingList"
+        $.ajaxUtil.get(url+"?startTime="+startTime+"&endTime="+endTime+"&gridId="+gridId, function (e) {
+            var disposeRanking = e.data.disposeRanking;
+            var disposeRate = e.data.disposeRate;
+            var inTimeDisposeRate = e.data.inTimeDisposeRate;
+            var reworkRate = e.data.reworkRate;
+
+            $("#bootstrap-table-did").bootstrapTable('load',disposeRanking);
+            $("#bootstrap-table2").bootstrapTable('load',disposeRate);
+            $("#bootstrap-table3").bootstrapTable('load',inTimeDisposeRate);
+            $("#bootstrap-table4").bootstrapTable('load',reworkRate);
+            $('#bootstrap-table-did').bootstrapTable({
+                columns: [
+                    {
+                        field: 'index',
+                        title: '排名',
+                        formatter: medal
+                    },
+                    {
+                        title: '考核部门',
+                        field: "deptName"
+                    },
+                    {
+                        title: '处置数',
+                        field: 'disposeNum',
+                    },
+                    // {
+                    //     field: 'patrolReport',
+                    //     title: '趋势',
+                    //     formatter: trend
+                    // },
+                ],
+                data: disposeRanking
+            });
+
+            $('#bootstrap-table2').bootstrapTable({
+                columns: [
+                    {
+                        field: 'index',
+                        title: '排名',
+                        formatter: medal
+                    },
+                    {
+                        title: '考核部门',
+                        field: "deptName"
+                    },
+                    {
+                        title: '处置率',
+                        field: 'disposeRate',
+                    },
+                    // {
+                    //     field: 'patrolReport',
+                    //     title: '趋势',
+                    //     formatter: trend
+                    // },
+                ],
+                data: disposeRate
+            });
+
+            $('#bootstrap-table3').bootstrapTable({
+                columns: [
+                    {
+                        field: 'index',
+                        title: '排名',
+                        formatter: medal
+                    },
+                    {
+                        title: '考核部门',
+                        field: "deptName"
+                    },
+                    {
+                        title: '按期处置率',
+                        field: 'inTimeDisposeRate',
+                    },
+                    // {
+                    //     field: 'patrolReport',
+                    //     title: '趋势',
+                    //     formatter: trend
+                    // },
+                ],
+                data: inTimeDisposeRate
+            });
+
+            $('#bootstrap-table4').bootstrapTable({
+                columns: [
+                    {
+                        field: 'index',
+                        title: '排名',
+                        formatter: medal
+                    },
+                    {
+                        title: '考核部门',
+                        field: "deptName"
+                    },
+                    {
+                        title: '返工率',
+                        field: 'reworkRate',
+                    },
+                    // {
+                    //     field: 'patrolReport',
+                    //     title: '趋势',
+                    //     formatter: trend
+                    // },
+                ],
+                data: reworkRate
+            });
+        });
+
+    }
+
+
+
+
+    //金牌 银牌 铜牌
+    function medal(index){
+        if (index == 1){
+            var demo = "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
+                "<img src='../img/goldcard.png' style='width: 100%;height: 100%'></div>";
+        }else if(index == 2) {
+            var demo ="<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
+                "<img src='../img/ycard.png' style='width: 100%;height: 100%'></div>";
+        }else if(index == 3) {
+            var demo= "<div style='width: 25px;height: 25px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
+                "<img src='../img/tcard.png' style='width: 100%;height: 100%'></div>";
+        }else {
+            var demo = index
+        }
+        return demo;
+    }
+
+    //趋势 上下
+    function trend(patrolReport) {
+        if (patrolReport == 1){
+            var line = "<div style='width: 15px;height: 15px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
+                "<img src='../img/riseup.png' style='width: 100%;height: 100%'></div>";
+        }else{
+            var line ="<div style='width: 15px;height: 15px;border-radius: 50%;overflow: hidden;margin: 0 auto' class='timeSet'>" +
+                "<img src='../img/godown.png' style='width: 100%;height: 100%'></div>";
+        }
+        return line;
+    }
+</script>
+</body>
+</html>

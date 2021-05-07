@@ -1,21 +1,75 @@
 server:
   port: 8081
 spring:
+  application:
+    name: API
   datasource:
-    url: jdbc:mysql://192.168.23.123:32722/urban_management_platform?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true
+    url: jdbc:mysql://192.168.27.76:30734/urban_management_platform?useUnicode=true&autoReconnect=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&nullCatalogMeansCurrent=true&allowPublicKeyRetrieval=true
     username: root
     password: Root@123
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 99              # 最大连接数
+      minimum-idle: 30                   # 最小空闲连接
+      connection-test-query: SELECT 1    # 连接测试查询
+      connection-timeout: 60000          # 连接超时时间 毫秒
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
-      ddl-auto: update
-    show-sql: true
+      ddl-auto: none
+    show-sql: false
     open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true                  # 格式化SQL
+        use_sql_comments: false           # 显示JPQL语句
+        generate_statistics: false        # 显示SQL性能分析日志
 
   activiti:
     history-level: full
     check-process-definitions: false
     db-history-used: true
-    db-identity-used: false
+    db-identity-used: true
     job-executor-activate: false
+    async-executor-enabled: false
+
+  servlet:
+    multipart:
+      max-file-size: 30MB                  # 单个文件大小
+      max-request-size: 40MB               # 设置总上传的文件大小
+
+fdfs:
+  nginx-url: http://192.168.24.203:8090/
+  connect-timeout: 10000                   # 连接超时时间 socket的connectTimeout事件 毫秒
+  tracker-list:                            # TrackerList参数,支持多个
+    - 192.168.24.203:22122
+  pool:
+    max-total: 100                         # 从池中借出的对象的最大数目
+    max-total-per-key: 50                  # 每个tracker地址的最大连接数
+    max-wait-millis: 5000                  # 连接耗尽时等待获取连接的最大毫秒数
+gis:
+  geoserver:
+    url: http://192.168.24.203:7881/geoserver/hegang/wms
+    center_x: 597460.943
+    center_y: 5246408.8891
+    layers: hegang:hegang
+    zoom: 0
+    epsg: EPSG:4552
+  api:
+    url: http://192.168.27.82:27745/api
+logging:
+  level:
+    com.unicom: info
+    org.springframework: info
+    org.activiti.engine: info
+    com.github.tobato: info
+    com.github.tobato.fastdfs.domain.proto: info
+    org.hibernate.type.descriptor.sql.BasicBinder: info
+
+
+auth:
+  token:
+    secret:
+      key: SecretKey012345678901234567890123456789012345678901234567890123456789
+    expire:
+      seconds: 18000

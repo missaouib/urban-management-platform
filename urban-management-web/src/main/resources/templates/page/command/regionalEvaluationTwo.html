@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>综合评价</title>
+    <th:block th:include="page/fragments/common :: common_css" />
+    <th:block th:include="page/fragments/common :: fileUpload_css" />
+    <th:block th:include="page/fragments/common :: bootstrap_table_css" />
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css" />
+    <th:block th:include="page/fragments/common :: swiper_css" />
+    <link th:href="@{/css/ealuations.css}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="warp" style="position: relative">
+    <div class="fullScreen_index"><i class="fa fa-arrows-alt" aria-hidden="true"></i></div>
+    <div class="leftwarp">
+        <div class="inner">
+            <form id="userForm">
+                <div class="group">
+                    <div class="grouptitle">考核周期</div>
+                    <div class="inputs">
+                        <div class="dateIn">
+                            <input size="16" class="form_datetime" name="startTime" id="begin" type="text" value="" readonly>
+                        </div>
+                        <div class="dateIn">
+                            <input size="16" class="form_datetime" name="endTime" id="end" type="text" value="" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="group">
+                    <div class="grouptitle">区域</div>
+                    <div class="inputs">
+                        <div class="dateIn">
+                            <input type="text" readonly="readonly" id="grid" class="find_input" style="width: 100%;" />
+                            <input type="hidden" readonly="readonly" name="gridId" id="gridId" class="find_input" />
+                            <button type="button" class="addBtn" onclick="selectGridTree()">
+                                +
+                            </button>
+                        </div>
+                        <div class="notice_check">
+                            <form id="search-form">
+                                <p style="display: flex;justify-content: flex-end">
+                                    <input type="button" class="check_btn button_ground closeSearch" onclick="$.table.search()" value="查询">
+                                    <input type="button" class="check_btn1 button_ground closeSearch" onclick="$.form.reset()" value="重置">
+                                </p>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="tablegroup">
+                    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="rightwarp" style="position: relative">
+        <div class="seekBos">
+            <div class="boosLever">
+                <div class="boss"></div>
+                <div class="beats">等级A</div>
+            </div>
+            <div class="boosLever">
+                <div class="boss"></div>
+                <div class="beats">等级B</div>
+            </div>
+            <div class="boosLever">
+                <div class="boss"></div>
+                <div class="beats">等级C</div>
+            </div>
+            <div class="boosLever">
+                <div class="boss"></div>
+                <div class="beats">等级D</div>
+            </div>
+            <div class="boosLever">
+                <div class="boss"></div>
+                <div class="beats">等级E</div>
+            </div>
+        </div>
+        <div class="mengBan"></div>
+        <div id="container" style="width: 100%;height: 100%;"></div>
+        <div class="map" id="map" style="width: 100%;height: 100%"></div>
+    </div>
+</div>
+</body>
+
+
+</div>
+<th:block th:include="page/fragments/common :: common_js" />
+<th:block th:include="page/fragments/common :: jquery_validation_js" />
+<th:block th:include="page/fragments/common :: fileUpload_js" />
+<th:block th:include="page/fragments/common :: map_js" />
+<th:block th:include="page/fragments/common :: bootstrap_table_js" />
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js" />
+<th:block th:include="page/fragments/common :: swiper_js" />
+<th:block th:include="page/fragments/common :: ztree_js" />
+<script th:src="@{/js/index.js}"></script>
+<th:block th:include="page/fragments/common :: mapinit_js"/>
+<th:block th:include="page/fragments/common :: bmap_js" />
+<script type="text/javascript" th:inline="javascript">
+
+    function selectGridTree() {
+        var url = /*[[@{/tree/grid}]]*/ "/tree/grid";
+        var options = {
+            title: '选择区域',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#gridId").val(body.find('#treeId').val());
+        $("#grid").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+    $(function() {
+
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+
+        search();
+
+    });
+
+    let regionalEvaluationTwoUrl = /*[[@{/commandSubsystem/regionalEvaluationTwo}]]*/ "/commandSubsystem/regionalEvaluationTwo";
+
+    function search() {
+        let options = {
+            url: regionalEvaluationTwoUrl,
+            pagination: false,
+            onClickRow: function (row, index) {
+                layerMap.getSource().clear();
+                findGeomByGridId(row.gridId, row.comprehensiveIndexValue);
+            },
+            onLoadSuccess: function (data) {
+                layerMap.getSource().clear();
+                let rows = data.rows;
+                for (let i = 0; i < rows.length; i++) {
+                    findGeomByGridId(rows[i].gridId, rows[i].comprehensiveIndexValue);
+                }
+            },
+            columns: [
+                {
+                    field: 'gridName',
+                    title: '单元网格'
+                },
+                {
+                    field: 'publicReportAndInstSize',
+                    title: '监督举报核实数'
+                },
+                {
+                    field: 'instSize',
+                    title: '立案数'
+                },
+                {
+                    field: 'closeOrToCloseSize',
+                    title: '应结案数'
+                },
+                {
+                    field: 'closeSize',
+                    title: '结案数'
+                },
+                {
+                    field: 'comprehensiveIndexValue',
+                    title: '综合指标'
+                },
+            ]
+        };
+        $.table.init(options);
+    }
+
+    function findGeomByGridId(gridId, comprehensiveIndexValue) {
+        let url = "/event/findGeomByGridId?id=" + gridId;
+        $.ajaxUtil.get(url, function(e) {
+            $(e.data.geom).each(function(index, value) {
+                let split = value.split(",");
+                let polygonArray = [];
+                let polygonArrayEnd = [];
+                for (let j = 0; j < split.length; j++) {
+                    let pointArray = [];
+                    pointArray.push(split[j].split(" ")[0]);
+                    pointArray.push(split[j].split(" ")[1]);
+                    polygonArray.push(pointArray);
+                    polygonArrayEnd.push(polygonArray);
+                }
+                setPolygon(polygonArrayEnd, comprehensiveIndexValue);
+            });
+        });
+    }
+
+    function setPolygon(Polygons, data) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(Polygons)
+        });
+
+        var setColor;
+        if (getLevelAndColor(data) == "A"){
+            setColor = "green"
+        }else if (getLevelAndColor(data) == "B"){
+            setColor = "blue"
+        }else if(getLevelAndColor(data) == "C"){
+            setColor = "yellow"
+        }else if(getLevelAndColor(data) == "D"){
+            setColor = "red"
+        }else if(getLevelAndColor(data) == "E"){
+            setColor = "black"
+        }
+
+        Polygon.setStyle(new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: setColor,
+                width: 3
+            })
+        }));
+
+        layerMap.getSource().addFeature(Polygon);
+    }
+
+    function getLevelAndColor(data) {
+        if (data < 40) {
+            return "E";
+        } else if (data >= 90) {
+            return "A";
+        } else if (data >= 75) {
+            return "B";
+        } else if (data >= 60) {
+            return "C";
+        } else if (data >= 40) {
+            return "D";
+        }
+    }
+
+</script>
+</body>
+
+</html>

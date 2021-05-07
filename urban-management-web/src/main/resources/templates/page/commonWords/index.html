@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>惯用语维护</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<div class="notice_main ">
+
+
+
+    <div class="notice_check">
+        <form id="search-form">
+            <p>
+                <label class="">批示常用语</label>
+                <input type="text" class="find_input" style="width: 400px!important;" id="idiomsValue" name="idiomsValue" onclick="" >
+                <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
+                <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">
+            </p>
+        </form>
+    </div>
+
+
+    <div class="clear"></div>
+
+
+<!--    <div class="btn-group-sm" id="toolbar">-->
+<!--        <a class="btn btn-success addWords" onclick="" data-toggle='modal' data-target='#modal-default'>-->
+<!--            <i class="fa fa-plus"></i> 新增-->
+<!--        </a>-->
+
+<!--    </div>-->
+
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <P style="display: flex;align-items:center;justify-content:center;margin: 5px 0">
+                        <span class="sendText" style="width: 20%"><i style="color: red!important;"></i>提示常用语</span>
+                        <input style="width: 80%" type="text" class="find_input">
+                    </P>
+                    <P style="display: flex;align-items:center;justify-content:center">
+                        <span class="sendText" style="width: 20%"><i style="color: red!important;"></i>排序</span>
+                        <input style="width: 80%" type="text" class="find_input">
+                    </P>
+                </div>
+                <input type="hidden" id="imageUrlList" value="">
+                <div class="modal-footer justify-content-between"
+                     style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary" onclick="" id="underBtn">完成</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">返回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+    let searchUrl = /*[[@{/commonWords/list}]]*/ "/commonWords/list";
+    $(function () {
+
+
+        $(".enentTest").click(function () {
+            $(".modal-title").html($(this).html())
+            $("#underBtn").html($(this).html())
+        })
+$(".addWords").click(function () {
+    $(".modal-title").html("新增")
+    $("#underBtn").html("新增")
+})
+        queryUserList()
+    })
+
+
+
+    function queryUserList() {
+        var options = {
+            url: searchUrl,
+            // createUrl: addUrl,
+            // updateUrl: editUrl,
+            // removeUrl: removeUrl,
+            // uniqueId: "id",
+            // sortName: "updateTime",
+            // sortOrder: "desc",
+            modalName: "用户",
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class:'index_width',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '提示常用语',
+                    field: 'idiomsValue',
+                    sortable: true,
+                },
+                {
+                    title: '用户',
+                    field: 'userName',
+                    sortable: true,
+                },
+                // {
+                //     title: '操作',
+                //     field: '',
+                //     class: 'radios',
+                //     formatter: function (value, row) {
+                //         var e = "<a href='' title='' style='margin-right: 5px' class='enentTest' data-toggle='modal' data-target='#modal-default'>修改</a>" +
+                //             "<a href='' title='' style='margin-right: 5px'>删除</a>"
+                //         return e;
+                //     }
+                // }
+            ]
+        };
+        $.table.init(options);
+    }
+</script>
+</body>
+</html>

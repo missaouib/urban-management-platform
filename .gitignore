@@ -93,3 +93,7 @@ buildNumber.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
+# 忽略各个模块下的系统自动生成的文件
+**/.**
+tags
+

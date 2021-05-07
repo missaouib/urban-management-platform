@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>部件导入</title>
+    <th:block th:include="page/fragments/common :: common_css" />
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css" />
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <link th:href="@{/css/component.css}" rel="stylesheet" type="text/css">
+</head>
+
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+    <div class="notice_main ">
+        <div class="content">
+            <div class="leftBox" style="width: 50%!important;">
+                <div class="leftInner">
+                    <form id="">
+                        <div class="top table2_top">
+                            <div class="top_out">
+                                <table class="table" style="width: 50%">
+                                    <tbody>
+                                    <tr>
+                                        <td><span></span>部件名称</td>
+                                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                            <input type="text" class="find_input" id="eventType" style="float: left">
+                                            <button type="button" class="addBtn"  onclick="selectEventTypeTree()">
+                                                +
+                                            </button>
+                                        </td>
+                                        <td><span></span></td>
+                                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px"></td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- ztree-->
+                    <form id="fileForm">
+                        <input type="hidden" name="layerSettingType" value="1" />
+                        <input type="hidden" name="layerName" id="layerName" />
+                        <input type="hidden" name="componentTypeId" id="componentTypeId" />
+                        <div>
+                            <label class="modelTitle"></label>
+                            <input type="file" name="file" multiple="multiple">
+                        </div>
+                    <div style="padding-bottom: 20px;margin-right: 20px;display: flex;justify-content: flex-end" class="">
+                        <button type="button" id="btnAddFile" class="check_btn2" style="font-size:12px;"
+                                onclick="uploadFiles()">导入文件
+                        </button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+            <div class="rightBox" style="width: 50%!important;">
+
+            </div>
+        </div>
+    </div>
+    <th:block th:include="page/fragments/common :: common_js" />
+    <th:block th:include="page/fragments/common :: bootstrap_table_js" />
+    <th:block th:include="page/fragments/common :: ztree_js"/>
+    <script type="text/javascript" th:inline="javascript">
+        var setting = {
+            callback: {
+                onClick: zTreeOnClick
+            },
+            data: {//数据加载
+                keep: {
+                    parent: true,
+                    leaf: true
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: 'id',
+                    pIdKey: 'parent'
+                },
+                key: {
+                    name: "name"
+                }
+            }
+        };
+
+        function zTreeOnClick(event, treeId, treeNode) {
+        }
+        $(function () {
+            $.ajaxUtil.get(eventTypeUrl, function (e) {
+                var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+            })
+
+        })
+
+        let eventTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
+        let upload = /*[[@{/componentImport}]]*/ "/componentImport";
+        function uploadFiles() {
+            var formData = new FormData($("#fileForm")[0]);
+            $.ajax({
+                url: upload,
+                type: 'POST',
+                data: formData,
+                async: true,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+                    $.modal.loading("正在处理中，请稍后...");
+                },
+                success: function (data) {
+                    if(data.code == 99){
+                        $.modal.alertWarning("请选择正确文件格式！");
+                    }else if (data.code == 0){
+                        $.modal.alertSuccess('保存成功',function () {
+                            window.location.href = /*[[@{/cImport}]]*/ "/cImport";
+                        });
+                    }else if (data.code === 98) {
+                        $.modal.alertWarning("该分类已存在请选择其他分类！");
+                    }
+                },
+                error: function (data) {
+                    $.modal.alertError(data.message,function () {
+                    });
+                }
+            });
+        }
+        function selectEventTypeTree() {
+            var treeId = $("#treeId").val();
+            var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+            var url = /*[[@{/tree/eventtype}]]*/ "/tree/eventtype";
+            var options = {
+                title: '选择事件类型',
+                width: "380",
+                url: url,
+                callBack: doSubmit
+            };
+            $.modal.openOptions(options);
+        }
+
+        function doSubmit(index, layero){
+            var tree = layero.find("iframe")[0].contentWindow.$._tree;
+            var body = layer.getChildFrame('body', index);
+            $("#treeId").val(body.find('#treeId').val());
+            $("#eventType").val(body.find('#treeName').val());
+            $("#layerName").val(body.find('#treeName').val());
+            $("#componentTypeId").val(body.find('#treeId').val());
+            layer.close(index);
+        }
+
+
+    </script>
+</body>
+
+</html>

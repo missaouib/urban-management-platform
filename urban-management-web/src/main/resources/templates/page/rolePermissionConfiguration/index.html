@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
+</head>
+<body style="border-radius: 8px;">
+<div class="content">
+    <div class="areaCenter">
+        <div class="notice_check">
+                <h5 style="padding-left: 5px">搜索</h5>
+                <p>
+                    <label class=""></label>
+                    <input type="search" class="find_input" id="key" />
+<!--                    <input type="hidden" th:name="eventTypeId" id="eventTypeId">-->
+<!--                    <input type="button" class="check_btn button_ground" onclick="search()" value="查询">-->
+<!--                    <input type="button" class="check_btn1 button_ground" value="重置">-->
+                </p>
+            <div class="tree">
+                <div class="treeDemo">
+                    <ul id="treeDemo" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="areaCenter">
+        <div class="treesmenu">
+            <div class="menusTree">
+                <div class="treesTitle">业务权限</div>
+                <div class="treeDemo">
+                    <ul id="treeDemo1" class="ztree"></ul>
+                </div>
+            </div>
+            <div class="menusTree">
+                <div class="treesTitle">统计权限</div>
+                <div class="treeDemo">
+                    <ul id="treeDemo2" class="ztree"></ul>
+                </div>
+            </div>
+            <div class="menusTree">
+                <div class="treesTitle">维护权限</div>
+                <div class="treeDemo">
+                    <ul id="treeDemo3" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+        <form class="details">
+            <div class="top table2_top">
+
+                    <div class="r_right but_p girdBtnGroup" id="eventButton" style="margin: 10px 0 10px 0!important;">
+                        <form id="saveForm">
+                            <input type="hidden" name="id" id="roleId"/>
+                            <input type="hidden" name="menuIdList" id="menuIdList"/>
+                        </form>
+                        <button class="but_save" id="saveButton" onclick="save1111()" type="button" style="margin-right: 10px" >保存</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    let getDeptAndRoleTreeUrl = /*[[@{/rolePermissionConfiguration/getDeptAndRoleTree}]]*/ "/rolePermissionConfiguration/getDeptAndRoleTree";
+    let getMenuByMenuTypeUrl = /*[[@{/rolePermissionConfiguration/getMenuByMenuType}]]*/ "/rolePermissionConfiguration/getMenuByMenuType";
+    let url = /*[[@{/rolePermissionConfiguration/save}]]*/ "/rolePermissionConfiguration/save";
+    var setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parentId'
+            },
+            key: {
+                name: "deptName"
+            }
+        }
+    };
+    var setting1 = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox"
+        },
+        callback: {
+            onClick: zTreeOnClick1
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parentId'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+    var setting2 = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox"
+        },
+        callback: {
+            onClick: zTreeOnClick2
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parentId'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+    var setting3 = {
+        check: {
+            enable: true,
+            chkStyle: "checkbox"
+        },
+        callback: {
+            onClick: zTreeOnClick3
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parentId'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+    $(function () {
+        $.ajaxUtil.get(getDeptAndRoleTreeUrl, function (e) {
+            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        })
+        let roleId = '';
+        $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 1+"&roleId="+roleId, function (e) {
+            var zTreeObj = $.fn.zTree.init($("#treeDemo1"), setting1, e.data);
+        })
+        $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 2+"&roleId="+roleId, function (e) {
+            var zTreeObj = $.fn.zTree.init($("#treeDemo2"), setting2, e.data);
+        })
+        $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 3+"&roleId="+roleId, function (e) {
+            var zTreeObj = $.fn.zTree.init($("#treeDemo3"), setting3, e.data);
+        })
+        search();
+    });
+        function search() {
+            $.ajax({
+                type: "GET",
+                url: getDeptAndRoleTreeUrl,
+                success: function (result) {
+                    $.fn.zTree.init($("#treeDemo"), setting, result.data);
+                    fuzzySearch("treeDemo", '#key', null, true);
+                }
+            });
+        };
+
+        function setCheckEnable(flag) {
+            var treeObj1 = $.fn.zTree.getZTreeObj("treeDemo1");
+            var nodes = treeObj1.transformToArray(treeObj1.getNodes());
+            for (let i = 0; i < nodes.length; i++) {
+                treeObj1.setChkDisabled(nodes[i], flag);
+            }
+            var treeObj2 = $.fn.zTree.getZTreeObj("treeDemo2");
+            var nodes = treeObj2.transformToArray(treeObj2.getNodes());
+            for (let i = 0; i < nodes.length; i++) {
+                treeObj2.setChkDisabled(nodes[i], flag);
+            }
+            var treeObj3 = $.fn.zTree.getZTreeObj("treeDemo3");
+            var nodes = treeObj3.transformToArray(treeObj3.getNodes());
+            for (let i = 0; i < nodes.length; i++) {
+                treeObj3.setChkDisabled(nodes[i], flag);
+            }
+        }
+
+    function zTreeOnClick(event, treeId, treeNode) {
+            //判断当前节点是否有子节点
+            var zTree = $.fn.zTree.getZTreeObj(treeId);
+            var nodes = zTree.getSelectedNodes();
+            var node = nodes[0];
+            if (node.isParent) {
+                setCheckEnable(true);
+                $("#saveButton").attr("disabled", "disabled");
+            } else {
+                setCheckEnable(false);
+                $("#saveButton").removeAttr("disabled");
+                let roleId = treeNode.id;
+                $("#roleId").val(roleId);
+                $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 1+"&roleId="+roleId, function (e) {
+                    let data = e.data;
+                    let treeObj1 = $.fn.zTree.getZTreeObj("treeDemo1");
+                    let nodes1 = treeObj1.transformToArray(treeObj1.getNodes());
+                    for (let i = 0; i < nodes1.length; i++) {
+                        $(data).each(function (index, value) {
+                            if (value.id === nodes1[i].id) {
+                                if (value.checkbox === 1) {
+                                    nodes1[i].checked = true;
+                                }else {
+                                    nodes1[i].checked = false;
+                                }
+                                treeObj1.updateNode(nodes1[i]);
+                            }
+                        });
+                    }
+                })
+                $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 2+"&roleId="+roleId, function (e) {
+                    let data = e.data;
+                    let treeObj2 = $.fn.zTree.getZTreeObj("treeDemo2");
+                    let nodes2 = treeObj2.transformToArray(treeObj2.getNodes());
+                    for (let i = 0; i < nodes2.length; i++) {
+                        $(data).each(function (index, value) {
+                            if (value.id === nodes2[i].id ) {
+                                if (value.checkbox === 1) {
+                                    nodes2[i].checked = true;
+                                }else {
+                                    nodes2[i].checked = false;
+                                }
+                                treeObj2.updateNode(nodes2[i]);
+                            }
+                        });
+                    }
+                })
+                $.ajaxUtil.get(getMenuByMenuTypeUrl + "?menuTypeId=" + 3+"&roleId="+roleId, function (e) {
+                    let data = e.data;
+                    let treeObj3 = $.fn.zTree.getZTreeObj("treeDemo3");
+                    let nodes3 = treeObj3.transformToArray(treeObj3.getNodes());
+                    for (let i = 0; i < nodes3.length; i++) {
+                        $(data).each(function (index, value) {
+                            if (value.id === nodes3[i].id ) {
+                                if (value.checkbox === 1) {
+                                    nodes3[i].checked = true;
+                                }else {
+                                    nodes3[i].checked = false;
+                                }
+                                treeObj3.updateNode(nodes3[i]);
+                            }
+                        });
+                    }
+                })
+            }
+        }
+
+        function zTreeOnClick1(event, treeId, treeNode) {
+        }
+
+        function zTreeOnClick2(event, treeId, treeNode) {
+        }
+
+        function zTreeOnClick3(event, treeId, treeNode) {
+        }
+        function save1111() {
+            var roleId = $('#roleId').val();
+            if (roleId === undefined || roleId === '') {
+                $.modal.alertWarning("请选择部门！");
+                return false;
+            }
+            let menuIdList = new Array();
+            let treeObj1 = $.fn.zTree.getZTreeObj("treeDemo1");
+            let treeObj2 = $.fn.zTree.getZTreeObj("treeDemo2");
+            let treeObj3 = $.fn.zTree.getZTreeObj("treeDemo3");
+            let nodes1 = treeObj1.transformToArray(treeObj1.getNodes());
+            let nodes2 = treeObj2.transformToArray(treeObj2.getNodes());
+            let nodes3 = treeObj3.transformToArray(treeObj3.getNodes());
+            for (let i = 0; i < nodes1.length; i++) {
+                if (nodes1[i].checked === true) {
+                    menuIdList.push(nodes1[i].id);
+                }
+            }
+            for (let i = 0; i < nodes2.length; i++) {
+                if (nodes2[i].checked === true) {
+                    menuIdList.push(nodes2[i].id);
+                }
+            }
+            for (let i = 0; i < nodes3.length; i++) {
+                if (nodes3[i].checked === true) {
+                    menuIdList.push(nodes3[i].id);
+                }
+            }
+            if (menuIdList == null){
+                $.modal.alertWarning("请选择菜单");
+                return false;
+            }
+            $('#menuIdList').val(menuIdList);
+            $.operate.saveAndReload(url, {"id": roleId,"menuIdList":menuIdList});
+        }
+</script>
+</body>
+</html>

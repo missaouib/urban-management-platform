@@ -26,7 +26,7 @@
 <!--                <label class="">账号：</label>-->
 <!--                <input type="text" class="find_input" name="username">-->
 <!--                <input type="button" class="check_btn" onclick="$.table.search()" value="查询">-->
-<!--                <input type="button" class="check_btn1" onclick="$.form.reset()" value="重置查询">-->
+<!--                <input type="button" class="check_btn1" onclick="$.form.reset()" value="重置">-->
 <!--            </p>-->
 <!--        </form>-->
 <!--    </div>-->
@@ -122,35 +122,51 @@
             modalName: "流程定义",
             columns: [
                 {
+                    field: 'index',
+                    title: '序号',
+                    class:'index_width',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
                     checkbox: true
                 },
                 {
                     title: '流程定义ID',
-                    field: 'id'
+                    field: 'id',
+                    sortable: true,
                 },
                 {
                     title: '部署ID',
-                    field: 'deploymentId'
+                    field: 'deploymentId',
+                    sortable: true,
                 },
                 {
                     title: '名称',
-                    field: 'name'
+                    field: 'name',
+                    sortable: true,
                 },
                 {
                     title: 'KEY',
-                    field: 'key'
+                    field: 'key',
+                    sortable: true,
                 },
                 {
                     title: '模型ID',
-                    field: 'modelerId'
+                    field: 'modelerId',
+                    sortable: true,
                 },
                 {
                     title: '资源名称',
-                    field: 'resourceName'
+                    field: 'resourceName',
+                    sortable: true,
                 },
                 {
                     title: '版本',
-                    field: 'version'
+                    field: 'version',
+                    sortable: true,
                 },
                 {
                     title: '操作',
@@ -184,9 +200,7 @@
                 // var index = layer.load(2, {shade: false});
                 // // $.modal.disable();
                 // var formData = new FormData(layero.find('form')[0]);
-                var formData = $('#modelForm').serialize();
-                console.log(formData);
-
+                let formData = $('#modelForm').serialize();
 
                 $.ajax({
                     url: activitiUrl,

@@ -13,7 +13,7 @@ public class PasswordServiceImpl implements PasswordService {
 
     @Override
     public String getDefaultPassword() {
-        return SystemConstant.DEFAULT_PASSWORD;
+        return passwordEncoder.encode(SystemConstant.DEFAULT_PASSWORD);
     }
 
     @Override

@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: swiper_css"/>
+    <link th:href="@{/css/fullindex.css}" rel="stylesheet" type="text/css">
+</head>
+<body style="width: 100vw;height: 100vh;">
+<div class="warp">
+    <div class="fullScreen_index"><i class="fa fa-arrows-alt" aria-hidden="true"></i></div>
+    <input type="hidden" value="" id="eventId_map">
+    <input type="hidden" value="" id="url_map">
+    <div class="left">
+        <div class="bar barIn">
+            <div class="title">高发问题</div>
+            <div class="barinnner">
+                <div class="chars">
+                    <div id="highIncidence" style="width: 100%;height:100%;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="bar barIn">
+            <div class="title">高发区域</div>
+            <div class="barinnner">
+                <div class="chars">
+                    <div id="region" style="width: 100%;height:100%;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="bar barIn">
+            <div class="title">高发时段趋势分析</div>
+            <div class="barinnner">
+                <div class="chars">
+                    <div id="trendAnalysis" style="width: 100%;height:100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="center">
+        <div class="fullMap" style="background-color:#17335b94;">
+            <div class="mengBan"></div>
+            <div id="container" style="width: 100%;height: 100%;"></div>
+            <div class="map" id="map" style="width: 100%;height: 100%"></div>
+            <!--            <div class="fugai">-->
+            <div class="checkTime">
+                <div class="timeText">时间</div>
+                <div class="selectTime">
+                    <select class="timeSelect" id="time" onchange="timeQuery()">
+                        <option value="year" selected>年</option>
+                        <option value="month">月</option>
+                        <option value="day">日</option>
+                    </select>
+                </div>
+            </div>
+            <div class="numStatis">
+                <div class="statis1" id="reporting">
+                    <span class="colorStyle1" id="count">···</span>
+                    <span>上报</span>
+                </div>
+                <div class="statis1" id="register">
+                    <span class="colorStyle2" id="inst">···</span>
+                    <span>立案</span>
+
+                </div>
+                <div class="statis1" id="caseDispose">
+                    <span class="colorStyle3" id="dispose">···</span>
+                    <span>处置</span>
+
+                </div>
+                <div class="statis2" id="caseclosed">
+                    <span class="colorStyle4" id="close">···</span>
+                    <span>结案</span>
+                </div>
+
+            </div>
+
+
+            <!--                <div class="checkBox">-->
+            <!--                    <div class="mapLayers">-->
+            <!--                        <div class="clickLayer">-->
+            <!--                            <img th:src="@{/img/1.jpg}" alt="">-->
+            <!--                        </div>-->
+            <!--                        <span class="clickName">热力图</span>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+
+            <!--                <div class="viewGroup">-->
+            <!--                    <div class="mapView">-->
+            <!--                        <div class="optionLayers">-->
+            <!--                            <div class="layerGrounp" id="map1">-->
+            <!--                                <div class="layerInfo">-->
+            <!--                                    <img th:src="@{/img/1.jpg}" alt="">-->
+            <!--                                </div>-->
+            <!--                                <span class="layerName">热力图</span>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+
+            <!--                        <div class="optionLayers">-->
+            <!--                            <div class="layerGrounp" id="map2">-->
+            <!--                                <div class="layerInfo">-->
+            <!--                                    <img th:src="@{/img/2.jpg}" alt="">-->
+            <!--                                </div>-->
+            <!--                                <span class="layerName">人群图</span>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+
+
+            <!--                        <div class="optionLayers">-->
+            <!--                            <div class="layerGrounp" id="map3">-->
+            <!--                                <div class="layerInfo">-->
+            <!--                                    <img th:src="@{/img/3.jpg}" alt="">-->
+            <!--                                </div>-->
+            <!--                                <span class="layerName">街道图</span>-->
+            <!--                            </div>-->
+            <!--                        </div>-->
+
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+
+
+        </div>
+    </div>
+    <div class="right">
+        <div class="bar">
+            <div class="title titleOrter">事件、部件</div>
+            <div class="barinnner">
+                <div class="chars bandCha">
+                    <div class="abend">
+                        <div class="meter">
+                            <div id="watch" style="width: 100%;height:100%;"></div>
+                        </div>
+                        <div class="meterText">
+                            <div class="meterNum">
+                                <span class="did">已处置</span>
+                                <span class="line"></span>
+                                <span class="didNum" id="eventDisponse">1121</span>
+                            </div>
+                            <div class="meterNum">
+                                <span class="did">应处置</span>
+                                <span class="line"></span>
+                                <span class="didNum" id="eventNum">1121</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="abend">
+                        <div class="meter">
+                            <div id="watch2" style="width: 100%;height:100%;"></div>
+                        </div>
+                        <div class="meterText">
+                            <div class="meterNum">
+                                <span class="did">已处置</span>
+                                <span class="line"></span>
+                                <span class="didNum" id="unitDisponse">1121</span>
+                            </div>
+                            <div class="meterNum">
+                                <span class="did">应处置</span>
+                                <span class="line"></span>
+                                <span class="didNum" id="unitNum">1121</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bar barorther">
+            <div class="title titleOrter">问题来源</div>
+            <div class="barinnner">
+                <div class="chars">
+                    <div id="question" style="width: 100%;height:100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+
+
+</div>
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: echarts_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
+<th:block th:include="page/fragments/common :: mapinit_js"/>
+<th:block th:include="page/fragments/common :: bmap_js" />
+<script th:src="@{/js/index.js}"></script>
+<script type="text/javascript" th:inline="javascript">
+    var countUrl = /*[[@{/bigScreen/count}]]*/ "/bigScreen/count";
+    var showPointsUrl = /*[[@{/bigScreen/showPoints}]]*/ "/bigScreen/showPoints";
+    var findHighIncidenceUrl = /*[[@{/commandSubsystem/findHighIncidence}]]*/ "/commandSubsystem/findHighIncidence";
+    var getTrendAnalysisUrl = /*[[@{/commandSubsystem/getTrendAnalysis}]]*/ "/commandSubsystem/getTrendAnalysis";
+    $(function () {
+
+        $(".numBosen div").click(function () {
+            $(this).addClass('bosenActive').siblings(".numBosen div").removeClass("bosenActive")
+        })
+
+        //全屏展示
+        $(".fullScreen_index").click(function () {
+            $.learuntab.requestFullScreen();
+        })
+
+        var map_click = map.on('click', function (evt) {
+            var pixel = map.getEventPixel(evt.originalEvent);
+            var feature = map.forEachFeatureAtPixel(pixel, function (feature) {
+                return feature;
+            });
+            //判断当前单击处是否有要素，捕获到要素时弹出popup
+            var coordinate = evt.coordinate;
+            if (feature !== undefined) {
+                removeAllOverlay(map);
+                var popup_element = document.createElement('div');
+                popup_element.className = 'ol-popup';
+                var closer = document.createElement('a');
+                closer.href = '#';
+                closer.className = 'ol-popup-closer';
+                var title = document.createElement('div');
+                title.className = 'title_popup';
+                var content = document.createElement('div');
+                content.className = 'popup-content';
+                $(popup_element).append(closer);
+                $(popup_element).append(title);
+                $(popup_element).append(content);
+                var info_popup = new ol.Overlay(({
+                    element: popup_element,
+                    autoPan: true,
+                    autoPanAnimation: {
+                        duration: 250   //当Popup超出地图边界时，地图移动的速度
+                    }
+                }));
+                map.addOverlay(info_popup);
+                $(closer).on('click', function (event) {
+                    event.preventDefault();
+                    info_popup.setPosition(undefined);
+                });// 点击关闭的按钮
+                let data = feature.H.data;
+                let eventId = data.eventId;
+                if(eventId !== null && eventId !== undefined){
+                    let getDetailUrl = /*[[@{/commandSubsystem/toIndexDetails}]]*/ "/commandSubsystem/toIndexDetails";
+                    let url = getDetailUrl + "?eventId=" + eventId;
+                    $("#eventId_map").val(eventId);
+                    $("#url_map").val(url);
+                }
+                title.innerHTML = '<div><strong>案件信息</strong></div></div>';
+                content.innerHTML = '<div>' +
+                    '<div>案件编号:'+ data.eventCode +'</div>' +
+                    '<div>案件分类:'+ data.eventTypeName +'</div>' +
+                    '<div>问题描述:'+ data.represent +'</div>' +
+                    '<div class="details"><span class="">查看详情>></span></div>' +
+                    '</div>';
+                info_popup.setPosition(coordinate);
+                //查看详情跳页
+                $(".details").click(function () {
+                    let url = $("#url_map").val();
+                    let eventId = $("#eventId_map").val();
+                    window.parent.$.learuntab.myAddTab('详情', url, 'eventId');
+                })
+            }
+        });
+        // 清空上一个弹框
+        function removeAllOverlay(map) {
+            map.getOverlays().getArray().slice(0).forEach(function (overlay) {
+                map.removeOverlay(overlay);
+            });
+        }
+
+
+
+        // var selectSingleClick = new ol.interaction.Select();
+        // map.addInteraction(selectSingleClick);
+        // selectSingleClick.on('select', function (e) {
+        //
+        //     let features = e.target.getFeatures().getArray();
+        // let eventId = features[0].H.data.eventId;
+        // if(eventId !== null && eventId !== undefined){
+        //     let getDetailUrl = /*[[@{/commandSubsystem/toIndexDetails}]]*/ "/commandSubsystem/toIndexDetails";
+        //     let url = getDetailUrl + "?eventId=" + eventId;
+        //     console.log(eventId,url)
+        //     // window.parent.$.learuntab.myAddTab('详情', url, 'eventId');
+        // }
+
+        // });
+
+        count();
+        //
+        // $(".checkBox").click(function () {
+        //     $(this).fadeOut(300);
+        //     $(".viewGroup").fadeIn(300);
+        // });
+
+        // $(".layerGrounp").click(function () {
+        //     $(".clickLayer").html($(this).children(".layerInfo").html())
+        //     $(".clickName").html($(this).children(".layerName").html())
+        //     $(".viewGroup").fadeOut(300);
+        //     $(".checkBox").fadeIn(300);
+        // });
+    })
+    $("#reporting").click(function () {
+        layerMap.getSource().clear()
+        var timeType = $("#time").val();
+        $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "reporting", function (e) {
+            var data = e.data;
+            for (let i = 0; i < data.length; i++) {
+                setPoint(data[i].coordinate.split(" ")[0],
+                    data[i].coordinate.split(" ")[1],
+                    data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
+            }
+        });
+
+    })
+    $("#register").click(function () {
+        layerMap.getSource().clear()
+        var timeType = $("#time").val();
+        $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "register", function (e) {
+            var data = e.data;
+            for (let i = 0; i < data.length; i++) {
+                setPoint(data[i].coordinate.split(" ")[0],
+                    data[i].coordinate.split(" ")[1],
+                    data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
+            }
+        });
+
+    })
+    $("#caseDispose").click(function () {
+        layerMap.getSource().clear()
+        var timeType = $("#time").val();
+        $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "caseDispose", function (e) {
+            var data = e.data;
+            for (let i = 0; i < data.length; i++) {
+                setPoint(data[i].coordinate.split(" ")[0],
+                    data[i].coordinate.split(" ")[1],
+                    data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
+            }
+        });
+    });
+    $("#caseclosed").click(function () {
+        layerMap.getSource().clear()
+        var timeType = $("#time").val();
+        $.ajaxUtil.get(showPointsUrl + "?timeType=" + timeType + "&showType=" + "caseclosed", function (e) {
+            var data = e.data;
+            for (let i = 0; i < data.length; i++) {
+                setPoint(data[i].coordinate.split(" ")[0],
+                    data[i].coordinate.split(" ")[1],
+                    data[i].eventId, data[i].eventCode, data[i].represent, data[i].eventTypeName);
+            }
+        });
+    });
+
+    function setPoint(x, y, id, eventCode, represent, eventTypeName) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                eventId: id,
+                eventCode: eventCode,
+                represent: represent,
+                eventTypeName: eventTypeName,
+                coordinate: x + "," + y
+            }
+        });
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                src: '../img/dwpoint3.png'
+            })
+        }));
+        layerMap.getSource().addFeature(point);
+    }
+
+    //表格
+
+    //高发问题
+    findHighIncidence();
+    //高发区域
+    findHighGrid();
+    //问题来源
+    getEventSource();
+    //高发时段趋势分析
+    getTrendAnalysis();
+
+    function findHighGrid(){
+        let time = $("#time").val();
+        var myChart1 = echarts.init(document.getElementById('region'));
+        $.ajaxUtil.get("/statistics/findHotGrid?time="+time, function (e) {
+            if (e.code === 0) {
+                let gridNameArray=[];
+                let totalInstArray=[];
+                let totalCloseArray=[];
+                let datas = e.data;
+                for (let i=0; i< datas.length; i++){
+                    gridNameArray.push(datas[i].gridName);
+                    totalInstArray.push(datas[i].totalInst);
+                    totalCloseArray.push(datas[i].totalClose);
+                }
+                var option2 = {
+                    title: {
+                        x: "left"
+                    },
+                    legend: {
+                        data: ["结案量", "立案量"],
+                        x: "right",
+                        orient: "horizontal",
+                        y: "top",
+                        textStyle: {
+                            color: '#ffffff'//字体颜色
+                        }
+                    },
+                    tooltip: {
+                        trigger: "axis"
+                    },
+                    toolbox: {
+                        show: false,
+                        feature: {
+                            mark: {
+                                show: true
+                            },
+                            dataView: {
+                                show: true,
+                                readOnly: true
+                            },
+                            magicType: {
+                                show: false,
+                                type: ["line", "bar"]
+                            },
+                            restore: {
+                                show: true
+                            },
+                            saveAsImage: {
+                                show: true
+                            }
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: "category",
+                            data: gridNameArray,
+                            splitArea: {
+                                show: false
+                            },
+                            axisLabel: {
+                                show: true,
+                                textStyle: {
+                                    color: '#fff'
+                                },
+                                lineStyle: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        0, 0, 1, 0,
+                                        [
+                                            {offset: 0, color: '#CE9FFC'},
+                                            {offset: 1, color: '#7367F0'}
+                                        ]
+                                    )
+                                }
+                            },
+                            position: "bottom",
+                            axisTick: {
+                                show: true
+                            },
+                            splitLine: {
+                                show: false
+                            },
+                            nameTextStyle: {
+                                color: "#C4EAFC"
+                            }
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: "value",
+                            splitLine: {
+                                show: true
+                            },
+                            splitLine: {
+                                show: true,
+                                lineStyle: {
+                                    color: ['#0396FF'],
+                                    width: 1,
+                                    type: 'solid'
+                                }
+                            },
+                            axisLabel: {
+                                show: true,
+                                textStyle: {
+                                    color: '#fff'
+                                },
+                                lineStyle: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        0, 0, 1, 0,
+                                        [
+                                            {offset: 0, color: '#CE9FFC'},
+                                            {offset: 1, color: '#7367F0'}
+                                        ]
+                                    )
+                                }
+                            }
+                        }
+                    ],
+                    series: [
+                        {
+                            name: "立案量",
+                            barWidth: 10,
+                            type: "bar",
+                            data: totalInstArray,
+                            itemStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        0, 0, 1, 0,
+                                        [
+                                            {offset: 0, color: '#3977E6'},
+                                            {offset: 1, color: '#37BBF8'}
+
+                                        ]
+                                    )
+                                }
+                            }
+                        },
+                        {
+                            name: "结案量",
+                            type: "bar",
+                            barWidth: 10,
+                            data: totalCloseArray,
+                            itemStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(
+                                        0, 0, 1, 0,
+                                        [
+                                            {offset: 0, color: '#CE9FFC'},
+                                            {offset: 1, color: '#7367F0'}
+                                        ]
+                                    )
+                                }
+                            }
+                        },
+
+                    ],
+                    calculableColor: "rgba(255,165,0,0.6)",
+                    animation: true,
+                    animationEasing: "ExponentialInOut",
+                    grid: {
+                        x: 56,
+                        x2: 51,
+                        y2: 38,
+                        y: 38
+                    }
+                };
+                myChart1.setOption(option2);
+            }
+        });
+
+    }
+    //问题来源
+    function getEventSource() {
+
+        var myChart5 = echarts.init(document.getElementById('question'));
+        let time = $("#time").val();
+        $.ajaxUtil.get("/statistics/findEventSource?time="+time, function (e) {
+            if (e.code === 0) {
+                var option6 = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 10,
+                        x: "center",
+                        data: ['自行处理上报', '信息采集员上报', '热线上报'],
+                        y: "bottom",
+                        textStyle: {
+                            color: '#ffffff'//字体颜色
+                        }
+                    },
+                    series: [
+                        {
+                            name: '访问来源',
+                            type: 'pie',
+                            radius: ['50%', '70%'],
+                            avoidLabelOverlap: false,
+                            label: {
+                                show: false,
+                                position: 'center'
+                            },
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    fontSize: '30',
+                                    fontWeight: 'bold'
+                                }
+                            },
+                            labelLine: {
+                                show: false
+                            },
+                            data: [
+                                {value: e.data.reportSelfNum, name: '自行处理上报'},
+                                {value: e.data.reportPatrolNum, name: '信息采集员上报'},
+                                {value: e.data.findHotReportNum, name: '热线上报'},
+                            ],
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                },
+                                normal: {
+                                    color: function (params) {
+                                        //自定义颜色
+                                        var colorList = [
+                                            '#00FFFF', '#00FF00', '#FFFF00', '#FF8C00', '#FF0000', '#FE8463',
+                                        ];
+                                        return colorList[params.dataIndex]
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                };
+            }
+            myChart5.setOption(option6);
+        })
+    }
+
+
+
+    function timeQuery() {
+        count();
+        findHighIncidence();
+        getTrendAnalysis();
+        //高发区域
+        findHighGrid();
+        //问题来源
+        getEventSource();
+    }
+
+    function count() {
+        var timeType = $("#time").val()
+        $.ajaxUtil.get(countUrl + "?timeType=" + timeType, function (e) {
+            $("#count").text(e.data.count);
+            $("#dispose").text(e.data.dispose);
+            $("#close").text(e.data.close);
+            $("#inst").text(e.data.inst);
+            $("#eventNum").text(e.data.eventNum);
+            $("#eventDisponse").text(e.data.eventDisponse);
+            $("#unitNum").text(e.data.unitNum);
+            $("#unitDisponse").text(e.data.unitDisponse);
+            var myChart3 = echarts.init(document.getElementById('watch'));
+            var option4 = {
+                tooltip: {
+                    formatter: "{a} <br/>{b} : {c}%"
+                },
+                toolbox: {
+                    feature: {
+                        mark: {
+                            show: true
+                        },
+                        restore: {
+                            show: true
+                        },
+                        saveAsImage: {
+                            show: true
+                        }
+                    },
+                    show: false
+                },
+                series: [
+                    {
+                        name: "业务指标",
+                        type: "gauge",
+                        detail: {
+                            formatter: "{value}%",
+                            offsetCenter: [0, 45],
+                            width: 61,
+                            textStyle: {
+                                fontSize: 14,
+                            },
+                        },
+                        data: [
+                            {
+                                value: e.data.eventRate,
+                                name: "处置率",
+                            }
+                        ],
+                        axisLine: {
+                            lineStyle: {
+                                color: [
+                                    [0.2, "rgb(20, 159, 224)"], [1, "rgb(13, 138, 196)"], [1, "rgb(13, 138, 196)"]
+                                ],
+                                width: 11
+                            }
+                        },
+                        title: {
+                            offsetCenter: [0, 30],
+                            show: true,
+                            textStyle: {
+                                fontWeight: "bold",
+                                fontSize: 12,
+                                color: '#3677FF'
+                            }
+                        },
+                        center: ["50%", "50%"],
+                        radius: "96%",
+                        axisLabel: {
+                            show: true
+                        },
+                        axisTick: {
+                            length: 6,
+                            splitNumber: 5,
+                            lineStyle: {
+                                width: 3
+                            }
+                        },
+                        splitLine: {
+                            length: 10
+                        }
+                    }
+                ]
+            };
+            myChart3.setOption(option4);
+
+            var myChart4 = echarts.init(document.getElementById('watch2'));
+            var option5 = {
+                tooltip: {
+                    formatter: "{a} <br/>{b} : {c}%"
+                },
+                toolbox: {
+                    feature: {
+                        mark: {
+                            show: true
+                        },
+                        restore: {
+                            show: true
+                        },
+                        saveAsImage: {
+                            show: true
+                        }
+                    },
+                    show: false
+                },
+                series: [
+                    {
+                        name: "业务指标",
+                        type: "gauge",
+                        detail: {
+                            formatter: "{value}%",
+                            offsetCenter: [0, 45],
+                            width: 61,
+                            textStyle: {
+                                fontSize: 14,
+                            },
+                        },
+                        data: [
+                            {
+                                value: e.data.unitRate,
+                                name: "处置率",
+                            }
+                        ],
+                        axisLine: {
+                            lineStyle: {
+                                color: [
+                                    [0.2, "rgb(122, 216, 28)"], [1, "rgb(99, 178, 19)"], [1, "rgb(132, 234, 23)"]
+                                ],
+                                width: 11
+                            }
+                        },
+                        title: {
+                            offsetCenter: [0, 30],
+                            show: true,
+                            textStyle: {
+                                fontWeight: "bold",
+                                fontSize: 12,
+                                color: '#3CD500'
+                            }
+                        },
+                        center: ["50%", "50%"],
+                        radius: "96%",
+                        axisLabel: {
+                            show: true
+                        },
+                        axisTick: {
+                            length: 6,
+                            splitNumber: 5,
+                            lineStyle: {
+                                width: 3
+                            }
+                        },
+                        splitLine: {
+                            length: 10
+                        }
+                    }
+                ]
+            };
+            myChart4.setOption(option5);
+        });
+    }
+
+    /* 高发问题 */
+    function findHighIncidence() {
+        let time = $("#time").val();
+        let highIncidence = echarts.init(document.getElementById('highIncidence'));
+        $.ajaxUtil.get(findHighIncidenceUrl + "?time=" + time, function (e) {
+            let data = e.data;
+            let nameArray = [];
+            let instArray = [];
+            let closeArray = [];
+            for (let i = 0; i < data.length; i++) {
+                nameArray.push(data[i].name);
+                instArray.push(data[i].totalInst);
+                closeArray.push(data[i].totalClose);
+            }
+            let highIncidenceOption = {
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                        type: "shadow"
+                    }
+                },
+                legend: {
+                    data: ["立案量", "结案量"],
+                    x: "right",
+                    textStyle: {
+                        color: '#ffffff'//字体颜色
+                    }
+                },
+                toolbox: {
+                    show: false,
+                    feature: {
+                        mark: {
+                            show: true
+                        },
+                        dataView: {
+                            show: true,
+                            readOnly: true
+                        },
+                        magicType: {
+                            show: false,
+                            type: ["line", "bar", "stack", "tiled"]
+                        },
+                        restore: {
+                            show: true
+                        },
+                        saveAsImage: {
+                            show: true
+                        }
+                    }
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: "value",
+                        axisTick: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: false,
+                            textStyle: {
+                                color: '#fff'
+                            }
+                        },
+                        splitLine: {
+                            show: false
+                        },
+                        splitArea: {
+                            show: false
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: "category",
+                        data: nameArray,
+                        axisTick: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#71f5eb'
+                            }
+                        },
+                        splitLine: {
+                            show: false
+                        },
+                        splitArea: {
+                            show: false
+                        },
+                        axisLine: {
+                            show: false
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: "立案量",
+                        barWidth: 10,
+                        type: "bar",
+                        stack: "总量",
+                        itemStyle: {
+                            normal: {
+                                label: {
+                                    show: true,
+                                    position: "insideRight"
+                                },
+                                borderWidth: 0
+                            },
+                            emphasis: {
+                                borderWidth: 0
+                            }
+                        },
+                        data: instArray,
+                        itemStyle: {
+                            normal: {
+                                color: "#71f5eb",
+                                barBorderRadius: 7
+                            },
+                        }
+                    },
+                    {
+                        name: "结案量",
+                        type: "bar",
+                        stack: "总量",
+                        itemStyle: {
+                            normal: {
+                                label: {
+                                    show: true,
+                                    position: "insideRight"
+                                }
+                            }
+                        },
+                        data: closeArray,
+                        barGap: "38%",
+                        itemStyle: {
+                            normal: {
+                                color: "#3f6898",
+                                barBorderRadius: 7
+                            }
+                        }
+                    }
+                ],
+                grid: {
+                    x2: 12,
+                    x: 130,
+                    y: 43,
+                    y2: 24
+                }
+            };
+            highIncidence.setOption(highIncidenceOption);
+        });
+    }
+
+    /* 高发时段趋势分析 */
+    function getTrendAnalysis() {
+        let time = $("#time").val();
+        let trendAnalysis = echarts.init(document.getElementById('trendAnalysis'));
+        $.ajaxUtil.get(getTrendAnalysisUrl + "?time=" + time, function (e) {
+            let data = e.data;
+            let nameArray = [];
+            let dataArray = [];
+            /* 标题 */
+            for (let i = 0; i < data.length; i++) {
+                nameArray.push(data[i].name);
+            }
+            /* x轴 */
+            dataArray.push(data[0].data6.time6);
+            dataArray.push(data[0].data5.time5);
+            dataArray.push(data[0].data4.time4);
+            dataArray.push(data[0].data3.time3);
+            dataArray.push(data[0].data2.time2);
+            dataArray.push(data[0].data1.time1);
+            dataArray.push(data[0].data0.time0);
+            /* 线轴 */
+            let listDataArray0 = setArray(data[0]);
+            let listDataArray1 = setArray(data[1]);
+            let listDataArray2 = setArray(data[2]);
+            let listDataArray3 = setArray(data[3]);
+            let listDataArray4 = setArray(data[4]);
+            let listDataArray5 = setArray(data[5]);
+            let listDataArray6 = setArray(data[6]);
+
+            let trendAnalysisOption = {
+                tooltip: {
+                    trigger: "axis"
+                },
+                legend: {
+                    data: nameArray,
+                    x: "right",
+                    orient: "horizontal",
+                    y: "top",
+                    textStyle: {
+                        color: '#ffffff'//字体颜色
+                    }
+                },
+                toolbox: {
+                    feature: {
+                        dataView: {
+                            readOnly: true
+                        },
+                        magicType: {
+                            type: ["line", "bar"],
+                            show: false
+                        }
+                    }
+                },
+                calculable: true,
+                xAxis: [
+                    {
+                        type: "category",
+                        data: dataArray,
+                        axisTick: {
+                            lineStyle: {
+                                color: "rgb(56, 178, 234)"
+                            },
+                            show: false
+                        },
+                        splitLine: {
+                            show: false
+                        },
+                        boundaryGap: false,
+                        axisLine: {
+                            show: false
+                        },
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#3677FF'
+                            }
+                        }
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: "value",
+                        axisLine: {
+                            show: false
+                        },
+                        splitLine: {
+                            show: true,
+                            lineStyle: {
+                                color: "#C4EAFC",
+                                width: 1
+                            }
+                        },
+                        splitArea: {
+                            show: false
+                        },
+                        nameTextStyle: {
+                            color: "rgb(20, 159, 224)"
+                        },
+                        axisLabel: {
+                            show: true,
+                            textStyle: {
+                                color: '#3677FF'
+                            }
+                        }
+                    }
+                ],
+                series: [
+                    {
+                        name: listDataArray0[0],
+                        type: "line",
+                        data: listDataArray0[1],
+                        smooth: true,
+                        itemStyle: {
+                            normal: {
+                                color: "#71f5eb"
+                            }
+                        }
+                    },
+                    {
+                        name: listDataArray1[0],
+                        type: "line",
+                        data: listDataArray1[1],
+                        itemStyle: {
+                            normal: {
+                                color: "#f1b840"
+                            }
+                        },
+                        smooth: true
+                    },
+                    {
+                        name: listDataArray2[0],
+                        type: "line",
+                        data: listDataArray2[1],
+                        itemStyle: {
+                            normal: {
+                                color: "#f1b840"
+                            }
+                        },
+                        smooth: true
+                    },
+                    {
+                        name: listDataArray3[0],
+                        type: "line",
+                        data: listDataArray3[1],
+                        itemStyle: {
+                            normal: {
+                                color: "#f1b840"
+                            }
+                        },
+                        smooth: true
+                    },
+                    {
+                        name: listDataArray4[0],
+                        type: "line",
+                        data: listDataArray4[1],
+                        itemStyle: {
+                            normal: {
+                                color: "#f1b840"
+                            }
+                        },
+                        smooth: true
+                    },
+                    {
+                        name: listDataArray5[0],
+                        type: "line",
+                        data: listDataArray5[1],
+                        itemStyle: {
+                            normal: {
+                                color: "#f1b840"
+                            }
+                        },
+                        smooth: true
+                    },
+                    {
+                        name: listDataArray6[0],
+                        type: "line",
+                        data: listDataArray6[1],
+                        itemStyle: {
+                            normal: {
+                                color: "#f1b840"
+                            }
+                        },
+                        smooth: true
+                    }
+                ],
+                grid: {
+                    x: 56,
+                    x2: 51,
+                    y: 38,
+                    y2: 38
+                }
+            };
+            trendAnalysis.setOption(trendAnalysisOption);
+        });
+    }
+
+    function setArray(data) {
+        let listDataArray = [];
+        listDataArray.push(data.name);
+        let dataArray = [];
+        dataArray.push(data.data6.size6);
+        dataArray.push(data.data5.size5);
+        dataArray.push(data.data4.size4);
+        dataArray.push(data.data3.size3);
+        dataArray.push(data.data2.size2);
+        dataArray.push(data.data1.size1);
+        dataArray.push(data.data0.size0);
+        listDataArray.push(dataArray);
+        return listDataArray;
+    }
+
+
+
+</script>
+
+</body>
+</html>

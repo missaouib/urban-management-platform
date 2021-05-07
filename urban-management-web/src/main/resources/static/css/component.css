@@ -1,0 +1,11 @@
+.notice_check p label {
+    font-size: 12px;
+    width: 80px;
+    display: inline-block;
+}
+.notice_check p{
+    padding: 5px 0;
+}
+.componentTable{
+    width: 100%;
+}

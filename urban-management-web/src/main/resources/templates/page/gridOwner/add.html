@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
+</head>
+
+<body style="border-radius: 8px;">
+<div class="col-md-12" style="height: 100%">
+    <div class="content">
+        <div class="leftBox">
+            <h5>监督员</h5>
+            <div class="onmer_box" id="userList">
+
+            </div>
+            <div class="">
+                <div class="r_right but_p girdBtnGroup" id="eventButton">
+                    <button class="but_save" type="button" id="saveGridOwner" onclick="saveGridOwner()">
+                        保存
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="rightBox" style="position: relative">
+            <div class="mengBan"></div>
+            <div id="container" style="width: 100%;height: 100%;"></div>
+            <div class="map_masion">
+                <p>
+                    <span class="span1">所属区域</span><span class="span2" id="region">南岗区</span>
+                    <span class="span1">所属街道</span><span class="span2" id="street">南岗街道</span>
+                </p>
+                <p>
+                    <span class="span1">所属社区</span><span class="span2" id="community">南岗社区</span>
+                    <span class="span1">所属网格</span><span class="span2" id="remark">南岗网格</span>
+                </p>
+            </div>
+            <div class="map" id="map"></div>
+        </div>
+    </div>
+</div>
+<div id="pictureDiv" style="display: none">
+
+</div>
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: mapSlicing_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
+<th:block th:include="page/fragments/common :: bmap_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        $(".ol-full-screen-false").html("全屏")
+
+        getSupervisorUserList();
+        getGridData();
+    });
+
+    let gridId = [[${gridId}]];
+    getGridCenter()
+    /**
+     * 获取网格的中心点
+     */
+    function getGridCenter() {
+        layerMap.getSource().clear();
+        let surl = "/event/findGeomByGridId?id=" + gridId;
+        $.ajaxUtil.get(surl, function (e) {
+            $(e.data.geom).each(function (index, value) {
+                let split = value.split(",");
+                let polygonArray = [];
+                let polygonArrayEnd = [];
+                for (let j = 0; j < split.length; j++) {
+                    let pointArray = [];
+                    pointArray.push(split[j].split(" ")[0]);
+                    pointArray.push(split[j].split(" ")[1]);
+                    polygonArray.push(pointArray);
+                    polygonArrayEnd.push(polygonArray);
+                }
+                setPolygon(polygonArrayEnd);
+            })
+            var data = e.data.center[0].split(" ");
+            var center = [];
+            center.push(parseFloat(data[0]))
+            center.push(parseFloat(data[1]))
+            setCenterForGrid(center);
+        });
+
+    }
+    function setPolygon(Polygons, data) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(Polygons),
+            data: {
+                id: data,
+                // name: name,
+                coordinate: Polygons
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
+    }
+    function setCenterForGrid(data) {
+        map.getView().setCenter(data);
+    }
+
+    // let url = /*[[@{/event/register}]]*/ "/event/register";
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
+    let getGridDataUrl = /*[[@{/gridOwner/getGridData}]]*/ "/gridOwner/getGridData";
+    let getSupervisorUserListUrl = /*[[@{/gridOwner/getSupervisorUserList}]]*/ "/gridOwner/getSupervisorUserList";
+    let saveUrl = /*[[@{/gridOwner/save}]]*/ "/gridOwner/save";
+
+    //回调函数接收查询结果
+
+
+    function getSupervisorUserList() {
+        $.ajaxUtil.get(getSupervisorUserListUrl + "?gridId=" + gridId, function (e) {
+            let data = e.data;
+            let html = "";
+            $("#userList").empty();
+            if (data.length > 0) {
+                for (let i = 0; i < data.length; i++) {
+                    html += "<p>"
+                    if (data[i].sts === 1) {
+                        html += "<input name='owner' type='checkbox' checked id='" + data[i].id + "' onclick='getUserList()'>"
+                    } else {
+                        html += "<input name='owner' type='checkbox' id='" + data[i].id + "' onclick='getUserList()'>"
+                    }
+                    html += "<span>" + data[i].name + "</span>"
+                    html += "</p>"
+                }
+            } else {
+                html += "<p>"
+                html += "<span>暂无人员</span>"
+                html += "</p>"
+            }
+            $("#userList").html(html);
+            getUserList();
+        });
+    }
+
+    var userList = [];
+
+    function getUserList() {
+        userList = [];
+        $.each($('input[name*="owner"]:checked'), function (k, v) {
+            userList.push(v.id);
+        });
+        if (userList.length > 0) {
+            $("#saveGridOwner").removeAttr("disabled", "disabled");
+        } else {
+            $("#saveGridOwner").attr("disabled", "disabled");
+        }
+    }
+
+    function getGridData() {
+        $.ajaxUtil.get(getGridDataUrl + "?gridId=" + gridId, function (e) {
+            let data = e.data;
+            $("#community").text(data.community);
+            $("#region").text(data.region);
+            $("#remark").text(data.remark);
+            $("#street").text(data.street);
+        });
+    }
+
+    function setPolygon(coordinates) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(coordinates),
+            data: {
+                coordinate: coordinates
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
+    }
+
+    function saveGridOwner() {
+        // let data = $('#userForm').serialize();
+        $.operate.saveAndReload(saveUrl, {gridId: gridId, userList: userList});
+    }
+
+</script>
+</body>
+</html>

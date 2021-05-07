@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
+</head>
+<body style="border-radius: 8px;">
+<div class="content">
+    <div class="areaCenter">
+        <div class="notice_check">
+            <form id="search-form">
+                <h5 style="padding-left: 5px">搜索</h5>
+                <p>
+                    <label class=""></label>
+                    <input type="search" class="find_input" id="key">
+                    <input type="hidden" th:name="eventTypeId" id="eventTypeId">
+                    <!--                    <input type="button" class="check_btn button_ground" onclick="search()" value="查询">-->
+                    <!--                    <input type="button" class="check_btn1 button_ground" value="重置">-->
+                </p>
+            </form>
+            <div class="tree">
+                <div class="treeDemo">
+                    <ul id="treeDemo" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="areaCenter">
+        <form class="details" id="roleForm">
+            <div class="top table2_top">
+                    <div class="r_right but_p girdBtnGroup" id="eventButton" style="margin: 10px 0 10px 0!important;">
+                        <button class="but_save roleBox" type="submit" style="margin-right: 10px" id="saveRoleBtn"
+                                onclick="saveRole()">新增
+                        </button>
+                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="updateRoleBtn"
+                                onclick="updateRole()">修改
+                        </button>
+                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="deleteRoleBtn"
+                                onclick="deleteRole()">删除
+                        </button>
+<!--                        <button class="but_save" type="button" style="width: 100px"-->
+<!--                                onclick="window.parent.$.learuntab.myAddTab('角色批量添加人员', '/roleSetup/add', 'data_id')">-->
+<!--                            批量添加人员-->
+<!--                        </button>-->
+                </div>
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <input type="hidden" id="id" name="id" value="">
+                        <tr>
+                            <td><span>*</span>角色名称</td>
+                            <td>
+                                <input id="name" name="name" placeholder="" class="" type="text" required>
+                            </td>
+                            <td><span></span>角色描述</td>
+                            <td>
+                                <input id="describes" name="describes" type="text" maxlength="30">
+                            </td>
+                        </tr>
+                        <tr class="roleBox" id="timeAndSort">
+                            <td><span></span>创建时间</td>
+                            <td>
+                                <input size="16" id="createTime" type="text" readonly required>
+                                <span class="add-on"><i class="icon-remove"></i></span>
+                                <span class="add-on"><i class="icon-th"></i></span>
+                            </td>
+                            <td><span></span>排序</td>
+                            <td>
+                                <input id="sort" type="text" name="sort" required>
+                            </td>
+                        </tr>
+                        <tr class="col-12">
+                            <td><span></span>所属部门</td>
+                            <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                <input type="text" readonly="readonly" id="deptName" class="find_input"/>
+                                <input type="hidden" readonly="readonly" id="deptId" name="deptId"
+                                       class="find_input"/>
+                                <button type="button" class="addBtn" onclick="selectEventTypeTree()">
+                                    +
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+    let saveRoleUrl = /*[[@{/roleSetup/saveRole}]]*/ "/roleSetup/saveRole";
+    let updateRoleUrl = /*[[@{/roleSetup/updateRole}]]*/ "/roleSetup/updateRole";
+    let deleteRoleUrl = /*[[@{/roleSetup/deleteRole}]]*/ "/roleSetup/deleteRole";
+
+    let setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parentId'
+            },
+            key: {
+                name: "deptName"
+            }
+        }
+    };
+
+    $(function () {
+
+        //取消隐藏
+        $("#timeAndSort").removeClass("roleBox");
+        $("#timeAndSort").addClass("roleBox");
+
+        setRoleTree();
+
+        search();
+
+        $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose: true, todayBtn: true, startView: 4, minView: 3});
+        ////日期插件
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+
+        //搜索之后更改树title
+        $("#treeDemo").on('mouseover','a',function () {
+            $(this).prop("title",$(this).text())
+        });
+        //搜索之后更改树回显框的值
+        $("#treeDemo").on('click','a',function () {
+            $("#deptName").val($(this).text());
+        })
+
+
+    });
+
+
+    function setRoleTree() {
+        $.ajaxUtil.get(getAllAndRoleForTreeUrl, function (e) {
+            $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        });
+    }
+
+    function search() {
+        $.ajax({
+            type: "GET",
+            url: getAllAndRoleForTreeUrl,
+            success: function (result) {
+                $.fn.zTree.init($("#treeDemo"), setting, result.data);
+                fuzzySearch("treeDemo", '#key', null, true);
+            }
+        });
+        if ($("#key").val() == 0) {
+            $("#treeDemo").click(function () {
+                // $.fn.zTree.getZTreeObj("treeDemo").expandAll(false);
+            });
+        }
+    }
+
+    function removeClassForTimeAndSort() {
+        $("#timeAndSort").removeClass("roleBox");
+        $("#saveRoleBtn").addClass("roleBox");
+        $("#updateRoleBtn").removeClass("roleBox");
+        $("#deleteRoleBtn").removeClass("roleBox");
+    }
+
+    function addClassForTimeAndSort() {
+        $("#timeAndSort").addClass("roleBox");
+        $("#saveRoleBtn").removeClass("roleBox");
+        $("#updateRoleBtn").addClass("roleBox");
+        $("#deleteRoleBtn").addClass("roleBox");
+    }
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        console.log("treeNode", treeNode);
+        if (treeNode.levelOrNot === "role") {
+            removeClassForTimeAndSort();
+            $("#id").val(treeNode.id);
+            $("#name").val(treeNode.deptName);
+            $("#describes").val(treeNode.describes);
+            $("#createTime").val(treeNode.createTime);
+            $("#sort").val(treeNode.sort);
+            $("#deptId").val(treeNode.parentId);
+            $("#deptName").val(treeNode.parentName);
+        } else {
+            addClassForTimeAndSort();
+            $("#id").val("");
+            $("#name").val("");
+            $("#describes").val("");
+            $("#createTime").val("");
+            $("#sort").val("");
+            $("#deptId").val(treeNode.id);
+            // $("#deptName").val(treeNode.deptName);
+        }
+    }
+
+
+    function selectEventTypeTree() {
+        let treeId = $("#treeId").val();
+        let deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+        let url = /*[[@{/tree/dept}]]*/ "/tree/dept";
+        let options = {
+            title: '选择部门',
+            width: "380",
+            url: url,
+            callBack: doSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function doSubmit(index, layero) {
+        let body = layer.getChildFrame('body', index);
+        $("#deptId").val(body.find('#treeId').val());
+        $("#deptName").val(body.find('#treeName').val());
+        layer.close(index);
+    }
+
+    function saveRole() {
+        let data = $('#roleForm').serialize();
+        $.operate.saveAndReload(saveRoleUrl, data);
+    }
+
+    function updateRole() {
+        let data = $('#roleForm').serialize();
+        $.operate.saveAndReload(updateRoleUrl, data);
+    }
+
+    function deleteRole() {
+        let data = $('#roleForm').serialize();
+        $.operate.saveAndReload(deleteRoleUrl, data);
+    }
+
+    jQuery.extend(jQuery.validator.messages, {
+        required: "必填",
+        phone: "必填",
+        remote: "请修正该字段",
+        email: "请输入正确格式的电子邮件",
+        url: "请输入合法的网址",
+        date: "请输入合法的日期",
+        dateISO: "请输入合法的日期 (ISO).",
+        number: "请输入合法的数字",
+        digits: "只能输入整数",
+        creditcard: "请输入合法的信用卡号",
+        equalTo: "请再次输入相同的值",
+        accept: "请输入拥有合法后缀名的字符串",
+        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
+        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
+        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
+        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
+        min: jQuery.validator.format("请输入一个最小为{0} 的值")
+    });
+
+    $("#roleForm").validate({
+        debug: true,
+        ignore: "",
+        submitHandler: function (form) {
+            var params = $(form).serialize(); //串行化表单参数
+            $.post("user", params, function (result) {
+                if (result.ok) {//注册成功
+                    location.href = "register_ok.html";
+                } else {//注册失败
+                    alert(result.msg);
+                    $("#checkImg").click();
+                }
+            }, "json");
+        },
+        rules: {
+            name: {
+                required: true
+            },
+            userName: {
+                required: true
+            },
+            loginName: {
+                required: true,
+                // rangelength: [5, 8]
+            },
+            phonenumber: {
+                required: true,
+                // rangelength: [6, 12]
+            },
+            problemescription: {
+                required: true,
+                // rangelength: [6, 12],
+                /*重复密码需要与原密码相同的要求*/
+                // equalTo: "#pwd"
+            },
+            safeLevel: {
+                required: true
+            },
+            findTime: {
+                required: true,
+                // range: [26, 50]
+            },
+            enterprise: {
+                required: true
+            },
+            department: {
+                required: true
+            },
+            handleTime: {
+                required: true
+            }, charge: {
+                required: true
+            },
+            question: {
+                required: true
+            },
+            closeTime: {
+                required: true,
+                // email: true
+            },
+            // idcard: {
+            //     card: true
+            // },
+            // phone: {
+            //     phone: true
+            // }
+        },
+        messages: {
+            name: {
+                required: "必填"
+            },
+        }
+    });
+</script>
+</body>
+</html>

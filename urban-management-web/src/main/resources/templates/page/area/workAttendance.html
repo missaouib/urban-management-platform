@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>考勤</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <th:block th:include="page/fragments/common :: swiper_css"/>
+    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
+</head>
+<body style="border-radius: 8px;">
+<div class="content">
+    <div class="btn-group-sm" id="toolbar" >
+        <a class="btn btn-primary" onclick="window.parent.$.learuntab.myAddTab('新增', '/grid/toWorkAdd')">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+<!--        <a class="btn btn-primary" onclick="$.operate.report()">-->
+<!--            <i class="fa fa-paper-plane"></i> 上报-->
+<!--        </a>-->
+<!--        <a class="btn btn-primary" onclick="window.parent.$.learuntab.myAddTab('修改', '/area/workUpdate', 'data_id')">-->
+<!--            <i class="fa fa-edit"></i> 修改-->
+        </a>
+        <!--                <a class="btn btn-danger" style="color: #ffffff" onclick="serRowIdDel()">-->
+        <!--                    <i class="fa fa-remove"></i> 删除-->
+        <!--                </a>-->
+<!--        <a class="btn btn-danger" style="color: #ffffff" onclick="$.operate.removeBatch()">-->
+<!--            <i class="fa fa-remove"></i> 删除-->
+<!--        </a>-->
+    </div>
+    <div class="warpsOther slideWarps slideWarps_work_work">
+        <div class="col-md-12 bottomInner slideWarps_work_work">
+            <div class="innerBottom slideWarps_work_work">
+                <div class="zara tiaoActive slideWarps_work_work" >
+                    <table id="bootstrap-table" class="table_style slideWarps_work_work" style="margin: 0 auto"></table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        let searchUrl = /*[[@{/attendanceScheme/attendanceScheme}]]*/ "/home/eventListByToDoWithIndex";
+        let removeUrl = /*[[@{/attendanceScheme/del/{id}}]]*/ "/user/remove";
+        let editUrl = /*[[@{/grid/toWorkUpdate/{id}}]]*/ "/user/remove";
+
+        queryUserList()
+        function queryUserList() {
+            var options = {
+                showRefresh: false,
+                showColumns: false,
+                showToggle: false,
+                url: searchUrl,
+                updateUrl: editUrl,
+                pageSize: 10,
+                removeUrl: removeUrl,
+                uniqueId: "id",
+                modalName: "考勤规范",
+                columns: [
+                    {
+                        field: 'index',
+                        title: '序号',
+                        class:'index_width',
+                        formatter: function (value, row, index) {
+                            var page = $('#bootstrap-table').bootstrapTable("getPage");
+                            return page.pageSize * (page.pageNumber - 1) + index + 1;
+                        }
+                    },
+                    {
+                        title: '考勤地址',
+                        field: 'address',
+                        sortable: true,
+                    },
+                    {
+                        title: '半径范围',
+                        field: 'radius',
+                        formatter: function (value, row) {
+                            return row.radius+"米";
+                        }
+                    },
+                    {
+                        title: '考勤部门',
+                        field: 'deptName',
+
+                    },
+                    {
+                        title: '操作',
+                        field: '',
+                        formatter: function (value, row) {
+                            var a = '<a  href="#" title="" onclick="$.operate.editTab(\'' + row.id + '\')">编辑</a> ';
+                            var b = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
+                            return a + b;
+                        }
+                    }
+                ]
+            };
+            $.table.init(options);
+        }
+    })
+</script>
+
+</body>
+</html>

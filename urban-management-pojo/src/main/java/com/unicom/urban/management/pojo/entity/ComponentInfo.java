@@ -1,14 +1,15 @@
 package com.unicom.urban.management.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.unicom.urban.management.pojo.Delete;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 /**
  * 部件信息
@@ -22,7 +23,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ComponentInfo extends BaseEntity {
+@SQLDelete(sql = "update component_info set deleted = " + Delete.DELETE + " where id = ?")
+@Where(clause = "deleted = " + Delete.NORMAL)
+public class ComponentInfo extends AbstractEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
@@ -71,31 +74,34 @@ public class ComponentInfo extends BaseEntity {
     /**
      * 所在单元网格
      */
-    private String bgid;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Grid bgid;
 
     /**
      * 部件状态
      */
-    private String objState;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private KV objState;
 
     /**
      * 初始日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime initialDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate initialDate;
 
     /**
      * 变更日期
      */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime changeDate;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate changeDate;
 
     /**
      * 数据来源
      */
-    private String  dataSource;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private KV dataSource;
 
     /**
      * 备注

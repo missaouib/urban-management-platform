@@ -1,6 +1,19 @@
-﻿
+﻿function getMenus() {
+    var menuArray=[];
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "/menu/findAllMenu",
+        success: function (result) {
+            var data = result.data;
+            for (var i=0; i< data.length; i++){
+                menuArray[i] = data[i];
+            }
+        }
+    });
+    return menuArray;
+}
 (function ($) {
-
 
     $.learuntab = {
         requestFullScreen: function () {
@@ -97,8 +110,7 @@
                         }
                     });
                 }
-            }
-            else {
+            } else {
                 $(this).parents('.menuTab').remove();
                 $('.mainContent .LRADMS_iframe').each(function () {
                     if ($(this).data('id') == closeTabId) {
@@ -116,7 +128,7 @@
             if (dataId != "") {
                 //top.$.cookie('nfine_currentmoduleid', dataId, { path: "/" });
             }
-            var dataUrl = $(this).attr('href');
+            var dataUrl = $(this).attr('data-href');
 
             var menuName = $.trim($(this).text());
             var flag = true;
@@ -135,11 +147,24 @@
                             }
                         });
                     }
+
                     flag = false;
+
+                    // 点击菜单 如果菜单中有table 也要跟着刷新
+                    var $contentWindow = $('.LRADMS_iframe[data-id="' + dataUrl + '"]')[0].contentWindow;
+                    if ($contentWindow.table.options.type === table_type.bootstrapTable) {
+                        $contentWindow.$.table.refresh();
+                    } else if ($contentWindow.table.options.type === table_type.bootstrapTreeTable) {
+                        // $contentWindow.$.treeTable.refresh();
+                    }
+
+
+
+
                     return false;
                 }
             });
-            if (flag) {
+            if (flag) { // 如果选项卡不存在
                 var str = '<a href="javascript:;" class="active menuTab" data-id="' + dataUrl + '">' + menuName + ' <i class="fa fa-remove"></i></a>';
                 $('.menuTab').removeClass('active');
                 var str1 = '<iframe class="LRADMS_iframe" id="iframe' + dataId + '" name="iframe' + dataId + '"  width="100%" height="100%" src="' + dataUrl + '" frameborder="0" data-id="' + dataUrl + '" seamless></iframe>';
@@ -158,19 +183,19 @@
 
             $(".navbar-custom-menu>ul>li.open").removeClass("open");
             var dataId = data_id;
-            var dataUrl = Href;
+            var dataUrl = Href.trim();
             var menuName = Name;
             var flag = true;
             if (dataUrl == undefined || $.trim(dataUrl).length == 0) {
                 return false;
             }
             $('.menuTab').each(function () {
-                if ($(this).data('id') == dataUrl) {
+                if ($(this).data('id') === dataUrl) {
                     if (!$(this).hasClass('active')) {
                         $(this).addClass('active').siblings('.menuTab').removeClass('active');
                         $.learuntab.scrollToTab(this);
                         $('.mainContent .LRADMS_iframe').each(function () {
-                            if ($(this).data('id') == dataUrl) {
+                            if ($(this).data('id') === dataUrl) {
                                 $(this).show().siblings('.LRADMS_iframe').hide();
                                 return false;
                             }
@@ -257,7 +282,8 @@
             $('.page-tabs-content').animate({marginLeft: 0 - scrollVal + 'px'}, "fast");
         },
         scrollToTab: function (element) {
-            var marginLeftVal = $.learuntab.calSumWidth($(element).prevAll()), marginRightVal = $.learuntab.calSumWidth($(element).nextAll());
+            var marginLeftVal = $.learuntab.calSumWidth($(element).prevAll()),
+                marginRightVal = $.learuntab.calSumWidth($(element).nextAll());
             var tabOuterWidth = $.learuntab.calSumWidth($(".content-tabs").children().not(".menuTabs"));
             var visibleWidth = $(".content-tabs").outerWidth(true) - tabOuterWidth;
             var scrollVal = 0;
@@ -350,540 +376,46 @@
             return reval;
         },
         loadMenu: function (id) {
-            var data;
-
-            data = [
-                {
-                    "F_ModuleId": "001",
-                    "F_ParentId": "0",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "实例演示",
-                    "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/default",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 1,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "002",
-                    "F_ParentId": "001",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "弹窗",
-                    "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/default",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 1,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "003",
-                    "F_ParentId": "002",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "弹窗组件",
-                    "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/demo/modal/layer",
-                    "F_Target": "iframe",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 1,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "004",
-                    "F_ParentId": "002",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "模态窗口",
-                    "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/demo/modal/modals",
-                    "F_Target": "iframe",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 1,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "0502",
-                    "F_ParentId": "001",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "文件上传",
-                    "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/default",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 1,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                {
-                    "F_ModuleId": "1000",
-                    "F_ParentId": "0",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "系统管理",
-                    "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/default",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 1,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "1100041123",
-                    "F_ParentId": "1000",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "用户管理",
-                    "F_Icon": "fa fa-user",
-                    "F_UrlAddress": "/user",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 2,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "1100041123123123",
-                    "F_ParentId": "1000",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "菜单管理",
-                    "F_Icon": "fa fa-user",
-                    "F_UrlAddress": "/menu",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 2,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "11000",
-                    "F_ParentId": "1000",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "登录日志",
-                    "F_Icon": "fa fa-user",
-                    "F_UrlAddress": "/logininfo",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 3,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "1100065",
-                    "F_ParentId": "1000",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "热线上报",
-                    "F_Icon": "fa fa-user",
-                    "F_UrlAddress": "/hotline",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 3,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "11000654",
-                    "F_ParentId": "1000",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "数据字段",
-                    "F_Icon": "fa fa-user",
-                    "F_UrlAddress": "/dictdata",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 3,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "11000155",
-                    "F_ParentId": "1000",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "流程定义管理",
-                    "F_Icon": "fa fa-user",
-                    "F_UrlAddress": "/processdef",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 3,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "1100015335",
-                    "F_ParentId": "1000",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "事件详情",
-                    "F_Icon": "fa fa-user",
-                    "F_UrlAddress": "/detail",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 3,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                // {
-                //     "F_ModuleId": "1100015331235",
-                //     "F_ParentId": "1000",
-                //     "F_EnCode": "SysManage",
-                //     "F_FullName": "流程图绘制",
-                //     "F_Icon": "fa fa-user",
-                //     "F_UrlAddress": "/activiti/create",
-                //     "F_Target": "expand",
-                //     "F_IsMenu": 0,
-                //     "F_AllowExpand": 1,
-                //     "F_IsPublic": 0,
-                //     "F_AllowEdit": null,
-                //     "F_AllowDelete": null,
-                //     "F_SortCode": 3,
-                //     "F_DeleteMark": 0,
-                //     "F_EnabledMark": 1,
-                //     "F_Description": null,
-                //     "F_CreateDate": null,
-                //     "F_CreateUserId": null,
-                //     "F_CreateUserName": null,
-                //     "F_ModifyDate": "2015-11-17 11:22:46",
-                //     "F_ModifyUserId": "System",
-                //     "F_ModifyUserName": "超级管理员"
-                // },
-                {
-                    "F_ModuleId": "1006555550",
-                    "F_ParentId": "0",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "基础数据资源管理子系统",
-                    "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/default",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 1,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "1006555550123",
-                    "F_ParentId": "1006555550",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "GIS数据管理",
-                    "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/default",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 1,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "1006555512350123",
-                    "F_ParentId": "1006555550123",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "网格管理",
-                    "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/grid",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 1,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "10065555123501232",
-                    "F_ParentId": "1006555550123",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "要素库管理",
-                    "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/layertype",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 1,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "100655551235031232",
-                    "F_ParentId": "1006555550123",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "部件管理",
-                    "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/component",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 1,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-                {
-                    "F_ModuleId": "100655551235031232",
-                    "F_ParentId": "1006555550123",
-                    "F_EnCode": "SysManage",
-                    "F_FullName": "部件导入",
-                    "F_Icon": "fa fa-wrench",
-                    "F_UrlAddress": "/component/import",
-                    "F_Target": "expand",
-                    "F_IsMenu": 0,
-                    "F_AllowExpand": 1,
-                    "F_IsPublic": 0,
-                    "F_AllowEdit": null,
-                    "F_AllowDelete": null,
-                    "F_SortCode": 1,
-                    "F_DeleteMark": 0,
-                    "F_EnabledMark": 1,
-                    "F_Description": null,
-                    "F_CreateDate": null,
-                    "F_CreateUserId": null,
-                    "F_CreateUserName": null,
-                    "F_ModifyDate": "2015-11-17 11:22:46",
-                    "F_ModifyUserId": "System",
-                    "F_ModifyUserName": "超级管理员"
-                },
-            ];
-
+            var data=getMenus();
             var _html = "";
             $.each(data, function (i) {
                 var row = data[i];
-                if (row.F_ParentId == "0") {
+                if (row.parentId == "") {
                     if (i == 0) {
-                        // _html += '<li class="treeview active">';
-                        _html += '<li class="treeview">';
+                        _html += '<li class="treeview active">';
+                        // _html += '<li class="treeview">';
                     } else {
-                        _html += '<li class="treeview">';
+                        // _html += '<li class="treeview">';
+                        _html += '<li class="treeview active">';
                     }
                     _html += '<a href="#">'
-                    _html += '<i class="' + row.F_Icon + '"></i><span>' + row.F_FullName + '</span><i class="fa fa-angle-left pull-right"></i>'
+                    _html += '<i class="' + row.icon + '"></i><span>' + row.name + '</span><i class="fa fa-angle-left pull-right"></i>'
                     _html += '</a>'
-                    var childNodes = $.learunindex.jsonWhere(data, function (v) { return v.F_ParentId == row.F_ModuleId });
+                    var childNodes = $.learunindex.jsonWhere(data, function (v) {
+                        return v.parentId == row.id
+                    });
                     if (childNodes.length > 0) {
                         _html += '<ul class="treeview-menu">';
                         $.each(childNodes, function (i) {
                             var subrow = childNodes[i];
-                            var subchildNodes = $.learunindex.jsonWhere(data, function (v) { return v.F_ParentId == subrow.F_ModuleId });
+                            var subchildNodes = $.learunindex.jsonWhere(data, function (v) {
+                                return v.parentId == subrow.id
+                            });
                             _html += '<li>';
                             if (subchildNodes.length > 0) {
-                                _html += '<a href="#"><i class="' + subrow.F_Icon + '"></i>' + subrow.F_FullName + '';
+                                _html += '<a href="#"><i class="' + subrow.icon + '"></i>' + subrow.name + '';
                                 _html += '<i class="fa fa-angle-left pull-right"></i></a>';
                                 _html += '<ul class="treeview-menu">';
                                 $.each(subchildNodes, function (i) {
                                     var subchildNodesrow = subchildNodes[i];
-                                    // _html += '<li><a class="menuItem" data-id="' + subrow.F_ModuleId + '" href="' + subrow.F_UrlAddress + '"><i class="' + subchildNodesrow.F_Icon + '"></i>' + subchildNodesrow.F_FullName + '</a></li>';
+                                    // _html += '<li><a class="menuItem" data-id="' + subrow.id + '" href="' + subrow.path + '"><i class="' + subchildNodesrow.icon + '"></i>' + subchildNodesrow.name + '</a></li>';
                                     //把subrow修改为subchildNodesrow 不知道是不是源代码写错了
-                                    _html += '<li><a class="menuItem" data-id="' + subchildNodesrow.F_ModuleId + '" href="' + subchildNodesrow.F_UrlAddress + '"><i class="' + subchildNodesrow.F_Icon + '"></i>' + subchildNodesrow.F_FullName + '</a></li>';
+                                    _html += '<li><a class="menuItem" data-id="' + subchildNodesrow.id + '" href="javascript:void(0)" data-href="' + subchildNodesrow.path + '"><i class="' + subchildNodesrow.icon + '"></i>' + subchildNodesrow.name + '</a></li>';
                                 });
                                 _html += '</ul>';
 
                             } else {
-                                _html += '<a class="menuItem" data-id="' + subrow.F_ModuleId + '" href="' + subrow.F_UrlAddress + '"><i class="' + subrow.F_Icon + '"></i>' + subrow.F_FullName + '</a>';
+                                _html += '<a class="menuItem" data-id="' + subrow.id + '" href="javascript:void(0)" data-href="' + subrow.path + '"><i class="' + subrow.icon + '"></i>' + subrow.name + '</a>';
                             }
                             _html += '</li>';
                         });
@@ -894,6 +426,8 @@
             });
             $("#sidebar-menu").append(_html);
             $("#sidebar-menu li a").click(function () {
+
+
                 var d = $(this), e = d.next();
                 if (e.is(".treeview-menu") && e.is(":visible")) {
                     e.slideUp(500, function () {
@@ -901,17 +435,17 @@
                     });
                     e.parent("li").removeClass("active")
                 } else if (e.is(".treeview-menu") && !e.is(":visible")) {
-                    var f = d.parents("ul").first(),
+                    var f = d.parents("ul").first();
                     g = f.find("ul:visible").slideUp(500);
                     g.removeClass("menu-open");
                     var h = d.parent("li");
                     e.slideDown(500, function () {
-                        e.addClass("menu-open"),
-                        f.find("li.active").removeClass("active")
+                        e.addClass("menu-open");
+                        f.find("li.active").removeClass("active");
                         h.addClass("active");
 
                         var _height1 = $(window).height() - $("#sidebar-menu >li.active").position().top - 41;
-                        var _height2 = $("#sidebar-menu li > ul.menu-open").height() + 10
+                        var _height2 = $("#sidebar-menu li > ul.menu-open").height() + 10;
                         if (_height2 > _height1) {
                             $("#sidebar-menu >li > ul.menu-open").css({
                                 overflow: "auto",
@@ -921,6 +455,13 @@
                     })
                 }
                 e.is(".treeview-menu");
+
+
+
+
+
+
+
             });
         }
     };
@@ -940,14 +481,14 @@
                 "close_current": {
                     name: "关闭当前",
                     icon: "fa-close",
-                    callback: function(key, opt) {
+                    callback: function (key, opt) {
                         $('.page-tabs-content').find('.active i').trigger("click");
                     }
                 },
                 "close_other": {
                     name: "除此之外全部关闭",
                     icon: "paste",
-                    callback: function(key, opt) {
+                    callback: function (key, opt) {
                         $('.page-tabs-content').children("[data-id]").find('.fa-remove').parents('a').not(".active").each(function () {
                             $('.LRADMS_iframe[data-id="' + $(this).data('id') + '"]').remove();
                             $(this).remove();
@@ -958,7 +499,7 @@
                 "close_all": {
                     name: "全部关闭",
                     icon: "cut",
-                    callback: function(key, opt) {
+                    callback: function (key, opt) {
                         $('.page-tabs-content').children("[data-id]").find('.fa-remove').each(function () {
                             $('.LRADMS_iframe[data-id="' + $(this).data('id') + '"]').remove();
                             $(this).parents('a').remove();
@@ -973,7 +514,7 @@
                 "refresh": {
                     name: "刷新页面",
                     icon: "fa-refresh",
-                    callback: function(key, opt) {
+                    callback: function (key, opt) {
                         var currentId = $('.page-tabs-content').find('.active').attr('data-id');
                         var target = $('.LRADMS_iframe[data-id="' + currentId + '"]');
                         var url = target.attr('src');
@@ -987,7 +528,7 @@
                 "full": {
                     name: "全屏显示",
                     icon: "fa-arrows-alt",
-                    callback: function(key, opt) {
+                    callback: function (key, opt) {
                         if (!$(this).attr('fullscreen')) {
                             $(this).attr('fullscreen', 'true');
                             $.learuntab.requestFullScreen();

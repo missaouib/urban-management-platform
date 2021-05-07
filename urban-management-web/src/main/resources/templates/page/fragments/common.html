@@ -6,29 +6,87 @@
 <!-- 通用CSS -->
 <div th:fragment="common_css">
     <link rel="stylesheet" th:href="@{/plugins/bootstrap/dist/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/plugins/fontawesome-free/css/all.css}">
+    <link rel="stylesheet" th:href="@{/plugins/fontawesome/css/font-awesome.min.css}">
     <link rel="stylesheet" th:href="@{/plugins/layer/theme/default/layer.css}">
     <link rel="stylesheet" th:href="@{/css/common.css}">
 </div>
 <!-- 通用JS -->
 <div th:fragment="common_js">
     <script th:src="@{/plugins/jquery/dist/jquery.min.js}"></script>
-    <script th:src="@{/plugins/fontawesome-free/js/all.js}"></script>
+    <script th:src="@{/plugins/form/dist/jquery.form.min.js}"></script>
     <script th:src="@{/plugins/bootstrap/dist/js/bootstrap.bundle.js}"></script>
-    <script th:src="@{/plugins/@popperjs/core/dist/umd/popper.min.js}"></script>
+    <script th:src="@{/plugins/popperjs/core/dist/umd/popper.min.js}"></script>
     <script th:src="@{/plugins/jquery-serializejson/jquery.serializejson.min.js}"></script>
     <script th:src="@{/plugins/layer/layer.js}"></script>
     <script th:src="@{/js/common.js}"></script>
+    <script th:src="@{/js/currency.js}"></script>
+    <script th:src="@{/js/ajaxUtil.js}"></script>
+    <script type="text/javascript" th:inline="javascript">
+        var loginUrl = /*[[@{/login}]]*/ "/login";
+        var logoutUrl = /*[[@{/logout}]]*/ "/logout";
+    </script>
+</div>
+
+<!-- 弧  轨迹回放 arc -->
+<div th:fragment="bmap_js">
+    <script src="//api.map.baidu.com/api?type=webgl&v=1.0&ak=wIqQDGry2CEbykjiQHMyXdHUfTK98FFa"></script>
+    <script th:src="@{/plugins/map/bmap.js}"></script>
+</div>
+
+<!-- 图表 echarts 插件-->
+<div th:fragment="echarts_js">
+    <script th:src="@{/plugins/echarts/echarts.min.js}"></script>
+</div>
+<div th:fragment="echarts_liquidfill_js">
+    <script th:src="@{/plugins/echarts/echarts-liquidfill.min.js}"></script>
+</div>
+
+<!-- 弧  轨迹回放 arc -->
+<div th:fragment="arc_js">
+    <script th:src="@{/js/arc.js}"></script>
+</div>
+
+<!--地图-->
+<div th:fragment="mapinit_js">
+    <script type="text/javascript" th:inline="javascript">
+        let url = [[${@geoServerProperties.url}]];
+        let center_x = [[${@geoServerProperties.center_x}]];
+        let center_y = [[${@geoServerProperties.center_y}]];
+        let layers = [[${@geoServerProperties.layers}]];
+        let zoom = [[${@geoServerProperties.zoom}]];
+        let epsg = [[${@geoServerProperties.epsg}]];
+    </script>
+    <script th:src="@{/plugins/map/mapNew.js}"></script>
+<!--    <script th:src="@{/plugins/map/mapNew.js}"></script>-->
+    <script th:src="@{/plugins/map/boxSelect.js}"></script>
+    <script th:src="@{/plugins/map/mouseClickSearch.js}"></script>
 </div>
 
 
+<!--地图    非    切片地图-->
+<div th:fragment="mapSlicing_js">
+    <script type="text/javascript" th:inline="javascript">
+        let url = [[${@geoServerProperties.url}]];
+        let center_x = [[${@geoServerProperties.center_x}]];
+        let center_y = [[${@geoServerProperties.center_y}]];
+        let layers = [[${@geoServerProperties.layers}]];
+        let zoom = [[${@geoServerProperties.zoom}]];
+        let epsg = [[${@geoServerProperties.epsg}]];
+    </script>
+    <script th:src="@{/plugins/map/noSlicingMap.js}"></script>
+    <!--    <script th:src="@{/plugins/map/mapNew.js}"></script>-->
+    <script th:src="@{/plugins/map/boxSelect.js}"></script>
+    <script th:src="@{/plugins/map/mouseClickSearch.js}"></script>
+</div>
 
 
-
-
-
-
-
+<!-- 轮播图 swiper 插件-->
+<div th:fragment="swiper_css">
+    <link rel="stylesheet" th:href="@{/plugins/swiper/dist/css/swiper.min.css}">
+</div>
+<div th:fragment="swiper_js">
+    <script th:src="@{/plugins/swiper/dist/js/swiper.min.js}"></script>
+</div>
 
 
 <!-- bootstrap-table -->
@@ -47,6 +105,17 @@
 
 
 
+<!-- select2 -->
+<div th:fragment="select2_css">
+    <link rel="stylesheet" th:href="@{/plugins/select2/dist/css/select2.min.css}">
+</div>
+<div th:fragment="select2_js">
+    <script type="text/javascript" th:src="@{/plugins/select2/dist/js/select2.full.min.js}"></script>
+</div>
+
+
+
+
 
 
 
@@ -58,8 +127,8 @@
 </div>
 <div th:fragment="bootstrap_datepicker_js">
     <script th:src="@{/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js}"></script>
-    <script th:src="@{/plugins/bootstrap-datepicker/dist/locales/bootstrap-datepicker.zh-CN.min.js}" charset="UTF-8"></script>
-    <script th:src="@{/plugins/bootstrap-datepicker/datapicker.js}"></script>
+<!--    <script th:src="@{/plugins/bootstrap-datepicker/datapicker.js}"></script>-->
+    <script th:src="@{/plugins/bootstrap-datepicker/dist/locales/bootstrap-datepicker.zh-CN.min.js}"></script>
 </div>
 
 
@@ -95,7 +164,7 @@
     <script th:src="@{/plugins/zTree/js/jquery.ztree.exhide.js}"></script>
     <script th:src="@{/plugins/zTree/js/jquery.ztree.all.js}"></script>
     <script th:src="@{/plugins/zTree/demo/js/fuzzysearch.js}"></script>
-    <script th:src="@{/dist/js/ztreetools.js}"></script>
+    <script th:src="@{/plugins/zTree/ztreetools.js}"></script>
 </div>
 
 
@@ -112,6 +181,15 @@
     <script th:src="@{/plugins/bootstrap-fileinput/js/fileinput.min.js}"></script>
     <script th:src="@{/plugins/bootstrap-fileinput/js/locales/zh.js}"></script>
     <script th:src="@{/plugins/bootstrap-fileinput/themes/fa/theme.min.js}"></script>
+    <script th:src="@{/plugins/bootstrap-fileinput/file_upload.js}"></script>
+</div>
+
+<!-- 地图openLayer插件-->
+<div th:fragment="map_css">
+    <link rel="stylesheet" th:href="@{/plugins/ol/ol.css}">
+</div>
+<div th:fragment="map_js">
+    <script th:src="@{/plugins/ol/ol.js}"></script>
 </div>
 
 

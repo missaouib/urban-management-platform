@@ -2,6 +2,7 @@ package com.unicom.urban.management.mapper;
 
 import com.unicom.urban.management.pojo.dto.GridDTO;
 import com.unicom.urban.management.pojo.entity.Grid;
+import com.unicom.urban.management.pojo.entity.Record;
 import com.unicom.urban.management.pojo.vo.GridVO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -10,7 +11,7 @@ import org.mapstruct.factory.Mappers;
 import java.util.List;
 
 /**
- * 网格实体类
+ * 网格mapper
  *
  * @author jiangwen
  */
@@ -33,7 +34,12 @@ public interface GridMapper {
      * @param grid 实体
      * @return vo
      */
-    @Mapping(source = "dept.deptName", target = "deptName")
+    @Mapping(source = "record.coordinate", target = "coordinate")
+    @Mapping(source = "parent.parent.parent.gridName", target = "region")
+    @Mapping(source = "parent.parent.gridName", target = "street")
+    @Mapping(source = "parent.gridName", target = "community")
+    @Mapping(source = "initialDate", target = "initialDateStr", dateFormat = "yyyy-MM-dd")
+    @Mapping(source = "parent.id", target = "parentId")
     GridVO gridToGridVO(Grid grid);
 
     /**
@@ -43,5 +49,13 @@ public interface GridMapper {
      * @return 实体
      */
     Grid gridDTOToGrid(GridDTO gridDTO);
+
+    /**
+     * dto转Record
+     *
+     * @param gridDTO dto
+     * @return Record
+     */
+    Record gridDTOToRecord(GridDTO gridDTO);
 
 }

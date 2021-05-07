@@ -1,12 +1,16 @@
 package com.unicom.urban.management.pojo.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.unicom.urban.management.pojo.Delete;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 网格实体类
@@ -15,7 +19,9 @@ import java.time.LocalDateTime;
  */
 @Data
 @Entity
-public class Grid extends BaseEntity {
+@SQLDelete(sql = "update grid set deleted = " + Delete.DELETE + " where id = ?")
+@Where(clause = "deleted = " + Delete.NORMAL)
+public class Grid extends AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -28,32 +34,42 @@ public class Grid extends BaseEntity {
 
     private String remark;
 
-    @ManyToOne
-    @JoinColumn
-    private KV kv;
-
     private String area;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Grid parent;
+
+    /**
+     * 等级 1区域 - 2街道 - 3社区 - 4网格
+     */
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer level;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
+    @Column
     private LocalDateTime initialDate;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(nullable = false)
+    @Column
     private LocalDateTime terminationDate;
 
-    private int sts;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Publish publish;
 
-    private String url;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private Record record;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
     private Dept dept;
 
-    @ManyToOne
-    @JoinColumn
-    private User user;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "sys_user_grid", joinColumns = @JoinColumn(name = "grid_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> userList;
 
 }

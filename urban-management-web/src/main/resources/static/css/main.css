@@ -17,11 +17,11 @@ body {
 .center-point {
     position: absolute;
     top: 50%;
-    left: 5.5%;
-    width: 175px;
-    height: 175px;
+    left: 12.5%;
+    width: 275px;
+    height: 275px;
     margin-left: 33px;
-    margin-top: -86.5px;
+    margin-top: -108.5px;
     border-radius: 50%;
     background: radial-gradient(circle, rgba(1, 94, 234, 0.68), rgba(0, 192, 250, 0.68));
     /* background-size: 100% 100%; */
@@ -35,8 +35,8 @@ body {
 }
 
 .get {
-    width: 535px;
-    height: 245px;
+    width: 835px;
+    height: 400px;
     float: right;
     margin-top: 82px;
     /* margin-right: 50px; */
@@ -51,8 +51,8 @@ body {
     background: url('../img/bborder.png');
     background-size: 100%;
     position: absolute;
-    bottom: 15px;
-    right: 120px;
+    bottom: -45px;
+    right: 10px;
     text-align: center;
     line-height: 53px;
     cursor:pointer;
@@ -60,28 +60,28 @@ body {
     font-family: Microsoft YaHei;
     font-weight: bold;
     color: #FFFFFF;
+    display: none;
 }
 .robot{
-    width: 57px;
-    height: 65px;
+    width: 77px;
+    height: 85px;
     position: absolute;
     left: -40px;
     bottom: 0;
     background: url('../img/robot.png');
-    background-size: 100%;
+    background-size: 100% 100%;
 }
 
 .info {
     position: relative;
-    width: 402px;
-    height: 99px;
-    font-size: 16px;
+    width: 672px;
+    height: 278px;
     font-family: BDZongYi-A001;
     font-weight: normal;
     color: #BFDCFF;
     margin-top: 70px;
     text-align: center;
-
+font-size: 21px;
 }
 
 .test {
@@ -91,13 +91,22 @@ body {
     top: 0;
     left: 0;
     display: none;
-    text-align: center;
+}
+/*.test1{*/
+/*    line-height: 99px;*/
+/*}*/
+.textsInbig{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;justify-content: center;
+    text-align: left;
 }
 
 .active {
-    width: 210px!important;
-    height: 120px!important;
-    font-size: 20px;
+    width: 285px!important;
+    height: 160px!important;
+    font-size: 22px;
     font-weight: 500;
     background-image: url('../img/back.png')!important;
 }
@@ -113,90 +122,92 @@ body {
 .solid {
     position: absolute;
     top: 0;
-    left: 0;
+    left: 5%;
     bottom: 0;
     right: 0;
     margin: auto;
-    width: 920px;
-    height: 405px;
+    width: 1400px;
+    height: 560px;
     /* margin: 0 auto; */
     background: url("../img/solidbig.png") no-repeat;
-    background-size: 100%;
+    background-size: 100% 100%;
 }
 
 .circle {
     /* 这里一定要绝对定位，这样位置才能铺开来 */
     position: absolute;
-    top: 35px;
-    left: -10px;
-    width: 200px;
-    height: 100px;
-    line-height: 100px;
+    top: 68px;
+    left: 9px;
+    width: 275px;
+    height: 140px;
+    line-height: 140px;
     text-align: center;
     color: #fff;
     background-size: 100% 100%;
     background-image: url('../img/back.png');
     transition: all 0.3s;
+    cursor:pointer;
+    font-size: 18px;
 }
 
 .circle1 {
     /* rotateZ控制方向，每个元素旋转30度，12个元素刚好360度。translateY控制每个元素距中心点的距离 */
-    transform: rotateZ(203deg) translateY(190px);
+    transform: rotateZ(196deg) translateY(272px);
     z-index: 9;
 }
 
 .circle2 {
-    transform: rotateZ(159deg) translateY(190px) translateX(-2px);
+    transform: rotateZ(157deg) translateY(278px) translateX(10px);
     z-index: 8;
 }
 
 .circle3 {
-    transform: rotateZ(115deg) translateY(190px) translateX(-3px);
+    transform: rotateZ(111deg) translateY(277px) translateX(-16px);
     z-index: 7;
 }
 
 .circle4 {
-    transform: rotateZ(72deg) translateY(190px) translateX(-2px);
+    transform: rotateZ(71deg) translateY(271px) translateX(-5px);
     z-index: 6;
 }
 
 .circle5 {
     z-index: 5;
-    transform: rotateZ(29deg) translateY(191px) translateX(-1px);
+    transform: rotateZ(31deg) translateY(273px) translateX(5px);
 }
 
 .circle6 {
-    transform: rotateZ(-15deg) translateY(191px) translateX(-3px);
+    transform: rotateZ(-12deg) translateY(277px) translateX(-3px);
     z-index: 4;
 }
 
 .active.circle1 {
-    transform: rotateZ(202deg) translateY(203px) translateX(0px);
+    transform: rotateZ(199deg) translateY(284px) translateX(14px);
     z-index: 9;
 }
 
 .active.circle2 {
-    transform: rotateZ(159deg) translateY(207px) translateX(-2px);
+    transform: rotateZ(154deg) translateY(295px) translateX(2px);
     z-index: 9;
 }
 
 .active.circle3 {
-    transform: rotateZ(116deg) translateY(203px) translateX(-5px);
+    transform: rotateZ(112deg) translateY(298px) translateX(-18px);
     z-index: 9;
 }
 
 .active.circle4 {
-    transform: rotateZ(74deg) translateY(199px) translateX(-3px);
+    transform: rotateZ(70deg) translateY(277px) translateX(-21px);
     z-index: 9;
 }
 
 .active.circle5 {
-    transform: rotateZ(31deg) translateY(188px) translateX(-1px);
+    transform: rotateZ(30deg) translateY(275px) translateX(-10px);
     z-index: 9;
 }
 
 .active.circle6 {
-    transform: rotateZ(-14deg) translateY(189px) translateX(-1px);
+    transform: rotateZ(-12deg) translateY(271px) translateX(-1px);
     z-index: 9;
 }
 
@@ -253,7 +264,7 @@ img {
     overflow: hidden;
 }
 
-.username {
+.username_nn {
     font-size: 13px;
     font-family: Microsoft YaHei;
     font-weight: 400;
@@ -351,9 +362,9 @@ img {
     display: block;
 }
 .computer {
-    width: 56px;
-    height: 50px;
-    margin: 40px auto 20px auto;
+    width: 100px;
+    height: 100px;
+    margin: 70px auto 20px auto;
 }
 
 .worktable {
@@ -372,4 +383,178 @@ img {
 .active .inner2,
 .active .inner3{
     margin-top: 10px;
+}
+.intoBtn a{
+    text-decoration: none!important;
+    color: white!important;
+}
+.login_frame{
+    width: 100%;height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    background-image: url("../img/bg.png");
+    background-size: 100% 100%;
+}
+
+
+/*登录*/
+.inpBox{
+    position: relative;
+}
+.icon{
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    background-size: 100% 100%;
+    top: 50%;
+    margin-top: -9px;
+    left: 15px;
+}
+.icon1{
+    background-image: url("../img/user.png");
+}
+.icon2{
+    background-image: url("../img/pass.png");
+}
+.icon3{
+    background-image: url("../img/code.png");
+}
+.login {
+    max-height: 330px;
+    max-width: 380px;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    /* overflow-x: hidden; */
+    background-image: url("../img/solid.png");
+    background-size: 100% 100%;
+    position: absolute;
+    top: 0;left: 0;right: 0;bottom: 0;
+    margin: auto;
+}
+
+a.logo {
+    display: block;
+    height: 58px;
+    width: 167px;
+    margin: 0 auto 30px auto;
+    background-size: 167px 42px;
+}
+
+.message {
+    margin-top: -30px;
+    text-align: center;
+    font-size: 18px;
+    font-family: Microsoft YaHei;
+    font-weight: bold;
+    color: #AED4FF;
+    line-height: 24px;
+}
+
+#darkbannerwrap {
+    width: 18px;
+    height: 10px;
+    margin: 0px;
+    position: relative;
+}
+.username,.password,.input-val{
+    padding-left: 45px!important;
+    /*color: white!important;*/
+}
+
+.username,.password,.input-val,.login_btn{
+
+    background: #FFFFFF!important;
+    border: none;
+    opacity: 0.3;
+    border-radius: 5px;
+    width: 100%;
+    height: 50px;
+    position: relative;
+    font-size: 16px;
+    font-weight: 800;
+}
+.login_btn{
+    background: linear-gradient(0deg, #5A82D2, #2A4B90, #122244)!important;
+    border-radius: 5px;
+    color: white;
+    font-size: 18px;
+    opacity: 1;
+    cursor:pointer;
+}
+.forget{
+    width: 100%;
+    display: block;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+}
+hr.hr15 {
+    height: 15px;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+hr.hr20 {
+    height: 13px;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    color: #2e619a;
+}
+
+.copyright {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    display: block;
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+    text-align: center;
+    text-shadow: 5px 5px 5px #000;
+}
+
+.input-val {
+    width: 55% !important;
+}
+
+.canvas {
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 99;
+    width: 40%;
+    height: 50px;
+    border-radius: 5px;
+    float: right;
+    cursor:pointer;
+}
+.ortion{
+    width: 100%;
+    height: 20px;
+    margin-bottom: 10px;
+}
+.leftChange,.rightChage{
+    width: 90px;
+    color: white;
+}
+.leftChange{
+    float: left;
+}
+.rightChage{
+    text-align: right;
+    float: right;
+}
+.checkbox{
+    margin: 2px;
+    display: block;
+    float: left;
+}
+.check{
+    margin-left: 20px;
 }

@@ -27,12 +27,12 @@ public class LoginSuccessHandler extends AbstractAuthenticationHandler implement
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
 
-        String content = objectMapper.writeValueAsString(Result.success());
-
-        // 记录登录日志
-        saveLoginInfo(request, response, content);
-
-        handleResponse(request, response, content);
+        try {
+            loginLog(request, response, 0);
+        } catch (Exception e) {
+            log.error("登录成功 记录登录日志发成异常", e);
+        }
+        handleResponse(request, response, objectMapper.writeValueAsString(Result.success()));
 
     }
 

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>发布</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: map_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <link th:href="@{/css/publishList.css}" rel="stylesheet" type="text/css">
+</head>
+<style>
+
+</style>
+<body>
+<div class="infoBox">
+    <div class="radioInput">
+        <input type="hidden" id="dataValue" value=""/>
+        <input type="hidden" id="dataId" value=""/>
+        <div id="publishList"></div>
+            <div class="r_right but_p girdBtnGroup" style="margin: 0 0 10px 0!important;">
+                <button class="but_save" type="button" onclick="layerPublish()">发布</button>
+
+            </div>
+    </div>
+    <div class="maps" style="position: relative">
+        <div class="mengBan"></div>
+        <div id="container" style="width: 100%;height: 100%;"></div>
+        <div class="map" id="map" style="width: 100%;height: 100%"></div>
+    </div>
+</div>
+
+<div id="pictureDiv" style="display: none">
+
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: bmap_js" />
+<script type="text/javascript" th:inline="javascript">
+
+
+    let getPublishListUrl = /*[[@{/publish/getPublishList}]]*/ "/publish/getPublishList";
+    let layerPublishUrl = /*[[@{/publish/layerPublish}]]*/ "/publish/layerPublish";
+
+    $(function () {
+        getPublishList();
+        $(".ol-full-screen-false").html("全屏")
+
+    });
+
+    function getPublishList() {
+        $.ajaxUtil.get(getPublishListUrl, function (e) {
+            let data = e.data;
+            $("#publishList").empty();
+            let htmlStr = "";
+            for (let i = 0; i < data.length; i++) {
+                htmlStr += "<p>"
+                htmlStr += "<input type='radio' value='" + data[i].type + "' id='" + data[i].id + "' name='publish' onclick='radioPublish(this)' class='radio'>" + data[i].name
+                htmlStr += "</p>"
+            }
+            $("#publishList").append(htmlStr);
+        });
+    }
+
+    $('#publishList').on("click", ".radio", function () {
+        layerMap.getSource().clear()
+    })
+
+    function radioPublish(data) {
+        $("#dataId").val(data.id);
+        $("#dataValue").val(data.value);
+        getPublishOneUrl(data.id);
+    }
+
+    function getPublishOneUrl(id) {
+        let getPublishOneUrl = /*[[@{/publish/getPublishOne/}]]+id*/ "/publish/getPublishOne/" + id;
+        $.ajaxUtil.get(getPublishOneUrl, function (e) {
+            let data = e.data;
+            if (data.length === 0) {
+                return false;
+            }
+            if (data[0].type === "部件") {
+                for (let i = 0; i < data.length; i++) {
+                    setPoint(data[i].coordinate.split(",")[0], data[i].coordinate.split(",")[1], data[i].id, data[i].type);
+                }
+            } else if (data[0].type === "网格") {
+                for (let i = 0; i < data.length; i++) {
+                    let data1 = data[i].coordinate;
+                    let split = data1.split("-");
+                    let polygonArray = [];
+                    let polygonArrayEnd = [];
+                    for (let j = 0; j < split.length; j++) {
+                        let pointArray = [];
+                        pointArray.push(split[j].split(",")[0]);
+                        pointArray.push(split[j].split(",")[1]);
+                        polygonArray.push(pointArray);
+                        polygonArrayEnd.push(polygonArray);
+                    }
+                    setPolygon(polygonArrayEnd, data[i].id);
+                }
+            } else {
+                console.log("error")
+            }
+        });
+
+    }
+
+    $(".clear").click(function () {
+        layerMap.getSource().clear()
+    })
+
+
+    function layerPublish() {
+        let id = $("#dataId").val();
+        let type = $("#dataValue").val();
+        $.operate.post(layerPublishUrl, {id: id, type: type}, function (e) {
+            console.log("e", e);
+        })
+    }
+
+</script>
+
+
+<script type="text/javascript" th:inline="javascript">
+
+
+
+    function setPoint(x, y, id, type) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+            data: {
+                id: id,
+                type: type,
+                coordinate: x + "," + y
+            }
+        });
+        layerMap.getSource().addFeature(point);
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 10,
+                fill: new ol.style.Fill({
+                    color: '#ff0000'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#ff0000',
+                    width: 3
+                })
+            })
+        }));
+    }
+
+    function setPolygon(coordinates, id) {
+
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(coordinates),
+            data: {
+                id: id,
+                // name: name,
+                coordinate: coordinates
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
+    }
+
+</script>
+<th:block th:include="page/fragments/common :: mapinit_js"/>
+</body>
+</html>

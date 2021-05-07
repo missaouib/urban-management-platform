@@ -28,7 +28,7 @@ public class ProcessDefService {
 
     public Page<ProcessDefinitionVO> search(Pageable pageable) {
 
-        List<Model> list = repositoryService.createModelQuery().list();
+        List<Model> list = repositoryService.createModelQuery().orderByLastUpdateTime().desc().list();
 
         List<ProcessDefinition> deployments = repositoryService.createProcessDefinitionQuery()
                 .orderByProcessDefinitionId().desc()

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>角色新增</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+
+<!--    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">-->
+</head>
+<body style="border-radius: 8px;width: 680px">
+
+<form id="userForm">
+    <div class="top table2_top">
+<!--        <div>-->
+            <div class="top_out">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>角色名称<span>*</span></td>
+                        <td>
+                            <input type="text" id="name" name="name"/>
+                        </td>
+<!--                        <td>登录账号<span>*</span></td>-->
+<!--                        <td>-->
+<!--                            <input type="text" id="username" name="username"/>-->
+<!--                        </td>-->
+                    </tr>
+<!--                    <tr>-->
+<!--                        <td>手机号码<span>*</span></td>-->
+<!--                        <td>-->
+<!--                           <input type="text" id="mobileNumber" name="mobileNumber"/>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <td>部门<span>*</span></td>-->
+<!--                        <td>-->
+<!--                            <input name="deptId" type="hidden" id="treeId"/>-->
+<!--                            <input type="text" id="dept" name="dept" onclick="selectDeptTree()" placeholder="请选择部门"/>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+                    <tr>
+                        <td></td>
+<!--                        <td><input type="submit" id="smtBtn" value="保存"></td>-->
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+<!--    </div>-->
+</form>
+<div class="notice_bot">
+    <div class="r_right but_p" style="display: flex;justify-content: flex-end">
+        <button class="but_save" type="submit" id="smtBtn" onclick="submit()">保存</button>
+        <button class="but_close" onclick="$.modal.closeTab();">关闭</button>
+    </div>
+</div>
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+
+     // 更改error文字
+    jQuery.extend(jQuery.validator.messages, {
+        required: "必填",
+        mobileNumber: "必填",
+        remote: "请修正该字段",
+        email: "请输入正确格式的电子邮件",
+        url: "请输入合法的网址",
+        date: "请输入合法的日期",
+        dateISO: "请输入合法的日期 (ISO).",
+        number: "请输入合法的数字",
+        digits: "只能输入整数",
+        creditcard: "请输入合法的信用卡号",
+        equalTo: "请再次输入相同的值",
+        accept: "请输入拥有合法后缀名的字符串",
+        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
+        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
+        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
+        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
+        min: jQuery.validator.format("请输入一个最小为{0} 的值")
+    });
+
+     /* 角色管理-新增-选择部门树 */
+     function selectDeptTree() {
+         var treeId = $("#treeId").val();
+         var deptId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
+         var url = ctx + "system/dept/selectDeptTree/" + deptId;
+         var options = {
+             title: '选择部门',
+             width: "380",
+             url: url,
+             callBack: doSubmit
+         };
+         $.modal.openOptions(options);
+     }
+
+    $("#userForm").validate({
+        debug: true,
+        ignore:"",
+        submitHandler:function(form){
+            var params = $(form).serialize(); //串行化表单参数
+            $.post("user",params,function(result){
+                if (result.ok) {//注册成功
+                    location.href = "register_ok.html";
+                }else{//注册失败
+                    alert(result.msg);
+                    $("#checkImg").click();
+                }
+            },"json");
+        },
+        rules: {
+            name: {
+                required: true
+            },
+            username: {
+                required: true,
+                // rangelength: [5, 8]
+            },
+            // pwd: {
+            //     required: true,
+            //     rangelength: [6, 12]
+            // },
+            // pwd2: {
+            //     required: true,
+            //     rangelength: [6, 12],
+            //     /*重复密码需要与原密码相同的要求*/
+            //     equalTo: "#pwd"
+            // },
+            // sex: {
+            //     required: true
+            // },
+            // age: {
+            //     required: true,
+            //     range: [26, 50]
+            // },
+            // email: {
+            //     email: true
+            // },
+            // idcard: {
+            //     card: true
+            // },
+            mobileNumber: {
+                mobileNumber: true
+            }
+        },
+        messages: {
+            // name: {
+            //     required: "真实姓名不能为空"
+            // },
+            // username: {
+            //     required: "登录名不能为空",
+            //     rangelength: "登录名长度要在5-8位之间"
+            // },
+            // pwd: {
+            //     required: "密码不能为空",
+            //     rangelength: "密码长度在6-12位之间"
+            // },
+            // pwd2: {
+            //     required: "重复密码不能为空",
+            //     rangelength: "重复密码长度在6-12位之间",
+            //     equalTo: "重复密码与密码不一致"
+            // },
+            // sex: {
+            //     required: "请选择性别"
+            // },
+            // age: {
+            //     required: "年龄不能为空",
+            //     range: "年龄必须在26-50岁之间"
+            // },
+            // email: {
+            //     email: "请输入有效邮箱"
+            // },
+            // idcard: {
+            //     card: "请输入有效身份证号"
+            // },
+            mobileNumber: {
+                mobileNumber: "必填"
+            }
+        }
+    });
+    /*手机号格式验证*/
+    $.validator.addMethod("mobileNumber", function (value, element, params) {
+        var reg = /^1[34578]\d{9}$/;
+        return reg.test(value);
+    }, "mobileNumber error");
+
+    let url = /*[[@{/role/save}]]*/ "/json/unit.json";
+
+    function save(){
+        var data = $('#userForm').serialize();
+        $.operate.saveTab(url, data);
+    }
+    function submit(){
+    //先校验
+        if (!$("form").valid()) {
+            return;
+
+        }
+        var data = $('#userForm').serialize();
+        $.operate.saveTab(url, data);
+    //然后才提交
+    }
+</script>
+</body>
+</html>

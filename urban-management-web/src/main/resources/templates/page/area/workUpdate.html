@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">
+</head>
+<style>
+    .file-drop-zone-title{
+        padding: 68px 55px!important;
+    }
+    .file-drop-zone{
+        min-height: 200px!important;
+    }
+    .file-preview-thumbnails{
+        max-height: 233px!important;
+    }
+    .file-preview{
+        height: 241px!important;
+    }
+</style>
+<body style="border-radius: 8px;">
+<div class="col-md-12" style="height: 100%">
+    <div class="content">
+        <div class="leftContent">
+            <form id="userForm">
+                <div style="width: 100%;display: flex;justify-content: start;">
+                    <button style="margin-left: 10px" class="but_save saveTheBtn" type="submit" onclick="submitHandler()">保存</button>
+                </div>
+                <div class="top table2_top">
+                    <div class="top_out">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+
+                                <td><span></span>所属部门</td>
+                                <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                    <input type="text" th:value="${attendanceScheme.deptName}" readonly="readonly" id="typeStr" class="find_input"/>
+                                    <input type="hidden" th:value="${attendanceScheme.deptId}" readonly="readonly" id="deptId" th:name="deptId" class="find_input" />
+                                    <button type="button" class="addBtn" onclick="selectDeptTree()">
+                                        +
+                                    </button>
+                                </td>
+                                <td><span>*</span>半径</td>
+                                <td>
+                                    <input type="text" th:value="${attendanceScheme.radius}" class="" value="" name="radius" id="radius"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>经度</td>
+                                <td>
+                                    <input type="text" th:value="${attendanceScheme.x}" class=""  name="x" id="longitude"  required readonly/>
+                                </td>
+                                <td><span>*</span>纬度</td>
+                                <td>
+                                    <input type="text"  th:value="${attendanceScheme.y}" class=""  name="y" id="latitude" required readonly/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><span>*</span>位置</td>
+                                <td>
+                                    <input type="text" class="" th:value="${attendanceScheme.address}"  name="address" id="address"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="rightContent" style="position: relative">
+            <div class="mengBan"></div>
+            <div id="container" style="width: 100%;height: 100%;"></div>
+            <div class="search_map">
+                <div class="map_input">
+                    <input id="sole-input" placeholder="搜索地点" value="" onkeyup="setLocalSearch(this.value)">
+                </div>
+                <div class="map_button"><img th:src="@{/img/search.png}"></div>
+                <div class="place_map">
+                    <ul id="place_ul">
+
+                    </ul>
+                </div>
+            </div>
+            <div class="map" id="map"></div>
+            <div id="popup" class="ol-popup">
+                <div class="closePopup">×</div>
+                <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+                <div id="popup-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+<th:block th:include="page/fragments/common :: bmap_js" />
+<script type="text/javascript" th:inline="javascript">
+
+
+    let multiMediaData = [];
+    let multiMediaAfterData = [];
+
+    $(function () {
+        $(".ol-full-screen-false").html("全屏");
+
+
+        $.ajaxUtil.get(componentTypeUrl, function (e) {
+            $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        });
+
+        console.log($("#longitude").val(),$("#latitude").val())
+        setPoint($("#longitude").val(),$("#latitude").val())
+
+    })
+    /**
+     * 模态窗 selectEventTypeTree
+     */
+    function selectDeptTree() {
+        var url = /*[[@{/tree/dept}]]*/ "/tree/dept";
+        var options = {
+            title: '请选择部门',
+            width: "380",
+            url: url,
+            callBack: deptDoSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function deptDoSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#typeStr").val(body.find('#treeName').val());
+        $("#deptId").val(body.find('#treeId').val());
+        layer.close(index);
+    }
+    let url = /*[[@{/event/register}]]*/ "/event/register";
+    let receiveUrl = /*[[@{/event/receive}]]*/ "/event/receive";
+    let dispatchUrl = /*[[@{/event/dispatch}]]*/ "/event/dispatch";
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
+    let componentTypeUrl = /*[[@{/allEventType}]]*/ "/allEventType";
+    let createEventCodeUrl = /*[[@{/event/createEventCode}]]*/ "/event/createEventCode";
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+    let publishUrl = /*[[@{/componentTypePublish}]]*/ "/componentTypePublish";
+    let getDeptTimeLimitByLevelUrl = /*[[@{/event/getDeptTimeLimitByLevel}]]*/ "/event/getDeptTimeLimitByLevel";
+    let findAllByKvIdUrl = /*[[@{/event/findAllByKvId}]]*/ "/event/findAllByKvId";
+    let saveUrl = /*[[@{/attendanceScheme/attendanceScheme}]]*/ "/event/saveTemp";
+    let preReportUrl = /*[[@{/event/preReport}]]*/ "/event/preReport";
+    let getGisComponent = /*[[@{/getGisComponent}]]*/ "/getGisComponent";
+    let setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parent'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+    // setPoint(596459.8984375,5245954.445312499)
+    //
+
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        $("#typeStr").val(treeNode.name);
+        $("#eventTypeId").val(treeNode.id);
+        $(".closemodal").click();
+        let eventTypeId = $("#eventTypeId").val();
+        createEventCode(eventTypeId);
+        //获取立案区域
+        findEventConditionByEventType(eventTypeId)
+    }
+
+    /**
+     * 保存
+     */
+    function submitHandler() {
+        //先校验
+        if (!$("form").valid()) {
+            return;
+        }
+        var data = $('#userForm').serialize();
+        $.operate.saveTab(saveUrl, data);
+        // $.operate.saveTab(saveUrl, data);
+    }
+
+
+    /**
+     * 后台自动生成案卷号
+     * @param eventTypeId
+     */
+    function createEventCode(eventTypeId) {
+        if (eventTypeId !== undefined && eventTypeId !== '') {
+            var url = createEventCodeUrl + "?eventTypeId=" + eventTypeId
+            $.ajaxUtil.get(url, function (e) {
+                if (e.code === 0) {
+                    let eventCode = e.data
+                    $("#eventCode").val(eventCode);
+                }
+            })
+        }
+    }
+    let unit = /*[[@{/event/findUnit}]]*/ "/event/findUnit";
+    /**
+     * 获取部件的发布图层
+     */
+    function findUrlListByEventTypeId(eventTypeId) {
+        $.ajaxUtil.get(publishUrl + "?typeId=" + eventTypeId, function (e) {
+            $("#layer").val("");
+            //删除上一个底图
+            let mation = map.getLayerGroup().getLayers().a;
+            if (mation.length > 2) {
+                mation.splice(1, 1);
+                // source.clear();
+                $("#componentObjId").val("")
+                layerMap.getSource().clear();
+            }
+            $(e.data).each(function (index, value) {
+                if (value.url != null) {
+                    $("#layer").val(value.layerId);
+                    let urlParam = value.url.split("?");
+                    let url = urlParam[0];
+                    let param = urlParam[1];
+                    var format = 'image/png';
+                    var ImageVector = new ol.layer.Image({
+                        source: new ol.source.ImageWMS({
+                            url: url,
+                            params: {'FORMAT': format,
+                                'VERSION': '1.1.1',
+                                tiled: true,
+                                "LAYERS": param,
+                                "exceptions": 'application/vnd.ogc.se_inimage'
+                            }
+                        })
+                    });
+
+
+                    let layersArray = map.getLayers();
+                    layersArray.insertAt(1, ImageVector);
+
+
+
+                }
+            })
+        })
+    }
+
+    function success_jsonpCallback1(res) {
+        var features = geojsonFormat.readFeatures(res);
+        if (undefined !== features[0]) {
+            $.ajaxUtil.get(getGisComponent + "?mongoId=" + features[0].H.mongodb_id, function (e) {
+                $("#objId").val(e.data.objId);
+                $("#objId1").val(e.data.id);
+            });
+        }
+    }
+
+
+
+    function doSubmit(index, layero) {
+        var tree = layero.find("iframe")[0].contentWindow.$._tree;
+        var body = layer.getChildFrame('body', index);
+        $("#eventTypeId").val(body.find('#treeId').val());
+        $("#typeStr").val(body.find('#treeName').val());
+        let eventTypeId = $("#eventTypeId").val();
+        createEventCode(eventTypeId);
+        //获取立案区域
+        findEventConditionByEventType(eventTypeId);
+        //部件获取
+        findUrlListByEventTypeId(eventTypeId);
+        layer.close(index);
+    }
+
+    function save() {
+        var data = $('#userForm').serialize();
+        $.operate.saveTab(url, data);
+    }
+
+    // 更改校验文字
+    jQuery.extend(jQuery.validator.messages, {
+        required: "必填",
+        x: "必填",
+        y: "必填",
+        address: "必填",
+        email: "请输入正确格式的电子邮件",
+        url: "请输入合法的网址",
+        date: "请输入合法的日期",
+        dateISO: "请输入合法的日期 (ISO).",
+        number: "请输入合法的数字",
+        digits: "只能输入整数",
+        creditcard: "请输入合法的信用卡号",
+        equalTo: "请再次输入相同的值",
+        accept: "请输入拥有合法后缀名的字符串",
+        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
+        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
+        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
+        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
+        min: jQuery.validator.format("请输入一个最小为{0} 的值")
+    });
+
+    $("#userForm").validate({
+        debug: true,
+        ignore: "",
+        submitHandler: function (form) {
+            var params = $(form).serialize(); //串行化表单参数
+            $.post("user", params, function (result) {
+                if (result.ok) {//注册成功
+                    location.href = "register_ok.html";
+                } else {//注册失败
+                    alert(result.msg);
+                    $("#checkImg").click();
+                }
+            }, "json");
+        },
+        rules: {
+            userName: {
+                required: true
+            },
+            loginName: {
+                required: true,
+                // rangelength: [5, 8]
+            },
+            phonenumber: {
+                required: true,
+                // rangelength: [6, 12]
+            },
+            problemescription: {
+                required: true,
+                // rangelength: [6, 12],
+                /*重复密码需要与原密码相同的要求*/
+                // equalTo: "#pwd"
+            },
+            safeLevel: {
+                required: true
+            },
+            findTime: {
+                required: true,
+                // range: [26, 50]
+            },
+            enterprise: {
+                required: true
+            },
+            department: {
+                required: true
+            },
+            handleTime: {
+                required: true
+            }, charge: {
+                required: true
+            },
+            question: {
+                required: true
+            },
+            closeTime: {
+                required: true,
+                // email: true
+            },
+            x: {
+                required: true
+            },
+            y: {
+                required: true
+            },
+        },
+        messages: {
+        }
+    });
+    /*手机号格式验证*/
+    $.validator.addMethod("phone", function (value, element, params) {
+        var reg = /^1[34578]\d{9}$/;
+        return reg.test(value);
+    }, "phone error");
+    $.validator.addMethod("petitonerPhone", function (value, element, params) {
+        var reg = /^1[34578]\d{9}$/;
+        return reg.test(value);
+    }, "petitonerPhone error");
+
+    var container = document.getElementById('popup');
+    var content = document.getElementById('popup-content');
+    var closer = document.getElementById('popup-closer');
+    var overlay = new ol.Overlay({
+        element: container,
+        autoPan: true,
+        autoPanAnimation: {
+            duration: 250
+        }
+    });
+    let mapUrl = [[${@geoServerProperties.url}]];
+    let center_x = [[${@geoServerProperties.center_x}]];
+    let center_y = [[${@geoServerProperties.center_y}]];
+    let layers = [[${@geoServerProperties.layers}]];
+    let zoom = [[${@geoServerProperties.zoom}]];
+    let epsg = [[${@geoServerProperties.epsg}]];
+    // 沽源地图
+    var gridsetName = 'EPSG:4552';
+    var gridNames = ['EPSG:4552:0', 'EPSG:4552:1', 'EPSG:4552:2', 'EPSG:4552:3', 'EPSG:4552:4', 'EPSG:4552:5', 'EPSG:4552:6', 'EPSG:4552:7'];
+    var baseUrl = 'http://218.10.223.8:9050/geoserver/gwc/service/wmts';
+    var style = '';
+    var format = 'image/png';
+    var infoFormat = 'text/html';
+    var layerName = 'hegang:hegang8';
+    var layerName1 = 'hegang:gongnong';
+    var projection = new ol.proj.Projection({
+        code: 'EPSG:4552',
+        units: 'm',
+        axisOrientation: 'neu'
+    });
+    var resolutions = [13.999999999999998, 6.999999999999999, 3.4999999999999996, 1.7499999999999998, 0.8749999999999999, 0.43749999999999994, 0.21874999999999997, 0.10937499999999999];
+    baseParams = ['VERSION','LAYER','STYLE','TILEMATRIX','TILEMATRIXSET','SERVICE','FORMAT'];
+
+    params = {
+        'VERSION': '1.0.0',
+        'LAYER': layerName,
+        'STYLE': style,
+        'TILEMATRIX': gridNames,
+        'TILEMATRIXSET': gridsetName,
+        'SERVICE': 'WMTS',
+        'FORMAT': format
+    };
+
+    function constructSource() {
+        var url = baseUrl+'?'
+        for (var param in params) {
+            if (baseParams.indexOf(param.toUpperCase()) < 0) {
+                url = url + param + '=' + params[param] + '&';
+            }
+        }
+        url = url.slice(0, -1);
+
+        var source = new ol.source.WMTS({
+            url: url,
+            layer: params['LAYER'],
+            matrixSet: params['TILEMATRIXSET'],
+            format: params['FORMAT'],
+            projection: projection,
+            tileGrid: new ol.tilegrid.WMTS({
+                tileSize: [512,512],
+                extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
+                origin: [374503.7646126483, 5570848.560955403],
+                resolutions: resolutions,
+                matrixIds: params['TILEMATRIX']
+            }),
+            style: params['STYLE'],
+            wrapX: true
+        });
+        return source;
+    }
+
+    var untiled = new ol.layer.Tile({
+        source: constructSource()
+    });
+    // //覆盖新图层
+    // params = {
+    //     'VERSION': '1.0.0',
+    //     'LAYER': layerName1,
+    //     'STYLE': style,
+    //     'TILEMATRIX': gridNames,
+    //     'TILEMATRIXSET': gridsetName,
+    //     'SERVICE': 'WMTS',
+    //     'FORMAT': format
+    // };
+    function constructSource1() {
+        var url = baseUrl+'?'
+        for (var param in params) {
+            if (baseParams.indexOf(param.toUpperCase()) < 0) {
+                url = url + param + '=' + params[param] + '&';
+            }
+        }
+        url = url.slice(0, -1);
+
+        var source = new ol.source.WMTS({
+            url: url,
+            layer: params['LAYER'],
+            matrixSet: params['TILEMATRIXSET'],
+            format: params['FORMAT'],
+            projection: projection,
+            tileGrid: new ol.tilegrid.WMTS({
+                tileSize: [512,512],
+                extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
+                origin: [374503.7646126483, 5570848.560955403],
+                resolutions: resolutions,
+                matrixIds: params['TILEMATRIX']
+            }),
+            style: params['STYLE'],
+            wrapX: true
+        });
+        return source;
+    }
+
+    var gongnong = new ol.layer.Tile({
+        source: constructSource1()
+    });
+
+    var view = new ol.View({
+        center: [0, 0],
+        zoom: 17,
+        resolutions: resolutions,
+        projection: projection,
+        extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403]
+    });
+
+    var map = new ol.Map({
+        layers: [untiled,gongnong],
+        target: 'map',
+        view: view
+    });
+    map.getView().fit([593489.95, 5237489.95,
+        598010.0499999999, 5247510.05], map.getSize());
+    var fullScreenControl = new ol.control.FullScreen();
+
+    map.addControl(fullScreenControl)
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
+
+
+
+    let localReverseGeocoding = /*[[@{/event/localReverseGeocoding}]]*/ "/event/localReverseGeocoding";
+    map.on('singleclick', function (evt) {
+        let t = evt.coordinate;
+        $("#longitude").val(t[0])
+        $("#latitude").val(t[1])
+        $.ajaxUtil.get(localReverseGeocoding + "?x=" + t[0] + "&y=" + t[1], function (e) {
+            $("#location").val(e.data.mongo)
+        })
+
+
+        layerMap.getSource().clear()
+        setPoint(t[0],t[1])
+
+        $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + t[0] + "&y=" + t[1], function (e) {
+            let split = e.data.multiPolygon.split(",");
+            let polygonArray = [];
+            let polygonArrayEnd = [];
+            for (let j = 0; j < split.length; j++) {
+                let pointArray = [];
+                pointArray.push(split[j].split(" ")[0]);
+                pointArray.push(split[j].split(" ")[1]);
+                polygonArray.push(pointArray);
+                polygonArrayEnd.push(polygonArray);
+            }
+            setPolygon(polygonArrayEnd);
+            let data = e.data.mapList;
+            for (let i = 0; i < data.length; i++) {
+                switch (data[i].level) {
+                    case 1:
+                        $("#grid1").val(data[i].id);
+                        break;
+                    case 2:
+                        $("#grid2").empty();
+                        let option2 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid2").html(option2);
+                        break;
+                    case 3:
+                        $("#grid3").empty();
+                        let option3 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid3").html(option3);
+                        break;
+                    case 4:
+                        let coordinate = [];
+                        coordinate.push($("#longitude").val());
+                        coordinate.push($("#latitude").val());
+                        overlay.setPosition(coordinate);
+                        let popupContentHtml = "<div class='demo2'>网格名称:" + data[i].name;
+                        popupContentHtml += "<em>&#9670;</em>";
+                        popupContentHtml += "<span>&#9670;</span>";
+                        popupContentHtml += "</div>";
+                        $("#popup-content").html(popupContentHtml);
+                        $("#popup").on("click", ".closePopup", function (e) {
+                            e.preventDefault();
+                            overlay.setPosition(undefined);
+                        })
+
+                        $("#grid4").empty();
+                        let option4 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid4").html(option4);
+                        break;
+                    default:
+                        console.log("查询出了网格之外的东西");
+                }
+            }
+        });
+
+
+
+
+    });
+
+
+    let localGeocodingUrl = /*[[@{/event/localGeocoding}]]*/ "/event/localGeocoding";
+
+    function localGeocoding() {
+        let location = $("#location").val();
+        if(location === null || location === "" || location === undefined){
+            $.modal.alertError("请填写地址", function (){
+                return;
+            });
+        }else{
+            $.ajaxUtil.get(localGeocodingUrl + "?address=" + location, function (e) {
+                let data = e.data;
+                $("#place_ul").empty();
+                let localGeocoding = "";
+                if(data.length > 0){
+                    for (let i = 0; i < data.length; i++) {
+                        localGeocoding += "<li className='place_li' id='"+ data[i].multiPolygon +"' onclick='setLocationPoint(this)'><i className='fa fa-search place_mirror' aria-hidden='true'></i>"+ data[i].mongo +"</li>";
+                    }
+                }else{
+                    localGeocoding += "<li class='place_li' onclick='setLocationPointClose()'>没有可匹配的地址</li>";
+                }
+                $("#place_ul").html(localGeocoding);
+                $(".place_map").slideDown(200);
+            })
+        }
+    }
+
+    function setLocalSearch(data) {
+        $("#location").val(data);
+        $("#sole-input").val(data);
+    }
+
+    function setLocationPoint(data) {
+        let x = parseFloat(data.id.split(" ")[0]);
+        let y = parseFloat(data.id.split(" ")[1]);
+        setCenterAndZoom(x, y, map.getView().getZoom() + 2);
+        setPoint([x, y]);
+        setLocationPointClose();
+    }
+
+    function setLocationPointClose() {
+        $(".place_map").slideUp(200);
+    }
+
+    function setPoint(newPoint) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point(newPoint),
+            data: {}
+        });
+        layerMap.getSource().addFeature(point);
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                src: '../img/dwpoint3.png'
+            })
+        }));
+    }
+
+    //回调函数接收查询结果
+    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
+
+    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
+    /* 点击网格列表赋值 */
+    function success_jsonpCallback(res) {
+        var features = geojsonFormat.readFeatures(res);
+        var x = $("#longitude").val();
+        var y = $("#latitude").val();
+        $.ajaxUtil.get(getGridByCheckLayerUrl + "?x=" + x + "&y=" + y, function (e) {
+            let split = e.data.multiPolygon.split(",");
+            let polygonArray = [];
+            let polygonArrayEnd = [];
+            for (let j = 0; j < split.length; j++) {
+                let pointArray = [];
+                pointArray.push(split[j].split(" ")[0]);
+                pointArray.push(split[j].split(" ")[1]);
+                polygonArray.push(pointArray);
+                polygonArrayEnd.push(polygonArray);
+            }
+            setPolygon(polygonArrayEnd);
+            let data = e.data.mapList;
+            for (let i = 0; i < data.length; i++) {
+                switch (data[i].level) {
+                    case 1:
+                        $("#grid1").val(data[i].id);
+                        break;
+                    case 2:
+                        $("#grid2").empty();
+                        let option2 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid2").html(option2);
+                        break;
+                    case 3:
+                        $("#grid3").empty();
+                        let option3 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid3").html(option3);
+                        break;
+                    case 4:
+                        var coordinate = [$("#longitude").val(),
+                            $("#latitude").val()];
+                        overlay.setPosition(coordinate);
+                        let popupContentHtml = "<div class='demo2'>网格名称:" + data[i].name;
+                        popupContentHtml += "<em>&#9670;</em>";
+                        popupContentHtml += "<span>&#9670;</span>";
+                        popupContentHtml += "</div>";
+                        $("#popup-content").html(popupContentHtml);
+                        $("#popup").on("click", ".closePopup", function (e) {
+                            e.preventDefault();
+                            overlay.setPosition(undefined);
+                        })
+                        $("#grid4").empty();
+                        let option4 = "<option value='" + data[i].id + "'>" + data[i].name + "</option>";
+                        $("#grid4").html(option4);
+                        break;
+                    default:
+                        console.log("查询出了网格之外的东西");
+                }
+            }
+        });
+
+    }
+
+    /**
+     * 获取网格的中心点
+     */
+    /**
+     * 获取网格的中心点
+     */
+    function getGridCenter() {
+        layerMap.getSource().clear();
+        let pointOfCenter = $("#grid4 option:selected").val();
+        let url = "/event/findGeomByGridId?id=" + pointOfCenter;
+        $.ajaxUtil.get(url, function (e) {
+            $(e.data.geom).each(function (index, value) {
+                let split = value.split(",");
+                let polygonArray = [];
+                let polygonArrayEnd = [];
+                for (let j = 0; j < split.length; j++) {
+                    let pointArray = [];
+                    pointArray.push(split[j].split(" ")[0]);
+                    pointArray.push(split[j].split(" ")[1]);
+                    polygonArray.push(pointArray);
+                    polygonArrayEnd.push(polygonArray);
+                }
+                setPolygon(polygonArrayEnd);
+            })
+            var data = e.data.center[0].split(" ");
+            var center = [];
+            center.push(parseFloat(data[0]))
+            center.push(parseFloat(data[1]))
+            setCenterForGrid(center);
+        });
+
+
+    }
+    function setPolygon(Polygons, data) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(Polygons),
+            data: {
+                id: data,
+                // name: name,
+                coordinate: Polygons
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
+    }
+    function setCenterForGrid(data) {
+        map.getView().setCenter(data);
+    }
+    function setPoint(x, y) {
+        let point = new ol.Feature({
+            geometry: new ol.geom.Point([x, y]),
+        });
+        layerMap.getSource().addFeature(point);
+        point.setStyle(new ol.style.Style({
+            image: new ol.style.Icon({
+                src: '../../img/dwpoint3.png'
+            })
+        }));
+    }
+
+
+</script>
+</body>
+</html>

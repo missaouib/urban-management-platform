@@ -3,14 +3,19 @@ package com.unicom.urban.management.web.framework.activiti;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.extern.slf4j.Slf4j;
-import org.activiti.engine.ProcessEngine;
-import org.activiti.engine.ProcessEngineConfiguration;
-import org.activiti.engine.RepositoryService;
+import org.activiti.engine.*;
+import org.activiti.engine.impl.history.HistoryLevel;
 import org.activiti.engine.repository.Model;
+import org.activiti.engine.runtime.ProcessInstance;
+import org.activiti.engine.task.Task;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class ActivitiTest {
@@ -19,6 +24,10 @@ public class ActivitiTest {
     private ProcessEngine processEngine;
 
     private RepositoryService repositoryService;
+
+    private RuntimeService runtimeService;
+
+    private TaskService taskService;
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -30,9 +39,55 @@ public class ActivitiTest {
                 .setJdbcUsername("root")
                 .setJdbcPassword("Root@123")
                 .setDbIdentityUsed(false)
+                .setHistoryLevel(HistoryLevel.FULL)
+                .setDbHistoryUsed(true)
                 .buildProcessEngine();
 
         repositoryService = processEngine.getRepositoryService();
+        runtimeService = processEngine.getRuntimeService();
+        taskService = processEngine.getTaskService();
+    }
+
+    @Test
+    public void testEvent() {
+        String eventId = "1";
+
+        List<String> shouliyuanList = Arrays.asList("zhangsan", "lisi", "wangwu");
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("reportUserId", "liukai");
+        map.put("shouliyuanList", shouliyuanList);
+
+
+        ProcessInstance event = runtimeService.startProcessInstanceByKey("event", eventId, map);
+
+        System.out.println(event.getProcessInstanceId());
+
+
+//        Task zhangsanTask = taskService.createTaskQuery().taskAssignee("zhangsan").singleResult();
+
+//        System.out.println(zhangsanTaskList.size());
+
+
+//        taskService.complete(zhangsanTask.getId());
+
+
+//        for (String s : shouliyuanList) {
+//            Task task = taskService.createTaskQuery().taskAssignee(s).singleResult();
+//            System.out.println(task);
+//        }
+//
+//        Task zhangsan = taskService.createTaskQuery().taskAssignee("zhangsan").singleResult();
+//
+//        taskService.complete(zhangsan.getId());
+//
+//        for (String s : shouliyuanList) {
+//            Task task = taskService.createTaskQuery().taskAssignee(s).singleResult();
+//            System.out.println(task);
+//        }
+
+
     }
 
     @Test

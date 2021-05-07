@@ -1,0 +1,406 @@
+@startuml
+title 城管类图
+class User <<用户实体类>>{
+    -id: String
+    -name : String
+    -sts : int           //激活、未激活    Kv 里的Key
+    -userName : String         //帐号
+    -password : String      //密码
+    -phone : String         //联系方式
+    -officePhone: String    //办公联系方式
+    -email : String         //邮箱
+    -sex : Stromg              //性别           
+    -post : String          //职务
+    -birth : Date           //出生日期
+    -dept  : Dept           //所属组织
+    -sort  ：int            //排序
+}
+
+class Idioms<<惯用语实体类>>{
+    -id : String 
+    -user : User 
+    -idiomsValue : String  // 惯用语内容 
+}
+
+class Role <<角色实体类>>{
+    -id: String
+    -name : String
+    -roleDescribe : String      //描述
+    -sort : int   //排序
+    -userList : User[*]
+    -menuList : Menu[*]
+}
+
+class Dept<<责任部门实体类>>{
+    -id: String
+    -deptName : String      //部门名称
+    -deptDescribe : String      //描述
+    -deptPhone : String     //办公电话  
+    -deptAddress : String   //部门地址
+    -grid : Grid            //所属区域       到第三级  区、街道、社区
+    -level : String
+    -parent : Dept
+    -roleList : Role[*]
+}
+
+class Menu<<菜单实体类>>{
+    -id : String  
+    -name : String
+    -sort : int //排序
+    -parent : String    //父Id
+    -url   :  String  
+    -icon  : String     //图标地址
+    -menuType : MenuType  //权限分类
+    -purpose ： int     //用途    Kv 里的Key    PC  、 App
+}
+
+class MenuType<<权限分类实体类>>{
+    -id : String
+    -name : String 
+    -sort : int //排序
+}
+
+class Logs<<日志管理实体类>>{
+    -id : String    
+    -login : String                   //帐号
+    -loginAddress : String            //登录地址
+    -operatingSystem : String         //操作系统
+    -browser : String                 //浏览器
+    -loginResult : String             //登录状态
+}
+
+class Grid<<网格实体类>>{
+    -id: String
+    -gridCode : String
+    -gridName : String   
+    -remark : String
+    -parent : String    
+    -level : Kv    //层级   
+    -area : String
+    -initialDate : date
+    -terminationDate : date
+    -sts : int
+    -dept : Dept
+    -user : User[*]       //监督员
+    -publish : Publish
+    -record : Record
+    -publish : Publish
+}
+
+
+class Component<<部件实体类>>{
+    -id: String
+    -eventType : EventType
+    -componentInfo : ComponentInfo
+    -sts : int  // 用于记录该部件删除
+    -publish : Publish
+    -record : Record
+}
+
+
+class ComponentInfo<<部件信息实体类>>{
+    -id : String
+    -objId : String
+    -objName : String
+    -mainDeptCode : String
+    -mainDept : String
+    -ownershipDeptCode : String
+    -ownershipDeptName : String
+    -maintenanceDeptCode : String
+    -maintenanceDeptName  : String
+    -bgid : Grid
+    -objState : Kv
+    -initialDate : date
+    -changeDate : date
+    -dataSource : Kv
+    -note : String
+}
+
+class Publish<<发布实体类>>{
+    -id : String
+    -name : String
+    -layerId : String     //图层ID:当发布后GIS平台将把该图层ID返回城管中，城管再次添加元素可以找到对应GIS平台的哪个图层
+    -workName : String 
+    -layerGroup : String 
+    -url : String         //GIS平台提供的发布的图层地址
+    -kv : Kv              //类型：编辑的是部件、网格。
+    -sts : int            //状态：用于判断是发布、未发布状态
+    -user : User          //用于记录谁发布的
+    -eventType : EventType
+}
+class Record<<编辑实体类>>{
+    -id : String
+    -coordinate : String  //坐标
+    -user : User
+    -publish : Publish
+    -sts : int //判断该记录是编辑中、发布
+}
+
+class Kv<<Kv实体类>>{
+    -id : String
+    -tableName : String   记录表
+    -fieldName : String  sex
+    -key : String 
+    -value : String     男
+    -sts : int
+}
+
+class Event<<案件实体类>>{
+    -id : String
+    -eventCode : String
+    -Component : ComponentInfo //部件编码
+    -eventTypeId : EventType     //分类id
+    -represent : String
+    -gridId : Grid
+    -location : String
+    -User : User
+    -eventSource : Kv
+    -x : double
+    -y : double
+    -processInstanceId : String  //流程实例id
+    -recTypeId : Kv      //案件类型    日常  、转向普查、其他
+    -eventSate : Kv      // 案件状态   
+    -doBySelf : boolean  // 自处理标识
+    -eptTimeLimit : DeptTimeLimit
+    -eventCondition : EventCondition
+    -petitioner : Petitioner
+    -eventFile     : EventFile[*] //附件
+    
+}
+
+class Petitioner<<诉求人>>{
+    id : String
+    name : String 
+    sex : String 
+    phone : int 
+}
+
+class EventType<<分类实体类>>{
+    -id   : String
+    -type : int
+    -code : String
+    -name : String
+    -level : int 
+    -parentId : String
+    -dept : Dept
+}
+
+class EventFile<<事件附件实体类>>{
+    -id : String
+    -fileName : String
+    -fileType ：int
+    -management : Kv    //  记录 处置前  处置后  标识
+    
+}
+class EventCondition<<条件实体类>>{
+    -id : String
+    -region : String   // 区域     不同区域立案条件不同     需要确定该字段是否为网格表里的区域
+    -parent : String
+    -conditionValue : String
+    -eventTypeId : EventType
+    -type : int    // 1 立案的条件   2 是结案条件  
+}
+
+class DeptTimeLimit<<专业部门时限实体类>>{
+    -id : String
+    -eventCondition : EventCondition   //立案条件外键
+    -level : Kv  //ABC 类   每一个立案条件 都有 ABC三类  对应三类时间
+    -timeLimit : int     //时限
+    -timeType : Kv    // 时间类别  小时 天  分
+}
+
+class ProcessTimeLimit<<流程时限实体类>>{
+    -id : String
+    -node : Kv     //环节
+    -level : Kv   //都有 ABC三类
+    -timeLimit : int     //时限
+    -timeType : Kv    // 时间类别  小时 天  分
+}
+
+
+class Process<<流程实体类>>{
+    -id : String 
+    -nodeName : String  //七步环节名称
+    -node : Kv          //子环节名称
+    -parentId : String  //父id
+    -url  :  String     //为首页进行对应待办跳转
+}
+
+class nodeInfo<<环节信息实体类>>{
+    id : String 
+    taskName : String               // 环节
+    role : Role             // 环节涉及角色
+}
+
+class eventButten<<按钮实体>>{
+    taskName : Kv  //环节
+    sort : int  // 排序
+    buttonText : String  //按钮名 
+    class
+}
+
+class supervise<<督办实体类>>{
+    id : String 
+    event : Event
+    user :  User           //督办人
+    dept :  Dept           //督办部门
+    opinion : String       //督办意见
+    replayOpinion : String //回复意见
+    sts   :   Kv           //督办状态     已督办  未督办
+}
+
+class Statistics<<流转统计实体类>>{
+    -id                   : String
+    -event                : Event
+    -starTime : date
+    -endTime  : date
+    -taskId   : String    //任务id   : 当前任务在工作流中节点ID
+    -node : Kv     //环节
+    -deptTimeLimit  :  DeptTimeLimit
+    -processTimeLimit  :  ProcessTimeLimit
+    -sts      : int        //当前环节是否超时
+    -user     : User
+    -sort     : int      //排序
+    -opinions             : String    //处理意见
+    -eventFile            : EventFile[*] //附件    
+    -patrolReport	      : int       //监督员上报  
+    -publicReport	      : int       //公众举报    =      漏报数   //如何判断重复事件  例如监督员报了  公众也上报了  //相似事件判断   类型相同 时间（一般是半小时）  距离（0.5-1米） 该功能可放到受理员处
+    -report			      : int       //上报
+    -reportPatrol	      : User      //上报监督员标识
+    -reportPatrolName	  : User      //上报监督员
+    -validPatrolReport    : int       //监督员有效上报     立案+作废
+    -validPublicReport    : int       //公众举报有效上报   
+    -validReport		  : int       //有效上报
+
+    -needVerify             : int           //应核实         监督员   应核实 = 受理员发给该监督员的核实的案件
+    -verify                 : int           //核实           监督员   有监督员回馈的核实结果的事
+    -intimeVerify           : int           //按时核实       监督员    不超期的 核实数
+    -verifyPatrol           : User          //核实监督员标识  监督员
+    -verifyPatrolName       : User          //核实监督员     监督员
+
+    -notOperate       : int     //不予受理       受理员
+    -toOperate        : int     //待受理   未批转值班长
+    -intimeOperate    : int     //按时受理  
+    -operate          : int     //受理    批转值班长 触发
+    -closingFiling    : int     //结案存档（自处理被判定有效案件）
+    -invalidEvent     ：int     //无效案件（自处理被判定无效案件）
+
+    -toCloseEvent      : int   // 待结案受理
+    -CloseOperate      : int //结案受理
+    -CloseIntimeOperate: int //按时结案受理
+
+    -operateHuman     : User    //受理人标识
+    -operateHumanName : User    //受理人
+    -operateRole      : Role     //受理人岗位标识
+
+    -needSendVerify       : int     //应发核实     受理员   待发核实 + 已发核实              
+    -sendVerify           : int     //发核实       受理员   只要派出去就算
+    -intimeSendVerify     : int     //按时发核实   受理员   按时下发核实
+    -sendVerifyHumanName  : User    //发核实人姓名
+    -sendVerifyHuman      : User    //发核实人id
+    -sendVerifyHumanRole  : Role    //发核实人岗位标识
+
+
+    -sendCheck             : int      //发核查             受理员
+    -needSendCheck         : int      //应发核查           受理员 
+    -sendCheckHuman        : User      //发核查人标识       受理员
+    -sendCheckHumanName    : User     //发核查人          
+    -sendCheckHumanRole    : Role      //发核查人岗位标识  
+
+
+    -inst           :  int      //立案      值班长  立案
+    -intimeInst     :  int      //按时立案   值班长  不超时立案
+    -toInst         :  int      //待立案     值班长  未立案的数
+    -instHuman      :  User     //立案人标识
+    -instHumanName  :  User     //立案人
+    -instRole       :  Role     //立案人岗` 位标识
+
+    -close          :  int      //结案
+    -inTimeClose    :  int      //按时结案
+    -toClose        :  int      //待结案
+    -closeHuman     :  User     //结案人标识
+    -closeHumanName :  User     //结案人
+    -closeRole      :  Role     //结案人岗位标识
+
+    -dispatch             : int      //派遣        派遣员   已派遣     派遣数   所有 专业  应处置
+    -toDispatch           : int      //待派遣      派遣员  
+    -needDispatch         : int      //应派遣      派遣员   应派遣= 已派遣 + 未派遣    
+    -intimeDispatch       : int      //按时派遣    派遣员   = 未超时的派遣 
+    -accuracyDispatch     : int      //准确派遣数   未出现重新派的其他专业部门   结案触发
+    -errorDispatch        : int      //错误派遣     出现派遣2个或者以上的专业部门   结案触发     例如  第一派遣A  第二次派遣 B 
+    -dispatchHuman        : User     //派遣员标识     
+    -dispatchHumanName    : User     //派遣员         
+    -dispatchHumanRole    : Role     //派遣员岗位标识 
+
+    -dispose              : int      //处置         //专业部门
+    -needDispose          : int      //应处置  
+    -toDispose            : int      //待处置                                      
+    -intimeDispose        : int      //按时处置    
+    -overtimeToDispose    : int      //超时未处置   
+    -overtimeDispose      : int      //超时处置          
+    -disposeUnit          : Dept      //处置部门标识   
+    -disposeUnitName      : Dept     //处置部门   
+
+    
+    -checkNum              : int      //核查数
+    -needCheck             : int      //应核查          //监督员  
+    -intimeCheck           : int      //按时核查  
+    -checkPatrolId         : Role      //核查监督员标识    
+    -checkPatrolName       : User      //核查监督员          
+
+
+    -sendCheckNum          ：int      //发核查
+    -intimeSendCheck       : int      //按时发核查      //受理员
+    -checkTrans            : int      //核查批转       
+    -checkTransHuman       : User     //核查受理员标识    
+    -checkTransHumanName   : User     //核查受理员        
+    -checkTransHumanRole   : Role     //核查受理员岗位标识
+    -checkTransTime        : date     //核查批转时间   
+
+
+    -cancel         :  int       //作废   
+    -cancelDate     :  date      //作废时间    申请作废时间
+    -hang           :  int       //挂账  
+    -hangDate       ： date      //挂账时间    申请挂账的时间
+    -hangDuration   :  int       //挂账时长
+    -delayedState   :  int        //延时
+    -delayedDate    :  date       //延时       申请延时的时间
+    -backOff        : int        //回退 
+    -backOffDate    : date       //回退        申请回退的时间
+    -delayedHours   : int        //延时多久
+    -specialStartTime ： date    //特殊环节开始时间   例如同意挂账的时间  同意延时的开始时间   同意作废时间   同意回退的时间
+    -specialEndTime  : date      //特殊环节结束时间   例如挂账的恢复时间  延时的结束时间       同意作废时间   同意回退的时间
+    -rework         :  int       //返工             二次或者多次派遣同一个专业部门   经历核查阶段  结案触发     
+    -displayStyleId :  int       //显示类型标识 
+    -shuffle        :  int       //推诿         
+}
+
+
+2020年12月7日 13:09:49  
+
+
+
+Dept --> User
+Role --> User
+Grid --> User
+Grid --> Dept
+Grid --> Record
+Grid --> Publish
+Grid --|> Kv
+Component --> ComponentInfo
+Component --> Record
+Component --> Publish
+ComponentInfo --|> Event
+Publish --> Record
+Publish --|> Kv
+Event --> EventType
+Event --|> Kv
+Event --|> Statistics
+EventCondition -->  EventType 
+EventCondition -->  DeptTimeLimit
+Statistics --> DeptTimeLimit 
+Statistics --> ProcessTimeLimit 
+Statistics --> EventFile
+Statistics --> User
+Statistics --> Role
+@enduml

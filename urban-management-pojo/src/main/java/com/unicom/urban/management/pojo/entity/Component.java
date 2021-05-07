@@ -1,7 +1,10 @@
 package com.unicom.urban.management.pojo.entity;
 
+import com.unicom.urban.management.pojo.Delete;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
@@ -17,24 +20,28 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Component extends BaseEntity {
+@SQLDelete(sql = "update component set deleted = " + Delete.DELETE + " where id = ?")
+@Where(clause = "deleted = " + Delete.NORMAL)
+public class Component extends AbstractEntity {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    private String layerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private EventType eventType;
 
-    private String componentName;
-
-    @ManyToOne
-    private ComponentType componentType;
-
-    @OneToOne
+    @OneToOne(cascade = CascadeType.MERGE)
     private ComponentInfo componentInfo;
 
-    private String url;
+    @Column(columnDefinition = "TINYINT(1)")
+    private Integer sts;
 
-    private String sts;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Publish publish;
+
+    @OneToOne
+    private Record record;
+
 
 }

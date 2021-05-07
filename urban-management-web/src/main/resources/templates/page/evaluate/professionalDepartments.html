@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+</head>
+<style>
+    .bootstrap-table {
+        width: 100%;
+        padding: 0 10px 0px 10px !important;
+    }
+</style>
+<body style="border-radius: 8px;">
+<div class="bigTitle">专业部门评价</div>
+<div class="search_box">
+    <div class="search_inner">
+
+            <div class="top table2_top">
+                <form id="userForm">
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span></span>开始日期</td>
+                            <td>
+                                <input size="16" class="form_datetime"  name="startTime" id="begin" type="text" value="" readonly>
+                            </td>
+                            <td><span></span>结束日期</td>
+                            <td>
+                                <input size="16" class="form_datetime"  name="endTime" id="end" type="text" value="" readonly>
+                            </td>
+                            <td style="float: right;margin-right: 5px">
+                                <button type="button" class="check_btn" id="search_clean" onclick="$.table.search()">查询</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                </form>
+                <!--                            按钮-->
+                <div class="notice_bot">
+                    <!--            <div class="l_left">-->
+                    <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                    <!--            </div>-->
+                    <div class="r_right but_p btn_search dates">
+                        <button class="check_btn2" type="button" id="theWeek" onclick="$.table.search()">本周</button>
+                        <button class="check_btn2" type="button" id="theMonth" onclick="$.table.search()">本月</button>
+                        <button class="check_btn2" type="button" id="theuarter" onclick="$.table.search()">本季</button>
+                        <button class="check_btn2" type="button" id="theYear" onclick="$.table.search()">本年</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="contents">
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+    <div class="explain">
+        <div class="explain_box">
+            <p style="padding-left: 0px">注：1）综合指标值中，各个指标的分值计算方法如下：</p>
+            <p>立案数分值：0~50 件 100 分；51~100 件 90 分；100~200 件 75 分；200~500 件 60 分；500~1000 件</p>
+            <p>40 分；1000件及以上0分。宜根据部门工作职责分组设定立案数分值</p>
+            <p>结案率分值：结案率×100</p>
+            <p>按期处置率分值：按期处置率×100</p>
+            <p>返工率分值：（1-返工率）×100</p>
+            <p style="padding-left: 25px">2）综合指标值的计算公式如下：</p>
+            <p>综合指标值=立案数分值×10%+结案数分值×30%+按期处置率分值×30%+返工率分值×30%</p>
+        </div>
+    </div>
+</div>
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+
+
+
+    $(function () {
+        ////日期插件
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+
+        search();
+        cleanSearchInput()
+
+
+
+
+        var date = new Date();
+        //本周
+        $("#theWeek").click(function () {
+            var getWeekToSearch = new getWeek();
+            var week = getWeekToSearch.init().getWeekType();
+            var endWeek = week.slice(11,21);
+            var starWeek = week.slice(0,10);
+            $("#begin").val(starWeek + ' 00:00:00')
+            $("#end").val(endWeek + ' 23:59:59')
+        });
+
+        //本月
+        $("#theMonth").click(function () {
+            //月一
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            month = month > 9 ? month : "0" + month;
+
+            let firstDayOfCurMonth = `${year}-${month}-01`;
+            let lastDay = new Date(year, month, 0);
+            let lastDayOfCurMonth = `${year}-${month}-${lastDay.getDate()}`;
+            $("#begin").val(firstDayOfCurMonth + " 00:00:00")
+            $("#end").val(lastDayOfCurMonth + " 23:59:59")
+        });
+
+        //本季
+        $("#theuarter").click(function () {
+           getQuarterMonth()
+        });
+
+        //本年
+        $("#theYear").click(function () {
+            let year = date.getFullYear();
+            $("#begin").val(year + "-" +"01-01" + " 00:00:00")
+            $("#end").val(year + "-" +"12-31" + " 23:59:59")
+        });
+    })
+
+
+    let cellGridRegionUrl = /*[[@{/dept/evaluate}]]*/ "/dept/evaluate";
+
+    function search() {
+        var options = {
+            url: cellGridRegionUrl,
+            pagination: false,
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class:'index_width',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '部门',
+                    field: "deptName",
+                    sortable: false,
+                },
+                {
+                    field: 'registerNum',
+                    title: '立案数',
+                    sortable: false,
+                },
+                {
+                    field: 'onTimeCloseNum',
+                    title: '按期结案数',
+                    sortable: false,
+                },
+                {
+                    field: 'closeNum',
+                    title: "总结案数",
+                    sortable: false,
+                },
+                {
+                    field: 'mustCloseNum',
+                    title: '应结案数',
+                    sortable: false,
+                },
+                {
+                    field: 'closeRate',
+                    title: '结案率',
+                    sortable: false,
+                },
+                {
+                    field: 'onTimeManagementNum',
+                    title: '按期处置数',
+                    sortable: false,
+                },
+                {
+                    field: 'mustManagementNum',
+                    title: '应处置数',
+                    sortable: false,
+                },
+                {
+                    field: 'onTimeManagementRate',
+                    title: '按期处置率',
+                    sortable: false,
+                },
+                {
+                    field: 'reworkNum',
+                    title: '返工数',
+                    sortable: false,
+                },
+                {
+                    field: 'managementNum',
+                    title: '处置数',
+                    sortable: false,
+                },
+                {
+                    field: 'reworkRate',
+                    title: '返工率',
+                    sortable: false,
+
+                },
+                {
+                    field: 'comprehensive',
+                    title: '综合标准值',
+                    sortable: false,
+
+                },
+                {
+                    field: 'initialDate',
+                    title: '评价等级',
+                    sortable: false,
+                },
+            ]
+        };
+        $.table.init(options);
+    }
+
+
+</script>
+</body>
+</html>

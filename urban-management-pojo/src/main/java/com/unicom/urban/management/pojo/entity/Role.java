@@ -1,14 +1,15 @@
 package com.unicom.urban.management.pojo.entity;
 
 
+import com.unicom.urban.management.pojo.Delete;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -20,7 +21,9 @@ import javax.persistence.Table;
 @Getter
 @Entity
 @Table(name = "sys_role")
-public class Role extends BaseEntity {
+@SQLDelete(sql = "update sys_role set deleted = " + Delete.DELETE + " where id = ?")
+@Where(clause = "deleted = " + Delete.NORMAL)
+public class Role extends AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -32,5 +35,37 @@ public class Role extends BaseEntity {
      * 角色名称
      */
     private String name;
+
+    /**
+     * 描述
+     */
+    private String describes;
+
+    @Where(clause = "deleted = " + Delete.NORMAL)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "sys_user_role", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> userList;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dept_id")
+    private Dept dept;
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "sys_role_menu", joinColumns = @JoinColumn(name = "role_id"), inverseJoinColumns = @JoinColumn(name = "menu_id"))
+    @OrderBy("sort ASC ")
+    private List<Menu> menuList;
+
+    private Integer sort;
+
+
+    public Role() {
+
+    }
+
+    public Role(String id) {
+        this.id = id;
+    }
+
 
 }

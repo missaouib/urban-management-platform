@@ -1,0 +1,144 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+}
+
+.warp {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notfond {
+    width: 1140px;
+    height: 330px;
+    display: flex;
+    padding-left: 200px;
+}
+
+.error,.toyout,
+.text {
+    flex: 1;
+}
+
+.error {
+    width: 100%;
+    height: 100%;
+    background: url("../img/404bg.png");
+    background-size: 100% 100%;
+    position: relative;
+}
+.toyout{
+    width: 100%;
+    height: 100%;
+    background: url("../img/500bg.png");
+    background-size: 100% 100%;
+    position: relative;
+}
+
+.cloud {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 30px;
+    left: 100px;
+    background: url("../img/404cloud.png");
+    background-size: 100% 100%;
+    opacity: 1;
+    transition: all 3s;
+}
+
+.cloud1 {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 120px;
+    left: 180px;
+}
+
+.cloud2 {
+    position: absolute;
+    top: 100px;
+    left: 280px;
+}
+
+.cloud3 {
+    position: absolute;
+    top: 30px;
+    left: 380px;
+}
+
+.cloud2acive {
+    top: 150px;
+    left: 180px;
+    opacity: 0;
+}
+
+.cloud1acive {
+    top: 170px;
+    left: 80px;
+    opacity: 0;
+}
+
+.cloud3acive {
+    top: 80px;
+    left: 280px;
+    opacity: 0;
+}
+
+.cloud4acive {
+    top: 80px;
+    left: 0px;
+    opacity: 0;
+}
+
+.text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.text div {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    font-size: 32px;
+    color: #1482f0;
+    font-weight: 600;
+}
+
+.adminSay {
+    font-size: 20px;
+    color: #222;
+    font-weight: 400;
+}
+
+.look {
+    font-size: 13px;
+    color: grey;
+    font-weight: 400;
+}
+
+.back {
+    width: 110px!important;
+    height: 36px!important;
+    background: #1482f0;
+    border-radius: 100px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+}

@@ -1,64 +1,92 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
     <title>用户管理</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
 
 </head>
-<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
 <div class="notice_main ">
     <h6>用户管理</h6>
     <div style="border-bottom: 1px #ccc solid;padding-bottom: 8px">
-        <p style="line-height: 24px;font-size: 14px;padding: 4px 0 0 36px ;color:#bb8940;background-image: url(img/ts_03.png);background-repeat: no-repeat;background-position: 10px 8px;font-weight: bold">温馨提示</p>
+        <p style="line-height: 24px;font-size: 14px;padding: 4px 0 0 36px ;color:#bb8940;background-image: url(img/ts_03.png);background-repeat: no-repeat;background-position: 10px 8px;font-weight: bold">
+            温馨提示</p>
         <ul class="ts">
             <li><span>*</span>该页面主要显示的是用户信息查询界面。</li>
         </ul>
     </div>
 
 
+    <form id="userForm">
+        <div class="top table2_top">
+            <div class="top_out">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td>姓名<span></span></td>
+                        <td>
+                            <input type="text" class="find_input" name="name" autocomplete="off">
+                        </td>
+                        <td>角色<span></span></td>
+                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                            <input type="text" readonly="readonly" id="role" class="find_input"/>
+                            <input type="hidden" readonly="readonly" id="roleId" name="roleId"
+                                   class="find_input"/>
+                            <button type="button" class="addBtn" onclick="selectDeptRoleTree()">
+                                +
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>所属组织<span></span></td>
+                        <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                            <input type="text" readonly="readonly" id="dept" class="find_input"/>
+                            <input type="hidden" readonly="readonly" id="deptId" name="deptId"
+                                   class="find_input"/>
+                            <button type="button" class="addBtn" onclick="selectDeptTree()">
+                                +
+                            </button>
+                        </td>
+                        <td>状态<span></span></td>
+                        <td>
+                            <select name="sts">
+                                <option value="3">--请选择--</option>
+                                <option value="0">激活</option>
+                                <option value="1">未激活</option>
+                            </select>
+                        </td>
+                    </tr>
 
-
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
     <div class="notice_check">
         <form id="search-form">
-            <p>
-                <label class="">账号：</label>
-                <input type="text" class="find_input" name="username">
-                <label class="">姓名：</label>
-                <input type="text" class="find_input" name="name">
-                <input type="button" class="check_btn" onclick="$.table.search()" value="查询">
-                <input type="button" class="check_btn1" onclick="$.form.reset()" value="重置查询">
+            <p style="display: flex;justify-content: flex-end">
+                <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
+                <input type="button" class="check_btn1 button_ground" onclick="$.form.reset()" value="重置">
             </p>
         </form>
     </div>
 
+
     <div class="clear"></div>
 
 
-    <div class="btn-group-sm" id="toolbar" >
+    <div class="btn-group-sm" id="toolbar">
         <a class="btn btn-success" onclick="$.operate.addTab()">
             <i class="fa fa-plus"></i> 新增
         </a>
-        <a class="btn btn-primary single disabled" onclick="$.operate.editTab()">
-            <i class="fa fa-edit"></i> 修改
-        </a>
-        <a class="btn btn-danger multiple disabled" onclick="$.operate.removeBatch()">
-            <i class="fa fa-remove"></i> 删除
-        </a>
-        <!--    <a class="btn btn-info" onclick="$.table.importExcel()">-->
-        <!--        <i class="fa fa-upload"></i> 导入-->
-        <!--    </a>-->
-        <!--    <a class="btn btn-warning" onclick="$.table.exportExcel()">-->
-        <!--        <i class="fa fa-download"></i> 导出-->
-        <!--    </a>-->
+
     </div>
 
 
-    <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
 </div>
-
-
 
 
 <th:block th:include="page/fragments/common :: common_js"/>
@@ -67,9 +95,47 @@
 <script type="text/javascript" th:inline="javascript">
 
     $(function () {
+
         queryUserList();
     })
 
+    function selectDeptTree() {
+        var url = /*[[@{/tree/dept}]]*/ "/tree/dept";
+        var options = {
+            title: '请选择部门',
+            width: "380",
+            url: url,
+            callBack: deptDoSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function deptDoSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#deptId").val(body.find('#treeId').val());
+        $("#dept").val(body.find('#treeName').val());
+
+        layer.close(index);
+    }
+
+    function selectDeptRoleTree() {
+        var url = /*[[@{/tree/deptRole}]]*/ "/tree/deptRole";
+        var options = {
+            title: '请选择部门',
+            width: "380",
+            url: url,
+            callBack: deptRoleDoSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function deptRoleDoSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        $("#roleId").val(body.find('#treeId').val());
+        $("#role").val(body.find('#treeName').val());
+
+        layer.close(index);
+    }
 
     let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
 
@@ -79,51 +145,73 @@
 
     let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
 
+    let activationUrl = /*[[@{/user/activation}]]*/ "/user/activation";
+
+    let initializationUrl = /*[[@{/user/initialization}]]*/ "/user/initialization";
+
     function queryUserList() {
         var options = {
             url: searchUrl,
             createUrl: addUrl,
             updateUrl: editUrl,
             removeUrl: removeUrl,
-            // exportUrl: prefix + "/export",
-            // importUrl: prefix + "/importData",
-            // importTemplateUrl: prefix + "/importTemplate",
             uniqueId: "id",
             sortName: "updateTime",
             sortOrder: "desc",
             modalName: "用户",
             columns: [
                 {
-                    checkbox: true
-                },
-                {
-                    title: '账号',
-                    field: 'username'
+                    field: 'index',
+                    title: '序号',
+                    class:'index_width',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
                 },
                 {
                     title: '姓名',
-                    field: 'name'
+                    field: 'name',
+                    sortable: true,
                 },
+                {
+                    title: '账号',
+                    field: 'username',
+                    sortable: true,
+                },
+
                 {
                     title: '手机号码',
-                    field: 'mobileNumber'
-                },
-                {
-                    title: '创建时间',
-                    field: 'createTime',
+                    field: 'phone',
                     sortable: true,
                 },
                 {
-                    title: '修改时间',
-                    field: 'updateTime',
+                    title: '所属部门',
+                    field: 'deptName',
                     sortable: true,
-
+                },
+                {
+                    title: '所属角色',
+                    field: 'roles',
+                    sortable: true,
                 },
                 {
                     title: '操作',
                     field: '',
+                    class: 'radios',
                     formatter: function (value, row) {
-                        var e = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
+                        var e = "<label class='toggle-switch switch-solid' style='margin: 0 5px'>\n";
+                        if (row.sts === 0) {
+                            e += "<input type='checkbox' id='status' checked onclick='activation(\"" + row.id + "\")'>\n"
+                        } else {
+                            e += "<input type='checkbox' id='status'  onclick='activation(\"" + row.id + "\")'>\n"
+                        }
+                        e += "<span></span>\n</label>";
+                        e +=  "<a href='#' title='' style='margin-right: 5px' onclick='$.operate.editTab(\"" + row.id + "\")'>修改</a>";
+                        if (row.system !== "1") {
+                            e +="<a href='#' title='' style='margin-right: 5px' onclick='$.operate.remove(\"" + row.id + "\")' >删除</a>";
+                        }
+                        e += "<a href='#' title='' onclick='initialization(\"" + row.id + "\")'>重置密码</a>"
                         return e;
                     }
                 }
@@ -131,6 +219,26 @@
         };
         $.table.init(options);
     }
+
+    function activation(obj) {
+        $.ajax({
+            type: "GET",
+            url: activationUrl + "?id=" + obj
+        });
+    }
+
+    function initialization(obj) {
+        $.ajax({
+            type: "GET",
+            url: initializationUrl + "?id=" + obj,
+            success: function (result) {
+               if(result.code === 0){
+                   $.modal.alertSuccess("重置密码成功")
+               }
+            }
+        });
+    }
+
 
 
 </script>

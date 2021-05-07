@@ -1,48 +1,89 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html" charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
     <title>用户管理</title>
     <th:block th:include="page/fragments/common :: common_css"/>
     <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <link th:href="@{/css/component.css}" rel="stylesheet" type="text/css">
 
 </head>
-<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto" >
+
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
 <div class="notice_main ">
 
     <div class="notice_check">
         <form id="search-form">
-            <p>
-                <label class="">分类</label>
-                <input type="text" readonly="readonly" id="typeStr" class="find_input">
-                <button type="button" class="addBtn"  data-toggle="modal" data-target="#modal-default">
-                 +
+            <p style="display: flex;align-items: center;float:left;padding: 5px">
+                <label class="" style="margin: 0">分类</label>
+                <input type="text" readonly="readonly" id="typeStr" class="find_input"/>
+                <input type="hidden" readonly="readonly" id="eventTypeId" class="find_input">
+                <button type="button" class="addBtn" data-toggle="modal" data-target="#modal-default">
+                    +
                 </button>
-                <label class="">名称</label>
-                <input type="text" class="find_input" name="name">
-                <input type="button" class="check_btn" onclick="$.table.search()" value="查询">
-                <input type="button" class="check_btn1" onclick="$.form.reset()" value="重置查询">
+                <!--                <label class="">名称</label>-->
+                <!--                <input type="text" class="find_input" name="name" >-->
+                <div class="less_slide" style="padding: 5px 0">
+                    <input type="button" class="check_btn button_ground" onclick="search()" value="查询">
+                    <input type="button" class="check_btn2 button_ground" id="more_slide" onclick="" value="更多检索">
+                    <input type="button" class="check_btn1 button_ground" onclick="" value="重置">
+                 </div>
+
             </p>
+            <div class="more_look" style="display: none">
+                <p>
+                    <label class="">部件标识码</label>
+                    <input type="text" class="find_input" id="objId" name="name">
+                    <label class="">部件名称</label>
+                    <input type="text" class="find_input" id="objName" name="name">
+                    <label class="">主管部门代码</label>
+                    <input type="text" class="find_input" id="mainDeptCode" name="name">
+                </p>
+                <p>
+                    <label class="">主管部门名称</label>
+                    <input type="text" class="find_input" id="mainDeptName" name="name">
+                    <label class="">权属单位代码</label>
+                    <input type="text" class="find_input" id="ownershipDeptCode" name="name">
+                    <label class="">权属单位名称</label>
+                    <input type="text" class="find_input" id="ownershipDeptName" name="name">
+                </p>
+                <p>
+                    <label class="">养护单位代码</label>
+                    <input type="text" class="find_input" id="maintenanceDeptCode" name="name">
+                    <label class="">养护单位名称</label>
+                    <input type="text" class="find_input" id="maintenanceDeptName" name="name">
+                    <label class="">所在单元网格</label>
+                    <select class="find_input" required id="bgid" name="bgid"></select>
+                </p>
+                <p>
+                    <label class="">部件状态</label>
+                    <select class="find_input" id="objState" name="objState" required>
+
+                    </select>
+                    <label class="">初始日期</label>
+                    <input size="16" class="find_input form_datetime" type="text" value="" readonly>
+                    <span class="add-on"><i class="icon-remove"></i></span>
+                    <span class="add-on"><i class="icon-th"></i></span>
+                    <label class="">变更日期</label>
+                    <input size="16" class="find_input form_datetime" type="text" value="" readonly>
+                    <span class="add-on"><i class="icon-remove"></i></span>
+                    <span class="add-on"><i class="icon-th"></i></span>
+                </p>
+                <p>
+                    <label class="">数据来源</label>
+                    <select class="find_input" id="dataSource" name="safeLevel" required>
+
+                    </select>
+                    <input type="button" class="check_btn button_ground" onclick="" value="查询">
+                    <input type="button" class="check_btn2 button_ground" id="less_slide" onclick="" value="精简检索">
+                    <input type="button" class="check_btn1 button_ground" onclick="" value="重置">
+                </p>
+            </div >
+
+
         </form>
-    </div>
-
-<!--    <div class="clear"></div>-->
-
-
-    <div class="btn-group-sm" id="toolbar">
-        <a class="btn btn-primary" onclick="$.table.importExcel()">
-            <i class="fa fa-upload"></i> 导入部件图层
-        </a>
-        <a class="btn btn-info" onclick="$.table.importExcel()">
-            <i class="fa fa-search"></i> 查询
-        </a>
-        <a class="btn btn-warning" onclick="$.table.exportExcel()">
-            <i class="fa fa-retweet"></i> 重置
-        </a>
-
-        <!--    <a class="btn btn-warning" onclick="$.table.exportExcel()">-->
-        <!--        <i class="fa fa-download"></i> 导出-->
-        <!--    </a>-->
     </div>
     <div class="modal fade" id="modal-default">
         <div class="modal-dialog">
@@ -51,95 +92,475 @@
                     <h4 class="modal-title">默认窗口</h4>
                 </div>
                 <div class="modal-body">
-                    <p>zTree</p>
+                    <div class="tree">
+                        <div class="treeDemo">
+                            <ul id="treeDemo" class="ztree">zTree</ul>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
                     <button type="button" class="btn btn-primary">确认</button>
                 </div>
             </div>
         </div>
     </div>
+    <table id="table" class="component"></table>
+    <div class="notice_check">
+        <p>
+            <input type="button" class="check_btn2 button_ground" onclick="" value="更新">
+        </p>
+    </div>
 
-
-    <table id="bootstrap-table" class="table_style" style="margin: 0 auto" > </table>
 </div>
-
-
 
 
 <th:block th:include="page/fragments/common :: common_js"/>
 <th:block th:include="page/fragments/common :: bootstrap_table_js"/>
-
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
 <script type="text/javascript" th:inline="javascript">
 
-    $(function () {
-        queryUserList();
+    $("#more_slide").click(function () {
+        $(".more_look").slideDown(300);
+        $(".less_slide").addClass("visActive")
     })
 
+    $("#less_slide").click(function () {
+        $(".more_look").slideUp(300);
+        $(".less_slide").removeClass("visActive")
+    })
+    ////日期插件
+    $('.form_datetime').datetimepicker({
+        language: 'zh-CN',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        format: "yyyy-mm-dd hh:ii:ss"
+    });
 
-    let searchUrl = /*[[@{/user/search}]]*/ "/json/unit.json";
 
-    let addUrl = /*[[@{/user/add}]]*/ "/user/add";
 
-    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
 
-    let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
+    $('#table').bootstrapTable({
 
-    function queryUserList() {
-        var options = {
-            url: searchUrl,
-            createUrl: addUrl,
-            updateUrl: editUrl,
-            removeUrl: removeUrl,
-            // exportUrl: prefix + "/export",
-            // importUrl: prefix + "/importData",
-            // importTemplateUrl: prefix + "/importTemplate",
-            uniqueId: "id",
-            sortName: "updateTime",
-            sortOrder: "desc",
-            modalName: "用户",
-            columns: [
-                {
-                    checkbox: true
-                },
-                {
-                    title: '账号',
-                    field: 'username'
-                },
-                {
-                    title: '姓名',
-                    field: 'name'
-                },
-                {
-                    title: '手机号码',
-                    field: 'mobileNumber'
-                },
-                {
-                    title: '创建时间',
-                    field: 'createTime',
-                    sortable: true,
-                },
-                {
-                    title: '修改时间',
-                    field: 'updateTime',
-                    sortable: true,
+        //点击全选框时触发的操作
+        onCheckAll: function (rows) {
+            $(".componentTable").removeAttr('disabled');
+            $(".componentSelect").removeAttr('disabled');
+            console.log("点击全选框时触发的操作",rows);
+            for (var i = 0; i < rows.length; i++) {
+                // addItem(rows[i]);
+                //alert(rows[i].ResultName)
+            }
+        },
+        //  点击每行进行函数的触发
+        // onClickRow: function (row, tr, flied) {
+        //
+        //
+        // },
+        //点击每一个单选框时触发的操作
+        onCheck: function (row) {
+            console.log("点击每一个单选框时触发的操作",row);
+            $(".selected .componentTable").removeAttr('disabled');
+            $(".selected .componentSelect").removeAttr('disabled');
+        },
 
-                },
-                {
-                    title: '操作',
-                    field: '',
-                    formatter: function (value, row) {
-                        var e = '<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ';
-                        return e;
+        //取消每一个单选框时对应的操作；
+        onUncheck: function (row, tr, flied) {
+            console.log("取消每一个单选框时对应的操作",row)
+            let input = tr[0].parentNode.parentNode;
+            function sibling(elem) {
+                var r = [];
+                var n = elem.parentNode.firstChild;
+                for (; n; n = n.nextSibling) {
+                    if (n.nodeType === 1 && n !== elem) {
+                        r.push(n);
                     }
                 }
-            ]
-        };
-        $.table.init(options);
+                return r;
+            }
+            var allBorther = sibling(input)
+            var selectInput = allBorther[10].childNodes[0]
+            var selectInput2 = allBorther[11].childNodes[0]
+            var selectInput3 = allBorther[14].childNodes[0]
+            selectInput.setAttribute('disabled', 'disabled');
+            selectInput3.setAttribute('disabled', 'disabled');
+            selectInput2.setAttribute('disabled', 'disabled');
+        },
+
+        ////取消所有
+        onUncheckAll: function (row) {
+            $(".componentTable").attr('disabled', 'disabled');
+            $(".componentSelect").attr('disabled', 'disabled');
+        },
+        columns: [
+            {
+                field: 'index',
+                title: '序号',
+                class:'index_width',
+            },
+            {
+                checkbox: true,
+                title: '编辑',
+                class: "check"
+            },
+            {
+                field: 'eventType',
+                title: '部件分类',
+                sortable: true,
+            },
+            {
+                field: 'objId',
+                title: '部件标识码',
+                class: "contenteditable",
+                sortable: true,
+
+            },
+            {
+                field: 'objName',
+                title: '部件名称',
+                class: "contenteditable",
+                sortable: true,
+            },
+            {
+                field: 'mainDeptCode',
+                title: '主管部门代码',
+                class: "contenteditable",
+                sortable: true,
+            },
+            {
+                field: 'mainDeptName',
+                title: '主管部门名称',
+                class: "contenteditable",
+                sortable: true,
+            },
+            {
+                field: 'ownershipDeptCode',
+                title: '权属单位代码',
+                class: "contenteditable",
+                sortable: true,
+            },
+            {
+                field: 'ownershipDeptName',
+                title: '权属单位名称',
+                class: "contenteditable",
+                sortable: true,
+            },
+            {
+                field: 'maintenanceDeptCode',
+                title: '养护单位代码',
+                class: "contenteditable"
+            },
+            {
+                field: 'maintenanceDeptName',
+                title: '养护单位名称',
+                class: "contenteditable",
+                sortable: true,
+            },
+            {
+                field: 'grid',
+                title: '所在单元网格',
+                formatter: grid,
+                class: "gird",
+                sortable: true,
+
+            },
+            {
+                field: 'objState',
+                title: '部件状态',
+                formatter: objState,
+                class: "objState",
+                sortable: true,
+
+            },
+            {
+                field: 'initialDate',
+                title: '初始日期',
+                class: "contenteditable",
+                sortable: true,
+            },
+            {
+                field: 'changeDate',
+                title: '变更日期',
+                class: "contenteditable",
+                sortable: true,
+            },
+            {
+                field: 'sno',
+                title: '数据来源',
+                formatter: dataSource,
+                class: "dataSource",
+                sortable: true,
+            },
+
+        ],
+        onClickCell: function(field, value, row, $element) {
+
+            $(".contenteditable").attr('contenteditable', true);
+            $element.blur(function() {
+                let index = $element.parent().data('index');
+                let tdValue = $element.html();
+                saveData(index, field, tdValue);
+            })
+        }
+    });
+
+    function saveData(index, field, value) {
+        $('#table').bootstrapTable('updateCell', {
+            index: index,       //行索引
+            field: field,       //列名
+            value: value        //cell值
+        })
     }
 
+    //下拉列表
+    function objState(value, row, index) {
+        var objStateStr = "<select id='objState' class=\"componentSelect\" disabled='disabled' onchange='objStareChange(this)'>";
+        $(objState.data).each(function (index, value) {
+            if (row.objStateId !== value.id) {
+                objStateStr += "<option value='" + value.id + "'>" + value.value + "</option>"
+            } else {
+                objStateStr += "<option selected='selected' value='" + value.id + "'>" + value.value + "</option>"
+            }
+        })
+        objStateStr += "</select>";
+        return objStateStr;
+    }
+    function dataSource(value, row, index) {
+        var dataSource = "<select id='dataSource' class=\"componentSelect\" disabled='disabled' onchange='dataSourceChange(this)'>";
+        $(datasourceData.data).each(function (index, value) {
+            if (row.objStateId !== value.id) {
+                dataSource += "<option value='" + value.id + "'>" + value.value + "</option>"
+            } else {
+                dataSource += "<option selected='selected' value='" + value.id + "'>" + value.value + "</option>"
+            }
+        })
+        return dataSource;
+    }
+    function grid(value, row, index) {
+        var grid = "<select  id='grid' class=\"componentSelect\" disabled='disabled' onchange='gridChange(this)'>";
+        $(gridData.data).each(function (index, value) {
+            if (row.objStateId !== value.id) {
+                grid += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+            } else {
+                grid += "<option selected='selected' value='" + value.id + "'>" + value.gridName + "</option>"
+            }
+        })
+        grid += "</select>";
+        return grid;
+    }
 
+    var rows
+    $(".check_btn1").click(function () {
+        rows = $('#table').bootstrapTable('getSelections');
+        var data=[];
+        $(rows).each(function (index,value) {
+            data.push(value);
+        })
+        $.ajax({
+            type:"post",
+            url:updateUrl,
+            data:JSON.stringify(data),
+            contentType: "application/json",
+            success: function(result){
+                if (result.code === web_status.SUCCESS) {
+                    $.modal.msgSuccess(result.message);
+                    setTimeout("window.location.reload()", 2000);
+                    return;
+                } else if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTreeTable) {
+                    $.modal.msgSuccess(result.message);
+                } else if (result.code === web_status.SUCCESS && $.common.isEmpty(table.options.type)) {
+                    $.modal.msgSuccess(result.message)
+                } else if (result.code === web_status.WARNING) {
+                    $.modal.alertWarning(result.message)
+                } else {
+                    $.modal.alertError(result.message);
+                    return;
+                }
+                $.modal.closeLoading();
+            }
+        });
+    })
+
+    function objStareChange(ele) {
+        var newRow = $('#table').bootstrapTable('getSelections')[0]
+        var objStareN= ele.options[ele.selectedIndex].text;
+        console.log("变换值————————",objStareN)
+        newRow.objState = objStareN
+        console.log(newRow.objState)
+    }
+    function dataSourceChange(ele) {
+        var newRow = $('#table').bootstrapTable('getSelections')[0]
+        var dataSourceN= ele.options[ele.selectedIndex].text;
+        console.log("变换值————————",dataSourceN)
+        newRow.dataSource = dataSourceN
+        console.log(newRow.dataSource)
+    }
+    function gridChange(ele) {
+        var newRow = $('#table').bootstrapTable('getSelections')[0]
+        var gridN= ele.options[ele.selectedIndex].text;
+        console.log("变换值————————",gridN)
+        newRow.grid = gridN
+        console.log(newRow.grid)
+    }
+
+    function search() {
+        $('#table').bootstrapTable('removeAll');
+        var count = $('#table').bootstrapTable('getData').length;
+        var param = "?1=1";
+        if ($("#eventTypeId").val() !== "") {
+            param += "&eventTypeId=" + $("#eventTypeId").val();
+        }
+        if ($("#objId").val() !== "") {
+            param += "&objId=" + $("#objId").val();
+        }
+        if ($("#objName").val() !== "") {
+            param += "&objName=" + $("#objName").val();
+        }
+        if ($("#mainDeptCode").val() !== "") {
+            param += "&mainDeptCode=" + $("#mainDeptCode").val();
+        }
+        if ($("#mainDeptName").val() !== "") {
+            param += "&mainDeptName=" + $("#mainDeptName").val();
+        }
+        if ($("#ownershipDeptCode").val() !== "") {
+            param += "&ownershipDeptCode=" + $("#ownershipDeptCode").val();
+        }
+        if ($("#ownershipDeptName").val() !== "") {
+            param += "&ownershipDeptName=" + $("#ownershipDeptName").val();
+        }
+        if ($("#maintenanceDeptCode").val() !== "") {
+            param += "&maintenanceDeptCode=" + $("#maintenanceDeptCode").val();
+        }
+        if ($("#maintenanceDeptName").val() !== "") {
+            param += "&maintenanceDeptName=" + $("#maintenanceDeptName").val();
+        }
+        if ($("#bgid").val() !== "" && $("#objState").val() !== null) {
+            param += "&bgid=" + $("#bgid").val();
+        }
+        if ($("#objState").val() !== "" && $("#objState").val() !== null) {
+            param += "&objState=" + $("#objState").val();
+        }
+        if ($("#dataSource").val() !== "" && $("#dataSource").val() !== null) {
+            param += "&dataSource=" + $("#dataSource").val();
+        }
+
+
+        $.ajaxUtil.get(searchUrl + param, function (e) {
+            $(e.data).each(function (index, value) {
+                // console.log(value)
+                $('#table').bootstrapTable('insertRow', {
+                    index: index,
+                    row: {
+                        index: index+1,
+                        id: value.id,
+                        name: value.objId,
+                        eventType: value.eventType,
+                        objId: value.objId,
+                        objName: value.objName,
+                        mainDeptCode: value.mainDeptCode,
+                        mainDeptName: value.mainDeptName,
+                        ownershipDeptCode: value.ownershipDeptCode,
+                        ownershipDeptName: value.ownershipDeptName,
+                        maintenanceDeptCode: value.maintenanceDeptCode,
+                        maintenanceDeptName: value.maintenanceDeptName,
+                        bgname: value.bgname,
+                        bgid: value.bgid,
+                        objState: value.objState,
+                        objStateId: value.objStateId,
+                        initialDate: value.initialDate,
+                        changeDate: value.changeDate,
+                        dataSource: value.dataSource,
+                        dataSourceId: value.dataSourceId
+                    }
+                });
+            })
+
+        })
+    }
+
+    var setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {//数据加载
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parent'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        $("#typeStr").val(treeNode.name);
+        $("#eventTypeId").val(treeNode.id);
+        $(".closemodal").click();
+    }
+
+    $(function () {
+        $.ajaxUtil.get(componentTypeUrl, function (e) {
+            var zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        })
+    })
+
+    let componentTypeUrl = /*[[@{/eventType}]]*/ "/eventType";
+
+    let searchUrl = /*[[@{/componentList}]]*/ "/componentList";
+
+    let objStateUrl = /*[[@{/objState}]]*/ "/objState";
+
+    let dataSourceUrl = /*[[@{/dataSource}]]*/ "/dataSource";
+
+    let gridUrl = /*[[@{/grid}]]*/ "/grid";
+
+    let updateUrl = /*[[@{/componentList}]]*/ "/componentList";
+
+
+    $(function () {
+        $.ajaxUtil.get(objStateUrl, function (e) {
+            var objStateStr = "<option value=''>--请选择--</option>";
+            $(e.data).each(function (index, value) {
+                objStateStr += "<option value='" + value.id + "'>" + value.value + "</option>"
+            })
+            $("#objState").append(objStateStr);
+            objState = e;
+        });
+        $.ajaxUtil.get(gridUrl, function (e) {
+            var gridStr = "<option value=''>--请选择--</option>";
+            $(e.data).each(function (index, value) {
+                gridStr += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+            })
+            $("#bgid").append(gridStr);
+            gridData = e;
+        });
+        $.ajaxUtil.get(dataSourceUrl, function (e) {
+            var datasourceStr = "<option value=''>--请选择--</option>";
+            $(e.data).each(function (index, value) {
+                datasourceStr += "<option value='" + value.id + "'>" + value.value + "</option>"
+            })
+            $("#dataSource").append(datasourceStr);
+            datasourceData = e
+        })
+        search();
+    })
+    var objStare;
+    var gridData;
+    var datasourceData;
 </script>
 </body>
 </html>
+
+

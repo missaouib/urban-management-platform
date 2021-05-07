@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
  */
 public class MobileNumberConstraintValidator implements ConstraintValidator<MobileNumber, String> {
 
-    private final static String PATTERN = "0?(13|14|15|18|19|16|17)[0-9]{9}";
+    private final static String PATTERN = "^0?(13|14|15|18|19|16|17)[0-9]{9}$";
 
     @Override
     public void initialize(MobileNumber constraintAnnotation) {

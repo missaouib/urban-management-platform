@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>区域维护</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+</head>
+<style>
+    .addModel{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .addModel span{
+        width: 20%;
+    }
+    .addModel input{
+        width: 80%;
+    }
+
+</style>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<div class="notice_main ">
+    <div class="clear"></div>
+
+
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+    <div class="btn-group-sm" id="toolbar"  data-toggle="modal" data-target="#modal-default">
+        <a class="btn btn-success modelName">
+            <i class="fa fa-plus"></i> 新增
+        </a>
+    </div>
+</div>
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+            </div>
+            <form id="myFormAdd">
+                <div class="modal-body">
+                    <div class="addModel">
+                        <input type="hidden" id="eventTypeId" name="eventTypeId"/>
+                        <span>区域名称</span><input name="region" value="" class="find_input" type="text"/>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between"
+                     style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary" id="sureOne">确认</button>
+                    <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-update">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"></h4>
+            </div>
+            <form id="myFormUpdate">
+                <div class="modal-body">
+                    <div class="addModel">
+                        <input type="hidden" id="eventConditionIdUpdate" name="id"/>
+                        <span>区域名称</span><input name="region" id="regionUpdate" value="" class="find_input" type="text"/>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between"
+                     style="display: flex;justify-content: flex-end!important;">
+                    <button type="button" class="btn btn-primary" id="sureTwo" >确认</button>
+                    <button type="button" class="btn btn-success closemodal" data-dismiss="modal">关闭</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+    let searchUrl = /*[[@{/eventCondition/search}]]*/ "/eventCondition/search";
+    let addUrl = /*[[@{/eventCondition/save}]]*/ "/eventCondition/save";
+    let editUrl = /*[[@{/eventCondition/update}]]*/ "/eventCondition/update";
+    let removeUrl = /*[[@{/eventCondition/del/{id}}]]*/ "/eventCondition/del/{id}";
+
+
+    $(function () {
+
+        let eventTypeId = [[${eventTypeId}]];
+        $("#eventTypeId").val(eventTypeId);
+
+        queryUserList();
+
+        $(document).on('click',".modelName",function () {
+            $(".modal-title").html($(this).text());
+            $("#changeName").html($(this).text()+"案件")
+        })
+        $("#sureOne").on('click', function () {
+            let data = $('#myFormAdd').serialize();
+            let regionUpdate = $("#regionUpdate").val();
+            if(regionUpdate === null || regionUpdate === "" || regionUpdate === undefined){
+                $.modal.alertError("请填写区域名称", function (){
+                    return false;
+                });
+            }else{
+                $.operate.saveAndReload(addUrl, data);
+            }
+        })
+        $("#sureTwo").on('click', function () {
+            let data = $('#myFormUpdate').serialize();
+            $.operate.saveAndReload(editUrl, data);
+        })
+    });
+
+
+
+    function queryUserList() {
+        let options = {
+            url: searchUrl,
+            // createUrl: addUrl,
+            // updateUrl: editUrl,
+            removeUrl: removeUrl,
+            uniqueId: "id",
+            // sortName: "",
+            // sortOrder: "desc",
+            modalName: "区域",
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class:'index_width',
+                    formatter: function (value, row, index) {
+                        let page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '大类名称',
+                    field: 'eventTypeParentName',
+                    sortable: true,
+                },
+                {
+                    title: '小类名称',
+                    field: 'eventTypeName',
+                    sortable: true,
+                },
+
+                {
+                    title: '立案区域',
+                    field: 'region',
+                    sortable: true,
+                },
+                {
+                    title: '操作',
+                    field: '',
+                    class: 'radios',
+                    formatter: function (value, row) {
+                        var actions = [];
+                        actions.push('<a href="javascript:void(0)" id="'+row.id+'" name="'+row.region+'" class="modelName" data-toggle="modal" data-target="#modal-update" onclick="updateEventCondition(this)">修改</a> ');
+                        actions.push('<a  href="#" title="" onclick="$.operate.remove(\'' + row.id + '\')">删除</a> ');
+                        return actions.join('');
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    }
+function updateEventCondition(data){
+    $("#eventConditionIdUpdate").val(data.id);
+    $("#regionUpdate").val(data.name);
+}
+    /**
+     * 获取街道
+     */
+    function getStreetList() {
+        let parentId = $("#grid1 option:selected").val();
+        let url = "/event/findAllByParentId/?parentId=" + parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid2").html(option);
+            }
+        });
+    }
+
+    /**
+     * 获取社区
+     */
+    function getCommunityList() {
+        let parentId = $("#grid2 option:selected").val();
+        let url = "/event/findAllByParentId/?parentId=" + parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid3").html(option);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

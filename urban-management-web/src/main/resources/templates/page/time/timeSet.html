@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>计时设置</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<div class="notice_main ">
+    <h6>计时新增</h6>
+
+
+    <form id="userForm" style="margin-top: 10px">
+        <div class="top table2_top">
+            <div class="top_out">
+            </div>
+        </div>
+    </form>
+    <div class="notice_check">
+        <form id="search-form">
+            <p style="display: flex;justify-content: flex-end">
+                <input type="button" class="check_btn2 button_ground butn" onclick="$.table.search()" value="保存">
+            </p>
+        </form>
+    </div>
+
+    <input type="hidden" name="id" id="id" th:value="${id}">
+
+    <div class="clear"></div>
+
+
+
+
+
+    <div class="onner_warp" id="onner_warp">
+        <!--        <span class="onner_warp_inner">-->
+        <!--            <input type="checkbox">-->
+        <!--            <span class="time_warp_inners">00:00</span>-->
+        <!--        </span>-->
+    </div>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    var list = [[${list}]];
+    let saveUrl = /*[[@{/time/settime}]]*/ "/time/settime";
+    $(function () {
+
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+
+        let timeArr = []
+        list.map(r =>{
+            timeArr.push(r.startTime)
+        })
+        var html = "";
+        $('#onner_warp').html(``)
+
+        var timeList2 = [
+            '00:00:00','00:30:00','01:00:00','01:30:00','02:00:00','02:30:00','03:00:00','03:30:00','04:00:00','04:30:00','05:00:00','05:30:00','06:00:00','06:30:00','07:00:00','07:30:00','08:00:00','08:30:00','09:00:00','09:30:00','10:00:00','10:30:00','11:00:00','11:30:00','12:00:00','12:30:00','13:00:00','13:30:00','14:00:00','14:30:00','15:00:00','15:30:00','16:00:00','16:30:00','17:00:00','17:30:00','18:00:00','18:30:00','19:00:00','19:30:00','20:00:00','20:30:00','21:00:00','21:30:00','22:00:00','22:30:00','23:00:00','23:30:00'
+        ]
+        let indexTime = getInclude(timeList2, timeArr);
+        for (let i=0;i<timeList2.length;i++){
+            html += `
+                <span class="onner_warp_inner">
+                    <input type="checkbox" class="chexkBox" name="addCheckBox" value="${timeList2[i]}">
+                    <span class="time_warp_inners">${timeList2[i]}</span>
+                </span>
+            `
+        }
+        $('#onner_warp').html(html)
+
+
+        var x = document.querySelectorAll(".chexkBox");
+        indexTime.map(j =>{
+            x[j].checked = true
+        })
+
+
+        function getInclude(arr1, arr2) {
+            let temp = []
+            for (const item of arr2) {
+                temp.push(arr1.findIndex(i => i === item))
+            }
+            return temp
+        }
+
+
+        $('.butn').click(function () {
+            let addList = [];
+            $("input[name ='addCheckBox']").each(function (index, value) {
+                if ($(value).prop("checked") === true) {
+                    addList.push($(value).val());
+                }
+            });
+
+            var id = $('#id').val();
+            var time = addList.join(',');
+            let param = {
+                id: id,
+                time: time
+            };
+            $.operate.saveTab(saveUrl,param);
+
+
+
+
+
+
+        })
+
+
+    })
+
+
+</script>
+</body>
+</html>

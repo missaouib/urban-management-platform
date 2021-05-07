@@ -1,0 +1,408 @@
+﻿<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>城市综合管理服务平台</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <link rel="stylesheet" th:href="@{/css/home.css}"/>
+    <style>
+        .page-list {display: none !important;}
+        td {border: 1px #ccc solid !important;}
+        .charts span {margin-left: 10px}
+        .pagination {margin-right: 10px}
+        .pagination-detail {margin-top: 10px !important;}
+        .pagination-info {display: none !important;}
+        .matter .content .matter-content .matter-list li .matter-time {width: 46px}
+        .rows h2, .rows h5 {color: #fff;margin-bottom: 10px}
+    </style>
+</head>
+<body>
+    <div id="areascontent" style="background: #f5f5f5">
+        <div class="rows" style="margin-bottom: 0.8%; overflow: hidden;">
+            <div style="float: left; width: 100%;">
+                <div  style="height: 100vh;width:100%;position: relative; overflow: hidden;">
+                    <div class="warpsNone" style="height: 60%">
+                        <div class="warps" style="height: 100%;height: 100%">
+                            <div class="vneterBox" >
+                                <div class="manner">
+                                    <div class="block">
+                                        <img th:src="@{/img/ground2.png}" alt="">
+                                        <div class="test1">上报数</div>
+                                        <div class="test2" id="report">80</div>
+                                        <div class="test3">本周</div>
+                                    </div>
+                                    <div class="block">
+                                        <img th:src="@{/img/ground5.png}" alt="">
+                                        <div class="test1">受理数</div>
+                                        <div class="test2"  id="operate">90</div>
+                                        <div class="test3">本周</div>
+                                    </div>
+
+                                </div>
+                                <!--                        表格处-->
+
+                                <div class="mannertable autotable">
+                                    <table class="table" >
+                                        <thead>
+                                        <tr>
+                                            <th>部件</th>
+                                            <th>本周</th>
+                                            <th>本月</th>
+                                            <th>总数</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="unitCount">
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <div class="vneterBox">
+                                <div class="manner">
+                                    <div class="block">
+                                        <img th:src="@{/img/ground3.png}" alt="">
+                                        <div class="test1">立案数</div>
+                                        <div class="test2" id="inst">180</div>
+                                        <div class="test3">本周</div>
+                                    </div>
+                                    <div class="block">
+                                        <img th:src="@{/img/ground33.png}" alt="">
+                                        <div class="test1">派遣数</div>
+                                        <div class="test2" id="dispatch">90</div>
+                                        <div class="test3">本周</div>
+                                    </div>
+
+                                </div>
+                                <!--                        表格处-->
+                                <div class="mannertable autotable">
+                                    <table class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>事件</th>
+                                            <th>本周</th>
+                                            <th>本月</th>
+                                            <th>总数</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="eventCount">
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="vneterBox">
+                                <div class="manner">
+
+                                    <div class="block">
+                                        <img th:src="@{/img/ground6.png}" alt="">
+                                        <div class="test1">处置数</div>
+                                        <div class="test2" id="dispose">90</div>
+                                        <div class="test3">本周</div>
+                                    </div>
+                                    <div class="block">
+                                        <img th:src="@{/img/ground4.png}" alt="">
+                                        <div class="test1">结案数</div>
+                                        <div class="test2" id="close">20</div>
+                                        <div class="test3">本周</div>
+                                    </div>
+                                </div>
+
+<!--                                <div class="manner userManner">-->
+<!--                                    <div class="userBox">-->
+<!--                                        <div class="headImg">-->
+<!--                                            <div class="headerImg">-->
+<!--                                                <img th:src="@{/img/header.png}" alt="">-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                        <div class="username">-->
+<!--                                            <div class="adminName" th:sec:authentication="principal.name"></div>-->
+<!--                                        </div>-->
+<!--                                        <div class="purpose">-->
+
+<!--&lt;!&ndash;                                            <div class="book">&ndash;&gt;-->
+<!--&lt;!&ndash;                                                <div class="bookBox">&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <img th:src="@{/img/self.png}" alt="">&ndash;&gt;-->
+<!--&lt;!&ndash;                                                    <div class="bookText" >用户</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                                                </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            </div>&ndash;&gt;-->
+
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+                                <!--                                                    表格处-->
+                                <div class="mannertable cardInfo">
+                                    <table class="table">
+                                        <div class="whitebg">
+                                            <div class="mation">
+                                                <div style="float:left;font-size: 16px;color: #4c4c4c;border-left: 6px solid #6399fc;text-indent: 10px">角色信息</div>
+                                                <div style="float: right;color: #6399fc;font-size: 16px;font-weight: bold" id="roleName"></div>
+                                            </div>
+                                            <div class="mation">
+                                                <div style="float:left;font-size: 16px;color: #4c4c4c;">岗位案件数</div>
+                                                <div style="float: right;color: #6399fc;font-size: 16px;font-weight: bold" id="takeCase"></div>
+                                            </div>
+                                            <div class="mation">
+                                                <div style="float:left;font-size: 16px;color: #4c4c4c;">办理案件数</div>
+                                                <div style="float: right;color: #6399fc;font-size: 16px;font-weight: bold" id="instCase"></div>
+                                            </div>
+                                            <div class="mation">
+                                                <div style="float:left;font-size: 16px;color: #4c4c4c;">完结案件数</div>
+                                                <div style="float: right;color: #6399fc;font-size: 16px;font-weight: bold" id="closeCase"></div>
+                                            </div>
+                                        </div>
+<!--                                        <div class="mation mationTitle">-->
+<!--                                            个人信息-->
+<!--                                        </div>-->
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="width: 100%;width: 100%;display: flex;justify-content: center">
+                        <div class="xiala"><i class="selectmenu"></i></div>
+                    </div>
+
+                    <div class="warpsOther slideWarps">
+                        <div class="col-md-12 bottomInner">
+                            <div class="innerTop">
+                                <div class="buck">待办事项</div>
+                            </div>
+                            <div class="innerBottom">
+                                <div class="zara tiaoActive" >
+                                    <div class="toop">
+                                        <img class="inline" th:src="@{/img/2.png}" width="20px" alt="">
+                                        <span class="inline">未超时</span>
+                                        <img class="inline" th:src="@{/img/1.png}" width="20px" alt="">
+                                        <span class="inline">将超时</span>
+                                        <img  class="inline"th:src="@{/img/0.png}" width="20px" alt="">
+                                        <span class="inline">已超时</span>
+                                    </div>
+                                    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    function getCase() {
+        $.ajaxUtil.get("/statistics/personInfo", function (e) {
+            $("#roleName").html(e.data[0]);
+            $("#takeCase").html(e.data[1]);
+            $("#instCase").html(e.data[2]);
+            $("#closeCase").html(e.data[3]);
+        });
+    }
+    $(function () {
+        getCase()
+
+    queryUserList()
+
+        var r = 0;
+        var slideNum = 0;
+        $(".xiala").click(function() {
+            r += 180;
+            slideNum++;
+            $(".warpsNone").slideToggle(300);
+            //下拉
+            if (slideNum % 2 == 0){
+                $(".warpsOther").addClass("slideWarps")
+                $(".warpsOther").removeClass("slideAuto")
+            }else {
+                $(".warpsOther").addClass("slideAuto")
+                $(".warpsOther").removeClass("slideWarps")
+            }
+            $(".selectmenu").css('transform', 'rotate(' + r + 'deg)');
+        })
+
+        $(".star").click(function () {
+            $(this).addClass("staractive").siblings(".star").removeClass("staractive");
+            $(".zara").eq($(this).index(".star")).addClass("tiaoActive").siblings(".zara").removeClass("tiaoActive");
+            // $(".tiao").eq($(this).index(".star")).addClass("tiaoActive").siblings(".tiao").removeClass("tiaoActive");
+            $(this).children(".tiao").addClass("tiaoActive").parent(".star").siblings('.star').children(".tiao").removeClass("tiaoActive");
+        })
+        $(".innerBottom").height($(".bottomInner").height() - $(".innerTop").height() - 20);
+
+        getIndexValueByWeek();
+        unitCount();
+        eventCount();
+
+    });
+
+    let getIndexValueByWeekUrl = /*[[@{/home/getIndexValueByWeek}]]*/ "/home/getIndexValueByWeek";
+
+    function getIndexValueByWeek() {
+        $.ajaxUtil.get(getIndexValueByWeekUrl, function (e) {
+            $("#report").text(e.data.report);
+            $("#inst").text(e.data.inst);
+            $("#dispatch").text(e.data.dispatch);
+            $("#close").text(e.data.close);
+            $("#operate").text(e.data.close);
+            $("#dispose").text(e.data.close);
+        });
+    }
+
+    let unitCountUrl = /*[[@{/home/unitCount}]]*/ "/home/unitCount";
+    function unitCount() {
+        $.ajaxUtil.get(unitCountUrl, function (e) {
+            var html = "";
+            $(e.data).each(function (index,value) {
+                html+="<tr> <td>"+value.typeName+"</td>" +
+                    "<td>"+value.weekCount+"</td>" +
+                    "<td>"+value.monthCount+"</td>" +
+                    "<td>"+value.count+"</td></tr>"
+            })
+            $("#unitCount").empty();
+            $("#unitCount").append(html);
+        });
+    }
+
+    let eventCountUrl = /*[[@{/home/eventCount}]]*/ "/home/eventCount";
+    function eventCount() {
+        $.ajaxUtil.get(eventCountUrl, function (e) {
+            var html = "";
+            $(e.data).each(function (index,value) {
+                html+="<tr> <td>"+value.typeName+"</td>" +
+                    "<td>"+value.weekCount+"</td>" +
+                    "<td>"+value.monthCount+"</td>" +
+                    "<td>"+value.count+"</td></tr>"
+            })
+            $("#eventCount").empty();
+            $("#eventCount").append(html);
+        });
+    }
+
+    let findEventConditionByEventTypeUrl = /*[[@{/event/findEventConditionByEventType}]]*/ "/event/findEventConditionByEventType";
+    let showUrl = [[${@fastProperties.nginxUrl}]];
+    let uploadUrl = /*[[@{/common/uploads}]]*/ "/json/unit.json";
+    let img = /*[[@{/common/img/}]]*/ "/common/img/";
+    let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
+    let getNodeNameUrl = /*[[@{/event/getNodeName}]]*/ "/event/getNodeName";
+    let searchUrl = /*[[@{/home/eventListByToDoWithIndex}]]*/ "/home/eventListByToDoWithIndex";
+    let addUrl = /*[[@{/event/toSupervisionAcceptanceSave}]]*/ "/user/add";
+    let removeUrl = /*[[@{/user/remove}]]*/ "/user/remove";
+    let completeByReceptionistUrl = /*[[@{/event/completeByReceptionistWithSendVerification}]]*/ "/event/completeByReceptionistWithSendVerification";
+    let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
+    let editUrl = /*[[@{/user/toSupervisionAcceptanceUpdate/{id}}]]*/ "/user/remove";
+    let dispatcherUrl= /*[[@{/workbench/dispatcher}]]*/ "/workbench/dispatcher";
+
+    let num = 1;
+
+    function queryUserList() {
+        var options = {
+            num: num,
+            showRefresh: false,
+            showColumns: false,
+            showToggle: false,
+            url: searchUrl,
+            createUrl: addUrl,
+            updateUrl: editUrl,
+            pageSize: 20,
+            removeUrl: removeUrl,
+            // exportUrl: prefix + "/export",
+            // importUrl: prefix + "/importData",
+            // importTemplateUrl: prefix + "/importTemplate",
+            uniqueId: "id",
+            sortName: "createTime",
+            sortOrder: "desc",
+            modalName: "待办事件",
+            onClickRow: function (row, index) {
+                let url = dispatcherUrl + "?url=" + row.url + "&id=" + row.id;
+                window.parent.$.learuntab.myAddTab('待办事件', url, 'data_id')
+            },
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class:'index_width',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '示警灯',
+                    field: '',
+                    class:'time_width',
+                    formatter: setTimeLimit
+                },
+                {
+                    title: '案件编号',
+                    field: 'eventCode',
+                    sortable: true,
+                },
+                {
+                    title: '问题描述',
+                    field: 'represent',
+                    // sortable: true,
+                },
+                {
+                    title: '当前阶段',
+                    field: 'taskName',
+                    // sortable: true,
+                    // formatter: function (value, row, index) {
+                    //     return row.taskName;
+                    // },
+
+                },
+                {
+                    title: '案件分类',
+                    field: 'eventTypeName',
+                    sortable: true,
+                },
+                {
+                    title: '案件类型',
+                    field: 'recTypeId',
+                    sortable: true,
+                    formatter: function (value,row){
+                        return row.recTypeName;
+                    }
+                },
+                {
+                    title: '创建日期',
+                    field: 'createTime',
+                    sortable: true,
+                },
+                {
+                    title: '处置时限',
+                    field: 'timeLimitStr',
+                    // sortable: true,
+                },
+                {
+                    title: '截止日期',
+                    field: 'endTimeStr',
+                    // sortable: true,
+                },
+                // {
+                //     title: '案件来源',
+                //     field: 'eventSource.value',
+                //     sortable: true,
+                //     formatter: function (value, row, index) {
+                //         return row.eventSourceName;
+                //     }
+                // },
+
+            ]
+        };
+        $.table.init(options);
+    }
+
+</script>
+</html>

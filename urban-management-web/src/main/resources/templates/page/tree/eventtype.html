@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>选择部门</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+
+    <!--    <link th:href="@{/css/tail.css}" rel="stylesheet" type="text/css">-->
+</head>
+<body>
+
+<div class="content">
+    <!--        <div>-->
+    <div class="notice_check">
+        <!--            <input id="treeId"   name="treeId"    type="hidden" th:value="${dept.deptId}"/>-->
+        <!--            <input id="treeName" name="treeName"  type="hidden" th:value="${dept.deptName}"/>-->
+        <input id="treeId" name="treeId" type="hidden"/>
+        <input id="treeName" name="treeName" type="hidden"/>
+<!--        <div id="search" style="display: flex; justify-content: space-between;">-->
+<!--            <label for="keyword">关键字：</label>-->
+<!--            <input type="text" class="find_input" id="keyword">-->
+<!--            <input type="button" class="check_btn" value="搜索" onclick="$.tree.searchNode()">-->
+<!--        </div>-->
+        <div class="treeDemo">
+            <ul id="tree" class="ztree"></ul>
+        </div>
+    </div>
+</div>
+
+    <!--    </div>-->
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+
+    var tree = [[${tree}]];
+
+
+    $(function () {
+        var options = {
+            expandLevel: 2,
+            datas: tree,
+            onClick : zTreeOnClick
+        };
+        $.tree.init(options);
+    })
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        var treeId = treeNode.id;
+        var treeName = treeNode.name;
+        $("#treeId").val(treeId);
+        $("#treeName").val(treeName);
+    }
+
+
+
+</script>
+</body>
+</html>

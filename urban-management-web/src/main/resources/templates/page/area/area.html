@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
+</head>
+<body style="border-radius: 8px;">
+<div class="content">
+    <div class="areaCenter">
+        <div class="notice_check">
+            <form id="search-form">
+
+            </form>
+            <div class="tree">
+                <div class="treeDemo">
+                    <ul id="treeDemo" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="areaCenter">
+        <div class="r_right but_p girdBtnGroup" id="eventButton" style="margin: 0 0 10px 0!important;">
+            <button class="but_save" id="collocation" type="button" style="margin-right: 10px;display: none"
+                    onclick="toCollocation()">
+                配置
+            </button>
+            <button class="but_save" type="button" style="margin-right: 10px" id="updateRoleBtn"
+                    onclick="formReset()">清空
+            </button>
+            <button class="but_save" type="submit" onclick="save()">新增</button>
+
+            <button class="but_save" type="submit" onclick="area()">修改</button>
+            <button class="but_save" type="button" style="margin-right: 10px" id="deleteRoleBtn"
+                    onclick="deleteRole()">删除
+            </button>
+
+        </div>
+
+        <form class="details" id="areaForm">
+            <div class="top table2_top">
+
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span>*</span>名称</td>
+                            <td>
+                                <input id="gridName" name="gridName" placeholder="" class="" type="text">
+                                <input id="id" name="gridId" placeholder="" class="" type="hidden">
+                                <input id="level" name="level" placeholder="" class="" type="hidden" value="1">
+                                <input type="hidden" id="ifLevel">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span></span>父节点</td>
+                            <td style="display: flex;justify-content: space-between;align-items: center;margin-top: 4px">
+                                <input type="text" id="parentName" readonly="readonly" class="find_input"/>
+                                <input name="pid" type="hidden" readonly="readonly" id="pid" class="find_input"/>
+                                <button type="button" class="addBtn" onclick="selectGridTree()">
+                                    +
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    let gridTreeUrl = /*[[@{/grid/getGridTree}]]*/ "/gird/getGridTree";
+    let areaUrl = /*[[@{/grid/area}]]*/ "/gird/area";
+    let delUrl = /*[[@{/grid/gridDelete}]]*/ "/gird/gridDelete";
+
+    let setting = {
+        callback: {
+            onClick: zTreeOnClick
+        },
+        data: {
+            keep: {
+                parent: true,
+                leaf: true
+            },
+            simpleData: {
+                enable: true,
+                idKey: 'id',
+                pIdKey: 'parentId'
+            },
+            key: {
+                name: "name"
+            }
+        }
+    };
+
+    function selectGridTree() {
+        var id = $("#id").val();
+        var url = /*[[@{/tree/grid}]]*/ "/tree/grid?num=two";
+        url += "?level=3&id=" + id
+        var options = {
+            title: '请选择区域',
+            width: "380",
+            url: url,
+            callBack: gridDoSubmit
+        };
+        $.modal.openOptions(options);
+    }
+
+    function gridDoSubmit(index, layero) {
+        var body = layer.getChildFrame('body', index);
+        if ($("#ifLevel").val() !== null && $("#ifLevel").val() !== "") {
+            if ((body.find('#treeLevel').val()) !== $("#ifLevel").val()) {
+                $.modal.alertWarning("请选择同级节点");
+                return;
+            }
+        }
+        console.log(body.find('#treeLevel').val())
+        $("#pid").val(body.find('#treeId').val());
+        $("#parentName").val(body.find('#treeName').val());
+        $("#level").val(parseInt(body.find('#treeLevel').val()) + 1);
+        layer.close(index);
+    }
+
+    $(function () {
+
+        gridTree();
+
+        $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose: true, todayBtn: true, startView: 4, minView: 3});
+        ////日期插件
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+
+    });
+
+    function gridTree() {
+        $.ajaxUtil.get(gridTreeUrl, function (e) {
+            $.fn.zTree.init($("#treeDemo"), setting, e.data);
+        });
+    }
+
+
+    function toCollocation() {
+        var id = $("#id").val();
+        window.parent.$.learuntab.myAddTab('配置网格', '/grid/toCollocation?id=' + id, 'data_id')
+    }
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        if (treeNode.level === 2) {
+            $("#collocation").css("display", "block")
+        }
+        $("#ifLevel").val(treeNode.level);
+        $("#id").val(treeNode.id);
+        $("#level").val(treeNode.level + 1);
+        $("#gridName").val(treeNode.name);
+        if (treeNode.getParentNode() !== null) {
+            $("#parentName").val(treeNode.getParentNode().name);
+            $("#pid").val(treeNode.getParentNode().id);
+        } else {
+            $("#parentName").val("");
+            $("#pid").val("");
+        }
+
+
+    }
+
+    function formReset() {
+        $("#id").val("");
+        $("#level").val(1);
+        $("#gridName").val("");
+        $("#parentName").val("");
+        $("#pid").val("");
+        $("#ifLevel").val("");
+    }
+
+    function save() {
+        $("#gridId").val("");
+        area();
+    }
+
+    function area() {
+        let data = $('#areaForm').serialize();
+        $.operate.saveAndReload(areaUrl, data);
+    }
+
+
+    function deleteRole() {
+        let data = $('#areaForm').serialize();
+        $.operate.saveAndReload(delUrl, data);
+    }
+
+
+    jQuery.extend(jQuery.validator.messages, {
+        required: "必填",
+        phone: "必填",
+        remote: "请修正该字段",
+        email: "请输入正确格式的电子邮件",
+        url: "请输入合法的网址",
+        date: "请输入合法的日期",
+        dateISO: "请输入合法的日期 (ISO).",
+        number: "请输入合法的数字",
+        digits: "只能输入整数",
+        creditcard: "请输入合法的信用卡号",
+        equalTo: "请再次输入相同的值",
+        accept: "请输入拥有合法后缀名的字符串",
+        maxlength: jQuery.validator.format("请输入一个 长度最多是 {0} 的字符串"),
+        minlength: jQuery.validator.format("请输入一个 长度最少是 {0} 的字符串"),
+        rangelength: jQuery.validator.format("请输入 一个长度介于 {0} 和 {1} 之间的字符串"),
+        range: jQuery.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
+        max: jQuery.validator.format("请输入一个最大为{0} 的值"),
+        min: jQuery.validator.format("请输入一个最小为{0} 的值")
+    });
+
+    $("#areaForm").validate({
+        debug: true,
+        ignore: "",
+        submitHandler: function (form) {
+            var params = $(form).serialize(); //串行化表单参数
+            $.post("user", params, function (result) {
+                if (result.ok) {//注册成功
+                    location.href = "register_ok.html";
+                } else {//注册失败
+                    alert(result.msg);
+                    $("#checkImg").click();
+                }
+            }, "json");
+        },
+        rules: {
+            userName: {
+                required: true
+            },
+            loginName: {
+                required: true,
+                // rangelength: [5, 8]
+            },
+            phonenumber: {
+                required: true,
+                // rangelength: [6, 12]
+            },
+            problemescription: {
+                required: true,
+                // rangelength: [6, 12],
+                /*重复密码需要与原密码相同的要求*/
+                // equalTo: "#pwd"
+            },
+            safeLevel: {
+                required: true
+            },
+            findTime: {
+                required: true,
+                // range: [26, 50]
+            },
+            enterprise: {
+                required: true
+            },
+            department: {
+                required: true
+            },
+            handleTime: {
+                required: true
+            }, charge: {
+                required: true
+            },
+            question: {
+                required: true
+            },
+            closeTime: {
+                required: true,
+                // email: true
+            },
+            // idcard: {
+            //     card: true
+            // },
+            // phone: {
+            //     phone: true
+            // }
+        },
+        messages: {}
+    });
+</script>
+</body>
+</html>

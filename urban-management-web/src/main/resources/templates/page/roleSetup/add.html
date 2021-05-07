@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>角色批量增加人员</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: ztree_css"/>
+    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
+</head>
+<body style="border-radius: 8px;">
+<div class="content">
+    <div class="areaCenter">
+        <div class="notice_check">
+            <form id="search-form">
+                <h5 style="padding-left: 5px">搜索</h5>
+                <p>
+                    <label class=""></label>
+                    <input type="search" class="find_input" id="key">
+                </p>
+            </form>
+            <div class="tree">
+                <div class="treeDemo">
+                    <ul id="treeDemo" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="areaCenter">
+        <form class="details" id="roleForm">
+            <div class="top table2_top">
+                <h5 style="padding: 16px 10px 0">人员列表</h5>
+                    <input type="hidden" name="roleId" id="roleId" />
+                    <input type="hidden" name="userIdList" id="userIdList" />
+                <div class="top_out personneList" id="showUser">
+                </div>
+
+                    <div class="r_right but_p girdBtnGroup" id="eventButton" style="margin:  0 0 10px 0!important;">
+                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="saveRoleBtn"
+                                >全选
+                        </button>
+                        <button class="but_save roleBox" type="button" id="lessCheck" style="margin-right: 10px">取消全选
+                        </button>
+                        <button class="but_save roleBox" type="button" style="margin-right: 10px" id="updateRoleBtn" onclick="save()"  >保存
+                        </button>
+
+            </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: ztree_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    let getAllAndRoleForTreeUrl = /*[[@{/roleSetup/getAllAndRoleForTree}]]*/ "/roleSetup/getAllAndRoleForTree";
+    let findUserByRoleUrl = /*[[@{/roleSetup/findUserByRole}]]*/ "/roleSetup/findUserByRole";
+    let saveUserAndRoleURL = /*[[@{/roleSetup/saveUserAndRole}]]*/ "/roleSetup/saveUserAndRole";
+
+    $(function () {
+
+        //全选 全不选
+        $("#saveRoleBtn").click(function () {
+            $(this).addClass("roleBox");
+            $("#lessCheck").removeClass("roleBox");
+            $('input:checkbox').prop("checked",true)
+        });
+
+        $("#lessCheck").click(function () {
+            $(this).addClass("roleBox");
+            $("#saveRoleBtn").removeClass("roleBox");
+            $('input:checkbox').prop("checked",false)
+        });
+
+        let setting = {
+            callback: {
+                onClick: zTreeOnClick
+            },
+            data: {//数据加载
+                keep: {
+                    parent: true,
+                    leaf: true
+                },
+                simpleData: {
+                    enable: true,
+                    idKey: 'id',
+                    pIdKey: 'parentId'
+                },
+                key: {
+                    name: "deptName"
+                }
+            }
+        };
+
+        function search() {
+            $.ajax({
+                type: "GET",
+                url: getAllAndRoleForTreeUrl,
+                success: function (result) {
+                    $.fn.zTree.init($("#treeDemo"), setting, result.data);
+                    fuzzySearch("treeDemo", '#key', null, true);
+                }
+            });
+        }
+
+        search()
+
+    });
+
+    function save() {
+        let userIdList = [];
+        let roleId = $("#roleId").val();
+        if (roleId === null){
+            $.modal.alertWarning("请选择角色");
+            return false;
+        }
+        $("input[name ='roleCheckBox']").each(function(index,value){
+            let map = {};
+            if($(value).prop("checked") === true){
+                map.checkbox = 1;
+                map.id=$(value).val();
+                userIdList.push(map);
+            }
+        });
+        saveAndReload(saveUserAndRoleURL, {"roleId": roleId,"userIdList" : userIdList})
+    }
+    function zTreeOnClick(event, treeId, treeNode) {
+        if(treeNode.isParent || treeNode.levelOrNot === null){
+            $.modal.alertWarning("请选择角色");
+            $("#saveRoleBtn").addClass("roleBox");
+            $("#updateRoleBtn").addClass("roleBox");
+            $("#lessCheck").addClass("roleBox");
+            return false;
+        }
+        $("#saveRoleBtn").removeClass("roleBox");
+        $("#updateRoleBtn").removeClass("roleBox");
+        $("#roleId").val(treeNode.id)
+        findUserByRole(treeNode.id)
+    }
+
+    function findUserByRole(roleId) {
+        $.ajaxUtil.get(findUserByRoleUrl + "?roleId=" + roleId, function (e) {
+            let data =e.data;
+            if (data != undefined && data.length > 0){
+                let html = "";
+                $(data).each(function (index,value) {
+                    if (value.checkbox === 1){
+                        html+="<div class='role'><input name='roleCheckBox' type='checkbox' class='roleCheckBox' value='"+value.id+"' checked><span class='roleName'>"+value.name+"</span></div>";
+                    }else{
+                        html+="<div class='role'><input name='roleCheckBox' type='checkbox' class='roleCheckBox' value='"+value.id+"'><span class='roleName'>"+value.name+"</span></div>";
+                    }
+                });
+                $("#showUser").html(html);
+            }
+        });
+    }
+    // 保存提交当前表单数据 然后刷新当前选项卡页面
+    function saveAndReload(url, data) {
+        let config = {
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            // traditional: true,
+            data: data,
+            beforeSend: function () {
+                $.modal.loading("正在处理中，请稍后...");
+            },
+            success: function (result) {
+                if (result.code === web_status.SUCCESS) {
+                    $.modal.msgSuccess(result.message);
+                    setTimeout("window.location.reload()", 2000);
+                    return;
+                } else if (result.code === web_status.SUCCESS && table.options.type === table_type.bootstrapTreeTable) {
+                    $.modal.msgSuccess(result.message);
+                } else if (result.code === web_status.SUCCESS && $.common.isEmpty(table.options.type)) {
+                    $.modal.msgSuccess(result.message)
+                } else if (result.code === web_status.WARNING) {
+                    $.modal.alertWarning(result.message)
+                } else {
+                    $.modal.alertError(result.message);
+                    return;
+                }
+                $.modal.closeLoading();
+            }
+        };
+        $.ajax(config)
+
+    }
+</script>
+</body>
+</html>

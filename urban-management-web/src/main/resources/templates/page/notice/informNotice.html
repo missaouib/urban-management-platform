@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>通知公告</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+
+</head>
+
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<div class="notice_main ">
+    <div class="clear"></div>
+
+    <div class="btn-group-sm" id="toolbar">
+        <a class="btn btn-success" onclick="add()">
+            <i class="fa fa-plus"></i> 添加
+        </a>
+        <a class="btn btn-success" onclick="goTypeClassify()">
+            <i class="fa fa-plus"></i> 通知公告维护
+        </a>
+    </div>
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+</div>
+
+<script id="modelDiv" type="text/template">
+    <form action="" method="post" id="noticeForm">
+        <div class="modelBox">
+            <label class="modelTitle" style="margin-top: 10px">名称:</label>
+            <input type="text" required="required" name="title" id="title" style="width: 70%">
+
+        </div>
+        <div class="modelBox">
+            <label class="modelTitle" style="margin-top: 10px">类别:</label>
+            <!--            <input type="text" required="required" name="title" id="title" style="width: 70%">-->
+            <select id="titleType" style="width: 70%">
+
+            </select>
+        </div>
+        <div class="modelBox">
+            <label class="modelTitle" style="margin-top: 10px">描述:</label>
+            <textarea type="text" cols="8" rows="6" required="required" name="content"
+                      style="width: 70%;height:120px;" id="content"></textarea>
+        </div>
+    </form>
+</script>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+
+</body>
+
+</html>
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        search();
+
+    })
+
+
+    let searchUrl = /*[[@{/notice/search}]]*/ "/notice/search";
+
+
+    let addUrl = /*[[@{/notice/noticeSave}]]*/ "/notice/noticeSave";
+
+    let editUrl = /*[[@{/notice/noticeUpdate}]]*/ "/modeler.html";
+
+    let removeUrl = /*[[@{/notice/noticeDelete}]]*/ "/processdef/remove";
+
+    let activitiUrl = /*[[@{/activiti/create}]]*/ "/deployment/file";
+
+    let modelUrl = /*[[@{/modeler.html?modelId=}]]*/ "/modeler.html";
+
+
+    // let editUrl = /*[[@{/user/edit/{id}}]]*/ "/user/remove";
+
+    function doSubmit(index, layero) {
+        console.log(index);
+        console.log(layero);
+    }
+
+    function goTypeClassify() {
+        window.parent.$.learuntab.myAddTab('通知公告类型', '/notice/toNoticeTypeList', 'data_id')
+    }
+
+    function search() {
+        var options = {
+            url: searchUrl,
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class: 'index_width',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '标题',
+                    field: 'title',
+                    sortable: true,
+                },
+                {
+                    title: '创建时间',
+                    field: 'createTime',
+                    sortable: true,
+                },
+                {
+                    title: '内容',
+                    field: 'content',
+                    sortable: true,
+                },
+                {
+                    title: '操作',
+                    field: '',
+                    formatter: function (value, row) {
+                        var a = '<a  href="#" title=" '+ row.id +' " onclick="edit(this)">编辑</a> ';
+                        var b = '<a  href="#" title=" '+ row.id +' " onclick="deleteFn(this)">删除</a> ';
+                        return a + b;
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    }
+
+    function deleteFn(id) {
+        $.operate.saveAndReload(removeUrl, {id:id.title.trim()});
+    }
+
+    function edit(id) {
+        getSelectType()
+        layer.open({
+            type: 1,
+            area: ['400px', '300px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '编辑',
+            content: $('#modelDiv').html(),
+            btn: ['<i class="fa fa-check"></i> 保存', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: false,
+            btn1: function (index, layero) {
+                let myId = $("#titleType option:selected").val();
+                let params = {
+                    noticeTypeId:myId,
+                    title:$('#title').val(),
+                    content:$('#content').val(),
+                    id:id.title.trim()
+                }
+                $.operate.saveAndReload(editUrl, {...params});
+            }
+        });
+    }
+
+    function add() {
+        getSelectType()
+        layer.open({
+            type: 1,
+            area: ['400px', '300px'],
+            fix: false,
+            //不固定
+            maxmin: true,
+            shade: 0.3,
+            title: '新增',
+            content: $('#modelDiv').html(),
+            btn: ['<i class="fa fa-check"></i> 保存', '<i class="fa fa-remove"></i> 取消'],
+            // 弹层外区域关闭
+            shadeClose: false,
+            btn1: function (index, layero) {
+                let myId = $("#titleType option:selected").val();
+                let params = {
+                    noticeTypeId:myId,
+                    title:$('#title').val(),
+                    content:$('#content').val()
+                }
+                $.operate.saveAndReload(addUrl, {...params});
+            }
+        });
+    }
+    function getSelectType() {
+        let getNoticeTypeListUrl = /*[[@{/noticeType/getNoticeTypeList}]]*/ "/json/unit.json";
+        $('#titleType').html(``)
+        $.ajax({
+            url: getNoticeTypeListUrl,
+            type: 'GET',
+            async: true,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                let html = '';
+                for (let i=0;i<data.data.length;i++){
+                    html += `
+                            <option value="${data.data[i].id}">${data.data[i].name}</option>
+                        `
+                }
+                $('#titleType').html(html)
+
+            },
+            error: function (data) {
+                $.modal.alertError(data.message,function () {
+                });
+            }
+        });
+    }
+
+
+</script>

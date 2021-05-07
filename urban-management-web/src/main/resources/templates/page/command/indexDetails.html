@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>首页详情</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: swiper_css"/>
+    <link th:href="@{/css/eventList.css}" rel="stylesheet" type="text/css">
+</head>
+<body style="border-radius: 8px;">
+<div class="content">
+    <div class="leftContent">
+        <div class="left_topIn">
+            <div class="fami">
+                <form class="details">
+                    <div class="top table2_top">
+                        <div class="top_out">
+                            <table class="table delBorder">
+                                <tbody>
+                                <tr>
+                                    <td><span></span>案件编号</td>
+                                    <td>
+                                        <input id="eventCode" placeholder="" class="" type="text" readonly="readonly" required>
+                                    </td>
+                                    <td><span></span>案件分类</td>
+                                    <td>
+                                        <input id="eventTypeStr" type="text" maxlength="30" required readonly="readonly">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>立案区域</td>
+                                    <td>
+                                        <input id="regionStr" type="text" maxlength="30" required readonly="readonly">
+                                    </td>
+                                    <td><span></span>立案条件</td>
+                                    <td>
+                                        <input id="conditionValue" type="text" maxlength="30" required readonly="readonly">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>计时等级</td>
+                                    <td>
+                                        <input id="level" type="text" maxlength="30" required readonly="readonly">
+
+                                    </td>
+                                    <td><span></span>处理时限</td>
+                                    <td>
+                                        <input id="timeLimitStr" type="text" readonly required>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>问题描述</td>
+                                    <td colspan="8"><input id="represent" type="text" class="find_input" readonly>
+                                </tr>
+                                <tr class="col-12">
+                                    <td><span></span>案件地址</td>
+                                    <td>
+                                        <input id="location" name="location" placeholder="" class="" readonly type="text">
+                                    </td>
+                                    <td><span></span>案件类型</td>
+                                    <td>
+                                        <input id="recTypeStr" name="location" placeholder="" class="" readonly type="text">
+                                    </td>
+                                </tr>
+                                <tr class="col-12">
+                                    <td><span></span>所属区域</td>
+                                    <td>
+                                        <input id="eventRegion" name="location" placeholder="" class="" readonly type="text">
+                                    </td>
+                                    <td><span></span>所属街道</td>
+                                    <td>
+                                        <input id="street" name="location" placeholder="" class="" readonly type="text">
+                                    </td>
+                                </tr>
+                                <tr class="col-12">
+                                    <td><span></span>所属社区</td>
+                                    <td>
+                                        <input id="community" name="location" placeholder="" class="" readonly type="text">
+                                    </td>
+                                    <td><span></span>单元网格</td>
+                                    <td>
+                                        <input id="girdStr" name="location" placeholder="" class="" readonly type="text">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>问题来源</td>
+                                    <td>
+                                        <input name="eventSourceStr" id="eventSourceStr" placeholder="" class="" type="text" readonly="readonly">
+                                    </td>
+                                    <td><span></span>上报人</td>
+                                    <td>
+                                        <input id="userName" name="userName" placeholder="" class="" readonly type="text">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>诉求人</td>
+                                    <td>
+                                        <input id="petitionerName" name="petitionerName" placeholder="" class="" readonly type="text">
+                                    </td>
+                                    <td><span></span>联系方式</td>
+                                    <td><input id="petitionerPhone" name="petitionerPhone" type="text" value="" readonly="readonly"></td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>性别</td>
+                                    <td>
+                                        <input id="petitionerSex" name="petitionerSex" placeholder="" class="" readonly type="text">
+                                    </td>
+                                    <td><span></span>创建时间</td>
+                                    <td>
+                                        <input id="cdate" name="cdate" placeholder="" class="" readonly type="text">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><span></span>经度</td>
+                                    <td>
+                                        <input id="x" type="text" class="find_input" readonly="readonly" value="">
+                                    </td>
+                                    <td><span></span>纬度</td>
+                                    <td>
+                                        <input id="y" type="text" class="find_input" readonly="readonly" value="">
+                                        <input type="hidden" id="userId" value="">
+                                        <input type="hidden" id="eventId" value="">
+                                        <input type="hidden" id="button" value="">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="partCodes">部件编码<span></span></td>
+                                    <td class="partCodes">
+                                        <input type="text" class="find_input" id="objId">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="left_bottomIn">
+            <div class="bottom_left" style="width: 100%!important;">
+                <div class="doItTitle">
+                    <span class="do_span active">处置前</span>
+                    <span class="do_span">处置后</span>
+                </div>
+                <div class="doItInner">
+                    <div class="do_banner blockActive">
+                        <!-- Swiper -->
+                        <div class="swiper-container" id="beforeDisSwiper">
+                            <div class="swiper-wrapper" id="MultiMediaBefore">
+                                                                <div class="swiper-slide">Slide 1</div>
+                                                                <div class="swiper-slide">Slide 2</div>
+                                                                <div class="swiper-slide">Slide 3</div>
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination beforeDisPg"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+                    <div class="do_banner">
+                        <!-- Swiper -->
+                        <div class="swiper-container" id="afterDisSwiper">
+                            <div class="swiper-wrapper" id="MultiMediaAfter">
+                                <div class="swiper-slide">Slide 1</div>
+                                <div class="swiper-slide">Slide 2</div>
+                                <div class="swiper-slide">Slide 3</div>
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination afterDisPg"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="rightContent" style="overflow: auto">
+        <div class='g_con'>
+            <!-- 物流时间轴 -->
+            <div class='expressRecord lopWidth' id="timeAxis">
+                <div>暂时没有数据，请进入流程处理案件</div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--    附件详情弹出的窗口-->
+    <div class="duck_duck">
+        <div class="duck_box">
+            <div class="allTiel">
+                <div class="duck_close">
+                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png" style="width: 100%;height: 100%"></i>
+                </div>
+                <div class="duck_title">
+                    <span class="duckActive">图片</span>
+                    <span>视频</span>
+                    <span>音频</span>
+                </div>
+                <div class="duck_info">
+                    <div class="info_chance blockActive">
+                        <div class="swiper-container modelImageBox">
+                            <div class="swiper-wrapper" id="modelImageList">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination modelImagePage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+                    <div class="info_chance">
+                        <div class="swiper-container modelVideoBox">
+                            <div class="swiper-wrapper" id="modelVideoList">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination modelVideoPage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+                    <div class="info_chance">
+                        <div class="swiper-container modelAudioBox">
+                            <div class="swiper-wrapper" id="modelAudioList">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination modelAudioPage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- &lt;!&ndash; 处置前 弹出的全屏显示轮播图  &ndash;&gt;-->
+    <div class="duk_duck" id="pictureBoxDuc">
+        <div class="duk_box">
+            <div class="allTiel" id="allTiel">
+                <div class="fullScreen" id="fullScreen">全屏</div>
+                <div class="fullScreen exitfullScreen" id="exitfullScreen">退出全屏</div>
+                <div class="duk_close" id="duk_picture">
+                    <i style="width: 20px;height: 20px"><img src="../img/close_duck.png" style="width: 100%;height: 100%"></i>
+                </div>
+                <div style="width: 100%;height: 100%;padding: 5px">
+                    <div class="info_chance blockActive">
+                        <div class="swiper-container imageDetailBox">
+                            <div class="swiper-wrapper" id="imageDetailList">
+                            </div>
+                            <!-- Add Pagination -->
+                            <div class="swiper-pagination imageDetailPage"></div>
+                            <!-- Add Arrows -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
+<script type="text/javascript" th:inline="javascript">
+
+    let eventId = [[${eventId}]];
+
+    $(function () {
+
+        //附件详情弹出 选项卡
+        $(".duck_title span").click(function (event) {
+            $(this).addClass("duckActive").siblings(".duck_title span").removeClass("duckActive")
+            $(".info_chance").eq($(this).index(".duck_title span")).addClass("blockActive").siblings(".info_chance").removeClass("blockActive")
+            event.stopPropagation();
+        });
+
+        $(".duck_close").click(function () {
+            $(".duck_duck").fadeOut(300)
+        });
+
+        $(document).on("click", ".enclosure", function () {
+            $(".duck_duck").fadeIn(300)
+        });
+
+        $(".tabTitle span").click(function () {
+            $(this).addClass("active").siblings(".tabTitle span").removeClass("active");
+            $(".banner").eq($(this).index(".tabTitle span")).addClass("blockActive").siblings(".banner").removeClass("blockActive");
+        });
+
+        $(".do_banner").on("click", "#beforeDisSwiper", function () {
+            $("#imageDetailList").html($("#MultiMediaBefore").html())
+            $("#pictureBoxDuc").fadeIn(300);
+        });
+
+        $(".do_banner").on("click", "#afterDisSwiper ", function () {
+            $("#imageDetailList").html($("#MultiMediaAfter").html())
+            $("#pictureBoxDuc").fadeIn(300);
+        });
+
+        //全屏
+        $("#fullScreen").click(function () {
+            $("#allTiel").addClass("allTielFont");
+            $("#exitfullScreen").css("display", "block");
+            $(this).css("display", "none")
+        });
+
+        $("#exitfullScreen").click(function () {
+            $("#allTiel").removeClass("allTielFont");
+            $(this).css("display", "none");
+            $("#fullScreen").css("display", "block");
+        })
+
+        //处置前 轮播
+        var beforeDisSwiper = new Swiper('#beforeDisSwiper', {
+            pagination: '.beforeDisPg',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        //处置后 轮播
+        var afterDisSwiper = new Swiper('#afterDisSwiper', {
+            pagination: '.afterDisPg',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        /* 详情图片轮播 */
+        var swiperImage1 = new Swiper('.imageDetailBox', {
+            pagination: '.imageDetailPage',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            // loop: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        /* 详情视频轮播 */
+        var swiperVideo1 = new Swiper('.videoDetailBox', {
+            pagination: '.videoDetailPage',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            // loop: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        /* 详情音频轮播 */
+        var swiperAudio1 = new Swiper('.audioDetailBox', {
+            pagination: '.audioDetailPage',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            // loop: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        /* 时间轴图片轮播 */
+        var swiperImage = new Swiper('.modelImageBox', {
+            pagination: '.modelImagePage',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            // loop: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        /* 时间轴视频轮播 */
+        var swiperVideo = new Swiper('.modelVideoBox', {
+            pagination: '.modelVideoPage',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            // loop: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        /* 时间轴音频轮播 */
+        var swiperAudio = new Swiper('.modelAudioBox', {
+            pagination: '.modelAudioPage',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            slidesPerView: 1,
+            paginationClickable: true,
+            spaceBetween: 30,
+            // loop: true,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        //处置后放大 轮播
+        var imageMediailListAfter = new Swiper('#imageMediailListAfter', {
+            pagination: '.imageMediailListAfterPg',
+            paginationClickable: true,
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            spaceBetween: 30,
+            observer: true, //修改swiper自己或子元素时，自动初始化swiper
+            observeParents: true //修改swiper的父元素时，自动初始化swiperd
+        });
+
+        if(eventId !== null && eventId !== undefined && eventId !== ""){
+            getTimeAxis(eventId);
+            getEventDetail(eventId);
+        }else{
+            $.modal.alertWarning("数据异常");
+        }
+
+
+    });
+
+    let statisticsByEventIdUrl = /*[[@{/statistics/byEventId}]]*/ "/statistics/byEventId";
+    let event = /*[[@{/event/findOne}]]*/ "/event/findOne";
+    let showUrl = [[${@fastProperties.nginxUrl}]];
+
+    /* 时间轴 */
+    function getTimeAxis(eventId) {
+        $.ajaxUtil.get(statisticsByEventIdUrl + "/?eventId=" + eventId, function (e) {
+            let data = e.data;
+            $("#timeAxis").empty();
+            let html = "";
+            if (data.length === 0) {
+                html += "<div>暂时没有数据，请进入流程处理案件</div>";
+            } else {
+                for (let i = 0; i < data.length; i++) {
+                    html += "<div class='expressRecord-single-close'>";
+                    html += "<div class='expressRecord-single-noReach-online-top-close'>";
+                    if (i === 0) {
+                        html += "<div class='online-top-closing'></div>";
+                    } else {
+                        html += "<div class='online-top-close'></div>";
+                    }
+                    html += "<div class='dot-close'>";
+                    if (i === 0) {
+                        html += "<div class='yes blockActive'></div>";
+                    } else {
+                        html += "<div class='yes'></div>";
+                    }
+                    html += "</div>";
+                    if (i === (data.length - 1)) {
+                        html += "<div class='online-bottom-start'></div>";
+                    } else {
+                        html += "<div class='online-bottom'></div>";
+                    }
+                    html += "</div>";
+                    html += "<div class='expressRecord-text'>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "回复内容:<em class='roleSize'>"+ data[i].opinions +"</em> ";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox'>";
+                    html += "by:<em class='roleSize'>"+ data[i].user  + "</em> ";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox RecordTime'>";
+                    html += "<div>开始时间:<em>"+ data[i].starTime +"</em></div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox RecordTime'>";
+                    html += "结束时间:<em>"+ data[i].endTime +"</em>"
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='gameEnd'>";
+                    html += "<div class='endBox' style='display: flex;justify-content: flex-end'>";
+                    html += "<em></em>"
+                    if (data[i].fileName.length > 0) {
+                        html += "<button class='endBox enclosure' type='button' value='" + JSON.stringify(data[i].fileName) + "' onclick='setFileUrl(this)'><i></i>附件详情</button>";
+                    }
+                    html += "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<div class='expressRecord-date'>";
+                    html += "<div class='expressRecord-date-text'>" + data[i].link + "</div>";
+                    html += "</div>";
+                    html += "</div>"
+                }
+            }
+            $("#timeAxis").append(html);
+            $("div[class=dot-close]:last").css("background","green")
+        });
+    }
+
+    function setFileUrl(data) {
+        let value = $.parseJSON(data.value);
+        if (value.length > 0) {
+            $("#modelImageList").empty();
+            $("#modelVideoList").empty();
+            $("#modelAudioList").empty();
+            let imageHtml = "";
+            let videoHtml = "";
+            let audioHtml = "";
+            for (let i = 0; i < value.length; i++) {
+                if (value[i].type === 1) {
+                    imageHtml += "<div class='swiper-slide'>";
+                    imageHtml += "<img style='width: 100%;height: 100%' src='" + showUrl + value[i].url + "'>";
+                    imageHtml += "</div>";
+                }
+                if (value[i].type === 2) {
+                    videoHtml += "<div class='swiper-slide'>";
+                    videoHtml += "<video style='width: 100%;height: 100%' controls src='" + showUrl + value[i].url + "'></video>";
+                    videoHtml += "</div>";
+                }
+                if (value[i].type === 3) {
+                    audioHtml += "<div class='swiper-slide'>";
+                    audioHtml += "<audio style='width: 100%;height: 100%' controls src='" + showUrl + value[i].url + "'></audio>";
+                    audioHtml += "</div>";
+                }
+            }
+            $("#modelImageList").html(imageHtml);
+            $("#modelVideoList").html(videoHtml);
+            $("#modelAudioList").html(audioHtml);
+        }
+    }
+
+    function getEventDetail(eventId) {
+        $.ajaxUtil.get(event + "?eventId=" + eventId, function (e) {
+            let data = e.data;
+            eventId = data.id;
+            /*详情*/
+            $("#eventCode").val(data.eventCode);
+            $("#eventTypeStr").val(data.eventTypeStr);
+            $("#represent").val(data.represent);
+            $("#location").val(data.location);
+            $("#regionStr").val(data.regionStr);
+            $("#conditionValue").val(data.conditionValue);
+            $("#level").val(data.level);
+            $("#timeLimitStr").val(data.timeLimitStr);
+            $("#girdStr").val(data.girdStr);
+            $("#community").val(data.community);
+            $("#street").val(data.street);
+            $("#eventRegion").val(data.eventRegion);
+            $("#x").val(data.x);
+            $("#y").val(data.y);
+            $("#eventSourceStr").val(data.eventSourceStr);
+            $("#cdate").val(data.cdate);
+            $("#petitionerSex").val(data.petitionerSex);
+            $("#petitionerPhone").val(data.petitionerPhone);
+            $("#petitionerName").val(data.petitionerName);
+            $("#userName").val(data.userName);
+            $("#recTypeStr").val(data.recTypeStr);
+            $("#objId").val(data.objId);
+            if (data.objId == null) {
+                $(".partCodes").addClass('roleBox')
+            } else {
+                $(".partCodes").removeClass('roleBox')
+            }
+            /* 附件图片回显 */
+            let file = data.file;
+            setFileInput(file);
+        });
+    }
+</script>
+</body>
+</html>

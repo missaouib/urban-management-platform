@@ -2926,7 +2926,7 @@
 	    icons: {
 	      paginationSwitchDown: 'fa-caret-square-down',
 	      paginationSwitchUp: 'fa-caret-square-up',
-	      refresh: 'fa-sync',
+	      refresh: 'fa-refresh',
 	      toggleOff: 'fa-toggle-off',
 	      toggleOn: 'fa-toggle-on',
 	      columns: 'fa-th-list',
@@ -3349,7 +3349,7 @@
 	  escape: false,
 	  events: undefined
 	};
-	var METHODS = ['getOptions', 'refreshOptions', 'getData', 'getSelections', 'getAllSelections', 'load', 'append', 'prepend', 'remove', 'removeAll', 'insertRow', 'updateRow', 'getRowByUniqueId', 'updateByUniqueId', 'removeByUniqueId', 'updateCell', 'updateCellByUniqueId', 'showRow', 'hideRow', 'getHiddenRows', 'showColumn', 'hideColumn', 'getVisibleColumns', 'getHiddenColumns', 'showAllColumns', 'hideAllColumns', 'mergeCells', 'checkAll', 'uncheckAll', 'checkInvert', 'check', 'uncheck', 'checkBy', 'uncheckBy', 'refresh', 'destroy', 'resetView', 'showLoading', 'hideLoading', 'togglePagination', 'toggleFullscreen', 'toggleView', 'resetSearch', 'filterBy', 'scrollTo', 'getScrollPosition', 'selectPage', 'prevPage', 'nextPage', 'toggleDetailView', 'expandRow', 'collapseRow', 'expandRowByUniqueId', 'collapseRowByUniqueId', 'expandAllRows', 'collapseAllRows', 'updateColumnTitle', 'updateFormatText'];
+	var METHODS = ['getOptions', 'refreshOptions', 'getData', 'getSelections', 'getAllSelections', 'load', 'append', 'prepend', 'remove', 'removeAll', 'insertRow', 'updateRow', 'getRowByUniqueId', 'updateByUniqueId', 'removeByUniqueId', 'updateCell', 'updateCellByUniqueId', 'showRow', 'hideRow', 'getHiddenRows', 'showColumn', 'hideColumn', 'getVisibleColumns', 'getHiddenColumns', 'showAllColumns', 'hideAllColumns', 'mergeCells', 'checkAll', 'uncheckAll', 'checkInvert', 'check', 'uncheck', 'checkBy', 'uncheckBy', 'refresh', 'destroy', 'resetView', 'showLoading', 'hideLoading', 'togglePagination', 'toggleFullscreen', 'toggleView', 'resetSearch', 'filterBy', 'scrollTo', 'getScrollPosition', 'selectPage', 'prevPage', 'nextPage', 'toggleDetailView', 'expandRow', 'collapseRow', 'expandRowByUniqueId', 'collapseRowByUniqueId', 'expandAllRows', 'collapseAllRows', 'updateColumnTitle', 'updateFormatText', 'getPage'];
 	var EVENTS = {
 	  'all.bs.table': 'onAll',
 	  'click-row.bs.table': 'onClickRow',
@@ -7523,7 +7523,9 @@
 	  });
 	  return typeof value === 'undefined' ? this : value;
 	};
-
+	BootstrapTable.prototype.getPage = function (params) {
+		return {pageSize: this.options.pageSize, pageNumber: this.options.pageNumber};
+	};
 	$.fn.bootstrapTable.Constructor = BootstrapTable;
 	$.fn.bootstrapTable.theme = Constants.THEME;
 	$.fn.bootstrapTable.VERSION = Constants.VERSION;

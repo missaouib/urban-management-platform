@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: map_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <link th:href="@{/css/girdSave.css}" rel="stylesheet" type="text/css">
+</head>
+<style>
+
+</style>
+<body>
+<div class="content">
+    <div class="leftContent">
+        <form id="gridForm">
+            <div class="top table2_top">
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span></span>单元网格标识码</td>
+                            <td>
+                                <input type="text" id="gridCode" name="gridCode" />
+                            </td>
+                            <td><span></span>单元网格名称</td>
+                            <td>
+                                <input type="text" id="gridName" name="gridName" />
+                            </td>
+                        </tr>
+                        <input type="hidden" id="coordinate" name="coordinate" />
+                        <tr>
+                            <td><span></span>区域分类</td>
+                            <td>
+                                <select id="gridKvId" name="kv" required>
+                                    <option value="">请选择</option>
+                                    <option value="454310fe-7b45-49b0-9910-36e777e6fdcc">1类</option>
+                                    <option value="e117bf07-0408-4623-98c3-f358ebeca8b1">2类</option>
+                                    <option value="fd533d5b-b5d1-4fbc-b4cd-4ced27b7b0c4">3类</option>
+                                </select>
+                            </td>
+                            <td><span></span>面积</td>
+                            <td>
+                                <input type="text" id="area" name="area" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><span></span>初始日期</td>
+                            <td>
+                                <input size="16" class="form_datetime" id="initialDate" name="initialDate" type="text" value="" readonly>
+                                <span class="add-on"><i class="icon-remove"></i></span>
+                                <span class="add-on"><i class="icon-th"></i></span>
+                            </td>
+                            <td><span></span>终止日期</td>
+                            <td>
+                                <input size="16" class="form_datetime" id="terminationDate" name="terminationDate" type="text" value="" readonly>
+                                <span class="add-on"><i class="icon-remove"></i></span>
+                                <span class="add-on"><i class="icon-th"></i></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><span></span>问题描述</td>
+                            <td colspan="8"><textarea id="remark" name="remark" required></textarea></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+        <div class="notice_bot">
+            <!--            <div class="l_left">-->
+            <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+            <!--            </div>-->
+            <div class="r_right but_p girdBtnGroup">
+                <button class="but_save" type="button" onclick="saveGrid()">保存</button>
+                <button class="but_esc" type="button" style="display: none;margin-left: 10px" onclick="updateGrid()">修改
+                </button>
+                <button class="but_close" onclick="Cancel()">关闭</button>
+            </div>
+        </div>
+    </div>
+    <div class="rightContent" style="position: relative">
+        <div class="mengBan"></div>
+        <div id="container" style="width: 100%;height: 100%;"></div>
+        <!--                <div class="card" style="margin-top: 0px">-->
+        <!--                    <div class="card-body" >-->
+        <div class="titlenav">
+            <button class="check_btn2 addPencle">新增</button>
+            <button class="check_btn2" type="button" onclick="deleteGrid()">删除</button>
+        </div>
+        <div class="map" id="map" style="width: 100%;height: 100%"></div>
+
+        <!--                                        line and pie-->
+        <div id="popup" class="ol-popup">
+            <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+            <div id="popup-content">
+                <ul id="message">
+
+                </ul>
+            </div>
+        </div>
+
+        <!--                    </div>&lt;!&ndash; /.card-body - ->-->
+        <!--                </div>&lt;!&ndash; /.card &ndash;&gt;-->
+    </div>
+</div>
+
+<div id="pictureDiv" style="display: none">
+
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: bmap_js" />
+<script type="text/javascript" th:inline="javascript">
+
+    let url = /*[[@{/user/save}]]*/ "/json/unit.json";
+    let gridSaveUrl = /*[[@{/grid/gridSave}]]*/ "/grid/gridSave";
+    let gridUpdateUrl = /*[[@{/grid/gridUpdate}]]*/ "/grid/gridUpdate";
+    let gridDeleteUrl = /*[[@{/grid/gridDelete}]]*/ "/grid/gridDelete";
+    let getGridListUrl = /*[[@{/grid/getGridList}]]*/ "/grid/getGridList";
+
+
+    function saveGrid() {
+        let data = $('#gridForm').serialize();
+        $.operate.saveAndReload(gridSaveUrl, data);
+    }
+
+    function updateGrid() {
+        let data = $('#gridForm').serialize();
+        $.operate.saveAndReload(gridUpdateUrl, data);
+    }
+
+    function deleteGrid() {
+        let data = {
+            gridId: $("#id").val()
+        };
+        $.operate.saveAndReload(gridDeleteUrl, data);
+    }
+
+    $(function () {
+        $(".ol-full-screen-false").html("全屏");
+        // $(".datepicker").datepicker({
+        //     language: 'zh-CN',
+        //     autoclose: true,
+        //     format: "yyyy-mm-dd hh:ii:ss"
+        // });
+        getGridList();
+    });
+
+    function getGridList() {
+        $.ajaxUtil.get(getGridListUrl, function (e) {
+            let data = e.data;
+            for (let i = 0; i < data.length; i++) {
+                let data1 = data[i].coordinate;
+                let split = data1.split("-");
+                let polygonArray = [];
+                let polygonArrayEnd = [];
+                for (let j = 0; j < split.length; j++) {
+                    let pointArray = [];
+                    pointArray.push(split[j].split(",")[0]);
+                    pointArray.push(split[j].split(",")[1]);
+                    polygonArray.push(pointArray);
+                    polygonArrayEnd.push(polygonArray);
+                }
+                setPolygon(polygonArrayEnd, data[i].id);
+            }
+        });
+    }
+
+</script>
+
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        $(".datepicker").datetimepicker({format: 'yyyy-mm', autoclose:true, todayBtn: true, startView:4, minView:3});
+        ////日期插件
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+
+    });
+
+    //回调函数接收查询结果
+    var geojsonFormat = new ol.format.GeoJSON({defaultDataProjection: "EPSG:4326"});
+
+    let getGridByCheckLayerUrl = /*[[@{/event/getGridByCheckLayer}]]*/ "/event/getGridByCheckLayer";
+
+    function success_jsonpCallback(res) {
+        var features = geojsonFormat.readFeatures(res);
+        let mongodbId = features[0].H.mongodb_id;
+        $.ajaxUtil.get(getGridByCheckLayerUrl + "?mongodbId=" + mongodbId, function (e) {
+            console.log("e", e);
+        });
+    }
+    // var center = ol.proj.transform([126.62, 45.74], "EPSG:4326", "EPSG:3857");
+    // var raster = new ol.layer.Tile({
+    //     source: new ol.source.OSM()
+    // });
+    // var source = new ol.source.Vector({wrapX: false});
+    // //ol.layer.Vector用于显示在客户端渲染的矢量数据。
+    // var vector = new ol.layer.Vector({
+    //     source: source
+    // });
+    // var map = new ol.Map({
+    //     target: 'map',
+    //     layers: [raster, vector],
+    //     view: new ol.View({
+    //         // projection: "EPSG:" + epsg,
+    //         center: center,
+    //         zoom: 12
+    //     })
+    // });
+
+    // 沽源地图
+    // var center = ol.proj.transform([115.68192, 41.66462], "EPSG:4326", "EPSG:3857");
+    let mapUrl = [[${@geoServerProperties.url}]];
+    let center_x = [[${@geoServerProperties.center_x}]];
+    let center_y = [[${@geoServerProperties.center_y}]];
+    let layers = [[${@geoServerProperties.layers}]];
+    let zoom = [[${@geoServerProperties.zoom}]];
+    let epsg = [[${@geoServerProperties.epsg}]];
+    var center = [center_x, center_y];
+    var projection = new ol.proj.Projection({
+        code: epsg,
+        units: 'degrees',
+        axisOrientation: 'neu',
+        global: true
+    });
+    var untiled = new ol.layer.Image({
+        source: new ol.source.ImageWMS({
+            ratio: 1,
+            url: mapUrl,
+            params: {
+                'VERSION': '1.1.1',
+                "LAYERS": layers,
+                "exceptions": 'application/vnd.ogc.se_inimage',
+            }
+        })
+    });
+    var source = new ol.source.Vector({wrapX: false});
+
+    var fullScreenControl = new ol.control.FullScreen();
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            untiled
+        ],
+        view: new ol.View({
+            // projection: projection,
+            center:center,
+            zoom:zoom,
+            projection: projection
+        })
+    });
+    //画笔
+    $(".addPencle").click(function () {
+        var draw = new ol.interaction.Draw({
+            source: source,
+            //点：Point   线:LineString      面:Polygon
+            type: "Polygon",
+        });
+        map.addInteraction(draw)
+        draw.on('drawstart', function () {
+            tarr.splice(0)
+        })
+        draw.on('drawend', function () {
+            source.clear();
+        });
+        $(".but_esc").removeClass("blockActive")
+    })
+
+    map.addControl(fullScreenControl)
+    var layerMap = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+    });
+    map.addLayer(layerMap);
+
+    var tarr = [];
+    var t;
+    $("#map").click(function (e) {
+        t = map.getEventCoordinate(e);
+        $("#coordinate").val(t);
+
+        //面:Polygon
+        tarr.push(t)
+        var newStr = [];
+        for (var i = 0; i < tarr.length - 1; i++) {
+            newStr.push(tarr[i])
+        }
+        newStr.push(newStr[0])
+        var array = newStr.join("-")
+        $("#coordinate").val(array)
+        if (array.length != 0) {
+            $("#coordinate").val(array)
+        }
+
+    });
+    var selectSingleClick = new ol.interaction.Select();
+    map.addInteraction(selectSingleClick);
+    selectSingleClick.on('select', function (e) {
+        let features = e.target.getFeatures().getArray();
+        let dataId = features[0].H.data.id;
+        let getGridOneUrl = /*[[@{/grid/getGridOne/}]]+dataId*/ "/grid/getGridOne/" + dataId;
+        $.ajaxUtil.get(getGridOneUrl, function (e) {
+            let data = e.data;
+            $("#id").val(data.id);
+            $("#coordinate").val(data.coordinate);
+            $("#area").val(data.area);
+            $("#gridCode").val(data.gridCode);
+            $("#gridName").val(data.gridName);
+            $("#initialDate").val(data.initialDate);
+            $("#remark").val(data.remark);
+            $("#terminationDate").val(data.terminationDate);
+            $("#gridKvId").val(data.kv);
+        });
+        $(".but_esc").addClass("blockActive")
+    });
+    //固定的面
+    var Polygons = [
+        [
+            [14098274.077604493, 5744048.473396081], [14094566.881732661, 5740952.773750531], [14097930.11097721, 5738659.662901975], [14101331.5587359, 5741831.79957581], [14098274.077604493, 5744048.473396081]
+        ]
+    ];
+    var polygon = new ol.geom.Polygon(Polygons);
+    //polygon.applyTransform(ol.proj.getTransform('EPSG:4326', 'EPSG:3857'));//经纬度坐标需要转换
+    var multiPolygon = new ol.Feature({
+        geometry: polygon
+    });
+
+    /*layerMap.getSource().addFeature(multiPolygon);*/
+
+    function setPolygon(Polygons, data) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(Polygons),
+            data: {
+                id: data,
+                // name: name,
+                coordinate: Polygons
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
+    }
+
+</script>
+</body>
+</html>
+

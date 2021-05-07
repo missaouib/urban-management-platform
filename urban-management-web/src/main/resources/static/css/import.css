@@ -1,0 +1,60 @@
+.innerBox{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.tree{
+    width: 15%;
+    height: 100%;
+}
+.tabels,.maps{
+    width: 42%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.tabels{
+    /*border: 1px solid black;*/
+    border-radius: 10px;
+    padding: 5px;
+    box-shadow: 1px 1px 6px 0px rgba(228, 228, 228, 0.5);
+    overflow: hidden;
+}
+.treeDemo{
+    width: 100%;
+    height: 100%;
+}
+.attribute{
+    width: 100%;
+    height: 100%;
+    background-color: skyblue;
+    padding: 10px 5px;
+    font-size: 14px;
+    margin: 10px 0;
+}
+
+.notice_check p label{
+    text-align: left;
+    width: 13%;
+}
+.notice_check .find_input{
+    margin: 0!important;
+}
+.function_btn{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.notice_check p{
+    padding: 5px 0;
+}
+.notice_check{
+    padding: 0px!important;
+}
+.maps{
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 5px;
+    box-shadow: 1px 1px 6px 0px rgba(228, 228, 228, 0.5);
+}

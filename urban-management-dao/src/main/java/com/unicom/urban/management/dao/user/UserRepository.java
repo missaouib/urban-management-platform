@@ -2,24 +2,18 @@ package com.unicom.urban.management.dao.user;
 
 import com.unicom.urban.management.dao.CustomizeRepository;
 import com.unicom.urban.management.pojo.entity.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends CustomizeRepository<User, String> {
 
     User findByUsername(String username);
 
-    Page<User> findByUsername(String username, Pageable pageable);
+    Optional<User> findByUsernameAndDeleted(String username, String deleted);
 
-    Boolean existsByUsername(String username);
+    List<User> findAllByDept_IdAndSortAndDeleted(String deptId, Integer sort, String deleted);
 
-    @Modifying
-    @Query(value = "delete from User u where u.id in ?1")
-    void deleteUserWithIds(List<String> ids);
-
+    boolean existsByUsernameAndDeleted(String username, String deleted);
 
 }

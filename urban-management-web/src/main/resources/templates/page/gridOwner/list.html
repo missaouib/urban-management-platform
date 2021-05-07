@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>移动终端配置</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<div class="notice_main ">
+
+
+
+    <form id="userForm" style="margin-top: 15px">
+        <div class="top table2_top">
+            <div class="top_out">
+                <table class="table">
+                    <tbody>
+                    <tr style="display: flex;justify-content: center;align-items: center">
+                        <td style="width: 20%">网格名称<span></span></td>
+                        <td style="width: 40%">
+                            <input type="text" class="find_input" name="gridName" autocomplete="off">
+                        </td>
+                        <td style="width: 20%">所在区域</td>
+                        <td style="width: 40%">
+                            <select name="region" class="form-control" id="grid1" onchange="getStreetList()" required>
+                                <option value="">--请选择--</option>
+                                <option th:each="as:${gridList}" th:value="${as.id}"
+                                        th:text="${as.gridName}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr style="display: flex;justify-content: center;align-items: center">
+                        <td style="width: 20%">所属街道</td>
+                        <td style="width: 40%">
+                            <select name="street" class="form-control" id="grid2" onchange="getCommunityList()"
+                                    required>
+                                <option value=''>--请选择--</option>
+                            </select>
+                        </td>
+                        <td style="width: 20%">所属社区</td>
+                        <td style="width: 40%">
+                            <select name="community" class="form-control" id="grid3" required>
+                                <option value=''>--请选择--</option>
+                            </select>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+    <div class="notice_check">
+        <form id="search-form">
+            <p style="display: flex;justify-content: flex-end">
+                <input type="button" class="check_btn button_ground" onclick="$.table.search()" value="查询">
+                <input type="button" class="check_btn1 button_ground closeSearch" onclick="$.form.reset()" value="重置">
+            </p>
+        </form>
+    </div>
+
+
+    <div class="clear"></div>
+
+
+    <div class="btn-group-sm" id="toolbar">
+    </div>
+
+
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+
+<script type="text/javascript" th:inline="javascript">
+
+    $(function () {
+        queryUserList();
+    });
+
+    let searchUrl = /*[[@{/gridOwner/getGridListPage}]]*/ "/gridOwner/getGridList";
+    let toInsertUrl = /*[[@{/gridOwner/toInsert/?id={id}}]]*/ "/gridOwner/toInsert";
+
+    function queryUserList() {
+        let options = {
+            url: searchUrl,
+            updateUrl: toInsertUrl,
+            uniqueId: "id",
+            sortName: "updateTime",
+            sortOrder: "desc",
+            modalName: "移动终端配置",
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class:'index_width',
+                    formatter: function (value, row, index) {
+                        let page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    title: '网格名称',
+                    field: 'gridName',
+                    sortable: true,
+                },
+                {
+                    title: '所在区域',
+                    field: 'region',
+                    sortable: true,
+                },
+
+                {
+                    title: '所属街道',
+                    field: 'street',
+                    sortable: true,
+                },
+                {
+                    title: '所属社区',
+                    field: 'community',
+                    sortable: true,
+                },
+                {
+                    title: '操作',
+                    field: '',
+                    class: 'radios',
+                    formatter: function (value, row) {
+                        return "<a href='javascript:void(0)' onclick='$.operate.editTab(\"" + row.id + "\")'>配置</a>";
+                    }
+                }
+            ]
+        };
+        $.table.init(options);
+    }
+
+    /**
+     * 获取街道
+     */
+    function getStreetList() {
+        let parentId = $("#grid1 option:selected").val();
+        let url = "/event/findAllByParentId/?parentId=" + parentId;
+        let option1 = "<option value=''>--请选择--</option>";
+        $("#grid2").html(option1);
+        $("#grid3").html(option1);
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid2").html(option);
+            }
+        });
+    }
+
+    /**
+     * 获取社区
+     */
+    function getCommunityList() {
+        let parentId = $("#grid2 option:selected").val();
+        let url = "/event/findAllByParentId/?parentId=" + parentId;
+        let option1 = "<option value=''>--请选择--</option>";
+        $("#grid3").html(option1);
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option value=''>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#grid3").html(option);
+            }
+        });
+    }
+
+</script>
+</body>
+</html>

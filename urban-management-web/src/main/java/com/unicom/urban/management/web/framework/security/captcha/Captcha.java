@@ -1,8 +1,9 @@
 package com.unicom.urban.management.web.framework.security.captcha;
 
-import lombok.Getter;
+import cn.hutool.captcha.LineCaptcha;
+import cn.hutool.captcha.generator.MathGenerator;
 
-import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -10,29 +11,21 @@ import java.time.LocalDateTime;
  *
  * @author liukai
  */
-public class Captcha {
-
-    @Getter
-    private BufferedImage bufferedImage;
-
-    /**
-     * 验证码的值
-     */
-    @Getter
-    private String code;
+public class Captcha extends LineCaptcha implements Serializable {
 
     /**
      * 验证码失效时间
      */
-    private LocalDateTime expireTime;
+    private final LocalDateTime expireTime;
 
-
-    public Captcha(BufferedImage bufferedImage, String code, int expireSecond) {
-        this.bufferedImage = bufferedImage;
-        this.code = code;
-        this.expireTime = LocalDateTime.now().plusSeconds(expireSecond);
+    public Captcha(int width, int height, int length, long expireTime) {
+        super(width, height, length, 150);
+        this.expireTime = LocalDateTime.now().plusSeconds(expireTime);
     }
 
+    /**
+     * 验证码是否过期
+     */
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(expireTime);
     }

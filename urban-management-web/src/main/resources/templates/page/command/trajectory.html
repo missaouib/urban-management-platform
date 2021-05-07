@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+    <th:block th:include="page/fragments/common :: swiper_css" />
+    <link th:href="@{/css/comprehensiveEvaluation.css}" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<div class="warp">
+    <div class="map_box" style="width: 100%;background-color:#17335B;position: relative">
+        <div class="buttons" style="position: absolute;top:10px;left: 10px;z-index: 99;justify-content: start">
+            <div class="times" style="display: flex;align-items:center;justify-content: space-between;flex-wrap: nowrap">
+                <div class="titleone" style="display: flex;align-items:center;justify-content: space-between;flex-wrap: nowrap;width: 80px">轨迹回放:</div>
+                <div class="titleorther">
+                    <input class="find_input form_date" id="titleorther" style="width: 100px;text-align: center;padding: 0">
+                </div>
+                <div class="titleorther" id="titleortherTime">18:20</div>
+            </div>
+            <div class="controls">
+                <div class="start">
+                    <div class="rameloss noneActive"></div>
+                    <div class="animationStart" id="start-animation"></div>
+                </div>
+                <div class="stop" id="stop"></div>
+                <div class="write" id="wait"></div>
+            </div>
+        </div>
+        <div class="mengBan"></div>
+        <div id="container" style="width: 100%;height: 100%;"></div>
+        <div class="map" id="map_map">
+            <div class="map" id="map" style="width: 100%;height: 100%"></div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+</div>
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<th:block th:include="page/fragments/common :: swiper_js"/>
+<th:block th:include="page/fragments/common :: arc_js"/>
+<th:block th:include="page/fragments/common :: bmap_js" />
+<!--<th:block th:include="page/fragments/common :: mapinit_js"/>-->
+<script type="text/javascript" th:inline="javascript">
+
+    var userId = [[${userId}]];
+    console.log("userId", userId);
+
+    $(function () {
+        ////日期插件
+        $('.form_date').datetimepicker({
+            language: 'fr',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0,
+            language: 'zh-CN', //语言
+            format: "yyyy-mm-dd"
+        });
+
+        let date = new Date()
+        let y = date.getFullYear();
+        let m = date.getMonth() <9 ? '0' + date.getMonth() :  date.getMonth();
+        let r = date.getDate() <9 ? '0' + date.getDate() :  date.getDate();
+        $("#titleorther").val(y + '-' + m + '-' + r)
+
+        setInterval(() => {
+            let date = new Date()
+            let H = date.getHours();
+            let Miu = date.getMinutes() < 9 ? '0' + date.getMinutes() :  date.getMinutes();
+            $("#titleortherTime").html(H + ':' + Miu)
+        }, 1000);
+
+        let ryglUrl = /*[[@{/commandSubsystem/getTrackLogForOne}]]*/ "/commandSubsystem/getTrackLogForOne";
+        var coorCode = y + '-' + m + '-' + r;
+        getPointArray(coorCode)
+
+
+
+        var routeCoords = []
+
+        $("#titleorther").change(function () {
+            console.log($("#titleorther").val())
+            $("#map_map").html(``)
+            $("#map_map").append(`<div class="map" id="map" style="width: 100%;height: 100%"></div>`)
+
+            routeCoords = []
+
+            getPointArray($("#titleorther").val())
+        })
+
+        function getPointArray(day) {
+            let startDay = day + ' ' + '00:00:00'
+            let endDay = day + ' ' + '23:59:59'
+            $.ajaxUtil.get(ryglUrl + "?id=" + userId + "&startTime=" + startDay + "&endTime=" + endDay,function (res) {
+                let data = res.data;
+                data.map(i=>{
+                    routeCoords.push([i.x,i.y])
+                })
+                if (routeCoords.length == 0){
+                    $.modal.alertError('当天无轨迹记录');
+                }
+                getMap()
+            })
+        }
+
+
+        function getMap() {
+                if (vectorLayer){
+                    vectorLayer.getSource().clear();
+                }
+                if (vectorLayer2){
+                    vectorLayer2.getSource().clear();
+                }
+                var routeLength = routeCoords.length;
+                if (routeLength == 0) {
+                    routeCoords = [
+                       [595861.5625,5242475.5],  [595861.5625,5242475.5],
+                    ]
+                }
+
+            var gridsetName = 'EPSG:4552';
+            var gridNames = ['EPSG:4552:0', 'EPSG:4552:1', 'EPSG:4552:2', 'EPSG:4552:3', 'EPSG:4552:4', 'EPSG:4552:5', 'EPSG:4552:6', 'EPSG:4552:7'];
+            var baseUrl = 'http://218.10.223.8:9050/geoserver/gwc/service/wmts';
+            var style = '';
+            var format = 'image/png';
+            var infoFormat = 'text/html';
+            var layerName = 'hegang:hegang8';
+            var projection = new ol.proj.Projection({
+                code: 'EPSG:4552',
+                units: 'm',
+                axisOrientation: 'neu'
+            });
+            var resolutions = [13.999999999999998, 6.999999999999999, 3.4999999999999996, 1.7499999999999998, 0.8749999999999999, 0.43749999999999994, 0.21874999999999997, 0.10937499999999999];
+            baseParams = ['VERSION','LAYER','STYLE','TILEMATRIX','TILEMATRIXSET','SERVICE','FORMAT'];
+
+            params = {
+                'VERSION': '1.0.0',
+                'LAYER': layerName,
+                'STYLE': style,
+                'TILEMATRIX': gridNames,
+                'TILEMATRIXSET': gridsetName,
+                'SERVICE': 'WMTS',
+                'FORMAT': format
+            };
+
+            function constructSource() {
+                var url = baseUrl+'?'
+                for (var param in params) {
+                    if (baseParams.indexOf(param.toUpperCase()) < 0) {
+                        url = url + param + '=' + params[param] + '&';
+                    }
+                }
+                url = url.slice(0, -1);
+
+                var source = new ol.source.WMTS({
+                    url: url,
+                    layer: params['LAYER'],
+                    matrixSet: params['TILEMATRIXSET'],
+                    format: params['FORMAT'],
+                    projection: projection,
+                    tileGrid: new ol.tilegrid.WMTS({
+                        tileSize: [512,512],
+                        extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403],
+                        origin: [374503.7646126483, 5570848.560955403],
+                        resolutions: resolutions,
+                        matrixIds: params['TILEMATRIX']
+                    }),
+                    style: params['STYLE'],
+                    wrapX: true
+                });
+                return source;
+            }
+
+            var untiled = new ol.layer.Tile({
+                source: constructSource()
+            });
+
+            var view = new ol.View({
+                center: [0, 0],
+                zoom: 17,
+                resolutions: resolutions,
+                projection: projection,
+                extent: [374503.7646126483,4581664.560955403,626817.3646126483,5570848.560955403]
+            });
+
+
+            var map = new ol.Map({
+                    layers: [untiled],
+                    target: 'map',
+                    view: view
+            });
+
+
+
+
+            map.getView().fit([593489.95, 5237489.95,
+                598010.0499999999, 5247510.05], map.getSize());
+
+
+               map.getView().setCenter(routeCoords[0]);
+               map.getView().setZoom(4);
+            var routeFeature = new ol.Feature({
+                type: 'route',
+                geometry: new ol.geom.LineString(routeCoords)
+            });
+            var geoMarker = new ol.Feature({
+                type: 'geoMarker',
+                geometry: new ol.geom.Point(routeCoords[0])
+            });
+
+            if (routeCoords.length > 1){
+                var styles = {
+                    'route': new ol.style.Style({
+                        stroke: new ol.style.Stroke({
+                            color: [25, 25, 255, 1],
+                            width: 6,
+                            lineDash: [2, 7],
+                        })
+                    }),
+                    'geoMarker': new ol.style.Style({
+                        image: new ol.style.Icon({
+                            src: '../img/taxi.png',
+                            rotateWithView: false,
+                            rotation: -Math.atan2(routeCoords[1][1] - routeCoords[0][1], routeCoords[1][0] - routeCoords[0][0])
+                        })
+                    })
+                };
+            }
+
+
+
+
+            var animating = false;
+            var now;
+            var progress = 0;
+
+            var vectorLayer = new ol.layer.Vector({
+                source: new ol.source.Vector({
+                    features: [routeFeature, geoMarker]
+                }),
+                style: function(feature) {
+                    if (animating && feature.get('type') === 'geoMarker') {
+                        return null;
+                    }
+                    if (styles){
+                        return styles[feature.get('type')];
+                    }
+                }
+            });
+            map.addLayer(vectorLayer)
+            var vectorLayer2 = new ol.layer.Vector({
+                source: new ol.source.Vector({})
+            });
+            map.addLayer(vectorLayer2)
+               var startMarker = new ol.Feature({
+                   geometry: new ol.geom.Point(routeCoords[0])
+               })
+               startMarker.setStyle(new ol.style.Style({
+                   text: new ol.style.Text({
+                       font: '16px sans-serif',
+                       text: '起点',
+                       offsetY: -10,
+                       fill: new ol.style.Fill({
+                           color: '#f58220'
+                       }),
+                       stroke: new ol.style.Stroke({
+                           color: '#fff',
+                           width: 3
+                       })
+                   }),
+               }))
+               vectorLayer.getSource().addFeature(startMarker)
+               //添加终点
+               var endMarker = new ol.Feature({
+                   geometry: new ol.geom.Point(routeCoords[routeCoords.length - 1])
+               })
+               endMarker.setStyle(new ol.style.Style({
+                   text: new ol.style.Text({
+                       font: '14px sans-serif',
+                       text: '终点',
+                       offsetY: -10,
+                       fill: new ol.style.Fill({
+                           color: '#f58220'
+                       }),
+                       stroke: new ol.style.Stroke({
+                           color: '#fff',
+                           width: 3
+                       })
+                   })
+               }))
+               vectorLayer.getSource().addFeature(endMarker)
+
+               var helpTooltipElement = document.createElement('div');
+               helpTooltipElement.className = 'measuretip';
+               var helpTooltip = new ol.Overlay({
+                   element: helpTooltipElement,
+                   offset: [15, 0],
+                   positioning: 'center-left'
+               });
+               map.addOverlay(helpTooltip);
+
+               window.requestAnimationFrame = window.requestAnimationFrame || window.taxizRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+               var cancelAnimationFrame = window.cancelAnimationFrame || window.taxizCancelAnimationFrame;
+
+               var progress = 0;
+               var animation;
+               var taxiveFeature = function(timestamp) {
+                   var speed = 1;
+                   // var speed = document.getElementById("speed").value;
+                   progress += 1;
+                   if (progress % speed == 0) {
+                       var currentPoint = new ol.geom.Point(routeCoords[progress / speed]);
+                       var dx = routeCoords[progress / speed][0] - routeCoords[progress / speed - 1][0];
+                       var dy = routeCoords[progress / speed][1] - routeCoords[progress / speed - 1][1];
+                       var rotation = Math.atan2(dy, dx);
+                       var styleGeomarker = new ol.style.Style({
+                           image: new ol.style.Icon({
+                               src: '../img/taxi.png',
+                               rotateWithView: false,
+                               rotation: -rotation
+                           })
+                       })
+                       var feature = new ol.Feature(currentPoint);
+                       vectorLayer2.getSource().clear();
+                       vectorLayer2.getSource().addFeature(feature);
+                       vectorLayer2.setStyle(styleGeomarker);
+                   }
+                   if (progress % speed != 0) {
+                       var arcGenerator = new arc.GreatCircle({
+                           x: routeCoords[Math.floor(progress / speed)][0],
+                           y: routeCoords[Math.floor(progress / speed)][1]
+                       }, {
+                           x: routeCoords[Math.floor(progress / speed + 1)][0],
+                           y: routeCoords[Math.floor(progress / speed + 1)][1]
+                       });
+
+                       var arcLine = arcGenerator.Arc(speed, {
+                           offset: 100
+                       }); //在两个点之间生成个点
+
+                       var line = new ol.geom.LineString(arcLine.geometries[0].coords);
+                       var lineFeature = new ol.Feature({
+                           type: 'route',
+                           geometry: line
+                       });
+
+
+                       var currentPoint = new ol.geom.Point(arcLine.geometries[0].coords[progress % speed]);
+                       var dx = arcLine.geometries[0].coords[progress % speed][0] - arcLine.geometries[0].coords[progress % speed - 1][0];
+                       var dy = arcLine.geometries[0].coords[progress % speed][1] - arcLine.geometries[0].coords[progress % speed - 1][1];
+                       var rotation = Math.atan2(dy, dx);
+                       var styleGeomarker = new ol.style.Style({
+                           image: new ol.style.Icon({
+                               src: '../img/taxi.png',
+                               rotateWithView: false,
+                               rotation: -rotation
+                           })
+                       })
+                       var feature = new ol.Feature(currentPoint);
+                       vectorLayer2.getSource().clear();
+                       vectorLayer2.getSource().addFeature(feature);
+                       vectorLayer2.setStyle(styleGeomarker);
+                       // helpTooltipElement.innerHTML = "<B>名称：</B>出租车" + "\<br\>" +
+                       //     "<B>当前速度：</B>75km/h" + "\<br\>" +
+                       //     "<B>号牌：</B>浙A0001" + "\<br\>" +
+                       //     "<B>经纬度：</B>" + (arcLine.geometries[0].coords[progress % 2][0] + "").substring(0, 8) + "," + (arcLine.geometries[0].coords[progress % 2][1] + "").substring(0, 7);
+                       // helpTooltip.setPosition(arcLine.geometries[0].coords[progress % 2]);
+                   }
+                   if (progress / speed < routeLength - 1) {
+                       animation = requestAnimationFrame(taxiveFeature);
+                   }
+
+               }
+               function startAnimation() {
+                   if (animating) {
+                       //stopAnimation(false);
+                       //stopAnimation2();
+                   } else {
+                       animating = true;
+                       geoMarker.setStyle(null);
+                       animation = requestAnimationFrame(taxiveFeature);
+                       map.render();
+                       // document.getElementById("startButton").value = "停止回放";
+                       // document.getElementById("startButton").onclick = stopAnimation
+                       // document.getElementById("pauseButton").disabled = false;
+                   }
+               }
+
+
+               function stopAnimation() {
+                   window.cancelAnimationFrame(animation);
+                   vectorLayer2.getSource().clear();
+                   helpTooltip.setPosition(undefined);
+                   geoMarker.setStyle(styles.geoMarker);
+                   progress = 0;
+                   animating = false;
+                   // document.getElementById("startButton").value = "开始回放";
+                   // document.getElementById("startButton").onclick = startAnimation
+                   // document.getElementById("pauseButton").value = "暂停";
+                   // document.getElementById("pauseButton").onclick = pauseAnimation
+                   // document.getElementById("pauseButton").disabled = true;
+               }
+
+               function pauseAnimation() {
+                   window.cancelAnimationFrame(animation);
+                   // document.getElementById("pauseButton").value = "继续";
+                   // document.getElementById("pauseButton").onclick = continueAnimation
+               }
+
+               function continueAnimation() {
+                   animation = requestAnimationFrame(taxiveFeature);
+                   // document.getElementById("pauseButton").value = "暂停";
+                   document.getElementById("pauseButton").onclick = pauseAnimation
+               }
+
+               //定时器
+               var time;
+               $("#start-animation").click(function() {
+                   $(".rameloss").removeClass("noneActive")
+                   var i = 0;
+                   clearInterval(time)
+                   var sportPoint = document.getElementById("sportPoint");
+                   // time = setInterval(function() {
+                   //     i++;
+                   //     sportPoint.style.top = i + "px";
+                   //     if (i > $(".sport_line").height() - 40) {
+                   //         clearInterval(time)
+                   //     }
+                   // }, 3)
+                   startAnimation()
+               });
+
+               $("#stop").click(function() {
+                   $(".rameloss").addClass("noneActive")
+                   var sportPoint = document.getElementById("sportPoint");
+                   // sportPoint.style.top = -26 + "px";
+                   // clearInterval(time)
+                   stopAnimation()
+               })
+           }
+
+        // document.getElementById("pauseButton").disabled = true;
+
+
+
+        // map.on('click',function (e) {
+        //     console.log(e.coordinate)
+        // })
+
+    })
+
+
+</script>
+
+</body>
+</html>

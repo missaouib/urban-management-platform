@@ -1,0 +1,449 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+html {
+	width: 100%;
+	height: 100%;
+}
+body{
+	background: url("../img/screen-bg.jpg") left 100% no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+}
+.warp {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.leftWarp {
+	width: 66%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.rightWarp {
+	width: 33%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.fullMap {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	/* background: url("../img/mapborder.png"); */
+	background-color: #fff;
+	background-size: 100% 100%;
+	overflow: hidden;
+	border-radius: 10px;
+}
+
+.fugai {
+	width: 100%;
+	height: 100%;
+	background: url("../img/randermap.png");
+	background-size: 100% 100%;
+	position: absolute;top: 0;left: 0;
+}
+
+.content_bottom {
+	width: 100%;
+	height: 33%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.bar {
+	width: 100%;
+	height: 50%;
+	background: url("../img/barorther2.png");
+	background-size: 100% 100%;
+	display: flex;
+	position: relative;
+}
+
+.barorther {
+	background: url("../img/barorther2.png");
+	background-size: 100% 100%;
+}
+
+.barIn {
+	width: 100%;
+	height: 33%;
+	background: url("../img/bar2.png");
+	background-size: 100% 100%;
+}
+
+.title {
+	width: 100%;
+	height: 10%;
+	font-size: 18px;
+	font-family: Microsoft YaHei;
+	font-weight: 400;
+	color: #00E4FF;
+	display: flex;
+	align-items: center;
+	padding: 4% 5%;
+}
+
+.barinnner {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: center;
+	align-self: center;
+}
+
+.chars {
+	width: 90%;
+	height: 73%;
+	margin-top: 5%;
+	justify-content: center;
+	align-self: center;
+}
+
+.titleOrter {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.numBosen {
+	width: 6%;
+	height: 40%;
+	border-radius: 10px;
+	border: 3px solid #fff;
+	box-shadow: 1px 4px 10px 2px #ccc;
+	position: absolute;
+	top: 5%;
+	left: 3%;
+	background-color: #fff;
+	display: flex;
+	flex-direction: column;
+}
+
+.numBosen div {
+	flex: 1;
+	border-bottom: 2px solid gray;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: #3889F7;
+	cursor: pointer;
+}
+
+.numBosen div:nth-child(1) {
+	border-top: none;
+}
+
+.numBosen div:nth-child(4) {
+	border-bottom: none;
+}
+
+.bosenActive {
+	color: orange!important;
+}
+
+.numBosen div span:nth-child(2) {
+	font-size: 12px;
+	margin-top: 5px;
+}
+
+.checkBox {
+	width: 10%;
+	height: 14%;
+	position: absolute;
+	bottom: 5%;
+	right: 3%;
+	border-radius: 10px;
+	z-index: 2;
+	overflow: hidden;
+	/* display: none; */
+}
+
+.mapLayers {
+	width: 100%;
+	height: 100%;
+}
+
+.viewGroup {
+	width: 32%;
+	height: 14%;
+	position: absolute;
+	bottom: 5%;
+	right: 3%;
+	border-radius: 10px;
+	z-index: 1;
+	display: none;
+}
+
+.mapView {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: space-between;
+	overflow: hidden;
+}
+
+.optionLayers {
+	flex: 1;
+	border-radius: 10px;
+}
+
+.layerGrounp {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+.mapView div:nth-child(2) {
+	margin: 0 10px;
+}
+
+.layerName,
+.clickName {
+	width: 100%;
+	height: 10%;
+	position: absolute;
+	bottom: 18%;
+	right: 0px;
+	display: flex;
+	justify-content: flex-end;
+	font-size: 12px;
+	color: #fff;
+	padding-right: 5%;
+}
+
+.layerInfo,
+.clickLayer {
+	width: 100%;
+	height: 100%;
+}
+
+.clickLayer img,
+.layerInfo img {
+	width: 100%;
+	height: 100%;
+}
+
+.abend {
+	width: 49%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.bandCha {
+	display: flex;
+	justify-content: space-between;
+}
+
+.meter {
+	width: 100%;
+	height: 69%;
+}
+
+.meterText {
+	width: 100%;
+	height: 30%;
+	display: flex;
+	justify-content: center;
+}
+
+.meterNum {
+	margin: 0 10px;
+	width: 40%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	background: url("../img/zusliod.png");
+	background-size: 100% 100%;
+}
+
+.meterNum span {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.did {
+	width: 100%;
+	height: 40%;
+	font-size: 12px;
+	color: #1181FF;
+}
+
+.line {
+	width: 100%;
+	height: 9%;
+	background: url("../img/line.png");
+	background-size: 100% 100%;
+}
+
+.didNum {
+	width: 100%;
+	height: 50%;
+	color: #07FBE7;
+	font-size: 16px;
+}
+.checkTime{
+	width: 22%;
+	height: 4%;
+	position: absolute;
+	top: 0%;
+	right: 15%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	z-index: 15;
+}
+.timeText{
+	width: 30%;
+	height: 100%;
+	color: #f0f1f3;
+	font-size: 14px;
+	text-align: right;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+}
+.selectTime{
+	width: 59%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+}
+.timeSelect{
+	width: 100%;height: 100%;
+	border-radius: 10px;
+	border-color: #1181FF;
+	color: #1181FF;
+	font-size: 14px;
+}
+.fullScreen_index{
+	width: 30px;
+	height: 30px;
+	background-color: #fff;
+	border-radius: 5px;
+	border: 1px #1181FF solid;
+	overflow: hidden;
+	line-height: 30px;text-align: center;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	z-index: 20;
+}
+
+.title_popup {
+	color: #fff;
+	padding: 2px;
+}
+
+.popup-content {
+	background: #fff;
+	padding: 3px;
+}
+
+.ol-popup-closer {
+	position: absolute;
+	top: 2px;
+	right: 8px;
+}
+
+.ol-popup-closer:after {
+	content: "x";
+	color: #fff;
+}
+.details{
+	cursor: pointer;
+}
+.details:hover{
+	color: #1181FF;
+}
+.left{
+	width: 30%;
+	height: 100%;
+	float: left;
+	padding: 5px;
+}
+.center{
+	width: 40%;
+	height: 100%;
+	background: url("../img/center-bg.png");
+	background-size: 100% 100%;
+	padding: 28px;
+	float: left;
+}
+.right{
+	width: 30%;
+	height: 100%;
+	float: left;
+	padding: 5px;
+}
+.numStatis{
+	width:70%;
+	height: 80px;
+	background: rgba(0,0,0,0.5);
+	box-shadow: 1px 1px 10px 0px #00c7ff;
+	position: absolute;
+	top: 5%;
+	left: 15%;
+	z-index: 15;
+}
+.statis1{
+	width: 25%;
+	height: 50px;
+	margin-top: 15px;
+	float: left;
+	border-right: 1px solid #00c7ff;
+	cursor: pointer;
+}
+.statis1 span{
+	color: #fff;
+	display: block;
+	text-align: center;
+}
+.statis2{
+	width: 25%;
+	height: 50px;
+	margin-top: 15px;
+	float: left;
+	cursor: pointer;
+}
+.statis2 span{
+	color: #fff;
+	display: block;
+	text-align: center;
+}
+.colorStyle1{
+	color: #48ebfc!important;
+	font-weight: bold;
+	line-height: 26px;
+}
+.colorStyle2{
+	color: #3cfd3c!important;
+	font-weight: bold;
+	line-height: 26px;
+}
+.colorStyle3{
+	color: #f8d546!important;
+	font-weight: bold;
+	line-height: 26px;
+}
+.colorStyle4{
+	color: #f74242!important;
+	font-weight: bold;
+	line-height: 26px;
+}

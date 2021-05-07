@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+</head>
+<style>
+    .bootstrap-table{width: 100%;padding: 0 10px 0px 10px!important;}
+</style>
+<body style="border-radius: 8px;">
+<div class="bigTitle">监督员岗位评价</div>
+<div class="search_box">
+    <div class="search_inner">
+        <form class="details">
+            <div class="top table2_top">
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span></span>开始日期</td>
+                            <td>
+                                <input size="16" id="startTimeOne" name="startTime" class="form_datetime" type="text"
+                                       value="" readonly>
+                            </td>
+                            <td><span></span>结束日期</td>
+                            <td>
+                                <input size="16" id="endTimeOne" name="endTime" class="form_datetime" type="text"
+                                       value="" readonly>
+                            </td>
+                            <td style="float: right;margin-right: 5px">
+                                <button class="check_btn" type="button" onclick="supervisorEvaluationSearch()">查询</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!--                            按钮-->
+                <div class="notice_bot">
+                    <!--            <div class="l_left">-->
+                    <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                    <!--            </div>-->
+                    <div class="r_right but_p btn_search dates supervisorEvaluationSearch">
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeOne','endTimeOne','theWeek','','','')">本周</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeOne','endTimeOne','','theMonth','','')">本月</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeOne','endTimeOne','','','theQuarter','')">本季</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeOne','endTimeOne','','','','theYear')">本年</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="contentTable">
+    <table id="tables" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
+    <div class="explain">
+        <div class="explain_box">
+            <p style="padding-left: 0px">注：1)综合指标值中，各个指标的分值计算方法如下：</p>
+            <p>监督员有效上报率分值：监督员有效上报率×100</p>
+            <p>漏报率分值：（1-漏报率）×100</p>
+            <p>按时核实率分值：按时核实率×100</p>
+            <p>按期处置率分值：按期处置率×100</p>
+            <p style="padding-left: 25px">2）综合指标值的计算公式如下：</p>
+            <p>综合指标值=监督员有效上报率分值×40%+漏报率分值×20%+按时核实率分值×20%+按时核查率分值×20%</p>
+        </div>
+    </div>
+</div>
+<div class="bigTitle">受理员岗位评价</div>
+<div class="search_box">
+    <div class="search_inner">
+        <form class="details" >
+            <div class="top table2_top">
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span></span>开始日期</td>
+                            <td>
+                                <input size="16" id="startTimeTwo" name="startTime" class="form_datetime" type="text"
+                                       value="" readonly>
+                            </td>
+                            <td><span></span>结束日期</td>
+                            <td>
+                                <input size="16" id="endTimeTwo" name="endTime" class="form_datetime" type="text"
+                                       value="" readonly>
+                            </td>
+                            <td style="float: right;margin-right: 5px">
+                                <button class="check_btn" type="button" onclick="acceptanceEvaluationSearch()">查询</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!--                            按钮-->
+                <div class="notice_bot">
+                    <!--            <div class="l_left">-->
+                    <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                    <!--            </div>-->
+                    <div class="r_right but_p btn_search dates acceptanceEvaluationSearch">
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeTwo','endTimeTwo','theWeek','','','')">本周</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeTwo','endTimeTwo','','theMonth','','')">本月</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeTwo','endTimeTwo','','','theQuarter','')">本季</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeTwo','endTimeTwo','','','','theYear')">本年</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="contentTable">
+    <table id="tableIn" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
+    <div class="explain">
+        <div class="explain_box">
+            <p style="padding-left: 0px">注：1）综合指标值中，各个指标的分值计算方法如下：</p>
+            <p>受理数分值：2001 件以上 100 分；1201~2000 件 90 分；501~1200 件 75 分；301~500 件 60 分；101~300 件 40 分；100 件及以下 0 分</p>
+            <p>核实按时派发率分值：核实按时派发率×100</p>
+            <p>核查按时派发率分值：核查按时派发率×100</p>
+            <p style="padding-left: 25px">2）综合指标值的计算公式如下：</p>
+            <p>综合指标值=受理数分值×25%+核实按时派发率分值×40%+核查按时派发率分值×35%</p>
+        </div>
+    </div>
+</div>
+<div class="bigTitle">值班长岗位评价</div>
+<div class="search_box">
+    <div class="search_inner">
+        <form class="details">
+            <div class="top table2_top">
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span></span>开始日期</td>
+                            <td>
+                                <input size="16" id="startTimeThree" name="startTime" class="form_datetime" type="text"
+                                       value="" readonly>
+                            </td>
+                            <td><span></span>结束日期</td>
+                            <td>
+                                <input size="16" id="endTimeThree" name="endTime" class="form_datetime" type="text"
+                                       value="" readonly>
+                            </td>
+                            <td style="float: right;margin-right: 5px">
+                                <button class="check_btn" type="button" onclick="shiftForemanEvaluationSearch()">查询</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!--                            按钮-->
+                <div class="notice_bot">
+                    <!--            <div class="l_left">-->
+                    <!--                <input type="checkbox" checked="checked"/>保存并关闭窗口-->
+                    <!--            </div>-->
+                    <div class="r_right but_p btn_search dates shiftForemanEvaluationSearch">
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeThree','endTimeThree','theWeek','','','')">本周</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeThree','endTimeThree','','theMonth','','')">本月</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeThree','endTimeThree','','','theQuarter','')">本季</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeThree','endTimeThree','','','','theYear')">本年</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="contentTable">
+    <table id="tableOn" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
+    <div class="explain">
+        <div class="explain_box">
+            <p style="padding-left: 0px">注：1）综合指标值中，各个指标的分值计算方法如下：</p>
+            <p>立案数分值：0~50 件 100 分；51~100 件 90 分；100~200 件 75 分；200~500 件 60 分；500~1000 件</p>
+            <p>按时立案率分值：按时立案率×100</p>
+            <p>准确立案率分值：准确立案率×100</p>
+            <p>按时结案率分值：按时结案率×100</p>
+            <p style="padding-left: 25px">2）综合指标值的计算公式如下：</p>
+            <p>综合指标值=按时立案率分值×25%+准确立案率分值×40%+按时结案率分值×35%</p>
+        </div>
+    </div>
+</div>
+<div class="bigTitle">派遣员岗位评价</div>
+<div class="search_box">
+    <div class="search_inner">
+        <form class="details">
+            <div class="top table2_top">
+                <div class="top_out">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td><span></span>开始日期</td>
+                            <td>
+                                <input size="16" id="startTimeFour" name="startTime" class="form_datetime" type="text"
+                                       value="" readonly>
+                            </td>
+                            <td><span></span>结束日期</td>
+                            <td>
+                                <input size="16" id="endTimeFour" name="endTime" class="form_datetime" type="text"
+                                       value="" readonly>
+                            </td>
+                            <td style="float: right;margin-right: 5px">
+                                <button class="check_btn" type="button" onclick="dispatcherEvaluationSearch()">查询</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!--                            按钮-->
+                <div class="notice_bot">
+                    <div class="r_right but_p btn_search dates dispatcherEvaluationSearch">
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeFour','endTimeFour','theWeek','','','')">本周</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeFour','endTimeFour','','theMonth','','')">本月</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeFour','endTimeFour','','','theQuarter','')">本季</button>
+                         <button class="check_btn2" type="button"  onclick="setDate('startTimeFour','endTimeFour','','','','theYear')">本年</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="contentTable">
+    <table id="tableOf" class="table_style" style="margin: 0 auto;margin-top: 10px" ></table>
+    <div class="explain">
+        <div class="explain_box">
+            <p style="padding-left: 0px">注：1）综合指标值中，各个指标的分值计算方法如下：</p>
+            <p>派遣数分值：2001 件以上 100 分；1201~2000 件 90 分；501~1200 件 75 分；301~500 件 60 分；101~300 件 40 分；100 件及以下 0 分</p>
+            <p>按时派遣率分值：按时派遣率×100</p>
+            <p>准确派遣率分值：准确立案率×100</p>
+            <p style="padding-left: 25px">2）综合指标值的计算公式如下：</p>
+            <p>综合指标值=派遣数分值×20%+按时派遣率分值×40%+准确派遣率分值×40%</p>
+        </div>
+    </div>
+</div>
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+
+        ////日期插件
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+        supervisorEvaluationSearch();
+        acceptanceEvaluationSearch();
+        shiftForemanEvaluationSearch();
+        dispatcherEvaluationSearch();
+
+    });
+    function setDate(startTime,endTime,theWeek,theMonth,theQuarter,theYear){
+        ////日期插件
+        var date = new Date();
+        //本周
+        if (theWeek !== '') {
+            // 本周一的日期
+            date.setDate(date.getDate() - date.getDay() + 1);
+            let sMonth = date.getMonth() + 1;
+            sMonth = sMonth > 9 ? sMonth : "0" + sMonth;
+            let sDay = date.getDate();
+            sDay =  sDay > 9 ? sDay : "0" + sDay;
+            let begin = date.getFullYear() + "-" + sMonth + "-" + sDay + " 00:00:00";
+            $("#"+startTime).val(begin)
+            // 本周日的日期
+            date.setDate(date.getDate() + 6);
+            let eMonth = date.getMonth() + 1;
+            eMonth = eMonth > 9 ? eMonth : "0" + eMonth;
+            let eDay = date.getDate();
+            eDay =  eDay > 9 ? eDay : "0" + eDay;
+            let end = date.getFullYear() + "-" + eMonth + "-" + eDay + " 23:59:59";
+            $("#"+endTime).val(end)
+        }
+
+        //本月
+        if (theMonth !== ''){
+            //月一
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            month = month > 9 ? month : "0" + month;
+
+            let firstDayOfCurMonth = `${year}-${month}-01`;
+            let lastDay = new Date(year, month, 0);
+            let lastDayOfCurMonth = `${year}-${month}-${lastDay.getDate()}`;
+            $("#"+startTime).val(firstDayOfCurMonth + " 00:00:00")
+            $("#"+endTime).val(lastDayOfCurMonth + " 23:59:59")
+        }
+
+        //本季
+            if (theQuarter !== ''){
+                var now = new Date();
+                var nowMonth = now.getMonth();
+                var year = now.getFullYear();
+                var starQuarte,endQyarte;
+                if(nowMonth>= 0 && nowMonth<= 2){
+                    starQuarte = year + '-01-01 00:00:00';
+                    endQyarte = year + '-03-31 23:59:59'
+                }else if(nowMonth>= 3 && nowMonth<= 5){
+                    starQuarte = year + '-04-01 00:00:00';
+                    endQyarte = year + '-06-30 23:59:59'
+                }else if(nowMonth>= 6 && nowMonth<= 8){
+                    starQuarte = year + '-07-01 00:00:00';
+                    endQyarte = year + '-09-30 23:59:59'
+                }else {
+                    starQuarte = year + '-10-01 00:00:00';
+                    endQyarte = year + '-12-31 23:59:59'
+                }
+
+            $("#"+startTime).val(starQuarte)
+            $("#"+endTime).val(endQyarte)
+        }
+
+        //本年
+        if (theYear !== '') {
+            let year = date.getFullYear();
+            $("#"+startTime).val(year + "-" + "01-01" + " 00:00:00")
+            $("#"+endTime).val(year + "-" + "12-31" + " 23:59:59")
+        }
+        switch (startTime) {
+            case ('startTimeOne'): supervisorEvaluationSearch(); break;
+            case ('startTimeTwo'): acceptanceEvaluationSearch(); break;
+            case ('startTimeThree'): shiftForemanEvaluationSearch(); break;
+            case ('startTimeFour'): dispatcherEvaluationSearch(); break;
+            default:
+        }
+
+    }
+    let supervisorEvaluationUrl = /*[[@{/evaluate/supervisorEvaluation}]]*/ "/evaluate/supervisorEvaluation";
+    let acceptanceEvaluationUrl = /*[[@{/evaluate/acceptanceEvaluation}]]*/ "/evaluate/acceptanceEvaluation";
+    let shiftForemanEvaluationUrl = /*[[@{/evaluate/shiftForemanEvaluation}]]*/ "/evaluate/shiftForemanEvaluation";
+    let dispatcherEvaluationUrl = /*[[@{/evaluate/dispatcherEvaluation}]]*/ "/evaluate/dispatcherEvaluation";
+    function supervisorEvaluationSearch() {
+        $('#tables').bootstrapTable('removeAll');
+        var count = $('#tables').bootstrapTable('getData').length;
+        var param = "?1=1";
+        param += "&startTime=" + $("#startTimeOne").val();
+        param += "&endTime=" + $("#endTimeOne").val();
+
+        $('#tables').bootstrapTable({
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class:'index_width',
+                },
+                {
+                    title: '姓名',
+                    field: "supervisorName",
+                    sortable: true,
+                },
+                {
+                    field: 'gridOnwer',
+                    title: '责任网格',
+                    sortable: true,
+                },
+                {
+                    field: 'patrolReport',
+                    title: '监督员上报数',
+                    sortable: true,
+                },
+                {
+                    field: 'validPatrolReport',
+                    title: "监督员有效上报数",
+                    sortable: true,
+                },
+                {
+                    field: 'reportVaildNumRate',
+                    title: '监督员有效上报率',
+                    sortable: true,
+                },
+                {
+                    field: 'intimeVerify',
+                    title: '按时核实数',
+                    sortable: true,
+                },
+                {
+                    field: 'needVerify',
+                    title: '应核实数',
+                    sortable: true,
+                },
+                {
+                    field: 'inTimeVerifyRate',
+                    title: '按时核实率',
+                    sortable: true,
+                },
+                {
+                    field: 'inTimeCheck',
+                    title: '按时核查数',
+                    sortable: true,
+                },
+                {
+                    field: 'publicReport',
+                    title: '漏报数',
+                    sortable: true,
+                },
+                {
+                    field: 'inst',
+                    title: '立案数',
+                    sortable: true,
+
+                },
+                {
+                    field: 'publicReportRate',
+                    title: '漏报率',
+                    sortable: true,
+
+                },
+                {
+                    field: 'aggregativeIndicator',
+                    title: '综合指标值',
+                    sortable: true,
+                },
+                {
+                    field: 'ratingLevel',
+                    title: '评价等级',
+                    sortable: true,
+                },
+            ],
+            data: []
+        });
+        $.ajaxUtil.get(supervisorEvaluationUrl + param, function (e) {
+            $(e.data).each(function (index, value) {
+                $('#tables').bootstrapTable('insertRow', {
+                    index: index,
+                    row: {
+                        index: index+1,
+                        supervisorName:value.supervisorName,
+                        gridOnwer:value.gridOnwer,
+                        patrolReport:value.patrolReport,
+                        validPatrolReport:value.validPatrolReport,
+                        reportVaildNumRate:value.reportVaildNumRate,
+                        intimeVerify:value.intimeVerify,
+                        needVerify:value.needVerify,
+                        inTimeVerifyRate:value.inTimeVerifyRate,
+                        inTimeCheck:value.inTimeCheck,
+                        publicReport:value.publicReport,
+                        inst:value.inst,
+                        publicReportRate:value.publicReportRate,
+                        aggregativeIndicator:value.aggregativeIndicator,
+                        ratingLevel:value.ratingLevel,
+                    }
+                });
+            })
+
+        })
+    }
+    function acceptanceEvaluationSearch(){
+        $('#tableIn').bootstrapTable('removeAll');
+        var count = $('#tableIn').bootstrapTable('getData').length;
+        var param = "?1=1";
+        param += "&startTime=" + $("#startTimeTwo").val();
+        param += "&endTime=" + $("#endTimeTwo").val();
+        $('#tableIn').bootstrapTable({
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                },
+                {
+                    title: '姓名',
+                    field: "operateHumanNameId",
+                    sortable: true,
+                },
+                {
+                    field: 'operate',
+                    title: '受理数',
+                    sortable: true,
+                },
+                {
+                    field: 'intimeSendVerify',
+                    title: '核实按时派发数',
+                    sortable: true,
+                },
+                {
+                    field: 'needSendVerify',
+                    title: "核实应派发数",
+                    sortable: true,
+                },
+                {
+                    field: 'sendVerifyRate',
+                    title: '核实按时派发率',
+                    sortable: true,
+                },
+                {
+                    field: 'intimeSendCheck',
+                    title: '核查按时派发数',
+                    sortable: true,
+                },
+                {
+                    field: 'needSendCheck',
+                    title: '核查应派发数',
+                    sortable: true,
+                },
+                {
+                    field: 'needSendCheckRate',
+                    title: '核查按时派发率',
+                    sortable: true,
+                },
+                {
+                    field: 'aggregativeIndicator',
+                    title: '综合指标值',
+                    sortable: true,
+                },
+                {
+                    field: 'ratingLevel',
+                    title: '评价等级',
+                    sortable: true,
+                }
+            ],
+            data:[
+
+            ]
+        });
+        $.ajaxUtil.get(acceptanceEvaluationUrl + param, function (e) {
+            $(e.data).each(function (index, value) {
+                $('#tableIn').bootstrapTable('insertRow', {
+                    index: index,
+                    row: {
+                        index: index+1,
+                        operateHumanNameId:value.operateHumanNameId,
+                        operate:value.operate,
+                        intimeSendVerify:value.intimeSendVerify,
+                        needSendVerify:value.needSendVerify,
+                        endVerifyRate:value.endVerifyRate,
+                        intimeSendCheck:value.intimeSendCheck,
+                        needSendCheck:value.needSendCheck,
+                        needSendCheckRate:value.needSendCheckRate,
+                        aggregativeIndicator:value.aggregativeIndicator,
+                        ratingLevel:value.ratingLevel,
+                        sendVerifyRate: value.sendVerifyRate
+                    }
+                });
+            })
+
+        })
+    }
+    function shiftForemanEvaluationSearch(){
+        $('#tableOn').bootstrapTable('removeAll');
+        var count = $('#tableOn').bootstrapTable('getData').length;
+        var param = "?1=1";
+        param += "&startTime=" + $("#startTimeThree").val();
+        param += "&endTime=" + $("#endTimeThree").val();
+        $('#tableOn').bootstrapTable({
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                },
+                {
+                    title: '姓名',
+                    field: "instHumanName",
+                    sortable: true,
+                },
+                {
+                    field: 'inst',
+                    title: '立案数',
+                    sortable: true,
+                },
+                {
+                    field: 'intimeInst',
+                    title: '按时立案数',
+                    sortable: true,
+                },
+                {
+                    field: 'intimeInstRate',
+                    title: "按时立案率",
+                    sortable: true,
+                },
+                {
+                    field: 'exactInst',
+                    title: '准确立案数',
+                    sortable: true,
+                },
+                {
+                    field: 'exactInstRate',
+                    title: '准确立案率',
+                    sortable: true,
+                },
+                {
+                    field: 'inTimeClose',
+                    title: '按时结案数',
+                    sortable: true,
+                },
+                {
+                    field: 'close',
+                    title: "应结案数",
+                    sortable: true,
+                },
+                {
+                    field: 'inTimeCloseRate',
+                    title: '按时结案率',
+                    sortable: true,
+                },
+                {
+                    field: 'aggregativeIndicator',
+                    title: '综合指标值',
+                    sortable: true,
+                },
+                {
+                    field: 'ratingLevel',
+                    title: '评价等级',
+                    sortable: true,
+                },
+            ],
+            data:[
+
+            ]
+        });
+        $.ajaxUtil.get(shiftForemanEvaluationUrl + param, function (e) {
+            $(e.data).each(function (index, value) {
+                $('#tableOn').bootstrapTable('insertRow', {
+                    index: index,
+                    row: {
+                        index: index+1,
+                        instHumanName:value.instHumanName,
+                        inst:value.inst,
+                        intimeInst:value.intimeInst,
+                        intimeInstRate:value.intimeInstRate,
+                        exactInst:value.exactInst,
+                        exactInstRate:value.exactInstRate,
+                        inTimeClose:value.inTimeClose,
+                        close:value.close,
+                        inTimeCloseRate:value.inTimeCloseRate,
+                        aggregativeIndicator:value.aggregativeIndicator,
+                        ratingLevel:value.ratingLevel,
+                    }
+                });
+            })
+        })
+    }
+    function dispatcherEvaluationSearch(){
+        $('#tableOf').bootstrapTable('removeAll');
+        var count = $('#tableOf').bootstrapTable('getData').length;
+        var param = "?1=1";
+            param += "&startTime=" + $("#startTimeFour").val();
+            param += "&endTime=" + $("#endTimeFour").val();
+
+
+        $('#tableOf').bootstrapTable({
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                },
+                {
+                    title: '姓名',
+                    field: "dispatch",
+                    sortable: true,
+                },
+                {
+                    field: 'toDispatch',
+                    title: '派遣数',
+                    sortable: true,
+                },
+                {
+                    field: 'intimeDispatch',
+                    title: '按时派遣数',
+                    sortable: true,
+                },
+                {
+                    field: 'needDispatch',
+                    title: "应派遣数",
+                    sortable: true,
+                },
+                {
+                    field: 'intimeDispatchRate',
+                    title: '按时派遣率',
+                    sortable: true,
+                },
+                {
+                    field: 'accuracyDispatch',
+                    title: '准确派遣数（派遣数-返工数）',
+                    sortable: true,
+                },
+                {
+                    field: 'accuracyDispatchRate',
+                    title: '准确派遣率',
+                    sortable: true,
+                },
+                {
+                    field: 'aggregativeIndicator',
+                    title: '综合指标值',
+                    sortable: true,
+                },
+                {
+                    field: 'ratingLevel',
+                    title: '评价等级',
+                    sortable: true,
+                },
+            ],
+            data:[
+
+            ]
+        });
+        $.ajaxUtil.get(dispatcherEvaluationUrl + param, function (e) {
+            $(e.data).each(function (index, value) {
+                $('#tableOf').bootstrapTable('insertRow', {
+                    index: index,
+                    row: {
+                        index: index+1,
+                        dispatch:value.dispatch,
+                        toDispatch:value.toDispatch,
+                        intimeDispatch:value.intimeDispatch,
+                        needDispatch:value.needDispatch,
+                        intimeDispatchRate:value.intimeDispatchRate,
+                        accuracyDispatch:value.accuracyDispatch,
+                        accuracyDispatchRate:value.accuracyDispatchRate,
+                        aggregativeIndicator:value.aggregativeIndicator,
+                        ratingLevel:value.ratingLevel,
+
+                    }
+                });
+            })
+        })
+    }
+</script>
+</body>
+</html>

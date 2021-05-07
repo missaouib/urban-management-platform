@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>热线上报</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: fileUpload_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_datepicker_css"/>
+</head>
+<style>
+    .bootstrap-table {
+        width: 100%
+    }
+</style>
+<body style="border-radius: 8px;">
+<div class="bigTitle">单元网格区域评价</div>
+<div class="search_box">
+    <div class="search_inner">
+            <div class="top table2_top">
+                <form id="userForm">
+                    <div class="top_out">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td><span></span>开始日期</td>
+                                <td>
+                                    <input size="16" id="startTime" name="startTime" class="form_datetime" type="text"
+                                           value="" readonly>
+                                </td>
+                                <td><span></span>结束日期</td>
+                                <td>
+                                    <input size="16" id="endTime" name="endTime" class="form_datetime" type="text"
+                                           value="" readonly>
+                                </td>
+                                <td style="float: right;margin-right: 5px">
+                                    <button class="check_btn" type="button" onclick="$.table.search()">查询</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+                <div class="notice_bot">
+                    <div class="r_right but_p btn_search dates">
+                        <button class="check_btn2" type="button" id="theWeek" onclick="$.table.search()">本周</button>
+                        <button class="check_btn2" type="button" id="theMonth" onclick="$.table.search()">本月</button>
+                        <button class="check_btn2" type="button" id="theQuarter" onclick="$.table.search()">本季</button>
+                        <button class="check_btn2" type="button" id="theYear" onclick="$.table.search()">本年</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="contents">
+    <table id="bootstrap-table" class="table_style" style="margin: 0 auto"></table>
+</div>
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: jquery_validation_js"/>
+<th:block th:include="page/fragments/common :: fileUpload_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_datepicker_js"/>
+<script type="text/javascript" th:inline="javascript">
+    $(function () {
+        ////日期插件
+        $('.form_datetime').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            forceParse: 0,
+            showMeridian: 1,
+            format: "yyyy-mm-dd hh:ii:ss"
+        });
+
+        search();
+
+        var date = new Date();
+        //本周
+        $("#theWeek").click(function () {
+            var getWeekToSearch = new getWeek();
+            var week = getWeekToSearch.init().getWeekType();
+            var endWeek = week.slice(11,21);
+            var starWeek = week.slice(0,10);
+            $("#startTime").val(starWeek + ' 00:00:00')
+            $("#endTime").val(endWeek + ' 23:59:59')
+        });
+
+        //本月
+        $("#theMonth").click(function () {
+            //月一
+            let year = date.getFullYear();
+            let month = date.getMonth() + 1;
+            month = month > 9 ? month : "0" + month;
+
+            let firstDayOfCurMonth = `${year}-${month}-01`;
+            let lastDay = new Date(year, month, 0);
+            let lastDayOfCurMonth = `${year}-${month}-${lastDay.getDate()}`;
+            $("#startTime").val(firstDayOfCurMonth + " 00:00:00")
+            $("#endTime").val(lastDayOfCurMonth + " 23:59:59")
+        });
+
+        //本季
+        $("#theQuarter").click(function () {
+            var now = new Date();
+            var nowMonth = now.getMonth();
+            var year = now.getFullYear();
+            var starQuarte,endQyarte;
+            if(nowMonth>= 0 && nowMonth<= 2){
+                starQuarte = year + '-01-01 00:00:00';
+                endQyarte = year + '-03-31 23:59:59'
+            }else if(nowMonth>= 3 && nowMonth<= 5){
+                starQuarte = year + '-04-01 00:00:00';
+                endQyarte = year + '-06-30 23:59:59'
+            }else if(nowMonth>= 6 && nowMonth<= 8){
+                starQuarte = year + '-07-01 00:00:00';
+                endQyarte = year + '-09-30 23:59:59'
+            }else {
+                starQuarte = year + '-10-01 00:00:00';
+                endQyarte = year + '-12-31 23:59:59'
+            }
+
+            $("#startTime").val(starQuarte)
+            $("#endTime").val(endQyarte)
+        });
+
+        //本年
+        $("#theYear").click(function () {
+            let year = date.getFullYear();
+            $("#startTime").val(year + "-" + "01-01" + " 00:00:00")
+            $("#endTime").val(year + "-" + "12-31" + " 23:59:59")
+        });
+    });
+
+    let cellGridRegionUrl = /*[[@{/evaluate/cellGridRegionOne}]]*/ "/evaluate/cellGridRegionOne";
+
+    function search() {
+        var options = {
+            url: cellGridRegionUrl,
+            pagination: false,
+            columns: [
+                {
+                    field: 'index',
+                    title: '序号',
+                    class:'index_width',
+                    formatter: function (value, row, index) {
+                        var page = $('#bootstrap-table').bootstrapTable("getPage");
+                        return page.pageSize * (page.pageNumber - 1) + index + 1;
+                    }
+                },
+                {
+                    field: 'streetName',
+                    title: '街道',
+                    sortable: true,
+                },
+                {
+                    field: 'communityName',
+                    title: '社区',
+                    sortable: true,
+                },
+                {
+                    field: 'gridName',
+                    title: '单元网格',
+                    sortable: true,
+                },
+                {
+                    field: 'publicReportAndInstSize',
+                    title: '监督举报核实数',
+                    sortable: true,
+                },
+                {
+                    field: 'instSize',
+                    title: '立案数',
+                    sortable: true,
+                },
+                {
+                    field: 'publicReportAndInstRate',
+                    title: '监督举报率',
+                    sortable: true,
+                },
+                {
+                    field: 'closeOrToCloseSize',
+                    title: '应结案数',
+                    sortable: true,
+                },
+                {
+                    field: 'closeSize',
+                    title: '结案数',
+                    sortable: true,
+                },
+                {
+                    field: 'closeRate',
+                    title: '结案率',
+                    sortable: true,
+                },
+                {
+                    field: 'inTimeCloseSize',
+                    title: '按期结案数',
+                    sortable: true,
+                },
+                {
+                    field: 'inTimeCloseRate',
+                    title: '按期结案率',
+                    sortable: true,
+                },
+                {
+                    field: 'comprehensiveIndexValue',
+                    title: '综合指标',
+                    sortable: true,
+                },
+            ]
+        };
+        $.table.init(options);
+    }
+
+</script>
+</body>
+</html>

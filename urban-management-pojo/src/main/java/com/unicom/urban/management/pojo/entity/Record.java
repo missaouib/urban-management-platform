@@ -1,7 +1,10 @@
 package com.unicom.urban.management.pojo.entity;
 
+import com.unicom.urban.management.pojo.Delete;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
@@ -12,7 +15,9 @@ import javax.persistence.*;
  */
 @Data
 @Entity
-public class Record extends BaseEntity {
+@SQLDelete(sql = "update record set deleted = " + Delete.DELETE + " where id = ?")
+@Where(clause = "deleted = " + Delete.NORMAL)
+public class Record extends AbstractEntity {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -24,12 +29,13 @@ public class Record extends BaseEntity {
      */
     private String coordinate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn
-    private User user;
+    private Publish publish;
 
-    @ManyToOne
-    @JoinColumn
-    private Release release;
+    /**
+     * 状态：用于判断是编辑中、发布等状态
+     */
+    private int sts;
 
 }

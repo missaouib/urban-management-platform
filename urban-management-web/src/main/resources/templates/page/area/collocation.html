@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <title>用户管理</title>
+    <th:block th:include="page/fragments/common :: common_css"/>
+    <th:block th:include="page/fragments/common :: bootstrap_table_css"/>
+    <link th:href="@{/css/gridSet.css}" rel="stylesheet" type="text/css">
+</head>
+<body style="background-color: #ecf0f5;font-family: 微软雅黑;color: #475059;min-width: 1150px;overflow: auto">
+<div class="notice_main ">
+
+    <div class="felx_wangge">
+        <div class="bg_fl">
+            <form id="userForm">
+                <div class="top table2_top">
+                    <div class="top_out">
+                        <table class="table">
+                            <tbody>
+                            <tr style="display: flex;justify-content: center;align-items: center">
+                                <td style="width: 20%">网格名称<span></span></td>
+                                <td style="width: 40%">
+                                    <input type="text" class="find_input" name="gridName" id="gridName" autocomplete="off">
+                                </td>
+                                <td style="width: 20%"><span>*</span>所在区域</td>
+                                <td style="width: 40%">
+                                    <select name="region" class="form-control" id="region" onchange="getStreetList()" required>
+                                        <option value="">--请选择--</option>
+                                        <option th:each="as:${gridList}" th:value="${as.id}"
+                                                th:text="${as.gridName}"></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr style="display: flex;justify-content: center;align-items: center">
+                                <td style="width: 20%"><span>*</span>所属街道</td>
+                                <td style="width: 40%">
+                                    <select name="street" class="form-control" id="street" onchange="getCommunityList()"
+                                            required>
+                                    </select>
+                                </td>
+                                <td style="width: 20%"><span>*</span>所属社区</td>
+                                <td style="width: 40%">
+                                    <select name="community" class="form-control" id="community" required>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+            <div class="notice_check">
+                <form id="collocationForm">
+                    <input type="hidden" name="pid" th:value="${id}">
+                    <input type="hidden" id="gridIds" name="gridIds" th:value="${gridIds}">
+                    <p style="display: flex;justify-content: flex-end">
+                        <input type="button" class="check_btn button_ground" onclick="search()" value="查询">
+                        <input type="button" class="check_btn1 button_ground" onclick="collocation()" value="保存">
+                    </p>
+                </form>
+            </div>
+
+
+            <div class="clear"></div>
+
+
+            <div class="btn-group-sm" id="toolbar">
+            </div>
+
+            <table id="table" class="table_style" style="margin: 0 auto"></table>
+        </div>
+        <div class="map_fl">
+            <div class="mengBan"></div>
+            <div id="container" style="width: 100%;height: 100%;"></div>
+            <div id="map" style="width: 100%;height: 100%" class="map"></div>
+        </div>
+    </div>
+</div>
+
+
+<th:block th:include="page/fragments/common :: common_js"/>
+<th:block th:include="page/fragments/common :: bootstrap_table_js"/>
+<th:block th:include="page/fragments/common :: map_js"/>
+<th:block th:include="page/fragments/common :: mapSlicing_js"/>
+<th:block th:include="page/fragments/common :: bmap_js" />
+<script type="text/javascript" th:inline="javascript">
+    var id=[[${id}]]
+    getGridCenter(id)
+    $(function () {
+        search();
+        $(".ol-full-screen-false").html("全屏")
+    });
+
+
+    /**
+     * 获取网格的中心点
+     */
+    function getGridCenter(id) {
+        layerMap.getSource().clear();
+        let surl = "/event/findGeomByGridId?id=" + id;
+        $.ajaxUtil.get(surl, function (e) {
+           if (e.data){
+               $(e.data.geom).each(function (index, value) {
+                   let split = value.split(",");
+                   let polygonArray = [];
+                   let polygonArrayEnd = [];
+                   for (let j = 0; j < split.length; j++) {
+                       let pointArray = [];
+                       pointArray.push(split[j].split(" ")[0]);
+                       pointArray.push(split[j].split(" ")[1]);
+                       polygonArray.push(pointArray);
+                       polygonArrayEnd.push(polygonArray);
+                   }
+                   setPolygon(polygonArrayEnd);
+               })
+               var data = e.data.center[0].split(" ");
+               var center = [];
+               center.push(parseFloat(data[0]))
+               center.push(parseFloat(data[1]))
+               setCenterForGrid(center);
+           }
+        });
+
+    }
+    function setPolygon(Polygons, data) {
+        let Polygon = new ol.Feature({
+            geometry: new ol.geom.Polygon(Polygons),
+            data: {
+                id: data,
+                // name: name,
+                coordinate: Polygons
+            }
+        });
+        layerMap.getSource().addFeature(Polygon);
+    }
+    function setCenterForGrid(data) {
+        map.getView().setCenter(data);
+    }
+
+
+    let searchUrl = /*[[@{/gridOwner/getGridList}]]*/ "/gridOwner/getGridList";
+    let collocationUrl = /*[[@{/grid/coolocation}]]*/ "/gridOwner/coolocation";
+
+
+    function search() {
+        $('#table').bootstrapTable('removeAll');
+        var count = $('#table').bootstrapTable('getData').length;
+        var param = "?level=4";
+        if ($("#gridName").val() !== "" && $("#gridName").val() !== null) {
+            param += "&gridName=" + $("#gridName").val();
+        }
+        if ($("#region").val() !== "" && $("#region").val() !== null) {
+            param += "&region=" + $("#region").val();
+        }
+        if ($("#street").val() !== "" && $("#street").val() !== null) {
+            param += "&street=" + $("#street").val();
+        }
+        if ($("#community").val() !== "" && $("#community").val() !== null) {
+            param += "&community=" + $("#community").val();
+        }
+
+        $.ajaxUtil.get(searchUrl + param, function (e) {
+            $(e.data).each(function (index, value) {
+                $('#table').bootstrapTable('insertRow', {
+                    index: index,
+                    row: {
+                        index: index + 1,
+                        id: value.id,
+                        gridName: value.gridName,
+                        region: value.region,
+                        street: value.street,
+                        community: value.community,
+                        initialDateStr: value.initialDateStr,
+                        parentId:value.parentId
+                    }
+                });
+            })
+
+        })
+
+    }
+
+    var gridIds = [];
+
+    $('#table').bootstrapTable({
+        //点击全选框时触发的操作
+        onCheckAll: function (rows) {
+            checked()
+        },
+        //点每一个单选框时触发的操作
+        onCheck: function (row) {
+            checked()
+        },
+
+        //取消每一个单选框时对应的操作；
+        onUncheck: function (row) {
+            checked()
+        },
+
+        ////取消所有
+        onUncheckAll: function (row) {
+            checked()
+        },
+        onClickRow: function (row,index) {
+            getGridCenter(row.id)
+        },
+        pagination: true,
+        paginationLoop: true,
+        pageSize: 10,
+        pageNumber: 1,
+        pageList: [10],
+        columns: [
+            {
+                field: 'index',
+                title: '序号',
+                class:'index_width'
+            },
+            {
+                checkbox: true,
+                title: '编辑',
+                class: "check",
+                formatter: stateFormatter
+            },
+            {
+                title: '网格名称',
+                field: 'gridName',
+                sortable: true,
+            },
+            {
+                title: '所属区域',
+                field: 'region',
+                sortable: true,
+            },
+            {
+                title: '所属街道',
+                field: 'street',
+                sortable: true,
+            },
+
+            {
+                title: '所属社区',
+                field: 'community',
+                sortable: true,
+            },
+
+            {
+                title: '创建时间',
+                field: 'initialDateStr',
+                sortable: true,
+            }
+        ]
+    });
+    var rows
+    $("#sureOne").click(function () {
+
+    })
+
+    function checked() {
+        var rows = $('#table').bootstrapTable('getSelections');
+        gridIds = [];
+        for (var i = 0; i < rows.length; i++) {
+            gridIds.push(rows[i].id);
+        }
+        $("#gridIds").val(gridIds)
+    }
+
+    //复选框判断是否选中
+    function stateFormatter(value, row, index) {
+        if (row.parentId === id)
+            return {
+                // disabled : true,//设置是否可用
+                checked: true//设置选中
+            };
+        return value;
+    }
+
+    /**
+     * 获取街道
+     */
+    function getStreetList() {
+        let parentId = $("#region option:selected").val();
+        let url = "/event/findAllByParentId/?parentId=" + parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#street").html(option);
+            }
+        });
+    }
+
+    /**
+     * 获取社区
+     */
+    function getCommunityList() {
+        let parentId = $("#street option:selected").val();
+        let url = "/event/findAllByParentId/?parentId=" + parentId;
+        $.ajaxUtil.get(url, function (e) {
+            let option = "<option>--请选择--</option>";
+            if (e.code === 0) {
+                $(e.data).each(function (index, value) {
+                    option += "<option value='" + value.id + "'>" + value.gridName + "</option>"
+                });
+                $("#community").html(option);
+            }
+        });
+    }
+
+    function collocation() {
+        let data = $('#collocationForm').serialize();
+        $.operate.saveAndReload(collocationUrl, data);
+    }
+
+
+
+
+</script>
+</body>
+</html>

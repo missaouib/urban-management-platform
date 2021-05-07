@@ -1,12 +1,9 @@
 package com.unicom.urban.management.pojo;
 
-//import com.cucsi.gis.framework.exception.BaseException;
-//import com.cucsi.gis.framework.exception.ErrorType;
-//import com.cucsi.gis.framework.exception.SystemErrorType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.unicom.urban.management.common.enums.ErrorCodeEnum;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,13 +17,10 @@ import java.time.LocalDateTime;
 @Getter
 public class Result {
 
-    public static final String SUCCESSFUL_CODE = "0";
-    public static final String SUCCESSFUL_MESSAGE = "处理成功";
-
     /**
      * 处理结果code
      */
-    private String code;
+    private Integer code;
 
     /**
      * 处理结果描述信息
@@ -62,12 +56,8 @@ public class Result {
 
     /**
      * 内部使用，用于构造成功的结果
-     *
-     * @param code
-     * @param message
-     * @param data
      */
-    private Result(String code, String message, Object data) {
+    private Result(Integer code, String message, Object data) {
         this.code = code;
         this.message = message;
         this.data = data;
@@ -76,11 +66,8 @@ public class Result {
 
     /**
      * 内部使用，用于构造成功的结果
-     *
-     * @param code
-     * @param message
      */
-    public Result(String code, String message) {
+    public Result(Integer code, String message) {
         this.code = code;
         this.message = message;
         this.time = LocalDateTime.now();
@@ -88,18 +75,13 @@ public class Result {
 
     /**
      * 快速创建成功结果并返回结果数据
-     *
-     * @param data
-     * @return Result
      */
     public static Result success(Object data) {
-        return new Result(SUCCESSFUL_CODE, SUCCESSFUL_MESSAGE, data);
+        return new Result(ErrorCodeEnum.SUCCESS.getCode(), ErrorCodeEnum.SUCCESS.getMessage(), data);
     }
 
     /**
      * 快速创建成功结果
-     *
-     * @return Result
      */
     public static Result success() {
         return success(null);
@@ -107,8 +89,6 @@ public class Result {
 
     /**
      * 系统异常类没有返回数据
-     *
-     * @return Result
      */
 //    public static Result fail() {
 //        return new Result(SystemErrorType.SYSTEM_ERROR);
@@ -136,16 +116,12 @@ public class Result {
 
     /**
      * 系统异常类并返回结果数据
-     *
-     * @param errorType
-     * @param message
-     * @return Result
      */
-//    public static Result fail(ErrorType errorType, String message) {
-//        return new Result(errorType, message);
-//    }
+    public static Result fail(ErrorCodeEnum errorCodeEnum) {
+        return new Result(errorCodeEnum.getCode(), errorCodeEnum.getMessage());
+    }
 
-    public static Result fail(String code, String message) {
+    public static Result fail(Integer code, String message) {
         return new Result(code, message);
     }
 
@@ -174,23 +150,5 @@ public class Result {
 //        return new Result(SystemErrorType.SYSTEM_ERROR, message);
 //    }
 
-    /**
-     * 成功code=200
-     *
-     * @return true/false
-     */
-    @JsonIgnore
-    public boolean isSuccess() {
-        return SUCCESSFUL_CODE.equals(this.code);
-    }
 
-    /**
-     * 失败
-     *
-     * @return true/false
-     */
-    @JsonIgnore
-    public boolean isFail() {
-        return !isSuccess();
-    }
 }

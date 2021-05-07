@@ -11,22 +11,18 @@ public class SystemConstant {
     public final static String PAGE = "page";
 
     /**
-     * 登录页面的URL
+     * PC登录页面的URL
      */
-    public final static String LOGIN_PAGE = "/login";
+    public final static String PC_LOGIN_PAGE = "/login";
+
+    public final static String APP_LOGIN_URL = "/login";
+
+    public final static String DEFAULT_LOGIN_PAGE = "/defaultlogin";
 
 
     /**
-     * 明文为123456
+     * Fe,scLoJ07e=DJxo
      */
-    public final static String DEFAULT_PASSWORD = "{bcrypt}$2a$10$JGpFd4.EsRD5mayYRzSBoe31cdqBxgJo7lJ9/1RrpD5ywoHYbpAAm";
-
-    /**
-     * 超级管理员的ID
-     */
-    public final static String ADMIN_USER_ID = "1";
-
-//    public final static String URL_PREFIX = "";
-
+    public final static String DEFAULT_PASSWORD = "Fe,scLoJ07e=DJxo";
 
 }

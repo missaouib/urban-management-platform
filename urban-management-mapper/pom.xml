@@ -16,7 +16,7 @@
 
         <dependency>
             <groupId>com.unicom</groupId>
-            <artifactId>urban-management-common</artifactId>
+            <artifactId>urban-management-pojo</artifactId>
             <version>${project.version}</version>
         </dependency>
 
@@ -32,6 +32,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <annotationProcessorPaths>
                         <path>
